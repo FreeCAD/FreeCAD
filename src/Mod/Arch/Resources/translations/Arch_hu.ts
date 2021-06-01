@@ -1679,7 +1679,7 @@
       <translation>Ezen szint aktiválásakor a vágás bekapcsolása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1160"/>
+      <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Az anyagszín használata az objektum alakzatszíneként, ha rendelkezésre áll</translation>
     </message>
@@ -1996,42 +1996,42 @@
     <message>
       <location filename="ArchStairs.py" line="324"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>A lépcsősor legteteje ide vezet:</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>A lépcső bal széle</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>A lépcső valamennyi szegmensének bal széle</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>A lépcső valamennyi szegmensének jobb széle</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>Az alsó szint födém vastagsága</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>A felső emeleti födém vastagsága</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>Az alsó födém és a lépcső kezdete közötti kapcsolat típusa</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>A lépcső vége és a felső emeleti födém közötti kapcsolat típusa</translation>
     </message>
   </context>
   <context>
@@ -2042,7 +2042,7 @@
       <translation>Összetevők</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1945"/>
+      <location filename="ArchComponent.py" line="1939"/>
       <source>Components of this object</source>
       <translation>Az objektum elemei</translation>
     </message>
@@ -2127,22 +2127,22 @@
       <translation>Hálókat alakzatokká</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1946"/>
+      <location filename="ArchComponent.py" line="1940"/>
       <source>Base component</source>
       <translation>Alap-összetevő</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1947"/>
+      <location filename="ArchComponent.py" line="1941"/>
       <source>Additions</source>
       <translation>Kiegészítők</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1948"/>
+      <location filename="ArchComponent.py" line="1942"/>
       <source>Subtractions</source>
       <translation>Kivonás</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1949"/>
+      <location filename="ArchComponent.py" line="1943"/>
       <source>Objects</source>
       <translation>Objektumok</translation>
     </message>
@@ -2277,7 +2277,7 @@
       <translation>Kérjük válassza ki az alap tárgyat</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1952"/>
+      <location filename="ArchComponent.py" line="1946"/>
       <source>Fixtures</source>
       <translation>Berendezési tárgyak</translation>
     </message>
@@ -2342,7 +2342,7 @@
       <translation>Tengelyek közti távolságok (mm) és szögek (fokban)</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="912"/>
+      <location filename="ArchComponent.py" line="910"/>
       <source>Error computing the shape of this object</source>
       <translation>Hiba a tárgy alakjának számítása közben</translation>
     </message>
@@ -2367,17 +2367,17 @@
       <translation>Brep erő jelző engedélyezése a tárgyon</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="933"/>
+      <location filename="ArchComponent.py" line="931"/>
       <source>has no solid</source>
       <translation>nem szilárd test</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="940"/>
+      <location filename="ArchComponent.py" line="938"/>
       <source>has an invalid shape</source>
       <translation>egy érvénytelen alak</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="942"/>
+      <location filename="ArchComponent.py" line="940"/>
       <source>has a null shape</source>
       <translation>van egy null alakja</translation>
     </message>
@@ -2532,7 +2532,7 @@
       <translation>Épület létrehozása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1953"/>
+      <location filename="ArchComponent.py" line="1947"/>
       <source>Group</source>
       <translation>Csoport</translation>
     </message>
@@ -2989,7 +2989,7 @@
       <translation>Összesen</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1954"/>
+      <location filename="ArchComponent.py" line="1948"/>
       <source>Hosts</source>
       <translation>Állomások</translation>
     </message>
@@ -3049,57 +3049,57 @@
       <translation>Az objektum nem rendelkezik IfcProperties attribútummal. Mégse hozzon létre számolótáblát ehhez az objektumhoz:</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1512"/>
+      <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
       <translation>Al-összetevők ki-/ bekapcsolása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1635"/>
+      <location filename="ArchComponent.py" line="1629"/>
       <source>Closing Sketch edit</source>
       <translation>Vázlat szerkesztés bezárása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1942"/>
+      <location filename="ArchComponent.py" line="1936"/>
       <source>Component</source>
       <translation>Összetevő</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1955"/>
+      <location filename="ArchComponent.py" line="1949"/>
       <source>Edit IFC properties</source>
       <translation>IFC tulajdonságok szerkesztése</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1956"/>
+      <location filename="ArchComponent.py" line="1950"/>
       <source>Edit standard code</source>
       <translation>Szabványos kód szerkesztése</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2002"/>
+      <location filename="ArchComponent.py" line="1996"/>
       <source>Property</source>
       <translation>Tulajdonság</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2007"/>
+      <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
       <translation>Tulajdonság hozzádása...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2008"/>
+      <location filename="ArchComponent.py" line="2002"/>
       <source>Add property set...</source>
       <translation>Tulajdonság készlet hozzádása...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2009"/>
+      <location filename="ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>Új...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2151"/>
+      <location filename="ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation>Új tulajdonság</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2186"/>
+      <location filename="ArchComponent.py" line="2180"/>
       <source>New property set</source>
       <translation>Új tulajdonság készlet</translation>
     </message>

@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Vnesite izraz ...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Izraz: </translation>
     </message>
   </context>
   <context>
@@ -506,17 +506,17 @@ kliknete na levo oz. desno tipko in premikate miško gor oz. dol</translation>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCADa ne bi bilo, če ne bi bilo prispevkov</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Posamezniki</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Družbe</translation>
     </message>
   </context>
   <context>
@@ -1423,7 +1423,7 @@ Neglede na to ima lastnost v skriptih še vedno polni naziv, kot npr. "obj.Ime_S
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Vrstice kode bodo oštevilčene</translation>
     </message>
   </context>
   <context>
@@ -2646,15 +2646,15 @@ Za spremembo te možnosti je treba program ponovno zagnati.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Kakšno glajenje robov z večkratnim vzorčenjem je uporabljeno</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Medočesna razdalja, uporabljena v dvovidnih preslikavah.
+Ta vredost predstavlja količnik, ki bo pomnožen z velikostjo
+mejnega kvadra trenutno prikazanega prostorskega predmeta.</translation>
     </message>
   </context>
   <context>
@@ -3597,25 +3597,25 @@ S to nastavitvijo nagibanje z miško ni onemogočeno.</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Zasuk v najbližji možni položaj, ob kliku na ploskev kocke</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Zasuk do najbližjega</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Velikost kocke</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Velikost krmilne kocke</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Za koliko se bo spremenila povečava.
+Korak preodmičenja "1" pomeni količnik velikost 7,5 za vsak korak.</translation>
     </message>
   </context>
   <context>
@@ -3933,7 +3933,7 @@ Prednostni je sistem, nastavljen v splošnih prednastavitvah.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>neznana enota:</translation>
     </message>
   </context>
   <context>
@@ -6959,9 +6959,9 @@ Dokument: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Tvarna pot: </translation>
     </message>
   </context>
   <context>

@@ -9,27 +9,6 @@
       <translation>Prikažite privremene objekte za izgradnju staza kada je modul u stanju DEBUG moda.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
-      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti uvelike povećavaju vrijeme obrade.
-</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti ne povećavaju vrijeme obrade.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Zaustavni indeks (kut) za rotacijsko skeniranje</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
-      <source>Dropcutter lines are created parallel to this axis.</source>
-      <translation>Linije spuštajućeg (drop-cutter) glodala stvaraju se paralelno s ovom osi.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="73"/>
       <source>The direction along which dropcutter lines are created</source>
       <translation>Smjer duž kojeg se stvaraju linije spuštajućeg glodala (drop-cutter)</translation>
@@ -38,11 +17,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="74"/>
       <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
       <translation>Kako operaciju treba ograničiti, kroz objekt osnove ili granični okvir osnovnog objekta</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Dodatni pomak za odabrani granični okvir</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="76"/>
@@ -65,6 +39,17 @@
       <translation>Omogući optimizaciju koja uklanja nepotrebne točke iz izvoza G-Koda</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
+      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti uvelike povećavaju vrijeme obrade.
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
+      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti ne povećavaju vrijeme obrade.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="129"/>
       <source>The completion mode for the operation: single or multi-pass</source>
       <translation>Način dovršetka operacije: jednostruki ili višeprolazni</translation>
@@ -75,14 +60,9 @@
       <translation>Smjer kojim alatna staza treba obilaziti dio: uspon (ClockWise) ili konvencionalni (CounterClockWise)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="132"/>
-      <source>The model will be rotated around this axis.</source>
-      <translation>Model će se vrtiti oko ove osi.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="133"/>
-      <source>Start index(angle) for rotational scan</source>
-      <translation>Početni indeks (kut) za rotacijsko skeniranje</translation>
+      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Zaustavni indeks (kut) za rotacijsko skeniranje</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="141"/>
@@ -98,6 +78,26 @@
       <location filename="../../../PathScripts/PathSurface.py" line="143"/>
       <source>Cut through waste to depth at model edge, releasing the model.</source>
       <translation>Prerežite otpadak do dubine na rubu modela, oslobađajući model.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
+      <source>Dropcutter lines are created parallel to this axis.</source>
+      <translation>Linije spuštajućeg (drop-cutter) glodala stvaraju se paralelno s ovom osi.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Dodatni pomak za odabrani granični okvir</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="132"/>
+      <source>The model will be rotated around this axis.</source>
+      <translation>Model će se vrtiti oko ove osi.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="133"/>
+      <source>Start index(angle) for rotational scan</source>
+      <translation>Početni indeks (kut) za rotacijsko skeniranje</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="128"/>
@@ -270,11 +270,6 @@
       <location filename="PathCopy.py" line="45"/>
       <source>The path to be copied</source>
       <translation>Put koji treba kopirati</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>Osnovna geometrija ove obrade staze</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="70"/>
@@ -650,6 +645,11 @@
       <translation>Dodatni pomak koji se primjenjuje na operaciju. Smjer ovisi o operaciji.</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Biblioteka koja se koristiti za generiranje staze</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Započnite utor na sredini ili rubu</translation>
@@ -739,9 +739,9 @@
       <translation>Postavi na istinito, ako koristite kompenzaciju radijusa glodala</translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Biblioteka koja se koristiti za generiranje staze</translation>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>Osnovna geometrija ove obrade staze</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
@@ -989,6 +989,21 @@
 </translation>
     </message>
     <message>
+      <location filename="PathUtils.py" line="750"/>
+      <source>Legacy Tools not supported</source>
+      <translation type="unfinished">Legacy Tools not supported</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="754"/>
+      <source>Selected tool is not a drill</source>
+      <translation type="unfinished">Selected tool is not a drill</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="762"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
+      <translation>Pogrešan rub rezanja kut %.2f, mora biti &lt; 90 ° i &gt; = 0 °</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="808"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
       <translation>Pogrešan kut rezanja ruba %.2f, mora biti &gt; = 0 ° i &lt;= 180 °</translation>
@@ -997,11 +1012,6 @@
       <location filename="PathUtils.py" line="767"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>Kut rezanja ruba (%.2f) rezultira negativnom duljinom vrha alata</translation>
-    </message>
-    <message>
-      <location filename="PathUtils.py" line="762"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
-      <translation>Pogrešan rub rezanja kut %.2f, mora biti &lt; 90 ° i &gt; = 0 °</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="397"/>
@@ -1234,13 +1244,6 @@
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Rotirano u "obrnuti kut" za pokušaj pristupa.
-
-</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
       <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
       <translation>Odabrane značajke zahtijevaju 'Omogući rotaciju: A(x)' za pristup.
@@ -1356,6 +1359,13 @@ Povećana na vrh osnove.</translation>
       <location filename="../../../InitGui.py" line="158"/>
       <source>Utils</source>
       <translation type="unfinished">Utils</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Rotirano u "obrnuti kut" za pokušaj pristupa.
+
+</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -2028,6 +2038,16 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
 </translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Pocket Shape</source>
+      <translation>Oblik Utora</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Creates a Path Pocket object from a face or faces</source>
+      <translation>Stvara objekt staze utora iz površine ili površina lica</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
       <source>Normal</source>
       <translation>Normalno</translation>
@@ -2041,16 +2061,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
       <source>Y</source>
       <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Pocket Shape</source>
-      <translation>Oblik Utora</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Creates a Path Pocket object from a face or faces</source>
-      <translation>Stvara objekt staze utora iz površine ili površina lica</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
@@ -2482,9 +2492,10 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSlot.py" line="448"/>
-      <source>Custom points not at same Z height.</source>
-      <translation>Prilagođene točke nisu u istoj Z visini.</translation>
+      <location filename="../../../PathScripts/PathSlot.py" line="720"/>
+      <source>The selected face is not oriented horizontally or vertically.</source>
+      <translation>Odabrano lice nije orijentirano vodoravno ili okomito.
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1638"/>
@@ -2492,6 +2503,16 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation>Trenutna vrijednost pomaka nije moguća.
 
 </translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="441"/>
+      <source>Custom points are identical.</source>
+      <translation type="unfinished">Custom points are identical.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSlot.py" line="448"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>Prilagođene točke nisu u istoj Z visini.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="493"/>
@@ -2516,10 +2537,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation>Potvrdi točke puta početka i kraja utora.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSlot.py" line="720"/>
-      <source>The selected face is not oriented horizontally or vertically.</source>
-      <translation>Odabrano lice nije orijentirano vodoravno ili okomito.
-</translation>
+      <location filename="PathSlot.py" line="752"/>
+      <source>The selected face is inaccessible.</source>
+      <translation type="unfinished">The selected face is inaccessible.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="737"/>
@@ -3579,16 +3599,6 @@ zadana vrijednost = 10,0.</translation>
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Dress-up (Odjenuti)</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Stvara staza objekt Dress-up od odabrane staze</translation>
-    </message>
-    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3606,6 +3616,16 @@ zadana vrijednost = 10,0.</translation>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Odaberite objekt staze</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Dress-up (Odjenuti)</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Stvara staza objekt Dress-up od odabrane staze</translation>
     </message>
   </context>
   <context>
@@ -4086,6 +4106,13 @@ zadana vrijednost = 10,0.</translation>
       <translation>Stvori objekt prijelaza staze</translation>
     </message>
     <message>
+      <location filename="PathHop.py" line="119"/>
+      <source>The selected object is not a path
+</source>
+      <translation>Odabrani objekt nije putanja staze
+</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
       <source>Please select one path object</source>
       <translation>Odaberite jedan objekt staze</translation>
@@ -4099,13 +4126,6 @@ zadana vrijednost = 10,0.</translation>
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Stvori prijelaz</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="119"/>
-      <source>The selected object is not a path
-</source>
-      <translation>Odabrani objekt nije putanja staze
-</translation>
     </message>
   </context>
   <context>
@@ -4359,6 +4379,11 @@ zadana vrijednost = 10,0.</translation>
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>Zadatak nema odabran osnovni objekt.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
       <translation>Provjerite ima li u putanji uobičajenih pogrešaka
@@ -4439,11 +4464,6 @@ zadana vrijednost = 10,0.</translation>
       <location filename="../../../PathScripts/PathSanity.py" line="223"/>
       <source>Minimum Z Height</source>
       <translation>Minimalna Z visina</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>Zadatak nema odabran osnovni objekt.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="224"/>
@@ -4787,6 +4807,11 @@ Broj linija</translation>
   <context>
     <name>Path_ToolController</name>
     <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Broj alata koji se koristi</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Zadatku dodajte kontroler alata</translation>
@@ -4795,11 +4820,6 @@ Broj linija</translation>
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Dodajte kontroler alata</translation>
-    </message>
-    <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Broj alata koji se koristi</translation>
     </message>
   </context>
   <context>
@@ -4830,6 +4850,14 @@ Broj linija</translation>
 </translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation>VCarve zahtijeva gravura                                    rezač s
+Kutom rezanja ruba
+
+</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="309"/>
       <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
       <translation type="unfinished">VCarve requires an engraving cutter with CuttingEdgeAngle</translation>
@@ -4838,14 +4866,6 @@ Broj linija</translation>
       <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
       <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
       <translation>Rezni kut ruba graviranja mora biti &lt; 180 stupnjeva.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
-      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
-      <translation>VCarve zahtijeva gravura                                    rezač s
-Kutom rezanja ruba
-
-</translation>
     </message>
   </context>
   <context>
@@ -4884,9 +4904,54 @@ Kutom rezanja ruba
       <translation>Spremi biblioteku nastavaka alata</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Tabela alata JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD Tabela alata (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC Tabela alata (*.tbl)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Otvori tabelu alata</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Spremi tabelu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Rename Tooltable</source>
+      <translation>Preimenuj Tabelu Alata </translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Enter Name:</source>
+      <translation>Unesite ime:</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Dodajte novu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Izbriši odabranu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Preimenuj odabranu tablicu alata</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -5100,11 +5165,6 @@ Kutom rezanja ruba
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Spremi tabelu alata</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Tabela alata XML (*.xml)</translation>
     </message>
@@ -5117,46 +5177,6 @@ Kutom rezanja ruba
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>Objekt nema svojstvo alata stola</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Rename Tooltable</source>
-      <translation>Preimenuj Tabelu Alata </translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Enter Name:</source>
-      <translation>Unesite ime:</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Dodajte novu tablicu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Izbriši odabranu tablicu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Preimenuj odabranu tablicu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Tabela alata JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD Tabela alata (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC Tabela alata (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>

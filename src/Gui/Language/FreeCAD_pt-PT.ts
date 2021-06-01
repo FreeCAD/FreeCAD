@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Introduza uma expressão...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Expressão: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>O FreeCAD não seria possível sem as contribuições de</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Indivíduos</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organizações</translation>
     </message>
   </context>
   <context>
@@ -715,7 +715,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Descrição detalhada da nova propriedade.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -1406,7 +1406,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>Tamanho da fonte a ser usado no tipo de código selecionado</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
@@ -1414,7 +1414,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>Família de fonte a ser usada no tipo de código selecionado</translation>
     </message>
     <message>
       <source>Color:</source>
@@ -1422,7 +1422,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Linhas de código serão numeradas</translation>
     </message>
   </context>
   <context>
@@ -1481,17 +1481,17 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>Idioma da interface de utilizador da aplicação</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Quantos ficheiros devem ser listados na lista de ficheiros recentes</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>O fundo da janela principal consistirá em mosaicos de uma imagem especial.
+Veja a Wiki do FreeCAD para mais detalhes sobre a imagem.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
@@ -1500,8 +1500,7 @@ See the FreeCAD Wiki for details about the image.</translation>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>Escolha a sua preferência para o tamanho do ícone na barra de ferramentas. Você pode ajustar de acordo com o tamanho do seu ecrã ou gosto pessoal</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
@@ -1964,7 +1963,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
       <source>Look at</source>
-      <translation type="unfinished">Look at</translation>
+      <translation>Olhar para</translation>
     </message>
     <message>
       <source>Groups</source>
@@ -2294,32 +2293,32 @@ Por favor, indique outra pasta.</translation>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation type="unfinished">When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</translation>
+      <translation>Quando ocorre um erro, a caixa de diálogo Vista de Relatório torna-se visível
+no ecrã enquanto mostra o erro</translation>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>Mostrar vista de relatório em caso de erro</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>Quando ocorre um aviso, a caixa de diálogo Vista de Relatório torna-se visível
+no ecrã enquanto mostra o aviso</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>Mostrar vista de relatório em caso de aviso</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>Quando ocorre uma mensagem normal, a caixa de diálogo Vista de Relatório torna-se visível
+no ecrã enquanto mostra a mensagem</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>Mostrar vista de relatório em caso de mensagem normal</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
@@ -2369,7 +2368,7 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Mensagens normais serão gravadas</translation>
     </message>
     <message>
       <source>Record normal messages</source>
@@ -2589,7 +2588,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
+      <translation>Cor da luz de fundo</translation>
     </message>
     <message>
       <source>Intensity</source>
@@ -3055,7 +3054,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Formato</translation>
     </message>
   </context>
   <context>
@@ -3362,7 +3361,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Menu de macros recentes</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
@@ -3370,7 +3369,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Quantas macros devem ser listadas na lista de macros recentes</translation>
     </message>
     <message>
       <source>Shortcut count</source>
@@ -3413,7 +3412,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <translation>Canto onde o cubo de navegação é mostrado</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -3597,15 +3596,15 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Girar para o mais próximo</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Tamanho do cubo</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Tamanho do cubo de navegação</translation>
     </message>
     <message>
       <source>How much will be zoomed.
@@ -3812,7 +3811,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Cor inferior</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
@@ -3820,7 +3819,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Cor superior</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -3929,7 +3928,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>unidade desconhecida:</translation>
     </message>
   </context>
   <context>
@@ -4728,7 +4727,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Avisos</translation>
     </message>
     <message>
       <source>Errors</source>
@@ -4736,7 +4735,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Mostrar vista de relatório em</translation>
     </message>
   </context>
   <context>
@@ -4830,7 +4829,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Lista de objetos escolhidos</translation>
     </message>
   </context>
   <context>
@@ -4905,14 +4904,14 @@ Deseja guardar as suas alterações?</translation>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Correspondência exata</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Correspondência exata</translation>
     </message>
   </context>
   <context>
@@ -5524,7 +5523,7 @@ Deseja sair sem guardar os seus dados?</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
-      <translation type="unfinished">Saves Python history across %1 sessions</translation>
+      <translation>Salva histórico do Python em %1 sessões</translation>
     </message>
   </context>
   <context>
@@ -5557,7 +5556,7 @@ Deseja sair sem guardar os seus dados?</translation>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Atalho para executar macro %1 (Shift+clique para editar): %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5695,18 +5694,18 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation type="unfinished">Translation Increment:</translation>
+      <translation>Incremento de translação:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation type="unfinished">Rotation Increment:</translation>
+      <translation>Incremento de rotação:</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskElementColors</name>
     <message>
       <source>Set element color</source>
-      <translation type="unfinished">Set element color</translation>
+      <translation>Definir cor do elemento</translation>
     </message>
     <message>
       <source>TextLabel</source>
@@ -5726,11 +5725,11 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
       <source>Remove all</source>
-      <translation type="unfinished">Remove all</translation>
+      <translation>Remover todos</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Ocultar</translation>
     </message>
     <message>
       <source>Box select</source>
@@ -5983,15 +5982,15 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
       <source>Valencian</source>
-      <translation type="unfinished">Valencian</translation>
+      <translation>Valenciano</translation>
     </message>
     <message>
       <source>Arabic</source>
-      <translation type="unfinished">Arabic</translation>
+      <translation>Árabe</translation>
     </message>
     <message>
       <source>Vietnamese</source>
-      <translation type="unfinished">Vietnamese</translation>
+      <translation>Vietnamita</translation>
     </message>
   </context>
   <context>
@@ -6088,7 +6087,7 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
       <source>Show hidden items</source>
-      <translation type="unfinished">Show hidden items</translation>
+      <translation>Mostrar itens ocultos</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
@@ -6096,27 +6095,27 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
       <source>Hide item</source>
-      <translation type="unfinished">Hide item</translation>
+      <translation>Ocultar item</translation>
     </message>
     <message>
       <source>Hide the item in tree</source>
-      <translation type="unfinished">Hide the item in tree</translation>
+      <translation>Ocultar o item na vista de árvore</translation>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>Fechar documento</translation>
     </message>
     <message>
       <source>Close the document</source>
-      <translation type="unfinished">Close the document</translation>
+      <translation>Fechar o documento</translation>
     </message>
     <message>
       <source>Reload document</source>
-      <translation type="unfinished">Reload document</translation>
+      <translation>Recarregar documento</translation>
     </message>
     <message>
       <source>Reload a partially loaded document</source>
-      <translation type="unfinished">Reload a partially loaded document</translation>
+      <translation>Recarregar um documento parcialmente carregado</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
@@ -6747,7 +6746,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Erro de dependência</translation>
     </message>
     <message>
       <source>Copy selected</source>
@@ -6767,7 +6766,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Erro de expressão</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
@@ -6777,7 +6776,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Failed to paste expressions</source>
-      <translation type="unfinished">Failed to paste expressions</translation>
+      <translation>Falha ao colar expressões</translation>
     </message>
     <message>
       <source>Simple group</source>
@@ -6851,11 +6850,11 @@ sublinhado (_) e não deve começar com um dígito.</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Falha ao guardar documento</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>Documentos contém dependências cíclicas. Você ainda deseja salvá-los?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6883,11 +6882,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
-      <translation type="unfinished">Apply answer to all</translation>
+      <translation>Aplicar resposta a todos</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>Arrastar &amp; soltar falhou</translation>
     </message>
     <message>
       <source>Override colors...</source>
@@ -6916,14 +6915,14 @@ Please check report view for more...</translation>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>
+Documento: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+  Caminho: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
@@ -6949,9 +6948,9 @@ Document: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Caminho físico: </translation>
     </message>
   </context>
   <context>
@@ -8317,7 +8316,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>&amp;Voltar</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
@@ -8347,7 +8346,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation type="unfinished">&amp;Forward</translation>
+      <translation>&amp;Avançar</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
@@ -8658,11 +8657,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>Expandir item selecionado</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>Expandir itens da árvore selecionados atualmente</translation>
     </message>
   </context>
   <context>

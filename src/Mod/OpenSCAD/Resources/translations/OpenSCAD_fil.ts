@@ -142,12 +142,12 @@
       <translation>Mangyaring pumili muna ng 3 mga object</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Hindi suportadong Function</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>I-press ang OK</translation>
     </message>

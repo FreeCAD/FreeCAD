@@ -307,185 +307,190 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>Tippek mutatása</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="182"/>
+      <location filename="../../DlgStartPreferences.ui" line="163"/>
+      <source>Displays help tips in the Start workbench Documents tab</source>
+      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="185"/>
       <source>Fonts and colors</source>
       <translation>Betűtípusok és színek</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="194"/>
+      <location filename="../../DlgStartPreferences.ui" line="197"/>
       <source>The background of the main start page area</source>
       <translation>A fő kezdő oldal területének a háttere</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="214"/>
+      <location filename="../../DlgStartPreferences.ui" line="217"/>
       <source>Background color</source>
       <translation>Háttér szín</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="226"/>
+      <location filename="../../DlgStartPreferences.ui" line="229"/>
       <source>in FreeCAD</source>
       <translation>FreeCAD-ban</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="245"/>
+      <location filename="../../DlgStartPreferences.ui" line="248"/>
       <source>In external browser</source>
       <translation>Külső böngészőben</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="263"/>
+      <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
       <translation type="unfinished">Background color down gradient</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <location filename="../../DlgStartPreferences.ui" line="279"/>
       <source>The color of the version text</source>
       <translation>A verzió szövegének színe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="296"/>
+      <location filename="../../DlgStartPreferences.ui" line="299"/>
       <source>Link color</source>
       <translation>Kapcsolat színe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="303"/>
+      <location filename="../../DlgStartPreferences.ui" line="306"/>
       <source>An optional image to display as background</source>
       <translation>Egy lehetséges ábra a háttérképnek</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="316"/>
+      <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
       <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="335"/>
+      <location filename="../../DlgStartPreferences.ui" line="338"/>
       <source>Page background color</source>
       <translation>Oldal háttérszíne</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <location filename="../../DlgStartPreferences.ui" line="351"/>
       <source>The color of the text on the main pages</source>
       <translation>A fő oldalak szöveg színe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="368"/>
+      <location filename="../../DlgStartPreferences.ui" line="371"/>
       <source>Background image</source>
       <translation>Háttérkép</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="375"/>
+      <location filename="../../DlgStartPreferences.ui" line="378"/>
       <source>Page text color</source>
       <translation>Oldal szöveg színe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="388"/>
+      <location filename="../../DlgStartPreferences.ui" line="391"/>
       <source>The color of the links</source>
       <translation>A hivatkozások színe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="414"/>
+      <location filename="../../DlgStartPreferences.ui" line="417"/>
       <source>The background color of the boxes inside the pages</source>
       <translation>Az oldalon levő téglatestek háttér színe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="434"/>
+      <location filename="../../DlgStartPreferences.ui" line="437"/>
       <source>Box background color</source>
       <translation>Téglatest háttérszíne</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="447"/>
+      <location filename="../../DlgStartPreferences.ui" line="450"/>
       <source>The background color behind the panels</source>
       <translation>Panelek mögötti háttérszín</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="476"/>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>The down gradient for the background color (currently unsupported)</source>
       <translation>A háttérszín halványítása (jelenleg nem támogatott)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="499"/>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>Open links</source>
       <translation>Nyitott kapcsolatok</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="506"/>
+      <location filename="../../DlgStartPreferences.ui" line="509"/>
       <source>Background text color</source>
       <translation>Háttér szöveg színe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="513"/>
+      <location filename="../../DlgStartPreferences.ui" line="516"/>
       <source>Use FreeCAD style sheet</source>
       <translation>FreeCAD stíluslap használata</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="520"/>
+      <location filename="../../DlgStartPreferences.ui" line="523"/>
       <source>Font family</source>
       <translation>Betűkészlet</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="529"/>
+      <location filename="../../DlgStartPreferences.ui" line="532"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
       <translation>A kezdő oldalon használni kívánt betűcsalád. Állhat egy betűtípus nevéből vagy vesszővel elválasztott visszatérő betűtípus sorozatából</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="535"/>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Arial,Helvetica,sans</source>
       <translation>Arial, Helvetica, sans</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="548"/>
+      <location filename="../../DlgStartPreferences.ui" line="551"/>
       <source>The base font size to use for all texts of the Start page</source>
       <translation>Alap betűméretet a kezdő oldal összes szövegének használatához</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="569"/>
+      <location filename="../../DlgStartPreferences.ui" line="572"/>
       <source>Use gradient for New File icon</source>
       <translation>Színátmenet használata új fájl ikonjára</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="576"/>
+      <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
       <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="598"/>
+      <location filename="../../DlgStartPreferences.ui" line="601"/>
       <source>Options</source>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="604"/>
+      <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
       <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="611"/>
+      <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
       <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="630"/>
+      <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
       <translation>Munkafelületre váltás a betöltés után</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="637"/>
+      <location filename="../../DlgStartPreferences.ui" line="640"/>
       <source>Close start page after loading</source>
       <translation>Kezdő oldal bezárása a betöltés után</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="644"/>
+      <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
       <translation type="unfinished">Close and switch on opening file</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="651"/>
+      <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
       <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
     </message>

@@ -1679,7 +1679,7 @@
       <translation type="unfinished">Turn cutting on when activating this level</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1160"/>
+      <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>材質の色が利用可能な場合は、このオブジェクトのシェイプ色に用います</translation>
     </message>
@@ -2042,7 +2042,7 @@
       <translation>コンポーネント</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1945"/>
+      <location filename="ArchComponent.py" line="1939"/>
       <source>Components of this object</source>
       <translation>このオブジェクトのコンポーネント</translation>
     </message>
@@ -2127,22 +2127,22 @@
       <translation>メッシュからシェイプへ</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1946"/>
+      <location filename="ArchComponent.py" line="1940"/>
       <source>Base component</source>
       <translation>基本コンポーネント</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1947"/>
+      <location filename="ArchComponent.py" line="1941"/>
       <source>Additions</source>
       <translation>加算</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1948"/>
+      <location filename="ArchComponent.py" line="1942"/>
       <source>Subtractions</source>
       <translation>減算</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1949"/>
+      <location filename="ArchComponent.py" line="1943"/>
       <source>Objects</source>
       <translation>オブジェクト</translation>
     </message>
@@ -2277,7 +2277,7 @@
       <translation>ベース オブジェクトを選択してください</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1952"/>
+      <location filename="ArchComponent.py" line="1946"/>
       <source>Fixtures</source>
       <translation>取り付け具</translation>
     </message>
@@ -2342,7 +2342,7 @@
       <translation>軸の間の距離 (mm) と角度 (度)</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="912"/>
+      <location filename="ArchComponent.py" line="910"/>
       <source>Error computing the shape of this object</source>
       <translation>このオブジェクトのシェイプ計算でエラーが発生しました。</translation>
     </message>
@@ -2367,17 +2367,17 @@
       <translation>オブジェクトの Brep 強制フラグを有効化</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="933"/>
+      <location filename="ArchComponent.py" line="931"/>
       <source>has no solid</source>
       <translation>ソリッドではありません</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="940"/>
+      <location filename="ArchComponent.py" line="938"/>
       <source>has an invalid shape</source>
       <translation>無効な形状があります</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="942"/>
+      <location filename="ArchComponent.py" line="940"/>
       <source>has a null shape</source>
       <translation>形状がありません</translation>
     </message>
@@ -2532,7 +2532,7 @@
       <translation>建物を作成</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1953"/>
+      <location filename="ArchComponent.py" line="1947"/>
       <source>Group</source>
       <translation>グループ</translation>
     </message>
@@ -2989,7 +2989,7 @@
       <translation>合計</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1954"/>
+      <location filename="ArchComponent.py" line="1948"/>
       <source>Hosts</source>
       <translation>ホスト</translation>
     </message>
@@ -3049,57 +3049,57 @@
       <translation>オブジェクトにIfcProperties属性がありません。このオブジェクトのためのスプレッドシート作成をキャンセルしてください：</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1512"/>
+      <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
       <translation>サブコンポーネントを切り替え</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1635"/>
+      <location filename="ArchComponent.py" line="1629"/>
       <source>Closing Sketch edit</source>
       <translation>スケッチ編集を終了</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1942"/>
+      <location filename="ArchComponent.py" line="1936"/>
       <source>Component</source>
       <translation>コンポーネント</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1955"/>
+      <location filename="ArchComponent.py" line="1949"/>
       <source>Edit IFC properties</source>
       <translation>IFCプロパティーの編集</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1956"/>
+      <location filename="ArchComponent.py" line="1950"/>
       <source>Edit standard code</source>
       <translation>標準コードを編集</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2002"/>
+      <location filename="ArchComponent.py" line="1996"/>
       <source>Property</source>
       <translation>プロパティ</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2007"/>
+      <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
       <translation>プロパティを追加...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2008"/>
+      <location filename="ArchComponent.py" line="2002"/>
       <source>Add property set...</source>
       <translation>プロパティセットを追加...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2009"/>
+      <location filename="ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>新規...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2151"/>
+      <location filename="ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation>新規プロパティ</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2186"/>
+      <location filename="ArchComponent.py" line="2180"/>
       <source>New property set</source>
       <translation>新規プロパティセット</translation>
     </message>

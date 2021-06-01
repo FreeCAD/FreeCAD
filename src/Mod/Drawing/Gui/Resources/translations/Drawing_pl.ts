@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="477"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="478"/>
@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="526"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="716"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="717"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="93"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="94"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
@@ -128,7 +128,7 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="440"/>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="390"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="680"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="681"/>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../Command.cpp" line="747"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="748"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../../Command.cpp" line="570"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="571"/>
@@ -768,7 +768,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
   </context>
 </TS>

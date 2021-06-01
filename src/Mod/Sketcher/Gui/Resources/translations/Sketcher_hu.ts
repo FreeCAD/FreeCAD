@@ -1873,12 +1873,12 @@ A 'Támogatás' tulajdonság törlődik, ha van.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6005"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Él felosztás</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6006"/>
       <source>Splits an edge into two while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
+      <translation>Kettévágja az éleket, miközben megőrzi a kényszerítéseket</translation>
     </message>
   </context>
   <context>
@@ -2223,7 +2223,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4230"/>
       <source>Swap PointOnObject+tangency with point to curve tangency</source>
-      <translation type="unfinished">Swap PointOnObject+tangency with point to curve tangency</translation>
+      <translation>Felcseréli a tárgyat+érintőpontot a görbe érintőpontjához ponttal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4325"/>
@@ -2442,7 +2442,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5977"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Él felosztás</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6152"/>
@@ -2546,22 +2546,22 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Vázlat kényszerítés átnevezése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="851"/>
+      <location filename="../../ViewProviderSketch.cpp" line="853"/>
       <source>Drag Point</source>
       <translation>Pont húzása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="882"/>
+      <location filename="../../ViewProviderSketch.cpp" line="884"/>
       <source>Drag Curve</source>
       <translation>Ív húzása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="933"/>
+      <location filename="../../ViewProviderSketch.cpp" line="935"/>
       <source>Drag Constraint</source>
       <translation>Kényszerítés húzása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1109"/>
       <source>Modify sketch constraints</source>
       <translation>Vázlat kényszerítés módosítása</translation>
     </message>
@@ -3282,22 +3282,22 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../CommandConstraints.cpp" line="675"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation type="unfinished">Sketcher Constraint Substitution</translation>
+      <translation>Vázlatolói kényszerítés helyettesítése</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="681"/>
       <source>Keep notifying me of constraint substitutions</source>
-      <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
+      <translation>Folyamatosan értesítsen a kényszerítés helyettesítéséről</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2674"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied instead.</translation>
+      <translation>Ehelyett a végpont és az él érintője került alkalmazásra.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4242"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
+      <translation>Végponttól az élig érintőt alkalmaztak. A tárgy kényszerítés pontját törölték.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4923"/>
@@ -4214,12 +4214,12 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="20"/>
       <source>Working colors</source>
-      <translation type="unfinished">Working colors</translation>
+      <translation>Munkaszínek</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
       <source>Coordinate text</source>
-      <translation type="unfinished">Coordinate text</translation>
+      <translation>Koordináta szöveg</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
@@ -4229,27 +4229,27 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
+      <translation>Vonal létrehozása</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="115"/>
       <source>Cursor crosshair</source>
-      <translation type="unfinished">Cursor crosshair</translation>
+      <translation>Kurzor célkereszt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="140"/>
       <source>Geometric element colors</source>
-      <translation type="unfinished">Geometric element colors</translation>
+      <translation>Geometriai elemek színei</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="154"/>
       <source>Internal alignment edge</source>
-      <translation type="unfinished">Internal alignment edge</translation>
+      <translation>Belső igazítás éle</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="167"/>
       <source>Unconstrained</source>
-      <translation type="unfinished">Unconstrained</translation>
+      <translation>Kényszerítetlen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="180"/>
@@ -4286,17 +4286,17 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="624"/>
       <source>Reference constraint</source>
-      <translation type="unfinished">Reference constraint</translation>
+      <translation>Hivatkozáskényszerítés</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="678"/>
       <source>Deactivated constraint</source>
-      <translation type="unfinished">Deactivated constraint</translation>
+      <translation>Inaktivált kényszerítés</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="723"/>
       <source>Colors outside Sketcher</source>
-      <translation type="unfinished">Colors outside Sketcher</translation>
+      <translation>A rajzolón kívüli színek</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="279"/>
@@ -4311,7 +4311,7 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="442"/>
       <source>Constrained</source>
-      <translation type="unfinished">Constrained</translation>
+      <translation>Kényszerített</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="466"/>
@@ -4321,7 +4321,7 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="479"/>
       <source>Fully constrained Sketch</source>
-      <translation type="unfinished">Fully constrained Sketch</translation>
+      <translation>Teljesen kényszerezett vázlat</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
@@ -4356,12 +4356,12 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="556"/>
       <source>Constraint colors</source>
-      <translation type="unfinished">Constraint colors</translation>
+      <translation>Kényszerítés színei</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="570"/>
       <source>Constraint symbols</source>
-      <translation type="unfinished">Constraint symbols</translation>
+      <translation>Kényszerítési szimbólumok</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="577"/>
@@ -4376,7 +4376,7 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="651"/>
       <source>Expression dependent constraint</source>
-      <translation type="unfinished">Expression dependent constraint</translation>
+      <translation>Kifejezés függő kényszerítés</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="658"/>
@@ -4463,12 +4463,12 @@ Az 'USA szokásos' és az 'USA/Euro építés' kivételével minden egységrends
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="98"/>
       <source>Use Diameter as default constraint for arcs and circles instead of Radius.</source>
-      <translation type="unfinished">Use Diameter as default constraint for arcs and circles instead of Radius.</translation>
+      <translation>Az ívek és körök alapértelmezett kényszerítésként az átmérőt használja a sugár helyett.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="101"/>
       <source>Use diameter as default constraint for arcs and circles</source>
-      <translation type="unfinished">Use diameter as default constraint for arcs and circles</translation>
+      <translation>Az ívek és körök alapértelmezett kényszerítésként használják az átmérőt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="120"/>
@@ -4512,26 +4512,36 @@ Az 'USA szokásos' és az 'USA/Euro építés' kivételével minden egységrends
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
-      <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
-      <translation type="unfinished">By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</translation>
+      <source>When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</source>
+      <translation type="unfinished">When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
-      <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <source>Force orthographic camera when entering edit</source>
+      <translation type="unfinished">Force orthographic camera when entering edit</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
+      <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
+      <translation>Alapértelmezés szerint nyisson meg egy vázlatot szakasznézet módban - A tárgyak csak a vázlatsík mögött láthatók</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
+      <source>Open sketch in Section View mode</source>
+      <translation>Vázlat megnyitása szakasznézet módban</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Megjegyzés: Ezek az új vázlatok alapértelmezett beállításai. A rendszer minden vázlathoz külön-külön tárolja a viselkedést tulajdonságokként a Nézet lapon.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>View scale ratio</source>
       <translation>Méretezési arány megtekintése</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="376"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="395"/>
       <source>The 3D view is scaled based on this factor</source>
       <translation>A 3D nézet mérete e tényező alapján kerül méretezésre</translation>
     </message>
@@ -4546,52 +4556,52 @@ Az 'USA szokásos' és az 'USA/Euro építés' kivételével minden egységrends
       <translation>Kamera helyzetének visszaállítása a szerkesztés után</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Applies current visibility automation settings to all sketches in open documents</source>
       <translation>Aktuális láthatóság automatizálási beállítások alkalmazása a megnyitott dokumentumok összes vázlatára</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="283"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="302"/>
       <source>Apply to existing sketches</source>
       <translation>Alkalmazza a meglévő vázlatokhoz</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="293"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>Font size used for labels and constraints</source>
       <translation>Címkékhez és kényszerítésekhez használt betűméret</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
       <source>Current sketcher creation tool will remain active after creation</source>
       <translation>A jelenlegi vázlatkészítő eszköz a létrehozás után is aktív marad</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="321"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="340"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Geometria létrehozása "Folytatás mód"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="356"/>
       <source>Grid line pattern</source>
       <translation>Rács vonalminta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="344"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="363"/>
       <source>Number of polygons for geometry approximation</source>
       <translation>A geometria hozzávetőlegességéhez szolgáló sokszögek száma</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="225"/>
+      <location filename="../../SketcherSettings.cpp" line="230"/>
       <source>Unexpected C++ exception</source>
       <translation>Váratlan C++ kivétel</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="233"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
@@ -5154,136 +5164,136 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6242"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6244"/>
       <source>Edit sketch</source>
       <translation>Vázlat szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6258"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6257"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6259"/>
       <source>Do you want to close this dialog?</source>
       <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6271"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
       <source>Invalid sketch</source>
       <translation>Érvénytelen vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6272"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6274"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Szeretné megnyitni a vázlat érvényesítés eszközt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6275"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>A vázlat érvénytelen, és nem szerkeszthető.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6490"/>
       <source>Please remove the following constraint:</source>
       <translation>Kérjük, távolítsa el az alábbi ilesztést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6491"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Kérjük, távolítsa el, legalább az egyiket a következő kényszerítésekből:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6497"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Kérjük, távolítsa el a következő felesleges kényszerítést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6496"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6498"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Kérjük, távolítsa el a következő felesleges kényszerítéseket:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6504"/>
       <source>The following constraint is partially redundant:</source>
       <translation>A következő kényszerítés részben felesleges:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6503"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6505"/>
       <source>The following constraints are partially redundant:</source>
       <translation>A következő kényszerítések részben feleslegesek:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6511"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Távolítsa el a következő hibás kényszerítést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6512"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Távolítsa el a következő hibás kényszerítéseket:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6547"/>
       <source>Empty sketch</source>
       <translation>Üres vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6554"/>
       <source>Over-constrained sketch</source>
-      <translation type="unfinished">Over-constrained sketch</translation>
+      <translation>Túl sok kényszerítést tartalmazó vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6561"/>
       <source>Sketch contains malformed constraints</source>
-      <translation type="unfinished">Sketch contains malformed constraints</translation>
+      <translation>A vázlat hibásan formázott kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6566"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6568"/>
       <source>Sketch contains conflicting constraints</source>
-      <translation type="unfinished">Sketch contains conflicting constraints</translation>
+      <translation>Vázlat szabálytalan kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6574"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6576"/>
       <source>Sketch contains redundant constraints</source>
-      <translation type="unfinished">Sketch contains redundant constraints</translation>
+      <translation>A vázlat felesleges kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6583"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
       <source>Sketch contains partially redundant constraints</source>
-      <translation type="unfinished">Sketch contains partially redundant constraints</translation>
+      <translation>A vázlat részlegesen felesleges kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6553"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6560"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6567"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6575"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6584"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6555"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6562"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6569"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6577"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6586"/>
       <source>(click to select)</source>
       <translation>(kattintás a kijelöléshez)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6595"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6597"/>
       <source>Fully constrained sketch</source>
       <translation>Teljesen zárolt vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6604"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Alul korlátozott vázlat &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 fok&lt;/span&gt;&lt;/a&gt; szabadsággal. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6605"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Alul korlátozott vázlat &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 fokkos&lt;/span&gt;&lt;/a&gt; szabadsággal. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6610"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6612"/>
       <source>Solved in %1 sec</source>
       <translation>Megoldva %1 másodperc alatt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6613"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Megoldatlan (%1 mp)</translation>
     </message>

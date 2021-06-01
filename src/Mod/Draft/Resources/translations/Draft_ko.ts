@@ -155,12 +155,12 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>직사각형 길이</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>직사각형 높이</translation>
     </message>
     <message>
       <location filename="wire.py" line="77"/>
@@ -376,17 +376,17 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>X 위치</translation>
     </message>
     <message>
       <location filename="point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Y 위치</translation>
     </message>
     <message>
       <location filename="point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Z 위치</translation>
     </message>
     <message>
       <location filename="layer.py" line="59"/>
@@ -783,7 +783,7 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="118"/>
       <source>Line Style</source>
-      <translation type="unfinished">Line Style</translation>
+      <translation>선 스타일</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="127"/>
@@ -1111,6 +1111,21 @@ Use 'arch' to force US arch notation</source>
       <translation type="unfinished">A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="47"/>
+      <source>Base object</source>
+      <translation type="unfinished">Base object</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="50"/>
+      <source>A list of points on lines that need to be removed</source>
+      <translation type="unfinished">A list of points on lines that need to be removed</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="53"/>
+      <source>A tolerance value for distances between points and edges</source>
+      <translation type="unfinished">A tolerance value for distances between points and edges</translation>
     </message>
   </context>
   <context>
@@ -1636,22 +1651,22 @@ The array can be turned into a polar or a circular array by changing its type.</
       <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="233"/>
+      <location filename="gui_setstyle.py" line="259"/>
       <source>Save style</source>
       <translation type="unfinished">Save style</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="234"/>
+      <location filename="gui_setstyle.py" line="260"/>
       <source>Name of this new style:</source>
       <translation type="unfinished">Name of this new style:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="242"/>
+      <location filename="gui_setstyle.py" line="268"/>
       <source>Name exists. Overwrite?</source>
       <translation type="unfinished">Name exists. Overwrite?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="277"/>
+      <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
     </message>
@@ -2552,6 +2567,19 @@ Objects added to this layer can share the same visual properties such as line co
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Lineremover</name>
+    <message>
+      <location filename="gui_lineremover.py" line="61"/>
+      <source>Facebinder</source>
+      <translation type="unfinished">Facebinder</translation>
+    </message>
+    <message>
+      <location filename="gui_lineremover.py" line="63"/>
+      <source>Creates a lineremover object from a selected object</source>
+      <translation type="unfinished">Creates a lineremover object from a selected object</translation>
     </message>
   </context>
   <context>
@@ -3714,11 +3742,6 @@ value by using the [ and ] keys while drawing</translation>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="349"/>
-      <source>Apply to selected objects</source>
-      <translation type="unfinished">Apply to selected objects</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
       <translation type="unfinished">Lines and faces</translation>
@@ -3747,6 +3770,41 @@ value by using the [ and ] keys while drawing</translation>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
       <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="14"/>
+      <source>Form</source>
+      <translation>양식</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="20"/>
+      <source>Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</source>
+      <translation type="unfinished">Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="33"/>
+      <source>Deletes selected point in the list above</source>
+      <translation type="unfinished">Deletes selected point in the list above</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="36"/>
+      <source>Delete</source>
+      <translation>삭제</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <source>Selected</source>
+      <translation type="unfinished">Selected</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
     </message>
   </context>
   <context>
@@ -3875,7 +3933,7 @@ such as "Arial:Bold"</source>
       <translation>공차</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>geometry를 결합</translation>
     </message>
@@ -3970,12 +4028,12 @@ such as "Arial:Bold"</source>
       <translation>오른쪽</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation type="unfinished">Group layers into blocks</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation type="unfinished">Export 3D objects as polyface meshes</translation>
     </message>
@@ -4005,17 +4063,17 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation type="unfinished">Use standard font size for texts</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation type="unfinished">Import hatch boundaries as wires</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation type="unfinished">Render polylines with width</translation>
     </message>
@@ -4060,32 +4118,32 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">Construction geometry color</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>가져오기</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>텍스트 및 치수</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>포인트</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation type="unfinished">layouts</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation type="unfinished">*blocks</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
@@ -4185,32 +4243,32 @@ such as "Arial:Bold"</source>
       <translation>가능한 모든 개체의 면을 채우기</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>만들기</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
       <translation>간단한 Part 셰이프</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation type="unfinished">Draft objects</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
       <translation type="unfinished">Sketches</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation type="unfinished">Get original colors from the DXF file</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation type="unfinished">Treat ellipses and splines as polylines</translation>
     </message>
@@ -4225,7 +4283,7 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">Show the unit suffix in dimensions</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation type="unfinished">Allow FreeCAD to automatically download and update the DXF libraries</translation>
     </message>
@@ -4375,7 +4433,7 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">Import options</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation type="unfinished">Use legacy python importer</translation>
     </message>
@@ -4400,22 +4458,22 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">Disable units scaling</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation type="unfinished">Export Drawing Views as blocks</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation type="unfinished">Note: Not all the options below are used by the new importer yet</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation type="unfinished">Show this dialog when importing and exporting</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation type="unfinished">Automatic update (legacy importer only)</translation>
     </message>
@@ -4425,7 +4483,7 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">Prefix labels of Clones with:</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation type="unfinished">Scale factor to apply to imported files</translation>
     </message>
@@ -4545,12 +4603,12 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">The path to your ODA (formerly Teigha) File Converter executable</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation type="unfinished">Max Spline Segment:</translation>
     </message>
@@ -4567,7 +4625,7 @@ Values with differences below this value will be treated as same. This value wil
 Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation type="unfinished">Use legacy python exporter</translation>
     </message>
@@ -4594,7 +4652,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="140"/>
       <source>R</source>
-      <translation type="unfinished">R</translation>
+      <translation>R</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="236"/>
@@ -4604,7 +4662,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="214"/>
       <source>T</source>
-      <translation type="unfinished">T</translation>
+      <translation>T</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="111"/>
@@ -4614,7 +4672,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="177"/>
       <source>O</source>
-      <translation type="unfinished">O</translation>
+      <translation>O</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="243"/>
@@ -4624,7 +4682,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="469"/>
       <source>P</source>
-      <translation type="unfinished">P</translation>
+      <translation>P</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="498"/>
@@ -4634,7 +4692,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="381"/>
       <source>D</source>
-      <translation type="unfinished">D</translation>
+      <translation>D</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="491"/>
@@ -4644,7 +4702,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="425"/>
       <source>L</source>
-      <translation type="unfinished">L</translation>
+      <translation>L</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="447"/>
@@ -4664,7 +4722,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="520"/>
       <source>E</source>
-      <translation type="unfinished">E</translation>
+      <translation>E</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="403"/>
@@ -4674,7 +4732,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="675"/>
       <source>Q</source>
-      <translation type="unfinished">Q</translation>
+      <translation>Q</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="352"/>
@@ -4684,7 +4742,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="557"/>
       <source>H</source>
-      <translation type="unfinished">H</translation>
+      <translation>H</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="359"/>
@@ -4694,7 +4752,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="601"/>
       <source>W</source>
-      <translation type="unfinished">W</translation>
+      <translation>W</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="697"/>
@@ -4704,7 +4762,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="719"/>
       <source>U</source>
-      <translation type="unfinished">U</translation>
+      <translation>U</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="257"/>
@@ -4714,7 +4772,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="52"/>
       <source>`</source>
-      <translation type="unfinished">`</translation>
+      <translation>`</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="338"/>
@@ -4724,7 +4782,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="89"/>
       <source>S</source>
-      <translation type="unfinished">S</translation>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="250"/>
@@ -4734,7 +4792,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="279"/>
       <source>[</source>
-      <translation type="unfinished">[</translation>
+      <translation>[</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="345"/>
@@ -4744,7 +4802,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="316"/>
       <source>]</source>
-      <translation type="unfinished">]</translation>
+      <translation>]</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="741"/>
@@ -4907,28 +4965,19 @@ Note that this is not fully supported, and many object will be not editable with
       <translation type="unfinished">Path to ODA file converter</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation type="unfinished">Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4937,42 +4986,42 @@ You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation type="unfinished">If unchecked, points won't be imported</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation type="unfinished">If checked, paper space objects will be imported too</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
       <translation type="unfinished">Sketches will be created whenever possible</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4983,76 +5032,76 @@ Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation type="unfinished">Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
       <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation type="unfinished">Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation type="unfinished">Use Layers</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation type="unfinished">Hatches will be converted into simple wires</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation type="unfinished">If polylines have a width defined, they will be rendered
 as closed wires with correct width</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation type="unfinished">Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation type="unfinished">All objects containing faces will be exported as 3D polyfaces</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation type="unfinished">Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation type="unfinished">Exported objects will be projected to reflect the current view direction</translation>
     </message>
@@ -5155,7 +5204,14 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
     </message>
   </context>
   <context>
@@ -5834,11 +5890,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">The two points are coincident</translation>
     </message>
     <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation type="unfinished">mirrored)</translation>
-    </message>
-    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation type="unfinished">Found 1 block: exploding it</translation>
@@ -5912,11 +5963,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation type="unfinished">Wrong input: incorrect type of points.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation type="unfinished">Cannot generate shape: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -7305,7 +7351,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Pick location point</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="115"/>
+      <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
       <translation type="unfinished">Create Text</translation>
     </message>
@@ -7446,6 +7492,21 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="gui_edit.py" line="934"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="gui_lineremover.py" line="72"/>
+      <source>Select an existing object</source>
+      <translation type="unfinished">Select an existing object</translation>
     </message>
   </context>
   <context>

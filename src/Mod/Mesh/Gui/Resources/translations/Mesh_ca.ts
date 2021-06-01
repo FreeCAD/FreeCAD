@@ -152,7 +152,7 @@
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Check solid mesh</source>
-      <translation>Comprova la malla sòlida</translation>
+      <translation>Comprova si la malla és un sòlid</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1364"/>
@@ -740,7 +740,7 @@
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>Crea una malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -1312,7 +1312,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="115"/>
       <source>Cone</source>
-      <translation>Cónus</translation>
+      <translation>Con</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="124"/>

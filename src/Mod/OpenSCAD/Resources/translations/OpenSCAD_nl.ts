@@ -142,12 +142,12 @@
       <translation>Selecteer eerst 3 objecten</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Niet-ondersteunde functie</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Druk op OK</translation>
     </message>
@@ -194,12 +194,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Laad</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Opslaan</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="345"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
       <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
+      <translation>Ververs</translation>
     </message>
   </context>
   <context>

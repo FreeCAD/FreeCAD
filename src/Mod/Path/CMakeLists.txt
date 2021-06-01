@@ -33,7 +33,6 @@ SET(PathScripts_SRCS
     PathScripts/PathCircularHoleBaseGui.py
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
-    PathScripts/PathCamoticsGui.py
     PathScripts/PathCustom.py
     PathScripts/PathCustomGui.py
     PathScripts/PathDeburr.py

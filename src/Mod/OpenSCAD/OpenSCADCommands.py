@@ -364,7 +364,7 @@ class AddSCADWidget(QtGui.QWidget):
         self.buttonadd.setText(translate('OpenSCAD','Add'))
         self.buttonload.setText(translate('OpenSCAD','Load'))
         self.buttonsave.setText(translate('OpenSCAD','Save'))
-        self.buttonrefresh.setText(translate('OpenSCAD','Refesh'))
+        self.buttonrefresh.setText(translate('OpenSCAD','Refresh'))
         self.buttonclear.setText(translate('OpenSCAD','Clear'))
         self.checkboxmesh.setText(translate('OpenSCAD','as Mesh'))
         self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))

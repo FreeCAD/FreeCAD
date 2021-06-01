@@ -1679,7 +1679,7 @@
       <translation>Ota leikkaus käyttöön, kun aktivoit tämän tason</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1160"/>
+      <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Käytä materiaalin väriä tämän objektin muotovärinä, jos saatavilla</translation>
     </message>
@@ -1906,17 +1906,17 @@
     <message>
       <location filename="ArchCurtainWall.py" line="198"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>Pystysuoran jakokarmin leveys, jos profiilia ei ole valittu</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="220"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Vaakasuoran jakokarmin korkeus, jos profiilia ei ole valittu</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="224"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Vaakasuoran jakokarmin leveys, jos profiilia ei ole valittu</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="641"/>
@@ -1941,7 +1941,7 @@
     <message>
       <location filename="ArchRoof.py" line="263"/>
       <source>The list of angles of the roof segments</source>
-      <translation type="unfinished">The list of angles of the roof segments</translation>
+      <translation>Luettelo, jossa luetellaan katon segmenttien kulmat</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="268"/>
@@ -2011,7 +2011,7 @@
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>Portaiden kaikkien segmenttien 'oikeanpuoleinen ääriviiva'</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="413"/>
@@ -2042,7 +2042,7 @@
       <translation>Osat</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1945"/>
+      <location filename="ArchComponent.py" line="1939"/>
       <source>Components of this object</source>
       <translation>Tämän objektin osat</translation>
     </message>
@@ -2127,22 +2127,22 @@
       <translation>Verkko Muodolle</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1946"/>
+      <location filename="ArchComponent.py" line="1940"/>
       <source>Base component</source>
       <translation>Perusosa</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1947"/>
+      <location filename="ArchComponent.py" line="1941"/>
       <source>Additions</source>
       <translation>Lisäykset</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1948"/>
+      <location filename="ArchComponent.py" line="1942"/>
       <source>Subtractions</source>
       <translation>Vähennykset</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1949"/>
+      <location filename="ArchComponent.py" line="1943"/>
       <source>Objects</source>
       <translation>Objektit</translation>
     </message>
@@ -2277,7 +2277,7 @@
       <translation>Valitse peruskohde</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1952"/>
+      <location filename="ArchComponent.py" line="1946"/>
       <source>Fixtures</source>
       <translation>Kalusteet</translation>
     </message>
@@ -2342,7 +2342,7 @@
       <translation>Etäisyydet (mm) ja kulmat (astetta) akselien väliselle</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="912"/>
+      <location filename="ArchComponent.py" line="910"/>
       <source>Error computing the shape of this object</source>
       <translation>Virhe laskettaessa tämän kohteen muotoa</translation>
     </message>
@@ -2367,17 +2367,17 @@
       <translation>Kytkee päälle kohteen Brep voiman lipun</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="933"/>
+      <location filename="ArchComponent.py" line="931"/>
       <source>has no solid</source>
       <translation>ei ole yhtenäinen</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="940"/>
+      <location filename="ArchComponent.py" line="938"/>
       <source>has an invalid shape</source>
       <translation>on virheellinen muoto</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="942"/>
+      <location filename="ArchComponent.py" line="940"/>
       <source>has a null shape</source>
       <translation>on tyhjä muoto</translation>
     </message>
@@ -2532,7 +2532,7 @@
       <translation>Luo rakennus</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1953"/>
+      <location filename="ArchComponent.py" line="1947"/>
       <source>Group</source>
       <translation>Ryhmä</translation>
     </message>
@@ -2989,7 +2989,7 @@
       <translation type="unfinished">Total</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1954"/>
+      <location filename="ArchComponent.py" line="1948"/>
       <source>Hosts</source>
       <translation type="unfinished">Hosts</translation>
     </message>
@@ -3049,57 +3049,57 @@
       <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1512"/>
+      <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
       <translation>Vaihda alikomponentteja</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1635"/>
+      <location filename="ArchComponent.py" line="1629"/>
       <source>Closing Sketch edit</source>
       <translation type="unfinished">Closing Sketch edit</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1942"/>
+      <location filename="ArchComponent.py" line="1936"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1955"/>
+      <location filename="ArchComponent.py" line="1949"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1956"/>
+      <location filename="ArchComponent.py" line="1950"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2002"/>
+      <location filename="ArchComponent.py" line="1996"/>
       <source>Property</source>
       <translation>Ominaisuus</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2007"/>
+      <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
       <translation type="unfinished">Add property...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2008"/>
+      <location filename="ArchComponent.py" line="2002"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2009"/>
+      <location filename="ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>Uusi ...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2151"/>
+      <location filename="ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation type="unfinished">New property</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2186"/>
+      <location filename="ArchComponent.py" line="2180"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>

@@ -2549,22 +2549,22 @@ restrições inválidas, geometria corrompida, etc.</translation>
       <translation>Renomear restrição do esboço</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="851"/>
+      <location filename="../../ViewProviderSketch.cpp" line="853"/>
       <source>Drag Point</source>
       <translation>Arrastar Ponto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="882"/>
+      <location filename="../../ViewProviderSketch.cpp" line="884"/>
       <source>Drag Curve</source>
       <translation>Arrastar Curva</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="933"/>
+      <location filename="../../ViewProviderSketch.cpp" line="935"/>
       <source>Drag Constraint</source>
       <translation>Restrição de arrasto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1109"/>
       <source>Modify sketch constraints</source>
       <translation>Modificar restrições do esboço</translation>
     </message>
@@ -4517,26 +4517,36 @@ Todos os sistemas de unidades são suportados, exceto 'US customy' e 'Building U
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
+      <source>When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</source>
+      <translation type="unfinished">When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <source>Force orthographic camera when entering edit</source>
+      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
       <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
       <translation type="unfinished">By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
       <source>Open sketch in Section View mode</source>
       <translation type="unfinished">Open sketch in Section View mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Nota: estas configurações são padrões aplicados aos novos esboços. Estas configurações são lembradas para cada esboço individualmente, e guardadas como propriedades de vista.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>View scale ratio</source>
       <translation>Proporção de escala de vista</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="376"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="395"/>
       <source>The 3D view is scaled based on this factor</source>
       <translation>A vista 3D é dimensionada com base neste fator</translation>
     </message>
@@ -4551,52 +4561,52 @@ Todos os sistemas de unidades são suportados, exceto 'US customy' e 'Building U
       <translation>Restaurar a posição da câmara após a edição</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Applies current visibility automation settings to all sketches in open documents</source>
       <translation>Aplica as configurações atuais de automação de vista a todos os esboços em documentos abertos</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="283"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="302"/>
       <source>Apply to existing sketches</source>
       <translation>Aplicar aos esboços existentes</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="293"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>Font size used for labels and constraints</source>
       <translation>Tamanho de texto usado para rótulos e restrições</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
       <source>Current sketcher creation tool will remain active after creation</source>
       <translation>A ferramenta atual de criação de esboço permanecerá ativa após a criação</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="321"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="340"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Modo continuo de criação da geometria</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="356"/>
       <source>Grid line pattern</source>
       <translation>Padrão das linhas da grade</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="344"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="363"/>
       <source>Number of polygons for geometry approximation</source>
       <translation>Número de polígonos para aproximação da geometria</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="225"/>
+      <location filename="../../SketcherSettings.cpp" line="230"/>
       <source>Unexpected C++ exception</source>
       <translation>Exceção inesperada de C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="233"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -5159,136 +5169,136 @@ Os pontos devem ser mais próximos de um quinto do tamanho de grade para serem c
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6242"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6244"/>
       <source>Edit sketch</source>
       <translation>Editar esboço</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6258"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Uma caixa de diálogo já está aberta no painel de tarefas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6257"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6259"/>
       <source>Do you want to close this dialog?</source>
       <translation>Deseja fechar este diálogo?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6271"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
       <source>Invalid sketch</source>
       <translation>Esboço inválido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6272"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6274"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Você quer abrir a ferramenta de validação de esboço?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6275"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>O esboço é inválido e não pode ser editado.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6490"/>
       <source>Please remove the following constraint:</source>
       <translation>Por favor, remova a seguinte restrição:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6491"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Por favor remova pelo menos uma das seguintes restrições:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6497"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Por favor, remova a seguinte restrição redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6496"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6498"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Por favor, remova as seguintes restrições redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6504"/>
       <source>The following constraint is partially redundant:</source>
       <translation>A restrição seguinte é parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6503"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6505"/>
       <source>The following constraints are partially redundant:</source>
       <translation>As restrições seguintes são parcialmente redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6511"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Por favor remova as seguintes restrições malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6512"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Por favor remova as seguintes restrições malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6547"/>
       <source>Empty sketch</source>
       <translation>Esboço vazio</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6554"/>
       <source>Over-constrained sketch</source>
       <translation type="unfinished">Over-constrained sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6561"/>
       <source>Sketch contains malformed constraints</source>
       <translation type="unfinished">Sketch contains malformed constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6566"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6568"/>
       <source>Sketch contains conflicting constraints</source>
       <translation type="unfinished">Sketch contains conflicting constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6574"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6576"/>
       <source>Sketch contains redundant constraints</source>
       <translation type="unfinished">Sketch contains redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6583"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation type="unfinished">Sketch contains partially redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6553"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6560"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6567"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6575"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6584"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6555"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6562"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6569"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6577"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6586"/>
       <source>(click to select)</source>
       <translation>(clique para selecionar)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6595"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6597"/>
       <source>Fully constrained sketch</source>
       <translation>Esboço totalmente restrito</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6604"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Esboço sub-restrito com &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 grau&lt;/span&gt;&lt;/a&gt; de liberdade. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6605"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Esboço sub-restrito com &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 graus&lt;/span&gt;&lt;/a&gt; de liberdade. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6610"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6612"/>
       <source>Solved in %1 sec</source>
       <translation>Resolvido em %1 seg</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6613"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Não resolvidos (%1 seg)</translation>
     </message>

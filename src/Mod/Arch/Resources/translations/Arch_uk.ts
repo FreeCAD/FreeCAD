@@ -1679,7 +1679,7 @@
       <translation>Ввімкнути вирізання при активації цього рівня</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1160"/>
+      <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Використовуйте колір матеріалу як колір форми цього об'єкта, якщо він доступний</translation>
     </message>
@@ -1996,42 +1996,42 @@
     <message>
       <location filename="ArchStairs.py" line="324"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>'Абсолютний' верхній рівень східців веде до</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>'Лівий контур' сходів</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>"Лівий контур" усіх сегментів сходів</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>"Правий контур" усіх сегментів сходів</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>Товщина покриття підлоги</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>Товщина покриття підлоги</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>Тип зв’язку між нижньою плитою та початком сходів</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>Тип зв'язку між кінцем сходів і верхньою підлогою плити</translation>
     </message>
   </context>
   <context>
@@ -2042,7 +2042,7 @@
       <translation>Компоненти</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1945"/>
+      <location filename="ArchComponent.py" line="1939"/>
       <source>Components of this object</source>
       <translation>Компоненти цього об'єкта</translation>
     </message>
@@ -2127,22 +2127,22 @@
       <translation>Меш у форму</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1946"/>
+      <location filename="ArchComponent.py" line="1940"/>
       <source>Base component</source>
       <translation>Основний компонент</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1947"/>
+      <location filename="ArchComponent.py" line="1941"/>
       <source>Additions</source>
       <translation>Додавання</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1948"/>
+      <location filename="ArchComponent.py" line="1942"/>
       <source>Subtractions</source>
       <translation>Віднімання</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1949"/>
+      <location filename="ArchComponent.py" line="1943"/>
       <source>Objects</source>
       <translation>Об'єкти</translation>
     </message>
@@ -2277,7 +2277,7 @@
       <translation>Будь ласка, виберіть базовий об'єкт</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1952"/>
+      <location filename="ArchComponent.py" line="1946"/>
       <source>Fixtures</source>
       <translation>Арматура</translation>
     </message>
@@ -2342,7 +2342,7 @@
       <translation>Відстані (мм) і кути (град) між осями</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="912"/>
+      <location filename="ArchComponent.py" line="910"/>
       <source>Error computing the shape of this object</source>
       <translation>Помилка обробки форма цього об'єкту</translation>
     </message>
@@ -2367,17 +2367,17 @@
       <translation>Ввімкнення прапорцю Brep-форсування</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="933"/>
+      <location filename="ArchComponent.py" line="931"/>
       <source>has no solid</source>
       <translation>не має суцільного тіла</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="940"/>
+      <location filename="ArchComponent.py" line="938"/>
       <source>has an invalid shape</source>
       <translation>має неприпустиму форму</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="942"/>
+      <location filename="ArchComponent.py" line="940"/>
       <source>has a null shape</source>
       <translation>має нульову форму</translation>
     </message>
@@ -2532,7 +2532,7 @@
       <translation>Створити будівлю</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1953"/>
+      <location filename="ArchComponent.py" line="1947"/>
       <source>Group</source>
       <translation>Група</translation>
     </message>
@@ -2989,7 +2989,7 @@
       <translation>Всього</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1954"/>
+      <location filename="ArchComponent.py" line="1948"/>
       <source>Hosts</source>
       <translation>Хост</translation>
     </message>
@@ -3049,64 +3049,64 @@
       <translation>Об'єкт не має атрибуту IfcProperties . Скасувати створення таблиці для об'єкта:</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1512"/>
+      <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
       <translation type="unfinished">Toggle subcomponents</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1635"/>
+      <location filename="ArchComponent.py" line="1629"/>
       <source>Closing Sketch edit</source>
       <translation>Закрити редагування ескізу</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1942"/>
+      <location filename="ArchComponent.py" line="1936"/>
       <source>Component</source>
       <translation>Компонент</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1955"/>
+      <location filename="ArchComponent.py" line="1949"/>
       <source>Edit IFC properties</source>
       <translation>Редагувати властивості IFC</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1956"/>
+      <location filename="ArchComponent.py" line="1950"/>
       <source>Edit standard code</source>
-      <translation type="unfinished">Edit standard code</translation>
+      <translation>Редагувати стандартний код</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2002"/>
+      <location filename="ArchComponent.py" line="1996"/>
       <source>Property</source>
       <translation>Властивість</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2007"/>
+      <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
       <translation>Додати властивість...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2008"/>
+      <location filename="ArchComponent.py" line="2002"/>
       <source>Add property set...</source>
       <translation>Додати набір властивостей...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2009"/>
+      <location filename="ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>Новий...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2151"/>
+      <location filename="ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation>Нова властивість</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2186"/>
+      <location filename="ArchComponent.py" line="2180"/>
       <source>New property set</source>
       <translation>Новий набір властивостей</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="216"/>
       <source>Crossing point not found in profile.</source>
-      <translation type="unfinished">Crossing point not found in profile.</translation>
+      <translation>Точку перетину не знайдено в профілі.</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="742"/>
@@ -3116,7 +3116,7 @@
     <message>
       <location filename="ArchPipe.py" line="158"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation type="unfinished">Please select exactly 2 or 3 Pipe objects</translation>
+      <translation>Будь ласка, виберіть точно 2 або 3 об'єкти труби</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="163"/>

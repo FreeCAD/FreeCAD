@@ -1083,22 +1083,22 @@ haratago duen luzera</translation>
     <message>
       <location filename="pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>Bikoiztuko den oinarri-objektua.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Sortuko den kopia kopurua.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Matrize kiribilduaren biraketa-faktorea.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Bete letrak aurpegiekin</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="216"/>
@@ -1108,6 +1108,21 @@ Use 'arch' to force US arch notation</source>
       <translation type="unfinished">A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="47"/>
+      <source>Base object</source>
+      <translation type="unfinished">Base object</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="50"/>
+      <source>A list of points on lines that need to be removed</source>
+      <translation type="unfinished">A list of points on lines that need to be removed</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="53"/>
+      <source>A tolerance value for distances between points and edges</source>
+      <translation type="unfinished">A tolerance value for distances between points and edges</translation>
     </message>
   </context>
   <context>
@@ -1633,24 +1648,24 @@ Matrizearen mota aldatu daiteke, polarra edo zirkularra izan dadin.</translation
       <translation>Desplazamenduaren norabidea ez dago definituta. Eraman sagua objektuaren aldeetako batera, norabide bat adierazteko</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="233"/>
+      <location filename="gui_setstyle.py" line="259"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Gorde estiloa</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="234"/>
+      <location filename="gui_setstyle.py" line="260"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Estilo berriaren izena:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="242"/>
+      <location filename="gui_setstyle.py" line="268"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Izena badago lehendik. Gainidatzi?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="277"/>
+      <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Errorea: Ez da aurkitu JSON modulua. Ezin izan da estiloa gorde</translation>
     </message>
   </context>
   <context>
@@ -2548,6 +2563,19 @@ Geruza horri gehitutako objektuek ikusizko propietate berak partekatuko dituzte,
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Bi puntuko lerro bat sortzen du. Ctrl atxikitzeko, Shift murrizteko.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Lineremover</name>
+    <message>
+      <location filename="gui_lineremover.py" line="61"/>
+      <source>Facebinder</source>
+      <translation>Aurpegi-zorroa</translation>
+    </message>
+    <message>
+      <location filename="gui_lineremover.py" line="63"/>
+      <source>Creates a lineremover object from a selected object</source>
+      <translation type="unfinished">Creates a lineremover object from a selected object</translation>
     </message>
   </context>
   <context>
@@ -3704,11 +3732,6 @@ value by using the [ and ] keys while drawing</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="349"/>
-      <source>Apply to selected objects</source>
-      <translation>Aplikatu hautatutako objektuei</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
       <translation>Lerroak eta aurpegiak</translation>
@@ -3731,12 +3754,47 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>Kargatu aurrezarpena</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
       <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="14"/>
+      <source>Form</source>
+      <translation>Inprimakia</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="20"/>
+      <source>Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</source>
+      <translation type="unfinished">Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="33"/>
+      <source>Deletes selected point in the list above</source>
+      <translation type="unfinished">Deletes selected point in the list above</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="36"/>
+      <source>Delete</source>
+      <translation>Ezabatu</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <source>Selected</source>
+      <translation>Hautatua</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
     </message>
   </context>
   <context>
@@ -3865,7 +3923,7 @@ such as "Arial:Bold"</source>
       <translation>Tolerantzia</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>Elkartu geometria</translation>
     </message>
@@ -3960,12 +4018,12 @@ such as "Arial:Bold"</source>
       <translation>Eskuinekoa</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation>Multzokatu geruzak blokeetan</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Esportatu 3D objektuak amaraun poligonal gisa</translation>
     </message>
@@ -3995,17 +4053,17 @@ such as "Arial:Bold"</source>
       <translation>Markatuta badago, zirriborro-sareta ikusgai egongo da beti zirriborroen lan-mahaia aktibo dagoenean. Bestela, komando bat erabiltzean soilik ikusiko da</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation>Erabili letra-tamaina estandarra testuetan</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Inportatu itzaleztadura-mugak alanbre gisa</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation>Errendatu zabalera duten polilerroak</translation>
     </message>
@@ -4050,32 +4108,32 @@ such as "Arial:Bold"</source>
       <translation>Eraikuntza-geometriaren kolorea</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>Inportatu</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>testuak eta kotak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>puntuak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation>diseinuak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation>*blokeak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation>Proiektatu esportatutako objektuak uneko bista-norabidearen luzeran</translation>
     </message>
@@ -4175,32 +4233,32 @@ such as "Arial:Bold"</source>
       <translation>Bete objektuak aurpegiekin, posible denean</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>Sortu</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
       <translation>pieza-forma sinpleak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation>Zirriborro-objektuak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
       <translation>Krokisak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation>Eskuratu DXF fitxategiko jatorrizko koloreak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Tratatu elipseak eta spline-ak polilerroak bailiran</translation>
     </message>
@@ -4215,7 +4273,7 @@ such as "Arial:Bold"</source>
       <translation>Erakutsi unitate-atzizkia kotetan</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Onartu FreeCADek automatikoki deskarga eta egunera ditzan DXF liburutegiak</translation>
     </message>
@@ -4365,7 +4423,7 @@ such as "Arial:Bold"</source>
       <translation>Inportazio-aukerak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation>Erabili Python inportatzaile zaharra</translation>
     </message>
@@ -4390,22 +4448,22 @@ such as "Arial:Bold"</source>
       <translation>Desgaitu unitateen eskalatzea</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation>Esportatu marrazki-bistak bloke modura</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation>Oharra: Beheko aukera guztiak ez daude oraindik erabilgarri inportatzaile berriarekin</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Erakutsi elkarrizketa-koadro hau inportatzean eta esportatzean</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation>Eguneratze automatikoa (inportatzaile zaharkitua soilik)</translation>
     </message>
@@ -4415,7 +4473,7 @@ such as "Arial:Bold"</source>
       <translation>Klonen etiketetan, erabili aurrizki gisa honako hau:</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Inportatutako fitxategiei aplikatuko zaien eskala-faktorea</translation>
     </message>
@@ -4535,12 +4593,12 @@ such as "Arial:Bold"</source>
       <translation>Zure ODA (lehen Teigha) File Converter exekutagarriaren bidea</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Elipseeen esportazioaren euskarria ez da oso ona. Erabili hau elipseak polilerro gisa esportatzeko.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation>Spline-segmentu maximoa:</translation>
     </message>
@@ -4557,7 +4615,7 @@ Values with differences below this value will be treated as same. This value wil
 Horren azpiko diferentziak dituzten balioak horretarako berdintzen dira. Balio hori laster zaharkituta geratuko da, goiko doitasun-mailak biak kontrolatuko baititu.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation>Erabili Python esportatzaile zaharra</translation>
     </message>
@@ -4897,28 +4955,19 @@ Kontuan izan eragiketa horren euskarria ez dela osoa, eta zenbait objektu ez dir
       <translation>ODA fitxategi-bihurtzailearen bidea</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Hobespenen elkarrizketa-koadro hau DXF fitxategiak inportatzean/esportatzean erakutsiko da</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Python inportatzailea erabiltzen da, bestela C++ berriagoa erabiltzen da.
 Oharra: C++ inportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation>Python esportatzailea erabiltzen da, bestela C++ berriagoa erabiltzen da.
-Oharra: C++ inportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
-      </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4926,42 +4975,42 @@ from the Addon Manager.</source>
 Eskuz ere egin daiteke, "dxf_library" lan-mahaia instalatuta gehigarrien kudeatzailetik.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Markatu gabe badago, testuak/mtestuak ez dira inportatuko</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Markatu gabe badago, puntuak ez dira inportatuko</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Markatuta badago, paper-espazioko objektuak ere inportatuko dira</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Izenik gabeko blokeak ere (* batekin hasten direnak) inportatu nahi dituzun</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Pieza-objektu estandarrak soilik sortuko dira (azkarrena)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Zirriborro-objektu parametrikoak sortuko dira ahal den guztietan</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Krokisak sortuko dira ahal den guztietan</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4971,75 +5020,75 @@ Zure DXF fitxategiaren unitatea milimetroetara bihurtzeko faktorea da.
 Adibidea: milimetroetan dauden fitxategietarako: 1, zentimetroetarako: 10, metroetarako: 1000, hazbeteetarako: 25.4, oinetarako: 304.8</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation>Koloreak DXF objektuetatik hartuko dira, posible bada. Bestela, kolore lehenetsiak aplikatuko dira. </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>Bat datozen objektuak alanbreetan elkartzen saiatuko da FreeCAD.
 Kontuan izan horrek denbora asko behar dezake!</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
       <translation>Geruza bereko objektuak zirriborro-blokeetan bilduko dira,
 bistaratzea azkartuz, baina edizioa zailduz </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Inportatutako testuek zirriborroen testu-tamaina estandarra hartuko dute,
 DXF dokumentuan duten tamaina erabili ordez</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Hau markatuta badago, DXF geruzak zirriborro-geruza gisa inportatuko dira</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation>Erabili geruzak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Itzalak alanbre sinple bihurtuko dira</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Polilerroek zabalera definituta badute, zabalera zuzena duten
 alanbre itxi modura errendatuko dira</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Polilerro-segmentu bakoitzaren luzera maximoa.
 Hemen '0' ezarri bada, spline osoa segmentu zuzen gisa tratatuko da.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Aurpegiak dituzten objektu guztiak 3D poligono gisa esportatuko dira</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Marrazki-bistak bloke modura esportatuko dira.
 Horrek huts egin dezake DXF R12 ondoko txantiloiekin.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Esportatutako objektuak uneko bistaren norabidea islatzeko moduan proiektatuko dira</translation>
     </message>
@@ -5143,6 +5192,13 @@ Balio hau segmentu-luzera maximoa da. </translation>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
       <translation type="unfinished">G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
     </message>
   </context>
   <context>
@@ -5821,11 +5877,6 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Bi puntuak bat datoz</translation>
     </message>
     <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation>ispilatua)</translation>
-    </message>
-    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation>Bloke bat aurkitu da: hura lehertzen</translation>
@@ -5899,11 +5950,6 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>Okerreko sarrera: puntu mota okerra.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation>Ezin da forma sortu: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -7292,7 +7338,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Aukeratu kokapen-puntua</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="115"/>
+      <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
       <translation>Sortu testua</translation>
     </message>
@@ -7433,6 +7479,21 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="gui_edit.py" line="934"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="gui_lineremover.py" line="72"/>
+      <source>Select an existing object</source>
+      <translation type="unfinished">Select an existing object</translation>
     </message>
   </context>
   <context>

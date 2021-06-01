@@ -905,7 +905,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module:</source>
-      <translation type="unfinished">Module:</translation>
+      <translation>Mòdul:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
@@ -943,10 +943,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>L'opció demanada no es pot crear. El motiu pot ser:
+ - el Cos actiu no conté una forma base, per tant no hi ha material a extreure;
+ - l'esbós seleccionat no pertany al Cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -957,10 +956,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>L'opció demanada no es pot crear. El motiu pot ser:
+ - el Cos actiu no conté una forma base, per tant no hi ha material a extreure;
+ - l'esbós seleccionat no pertany al Cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -971,10 +969,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>L'opció demanada no es pot crear. El motiu pot ser:
+ - el Cos actiu no conté una forma base, per tant no hi ha material a extreure;
+ - l'esbós seleccionat no pertany al Cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -1024,30 +1021,30 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="307"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1274"/>
       <source>Angle in first direction:</source>
-      <translation type="unfinished">Angle in first direction:</translation>
+      <translation>Angle en la primera direcció:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="314"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1281"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>Angle en la primera direcció</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="333"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1300"/>
       <source>Angle in second direction:</source>
-      <translation type="unfinished">Angle in second direction:</translation>
+      <translation>Angle en la segona direcció:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="340"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1307"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>Angle en la segona direcció</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="391"/>
       <source>Rotation angle:</source>
-      <translation type="unfinished">Rotation angle:</translation>
+      <translation>Angle de rotació:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="465"/>
@@ -1077,12 +1074,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
       <source>Radius in local z-direction</source>
-      <translation type="unfinished">Radius in local z-direction</translation>
+      <translation>Radi en la direcció local Z</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
       <source>Radius in local x-direction</source>
-      <translation type="unfinished">Radius in local x-direction</translation>
+      <translation>Radi en la direcció local X</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
@@ -1093,8 +1090,8 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>Radi en la direcció local Y
+Si el valor és zero, serà igual al Radi2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1105,12 +1102,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation type="unfinished">Radius in local xy-plane</translation>
+      <translation>Radi en el pla local XY</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation type="unfinished">Radius in local xz-plane</translation>
+      <translation>Radi en el pla local XZ</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1253,7 +1250,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</translation>
+      <translation>Heu seleccionat geometries que no formen part del cos actiu. Definiu com tractar aquestes seleccions. Si no voleu aquestes referències, cancel·leu l'ordre.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1332,34 +1329,34 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="725"/>
       <source>Cone radii are equal</source>
-      <translation type="unfinished">Cone radii are equal</translation>
+      <translation>Els radis del con són iguals</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="726"/>
       <source>The radii for cones must not be equal!</source>
-      <translation type="unfinished">The radii for cones must not be equal!</translation>
+      <translation>Els radis del con no poden ser iguals!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="801"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="806"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="811"/>
       <source>Invalid wedge parameters</source>
-      <translation type="unfinished">Invalid wedge parameters</translation>
+      <translation>Paràmetres invàlids de la falca</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="802"/>
       <source>X min must not be equal to X max!</source>
-      <translation type="unfinished">X min must not be equal to X max!</translation>
+      <translation>X min no ha de ser igual a X max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="807"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation type="unfinished">Y min must not be equal to Y max!</translation>
+      <translation>Y min no ha de ser igual a Y max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="812"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation type="unfinished">Z min must not be equal to Z max!</translation>
+      <translation>Z min no ha de ser igual a Z max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="850"/>
@@ -1380,8 +1377,8 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskChamferParameters.cpp" line="166"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Clica al botó per entrar en mode de selecció,
+clica altre cop per finalitzar la selecció</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="26"/>
@@ -1403,22 +1400,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="75"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>Distància igual</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>Dues distàncies</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="85"/>
       <source>Distance and angle</source>
-      <translation type="unfinished">Distance and angle</translation>
+      <translation>Distància i angle</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="98"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>Volteja la direcció</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="119"/>
@@ -1428,7 +1425,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="158"/>
       <source>Size 2</source>
-      <translation type="unfinished">Size 2</translation>
+      <translation>Mida 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
@@ -1527,8 +1524,8 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Clica al botó per entrar en mode de selecció,
+clica altre cop per finalitzar la selecció</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="26"/>
@@ -1706,8 +1703,8 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="121"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Clica al botó per entrar en mode de selecció,
+clica altre cop per finalitzar la selecció</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="26"/>
@@ -1760,7 +1757,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="23"/>
       <source>Status:</source>
-      <translation type="unfinished">Status:</translation>
+      <translation>Estat:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="30"/>
@@ -1849,7 +1846,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="214"/>
       <source>Cone angle:</source>
-      <translation type="unfinished">Cone angle:</translation>
+      <translation>Angle del con:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="248"/>
@@ -2896,8 +2893,8 @@ measured along the specified direction</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Clica al botó per entrar en mode de selecció,
+clica altre cop per finalitzar la selecció</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="26"/>

@@ -901,14 +901,9 @@
       <translation>Crea vista attiva</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="346"/>
+      <location filename="../../TaskCenterLine.cpp" line="331"/>
       <source>Create CenterLine</source>
       <translation>Crea linea di mezzeria</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.cpp" line="391"/>
-      <source>Edit CenterLine</source>
-      <translation>Modifica linea di mezzeria</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="271"/>
@@ -1821,12 +1816,12 @@
       <translation>Vista attiva in vista TechDraw</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="177"/>
+      <location filename="../../TaskCenterLine.cpp" line="200"/>
       <source>Create Center Line</source>
       <translation>Crea linea centrale</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="217"/>
+      <location filename="../../TaskCenterLine.cpp" line="230"/>
       <source>Edit Center Line</source>
       <translation>Modifica linea centrale</translation>
     </message>
@@ -3758,18 +3753,6 @@ Do you want to continue?</source>
       <location filename="../../TaskCenterLine.ui" line="327"/>
       <source>Continuous</source>
       <translation>Continue</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="380"/>
-      <source>Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-      <translation>Capovolge i punti finali delle linee selezionate per la creazione di una linea di centro,
-vedere il Wiki FreeCAD &apos;2LineCenterLine&apos; per una descrizione</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="384"/>
-      <source>Flip Ends</source>
-      <translation>Capovolgi</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="336"/>

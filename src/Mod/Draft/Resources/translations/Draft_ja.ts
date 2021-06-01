@@ -1092,6 +1092,21 @@ Use 'arch' to force US arch notation</source>
 Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
+    <message>
+      <location filename="lineremover.py" line="47"/>
+      <source>Base object</source>
+      <translation type="unfinished">Base object</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="50"/>
+      <source>A list of points on lines that need to be removed</source>
+      <translation type="unfinished">A list of points on lines that need to be removed</translation>
+    </message>
+    <message>
+      <location filename="lineremover.py" line="53"/>
+      <source>A tolerance value for distances between points and edges</source>
+      <translation type="unfinished">A tolerance value for distances between points and edges</translation>
+    </message>
   </context>
   <context>
     <name>Dialog</name>
@@ -1613,22 +1628,22 @@ X、Y、Zの軸の指定方向にコピーを並べます。
       <translation>オフセット方向が定義されていません。最初にオブジェクトのどちらか一方にマウスを動かして方向を指定してください。</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="233"/>
+      <location filename="gui_setstyle.py" line="259"/>
       <source>Save style</source>
       <translation type="unfinished">Save style</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="234"/>
+      <location filename="gui_setstyle.py" line="260"/>
       <source>Name of this new style:</source>
       <translation type="unfinished">Name of this new style:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="242"/>
+      <location filename="gui_setstyle.py" line="268"/>
       <source>Name exists. Overwrite?</source>
       <translation type="unfinished">Name exists. Overwrite?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="277"/>
+      <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
     </message>
@@ -2522,6 +2537,19 @@ Objects added to this layer can share the same visual properties such as line co
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>2点を指定して線を作成します。CTRLでスナップ、SHIFTで拘束。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Lineremover</name>
+    <message>
+      <location filename="gui_lineremover.py" line="61"/>
+      <source>Facebinder</source>
+      <translation>フェイスバインダー</translation>
+    </message>
+    <message>
+      <location filename="gui_lineremover.py" line="63"/>
+      <source>Creates a lineremover object from a selected object</source>
+      <translation type="unfinished">Creates a lineremover object from a selected object</translation>
     </message>
   </context>
   <context>
@@ -3673,11 +3701,6 @@ value by using the [ and ] keys while drawing</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="349"/>
-      <source>Apply to selected objects</source>
-      <translation>選択したオブジェクトに適用します。</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
       <translation>線と面</translation>
@@ -3706,6 +3729,41 @@ value by using the [ and ] keys while drawing</source>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
       <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="20"/>
+      <source>Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</source>
+      <translation type="unfinished">Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="33"/>
+      <source>Deletes selected point in the list above</source>
+      <translation type="unfinished">Deletes selected point in the list above</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_Lineremover.ui" line="36"/>
+      <source>Delete</source>
+      <translation>削除</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <source>Selected</source>
+      <translation>選択</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
     </message>
   </context>
   <context>
@@ -3834,7 +3892,7 @@ such as "Arial:Bold"</source>
       <translation>公差</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>ジオメトリーを結合</translation>
     </message>
@@ -3929,12 +3987,12 @@ such as "Arial:Bold"</source>
       <translation>右面図</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation>グループレイヤーをブロックへ</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>3D オブジェクトをポリフェイスメッシュとしてエクスポート</translation>
     </message>
@@ -3964,17 +4022,17 @@ such as "Arial:Bold"</source>
       <translation>チェックされている場合、ドラフトワークベンチのアクティブ状態中に常にドラフトグリッドが表示されます。それ以外の場合はコマンド使用時のみです。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation>標準フォントサイズを使用</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation>ハッチング境界をワイヤーとしてインポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation>幅のあるポリラインをレンダリング</translation>
     </message>
@@ -4019,32 +4077,32 @@ such as "Arial:Bold"</source>
       <translation>構築ジオメトリーの色</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>インポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>テキストと寸法線</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>ポイント</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation>レイアウト</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation>*blocks</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation>エクスポートされるオブジェクトを現在のビュー方向と平行に投影</translation>
     </message>
@@ -4144,32 +4202,32 @@ such as "Arial:Bold"</source>
       <translation>できるだけオブジェクトの面を塗りつぶす</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>作成</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
       <translation>パート形状を単純化</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation>ドラフトオブジェクト</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
       <translation>スケッチ</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation>DXFファイルからオリジナルの色を取得</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>楕円およびスプラインをポリラインとして扱う</translation>
     </message>
@@ -4184,7 +4242,7 @@ such as "Arial:Bold"</source>
       <translation>寸法の単位サフィックスを表示</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>DXF ライブラリの自動的なダウンロードと更新を FreeCAD に許可</translation>
     </message>
@@ -4334,7 +4392,7 @@ such as "Arial:Bold"</source>
       <translation>インポート・オプション</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation>従来型の Python インポーターを使用</translation>
     </message>
@@ -4359,22 +4417,22 @@ such as "Arial:Bold"</source>
       <translation>単位のスケーリングを無効</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation>ドローイングビューをブロックとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation>注: 以下のオプションには新しいインポート機能ではまだ使用できないものがあります</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>インポート、エクスポートするときにこのダイアログボックスを表示</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation>自動更新 (旧インポート機能のみ)</translation>
     </message>
@@ -4384,7 +4442,7 @@ such as "Arial:Bold"</source>
       <translation>クローンの接頭ラベル：</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation>インポートされたファイルに適用する尺度の係数</translation>
     </message>
@@ -4504,12 +4562,12 @@ such as "Arial:Bold"</source>
       <translation>ODA（旧 Teigha）ファイルコンバーター実行可能ファイルのパス</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>楕円のエクスポートは十分にサポートされていません。代わりにこれを使用してポリラインとしてエクスポートしてください。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation>スプラインの最大セグメント数:</translation>
     </message>
@@ -4526,7 +4584,7 @@ Values with differences below this value will be treated as same. This value wil
 この値よりも小さい差しかない値は同じものとして扱われます。上記の精度レベルが両方を制御するようになるとこの値は使用されなくなります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation>従来型の Python エクスポーターを使用</translation>
     </message>
@@ -4863,27 +4921,19 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>ODAファイルコンバータへのパス</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>この設定ダイアログは、DXFファイルのインポート／エクスポート時に表示されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Pythonのimporterが使用されます。そうでなければ、新しいC++が使用されます。
 注意: C++のimporterは速いですが、機能的ではありません。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation>Pythonのexporterが使用されます。そうでなければ、新しいC++が使用されます。
-注意: C++のexporterは速いですが、機能的ではありません。</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4892,42 +4942,42 @@ from the Addon Manager.</source>
 をインストールして手動で行うこともできます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>ここにチェックが入っていない場合、テキストとmtextはインポートされません</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation>ここにチェックが入っていない場合、ポイントはインポートされません</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>チェックが入っている場合、ペーパースペースオブジェクトもインポートされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>（*で始まる）名称のないブロックも一緒にインポートしたい場合は、ここにチェックを入れて下さい</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>標準のPartオブジェクトだけが作成されます(最も高速)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>できる限りパラメトリックなドラフト・オブジェクトが作成されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
       <translation>できる限りスケッチが作成します</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4938,71 +4988,71 @@ Example: for files in millimeters: 1, in centimeters: 10,
 メートルならば 1000 、インチならば 2.54、フィートならば 304.8 となります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation>色は可能な限りDXFオブジェクトから読み出されます。それ以外の場合、デフォルトの色が適用されます。 </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCADは一致するオブジェクトをワイヤーに結合しようとします。これには時間がかかる場合があります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
       <translation>同じレイヤーのオブジェクトがドラフトブロックとして連結されて表示が高速になりますが、編集は難しくなります。 </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>インポートされたテキストは、DXF 文書内にあるサイズからドラフトで定義された標準のテキストサイズへ変換されます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>ここがチェックされている場合、DXFレイヤーはドラフトレイヤーとしてインポートされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation>レイヤーを使用</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>ハッチングは単純なワイヤーに変換されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>ポリラインに幅が定義されている場合、正適切な幅の閉じたワイヤーとしてレンダリングされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>各ポリラインセグメントの最大長さ。
 '0' に設定すると、スプライン全体が直線セグメントとして扱われます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>面を含むすべてのオブジェクトは 3D ポリフェースとしてエクスポートされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>ドローイング・ビューはブロックとしてエクスポートされます。
 DXF R12 後のテンプレートでは失敗する可能性があります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>エクスポートされたオブジェクトは現在のビュー方向を反映するように投影されます</translation>
     </message>
@@ -5107,6 +5157,13 @@ This value is the maximum segment length. </source>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
       <translation type="unfinished">G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
     </message>
   </context>
   <context>
@@ -5785,11 +5842,6 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>2点が一致しています</translation>
     </message>
     <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation>鏡像)</translation>
-    </message>
-    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation>ブロックが1つ見つかりました：分解します</translation>
@@ -5863,11 +5915,6 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>誤った入力: 点タイプが正しくありません。</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation>シェイプを生成できません: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -7256,7 +7303,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>配置点を選択</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="115"/>
+      <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
       <translation>テキストを作成</translation>
     </message>
@@ -7397,6 +7444,21 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="gui_edit.py" line="934"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="gui_lineremover.py" line="72"/>
+      <source>Select an existing object</source>
+      <translation type="unfinished">Select an existing object</translation>
     </message>
   </context>
   <context>

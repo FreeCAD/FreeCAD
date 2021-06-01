@@ -91,12 +91,17 @@ class Shape2DView(DraftObject):
         obj.addProperty("App::PropertyFloat", "SegmentLength",
                         "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", 
+        _tip = QT_TRANSLATE_NOOP("App::Property",
                 "If this is True, this object will be recomputed only if it is \
                 visible")
         obj.addProperty("App::PropertyBool", "VisibleOnly",
                         "Draft", _tip)
-        
+
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "A list of exclusion points. Any edge touching any of those points will not be drawn.")
+        obj.addProperty("App::PropertyVectorList", "ExclusionPoints",
+                        "Draft", _tip)
+
         obj.Projection = App.Vector(0,0,1)
         obj.ProjectionMode = ["Solid", "Individual Faces",
                               "Cutlines", "Cutfaces","Solid faces"]
@@ -119,6 +124,7 @@ class Shape2DView(DraftObject):
             if obj.HiddenLines:
                 for g in _groups[5:]:
                     edges.append(g)
+        edges = self.cleanExcluded(obj,edges)
         #return Part.makeCompound(edges)
         if hasattr(obj,"Tessellation") and obj.Tessellation:
             return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),
@@ -127,6 +133,28 @@ class Shape2DView(DraftObject):
         else:
             return Part.makeCompound(edges)
             #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+
+    def cleanExcluded(self,obj,shapes):
+        """removes any edge touching exclusion points"""
+        import Part
+        MAXDIST = 0.0001
+        if (not hasattr(obj,"ExclusionPoints")) or (not obj.ExclusionPoints):
+            return shapes
+        #verts = [Part.Vertex(obj.Placement.multVec(p)) for p in obj.ExclusionPoints]
+        verts = [Part.Vertex(p) for p in obj.ExclusionPoints]
+        nedges = []
+        for s in shapes:
+            for e in s.Edges:
+                for v in verts:
+                    try:
+                        d = e.distToShape(v)
+                        if d and (d[0] <= MAXDIST):
+                            break
+                    except RuntimeError:
+                        print("FIXME: shape2dview: distance unavailable for edge",e,"in",obj.Label)
+                else:
+                    nedges.append(e)
+        return nedges
 
     def execute(self,obj):
         if hasattr(obj,"VisibleOnly"):
@@ -165,11 +193,11 @@ class Shape2DView(DraftObject):
                             if utils.get_type(o) in ["Wall","Structure"]:
                                 if onlysolids:
                                     shtypes.setdefault(o.Material.Name
-                                                      if (hasattr(o,"Material") and o.Material) 
+                                                      if (hasattr(o,"Material") and o.Material)
                                                       else "None",[]).extend(o.Shape.Solids)
                                 else:
-                                    shtypes.setdefault(o.Material.Name 
-                                                       if (hasattr(o,"Material") and o.Material) 
+                                    shtypes.setdefault(o.Material.Name
+                                                       if (hasattr(o,"Material") and o.Material)
                                                        else "None",[]).append(o.Shape.copy())
                             elif hasattr(o,'Shape'):
                                 if onlysolids:

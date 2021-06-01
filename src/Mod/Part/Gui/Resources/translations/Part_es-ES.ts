@@ -364,6 +364,16 @@ Un 'Filtro Compuesto' se puede utilizar para extraer las rodajas individuales.</
       <translation>Cortar aparte</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmentos booleanos</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Corta objetos donde intersectan</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -385,16 +395,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 o con las formas dentro de un componente.
 Esto significa que los volúmenes superpuestos de las formas se eliminarán.
 Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmentos booleanos</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Corta objetos donde intersectan</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

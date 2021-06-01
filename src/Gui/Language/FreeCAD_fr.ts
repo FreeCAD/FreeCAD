@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Entrer une expression…</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Expression : </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD ne serait pas possible sans les contributions de</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Particuliers</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organisations</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Les lignes de code seront numérotées</translation>
     </message>
   </context>
   <context>
@@ -2641,15 +2641,15 @@ La modification de cette option nécessite un redémarrage de l'application.</tr
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Quel type d'anticrénelage multi-échantillon est utilisé</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Ecart pupillaire utilisée pour les projections stéréo.
+La valeur spécifiée est un facteur qui sera multiplié avec la
+taille de la boîte englobante de l'objet 3D qui est actuellement affichée.</translation>
     </message>
   </context>
   <context>
@@ -3590,25 +3590,25 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Tourner vers l'état le plus proche lorsque vous cliquez sur une face du cube</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Tourner au plus près</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Taille du cube</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Taille du cube de navigation</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Quel sera le zoom.
+Le zoom au pas de '1' signifie un facteur de 7.5 pour chaque pas de zoom.</translation>
     </message>
   </context>
   <context>
@@ -3926,7 +3926,7 @@ Le système par défaut est celui défini dans les préférences générales.</t
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>unité inconnue :</translation>
     </message>
   </context>
   <context>
@@ -6946,9 +6946,9 @@ Document : </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Chemin physique : </translation>
     </message>
   </context>
   <context>

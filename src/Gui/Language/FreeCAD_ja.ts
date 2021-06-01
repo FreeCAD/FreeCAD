@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>式を入力...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>式: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD は以下の貢献がなければあり得なかったでしょう: </translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>個人</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>組織</translation>
     </message>
   </context>
   <context>
@@ -1423,7 +1423,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>コード行に番号を付ける</translation>
     </message>
   </context>
   <context>
@@ -2622,15 +2622,14 @@ Changing this option requires a restart of the application.</source>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>使用されているマルチサンプル・アンチエイリアスの種類</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>ステレオ投影で使用される目と目の間の距離。
+現在表示されている 3D オブジェクトのバウンディングボックスサイズと掛け合わされる係数の値を指定します。</translation>
     </message>
   </context>
   <context>
@@ -3566,25 +3565,25 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>キューブ面をクリックした時に最も近い状態へ回転</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>最も近い状態へ回転</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>キューブのサイズ</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>ナビゲーションキューブのサイズ</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>どの程度ズームを行うか。
+ズーム量「1」はズーム 1 段階ごとに 7.5 倍することを意味します。</translation>
     </message>
   </context>
   <context>
@@ -3902,7 +3901,7 @@ The preference system is the one set in the general preferences.</source>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>未知の単位:</translation>
     </message>
   </context>
   <context>
@@ -6920,9 +6919,9 @@ Document: </source>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+物理パス: </translation>
     </message>
   </context>
   <context>

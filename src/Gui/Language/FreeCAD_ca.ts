@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Introdueix una expressió...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Expressió: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD no seria possible sense les contribucions de</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Individus</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organitzacions</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ Si no està activat, la propietat ha de tenir un nom únic, i s'accedeix a ella 
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Les línies de codi seran numerades</translation>
     </message>
   </context>
   <context>
@@ -3596,17 +3596,17 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Mida del cub</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Mida del cub de navegació</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>En quant serà ampliat.
+Un valor de '1' implica un factor de 7,5 per cada grau d'ampliació.</translation>
     </message>
   </context>
   <context>
@@ -3924,7 +3924,7 @@ El sistema de preferències és el fixat en les preferències generals.</transla
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>unitat desconeguda:</translation>
     </message>
   </context>
   <context>
@@ -6937,9 +6937,9 @@ Camí: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Ruta física: </translation>
     </message>
   </context>
   <context>

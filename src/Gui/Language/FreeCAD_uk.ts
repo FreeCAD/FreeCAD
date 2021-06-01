@@ -1422,7 +1422,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Рядки коду буде пронумеровано</translation>
     </message>
   </context>
   <context>

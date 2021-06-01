@@ -78,7 +78,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathToolBitLibraryCmd
 
         import PathCommands
-
         PathGuiInit.Startup()
 
         # build commands list
@@ -97,6 +96,8 @@ class PathWorkbench (Workbench):
                           "Path_DressupLeadInOut", "Path_DressupRampEntry",
                           "Path_DressupTag", "Path_DressupZCorrect"]
         extracmdlist = []
+        # modcmdmore = ["Path_Hop",]
+        # remotecmdlist = ["Path_Remote"]
         specialcmdlist = []
 
 
@@ -121,12 +122,6 @@ class PathWorkbench (Workbench):
             twodopcmdlist.append("Path_Slot")
 
         if PathPreferences.advancedOCLFeaturesEnabled():
-            try:
-                import camotics
-                toolcmdlist.append("Path_Camotics")
-            except ImportError:
-                pass
-
             try:
                 import ocl  # pylint: disable=unused-variable
                 from PathScripts import PathSurfaceGui

@@ -122,17 +122,17 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
       <source>XY</source>
-      <translation type="unfinished">XY</translation>
+      <translation>XY</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="36"/>
       <source>XZ</source>
-      <translation type="unfinished">XZ</translation>
+      <translation>XZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="43"/>
       <source>YZ</source>
-      <translation type="unfinished">YZ</translation>
+      <translation>YZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>

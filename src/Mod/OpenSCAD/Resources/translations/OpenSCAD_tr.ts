@@ -142,12 +142,12 @@
       <translation>Lütfen öncelikle 3 nesneyi seçin</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Desteklenmeyen işlev</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>OK (Tamam) tuşuna basın</translation>
     </message>

@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Írj be egy kifejezést...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Kifejezés: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>A FreeCAD nem jöhetett volna létre az alábbi együttműködők nélkül</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Személyek</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Szervezetek</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úg
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>A kódsorok sorszámozva lesznek</translation>
     </message>
   </context>
   <context>
@@ -2639,15 +2639,15 @@ A beállítás módosításához újra kell indítani az alkalmazást.</translat
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Milyen több mintavételes élsimítást használ</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Szemtől-szembeni távolság sztereó kivetítésekhez.
+A megadott érték olyan tényező, amelyet megszoroz
+az aktuálisan megjelenített 3D tárgy határolókeret méretével.</translation>
     </message>
   </context>
   <context>
@@ -3590,25 +3590,25 @@ Ez a beállítás nem tiltja le az egér megdöntése beállítást.</translatio
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Kocka felületére kattintva a lehető legközelebbi állapotba forog</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Forgatás a legközelebbire</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Kocka méret</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Navigációs kocka mérete</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Mennyire nagyítson.
+Az '1' nagyítási lépés minden nagyítási lépésnél 7,5-ös tényezőt jelent.</translation>
     </message>
   </context>
   <context>
@@ -3926,7 +3926,7 @@ Az előnyben részesített rendszer az általános beállításokban beállítot
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>ismeretlen mértékegység:</translation>
     </message>
   </context>
   <context>
@@ -6953,9 +6953,9 @@ Dokumentum: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Fizikai útvonal: </translation>
     </message>
   </context>
   <context>

@@ -364,6 +364,16 @@ Tuloksena olevat viipaleet tallennetaan yhdistelmämuotoon.
       <translation>Viipaloi erilleen</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolen operaation sirpaleet</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Jaa objektit paloihin leikkauskohdista</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -385,16 +395,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 valitulla kohteella, tai muodoilla yhdistelmämuodon sisällä.
 Tämä tarkoittaa, että muotojen päällekkäiset tilavuudet poistetaan.
 'Yhdistelmämuodon suodatinta' voidaan käyttää jäljelle jääneiden palojen poimintaan.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolen operaation sirpaleet</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Jaa objektit paloihin leikkauskohdista</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

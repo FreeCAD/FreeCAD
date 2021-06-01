@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Voer een expressie in...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Expressie: </translation>
     </message>
   </context>
   <context>
@@ -510,12 +510,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Individuen</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organisaties</translation>
     </message>
   </context>
   <context>
@@ -3597,7 +3597,7 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Draai naar dichtstbijzijnde</translation>
     </message>
     <message>
       <source>Cube size</source>
@@ -3929,7 +3929,7 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>onbekende eenheid:</translation>
     </message>
   </context>
   <context>
@@ -6947,9 +6947,9 @@ Document: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Fysiek pad: </translation>
     </message>
   </context>
   <context>

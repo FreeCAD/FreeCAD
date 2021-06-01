@@ -9,26 +9,6 @@
       <translation>Toon de tijdelijke padconstructie-objecten wanneer de module in DEBUG-modus staat.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
-      <translation>Kleinere waarden leveren een fijner, nauwkeuriger mesh op. Kleinere waarden verhogen de verwerkingstijd aanzienlijk.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-      <translation>Kleinere waarden leveren een fijner, nauwkeuriger mesh op. Kleinere waarden verhogen de verwerkingstijd niet aanzienlijk.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Stop index(hoek) voor rotationele scan</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
-      <source>Dropcutter lines are created parallel to this axis.</source>
-      <translation>Dropcutterlijnen worden parallel gemaakt met deze as.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="73"/>
       <source>The direction along which dropcutter lines are created</source>
       <translation>De richting langs welke dropcutter lijnen worden gemaakt</translation>
@@ -37,11 +17,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="74"/>
       <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
       <translation>Moet de bewerking worden beperkt door het voorraadobject of door de begrenzingsdoos van het basisobject</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Extra verschuiving naar de geselecteerde begrenzingsdoos</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="76"/>
@@ -64,6 +39,16 @@
       <translation>Optimalisatie inschakelen die onnodige punten verwijdert van de G-Code uitvoer</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
+      <translation>Kleinere waarden leveren een fijner, nauwkeuriger mesh op. Kleinere waarden verhogen de verwerkingstijd aanzienlijk.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
+      <translation>Kleinere waarden leveren een fijner, nauwkeuriger mesh op. Kleinere waarden verhogen de verwerkingstijd niet aanzienlijk.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="129"/>
       <source>The completion mode for the operation: single or multi-pass</source>
       <translation>De voltooiing modus voor de bewerking: één of meerdere-pass</translation>
@@ -74,14 +59,9 @@
       <translation>De richting die het tool moet volge rond het werkstuk: Climb(met de klok mee) of conventioneel(tegen de klok)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="132"/>
-      <source>The model will be rotated around this axis.</source>
-      <translation>Het model zal rond deze as draaien.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="133"/>
-      <source>Start index(angle) for rotational scan</source>
-      <translation>Start index(hoek) voor rotationele scan</translation>
+      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Stop index(hoek) voor rotationele scan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="141"/>
@@ -97,6 +77,26 @@
       <location filename="../../../PathScripts/PathSurface.py" line="143"/>
       <source>Cut through waste to depth at model edge, releasing the model.</source>
       <translation>Ga door afval naar diepte aan de modelrand, waardoor het model vrijkomt.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
+      <source>Dropcutter lines are created parallel to this axis.</source>
+      <translation>Dropcutterlijnen worden parallel gemaakt met deze as.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Extra verschuiving naar de geselecteerde begrenzingsdoos</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="132"/>
+      <source>The model will be rotated around this axis.</source>
+      <translation>Het model zal rond deze as draaien.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="133"/>
+      <source>Start index(angle) for rotational scan</source>
+      <translation>Start index(hoek) voor rotationele scan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="128"/>
@@ -242,11 +242,6 @@
       <location filename="PathCopy.py" line="45"/>
       <source>The path to be copied</source>
       <translation>Het te kopiëren pad</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>De basisgeometrie voor dit gereedschapspad</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="70"/>
@@ -589,6 +584,11 @@
       <translation>Extra verschuiving om toe te passen op de bewerking. Richting is afhankelijk van bewerking.</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>De te bibliotheek gebruiken voor het genereren van het pad</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Begin met het uithollen in het midden of op de grens</translation>
@@ -674,9 +674,9 @@
       <translation>Zet Waar indien u gebruik maakt van de straalcompensatie van de snijder</translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>De te bibliotheek gebruiken voor het genereren van het pad</translation>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>De basisgeometrie voor dit gereedschapspad</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
@@ -922,6 +922,21 @@
       <translation>Ongeldige hoek van de snijrand %.2f, moet &gt;=0° en &lt;=180° zijn</translation>
     </message>
     <message>
+      <location filename="PathUtils.py" line="750"/>
+      <source>Legacy Tools not supported</source>
+      <translation type="unfinished">Legacy Tools not supported</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="754"/>
+      <source>Selected tool is not a drill</source>
+      <translation type="unfinished">Selected tool is not a drill</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="762"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
+      <translation>Ongeldige hoek van de snijrand %.2f, moet &gt;=0° en &lt;90° zijn</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="808"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
       <translation>Ongeldige hoek van de snijrand %.2f, moet &gt;=0° en &lt;=180° zijn</translation>
@@ -930,11 +945,6 @@
       <location filename="PathUtils.py" line="767"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>Snijhoek rand (%.2f) resulteert in negatieve tool tip lengte</translation>
-    </message>
-    <message>
-      <location filename="PathUtils.py" line="762"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
-      <translation>Ongeldige hoek van de snijrand %.2f, moet &gt;=0° en &lt;90° zijn</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="397"/>
@@ -1145,11 +1155,6 @@
       <translation>Gedraaid naar de omgekeerde hoek.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Gedraaid naar 'InverseAngle' om toegang te proberen.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
       <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
       <translation>Geselecteerde functie(s) vereist/vereisen 'Rotatie inschakelen: A(x)' voor toegang.</translation>
@@ -1255,6 +1260,11 @@ Toegenomen naar de standaard top.</translation>
       <location filename="../../../InitGui.py" line="158"/>
       <source>Utils</source>
       <translation>Hulpmiddelen</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Gedraaid naar 'InverseAngle' om toegang te proberen.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1905,6 +1915,16 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Definitieve diepte ingesteld onder ZMin of vlak(ken) geselecteerd.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Pocket Shape</source>
+      <translation>Vorm van de uitsparing</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Creates a Path Pocket object from a face or faces</source>
+      <translation>Maakt een object van een paduitsparing aan vanuit een of meerdere vlakken</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
       <source>Normal</source>
       <translation>Normaal</translation>
@@ -1918,16 +1938,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
       <source>Y</source>
       <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Pocket Shape</source>
-      <translation>Vorm van de uitsparing</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Creates a Path Pocket object from a face or faces</source>
-      <translation>Maakt een object van een paduitsparing aan vanuit een of meerdere vlakken</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
@@ -2335,14 +2345,24 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Geen Basis Geometrie object in de bewerking.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSlot.py" line="448"/>
-      <source>Custom points not at same Z height.</source>
-      <translation>Aangepaste punten niet op dezelfde Z-hoogte.</translation>
+      <location filename="../../../PathScripts/PathSlot.py" line="720"/>
+      <source>The selected face is not oriented horizontally or vertically.</source>
+      <translation>Het geselecteerde vlak is niet verticaal of horizontaal georiënteerd.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1638"/>
       <source>Current offset value is not possible.</source>
       <translation>Huidig offset waarde is niet mogelijk.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="441"/>
+      <source>Custom points are identical.</source>
+      <translation type="unfinished">Custom points are identical.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSlot.py" line="448"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>Aangepaste punten niet op dezelfde Z-hoogte.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="493"/>
@@ -2365,9 +2385,9 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Begin- en eindpunten van slot controleren.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSlot.py" line="720"/>
-      <source>The selected face is not oriented horizontally or vertically.</source>
-      <translation>Het geselecteerde vlak is niet verticaal of horizontaal georiënteerd.</translation>
+      <location filename="PathSlot.py" line="752"/>
+      <source>The selected face is inaccessible.</source>
+      <translation type="unfinished">The selected face is inaccessible.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="737"/>
@@ -3336,16 +3356,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Verkleding</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Maakt een padverkledingsobject uit een geselecteerd pad</translation>
-    </message>
-    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3363,6 +3373,16 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Gelieve een padobject te selecteren</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Verkleding</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Maakt een padverkledingsobject uit een geselecteerd pad</translation>
     </message>
   </context>
   <context>
@@ -3837,6 +3857,13 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Maakt een Padsprongobject</translation>
     </message>
     <message>
+      <location filename="PathHop.py" line="119"/>
+      <source>The selected object is not a path
+</source>
+      <translation>Het geselecteerde object is geen pad
+</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
       <source>Please select one path object</source>
       <translation>Gelieve een padobject te selecteren</translation>
@@ -3850,13 +3877,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Sprong maken</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="119"/>
-      <source>The selected object is not a path
-</source>
-      <translation>Het geselecteerde object is geen pad
-</translation>
     </message>
   </context>
   <context>
@@ -4108,6 +4128,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>Er is geen geselecteerd basisobject voor de taak.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
       <translation>Controleer het padproject op veelvoorkomende fouten</translation>
@@ -4186,11 +4211,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathSanity.py" line="223"/>
       <source>Minimum Z Height</source>
       <translation>Minimale Z-hoogte</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>Er is geen geselecteerd basisobject voor de taak.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="224"/>
@@ -4524,6 +4544,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_ToolController</name>
     <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Te laden gereedschapsnummer</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Gereedschapsregelaar toevoegen aan de taak</translation>
@@ -4532,11 +4557,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Gereedschapsregelaar toevoegen</translation>
-    </message>
-    <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Te laden gereedschapsnummer</translation>
     </message>
   </context>
   <context>
@@ -4565,6 +4585,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Maakt een middelste lijn graveer pad</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation>VCarve vereist een graverende snijder met CuttingEdgeAngle</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="309"/>
       <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
       <translation>VCarve vereist een graverende snijder met CuttingEdgeAngle</translation>
@@ -4573,11 +4598,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
       <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
       <translation>Engraver snij-hoek moet &lt; 180 graden zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
-      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
-      <translation>VCarve vereist een graverende snijder met CuttingEdgeAngle</translation>
     </message>
   </context>
   <context>
@@ -4614,9 +4634,54 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Toolbit-bibliotheek opslaan</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Gereedschapstafel JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD-gereedschapstafel (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC-gereedschapstafel (*.tbl)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Open gereedschapstafel</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Gereedschapstafel opslaan</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Rename Tooltable</source>
+      <translation>Hernoem gereedschapstabel</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Enter Name:</source>
+      <translation>Naam invoeren:</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Voeg nieuwe gereedschapstabel toe</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Verwijder de geselecteerde gereedschapstabel</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Hernoem de geselecteerde gereedschapstabel</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4830,11 +4895,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Gereedschapstafel opslaan</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Gereedschapstafel XML (*.xml)</translation>
     </message>
@@ -4847,46 +4907,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>Object heeft geen gereedschapstafeleigenschap</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Rename Tooltable</source>
-      <translation>Hernoem gereedschapstabel</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Enter Name:</source>
-      <translation>Naam invoeren:</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Voeg nieuwe gereedschapstabel toe</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Verwijder de geselecteerde gereedschapstabel</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Hernoem de geselecteerde gereedschapstabel</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Gereedschapstafel JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD-gereedschapstafel (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC-gereedschapstafel (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>
