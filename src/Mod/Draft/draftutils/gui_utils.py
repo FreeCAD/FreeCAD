@@ -350,7 +350,7 @@ def format_object(target, origin=None):
     if ui:
         doc = App.ActiveDocument
         if ui.isConstructionMode():
-            lcol = fcol = ui.getDefaultColor("constr")
+            lcol = ui.getDefaultColor("constr")
             tcol = lcol
             fcol = lcol
 
