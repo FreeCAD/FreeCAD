@@ -2799,7 +2799,11 @@ TopoShape &TopoShape::makEShape(const char *maker,
         HANDLE_NULL_INPUT;
     if(inputs.size()==1) {
         *this = inputs[0];
-        FC_WARN("Boolean operation with only one shape input");
+        if (shapes.size() == 1) {
+            // _shapes has fewer items than shapes due to compound expansion.
+            // Only warn if the caller paseses one shape.
+            FC_WARN("Boolean operation with only one shape input");
+        }
         return *this;
     }
 
