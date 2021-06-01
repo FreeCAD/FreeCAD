@@ -56,6 +56,7 @@ public:
     App::PropertyBool ParallelTransform;
 
     App::PropertyPlacement TransformOffset;
+    App::PropertyInteger _Version;
 
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
@@ -99,7 +100,7 @@ public:
 
     virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const;
 
-    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes);
 
 protected:
     virtual void handleChangedPropertyType(

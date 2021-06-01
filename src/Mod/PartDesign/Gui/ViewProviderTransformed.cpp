@@ -141,17 +141,24 @@ void ViewProviderTransformed::checkAddSubColor()
     auto feat = Base::freecad_dynamic_cast<PartDesign::Transformed>(getObject());
     if (!feat)
         return;
-    Part::TopoShape addShape, subShape;
-    feat->getAddSubShape(addShape, subShape);
-    if (addShape.isNull() && subShape.isNull())
+    std::vector<std::pair<Part::TopoShape, bool> > shapes;
+    feat->getAddSubShape(shapes);
+    if (shapes.empty())
         return;
+    int addCount=0, subCount=0;
+    for (auto &v : shapes) {
+        if (v.second)
+            ++addCount;
+        else
+            ++subCount;
+    }
     App::Color addcolor((uint32_t)PartGui::PartParams::PreviewAddColor());
     App::Color subcolor((uint32_t)PartGui::PartParams::PreviewSubColor());
     if (AddSubColor.getValue().getPackedValue()) {
         addcolor = AddSubColor.getValue();
         subcolor = App::Color((uint32_t)(0xFFFFFF00 ^ addcolor.getPackedValue()));
     }
-    if (addShape.isNull())
+    if (!addCount)
         addcolor = subcolor;
     // clamp transparency between 0.1 ~ 0.8
     float t = std::max(0.1f, std::min(0.8f, 1.0f - addcolor.a));
@@ -163,27 +170,37 @@ void ViewProviderTransformed::checkAddSubColor()
     view->ShapeColor.setValue(addcolor);
     view->Transparency.setValue(t*100);
 
-    if (addShape.isNull() || subShape.isNull())
+    if (!addCount || !subCount)
         return;
 
     auto addsubShape = feat->AddSubShape.getShape();
-    std::vector<App::Color> colors;
+    std::array<std::vector<App::Color>, 2> colors;
     std::array<TopAbs_ShapeEnum, 2> types = {TopAbs_EDGE, TopAbs_FACE};
     App::PropertyColorList *props[] = {&view->LineColorArray,
                                        &view->DiffuseColor};
+    int j=0;
+    for (auto type : types)
+        colors[j++].resize(addsubShape.countSubShapes(type),
+                addCount > subCount ? addcolor : subcolor);
+
     addcolor.a = t;
     subcolor.a = t;
-    int j=0;
-    for (auto type : types) {
-        colors.clear();
-        colors.resize(addsubShape.countSubShapes(type), addcolor);
-        for (auto &s : subShape.getSubShapes(type)) {
-            int idx = addsubShape.findShape(s);
-            if (idx >= 1 && idx <= (int)colors.size())
-                colors[idx-1] = subcolor;
+    auto color = addCount > subCount ? subcolor : addcolor;
+    for (auto &v : shapes) {
+        if ((addCount > subCount) == v.second)
+            continue;
+        auto &shape = v.first;
+        j = 0;
+        for (auto type : types) {
+            for (auto &s : shape.getSubShapes(type)) {
+                int idx = addsubShape.findShape(s);
+                if (idx >= 1 && idx <= (int)colors[j].size())
+                    colors[j][idx-1] = color;
+            }
+            auto prop = props[j];
+            prop->setValues(colors[j]);
+            j++;
         }
-        auto prop = props[j++];
-        prop->setValues(colors);
     }
 }
 

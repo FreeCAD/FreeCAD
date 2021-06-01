@@ -49,7 +49,7 @@ public:
 
     virtual short mustExecute() const override;
 
-    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes);
 
     TopoShape refineShapeIfActive(const TopoShape&) const;
 

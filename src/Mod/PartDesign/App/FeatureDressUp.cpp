@@ -214,7 +214,7 @@ void DressUp::onChanged(const App::Property* prop)
     Feature::onChanged(prop);
 }
 
-void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+void DressUp::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &addsubshapes)
 {
     Part::TopoShape res = AddSubShape.getShape();
 
@@ -284,7 +284,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
         throw Part::NullShapeException("Null AddSub shape");
 
     if(res.getShape().ShapeType() != TopAbs_COMPOUND) {
-        addShape = res;
+        addsubshapes.emplace_back(res, true);
     } else {
         int count = res.countSubShapes(TopAbs_SHAPE);
         if(!count)
@@ -292,12 +292,12 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
         if(count) {
             Part::TopoShape s = res.getSubTopoShape(TopAbs_SHAPE, 1);
             if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
-                addShape = s;
+                addsubshapes.emplace_back(s, true);
         }
         if(count > 1) {
             Part::TopoShape s = res.getSubTopoShape(TopAbs_SHAPE, 2);
             if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
-                subShape = s;
+                addsubshapes.emplace_back(s, false);
         }
     }
 }

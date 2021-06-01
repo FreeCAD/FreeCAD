@@ -70,14 +70,14 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
     return oldShape;
 }
 
-void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+void FeatureAddSub::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes)
 {
     if (Suppress.getValue())
         return;
     else if (addSubType == Additive)
-        addShape = AddSubShape.getShape();
+        shapes.emplace_back(AddSubShape.getShape(), true);
     else if (addSubType == Subtractive)
-        subShape = AddSubShape.getShape();
+        shapes.emplace_back(AddSubShape.getShape(), false);
 }
 
 const std::string &FeatureAddSub::addsubElementPrefix()
