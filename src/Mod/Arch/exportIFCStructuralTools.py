@@ -28,7 +28,8 @@ __url__ =    "https://www.freecadweb.org"
 
 ALLOW_LINEAR_OBJECTS = True # allow non-solid objects (wires, etc) to become analytic objects?
 
-structural_nodes = {} # this keeps track of nodes during this session
+structural_nodes = {} # this keeps track of structural nodes during this session
+structural_curves = {} # this keeps track of structural curves during this session
 scaling = 1.0 # this keeps track of scaling during this session
 
 
@@ -60,52 +61,85 @@ def createStructuralContext(ifcfile):
     # filter out subcontexts
     contexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationContext"]
     ctx = contexts[0] # arbitrarily take the first one...
-    structcontext = ifcfile.createIfcGeometricRepresentationSubContext('Analysis','Axis',None,None,None,None,ctx,None,"GRAPH_VIEW",None)
-    return structcontext
+    structContext = ifcfile.createIfcGeometricRepresentationSubContext(
+        'Analysis', 'Axis', None, None, None, None, ctx, None, "GRAPH_VIEW", None)
+    return structContext
 
 
 def getStructuralContext(ifcfile):
 
     """Returns the structural context from the file"""
+    
     for c in ifcfile.by_type("IfcGeometricRepresentationSubContext"):
         if c.ContextIdentifier == "Analysis":
             return c
 
 
-def createStructuralNode(ifcfile,ifcbin,point):
+def createStructuralNode(ifcfile, ifcbin, point):
 
     """Creates a connection node at the given point"""
 
     import ifcopenshell
     uid = ifcopenshell.guid.new
-    owh = ifcfile.by_type("IfcOwnerHistory")[0]
-    ctx = getStructuralContext(ifcfile)
-    cpt = ifcbin.createIfcCartesianPoint(tuple(point))
-    vtx = ifcfile.createIfcVertexPoint(cpt)
-    rep = ifcfile.createIfcTopologyRepresentation(ctx,'Analysis','Vertex',[vtx])
-    psh = ifcfile.createIfcProductDefinitionShape(None,None,[rep])
+    ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
+    structContext = getStructuralContext(ifcfile)
+    cartPoint = ifcbin.createIfcCartesianPoint(tuple(point))
+    vertexPoint = ifcfile.createIfcVertexPoint(cartPoint)
+    topologyRep = ifcfile.createIfcTopologyRepresentation(structContext, 'Analysis', 'Vertex', [vertexPoint])
+    prodDefShape = ifcfile.createIfcProductDefinitionShape(None, None, [topologyRep])
     # boundary conditions serve for ex. to create fixed nodes
-    #cnd = ifcfile.createIfcBoundaryNodeCondition("Fixed",ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True))
+    #condition = ifcfile.createIfcBoundaryNodeCondition("Fixed",ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True),ifcfile.createIfcBoolean(True))
     # for now we don't create any boundary condition
-    cnd = None
-    pla = ifcbin.createIfcLocalPlacement()
-    prd = ifcfile.createIfcStructuralPointConnection(uid(),owh,'Vertex',None,None,pla,psh,cnd,None)
-    return prd
+    appliedCondition = None
+    localPlacement = ifcbin.createIfcLocalPlacement()
+    structPntConn = ifcfile.createIfcStructuralPointConnection(
+        uid(), ownerHistory, 'Vertex', None, None, localPlacement, prodDefShape, appliedCondition, None)
+    return structPntConn
+    
+def createStructuralCurve(ifcfile, ifcbin, curve):
+
+    """Creates a structural connection for a curve"""
+
+    import ifcopenshell
+    uid = ifcopenshell.guid.new
+    ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
+    structContext = getStructuralContext(ifcfile)
+    
+    cartPnt1 = ifcbin.createIfcCartesianPoint(tuple(curve.Vertexes[ 0].Point.multiply(scaling)))
+    cartPnt2 = ifcbin.createIfcCartesianPoint(tuple(curve.Vertexes[-1].Point.multiply(scaling)))
+    vertPnt1 = ifcfile.createIfcVertexPoint(cartPnt1)
+    vertPnt2 = ifcfile.createIfcVertexPoint(cartPnt2)
+    edge = ifcfile.createIfcEdge(vertPnt1, vertPnt2)
+    topologyRep = ifcfile.createIfcTopologyRepresentation(structContext, "Analysis", "Edge", [edge])
+    prodDefShape = ifcfile.createIfcProductDefinitionShape(None, None , [topologyRep])
+
+    # boundary conditions serve for ex. to create fixed edges
+    # for now we don't create any boundary condition
+    appliedCondition = None
+    localPlacement = ifcbin.createIfcLocalPlacement()
+    origin = ifcfile.createIfcCartesianPoint((0.0, 0.0, 0.0))
+    orientation = [[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]]
+    xAxis = ifcfile.createIfcDirection(tuple(orientation[0]))
+    zAxis = ifcfile.createIfcDirection(tuple(orientation[2]))
+    localAxes = ifcfile.createIfcAxis2Placement3D(origin, zAxis, xAxis)
+    structCrvConn = ifcfile.createIfcStructuralCurveConnection(
+        uid(), ownerHistory, "Line", None, None, localPlacement, prodDefShape, appliedCondition, localAxes)
+    return structCrvConn
 
 
-def createStructuralMember(ifcfile,ifcbin,obj):
+def createStructuralMember(ifcfile, ifcbin, obj):
 
     """Creates a structural member if possible. Returns the member"""
 
     global structural_nodes
-    prd = None
+    structuralMember = None
     import Draft
     import Part
     import ifcopenshell
     uid = ifcopenshell.guid.new
-    owh = ifcfile.by_type("IfcOwnerHistory")[0]
-    ctx = getStructuralContext(ifcfile)
-    
+    ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
+    structContext = getStructuralContext(ifcfile)
+
     # find edges to convert into structural members
     edges = None
     if Draft.getType(obj) not in ["Structure"]:
@@ -124,61 +158,139 @@ def createStructuralMember(ifcfile,ifcbin,obj):
         # for structural elements with nodes
         nodes = [obj.Placement.multVec(n) for n in obj.Nodes]
         if len(nodes) > 2:
-            # when there are more then 2 nodes (i.e. for slabs) append closing node to produce closing edge
+            # when there are more then 2 nodes (i.e. for surfaces) append closing node to produce closing edge
             nodes.append(nodes[0])
         wire = Part.makePolygon(nodes)
         edges = wire.Edges
     if not edges:
         return None
+
+    # OBJECT CLASSIFICATION by edge number
+    # Linear elements for edge_number = 1, Surface elements for edge_number > 1
+    # we don't care about curved edges just now...
+    
+    if len(edges) == 1:
+        # LINEAR OBJECTS: beams, columns
+        # ATM limitations:
+        # - no profile properties are taken into account
+        # - no materials properties are takein into account
+
+        # creates geometry
+        verts = [None for _ in range(len(edges)+1)]
+        verts[0] = tuple(edges[0].Vertexes[ 0].Point.multiply(scaling))
+        verts[1] = tuple(edges[0].Vertexes[-1].Point.multiply(scaling))
+        cartPnt1 = ifcfile.createIfcCartesianPoint(verts[0])
+        cartPnt2 = ifcfile.createIfcCartesianPoint(verts[1])
+        vertPnt1 = ifcfile.createIfcVertexPoint(cartPnt1)
+        vertPnt2 = ifcfile.createIfcVertexPoint(cartPnt2)
+        edge = ifcfile.createIfcEdge(vertPnt1, vertPnt2)
+        topologyRep = ifcfile.createIfcTopologyRepresentation(structContext, "Analysis", "Edge", (edge,))
+        prodDefShape = ifcfile.createIfcProductDefinitionShape(None, None, (topologyRep,))
+
+        # sets local coordinate system
+        localPlacement = ifcbin.createIfcLocalPlacement()
+        localZAxis = ifcbin.createIfcDirection((0, 0, 1))
+
+        # creates structural memeber
+        structuralMember = ifcfile.createIfcStructuralCurveMember(
+            uid(), ownerHistory, obj.Label, None, None, localPlacement, prodDefShape, "RIGID_JOINED_MEMBER", localZAxis) 
+
+    elif len(edges) > 1:
+        # SURFACE OBJECTS: slabs, walls
+        # ATM limitations:
+        # - mo material properties are taken into account
+        # - walls don't work because they miss a node system
+        
+        # creates geometry
+        verts = [None for _ in range(len(edges))]
+        for i, edge in enumerate(edges):
+           verts[i] = tuple(edge.Vertexes[0].Point.multiply(scaling))
+           cartPnt = ifcfile.createIfcCartesianPoint(verts[i])
+           vertPnt = ifcfile.createIfcVertexPoint(cartPnt)
+
+        orientedEdges = [None for _ in range(len(edges))]
+        for i, vert in enumerate(verts):
+            v2Index = (i + 1) if i < len(verts) - 1 else 0
+            cartPnt1 = ifcfile.createIfcCartesianPoint(vert)
+            cartPnt2 = ifcfile.createIfcCartesianPoint(verts[v2Index])
+            vertPnt1 = ifcfile.createIfcVertexPoint(cartPnt1)
+            vertPnt2 = ifcfile.createIfcVertexPoint(cartPnt2)
+            edge = ifcfile.createIfcEdge(vertPnt1, vertPnt2)
+            orientedEdges[i] = ifcfile.createIfcOrientedEdge(None, None, edge, True)
+            
+        edgeLoop = ifcfile.createIfcEdgeLoop(tuple(orientedEdges))
+        
+        # sets local coordinate system
+        localPlacement = ifcbin.createIfcLocalPlacement()
+        origin = ifcfile.createIfcCartesianPoint((0.0, 0.0, 0.0))
+        orientation = [[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]]
+        xAxis = ifcfile.createIfcDirection(tuple(orientation[0]))
+        zAxis = ifcfile.createIfcDirection(tuple(orientation[2]))
+        localAxes = ifcfile.createIfcAxis2Placement3D(origin, zAxis, xAxis)
+        plane = ifcfile.createIfcPlane(localAxes)
+        faceBound = ifcfile.createIfcFaceBound(edgeLoop, True)
+        face = ifcfile.createIfcFaceSurface((faceBound,), plane, True)
+        topologyRep = ifcfile.createIfcTopologyRepresentation(structContext, "Analysis", "Face", (face,))
+        prodDefShape = ifcfile.createIfcProductDefinitionShape(None, None, (topologyRep,))
+
+        # sets surface thickness
+        thickness = float(obj.Height)*scaling
+
+        # creates structural member
+        structuralMember = ifcfile.createIfcStructuralSurfaceMember(
+            uid(), ownerHistory, obj.Label, None, None, localPlacement, prodDefShape, "SHELL", thickness) 
+   
+    # creates structural nodes with connections
+    for vert in verts:
+        vertCoord = tuple(vert)
+        if vertCoord in structural_nodes:
+            # structural node already exists for the vertex
+            # retrieve it by vertex coordinates
+            structPntConn = structural_nodes[vertCoord]
+        else:
+            # structural node doesn't exist for the vertex yet
+            # create structural point connection = structural node
+            structPntConn = createStructuralNode(ifcfile, ifcbin, vert)
+            structural_nodes[vert] = structPntConn
+        # connect structural member with structural point connection
+        relCon = ifcfile.createIfcRelConnectsStructuralMember(uid(), None, None, None, structuralMember, structPntConn, None, None, None, None)
+
+    # creates structural curves with connections
     for edge in edges:
-        if len(edge.Vertexes) > 1:
-            # we don't care about curved edges just now...
-            v0 = edge.Vertexes[0].Point.multiply(scaling)
-            v1 = edge.Vertexes[-1].Point.multiply(scaling)
-            cp1 = ifcbin.createIfcCartesianPoint(tuple(v0))
-            cp2 = ifcbin.createIfcCartesianPoint(tuple(v1))
-            upv = ifcbin.createIfcDirection((0,0,1))
-            pla = ifcbin.createIfcLocalPlacement()
-            vp1 = ifcfile.createIfcVertexPoint(cp1)
-            vp2 = ifcfile.createIfcVertexPoint(cp2)
-            edg = ifcfile.createIfcEdge(vp1,vp2)
-            rep = ifcfile.createIfcTopologyRepresentation(ctx,'Analysis','Edge',[edg])
-            psh = ifcfile.createIfcProductDefinitionShape(None,None,[rep])
-            prd = ifcfile.createIfcStructuralCurveMember(uid(),owh,obj.Label,None,None,pla,psh,"RIGID_JOINED_MEMBER",upv)
-            # check for existing connection nodes
-            for v in [v0,v1]:
-                vk = tuple(v)
-                if vk in structural_nodes:
-                    if structural_nodes[vk]:
-                        n = structural_nodes[vk]
-                    else:
-                        # there is another member with same point, create a new node
-                        n = createStructuralNode(ifcfile,ifcbin,v)
-                        structural_nodes[vk] = n
-                    ifcfile.createIfcRelConnectsStructuralMember(uid(),None,None,None,prd,n,None,None,None,None);
-                else:
-                    # just add the point, no other member using it yet
-                    structural_nodes[vk] = None
-    return prd
+        if edge in structural_curves:
+            # structural curve already exists for the edge
+            # retrieve it by edge
+            strucCrvConn = structural_curves[edge]
+        else:
+            # structural curve doesn't exist for the edge yet
+            # create structural curve connection
+            strucCrvConn = createStructuralCurve(ifcfile, ifcbin, edge)
+            structural_curves[edge] = strucCrvConn
+        # connect structural member with structural curve connection
+        relCon = ifcfile.createIfcRelConnectsStructuralMember(uid(), None, None, None, structuralMember, strucCrvConn, None, None, None, None)
+
+    return structuralMember
 
 
 def createStructuralGroup(ifcfile):
 
-    "Assigns all structural objects found in the file to the structural model"""
+    """Assigns all structural objects found in the file to the structural model"""
 
     import ifcopenshell
     uid = ifcopenshell.guid.new
-    owh = ifcfile.by_type("IfcOwnerHistory")[0]
-    edges = ifcfile.by_type("IfcStructuralCurveMember")
-    verts = ifcfile.by_type("IfcStructuralPointConnection")
+    ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
+    structPntConn = ifcfile.by_type("IfcStructuralPointConnection")
+    structCrvConn = ifcfile.by_type("IfcStructuralCurveConnection")
+    structCrvMember = ifcfile.by_type("IfcStructuralCurveMember")
+    structSrfMember = ifcfile.by_type("IfcStructuralSurfaceMember")
     model = ifcfile.by_type("IfcStructuralAnalysisModel")[0]
     if model:
-        members = edges + verts
+        members = structSrfMember + structCrvMember + structPntConn + structCrvConn
         if members:
-            ifcfile.createIfcRelAssignsToGroup(uid(),owh,None,None,members,"PRODUCT",model)
+            ifcfile.createIfcRelAssignsToGroup(uid(), ownerHistory, None, None, members, "PRODUCT", model)
 
 
-def associates(ifcfile,aobj,sobj):
+def associates(ifcfile, aobj, sobj):
 
     """Associates an arch object with a struct object"""
 
@@ -187,5 +299,5 @@ def associates(ifcfile,aobj,sobj):
 
     import ifcopenshell
     uid = ifcopenshell.guid.new
-    owh = ifcfile.by_type("IfcOwnerHistory")[0]
-    ifcfile.createIfcRelAssignsToProduct(uid(),owh,None,None,[sobj],None,aobj)
+    ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
+    ifcfile.createIfcRelAssignsToProduct(uid(), ownerHistory, None, None, [sobj], None, aobj)
