@@ -1121,7 +1121,9 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
       || this->depthwriteonly
       || draw_entry.material->type != Material::Triangle
       || (!draw_entry.material->outline
-          && (!ViewParams::getShowPreSelectedFaceOutline() || !highlight)))
+          && (!ViewParams::getShowPreSelectedFaceOutline()
+              || !highlight
+              || draw_entry.ventry->partidx < 0)))
     return;
 
   SoState *state = action->getState();
