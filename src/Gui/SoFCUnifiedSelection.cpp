@@ -899,6 +899,8 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
             {
                 detailPath->truncate(0);
                 SoDetail *det = 0;
+                if (useRenderer())
+                    detailPath->append(master);
                 if(vp->getDetailPath(hilaction->SelChange->pSubName,detailPath,true,det)) {
                     setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
                                  hilaction->SelChange->pSubName,
@@ -1277,6 +1279,8 @@ SoFCUnifiedSelection::Private::setSelection(const std::vector<PickedInfo> &infos
             hasNext = true;
             subName = nextsub;
             detailPath->truncate(0);
+            if (useRenderer())
+                detailPath->append(master);
             if(vpd->getDetailPath(subName.c_str(),detailPath,true,detNext) &&
                detailPath->getLength())
             {
