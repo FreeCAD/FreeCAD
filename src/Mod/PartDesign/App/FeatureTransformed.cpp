@@ -358,7 +358,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                             support.makECompound(fuseShapes);
                             addsub.emplace_back(support, true);
                         } else {
-                            support.makEFuse(fuseShapes);
+                            if (!isRecomputePaused())
+                                support.makEFuse(fuseShapes);
                             fuseShapes.erase(fuseShapes.begin());
                             addsub.emplace_back(
                                     TopoShape().makECompound(fuseShapes, nullptr, false), true);
@@ -378,7 +379,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                             addsub.emplace_back(result, false);
                         } else {
                             cutShapes[0] = support;
-                            result.makECut(cutShapes);
+                            if (!isRecomputePaused())
+                                result.makECut(cutShapes);
                             support = result;
                             cutShapes.erase(cutShapes.begin());
                             addsub.emplace_back(TopoShape().makECompound(
@@ -509,6 +511,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
 
                 addsub.emplace_back(shapeCopy, fuse);
+                if (isRecomputePaused())
+                    continue;
                 if (fuse) {
                     fuseShapes.push_back(shapeCopy);
                     result = support.makEFuse(shapeCopy);
@@ -595,11 +599,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         }
     }
 
-    result = refineShapeIfActive(result);
+    if (!isRecomputePaused()) {
+        result = refineShapeIfActive(result);
 
-    FC_TIME_LOG(t,"done");
+        FC_TIME_LOG(t,"done");
 
-    this->Shape.setValue(getSolid(result));
+        this->Shape.setValue(getSolid(result));
+    }
 
     if (rejected.size() > 0) {
         return new App::DocumentObjectExecReturn("Transformation failed");

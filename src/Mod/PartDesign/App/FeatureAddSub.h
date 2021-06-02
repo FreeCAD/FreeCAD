@@ -58,8 +58,15 @@ public:
 
     static const std::string &addsubElementPrefix();
 
+    virtual void setPauseRecompute(bool enable);
+    bool isRecomputePaused() const;
+
 protected:
     Type addSubType;
+
+private:
+    bool pauseRecompute = false;
+    int pausedRevision;
 };
 
 typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;

@@ -155,6 +155,9 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
         }
         this->AddSubShape.setValue(result);
+        if (!isRecomputePaused())
+            return App::DocumentObject::StdReturn;
+
         result.Tag = -getID();
 
         if(base.isNull()) {

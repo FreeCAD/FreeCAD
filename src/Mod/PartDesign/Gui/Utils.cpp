@@ -50,6 +50,7 @@
 #include <Gui/ViewProviderPart.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/WaitCursor.h>
 #include <Gui/ViewParams.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -821,6 +822,9 @@ public:
                         auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
                                 Gui::Application::Instance->getViewProvider(editObj));
                         if (vp) {
+                            auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(editObj);
+                            if (feat)
+                                feat->setPauseRecompute(true);
                             editPreview = true;
                             vp->setPreviewDisplayMode(true);
                         }
@@ -950,10 +954,15 @@ public:
     {
         connPrimitiveMoved.disconnect();
         connVisibilityChanged.disconnect();
+        auto editObj = editObjT.getObject();
         auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
-                Gui::Application::Instance->getViewProvider(editObjT.getObject()));
-        if (vp)
+                Gui::Application::Instance->getViewProvider(editObj));
+        if (vp) {
+            auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(editObj);
+            if (feat)
+                feat->setPauseRecompute(false);
             vp->setPreviewDisplayMode(false);
+        }
 
         for (auto & objs : visibleFeatures) {
             for (auto & objT : objs) {
@@ -1283,16 +1292,20 @@ void MonitorProxy::onPreview(bool checked)
     if (!_MonitorInstance)
         return;
 
+    auto editObj = _MonitorInstance->editObjT.getObject();
     auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
-            Gui::Application::Instance->getViewProvider(
-                _MonitorInstance->editObjT.getObject()));
+            Gui::Application::Instance->getViewProvider(editObj));
 
     if (vp) {
         _MonitorInstance->editPreview = checked;
         vp->setPreviewDisplayMode(checked);
+        auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(editObj);
+        if (feat)
+            feat->setPauseRecompute(checked);
         if (!checked) {
+            Gui::WaitCursor cursor;
             App::AutoTransaction guard("Recompute");
-            vp->getObject()->recomputeFeature(true);
+            editObj->recomputeFeature(true);
             vp->show();
         }
     }

@@ -56,6 +56,7 @@
 #include <Gui/DlgPropertyLink.h>
 #include <Gui/Placement.h>
 
+#include <Mod/Part/Gui/PartParams.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
@@ -157,9 +158,13 @@ void TaskTransformedParameters::onUpdateViewTimer()
 
 void TaskTransformedParameters::kickUpdateViewTimer() const
 {
-    if (updateViewTimer)
-        updateViewTimer->start();
-    else if (parentTask)
+    if (updateViewTimer) {
+        PartDesign::Transformed* pcTransformed = getObject();
+        int interval = PartGui::PartParams::EditRecomputeWait();
+        if (pcTransformed && pcTransformed->isRecomputePaused())
+            interval /= 3;
+        updateViewTimer->start(interval);
+    } else if (parentTask)
         parentTask->kickUpdateViewTimer();
 }
 
@@ -204,7 +209,6 @@ void TaskTransformedParameters::setupUI() {
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
     connect(updateViewTimer, SIGNAL(timeout()), this, SLOT(onUpdateViewTimer()));
     
     // remembers the initial transaction ID
@@ -474,6 +478,7 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks &combolinks,
 }
 
 void TaskTransformedParameters::recomputeFeature() {
+    Gui::WaitCursor cursor;
     getTopTransformedView()->recomputeFeature();
 }
 

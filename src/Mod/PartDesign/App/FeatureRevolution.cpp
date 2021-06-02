@@ -155,6 +155,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
         // set the additive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(result);            
+        if (isRecomputePaused())
+            return App::DocumentObject::StdReturn;
+
         result.Tag = -getID();
 
         if (!base.isNull()) {

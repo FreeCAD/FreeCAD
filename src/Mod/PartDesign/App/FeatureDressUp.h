@@ -67,6 +67,8 @@ public:
 
     static const std::string &addsubElementPrefix();
 
+    virtual void setPauseRecompute(bool) {}
+
 protected:
     virtual void onChanged(const App::Property* prop);
 };

@@ -337,6 +337,9 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
 
         //result.Move(invObjLoc);
         feat->AddSubShape.setValue(result);
+        if (feat->isRecomputePaused())
+            return App::DocumentObject::StdReturn;
+
         result.Tag = -feat->getID();
 
         if(base.isNull()) {

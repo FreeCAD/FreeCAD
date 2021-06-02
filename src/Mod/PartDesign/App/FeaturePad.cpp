@@ -409,6 +409,9 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
         this->AddSubShape.setValue(prism);
+        if (isRecomputePaused())
+            return App::DocumentObject::StdReturn;
+
         prism.Tag = -this->getID();
 
         if (!base.isNull() && fuse) {

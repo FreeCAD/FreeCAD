@@ -88,6 +88,22 @@ const std::string &FeatureAddSub::addsubElementPrefix()
     return res;
 }
 
+void FeatureAddSub::setPauseRecompute(bool enable)
+{
+    if (enable == pauseRecompute)
+        return;
+    pauseRecompute = enable;
+    if (enable)
+        pausedRevision = this->getRevision();
+    else if (pausedRevision != this->getRevision())
+        touch();
+}
+
+bool FeatureAddSub::isRecomputePaused() const
+{
+    return pauseRecompute;
+}
+
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeatureAddSubPython, PartDesign::FeatureAddSub)

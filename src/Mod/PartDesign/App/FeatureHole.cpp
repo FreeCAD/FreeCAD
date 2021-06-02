@@ -2019,6 +2019,8 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         // set the subtractive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(compound);
+        if (isRecomputePaused())
+            return App::DocumentObject::StdReturn;
 
         if (base.isNull()) {
             Shape.setValue(compound);

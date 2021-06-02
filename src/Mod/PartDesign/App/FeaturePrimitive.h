@@ -65,6 +65,8 @@ public:
 
     virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const override;
 
+    virtual void setPauseRecompute(bool) {}
+
 protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
     //make the boolean ops with the primitives provided by the derived features

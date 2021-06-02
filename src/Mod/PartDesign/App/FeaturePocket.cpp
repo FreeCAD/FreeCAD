@@ -43,6 +43,7 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
@@ -265,6 +266,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // set the subtractive shape property for later usage in e.g. pattern
             prism = refineShapeIfActive(prism);
             this->AddSubShape.setValue(prism);
+            if (isRecomputePaused())
+                return App::DocumentObject::StdReturn;
 
             prism.Tag = -this->getID();
 
@@ -312,3 +315,10 @@ void Pocket::setupObject()
     Linearize.setValue(Part::PartParams::LinearizeExtrusionDraft());
 }
 
+void Pocket::setPauseRecompute(bool enable)
+{
+    if (enable && (boost::equals(Type.getValueAsString(), "UpToFirst")
+                  || boost::equals(Type.getValueAsString(), "UpToFace")))
+        return;
+    ProfileBased::setPauseRecompute(enable);
+}

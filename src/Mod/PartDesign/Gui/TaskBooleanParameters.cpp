@@ -199,6 +199,7 @@ void TaskBooleanParameters::onItemMoved()
         return;
 
     try {
+        Gui::WaitCursor cursor;
         setupTransaction();
         Gui::Selection().clearSelection();
         pcBoolean->Group.setValues(group);
@@ -369,6 +370,7 @@ void TaskBooleanParameters::onButtonAdd()
     }
 
     try {
+        Gui::WaitCursor cursor;
         pcBoolean->addObject(ref);
         pcBoolean->recomputeFeature(true);
     } catch (Base::Exception &e) {
@@ -406,6 +408,7 @@ void TaskBooleanParameters::onTypeChanged(int index)
             default: pcBoolean->Type.setValue("Fuse");
         }
 
+        Gui::WaitCursor cursor;
         pcBoolean->recomputeFeature(true);
     } catch (Base::Exception &e) {
         e.ReportException();
@@ -449,6 +452,7 @@ void TaskBooleanParameters::onButtonRemove()
     Gui::Selection().clearSelection();
 
     try {
+        Gui::WaitCursor cursor;
         setupTransaction();
         pcBoolean->Group.setValues(group);
         for(auto &name : removed) 
@@ -478,6 +482,7 @@ void TaskBooleanParameters::changeEvent(QEvent *e)
 void TaskBooleanParameters::onNewSolidChanged(bool on)
 {
     try {
+        Gui::WaitCursor cursor;
         PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
         setupTransaction();
         pcBoolean->NewSolid.setValue(on);

@@ -161,9 +161,6 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         if(!base.isNull())
             base.move(invObjLoc);
-            
-        if (!Frozen.getValue())
-            AddSubShape.setValue(shape);
 
         if(base.isNull() || Type.getValue() > 1) {
             if (Type.getValue() < 2)
@@ -173,9 +170,18 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
                 if (shape.isNull())
                     return new App::DocumentObjectExecReturn("No solid shape");
             }
+        }
+            
+        if (!Frozen.getValue())
+            AddSubShape.setValue(shape);
+
+        if(base.isNull() || Type.getValue() > 1) {
             Shape.setValue(shape);
             return App::DocumentObject::StdReturn;
         }
+
+        if (isRecomputePaused())
+            return App::DocumentObject::StdReturn;
 
         TopoShape boolOp(0,getDocument()->getStringHasher());
 

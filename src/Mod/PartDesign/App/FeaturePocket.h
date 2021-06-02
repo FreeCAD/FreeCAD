@@ -68,6 +68,9 @@ public:
         return "PartDesignGui::ViewProviderPocket";
     }
     //@}
+
+    virtual void setPauseRecompute(bool enable);
+
 private:
     static const char* TypeEnums[];
 

@@ -33,6 +33,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/PrefWidgets.h>
+#include <Gui/WaitCursor.h>
 #include <Mod/Part/Gui/PartParams.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -124,9 +125,14 @@ void TaskFeatureParameters::recomputeFeature(bool delay)
     if (blockUpdate || !vp || !vp->getObject())
         return;
 
-    if (delay && updateViewTimer)
-        updateViewTimer->start(PartGui::PartParams::EditRecomputeWait());
-    else {
+    if (delay && updateViewTimer) {
+        int interval = PartGui::PartParams::EditRecomputeWait();
+        auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(vp->getObject());
+        if (feat && feat->isRecomputePaused())
+            interval /= 3;
+        updateViewTimer->start(interval);
+    } else {
+        Gui::WaitCursor cursor;
         setupTransaction();
         App::DocumentObject* obj = vp->getObject ();
         obj->getDocument()->recomputeFeature ( obj );
@@ -246,6 +252,7 @@ bool TaskDlgFeatureParameters::accept() {
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
+        Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::cmdAppDocument(feature, "recompute()");
 
         if (!feature->isValid()) {
@@ -261,7 +268,6 @@ bool TaskDlgFeatureParameters::accept() {
                 param->detachSelection();
         }
 
-        Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::Command::commitCommand();
 
     } catch (const Base::Exception& e) {
