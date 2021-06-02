@@ -716,7 +716,7 @@ public:
             if (name.find("#") >= 0
                     && ComplexGeoData::findTagInElementName(name) < 0)
             {
-                FC_ERR("missing tag postfix");
+                FC_ERR("missing tag postfix " << name);
             }
         }
         do {
