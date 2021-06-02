@@ -451,8 +451,10 @@ class Stretch(gui_base_original.Modifier):
                                 else:
                                     pts.append(vts[i].Point.add(self.displacement))
                             pts = str(pts).replace("Vector ", "FreeCAD.Vector")
-                            _cmd = "Draft.makeWire"
-                            _cmd += "(" + pts + ", closed=True)"
+                            _cmd = "Draft.make_wire"
+                            _cmd += "(" + pts + ", closed=True, "
+                            _cmd += "face=" + str(ops[0].MakeFace)
+                            _cmd += ")"
                             _format = "Draft.formatObject"
                             _format += "(w, "
                             _format += _doc + ops[0].Name
