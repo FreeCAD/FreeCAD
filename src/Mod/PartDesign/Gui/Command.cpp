@@ -1054,7 +1054,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         if (!pcActiveBody->isSolid()) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("Cannot use this command as there is no solid to subtract from."));
-            msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature  before attempting a subtractive command."));
+            msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature before attempting a subtractive command."));
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.setDefaultButton(QMessageBox::Ok);
             msgBox.exec();
