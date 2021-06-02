@@ -69,6 +69,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(Length2,(100.0),"Pocket",App::Prop_None,"P");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
+    ADD_PROPERTY_TYPE(Inverse,(false),"Pocket",App::Prop_None,"Invert the pocket-operation");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
     Offset.setConstraints ( &signedLengthConstraint );
 
@@ -219,11 +220,20 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism = refineShapeIfActive(prism);
             this->AddSubShape.setValue(prism);
 
-            // Cut the SubShape out of the base feature
-            BRepAlgoAPI_Cut mkCut(base, prism);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
-            TopoDS_Shape result = mkCut.Shape();
+            TopoDS_Shape result;
+            if (!Inverse.getValue()) {
+                // Cut the SubShape out of the base feature
+                BRepAlgoAPI_Cut mkCut(base, prism);
+                if (!mkCut.IsDone())
+                    return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
+                result = mkCut.Shape();
+            } else {
+                // Cut the base feature to SubShape
+                BRepAlgoAPI_Common mkCommon(base, prism);
+                if (!mkCommon.IsDone())
+                    return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
+                result = mkCommon.Shape();
+            }
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
             if (solRes.IsNull())

@@ -41,6 +41,7 @@ public:
     App::PropertyLength         Length;
     App::PropertyLength         Length2;
     App::PropertyLength         Offset;
+    App::PropertyBool           Inverse;
 
     /** @name methods override feature */
     //@{
