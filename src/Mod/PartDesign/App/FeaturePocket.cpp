@@ -201,6 +201,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             PrismMode mode = PrismMode::CutFromBase;
             generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
 #endif
+            prism.Tag = -this->getID();
             // And the really expensive way to get the SubShape...
             try {
                 TopoShape result(0,getDocument()->getStringHasher());
@@ -214,6 +215,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             if (NewSolid.getValue())
                 prism = this->AddSubShape.getShape();
+            else
+                prism = refineShapeIfActive(prism);
             this->Shape.setValue(getSolid(prism));
 
         } else {
