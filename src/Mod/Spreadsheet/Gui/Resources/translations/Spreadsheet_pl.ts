@@ -588,7 +588,7 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
       <translation>
-        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wiersz, który nie jest sąsiadujący</numerusform>
         <numerusform>Wstaw %n wiersze, które nie są sąsiadujące</numerusform>
         <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
         <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
@@ -624,7 +624,7 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
       <translation>
-        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumnę, która nie jest sąsiadująca</numerusform>
         <numerusform>Wstaw %n kolumny, które nie są sąsiadujące</numerusform>
         <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
         <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>

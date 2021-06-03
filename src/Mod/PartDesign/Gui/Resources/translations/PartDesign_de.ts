@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="1370"/>
       <source>Revolution</source>
-      <translation>Rotation</translation>
+      <translation>Drehen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1371"/>
@@ -552,7 +552,7 @@
       <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation type="unfinished">Create a sub-object(s) shape binder</translation>
+      <translation>Formbinder für Teilobjekt erstellen</translation>
     </message>
   </context>
   <context>
@@ -740,17 +740,17 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>Bearbeite Formbinder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>Formbinder erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>Formbinder für Teilobjekt erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -776,12 +776,12 @@
     <message>
       <location filename="../../Command.cpp" line="2477"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>Wandle in Mehrfachtransformation um</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2568"/>
       <source>Create Boolean</source>
-      <translation type="unfinished">Create Boolean</translation>
+      <translation>Boolean erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="193"/>
@@ -943,10 +943,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Das gewünschte Merkmal kann nicht erzeugt werden. Der Grund kann sein:
+- Der aktive Körper enthält keine Basisform, so dass kein Material entfernt werden kann;
+- Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
     </message>
   </context>
   <context>
@@ -957,10 +956,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Das gewünschte Merkmal kann nicht erzeugt werden. Der Grund kann sein:
+- Der aktive Körper enthält keine Basisform, so dass kein Material entfernt werden kann;
+- Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
     </message>
   </context>
   <context>
@@ -971,10 +969,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Das gewünschte Merkmal kann nicht erzeugt werden. Der Grund kann sein:
+- Der aktive Körper enthält keine Basisform, so dass kein Material entfernt werden kann;
+- Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
     </message>
   </context>
   <context>
@@ -1392,8 +1389,8 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the chamfers</translation>
+      <translation>- Wählen Sie ein Element um es zu markieren
+- Doppelklicken Sie auf ein Element, um die Fasen zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
@@ -1544,8 +1541,8 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskDraftParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the drafts</translation>
+      <translation>- Wählen Sie ein Element um es zu markieren
+- Doppelklicken Sie auf ein Element, um die Formschräge zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
@@ -1718,8 +1715,8 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the fillets</translation>
+      <translation>- Wählen Sie ein Element um es zu markieren
+- Doppelklicken Sie auf ein Element, um die Verrundung zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
@@ -2913,8 +2910,8 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the features</translation>
+      <translation>- Wählen Sie ein Element um es zu markieren
+- Doppelklicken Sie auf ein Element, um das Merkmal zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -3211,7 +3208,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-Shape Binder</source>
-      <translation type="unfinished">Sub-Shape Binder</translation>
+      <translation>Formbinder für Teilobjekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="589"/>
@@ -3282,22 +3279,22 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../Command.cpp" line="1056"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
+      <translation>Dieser Befehl kann nicht verwendet werden, da kein Festkörper vorhanden ist, von dem etwas abgezogen werden kann.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1057"/>
       <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature  before attempting a subtractive command.</translation>
+      <translation>Bitte sicherstellen, dass der Körper ein Objekt enthält, bevor ein subtraktiver Befehl angewendet wird.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
+      <translation>Ausgewähltes Objekt kann nicht verwendet werden. Ausgewähltes Objekt muss zum aktiven Körper gehören</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1079"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
+      <translation>Ziehe die Benutzung eines Formbinders oder eines BasisMerkmals in Betracht um externe Geometrie in einem Körper zu referenzieren.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
@@ -3963,7 +3960,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation type="unfinished">Roller Diameter:</translation>
+      <translation>Rollendurchmesser:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
@@ -4126,8 +4123,8 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <location filename="../../TaskHoleParameters.ui" line="97"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
-      <translation type="unfinished">Live update of changes to the thread
-Note that the calculation can take some time</translation>
+      <translation>Aktualisierung der Änderungen am Gewinde in Echtzeit.
+Achtung, die Berechnung kann einige Zeit dauern!</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="101"/>
@@ -4401,12 +4398,12 @@ account for the depth of blind holes</source>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Create an additive feature</source>
-      <translation>Ein hinzuzufügendes Objekt erzeugen</translation>
+      <translation>Erzeugen eines additives Merkmals</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Create a subtractive feature</source>
-      <translation>Ein abzuziehendes Objekt erzeugen</translation>
+      <translation>Erzeuge ein subtraktives Merkmal</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
@@ -4416,7 +4413,7 @@ account for the depth of blind holes</source>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a dress-up feature</source>
-      <translation type="unfinished">Apply a dress-up feature</translation>
+      <translation>Wende modifizierendes Merkmal an</translation>
     </message>
   </context>
 </TS>

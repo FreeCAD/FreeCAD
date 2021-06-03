@@ -548,12 +548,12 @@ Tą właściwość można tylko przeglądać, ponieważ ilość jest zależna od
     <message>
       <location filename="bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation>Punkty B-spline</translation>
+      <translation>Punkty krzywej złożonej</translation>
     </message>
     <message>
       <location filename="bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
-      <translation>Jeśli B-spline jest zamknięty lub nie</translation>
+      <translation>Czy krzywa złożona jest zamknięta czy tez nie</translation>
     </message>
     <message>
       <location filename="bspline.py" line="54"/>
@@ -1102,24 +1102,14 @@ beyond the dimension line</source>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation>Jednostka do opisu pomiaru.
-Pozostaw puste dla domyślnych ustawień systemu.
-Użyj 'arch', aby wymusić notację łuku amerykańskiego</translation>
+      <translation>Jednostka do opisu wymiarów.
+Pozostaw puste dla systemowych ustawień domyślnych..
+Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation>
     </message>
     <message>
-      <location filename="lineremover.py" line="47"/>
-      <source>Base object</source>
-      <translation type="unfinished">Base object</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="50"/>
-      <source>A list of points on lines that need to be removed</source>
-      <translation type="unfinished">A list of points on lines that need to be removed</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="53"/>
-      <source>A tolerance value for distances between points and edges</source>
-      <translation type="unfinished">A tolerance value for distances between points and edges</translation>
+      <location filename="shape2dview.py" line="102"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
   </context>
   <context>
@@ -1418,7 +1408,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>&amp;Utilities</source>
-      <translation>&amp;Przybory</translation>
+      <translation>P&amp;rzybory</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="122"/>
@@ -1493,12 +1483,12 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="task_orthoarray.py" line="157"/>
       <source>True</source>
-      <translation>Prawda</translation>
+      <translation>Tak</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="159"/>
       <source>False</source>
-      <translation>Fałsz</translation>
+      <translation>Nie</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="133"/>
@@ -1553,7 +1543,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="gui_clone.py" line="91"/>
       <source>Clone</source>
-      <translation>Klon</translation>
+      <translation>Klonuj</translation>
     </message>
     <message>
       <location filename="gui_lineslope.py" line="91"/>
@@ -1605,7 +1595,7 @@ Szyk można zmienić w szyk ortogonalny lub kołowy poprzez zmianę jego typu.</
     <message>
       <location filename="gui_orthoarray.py" line="66"/>
       <source>Array</source>
-      <translation>Tablica</translation>
+      <translation>Szyk</translation>
     </message>
     <message>
       <location filename="gui_orthoarray.py" line="68"/>
@@ -1619,22 +1609,22 @@ oznacza, że kopie przebiegają zgodnie z określonym kierunkiem w osiach X, Y, 
 Tablicę można przekształcić w tablicę polarną lub okrągłą, zmieniając jej typ.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="64"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Zaokrąglenie</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Tworzy wypełnianie pomiędzy dwoma wybranymi liniami łamanymi lub krawędziami.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
       <translation>Usuń oryginalne obiekty</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
       <translation>Utwórz fazkę</translation>
     </message>
@@ -1773,7 +1763,7 @@ Musi wynosić co najmniej 2.</translation>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="264"/>
       <source>Symmetry</source>
-      <translation>Symetria</translation>
+      <translation>Odbicie lustrzane</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="273"/>
@@ -2095,7 +2085,7 @@ Tworzy grupę konstrukcji, jeśli nie istniała.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation>Dodaje punkt do istniejącego szkieletu lub B-spline.</translation>
+      <translation>Dodaje punkt do istniejącej polilinii lub krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -2172,7 +2162,7 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     <message>
       <location filename="gui_array_simple.py" line="68"/>
       <source>Array</source>
-      <translation>Tablica</translation>
+      <translation>Szyk</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="71"/>
@@ -2204,12 +2194,12 @@ na polarny lub okrągły, a jej właściwości mogą być modyfikowane.</transla
     <message>
       <location filename="gui_splines.py" line="60"/>
       <source>B-spline</source>
-      <translation>B-spline</translation>
+      <translation>Krzywa złożona</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation>Tworzy wielopunktowe B-spline. CTRL aby przyciągnąć, SHIFT aby ograniczyć.</translation>
+      <translation>Tworzy wielopunktową krzywą złożoną. CTRL aby przyciągnąć, SHIFT aby związać.</translation>
     </message>
   </context>
   <context>
@@ -2260,7 +2250,7 @@ CTRL, aby przyciągnąć, ALT, aby wybrać styczny obiekt.</translation>
     <message>
       <location filename="gui_clone.py" line="70"/>
       <source>Clone</source>
-      <translation>Klon</translation>
+      <translation>Klonuj</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="73"/>
@@ -2288,7 +2278,7 @@ Uzyskany klon może być skalowany w każdym z trzech kierunków.</translation>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
-      <translation>Sześcienna krzywa beziera</translation>
+      <translation>Sześcienna krzywa Beziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2310,7 +2300,7 @@ CTRL aby przyciągnąć, SHIFT aby utworzyć wiązanie.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation>Usuwa punktu z bieżącego szkieletu lub B-spline.</translation>
+      <translation>Usuwa punktu z bieżącej polilinii lub krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -2561,16 +2551,6 @@ Obiekty dodane do tej warstwy mogą mieć te same właściwości wizualne, takie
   </context>
   <context>
     <name>Draft_Lineremover</name>
-    <message>
-      <location filename="gui_lineremover.py" line="61"/>
-      <source>Facebinder</source>
-      <translation>Grupa ścian</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="63"/>
-      <source>Creates a lineremover object from a selected object</source>
-      <translation type="unfinished">Creates a lineremover object from a selected object</translation>
-    </message>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -2648,7 +2628,7 @@ First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
       <translation>Tworzy kopie wybranego obiektu wzdłuż wybranej ścieżki.
 Najpierw wybierz obiekt, a następnie wybierz ścieżkę.
-Ścieżka może być polilinią, B-spline, krzywą Beziera lub nawet krawędziami innych obiektów.</translation>
+Ścieżka może być polilinią, krzywą złożoną, krzywą Beziera lub nawet krawędziami innych obiektów.</translation>
     </message>
   </context>
   <context>
@@ -2842,7 +2822,7 @@ te, które są na tym samym poziomie co ten obiekt, łącznie z grupą nadrzędn
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
       <translation>Wybierz powierzchnię bryły, aby utworzyć płaszczyznę roboczą, na której będziesz szkicować obiekty rysunkowe.
-Możesz również wybrać trzy wierzchołki lub roboczą Proxy Płaszczyznę.</translation>
+Możesz również wybrać trzy wierzchołki lub roboczą płaszczyznę pośrednią.</translation>
     </message>
   </context>
   <context>
@@ -3031,7 +3011,7 @@ prostych linii projektowych, które są rysowane w płaszczyźnie XY. Wybrane ob
     <message>
       <location filename="gui_snaps.py" line="213"/>
       <source>Set snapping to the intersection of grid lines.</source>
-      <translation>Ustaw przyciąganie na przecięcie linii siatki.</translation>
+      <translation>Przyciągnij do przecięcia linii siatki.</translation>
     </message>
   </context>
   <context>
@@ -3342,7 +3322,7 @@ konwertować zamknięte krawędzie na wypełnione powierzchnie i wielokąty para
     <message>
       <location filename="gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation>Połącz z B-splajnem</translation>
+      <translation>Polilinia na krzywą złożoną</translation>
     </message>
     <message>
       <location filename="gui_wire2spline.py" line="67"/>
@@ -3762,29 +3742,9 @@ używając klawisza [ i ] podczas rysowania</translation>
       <translation>Zapisz bieżący styl jako ustawienie wstępne ...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_Lineremover.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="20"/>
-      <source>Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</source>
-      <translation type="unfinished">Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="33"/>
-      <source>Deletes selected point in the list above</source>
-      <translation type="unfinished">Deletes selected point in the list above</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="36"/>
-      <source>Delete</source>
-      <translation>Usuń</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="351"/>
       <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
+      <translation>Zastosuj powyższy styl do wybranych obiektów</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="354"/>
@@ -3794,7 +3754,7 @@ używając klawisza [ i ] podczas rysowania</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="366"/>
       <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
+      <translation>Tekst / wymiary</translation>
     </message>
   </context>
   <context>
@@ -5198,8 +5158,8 @@ Wartość ta jest maksymalną długością segmentu. </translation>
       <location filename="preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Jeśli opcja jest zaznaczona stosowany jest eksporter Python, w przeciwnym razie stosowany jest nowszy eksporter C++.
+Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</translation>
     </message>
   </context>
   <context>
@@ -5346,7 +5306,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
     <message>
       <location filename="DraftGui.py" line="763"/>
       <source>&amp;OCC-style offset</source>
-      <translation>&amp;OCC-styl przesunięcie</translation>
+      <translation>&amp;Odsunięcie stylu OpenCascade</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="783"/>
@@ -5767,7 +5727,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Zmień domyślny styl dla nowych obiektów</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
       <translation>Brak aktywnego dokumentu. Przerwanie.</translation>
     </message>
@@ -5922,7 +5882,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Brak możliwości dalszej redukcji</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
       <translation>Nieprawidłowe dane wejściowe: obiektu nie ma w dokumencie.</translation>
     </message>
@@ -5932,7 +5892,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Nieprawidłowe dane wejściowe: obiekt punktowy nie posiada 'Geometrii', 'Powiązań' lub 'Komponentów'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Nieprawidłowe dane wejściowe: musi być umiejscowieniem, wektorem lub obrotem.</translation>
     </message>
@@ -6012,7 +5972,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Usunięto oryginalne obiekty.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Nieprawidłowe dane wejściowe: musi być listą ciągów znaków lub pojedynczym ciągiem znaków.</translation>
     </message>
@@ -6032,7 +5992,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Nieprawidłowe dane wejściowe: musi być liczbą całkowitą.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Błędne wejście: musi być wektorem.</translation>
     </message>
@@ -6042,7 +6002,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Szyk kołowy</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
       <translation>Błędne wejście: musi być liczbą.</translation>
     </message>
@@ -6057,7 +6017,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Użyj jednego z 'utwórz linię wymiarową', lub 'utwórz obiekt linia wymiarowa'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
       <translation>Nieprawidłowe dane wejściowe: obiekt nie może być listą.</translation>
     </message>
@@ -6152,7 +6112,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Błędne dane wejściowe: musi być liczbą z zakresu 0 a 100.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Nieprawidłowe dane wejściowe: musi to być lista lub tupla ciągów znaków, albo pojedynczy ciąg znaków.</translation>
     </message>
@@ -6223,37 +6183,32 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Szyk prostokątny 2D</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Nieprawidłowe dane wejściowe: element podrzędny nie należy do obiektu.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Nieprawidłowe dane wejściowe: musi być ciągiem znaków, 'Niestandardowy', 'Nazwa', 'Etykieta', 'Pozycja', 'Długość', 'Obszar', 'Objętość', 'Tag', lub 'Material'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation>Nieprawidłowe dane wejściowe: musi być ciągiem znaków.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation>Nieprawidłowe dane wejściowe: musi być ciągiem znaków 'Poziomy', 'Pionowy' lub 'Niestandardowy'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
       <translation>Nieprawidłowe dane wejściowe: musi być listą co najmniej dwóch wektorów.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation>Kierunek nie jest 'Niestandadowy'; punkty nie będą używane.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation>Błędne dane wejściowe: musi być listą dwóch elementów. Na przykład [obiekt, 'Krawędź1'].</translation>
     </message>
@@ -6560,7 +6515,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_lines.py" line="189"/>
       <source>Create Wire</source>
-      <translation>Utwórz linię łamaną</translation>
+      <translation>Utwórz polilinię</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="140"/>
@@ -6805,7 +6760,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_array_simple.py" line="101"/>
       <source>Array</source>
-      <translation>Tablica</translation>
+      <translation>Szyk</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="77"/>
@@ -7125,7 +7080,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_splines.py" line="183"/>
       <source>Create B-spline</source>
-      <translation>Utwórz B-spline</translation>
+      <translation>Utwórz krzywą złożoną</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="89"/>
@@ -7178,52 +7133,52 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Podziel linię</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Promień zaokrąglenia</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
       <translation>Promień zaokrąglenia</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
       <translation>Wprowadź promień.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
       <translation>Usuń oryginalne obiekty:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
       <translation>Tryb tworzenia fazki:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
       <translation>Potrzebne są dwa elementy.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="160"/>
+      <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
       <translation>Badany obiekt</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="161"/>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
       <translation>Obiekt testowy został usunięty</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
       <translation>Zaokrąglenie nie może być utworzone</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>Utwórz zaokrąglenie</translation>
     </message>
@@ -7483,17 +7438,12 @@ Niedostępne, jeśli opcja preferencji Rysunku Roboczego "używaj elementów pie
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>lustrzany</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="72"/>
-      <source>Select an existing object</source>
-      <translation type="unfinished">Select an existing object</translation>
+      <translation>Nie można wygenerować kształtu:</translation>
     </message>
   </context>
   <context>

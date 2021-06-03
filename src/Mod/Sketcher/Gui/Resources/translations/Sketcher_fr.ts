@@ -4506,37 +4506,27 @@ Supporte tous les systèmes d'unité sauf 'US customary' et 'Building US/Euro'.<
       <translation>Afficher les objets auxquels l'esquisse est attachée</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
-      <source>When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+      <translation>Forcer la caméra orthographique lors du passage en mode édition</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
-      <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
-      <translation>Par défaut, ouvrez une esquisse en mode Vue en coupe -- les objets ne sont visibles que derrière le plan de l'esquisse</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
       <source>Open sketch in Section View mode</source>
       <translation>Ouvrir l'esquisse en mode Vue en coupe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="282"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Remarque: ces paramètres sont des valeurs par défaut appliquées aux nouvelles esquisses. Chaque esquisse se comporte individuellement en fonction des propriétés définies dans l’onglet Vue.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
       <source>View scale ratio</source>
       <translation>Echelle de la vue</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="395"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="397"/>
       <source>The 3D view is scaled based on this factor</source>
       <translation>La vue 3D est mise à l'échelle en fonction de ce facteur</translation>
     </message>
@@ -4551,42 +4541,56 @@ Supporte tous les systèmes d'unité sauf 'US customary' et 'Building US/Euro'.<
       <translation>Restaurer la position de la caméra après l’édition</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
+      <source>When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</source>
+      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
+      <source>Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</source>
+      <translation type="unfinished">Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="301"/>
       <source>Applies current visibility automation settings to all sketches in open documents</source>
       <translation>Appliquer les paramètres d'automatisation de visibilité à tous les sketchs des documents ouverts</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="302"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="304"/>
       <source>Apply to existing sketches</source>
       <translation>Appliquer aux esquisses existantes</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="314"/>
       <source>Font size used for labels and constraints</source>
       <translation>Taille de police utilisée pour les étiquettes et les contraintes</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="317"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="339"/>
       <source>Current sketcher creation tool will remain active after creation</source>
       <translation>L'outil de création de géométrie en cours restera actif après la création</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="340"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="342"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Création de géométrie en mode continu</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="356"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="358"/>
       <source>Grid line pattern</source>
       <translation>Motif des lignes de grille</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="363"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="365"/>
       <source>Number of polygons for geometry approximation</source>
       <translation>Nombre de polygones pour l'approximation de géométrie</translation>
     </message>

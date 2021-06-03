@@ -312,7 +312,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Visualizza suggerimenti nell'ambiente di lavoro Start, scheda Documenti</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>

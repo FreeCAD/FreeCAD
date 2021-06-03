@@ -312,7 +312,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Wyświetla wskazówki pomocy w zakładce Dokumenty w środowisku pracy Start</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>

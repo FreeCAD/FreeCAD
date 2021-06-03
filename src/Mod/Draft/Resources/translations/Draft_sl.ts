@@ -1106,19 +1106,9 @@ Use 'arch' to force US arch notation</source>
 Če želite vsiliti anglosaški arhitekturni zapis, uporabite "arch"</translation>
     </message>
     <message>
-      <location filename="lineremover.py" line="47"/>
-      <source>Base object</source>
-      <translation type="unfinished">Base object</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="50"/>
-      <source>A list of points on lines that need to be removed</source>
-      <translation type="unfinished">A list of points on lines that need to be removed</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="53"/>
-      <source>A tolerance value for distances between points and edges</source>
-      <translation type="unfinished">A tolerance value for distances between points and edges</translation>
+      <location filename="shape2dview.py" line="102"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
   </context>
   <context>
@@ -1618,22 +1608,22 @@ to pomeni da kopije sledijo določeni smeri v X, Y in Z oseh.
 Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s spremembo njene vrste.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="64"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Zaokrožitev</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Ustvari zaokrožitev med izbranima črtovjema ali robovoma.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
       <translation>Brisanje izvornih predmetov</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
       <translation>Ustvari prisekanje</translation>
     </message>
@@ -2560,16 +2550,6 @@ Predmeti, ki so dodeljeni tej plasti, si lahko delijo enake videzne lastnosti, k
   </context>
   <context>
     <name>Draft_Lineremover</name>
-    <message>
-      <location filename="gui_lineremover.py" line="61"/>
-      <source>Facebinder</source>
-      <translation>Vezalnik površij</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="63"/>
-      <source>Creates a lineremover object from a selected object</source>
-      <translation type="unfinished">Creates a lineremover object from a selected object</translation>
-    </message>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -3225,8 +3205,8 @@ in potegnite črto vzdolž katere bo potekal premik.</translation>
       <location filename="gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>Vklapljanje pomožnega načina.
+Če se vklopi, bodo tega trenutka dalje ustvarjeni predmeti zajeti v pomožno skupino ter imeli izbrano barvo in lastnosti.</translation>
     </message>
   </context>
   <context>
@@ -3761,29 +3741,9 @@ risanjem spremenite s tipkama [ in ]</translation>
       <translation>Shrani trenutni slog kot prednastavitev ...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_Lineremover.ui" line="14"/>
-      <source>Form</source>
-      <translation>Oblika</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="20"/>
-      <source>Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</source>
-      <translation type="unfinished">Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="33"/>
-      <source>Deletes selected point in the list above</source>
-      <translation type="unfinished">Deletes selected point in the list above</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="36"/>
-      <source>Delete</source>
-      <translation>Izbriši</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="351"/>
       <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
+      <translation>Uporabi na izbranih predmetih zgornji slog</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="354"/>
@@ -3793,7 +3753,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="366"/>
       <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
+      <translation>Besedila / kote</translation>
     </message>
   </context>
   <context>
@@ -5202,8 +5162,8 @@ Ta vrednost predstavlja najdaljši možni odsek. </translation>
       <location filename="preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Uporablja se Pythonov izvozilnik, sicer pa je uporabljen novejši C++.
+Opozorilo: C++ izvozilnik je hitrejši, vendar nima še toliko zmožnosti</translation>
     </message>
   </context>
   <context>
@@ -5772,7 +5732,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Spremeni privzeti slog pri novih predmetih</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
       <translation>Ni dejavnega dokumenta. Prekinjanje.</translation>
     </message>
@@ -5927,7 +5887,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Ni več možnih pretvorb v enostavnejše predmete</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
       <translation>Napačen vnos: predmeta ni v dokumentu.</translation>
     </message>
@@ -5937,7 +5897,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Napačen vnos: točkovni predmet nima "Geometrije", "Povezav" ali "Sestavin".</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Napačen vnos: biti mora postavitev, vektor ali zasukanost.</translation>
     </message>
@@ -6017,7 +5977,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Odstranjeni izvorni predmeti.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Napačen vnos: biti mora seznam nizov ali en sam niz.</translation>
     </message>
@@ -6037,7 +5997,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Napačen vnos: biti mora celo število.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Napačen vnos: biti mora vektor.</translation>
     </message>
@@ -6047,7 +6007,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Krožna razpostavitev</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
       <translation>Napačen vnos: biti mora številka.</translation>
     </message>
@@ -6062,7 +6022,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Uporabite eno od 'make_linear_dimension' ali 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
       <translation>Napačen vnos: predmet ne sme biti seznam.</translation>
     </message>
@@ -6157,7 +6117,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Napačen vnos: mora biti število med 0 in 100.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Napačen vnos: mora biti seznam ali sklop nizov ali en niz.</translation>
     </message>
@@ -6228,37 +6188,32 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Pravokotna 2D razpostavitev</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Napačen vnos: podprvine ni v predmetu.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Napačen vnos: biti mora niz, "Po meri", "Ime", "Oznaka", "Položaj", "Dolžina", "Površina", "Prostornina", "Značka" ali "Snov".</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation>Napačen vnos: biti mora niz.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation>Napačen vnos: biti mora niz, "Vodoravno", "Navpično" ali "Po meri".</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
       <translation>Napačen vnos: biti mora seznam vsaj dveh vektorjev.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation>Smer ni "Po meri"; točke ne bodo uporabljene.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation>Napačen vnos: biti mora seznam dveh prvin. Npr. [predmet, "Rob1"].</translation>
     </message>
@@ -7183,52 +7138,52 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Presekaj črto</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Polmer zaokrožitve</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
       <translation>Polmer zaokrožitve</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
       <translation>Vnesi polmer.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
       <translation>Brisanje izvornih predmetov:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
       <translation>Način prisekovanja:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
       <translation>Potrebni sta dve prvini.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="160"/>
+      <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
       <translation>Preizkusni predmet</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="161"/>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
       <translation>Preizkusni predmet odstranjen</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
       <translation>Zaokrožitve ni mogoče izvesti</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>Ustvari zaokrožitev</translation>
     </message>
@@ -7488,17 +7443,12 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>zrcaljeno</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="72"/>
-      <source>Select an existing object</source>
-      <translation type="unfinished">Select an existing object</translation>
+      <translation>Ni mogoče ustvariti oblike:</translation>
     </message>
   </context>
   <context>

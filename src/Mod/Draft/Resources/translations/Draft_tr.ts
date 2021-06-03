@@ -1108,19 +1108,9 @@ Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
     <message>
-      <location filename="lineremover.py" line="47"/>
-      <source>Base object</source>
-      <translation type="unfinished">Base object</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="50"/>
-      <source>A list of points on lines that need to be removed</source>
-      <translation type="unfinished">A list of points on lines that need to be removed</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="53"/>
-      <source>A tolerance value for distances between points and edges</source>
-      <translation type="unfinished">A tolerance value for distances between points and edges</translation>
+      <location filename="shape2dview.py" line="102"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
   </context>
   <context>
@@ -1621,22 +1611,22 @@ kopyaların X, Y, Z eksenlerinde belirtilen yönü takip ettiği anlamına gelir
 Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürülebilir.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="64"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Yuvarla</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Seçili iki çizgi arasında yarıçapı girilen bir yay oluşturur.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
       <translation>Orijinal nesneleri silin</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
       <translation>Pah oluştur</translation>
     </message>
@@ -2566,16 +2556,6 @@ Bu katmana eklenen nesneler, çizgi rengi, çizgi kalınlığı ve şekil rengi 
   </context>
   <context>
     <name>Draft_Lineremover</name>
-    <message>
-      <location filename="gui_lineremover.py" line="61"/>
-      <source>Facebinder</source>
-      <translation>YüzeyBağlayıcı</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="63"/>
-      <source>Creates a lineremover object from a selected object</source>
-      <translation type="unfinished">Creates a lineremover object from a selected object</translation>
-    </message>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -3764,26 +3744,6 @@ sırasında değiştirebilirsiniz</translation>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
       <translation type="unfinished">Save current style as a preset...</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="14"/>
-      <source>Form</source>
-      <translation>Şekil:</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="20"/>
-      <source>Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</source>
-      <translation type="unfinished">Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="33"/>
-      <source>Deletes selected point in the list above</source>
-      <translation type="unfinished">Deletes selected point in the list above</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="36"/>
-      <source>Delete</source>
-      <translation>Sil</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="351"/>
@@ -5773,7 +5733,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Yeni nesneler için varsayılan biçimi değiştir</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
       <translation>Etkin belge yok. Durduruluyor.</translation>
     </message>
@@ -5928,7 +5888,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Daha fazla derece düşürme mümkün değil</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
       <translation>Yanlış girdi: nesne belgede yok.</translation>
     </message>
@@ -5938,7 +5898,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Yanlış girdi: nokta nesnesinde 'Geometri', 'Bağlantılar' veya 'Bileşenler' yok.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Yanlış girdi: bir yerleşim, vektör veya dönüş olmalıdır.</translation>
     </message>
@@ -6018,7 +5978,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Orijinal nesneler kaldırıldı.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Yanlış girdi: bir karakter dizi listesi veya tek bir karakter dizisi olmalı.</translation>
     </message>
@@ -6038,7 +5998,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Yanlış giriş: bir tam sayı olmalı.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Yanlış giriş: bir vektör olmalı.</translation>
     </message>
@@ -6048,7 +6008,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Kutupsal dizi</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
       <translation>Yanlış giriş: bir sayı olmalı.</translation>
     </message>
@@ -6063,7 +6023,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>'make_linear_dimension', veya 'make_linear_dimension_obj' den birini kullanın.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
       <translation>Yanlış girdi: nesne bir liste olmamalı.</translation>
     </message>
@@ -6158,7 +6118,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Yanlış giriş: 0 ile 100 arasında bir sayı olmalı.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Yanlış girdi: bir liste veya karakter dizisi demeti veya tek bir karakter dizisi olmalı.</translation>
     </message>
@@ -6229,37 +6189,32 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Dikdörtgenel 2D dizi</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Yanlış girdi: alt eleman nesnede değil.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Yanlış girdi: bir karakter dizisi, 'Özel', 'Ad', 'Etiket(Label)', 'Konum', 'Uzunluk', 'Alan', 'Hacim', 'Etiket(Tag)' veya 'Malzeme' olmalıdır.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation>Yanlış girdi: bir karakter dizisi olmalıdır.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation>Yanlış giriş: bir karakter dizisi, 'Yatay', 'Dikey' veya 'Özel' olmalıdır.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
       <translation>Yanlış girdi: en az iki vektörden oluşan bir liste olmalı.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation>Yön 'Özel' değildir; nokta kullanılmayacak.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation>Yanlış girdi: iki öğeden oluşan bir liste olmalıdır. Örneğin, [nesne, 'Kenar1'].</translation>
     </message>
@@ -7184,52 +7139,52 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Çizgiyi böl</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Kavis yarıçapı</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
       <translation>Kavisin yarıçapı</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
       <translation>Yarıçapı girin.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
       <translation>Orijinal nesneleri silin:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
       <translation>Pah modu:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
       <translation>İki unsur gerekli.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="160"/>
+      <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
       <translation>Test nesnesi</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="161"/>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
       <translation>Test nesnesi kaldırıldı</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
       <translation>Kavis oluşturulamaz</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>Fileto oluştur</translation>
     </message>
@@ -7495,11 +7450,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="72"/>
-      <source>Select an existing object</source>
-      <translation type="unfinished">Select an existing object</translation>
     </message>
   </context>
   <context>

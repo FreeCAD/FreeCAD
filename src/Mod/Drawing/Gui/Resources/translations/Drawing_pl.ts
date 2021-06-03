@@ -49,7 +49,7 @@
     <message>
       <location filename="../../Command.cpp" line="717"/>
       <source>&amp;Draft View</source>
-      <translation>Widok &amp;Szkicu</translation>
+      <translation>Widok &amp;Rysunku Roboczego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="718"/>
@@ -188,7 +188,7 @@
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>Project shape...</source>
-      <translation>Rzut obwiedni...</translation>
+      <translation>Rzutowanie kształtów ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="682"/>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../Command.cpp" line="748"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>&amp;Widok arkusza</translation>
+      <translation>&amp;Widok arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
@@ -265,7 +265,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;High Quality Antialiasing</source>
-      <translation>&amp;Antyaliasing wysokiej jakości</translation>
+      <translation>&amp;Wygładzanie wysokiej jakości</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="275"/>

@@ -4511,37 +4511,27 @@ Az 'USA szokásos' és az 'USA/Euro építés' kivételével minden egységrends
       <translation>Olyan tárgyak megjelenítése, amelyekhez a vázlat csatolva van</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
-      <source>When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+      <translation>Ortográfiai kamera kényszerítése szerkesztési mód bekapcsolásakor</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
-      <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
-      <translation>Alapértelmezés szerint nyisson meg egy vázlatot szakasznézet módban - A tárgyak csak a vázlatsík mögött láthatók</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
       <source>Open sketch in Section View mode</source>
       <translation>Vázlat megnyitása szakasznézet módban</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="282"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Megjegyzés: Ezek az új vázlatok alapértelmezett beállításai. A rendszer minden vázlathoz külön-külön tárolja a viselkedést tulajdonságokként a Nézet lapon.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
       <source>View scale ratio</source>
       <translation>Méretezési arány megtekintése</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="395"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="397"/>
       <source>The 3D view is scaled based on this factor</source>
       <translation>A 3D nézet mérete e tényező alapján kerül méretezésre</translation>
     </message>
@@ -4556,42 +4546,56 @@ Az 'USA szokásos' és az 'USA/Euro építés' kivételével minden egységrends
       <translation>Kamera helyzetének visszaállítása a szerkesztés után</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
+      <source>When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</source>
+      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
+      <source>Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</source>
+      <translation type="unfinished">Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="301"/>
       <source>Applies current visibility automation settings to all sketches in open documents</source>
       <translation>Aktuális láthatóság automatizálási beállítások alkalmazása a megnyitott dokumentumok összes vázlatára</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="302"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="304"/>
       <source>Apply to existing sketches</source>
       <translation>Alkalmazza a meglévő vázlatokhoz</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="314"/>
       <source>Font size used for labels and constraints</source>
       <translation>Címkékhez és kényszerítésekhez használt betűméret</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="317"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="339"/>
       <source>Current sketcher creation tool will remain active after creation</source>
       <translation>A jelenlegi vázlatkészítő eszköz a létrehozás után is aktív marad</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="340"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="342"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Geometria létrehozása "Folytatás mód"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="356"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="358"/>
       <source>Grid line pattern</source>
       <translation>Rács vonalminta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="363"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="365"/>
       <source>Number of polygons for geometry approximation</source>
       <translation>A geometria hozzávetőlegességéhez szolgáló sokszögek száma</translation>
     </message>

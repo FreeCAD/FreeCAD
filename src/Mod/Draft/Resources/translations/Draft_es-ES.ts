@@ -108,7 +108,7 @@ Deja esta propiedad vacía para poder establecer manualmente 'Eje' y 'Centro'.</
     <message>
       <location filename="array.py" line="247"/>
       <source>Angle to cover with copies</source>
-      <translation>Ángulo para cubrir con las copias</translation>
+      <translation>Ángulo a cubrir con las copias</translation>
     </message>
     <message>
       <location filename="array.py" line="260"/>
@@ -140,7 +140,7 @@ Esta propiedad es de solo lectura, ya que el número depende de los parámetros 
     <message>
       <location filename="patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation>Mostrar los elementos de matriz individuales (sólo para matrices de enlaces)</translation>
+      <translation>Muestra los elementos individuales de la matriz (sólo para matrices vinculadas)</translation>
     </message>
     <message>
       <location filename="block.py" line="43"/>
@@ -165,7 +165,7 @@ Esta propiedad es de solo lectura, ya que el número depende de los parámetros 
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation>Radio para redondeo las esquinas</translation>
+      <translation>Radio para redondear las esquinas</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
@@ -200,7 +200,7 @@ Esta propiedad es de solo lectura, ya que el número depende de los parámetros 
     <message>
       <location filename="dimension.py" line="150"/>
       <source>The object measured by this dimension object</source>
-      <translation>El objeto medido por este objeto de dimensión</translation>
+      <translation>El objeto medido por esta cota</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -213,12 +213,12 @@ There are various possibilities:
 - An arc object, and its edge.
 </source>
       <translation>El objeto, y subelementos específicos del mismo,
-que este objeto de dimensión está midiendo.
+que esta cota está midiendo.
 
 Hay varias posibilidades:
 - Un objeto, y una de sus aristas.
 - Un objeto, y dos de sus vértices.
-- Un objeto arco, y su arista.
+- Un arco, y su arista.
 </translation>
     </message>
     <message>
@@ -231,13 +231,13 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation>Un punto a través del cual pasará la línea de la dimensión, o una extrapolación de ella.
+      <translation>Un punto a través del cual pasará la línea de dimensión, o una extrapolación de ella.
 
-- Para las dimensiones lineales, esta propiedad controla qué tan cerca está la línea de dimensión
+- Para las cotas lineales, esta propiedad controla cuan cerca está la línea de cota
 al objeto medido.
-- Para las dimensiones radiales, esto controla la dirección de la línea de dimensión
+- Para las cotas radiales, controla la dirección de la línea de cota
 que muestra el radio o diámetro medido.
-- Para las dimensiones angulares, controla el radio del arco
+- Para las cotas angulares, controla el radio de la cota del arco
 que muestra el ángulo medido.</translation>
     </message>
     <message>
@@ -246,10 +246,10 @@ que muestra el ángulo medido.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation>Punto inicial de la línea de dimensión.
+      <translation>Punto inicial de la línea de cota.
 
-Si es una dimensión de radio, será el centro del arco.
-Si es una dimensión de diámetro, será un punto que se encuentra en el arco.</translation>
+Si es una cota de radio, será el centro del arco.
+Si es una cota de diámetro, será un punto en el arco.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -257,17 +257,17 @@ Si es una dimensión de diámetro, será un punto que se encuentra en el arco.</
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation>Punto final de la línea de dimensión.
+      <translation>Punto final de la línea de cota.
 
-Si es un radio o una dimensión de diámetro
-será un punto que se encuentre en el arco.</translation>
+Si esta es una cota de radio o diámetro
+será un punto en el arco.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation>La dirección de la línea de dimensión.
-Si esto permanece '(0,0,0)', la dirección se calculará automáticamente.</translation>
+      <translation>La dirección de la línea de cota.
+Si esta permanece en '(0,0,0)', la dirección se calculará automáticamente.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -281,7 +281,7 @@ is the radius or diameter, depending on the 'Diameter' property.</source>
       <translation>El valor de la medición.
 
 Esta propiedad es de solo lectura porque el valor es calculado
-de las propiedades 'Inicio' y 'Fin'.
+de los datos de 'Inicio' y 'Fin'.
 
 Si la 'Geometría Enlazada' es un arco o un círculo, esta 'Distancia'
 es el radio o diámetro, dependiendo de la propiedad 'Diámetro'.</translation>
@@ -290,22 +290,22 @@ es el radio o diámetro, dependiendo de la propiedad 'Diámetro'.</translation>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation>Al medir arcos circulares, determina si mostrar
-el radio o el valor del diámetro</translation>
+      <translation>Al medir arcos, determina si se muestra
+el valor del radio o del diámetro</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation>Ángulo inicial de la línea de dimensión (arco circular).
-El arco está dibujado en sentido contrario a las agujas del reloj.</translation>
+      <translation>Ángulo inicial de la línea de cota (arco).
+El arco será dibujado en sentido contrario a las agujas del reloj.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation>Ángulo final de la línea de dimensión (arco circular).
-El arco está dibujado en sentido contrario a las agujas del reloj.</translation>
+      <translation>Ángulo final de la línea de cota (arco).
+El arco será dibujado en sentido contrario a las agujas del reloj.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -313,10 +313,10 @@ El arco está dibujado en sentido contrario a las agujas del reloj.</translation
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation>El punto central de la línea de la dimensión, que es un arco circular.
+      <translation>El punto central de la línea de cota, cuando es un arco.
 
-Este es normalmente el punto donde dos segmentos de línea, o sus extensiones
-se intersecan, dando como resultado el 'Ángulo' medido entre ellos.</translation>
+Este es normalmente el punto donde dos segmentos,
+o sus intersecciones, resultan el 'Ángulo' medido entre ellos.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -326,20 +326,20 @@ This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
       <translation>El valor de la medición.
 
-Esta propiedad es de solo lectura porque el valor se calcula a partir de
-las propiedades 'Primer ángulo' y 'Último ángulo'.</translation>
+Esta propiedad es de solo lectura porque el valor se calcula desde
+las propiedades de 'Primer ángulo' y 'Último ángulo'.</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation>La colocación del punto base de la primera línea</translation>
+      <translation>Ubicación del punto base de la primera línea</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
       <translation>El texto mostrado por este objeto.
-Es una lista de cadenas; cada elemento en la lista se mostrará en su propia línea.</translation>
+Es un listado; donde cada elemento de la lista se mostrará en su propia línea.</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
@@ -356,7 +356,7 @@ Es una lista de cadenas; cada elemento en la lista se mostrará en su propia lí
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation>Radio de la circunferencia</translation>
+      <translation>Radio del círculo</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
@@ -371,7 +371,7 @@ Es una lista de cadenas; cada elemento en la lista se mostrará en su propia lí
     <message>
       <location filename="polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation>Cómo se debe dibujar el polígono desde el círculo de control</translation>
+      <translation>Cómo se trazará el polígono desde el círculo de control</translation>
     </message>
     <message>
       <location filename="point.py" line="45"/>
@@ -398,7 +398,7 @@ Es una lista de cadenas; cada elemento en la lista se mostrará en su propia lí
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
       <translation>La posición de la punta de la línea de líder.
-Este punto puede ser decorado con una flecha u otro símbolo.</translation>
+Este punto puede ser adornado con una flecha u otro símbolo.</translation>
     </message>
     <message>
       <location filename="label.py" line="79"/>
@@ -406,10 +406,10 @@ Este punto puede ser decorado con una flecha u otro símbolo.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation>Objeto, y opcionalmente subelemento, cuyas propiedades se mostrarán
-como 'Texto', dependiendo de 'Tipo de etiqueta'.
+      <translation>El objeto, y opcionalmente el subelemento, cuyas propiedades se mostrarán
+como 'Texto', dependiendo del 'Tipo de etiqueta'.
 
-'Destino' no se utilizará si 'Tipo de etiqueta' está configurado como 'Personalizado'.</translation>
+'Target' no podrá utilizarse si el 'Tipo de etiqueta' está configurado como 'Personalizado'.</translation>
     </message>
     <message>
       <location filename="label.py" line="109"/>
@@ -422,15 +422,15 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation>La lista de puntos que definen la línea directriz; normalmente una lista de tres puntos.
+      <translation>La lista de puntos que definen la línea directriz; normalmente es una lista de tres puntos.
 
-El primer punto debe ser la posición del texto, es decir, la 'Ubicación',
+El primer punto será la posición del texto, es decir, la 'Ubicación',
 y el último punto debe ser la punta de la línea, es decir, el 'Punto de destino'.
-El punto medio se calcula automáticamente en función de la elección
-'Dirección recta' y el valor y el signo de 'Distancia recta'.
+El punto medio se calcula automáticamente en función de lo seleccionado
+en 'Dirección de la recta' y el valor y el signo de 'Distancia de la recta'.
 
-Si 'Dirección recta' se establece en 'Personalizado', la propiedad 'Puntos'
-se puede configurar como una lista de puntos arbitrarios.</translation>
+Si la 'Dirección recta' se ajusta en 'Personalizado', las propiedades de los 'Puntos'
+se puede ajustar como una lista de puntos arbitrarios.</translation>
     </message>
     <message>
       <location filename="label.py" line="124"/>
@@ -440,7 +440,7 @@ If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
       <translation>La dirección del segmento recto de la línea directriz.
 
-Si se elige 'Personalizar', los puntos de la directriz pueden ser especificados
+Si se elige 'Personalizada', los puntos de la directriz pueden ser indicados
 asignando una lista personalizada al atributo 'Puntos'.</translation>
     </message>
     <message>
@@ -453,7 +453,7 @@ depending on the value of 'Straight Direction'.</source>
       <translation>La longitud del segmento recto de la línea directriz.
 
 Esta es una distancia orientada; si es negativa, la línea se dibujará
-a la izquierda o debajo del 'Texto', de otra manera a la derecha o superior,
+a la izquierda o debajo del 'Texto', de otra manera a la derecha o arriba,
 dependiendo del valor de 'Dirección Recta'.</translation>
     </message>
     <message>
@@ -464,7 +464,7 @@ dependiendo del valor de 'Dirección Recta'.</translation>
     <message>
       <location filename="label.py" line="166"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation>El texto a mostrar cuando 'Tipo de etiqueta' se establece en 'Personalizar'</translation>
+      <translation>El texto a mostrar cuando 'Tipo de Etiqueta' se establece en 'Personalizar'</translation>
     </message>
     <message>
       <location filename="label.py" line="181"/>
@@ -475,9 +475,9 @@ and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
       <translation>El texto mostrado por esta etiqueta.
 
-Esta propiedad es de solo lectura, ya que el texto final depende de 'Tipo de Etiqueta',
-y el objeto definido en 'Destino'.
-El 'Texto personalizado' se muestra sólo si 'Tipo de etiqueta' se establece en 'Personalizar'.</translation>
+Esta propiedad es de solo lectura, así que el texto definitivo depende de 'Tipo de Etiqueta',
+y lo definido en 'Objetivo'.
+El 'Texto personalizado' se muestra sólo si 'Tipo de etiqueta' está ajustado en  'Personalizar'.</translation>
     </message>
     <message>
       <location filename="label.py" line="216"/>
@@ -492,11 +492,11 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
       <translation>El tipo de información que se muestra en esta etiqueta.
 
 Si se elige 'Personalizar', se utilizará el contenido de 'Texto Personalizado'.
-Para otros tipos, la cadena se calculará automáticamente a partir del objeto definido en 'Destino'.
-'Etiqueta' y 'Material' sólo funcionan para objetos que tienen estas propiedades, como objetos Arch.
+Para otros tipos, la cadena se calculará automáticamente a partir de lo definido en 'Destino'.
+'Etiqueta' y 'Material' sólo funcionan para objetos que tienen estas propiedades, como objetos arquitectónicos.
 
-Para 'Posición', 'Longitud' y 'Area' estas propiedades se extraerán del objeto principal en 'Destino',
-o desde el subelemento 'VerticeN', 'AristaN', o 'CaraN', respectivamente, si se especifica.</translation>
+Para 'Posición', 'Longitud' y 'Área' estas propiedades se extraerán de lo principal definido en 'Destino',
+o desde el subelemento 'VerticeN', 'AristaN', o 'CaraN', respectivamente, si es indicado.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="47"/>
@@ -521,46 +521,46 @@ o desde el subelemento 'VerticeN', 'AristaN', o 'CaraN', respectivamente, si se 
     <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
-      <translation>Mostrar los elementos de matriz individuales</translation>
+      <translation>Mostrar los elementos individuales de la matriz</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation>Objeto base que será duplicado</translation>
+      <translation>Objeto ha ser duplicado</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
       <source>Object containing points used to distribute the base object, for example, a sketch or a Part compound.
 The sketch or compound must contain at least one explicit point or vertex object.</source>
-      <translation>Objeto que contiene puntos utilizados para distribuir el objeto base, por ejemplo, un boceto o un compuesto de piezas.
-El croquis o compuesto debe contener al menos un punto explícito u objeto de vértice.</translation>
+      <translation>Objeto conteniendo puntos utilizados para distribuir el objeto, por ejemplo, un boceto o una parte compuesta.
+El boceto o componente debe contener al menos un punto explícito o un vértice.</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="95"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
       <translation>Número total de elementos en la matriz.
-Esta propiedad es de solo lectura, ya que el número depende de los puntos contenidos en 'Objeto de Puntos'.</translation>
+Esta propiedad es de solo lectura, así que el número depende de los puntos contenidos en el 'Objeto Punto'.</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="139"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation>Posición adicional, cambio y rotación, que se aplicará a cada copia</translation>
+      <translation>Posición, cambio y rotación adicionales, que se aplicará a cada copia</translation>
     </message>
     <message>
       <location filename="bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation>Los puntos de la B-spline</translation>
+      <translation>Los puntos de la spolilínea-B</translation>
     </message>
     <message>
       <location filename="bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
-      <translation>Si el B-spline se cierra o no</translation>
+      <translation>Si la spolilínea-B es cerrada o no</translation>
     </message>
     <message>
       <location filename="bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation>Crear una cara si este spline está cerrado</translation>
+      <translation>Crear una cara si esta spolilínea está cerrada</translation>
     </message>
     <message>
       <location filename="bspline.py" line="67"/>
@@ -570,7 +570,7 @@ Esta propiedad es de solo lectura, ya que el número depende de los puntos conte
     <message>
       <location filename="shape2dview.py" line="49"/>
       <source>The base object this 2D view must represent</source>
-      <translation>El objeto base que debe representar esta vista 2D</translation>
+      <translation>El objeto que esta vista 2D debe representar</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="54"/>
@@ -580,7 +580,7 @@ Esta propiedad es de solo lectura, ya que el número depende de los puntos conte
     <message>
       <location filename="shape2dview.py" line="59"/>
       <source>The way the viewed object must be projected</source>
-      <translation>La forma que el objeto visto debe ser proyectado</translation>
+      <translation>La forma en que el objeto visto debe ser proyectado</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="64"/>
@@ -600,28 +600,28 @@ Esta propiedad es de solo lectura, ya que el número depende de los puntos conte
     <message>
       <location filename="shape2dview.py" line="79"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation>Teselar elipses y B-splines en segmentos de línea</translation>
+      <translation>Mosaicos de elipses y spolilíneas-B en segmentos de líneas</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="85"/>
       <source>For Cutlines and Cutfaces modes, 
                 this leaves the faces at the cut location</source>
-      <translation>Para los modos Cortar Lineas y Cortar Caras, 
-                esto deja las caras en la ubicación de corte</translation>
+      <translation>Para los modos Cortalíneas y Cortacaras,
+                deja las caras en la ubicación de corte</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="91"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                 into line segments</source>
-      <translation>Longitud de segmentos de línea si se ha teselado elipses o B-splines 
-                 en segmentos de línea</translation>
+      <translation>La longitud de los segmentos de línea resultantes de mosaicos de elipses o spolilíneas
+                  en segmentos de línea</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="97"/>
       <source>If this is True, this object will be recomputed only if it is 
                 visible</source>
-      <translation>Si esto es Verdadero, este objeto se recalculará solo si es 
-                visible</translation>
+      <translation>Si es Verdadero, este objeto será recalculado solo si está
+                 visible</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -633,9 +633,9 @@ Esta propiedad es de solo lectura, ya que el número depende de los puntos conte
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation>Ángulo final del arco elíptico 
+      <translation>Ángulo final del arco elíptico
 
-                (para un círculo completo, darle el mismo valor que el primer ángulo)</translation>
+                 (para un círculo completo, darle el mismo valor que el Primer Ángulo)</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="52"/>
@@ -655,12 +655,12 @@ Esta propiedad es de solo lectura, ya que el número depende de los puntos conte
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation>Los puntos de la curva Bezier</translation>
+      <translation>Puntos de la curva de Bézier</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation>El grado de la función Bezier</translation>
+      <translation>Grado de la función de Bézier</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -670,7 +670,7 @@ Esta propiedad es de solo lectura, ya que el número depende de los puntos conte
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation>Si la curva Bezier se debe cerrar o no</translation>
+      <translation>Si la curva de Bézier será cerrada o no</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
@@ -693,8 +693,8 @@ Esta propiedad es de solo lectura, ya que el número depende de los puntos conte
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
       <translation>Lista de aristas conectadas en el 'Objeto de Trayectoria'.
-Si están presentes, las copias se crearán únicamente a lo largo de estos subelementos.
-Deja esta propiedad vacía para crear copias a lo largo del objeto 'Trayectoria'.</translation>
+Si están presentes, las copias serán creadas únicamente a lo largo de estos subelementos.
+Deja esta propiedad vacía para crear copias a lo largo del 'Objeto Ruta'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="200"/>
@@ -1113,19 +1113,9 @@ Dejar en blanco para el valor predeterminado del sistema.
 Utilice 'arch' para forzar notación de arco de Estados Unidos</translation>
     </message>
     <message>
-      <location filename="lineremover.py" line="47"/>
-      <source>Base object</source>
-      <translation type="unfinished">Base object</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="50"/>
-      <source>A list of points on lines that need to be removed</source>
-      <translation type="unfinished">A list of points on lines that need to be removed</translation>
-    </message>
-    <message>
-      <location filename="lineremover.py" line="53"/>
-      <source>A tolerance value for distances between points and edges</source>
-      <translation type="unfinished">A tolerance value for distances between points and edges</translation>
+      <location filename="shape2dview.py" line="102"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
   </context>
   <context>
@@ -1626,22 +1616,22 @@ lo que significa que las copias siguen la dirección especificada en los ejes X,
 La matriz puede convertirse en una matriz polar o circular cambiando su tipo.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="64"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Redondear</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Crea un redondeo entre dos alambres o aristas seleccionados.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
       <translation>Eliminar objetos originales</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
       <translation>Crear chaflán</translation>
     </message>
@@ -1802,7 +1792,7 @@ Debe ser al menos 2.</translation>
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
       <translation>Distancia entre los elementos en la dirección del eje Z.
-Normalmente, solo el valor Z es necesario; los otros dos valores pueden dar lugar a un desplazamiento adicional en sus respectivas direcciones.
+Normalmente, solo el valor de Z es necesario; los otros dos valores pueden dar lugar a un cambio en sus respectivas direcciones.
 Los valores negativos darán como resultado copias generadas en la dirección negativa.</translation>
     </message>
     <message>
@@ -2570,16 +2560,6 @@ Los objetos añadidos a esta capa pueden compartir las mismas propiedades visual
   </context>
   <context>
     <name>Draft_Lineremover</name>
-    <message>
-      <location filename="gui_lineremover.py" line="61"/>
-      <source>Facebinder</source>
-      <translation>Facebinder</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="63"/>
-      <source>Creates a lineremover object from a selected object</source>
-      <translation type="unfinished">Creates a lineremover object from a selected object</translation>
-    </message>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -3769,29 +3749,9 @@ usando las teclas [ y ] mientras dibuja</translation>
       <translation>Guardar el estilo actual como preajuste...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_Lineremover.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulario</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="20"/>
-      <source>Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</source>
-      <translation type="unfinished">Add or remove points to/from the list below by clicking points on screen or highlighting an item and pressing the Delete button. Press OK when done</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="33"/>
-      <source>Deletes selected point in the list above</source>
-      <translation type="unfinished">Deletes selected point in the list above</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_Lineremover.ui" line="36"/>
-      <source>Delete</source>
-      <translation>Borrar</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="351"/>
       <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
+      <translation>Aplicar el estilo superior al objeto(s) seleccionado</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="354"/>
@@ -3801,7 +3761,7 @@ usando las teclas [ y ] mientras dibuja</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="366"/>
       <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
+      <translation>Textos/dimensiones</translation>
     </message>
   </context>
   <context>
@@ -5206,8 +5166,8 @@ Este valor es la longitud máxima del segmento. </translation>
       <location filename="preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Se utiliza el exportador de Python, de lo contrario se utilizará el nuevo C++.
+Nota: el exportador de C++ es más rápido, no está implementado todavía</translation>
     </message>
   </context>
   <context>
@@ -5774,7 +5734,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Cambia el estilo por defecto de nuevos objetos</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
       <translation>No hay documento activo. Abortando.</translation>
     </message>
@@ -5929,7 +5889,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>No es posible descomponer más</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
       <translation>Entrada incorrecta: objeto no está en el documento.</translation>
     </message>
@@ -5939,7 +5899,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Entrada incorrecta: el objeto punto no tiene 'Geometría', 'Enlaces', o 'Componentes'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Entrada incorrecta: debe ser una ubicación, un vector o una rotación.</translation>
     </message>
@@ -6019,7 +5979,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Objetos originales eliminados.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Entrada incorrecta: debe ser una lista de cadenas o una sola cadena.</translation>
     </message>
@@ -6039,7 +5999,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Entrada incorrecta: debe ser un número entero.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Entrada incorrecta: debe ser un vector.</translation>
     </message>
@@ -6049,7 +6009,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Matriz polar</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
       <translation>Entrada incorrecta: debe ser un número.</translation>
     </message>
@@ -6064,7 +6024,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Utilice una de 'make_linear_dimension' o 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
       <translation>Entrada incorrecta: el objeto no debe ser una lista.</translation>
     </message>
@@ -6159,7 +6119,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Entrada incorrecta: debe ser un número entre 0 y 100.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Entrada incorrecta: debe ser una lista o tupla de cadenas, o una sola cadena.</translation>
     </message>
@@ -6228,37 +6188,32 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Matriz rectangular 2D</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Entrada incorrecta: subelemento no está en el objeto.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Entrada incorrecta: debe ser una cadena, 'Personalizado', 'Nombre', 'Etiqueta', 'Posición', 'Longitud', 'Área', 'Volumen', 'Etiqueta', o 'Material'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation>Entrada incorrecta: debe ser una cadena.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation>Entrada incorrecta: debe ser una cadena, 'Horizontal', 'Vertical' o 'Personalizado'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
       <translation>Entrada incorrecta: debe ser una lista de al menos dos vectores.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation>La dirección no es 'Personalizada'; los puntos no se utilizarán.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation>Entrada incorrecta: debe ser una lista de dos elementos. Por ejemplo, [objeto, 'Arista1'].</translation>
     </message>
@@ -7183,52 +7138,52 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Dividir línea</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Radio de redondeado</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
       <translation>Radio del redondeado</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
       <translation>Introducir radio.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
       <translation>Eliminar objetos originales:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
       <translation>Modo Chaflán:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
       <translation>Se necesitan dos elementos.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="160"/>
+      <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
       <translation>Objeto de prueba</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="161"/>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
       <translation>Objeto de prueba eliminado</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
       <translation>No se puede crear el redondeo</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>Crear redondeo</translation>
     </message>
@@ -7487,17 +7442,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>reflejado</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
-    </message>
-    <message>
-      <location filename="gui_lineremover.py" line="72"/>
-      <source>Select an existing object</source>
-      <translation type="unfinished">Select an existing object</translation>
+      <translation>La forma no se puede generar:</translation>
     </message>
   </context>
   <context>

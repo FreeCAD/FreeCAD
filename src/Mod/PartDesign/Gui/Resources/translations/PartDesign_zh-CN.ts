@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>增料螺旋体</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
@@ -552,7 +552,7 @@
       <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation type="unfinished">Create a sub-object(s) shape binder</translation>
+      <translation>创建减料体</translation>
     </message>
   </context>
   <context>
@@ -565,7 +565,7 @@
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Subtractive helix</source>
-      <translation type="unfinished">Subtractive helix</translation>
+      <translation>螺旋减料</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1764"/>
@@ -4388,7 +4388,7 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Part Design</source>
-      <translation type="unfinished">&amp;Part Design</translation>
+      <translation>&amp;零件设计</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -4398,12 +4398,12 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Create a datum</source>
-      <translation type="unfinished">Create a datum</translation>
+      <translation>创建基准</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Create an additive feature</source>
-      <translation type="unfinished">Create an additive feature</translation>
+      <translation>创建增料体</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -4413,7 +4413,7 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Apply a pattern</source>
-      <translation type="unfinished">Apply a pattern</translation>
+      <translation>应用图样</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>

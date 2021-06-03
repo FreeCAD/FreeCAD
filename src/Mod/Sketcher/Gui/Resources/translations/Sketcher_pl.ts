@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="163"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation>Pokaż/ukryj grzebień krzywizny B-splajn</translation>
+      <translation>Pokaż/ukryj grzebień krzywizny krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="164"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem i chowaniem grzebienia krzywizny dla wszystich B-splajnów</translation>
+      <translation>Przełączaj widoczność grzebienia krzywizny dla wszystkich łuków krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="101"/>
       <source>Show/hide B-spline degree</source>
-      <translation>Pokaż/ukryj stopień B-spline</translation>
+      <translation>Pokaż/ukryj stopień krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="102"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a chowaniem stopnia dla wszystkich B-splajnów</translation>
+      <translation>Przełączaj widoczność stopnia dla wszystkich odcinków krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>Pokaż/ukryj ilość węzłów B-spline</translation>
+      <translation>Pokaż/ukryj ilość węzłów krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem wielkości węzłów dla wszystkich B-splajnów</translation>
+      <translation>Przełączaj widoczność wielkości węzłów dla wszystkich odcinków krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="133"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem wielokątu kontroli dla wszystkich b-spline</translation>
+      <translation>Przełącz widoczność ramki kontrolnej dla wszystkich krzywych złożonych</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1557"/>
       <source>Clone</source>
-      <translation>Klon</translation>
+      <translation>Klonuj</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1558"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="256"/>
       <source>Show/hide B-spline information layer</source>
-      <translation>Pokaż/ukryj warstwę informacyjną B-spline</translation>
+      <translation>Pokaż/ukryj warstwę informacyjną krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="331"/>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>Pokaż/ukryj ramkę kontrolną B-spline</translation>
+      <translation>Pokaż/ukryj ramkę kontrolną krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>Pokaż/ukryj ilość węzłów B-spline</translation>
+      <translation>Pokaż/ukryj ilość węzłów krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4447"/>
       <source>Create a B-spline</source>
-      <translation>Utwórz krzywą B-spline</translation>
+      <translation>Utwórz krzywą złożoną</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4448"/>
@@ -442,7 +442,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="900"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation>Modyfikuje wielokrotność wybranego węzła B-spline</translation>
+      <translation>Modyfikuje wielokrotność wybranego węzła krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="961"/>
@@ -742,7 +742,7 @@ na wybranym wierzchołku</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4884"/>
       <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
-      <translation>Ustal promień okręgu lub łuku albo ustal wagę bieguna krzywej B-Spline</translation>
+      <translation>Ustal promień okręgu lub łuku albo ustal wagę bieguna krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -975,12 +975,12 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4372"/>
       <source>Create B-spline</source>
-      <translation>Utwórz B-spline</translation>
+      <translation>Utwórz krzywą złożoną</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4373"/>
       <source>Create a B-spline via control points in the sketch.</source>
-      <translation>Utwórz B-spline poprzez punkty kontrolne na rysunku.</translation>
+      <translation>Utwórz krzywą złożoną poprzez punkty kontrolne na rysunku.</translation>
     </message>
   </context>
   <context>
@@ -1173,12 +1173,12 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4416"/>
       <source>Create periodic B-spline</source>
-      <translation>Utwórz okresowy b-spline</translation>
+      <translation>Utwórz okresową krzywą złożoną</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4417"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation>Utwórz okresowy B-spline przez punkty kontrolne na rysunku.</translation>
+      <translation>Utwórz okresową krzywą złożoną przez punkty kontrolne na rysunku.</translation>
     </message>
   </context>
   <context>
@@ -1281,7 +1281,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6606"/>
       <source>Create slot</source>
-      <translation>Utwórz szczelinę</translation>
+      <translation>Utwórz rowek</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6607"/>
@@ -1479,12 +1479,12 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="453"/>
       <source>Increase B-spline degree</source>
-      <translation>Zwiększ stopień B-spline</translation>
+      <translation>Zwiększ stopień krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="454"/>
       <source>Increases the degree of the B-spline</source>
-      <translation>Zwiększa stopień B-spline</translation>
+      <translation>Zwiększa stopień krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -1930,7 +1930,7 @@ To usunie właściwość "Support", jeśli istnieje.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="999"/>
       <source>Symmetry</source>
-      <translation>Symetria</translation>
+      <translation>Odbicie lustrzane</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1000"/>
@@ -2619,7 +2619,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5608"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
-      <translation>Indeks geometrii B-Spline (GeoID) jest poza wiązaniem.</translation>
+      <translation>Indeks geometrii krzywej złożonej (GeoID) jest poza wiązaniem.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5611"/>
@@ -2629,7 +2629,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5616"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
-      <translation>Podany indeks geometrii B-Spline (GeoId) nie jest krzywą B-Spline.</translation>
+      <translation>Podany indeks geometrii krzywej złożonej (GeoId) nie jest łukiem krzywej złożonej.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5623"/>
@@ -2639,7 +2639,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5630"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>Wielokrotność nie może być zwiększona poza stopień B-spline.</translation>
+      <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5633"/>
@@ -3098,7 +3098,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../CommandConstraints.cpp" line="2742"/>
       <location filename="../../CommandConstraints.cpp" line="2829"/>
       <source>Point on B-spline edge currently unsupported.</source>
-      <translation>Punkt na krawędzi B-spline obecnie nie jest obsługiwany.</translation>
+      <translation>Punkt na krawędzi krzywej złożonej obecnie nie jest obsługiwany.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2859"/>
@@ -3130,7 +3130,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../CommandConstraints.cpp" line="6415"/>
       <location filename="../../CommandConstraints.cpp" line="7105"/>
       <source>Select an edge that is not a B-spline weight</source>
-      <translation>Wybierz krawędź, która nie jest wagą B-spline</translation>
+      <translation>Wybierz krawędź, która nie jest wagą krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2770"/>
@@ -3233,7 +3233,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywej; dwa punkty końco
       <location filename="../../CommandConstraints.cpp" line="3767"/>
       <location filename="../../CommandConstraints.cpp" line="3948"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
-      <translation>Prostopadła do krawędzi B-spline obecnie nie jest obsługiwana.</translation>
+      <translation>Prostopadła do krawędzi krzywej złozonej obecnie nie jest obsługiwana.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3758"/>
@@ -3275,7 +3275,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../CommandConstraints.cpp" line="4433"/>
       <location filename="../../CommandConstraints.cpp" line="4631"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
-      <translation>Styczna do krawędzi B-spline nie jest obecnie obsługiwana.</translation>
+      <translation>Styczna do krawędzi krzywej złożonej nie jest obecnie obsługiwana.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4221"/>
@@ -3313,7 +3313,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandConstraints.cpp" line="4989"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation>Wybierz tylko jeden lub więcej biegunów B-Spline, albo tylko jeden lub więcej łuków lub okręgów ze szkicu, ale nie ich kombinację.</translation>
+      <translation>Wybierz tylko jeden lub więcej biegunów krzywej złożonej, albo tylko jeden lub więcej łuków lub okręgów ze szkicu, ale nie ich kombinację.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5045"/>
@@ -3379,7 +3379,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandConstraints.cpp" line="6585"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>Jednolitość dla krawędzi B-spline nie jest obecnie obsługiwana.</translation>
+      <translation>Równość pomiędzy krawędziami krzywej złożonej obecnie nie jest obsługiwana.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6615"/>
@@ -3428,7 +3428,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandConstraints.cpp" line="7099"/>
       <source>SnellsLaw on B-spline edge is currently unsupported.</source>
-      <translation>SnellsLaw na krawędzi B-spline jest obecnie nieobsługiwana.</translation>
+      <translation>Prawo Snell'a na krawędzi krzywej złożonej jest obecnie nieobsługiwana.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7283"/>
@@ -3546,7 +3546,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../CommandSketcherBSpline.cpp" line="503"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="581"/>
       <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
-      <translation>Co najmniej jeden z wybranych obiektów nie był B-Spline i został zignorowany.</translation>
+      <translation>Co najmniej jeden z wybranych obiektów nie był krzywą złożoną i został zignorowany.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="618"/>
@@ -3893,7 +3893,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6050"/>
       <source>This object belongs to another body, can't link.</source>
-      <translation>Ten obiekt należy do innego ciała, nie można połączyć.</translation>
+      <translation>Ten obiekt należy do innej zawartości, nie można go połączyć.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6053"/>
@@ -3949,17 +3949,17 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis/Point</source>
-      <translation>Wybierz odbicie lustrzane Oś/Punkt</translation>
+      <translation>Wybierz oś / punkt odbicia lustrzanego</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
       <source>X-Axis</source>
-      <translation>Oś-X</translation>
+      <translation>Oś - X</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="36"/>
       <source>Y-Axis</source>
-      <translation>Oś-Y</translation>
+      <translation>Oś - Y</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="43"/>
@@ -4514,37 +4514,27 @@ Obsługuje wszystkie systemy jednostek oprócz "zwyczajowego USA" i "budowlanego
       <translation>Pokaż obiekty, do których szkic jest dołączony</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
-      <source>When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+      <translation>Wymuś ortogonalne ujęcie widoku przy wejściu w tryb edycji</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
-      <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
-      <translation>Domyślnie otwórz szkic w trybie widoku przekroju -- widoczne są tylko obiekty za płaszczyzną szkicu</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
       <source>Open sketch in Section View mode</source>
       <translation>Otwórz szkic w trybie widoku przekroju</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="282"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Uwaga: te ustawienia są domyślnie stosowane do nowych szkiców. Ta akcja jest zapamiętane dla każdego szkicu indywidualnie jako właściwość w zakładce widoku.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
       <source>View scale ratio</source>
       <translation>Wyświetl współczynnik skali</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="395"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="397"/>
       <source>The 3D view is scaled based on this factor</source>
       <translation>Widok 3D jest skalowany na podstawie tego współczynnika</translation>
     </message>
@@ -4559,42 +4549,56 @@ Obsługuje wszystkie systemy jednostek oprócz "zwyczajowego USA" i "budowlanego
       <translation>Przywróć położenie ujęcia widoku po zakończeniu edycji</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
+      <source>When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</source>
+      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
+      <source>Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</source>
+      <translation type="unfinished">Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="301"/>
       <source>Applies current visibility automation settings to all sketches in open documents</source>
       <translation>Stosuje bieżące ustawienia automatyzacji widoczności dla wszystkich szkiców otwartych dokumentów</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="302"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="304"/>
       <source>Apply to existing sketches</source>
       <translation>Zastosuj do istniejących szkiców</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="314"/>
       <source>Font size used for labels and constraints</source>
       <translation>Rozmiar czcionki używany dla etykiet i wiązań</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="317"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="339"/>
       <source>Current sketcher creation tool will remain active after creation</source>
       <translation>Bieżące narzędzie do tworzenia szkicu pozostanie aktywne po utworzeniu</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="340"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="342"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Tworzenie geometrii "Tryb kontynuacji"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="356"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="358"/>
       <source>Grid line pattern</source>
       <translation>Styl linii siatki</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="363"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="365"/>
       <source>Number of polygons for geometry approximation</source>
       <translation>Liczba wielokątów do wyznaczenia geometrii</translation>
     </message>
@@ -5307,7 +5311,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
       <location filename="../../CommandSketcherBSpline.cpp" line="347"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem i chowaniem grzebienia krzywizny dla wszystich B-splajnów</translation>
+      <translation>Przełączaj widoczność grzebienia krzywizny dla wszystkich łuków krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -5325,7 +5329,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
       <location filename="../../CommandSketcherBSpline.cpp" line="333"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="335"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a chowaniem stopnia dla wszystkich B-splajnów</translation>
+      <translation>Przełączaj widoczność stopnia dla wszystkich odcinków krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -5343,7 +5347,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
       <location filename="../../CommandSketcherBSpline.cpp" line="354"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="356"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem wielkości węzłów dla wszystkich B-splajnów</translation>
+      <translation>Przełączaj widoczność wielkości węzłów dla wszystkich odcinków krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -5361,7 +5365,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
       <location filename="../../CommandSketcherBSpline.cpp" line="340"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="342"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem wielokątu kontroli dla wszystkich b-spline</translation>
+      <translation>Przełącz widoczność ramki kontrolnej dla wszystkich krzywych złożonych</translation>
     </message>
   </context>
   <context>
@@ -5477,13 +5481,13 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4532"/>
       <source>B-spline by control points</source>
-      <translation>B-spline przez punkty kontrolne</translation>
+      <translation>Krzywa złożona przez punkty kontrolne</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4533"/>
       <location filename="../../CommandCreateGeo.cpp" line="4534"/>
       <source>Create a B-spline by control points</source>
-      <translation>Utwórz B-spline przez punkty kontrolne</translation>
+      <translation>Utwórz krzywą złożoną za pomocą punktów kontrolnych</translation>
     </message>
   </context>
   <context>
@@ -5596,13 +5600,13 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4536"/>
       <source>Periodic B-spline by control points</source>
-      <translation>Okresowy B-spline przez punkty kontrolne</translation>
+      <translation>Okresowa krzywa złożona za pomocą punktów kontrolnych</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4537"/>
       <location filename="../../CommandCreateGeo.cpp" line="4538"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation>Utwórz okresowy B-spline przez punkty kontrolne</translation>
+      <translation>Utwórz okresową krzywą złożoną za pomocą punktów kontrolnych</translation>
     </message>
   </context>
   <context>
@@ -5625,7 +5629,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Select a sketch from the list</source>
-      <translation>Wybrać szkic z listy</translation>
+      <translation>Wybierz szkic z listy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="598"/>
@@ -5705,7 +5709,8 @@ Wybierz metodę, aby dołączyć ten szkic do wybranych obiektów.</translation>
       <location filename="../../Command.cpp" line="396"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation>Szkic ze wsparciem powierzchni nie może być przeorientowany. Czy chcesz go odłączyć od wsparcia?</translation>
+      <translation>Nie można zmienić orientacji szkicu z powierzchnią odniesienia.
+Chcesz odłączyć go od odniesienia?</translation>
     </message>
   </context>
   <context>
@@ -6087,7 +6092,7 @@ do określenia czy rozwiązanie jest zbieżne</translation>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher B-spline tools</source>
-      <translation>Narzędzia B-spline szkicownika</translation>
+      <translation>Narzędzia szkicownika krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>

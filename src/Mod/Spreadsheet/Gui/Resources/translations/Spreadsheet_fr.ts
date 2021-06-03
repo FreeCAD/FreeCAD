@@ -567,9 +567,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insérer %n ligne(s) au-dessus</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Insérer %n ligne au-dessus</numerusform>
+        <numerusform>Insérer %n lignes au-dessus</numerusform>
       </translation>
     </message>
     <message numerus="yes">
