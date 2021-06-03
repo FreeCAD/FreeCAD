@@ -1112,7 +1112,7 @@ SoFCUnifiedSelection::Private::setHighlight(SoFullPath *path,
     else {
         if (useRenderer()) {
             float t = 0.f;
-            ontop = ontop || ViewParams::getPreSelectionOnTop();
+            ontop = ontop || ViewParams::getShowPreSelectedFaceOnTop();
             if (ontop)
                 t = ViewParams::getTransparencyOnTop();
             App::SubObjectT obj(vpd->getObject(), subname);
