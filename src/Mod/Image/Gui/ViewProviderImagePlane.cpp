@@ -64,6 +64,8 @@ ViewProviderImagePlane::ViewProviderImagePlane()
 
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
+
+    SelectionStyle.setValue(1);
 }
 
 ViewProviderImagePlane::~ViewProviderImagePlane()
