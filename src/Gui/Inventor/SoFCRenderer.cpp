@@ -428,6 +428,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
       for(auto & info : clippers.getData()) {
         if (!info.identity)
           SoModelMatrixElement::set(state, NULL, info.matrix);
+        state->setCacheOpen(false);
         info.node->GLRender(action);
         if (!info.identity)
           SoModelMatrixElement::makeIdentity(state, NULL);
@@ -444,6 +445,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
           SoMultiTextureMatrixElement::set(state, NULL, texentry.first,
               texentry.second.identity ? matrixidentity : texentry.second.matrix);
           SoTextureUnitElement::set(state, NULL, texentry.first);
+          state->setCacheOpen(false);
           texentry.second.texture->GLRender(action);
         }
       }
@@ -455,6 +457,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
         for(auto & info : next.lights.getData()) {
           if (!info.identity)
             SoModelMatrixElement::set(state, NULL, info.matrix);
+          state->setCacheOpen(false);
           info.node->GLRender(action);
           if (!info.identity)
             SoModelMatrixElement::makeIdentity(state, NULL);
