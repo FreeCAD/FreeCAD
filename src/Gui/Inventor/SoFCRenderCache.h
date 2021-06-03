@@ -182,6 +182,11 @@ public:
       Line,
       Point,
     };
+    enum SelectStyle {
+      Full,
+      Box,
+      Unpickable,
+    };
     enum FlagBits {
       FLAG_AMBIENT,
       FLAG_DIFFUSE,
@@ -231,13 +236,14 @@ public:
     int8_t shadowstyle;
     int8_t depthfunc;
     int8_t partialhighlight;
+    int8_t selectstyle;
     bool depthtest;
     bool depthwrite;
+    bool depthclamp;
     bool transptexture;
     bool pervertexcolor;
     bool culling;
     bool twoside;
-    bool selectable;
     bool outline;
 
     TextureMatrixMap texturematrices;
@@ -266,12 +272,14 @@ public:
       if (type > other.type) return false;
       if (depthtest < other.depthtest) return true;
       if (depthtest > other.depthtest) return false;
+      if (depthclamp < other.depthclamp) return true;
+      if (depthclamp > other.depthclamp) return false;
       if (depthfunc < other.depthfunc) return true;
       if (depthfunc > other.depthfunc) return false;
       if (depthwrite < other.depthwrite) return true;
       if (depthwrite > other.depthwrite) return false;
-      if (selectable < other.selectable) return true;
-      if (selectable > other.selectable) return false;
+      if (selectstyle < other.selectstyle) return true;
+      if (selectstyle > other.selectstyle) return false;
       if (this->type == Triangle) {
         if (lights < other.lights) return true;
         if (lights > other.lights) return false;
@@ -393,13 +401,14 @@ public:
 
   const VertexCacheMap & getVertexCaches(bool finalize=false, int depth=0);
 
-  VertexCacheMap buildHighlightCache(int order,
+  VertexCacheMap buildHighlightCache(std::map<int, Gui::CoinPtr<SoFCVertexCache> > &sharedcache,
+                                     int order,
                                      const SoDetail * detail,
                                      uint32_t color,
                                      bool checkindices,
                                      bool wholeontop);
 
-  void open(SoState * state, bool selectable, bool initmaterial = false);
+  void open(SoState * state, int selectstyle = Material::Full, bool initmaterial = true);
   void close(SoState * state);
 
   void beginChildCaching(SoState * state, SoFCRenderCache * cache);

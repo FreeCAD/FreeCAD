@@ -70,6 +70,7 @@ typedef CoinPtr<SoPath> PathPtr;
 typedef CoinPtr<SoFCVertexCache> VertexCachePtr;
 typedef CoinPtr<SoFCRenderCache> RenderCachePtr;
 typedef SoFCRenderCache::VertexCacheMap VertexCacheMap;
+typedef SoFCRenderCache::Material Material;
 
 // copied from boost::hash_combine. 
 template <class T>
@@ -240,6 +241,8 @@ public:
   std::unordered_map<std::string, SelectionPathMap> selcaches;
   std::map<int, SoPath*> selpaths;
 
+  std::map<int, VertexCachePtr> sharedcache;
+
   int selid;
   
   std::vector<RenderCachePtr> stack;
@@ -393,7 +396,7 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
     return;
   SoState * state = PRIVATE(this)->action->getState();
   RenderCachePtr cache = new SoFCRenderCache(state, path->getHead());
-  cache->open(state, true, true);
+  cache->open(state);
   PRIVATE(this)->stack.resize(1, cache);
   if (ontop)
     SoFCSwitch::setOverrideSwitch(state, true);
@@ -406,7 +409,7 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
     int order = ontop ? 1 : 0;
     PRIVATE(this)->renderer->setHighlight(
           cache->buildHighlightCache(
-            order, detail, color, true, wholeontop),
+            PRIVATE(this)->sharedcache, order, detail, color, true, wholeontop),
           wholeontop);
   }
 }
@@ -430,7 +433,7 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
 
   SoState * state = self->action->getState();
   RenderCachePtr cache = new SoFCRenderCache(state, path->getHead());
-  cache->open(state, true, true);
+  cache->open(state);
   self->stack.resize(1, cache);
   if (sensor->ontop)
     SoFCSwitch::setOverrideSwitch(state, true);
@@ -447,7 +450,7 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
   for (auto & v : sensor->elements) {
     auto & elentry = v.second;
     elentry.vcachemap = sensor->cache->buildHighlightCache(
-        elentry.id, elentry.detail.get(), elentry.color,
+        self->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
         ViewParams::highlightIndicesOnFullSelect(), elentry.id > 0);
     self->renderer->addSelection(elentry.id, elentry.vcachemap);
   }
@@ -536,7 +539,7 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
 
       if (sensor->cache) {
         elentry.vcachemap = sensor->cache->buildHighlightCache(
-            elentry.id, elentry.detail.get(), elentry.color,
+            PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
             ViewParams::highlightIndicesOnFullSelect(), elentry.id > 0);
         PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
       }
@@ -562,7 +565,7 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
   elentry.detail.reset(detail ? detail->copy() : nullptr);
   if (sensor->cache) {
     elentry.vcachemap = sensor->cache->buildHighlightCache(
-        elentry.id, elentry.detail.get(), elentry.color,
+        PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
         ViewParams::highlightIndicesOnFullSelect(), elentry.id>0);
     PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
   }
@@ -638,7 +641,7 @@ SoFCRenderCacheManager::removeSelection(const std::string & key,
         elentry.id &= ~(SoFCRenderer::SelIdSelected);
         elentry.color &= 0xff;
         elentry.vcachemap = sensor.cache->buildHighlightCache(
-            elentry.id, elentry.detail.get(), elentry.color, false, elentry.id>0);
+            PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color, false, elentry.id>0);
         PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
       }
       ++itpath;
@@ -704,7 +707,7 @@ SoFCRenderCacheManager::clearSelection(bool alt)
             elentry.color &= 0xff;
             if (sensor.cache) {
               elentry.vcachemap = sensor.cache->buildHighlightCache(
-                  elentry.id, elentry.detail.get(), elentry.color, false, elentry.id>0);
+                  PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color, false, elentry.id>0);
               PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
             }
           }
@@ -748,7 +751,7 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
     if (!(shapestyleflags & SoShapeStyleElement::SHADOWMAP))
       PRIVATE(this)->sceneid = path->getTail()->getNodeId();
     RenderCachePtr cache = new SoFCRenderCache(state, path->getTail());
-    cache->open(state, true, true);
+    cache->open(state);
     PRIVATE(this)->stack.resize(1, cache);
     PRIVATE(this)->initAction();
     PRIVATE(this)->action->apply(path->getTail());
@@ -798,10 +801,19 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
 
   state->push();
 
-  bool selectable = true;
+  int selectstyle = Material::Full;
   auto selroot = static_cast<const SoFCSelectionRoot*>(node);
-  if (action->getCurPathCode() != SoAction::IN_PATH)
-    selectable = selroot->selectionStyle.getValue() != SoFCSelectionRoot::Unpickable;
+  switch(selroot->selectionStyle.getValue()) {
+  case SoFCSelectionRoot::Box:
+    selectstyle = Material::Box;
+    break;
+  case SoFCSelectionRoot::Unpickable:
+    if (action->getCurPathCode() != SoAction::IN_PATH)
+      selectstyle = Material::Unpickable;
+    break;
+  default:
+    break;
+  }
 
   RenderCachePtr cache(new SoFCRenderCache(state, node));
 
@@ -810,7 +822,7 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
   if (currentcache)
     currentcache->beginChildCaching(state, cache);
   self->stack.push_back(cache);
-  cache->open(state, selectable);
+  cache->open(state, selectstyle, false);
   return SoCallbackAction::CONTINUE;
 }
 

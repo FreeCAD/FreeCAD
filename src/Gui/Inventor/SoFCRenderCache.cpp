@@ -53,8 +53,10 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
+#include <Inventor/SbBox3f.h>
 
 #include "../InventorBase.h"
+#include "../ViewParams.h"
 #include "SoFCRenderCache.h"
 #include "SoFCVertexCache.h"
 #include "SoFCDetail.h"
@@ -220,6 +222,7 @@ void
 SoFCRenderCache::Material::init(SoState * state)
 {
   this->depthtest = true;
+  this->depthclamp = true;
   this->depthfunc = SoDepthBuffer::LEQUAL;
   this->depthwrite = true;
   this->order = 0;
@@ -250,7 +253,7 @@ SoFCRenderCache::Material::init(SoState * state)
   this->textures.clear();
   this->lights.clear();
   this->partialhighlight = 0;
-  this->selectable = true;
+  this->selectstyle = Material::Full;
   this->outline = false;
 
   if (!state)
@@ -521,8 +524,8 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
   if (parent.annotation > child.annotation)
     res.annotation = parent.annotation;
 
-  if (!parent.selectable)
-    res.selectable = false;
+  if (res.selectstyle != Material::Box && res.selectstyle != Material::Unpickable)
+    res.selectstyle = parent.selectstyle;
 
   if (parent.hiddenlinecolor)
     res.hiddenlinecolor = parent.hiddenlinecolor;
@@ -658,13 +661,13 @@ SoFCRenderCache::isValid(const SoState * state) const
 }
 
 void
-SoFCRenderCache::open(SoState *state, bool selectable, bool initmaterial)
+SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
 {
   SoCacheElement::set(state, this);
 
   PRIVATE(this)->facecolor = 0;
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
-  PRIVATE(this)->material.selectable = selectable;
+  PRIVATE(this)->material.selectstyle = selectstyle;
 
   SbBool outline = FALSE;
   if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state, &outline)) {
@@ -1101,7 +1104,8 @@ SoFCRenderCache::getVertexCaches(bool finalize, int depth)
 }
 
 SoFCRenderCache::VertexCacheMap
-SoFCRenderCache::buildHighlightCache(int order,
+SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
+                                     int order,
                                      const SoDetail * detail,
                                      uint32_t color,
                                      bool checkindices,
@@ -1133,6 +1137,9 @@ SoFCRenderCache::buildHighlightCache(int order,
     checkindices = false;
   }
 
+  bool bboxinited = false;
+  Material bboxmaterial;
+  SbBox3f bbox;
   for (auto & child : getVertexCaches(true)) {
     if (!wholeontop && detail) {
       // We are doing partial highlight, 'wholeontop' indicates that we shall
@@ -1140,7 +1147,7 @@ SoFCRenderCache::buildHighlightCache(int order,
       // 'wholeontop' and there is some highlight detail, it means we are
       // highlight some sub-element of a shape node.
 
-      if (!child.first.selectable) {
+      if (child.first.selectstyle == Material::Unpickable) {
         // Either the parent is not selectable, or the shape is not
         // sub-element selectable (checked in the loop below).
         continue;
@@ -1162,8 +1169,8 @@ SoFCRenderCache::buildHighlightCache(int order,
     }
 
     for (auto & ventry : child.second) {
-      bool elementselectable =
-        ventry.cache->isElementSelectable() && child.first.selectable;
+      bool elementselectable = ventry.cache->isElementSelectable()
+        && child.first.selectstyle != Material::Unpickable;
 
       if (!wholeontop && detail && !elementselectable)
           continue;
@@ -1181,6 +1188,31 @@ SoFCRenderCache::buildHighlightCache(int order,
           material.pervertexcolor = false;
           material.diffuse = color | (material.diffuse & 0xff);
         }
+      }
+
+      if (color && (material.selectstyle == Material::Box
+                    || ViewParams::getShowSelectionBoundingBox()))
+      {
+        if (!bboxinited) {
+          bboxinited = true;
+          bboxmaterial = material;
+        }
+        const SbMatrix *matrix = ventry.identity ? nullptr : &ventry.matrix;
+        switch(material.type) {
+        case Material::Point:
+          ventry.cache->getPointsBoundingBox(
+              matrix, bbox, pd ? pd->getCoordinateIndex() : -1);
+          break;
+        case Material::Line:
+          ventry.cache->getLinesBoundingBox(
+              matrix, bbox, ld ? ld->getLineIndex() : -1);
+          break;
+        case Material::Triangle:
+          ventry.cache->getTrianglesBoundingBox(
+              matrix, bbox, fd ? fd->getPartIndex() : -1);
+          break;
+        }
+        continue;
       }
 
       VertexCacheEntry newentry = ventry;
@@ -1345,6 +1377,59 @@ SoFCRenderCache::buildHighlightCache(int order,
       res[material].push_back(newentry);
     }
   }
+
+  if (!bbox.isEmpty()) {
+    SbVec3f unitsize(1.f, 1.f, 1.f);
+    auto size = bbox.getSize();
+    SbMatrix matrix;
+    int cacheid = 0;
+    if (size[0] < 1e-6f) {
+      unitsize[0] = 0.f;
+      size[0] = 1.f;
+      if (size[1] < 1e-6f) {
+        unitsize[1] = 0.f;
+        size[1] = 1.f;
+        if (size[2] < 1e-6f) {
+          unitsize[2] = 0.f;
+          size[2] = 1.f;
+          cacheid = 1;
+        } else
+          cacheid = 2;
+      } else if (size[2] < 1e-6f) {
+        unitsize[2] = 0.f;
+        size[2] = 1.f;
+        cacheid = 3;
+      }
+    } else if (size[1] < 1e-6f) {
+      unitsize[1] = 0.f;
+      size[1] = 1.f;
+      if (size[2] < 1e-6f) {
+        unitsize[2] = 0.f;
+        size[2] = 1.f;
+        cacheid = 4;
+      } else
+        cacheid = 5;
+    } else if (size[2] < 1e-6f) {
+      unitsize[2] = 0.f;
+      size[2] = 1.f;
+      cacheid = 6;
+    } else
+      cacheid = 7;
+    auto &cache = sharedcache[cacheid];
+    if (!cache) 
+      cache = new SoFCVertexCache(SbBox3f(SbVec3f(0.f, 0.f, 0.f), unitsize));
+
+    matrix.setTransform(bbox.getCenter(), SbRotation(), size, SbRotation());
+
+    bboxmaterial.type = cache->getNumLineIndices() ? Material::Line : Material::Point;
+    bboxmaterial.diffuse = color | 0xff;
+    bboxmaterial.linewidth = ViewParams::instance()->getSelectionBBoxLineWidth();
+    bboxmaterial.pointsize = bboxmaterial.linewidth * 2;
+    bboxmaterial.depthclamp = false;
+
+    res[bboxmaterial].emplace_back(cache, matrix, false, false, CacheKeyPtr());
+  }
+
   return res;
 }
 

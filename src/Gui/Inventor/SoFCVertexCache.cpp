@@ -166,6 +166,11 @@ public:
 
   uint32_t getColor(const SoFCVertexArrayIndexer * indexer, int part) const;
 
+  void getBoundingBox(const SbMatrix * matrix,
+                      SbBox3f & bbox,
+                      const SoFCVertexArrayIndexer *indexer,
+                      int part) const;
+
   struct Vertex {
   public:
     SbVec3f vertex;
@@ -510,6 +515,57 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
 
   PRIVATE(this)->elementselectable = PRIVATE(pprev)->elementselectable;
   PRIVATE(this)->ontoppattern = PRIVATE(pprev)->ontoppattern;
+}
+
+SoFCVertexCache::SoFCVertexCache(const SbBox3f &bbox)
+  : SoCache(nullptr),
+    pimpl(new SoFCVertexCacheP(this, nullptr, 0xD2A25905))
+{
+  PRIVATE(this)->vertexarray = new Vec3Array(PRIVATE(this)->nodeid, nullptr);
+  float w, h, d;
+  bbox.getSize(w,h,d);
+  w *= 0.5f;
+  h *= 0.5f;
+  d *= 0.5f;
+  for (int i = 0; i < 8; i++) {
+    PRIVATE(this)->vertexarray->append(
+        SbVec3f((i&1) ? -w : w,
+                (i&2) ? -h : h,
+                (i&4) ? -d : d));
+
+  }
+  auto verts = PRIVATE(this)->vertexarray->getArrayPtr();
+  static const int indices[][2] = {
+    {0,1},
+    {1,3},
+    {3,2},
+    {2,0},
+    {4,5},
+    {5,7},
+    {7,6},
+    {6,4},
+    {0,4},
+    {1,5},
+    {2,6},
+    {3,7},
+  };
+  for (int i=0; i<12; ++i) {
+    int a = indices[i][0];
+    int b = indices[i][1];
+    if ((verts[a]-verts[b]).sqrLength() < 1e-12)
+      continue;
+    if (!PRIVATE(this)->lineindexer)
+      PRIVATE(this)->lineindexer = new SoFCVertexArrayIndexer(PRIVATE(this)->nodeid, nullptr);
+    PRIVATE(this)->lineindexer->addLine(a,b,0);
+  }
+  PRIVATE(this)->vertexarray = PRIVATE(this)->vertexarray->attach();
+  if (PRIVATE(this)->lineindexer) {
+    PRIVATE(this)->lineindexer->close();
+  } else {
+    PRIVATE(this)->pointindexer = new SoFCVertexArrayIndexer(PRIVATE(this)->nodeid, nullptr);
+    PRIVATE(this)->pointindexer->addPoint(0);
+    PRIVATE(this)->pointindexer->close();
+  }
 }
 
 SoFCVertexCache::~SoFCVertexCache()
@@ -1750,6 +1806,81 @@ SoFCVertexCache::getBoundingBox(const SbMatrix * matrix, SbBox3f & bbox) const
     for (int i=0; i<num; ++i)
       bbox.extendBy(vptr[i]);
   }
+}
+
+void
+SoFCVertexCacheP::getBoundingBox(const SbMatrix * matrix,
+                                 SbBox3f & bbox,
+                                 const SoFCVertexArrayIndexer *indexer,
+                                 int part) const
+{
+  const SbVec3f *vptr = PUBLIC(this)->getVertexArray();
+  if (part < 0 || this->prevattached)
+    return indexer->getBoundingBox(matrix, bbox, vptr);
+
+  const int * indices = indexer->getIndices();
+  int numindices = indexer->getNumIndices();
+  int numparts = indexer->getNumParts();
+  if (!numparts) {
+    int unit;
+    switch(indexer->getTarget()) {
+    case GL_POINTS:
+      unit = 1;
+      break;
+    case GL_LINES:
+      unit = 2;
+      break;
+    default:
+      unit = 3;
+    }
+    part *= unit;
+    if (part >= 0 && part < numindices) {
+      SbVec3f v;
+      int i = indices[part];
+      if (matrix)
+        matrix->multVecMatrix(vptr[i], v);
+      else
+        v = vptr[i];
+      bbox.extendBy(v);
+      return;
+    }
+  }
+  if (part >= numparts)
+    return;
+
+  const GLint * parts = indexer->getPartOffsets();
+  for (int i=part?parts[part-1]:0; i<parts[part]; ++i) {
+    SbVec3f v;
+    if (matrix)
+      matrix->multVecMatrix(vptr[indices[i]], v);
+    else
+      v = vptr[indices[i]];
+    bbox.extendBy(v);
+  }
+}
+
+void
+SoFCVertexCache::getTrianglesBoundingBox(const SbMatrix * matrix,
+                                        SbBox3f & bbox,
+                                        int part) const
+{
+  PRIVATE(this)->getBoundingBox(matrix, bbox, PRIVATE(this)->triangleindexer, part);
+}
+
+void
+SoFCVertexCache::getLinesBoundingBox(const SbMatrix * matrix,
+                                        SbBox3f & bbox,
+                                        int part) const
+{
+  PRIVATE(this)->getBoundingBox(matrix, bbox, PRIVATE(this)->lineindexer, part);
+}
+
+void
+SoFCVertexCache::getPointsBoundingBox(const SbMatrix * matrix,
+                                       SbBox3f & bbox,
+                                       int part) const
+{
+  PRIVATE(this)->getBoundingBox(matrix, bbox, PRIVATE(this)->pointindexer, part);
 }
 
 uint32_t

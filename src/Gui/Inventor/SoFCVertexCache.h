@@ -44,6 +44,7 @@ class GuiExport SoFCVertexCache : public SoCache {
 public:
   SoFCVertexCache(SoState * state, const SoNode * node, SoFCVertexCache *prev=NULL);
   SoFCVertexCache(SoFCVertexCache & prev);
+  SoFCVertexCache(const SbBox3f &bbox); // create a cache for rendering a wireframe cube
 
   virtual ~SoFCVertexCache();
 
@@ -122,6 +123,10 @@ public:
   SbVec3f getCenter() const;
   const SbBox3f & getBoundingBox() const;
   void getBoundingBox(const SbMatrix * matrix, SbBox3f & bbox) const;
+
+  void getTrianglesBoundingBox(const SbMatrix *matrix, SbBox3f &bbox, int part = -1) const;
+  void getLinesBoundingBox(const SbMatrix *matrix, SbBox3f &bbox, int part = -1) const;
+  void getPointsBoundingBox(const SbMatrix *matrix, SbBox3f &bbox, int part = -1) const;
 
   SoFCVertexCache * getWholeCache() const;
 

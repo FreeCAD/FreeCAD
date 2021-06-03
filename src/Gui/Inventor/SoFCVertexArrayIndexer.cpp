@@ -579,7 +579,7 @@ SoFCVertexArrayIndexer::getWriteableIndices(void)
 void
 SoFCVertexArrayIndexer::getBoundingBox(const SbMatrix * matrix,
                                        SbBox3f &bbox,
-                                       const SbVec3f * vertices)
+                                       const SbVec3f * vertices) const
 {
   if (!this->indexarray)
     return;

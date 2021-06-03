@@ -526,6 +526,15 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     this->material.depthtest = depthtest;
   }
 
+  if (first || this->material.depthclamp != next.depthclamp) {
+    if (next.depthclamp)
+      glEnable(GL_DEPTH_CLAMP);
+    else
+      glDisable(GL_DEPTH_CLAMP);
+    FC_GLERROR_CHECK;
+    this->material.depthclamp = next.depthclamp;
+  }
+
   if (first || this->material.depthwrite != depthwrite) {
     glDepthMask(depthwrite ? GL_TRUE : GL_FALSE);
     FC_GLERROR_CHECK;
@@ -967,7 +976,7 @@ SoFCRendererP::updateSelection()
     std::size_t idx = pushDrawEntry(this->slentries, material, ventry);
     if (!idx)
       return 0;
-    if (ventry.partidx >= 0 || ventry.cache != ventry.cache->getWholeCache())
+    if (!ventry.key || ventry.partidx >= 0 || ventry.cache != ventry.cache->getWholeCache())
       return idx;
     if (lastkey != ventry.key) {
       lastkey = ventry.key;

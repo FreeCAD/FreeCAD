@@ -103,7 +103,7 @@ public:
 
   SbBool useShorts() const {return this->use_shorts;}
 
-  void getBoundingBox(const SbMatrix * matrix, SbBox3f &bbox, const SbVec3f * vertices);
+  void getBoundingBox(const SbMatrix * matrix, SbBox3f &bbox, const SbVec3f * vertices) const;
 
 private:
   template<class IndicesT>
