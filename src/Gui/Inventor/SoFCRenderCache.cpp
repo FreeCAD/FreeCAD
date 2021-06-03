@@ -1277,7 +1277,7 @@ SoFCRenderCache::buildHighlightCache(int order,
         break;
 
       case Material::Triangle:
-        if (alpha) {
+        if (alpha != 0xff) {
           uint32_t a = (child.first.diffuse & 0xff);
           if (child.first.pervertexcolor && ventry.cache->hasTransparency()) {
             if (a == 0xff)
