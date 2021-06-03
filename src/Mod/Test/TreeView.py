@@ -16,34 +16,77 @@ class TreeViewTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def getTreeViewDocItem(self, docName):
+    def getTreeWidget(self):
         mainWnd = FreeCADGui.getMainWindow()
         treeDock = mainWnd.findChild(QtGui.QDockWidget, "Tree View")
         if treeDock is None:
             treeDock = mainWnd.findChild(QtGui.QDockWidget, "Combo View")
             if not treeDock is None:
-                tabWidget = treeDock.findChild(QtGui.QTabWidget)
+                tabWidget = treeDock.findChild(QtGui.QTabWidget, "combiTab")
                 if not tabWidget is None:
                     tabWidget.setCurrentIndex(0)
-
         self.assertTrue(not treeDock is None, "No Tree View docks available")
 
         treeView = treeDock.findChild(QtGui.QTreeWidget)
         self.assertTrue(not treeView is None, "No Tree View widget found")
 
-        appNode = treeView.topLevelItem(0)
-        self.assertTrue(not appNode is None, "No Application top level node")
-
-        docNode = next((appNode.child(i) for i in range(appNode.childCount())
-                                         if appNode.child(i).text(0).startswith(docName)), None)
-        self.assertTrue(not docNode is None, "No test Document node")
-
-        return docNode
+        return treeView
 
     def waitForTreeViewSync(self):
         start = time.time()
         while time.time() < start + 0.5:
             FreeCADGui.updateGui()
+
+    def trySwapOuterTreeViewItems(self, docItem, transposable):
+
+        treeView = self.getTreeWidget()
+
+        if docItem.TypeId == "App::Document":
+            appNode = treeView.topLevelItem(0)
+            self.assertTrue(not appNode is None, "No Application top level node")
+
+            docNode = next((appNode.child(i) for i in range(appNode.childCount())
+                                             if appNode.child(i).text(0) == docItem.Label), None)
+            self.assertTrue(not docNode is None, "No test Document node")
+            treeView.setCurrentItem(docNode)
+        else:
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(docItem)
+            self.waitForTreeViewSync()
+
+        selected = treeView.selectedItems()
+        self.assertTrue(len(selected) == 1,
+                        "Unexpected count of selected items: " + str(len(selected)))
+        selected = selected[0]
+
+        originalState = [ selected.child(i).text(0) for i in range(selected.childCount()) ]
+        self.assertTrue(len(originalState) >= 1,
+                        "No children found in item " + selected.text(0))
+
+        targetState = originalState.copy()
+        if transposable:
+            targetState[0], targetState[-1] = targetState[-1], targetState[0]
+
+        treeView.setCurrentItem(selected.child(0))
+        self.waitForTreeViewSync()
+
+        # One move down attempt more to test boundary behaviour
+        for i in range(len(originalState)):
+            FreeCADGui.runCommand("Std_GroupMoveDown")
+            self.waitForTreeViewSync()
+
+        treeView.setCurrentItem(selected.child(len(originalState) - 2 if len(originalState) > 1 else 0))
+        self.waitForTreeViewSync()
+
+        # One move up attempt more to test boundary behaviour
+        for i in range(len(originalState) - 2):
+            FreeCADGui.runCommand("Std_GroupMoveUp")
+            self.waitForTreeViewSync()
+
+        finalState = [ selected.child(i).text(0) for i in range(selected.childCount()) ]
+        self.assertTrue(targetState == finalState,
+                        "Unexpected final state: %s\nExpected: %s" % (finalState, targetState))
+
 
     def testMoveTransposableItems(self):
         # Makes sense only if Gui is shown
@@ -53,50 +96,21 @@ class TreeViewTestCase(unittest.TestCase):
         FreeCAD.TestEnvironment = True
 
         doc = FreeCAD.newDocument("TreeViewTest1")
+        FreeCAD.setActiveDocument(doc.Name)
+
         box = doc.addObject("Part::Box", "Box")
         cyl = doc.addObject("Part::Cylinder", "Cylinder")
         sph = doc.addObject("Part::Sphere", "Sphere")
+        con = doc.addObject("Part::Cone", "Cone")
         doc.recompute()
 
-        viewBox = doc.getObject("Box").ViewObject
-        viewCyl = doc.getObject("Cylinder").ViewObject
-        viewSph = doc.getObject("Sphere").ViewObject
+        self.trySwapOuterTreeViewItems(doc, True)
 
-        self.waitForTreeViewSync()
-        docNode = self.getTreeViewDocItem("TreeViewTest1")
+        grp = doc.addObject("App::DocumentObjectGroup", "Group")
+        grp.addObjects([ box, cyl, sph, con ])
+        doc.recompute()
 
-        nodeNames = [ docNode.child(i).text(0) for i in range(docNode.childCount()) ]
-        self.assertTrue(nodeNames == [ "Box", "Cylinder", "Sphere" ],
-                        "Unexpected initial tree view order: " + str(nodeNames))
-
-        baseRank = viewBox.TreeRank
-        self.assertTrue([ viewBox.TreeRank, viewCyl.TreeRank, viewSph.TreeRank ]
-                        == [ baseRank, baseRank + 1, baseRank + 2 ],
-                        "Unexpected initial state of tree ranks")
-
-        FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection(box)
-        self.waitForTreeViewSync()
-        
-        FreeCADGui.runCommand("Std_GroupMoveDown")
-        self.waitForTreeViewSync()
-
-        FreeCADGui.runCommand("Std_GroupMoveDown")
-        self.waitForTreeViewSync()
-
-        FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection(sph)
-        self.waitForTreeViewSync()
-
-        FreeCADGui.runCommand("Std_GroupMoveUp")
-        self.waitForTreeViewSync()
-
-        nodeNames = [ docNode.child(i).text(0) for i in range(docNode.childCount()) ]
-        self.assertTrue(nodeNames == [ "Sphere", "Cylinder", "Box" ],
-                        "Unexpected final tree view order: " + str(nodeNames))
-        self.assertTrue([ viewBox.TreeRank, viewCyl.TreeRank, viewSph.TreeRank ]
-                        == [ baseRank + 2, baseRank + 1, baseRank ],
-                        "Unexpected final state of tree ranks")
+        self.trySwapOuterTreeViewItems(grp, True)
 
         del FreeCAD.TestEnvironment
 
@@ -109,64 +123,45 @@ class TreeViewTestCase(unittest.TestCase):
         FreeCAD.TestEnvironment = True
 
         doc = FreeCAD.newDocument("TreeViewTest2")
-        box = doc.addObject("Part::Box", "Box")
-        cyl = doc.addObject("Part::Cylinder", "Cylinder")
+        FreeCAD.setActiveDocument(doc.Name)
+
+        sph = doc.addObject("Part::Sphere", "Sphere")
+        con = doc.addObject("Part::Cone", "Cone")
         doc.recompute()
 
-        viewBox = doc.getObject("Box").ViewObject
-        viewCyl = doc.getObject("Cylinder").ViewObject
-
-        self.waitForTreeViewSync()
-        docNode = self.getTreeViewDocItem("TreeViewTest2")
-
-        nodeNames = [ docNode.child(i).text(0) for i in range(docNode.childCount()) ]
-        self.assertTrue(nodeNames == [ "Box", "Cylinder" ],
-                        "Unexpected initial tree view order: " + str(nodeNames))
-
-        baseRank = viewBox.TreeRank
-        self.assertTrue([ viewBox.TreeRank, viewCyl.TreeRank ] == [ baseRank, baseRank + 1 ],
-                        "Unexpected initial state of tree ranks")
-
         cut = doc.addObject("Part::Cut", "Cut")
-        cut.Base = box
-        cut.Tool = cyl
-        self.waitForTreeViewSync()
+        cut.Base = sph
+        cut.Tool = con
+        doc.recompute()
 
-        nodeNames = [ docNode.child(i).text(0) for i in range(docNode.childCount()) ]
-        self.assertTrue(nodeNames == [ "Cut" ],
-                        "Unexpected tree view order after cut: " + str(nodeNames))
+        self.trySwapOuterTreeViewItems(cut, False)
 
-        cutNode = docNode.child(0)
-        cutNode.setExpanded(True)
-
-        nodeNames = [ cutNode.child(i).text(0) for i in range(cutNode.childCount()) ]
-        self.assertTrue(nodeNames == [ "Box", "Cylinder" ],
-                        "Unexpected tree view order of cut components: " + str(nodeNames))
-        self.assertTrue([ viewBox.TreeRank, viewCyl.TreeRank ] == [ baseRank, baseRank + 1 ],
-                        "Unexpected state of tree ranks after cut")
+        bdy = doc.addObject("PartDesign::Body", "Body")
+        box = doc.addObject("PartDesign::AdditiveBox", "Box")
+        bdy.addObject(box)
+        doc.recompute()
 
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection(box)
+        FreeCADGui.Selection.addSelection(bdy)
         self.waitForTreeViewSync()
 
-        FreeCADGui.runCommand("Std_GroupMoveDown")
+        treeView = self.getTreeWidget()
+        treeView.selectedItems()[0].setExpanded(True)
         self.waitForTreeViewSync()
-
-        nodeNames = [ cutNode.child(i).text(0) for i in range(cutNode.childCount()) ]
-        self.assertTrue(nodeNames == [ "Box", "Cylinder" ],
-                        "Unexpected tree view order of cut components after move down: " + str(nodeNames))
-        self.assertTrue([ viewBox.TreeRank, viewCyl.TreeRank ] == [ baseRank, baseRank + 1 ],
-                        "Unexpected state of tree ranks after move down")
 
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection(cyl)
+        FreeCADGui.Selection.addSelection(doc.Name, bdy.Name, box.Name + ".Face6")
         self.waitForTreeViewSync()
 
-        FreeCADGui.runCommand("Std_GroupMoveUp")
-        self.waitForTreeViewSync()
+        cha = bdy.newObject("PartDesign::Chamfer", "Chamfer")
+        cha.Base = (box, ['Face6'])
+        doc.recompute()
 
-        nodeNames = [ cutNode.child(i).text(0) for i in range(cutNode.childCount()) ]
-        self.assertTrue(nodeNames == [ "Box", "Cylinder" ],
-                        "Unexpected tree view order of cut components after move up: " + str(nodeNames))
-        self.assertTrue([ viewBox.TreeRank, viewCyl.TreeRank ] == [ baseRank, baseRank + 1 ],
-                        "Unexpected state of tree ranks after move up")
+        cyl = doc.addObject("PartDesign::SubtractiveCylinder", "Cylinder")
+        bdy.addObject(cyl)
+        doc.recompute()
+
+        self.trySwapOuterTreeViewItems(bdy, False)
+
+        del FreeCAD.TestEnvironment
+
