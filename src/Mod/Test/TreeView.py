@@ -79,7 +79,7 @@ class TreeViewTestCase(unittest.TestCase):
         self.waitForTreeViewSync()
 
         # One move up attempt more to test boundary behaviour
-        for i in range(len(originalState) - 2):
+        for i in range(len(originalState) - 1):
             FreeCADGui.runCommand("Std_GroupMoveUp")
             self.waitForTreeViewSync()
 
