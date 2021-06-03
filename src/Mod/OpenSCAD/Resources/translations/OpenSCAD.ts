@@ -201,13 +201,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="345"/>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="OpenSCADCommands.py" line="367"/>
-        <source>Refesh</source>
+        <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
