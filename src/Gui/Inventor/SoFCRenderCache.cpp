@@ -241,7 +241,7 @@ SoFCRenderCache::Material::init(SoState * state)
   this->pervertexcolor = false;
   this->transptexture = false;
   this->lightmodel = SoLazyElement::PHONG;
-  this->vertexordering = SoLazyElement::CW;
+  this->vertexordering = SoLazyElement::CCW;
   this->culling = false;
   this->twoside = false;
   this->drawstyle = 0;
