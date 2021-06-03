@@ -312,7 +312,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Affiche les astuces dans l'onglet Documents de l'atelier Démarrage</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>

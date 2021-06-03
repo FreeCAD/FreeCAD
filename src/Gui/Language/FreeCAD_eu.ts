@@ -505,7 +505,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCADik ez litzateke egongo honakoen laguntzarik gabe:</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -2652,9 +2652,9 @@ Aukera hau aldatzeko, aplikazioa berrabiarazi behar da.</translation>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Begien arteko distantzia proiekzio estereoetarako.
+Zehaztutako balioa unean bistaratzen ari den 3D objektuaren
+muga-koadroaren tamainarekin biderkatuko den faktore bat da.</translation>
     </message>
   </context>
   <context>
@@ -3598,7 +3598,7 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Egoera posible hurbilenera biratzen du kuboaren aurpegi batean klik egitean</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
@@ -3615,8 +3615,8 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Zenbateko zooma egingo den.
+'1' mailako zoomak 7,5eko faktorea da zoom-maila bakoitzerako.</translation>
     </message>
   </context>
   <context>
@@ -7436,7 +7436,7 @@ Bide-izen fisikoa: </translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Birkalkulatu elementua edo dokumentua</translation>
+      <translation>Birkalkulatu ezaugarria edo dokumentua</translation>
     </message>
   </context>
   <context>

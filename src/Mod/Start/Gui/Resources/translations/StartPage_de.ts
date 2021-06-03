@@ -313,7 +313,7 @@ Wenn Sie ";;" verwenden, um Pfade zu trennen, können Sie hier mehrere Ordner hi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Zeigt Hilfe-Tipps im Dokumente Tab des Start Arbeitsbereich</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -488,7 +488,7 @@ Wenn Sie ";;" verwenden, um Pfade zu trennen, können Sie hier mehrere Ordner hi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>Datei öffnen bewirkt Schließen und Wechseln</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>

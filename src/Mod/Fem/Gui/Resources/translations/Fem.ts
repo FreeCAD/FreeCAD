@@ -75,6 +75,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+        <source>Geometry reference selector for a </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
@@ -112,11 +117,6 @@
     <message>
         <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
         <source>Solid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-        <source>Geometry reference selector for a </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

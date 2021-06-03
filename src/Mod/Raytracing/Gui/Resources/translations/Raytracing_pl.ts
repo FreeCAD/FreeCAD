@@ -367,7 +367,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>
       <source>Do not calculate vertex normals</source>
-      <translation>Nie przeliczaj 'normalnych' wierzchołków</translation>
+      <translation>Nie przeliczaj wierzchołków normalnych</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="93"/>

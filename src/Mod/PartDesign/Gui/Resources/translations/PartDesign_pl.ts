@@ -281,12 +281,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="313"/>
       <source>Migrate</source>
-      <translation>Przenieś</translation>
+      <translation>Przenieś ze starszej wersji</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="314"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Przenieś dokument do nowoczesnego przepływu pracy Projekt części</translation>
+      <translation>Przenieś dokument do nowoczesnego przepływu pracy Projekt Części</translation>
     </message>
   </context>
   <context>
@@ -895,7 +895,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Parametry ewolwenty</translation>
+      <translation>Parametry profilu ewolwenty</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -921,13 +921,13 @@
       <location filename="../../../InvoluteGearFeature.ui" line="139"/>
       <location filename="../../../InvoluteGearFeature.ui" line="166"/>
       <source>True</source>
-      <translation>Prawda</translation>
+      <translation>Tak</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="144"/>
       <location filename="../../../InvoluteGearFeature.ui" line="171"/>
       <source>False</source>
-      <translation>Fałsz</translation>
+      <translation>Nie</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
@@ -1289,12 +1289,12 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation>Dodaj kontener</translation>
+      <translation>Dodaj zawartość</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation>Usuń kontener</translation>
+      <translation>Usuń zawartość</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
@@ -1349,17 +1349,17 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="802"/>
       <source>X min must not be equal to X max!</source>
-      <translation>X min nie może być równe X max!</translation>
+      <translation>Wartość minimalna X nie może być równa wartości maksymalnej X!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="807"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation>Y min nie może być równe Y maks!</translation>
+      <translation>Wartość minimalna Y nie może być równa wartości maksymalnej Y!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="812"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation>Z min nie może być równe Z max!</translation>
+      <translation>Wartość minimalna Z nie może być równa wartości maksymalnej Z!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="850"/>
@@ -1859,7 +1859,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="277"/>
       <source>Left handed</source>
-      <translation>Leworęczny</translation>
+      <translation>Lewostronny</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="288"/>
@@ -1869,7 +1869,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="296"/>
       <source>Remove outside of profile</source>
-      <translation>Usuń na zewnątrz profilu</translation>
+      <translation>Usuń za obrębem profilu profilu</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="315"/>
@@ -2293,7 +2293,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="210"/>
       <source>Symmetric to plane</source>
-      <translation>Symetryczna do płaszczyzny</translation>
+      <translation>Symetrycznie do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="217"/>
@@ -2601,7 +2601,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="74"/>
       <source>Symmetric to plane</source>
-      <translation>Symetryczna do płaszczyzny</translation>
+      <translation>Symetrycznie do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="81"/>
@@ -2786,7 +2786,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation>Symetryczna do płaszczyzny</translation>
+      <translation>Symetrycznie do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
@@ -3241,7 +3241,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../Command.cpp" line="611"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>Musisz wybrać ścianę planarną jako płaszczyznę szkicu!</translation>
+      <translation>Musisz wybrać powierzchnię jako bazę dla szkicu!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="796"/>
@@ -3251,7 +3251,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../Command.cpp" line="797"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Proszę stworzyć najpierw płaszczyznę lub wybrać ścianę do szkicu</translation>
+      <translation>Proszę stworzyć najpierw płaszczyznę lub wybrać ścianę dla umieszczenia szkicu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="810"/>
@@ -3302,7 +3302,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>No sketch to work on</source>
-      <translation>Brak szkicu</translation>
+      <translation>Brak szkicu do pracy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
@@ -3346,7 +3346,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../Command.cpp" line="1838"/>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
-      <translation>Wybór nie jest w aktywnej zawartości</translation>
+      <translation>Wybór nie znajduje się w aktywnej zawartości</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3366,7 +3366,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../Command.cpp" line="1872"/>
       <source> not possible on selected faces/edges.</source>
-      <translation> nie jest to możliwe na wybranych ścianach/krawędziach.</translation>
+      <translation> nie jest możliwe na wybranych ścianach/krawędziach.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2157"/>
@@ -3513,17 +3513,17 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Niemożliwe jest przeniesienie podstawowej cechy ciała.</translation>
+      <translation>Niemożliwe jest przeniesienie podstawowej cechy zawartości.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="859"/>
       <source>Select one or more features from the same body.</source>
-      <translation>Wybierz jedną lub więcej funkcji tego samego ciała.</translation>
+      <translation>Wybierz jedną lub więcej cech z tej samej zawartości.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="872"/>
       <source>Beginning of the body</source>
-      <translation>Początek ciała</translation>
+      <translation>Początek zawartości</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="936"/>
@@ -3616,7 +3616,7 @@ Jeśli masz starszy dokument z obiektami Projektu części bez obiektu Zawartoś
     <message>
       <location filename="../../Utils.cpp" line="234"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>Ta funkcja musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
+      <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="97"/>
@@ -3770,7 +3770,7 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
       <translation>Uwaga: Jeśli zdecydujesz się na migrację, nie będziesz mógł edytować pliku przy użyciu starszej wersji FreeCAD.
-Jeśli odmówisz migracji, nie będziesz mógł używać nowych funkcji środowiska Projekt Części, takich jak Zawarrtość i Część. W rezultacie nie będziesz mógł również używać swoich części w środowisku Złożeń.
+Jeśli odmówisz migracji, nie będziesz mógł używać nowych funkcji środowiska Projekt Części, takich jak Zawartość i Część. W rezultacie nie będziesz mógł również używać swoich części w środowisku Złożeń.
 Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Migruj".</translation>
     </message>
     <message>
@@ -3789,7 +3789,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameter</source>
-      <translation>Parametr koła łańcuchowego</translation>
+      <translation>Parametry koła łańcuchowego</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="20"/>
@@ -4088,7 +4088,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>
       <source>Counterbore depth</source>
-      <translation>Głębokość pogłębiacza walcowego</translation>
+      <translation>Głębokość pogłębienia walcowego</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
@@ -4106,7 +4106,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="20"/>
       <source>Task Hole Parameters</source>
-      <translation>Parametry zadania</translation>
+      <translation>Parametry otworu roboczego</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="68"/>
@@ -4254,7 +4254,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="507"/>
       <source>Cut type for screw heads</source>
-      <translation>Typ cięcia dla łbów śrub</translation>
+      <translation>Typ nacięcia dla łbów śrub</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="520"/>

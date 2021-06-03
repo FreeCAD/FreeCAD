@@ -40,8 +40,9 @@ Available commands:
     status:              prints a status of the translations
     update:              updates crowdin the current version of .ts files found in the source code
     build:               builds a new downloadable package on crowdin with all translated strings
+    build-status:        shows the status of the current builds available on crowdin
     download [build_id]: downloads build specified by 'build_id' or latest if build_id is left blank
-    apply:               applies downloaded translations to source code (runs updatefromcrowdin.py)
+    apply / install:     applies downloaded translations to source code (runs updatefromcrowdin.py)
 
 Example:
 
@@ -257,7 +258,7 @@ if __name__ == "__main__":
 
         updater.update(ts_files)
 
-    elif command == "apply":
+    elif command in ["apply","install"]:
         import updatefromcrowdin
         updatefromcrowdin.run()
 

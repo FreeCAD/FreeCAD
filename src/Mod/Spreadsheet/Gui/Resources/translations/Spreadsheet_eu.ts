@@ -571,28 +571,28 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
         <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Txertatu %n errenkada goian</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
         <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Txertatu %n errenkada behean</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
         <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n errenkada</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
       <translation type="unfinished">
         <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Kendu errenkadak</numerusform>
       </translation>
     </message>
     <message numerus="yes">

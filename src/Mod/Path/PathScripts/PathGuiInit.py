@@ -39,13 +39,6 @@ def Startup():
         PathLog.debug('Initializing PathGui')
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
-        try:
-            import camotics
-        except ImportError:
-            import FreeCAD
-            FreeCAD.Console.PrintError("Camotics is not available.\n")
-        else:
-            from PathScripts import PathCamoticsGui
         from PathScripts import PathComment
         from PathScripts import PathCustomGui
         from PathScripts import PathDeburrGui

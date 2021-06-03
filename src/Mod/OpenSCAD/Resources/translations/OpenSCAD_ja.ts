@@ -202,13 +202,8 @@
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="345"/>
-      <source>Refresh</source>
-      <translation>更新</translation>
-    </message>
-    <message>
       <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refesh</source>
+      <source>Refresh</source>
       <translation>更新</translation>
     </message>
   </context>

@@ -1135,7 +1135,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Pomoc</translation>
+      <translation>Pomo&amp;c</translation>
     </message>
     <message>
       <source>&amp;Close</source>
@@ -7809,11 +7809,11 @@ Physical path: </source>
     </message>
     <message>
       <source>Debug macro</source>
-      <translation>Debugowanie makra</translation>
+      <translation>Debugowanie makrodefinicji</translation>
     </message>
     <message>
       <source>Start debugging of macro</source>
-      <translation>Uruchom debugowanie makra</translation>
+      <translation>Uruchom debugowanie makrodefinicji</translation>
     </message>
   </context>
   <context>
@@ -8271,7 +8271,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>Zapisz j&amp;ako...</translation>
+      <translation>Zapisz &amp;jako ...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
@@ -8481,7 +8481,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Texture mapping...</source>
-      <translation>Mapowanie tekstury...</translation>
+      <translation>Odwzorowanie tekstury ...</translation>
     </message>
     <message>
       <source>Texture mapping</source>

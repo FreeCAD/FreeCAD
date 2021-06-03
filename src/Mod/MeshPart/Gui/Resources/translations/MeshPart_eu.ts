@@ -351,7 +351,7 @@ gainazal-desbideratzea bidez uneko amaraun-segmentuaren (ertzaren) luzera.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>Amaraun-segmentuak objektu-aurpegien kolorearen arabera taldekatuko dira.
-Talde horiek eginbide hau onartzen duten irteera-formatuetara esportatuko dira
+Talde horiek ezaugarri hau onartzen duten irteera-formatuetara esportatuko dira
 (adibidez, OBJ formatua).</translation>
     </message>
     <message>

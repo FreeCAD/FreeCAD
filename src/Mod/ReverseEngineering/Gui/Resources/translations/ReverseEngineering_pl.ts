@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Przybliżona powierzchnia B-splajnu...</translation>
+      <translation>Przybliżona powierzchnia krzywej złożonej ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Przybliżenie powierzchni B-splajnu</translation>
+      <translation>Przybliżona powierzchnia krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-Spline</source>
-      <translation>Dopasuj B-Spline</translation>
+      <translation>Dopasuj krzywą złożoną</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>Dopasuj powierzchnie B-spline</translation>
+      <translation>Dopasuj powierzchnie krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
