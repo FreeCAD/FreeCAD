@@ -44,12 +44,12 @@ def setup(ifcfile,ifcbin,scale):
     owh = ifcfile.by_type("IfcOwnerHistory")[0]
     prj = ifcfile.by_type("IfcProject")[0]
     ctx = createStructuralContext(ifcfile)
-    if ifcfile.wrapped_data.schema_name == "IFC2X3":
+    if ifcfile.wrapped_data.schema_name() == "IFC2X3":
         mod = ifcfile.createIfcStructuralAnalysisModel(uid(),owh,"Structural Analysis Model",None,None,"NOTDEFINED",None,None,None)
     else:
         pla = ifcbin.createIfcLocalPlacement()
         mod = ifcfile.createIfcStructuralAnalysisModel(uid(),owh,"Structural Analysis Model",None,None,"NOTDEFINED",None,None,None,pla)
-    rel = ifcfile.createIfcRelDeclares(uid(),owh,None,None,prj,[mod])
+        rel = ifcfile.createIfcRelDeclares(uid(),owh,None,None,prj,[mod])
 
 
 def createStructuralContext(ifcfile):
@@ -89,7 +89,10 @@ def createStructuralNode(ifcfile,ifcbin,point):
     # for now we don't create any boundary condition
     cnd = None
     pla = ifcbin.createIfcLocalPlacement()
-    prd = ifcfile.createIfcStructuralPointConnection(uid(),owh,'Vertex',None,None,pla,psh,cnd,None)
+    if ifcfile.wrapped_data.schema_name() == "IFC2X3":
+    	prd = ifcfile.createIfcStructuralPointConnection(uid(),owh,'Vertex',None,None,pla,psh,cnd)
+    else:
+        prd = ifcfile.createIfcStructuralPointConnection(uid(),owh,'Vertex',None,None,pla,psh,cnd,None)
     return prd
 
 
@@ -137,25 +140,29 @@ def createStructuralMember(ifcfile,ifcbin,obj):
             v1 = edge.Vertexes[-1].Point.multiply(scaling)
             cp1 = ifcbin.createIfcCartesianPoint(tuple(v0))
             cp2 = ifcbin.createIfcCartesianPoint(tuple(v1))
-            upv = ifcbin.createIfcDirection((0,0,1))
             pla = ifcbin.createIfcLocalPlacement()
             vp1 = ifcfile.createIfcVertexPoint(cp1)
             vp2 = ifcfile.createIfcVertexPoint(cp2)
             edg = ifcfile.createIfcEdge(vp1,vp2)
             rep = ifcfile.createIfcTopologyRepresentation(ctx,'Analysis','Edge',[edg])
             psh = ifcfile.createIfcProductDefinitionShape(None,None,[rep])
-            prd = ifcfile.createIfcStructuralCurveMember(uid(),owh,obj.Label,None,None,pla,psh,"RIGID_JOINED_MEMBER",upv)
+            if ifcfile.wrapped_data.schema_name() == "IFC2X3":
+            	prd = ifcfile.createIfcStructuralCurveMember(uid(),owh,obj.Label,None,None,pla,psh,"RIGID_JOINED_MEMBER")
+            else:
+            	upv = ifcbin.createIfcDirection((0,0,1))
+            	prd = ifcfile.createIfcStructuralCurveMember(uid(),owh,obj.Label,None,None,pla,psh,"RIGID_JOINED_MEMBER",upv)
             # check for existing connection nodes
             for v in [v0,v1]:
                 vk = tuple(v)
                 if vk in structural_nodes:
                     if structural_nodes[vk]:
+                        # there is already another member using this point
                         n = structural_nodes[vk]
                     else:
                         # there is another member with same point, create a new node
                         n = createStructuralNode(ifcfile,ifcbin,v)
                         structural_nodes[vk] = n
-                    ifcfile.createIfcRelConnectsStructuralMember(uid(),None,None,None,prd,n,None,None,None,None);
+                    ifcfile.createIfcRelConnectsStructuralMember(uid(),owh,None,None,prd,n,None,None,None,None)
                 else:
                     # just add the point, no other member using it yet
                     structural_nodes[vk] = None
