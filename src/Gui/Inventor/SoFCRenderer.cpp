@@ -556,9 +556,6 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     this->material.lightmodel = next.lightmodel;
   }
 
-  if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
-    emissive = 0;
-
   // Always set color because the current color may be changed by opengl draw call
   glColor4ub((unsigned char)((col>>24)&0xff),
               (unsigned char)((col>>16)&0xff),
@@ -599,6 +596,9 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   // with lighting as BASE_COLOR. For some reason, if shadow is enabled
   // (possibly due to extra light source), emission color is taking effect
   // even if lighting is BASE_COLOR.
+  if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
+    emissive = 0;
+
   if (first || this->material.emissive != emissive) {
     setGLColor(GL_EMISSION, emissive);
     this->material.emissive = emissive;
@@ -1164,6 +1164,7 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
 
       glEnable(GL_STENCIL_TEST);
       glDisable(GL_LIGHTING);
+      glDisable(GL_TEXTURE_2D);
       // glDisable(GL_DEPTH_TEST);
       auto col = drawidx >= 0 ? this->material.emissive
                               : draw_entry.material->hiddenlinecolor;
@@ -1675,7 +1676,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
                                 PRIVATE(this)->opaquevcache);
 
     PRIVATE(this)->recheckmaterial = true;
-    PRIVATE(this)->notexture = true;
+    // PRIVATE(this)->notexture = true;
 
     PRIVATE(this)->renderOpaque(action,
                                 PRIVATE(this)->slentries,
@@ -1689,7 +1690,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
                                       PRIVATE(this)->transpvcache);
 
     PRIVATE(this)->recheckmaterial = true;
-    PRIVATE(this)->notexture = true;
+    // PRIVATE(this)->notexture = true;
 
     PRIVATE(this)->renderTransparency(action,
                                       PRIVATE(this)->slentries,
@@ -1724,7 +1725,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   }
   
   PRIVATE(this)->recheckmaterial = true;
-  PRIVATE(this)->notexture = true;
+  // PRIVATE(this)->notexture = true;
 
   PRIVATE(this)->renderTransparency(action,
                                     PRIVATE(this)->slentries,
