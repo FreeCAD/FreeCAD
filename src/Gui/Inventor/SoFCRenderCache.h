@@ -401,12 +401,16 @@ public:
 
   const VertexCacheMap & getVertexCaches(bool finalize=false, int depth=0);
 
+  enum HighlightFlag {
+    PreselectHighlight = 1,
+    CheckIndices = 2,
+    WholeOnTop = 4,
+  };
   VertexCacheMap buildHighlightCache(std::map<int, Gui::CoinPtr<SoFCVertexCache> > &sharedcache,
                                      int order,
                                      const SoDetail * detail,
                                      uint32_t color,
-                                     bool checkindices,
-                                     bool wholeontop);
+                                     int flags = 0);
 
   void open(SoState * state, int selectstyle = Material::Full, bool initmaterial = true);
   void close(SoState * state);

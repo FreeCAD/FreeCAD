@@ -522,16 +522,13 @@ SoFCVertexCache::SoFCVertexCache(const SbBox3f &bbox)
     pimpl(new SoFCVertexCacheP(this, nullptr, 0xD2A25905))
 {
   PRIVATE(this)->vertexarray = new Vec3Array(PRIVATE(this)->nodeid, nullptr);
-  float w, h, d;
-  bbox.getSize(w,h,d);
-  w *= 0.5f;
-  h *= 0.5f;
-  d *= 0.5f;
+  float minx, miny, minz, maxx, maxy, maxz;
+  bbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
   for (int i = 0; i < 8; i++) {
     PRIVATE(this)->vertexarray->append(
-        SbVec3f((i&1) ? -w : w,
-                (i&2) ? -h : h,
-                (i&4) ? -d : d));
+        SbVec3f((i&1) ? minx : maxx,
+                (i&2) ? miny : maxy,
+                (i&4) ? minz : maxz));
 
   }
   auto verts = PRIVATE(this)->vertexarray->getArrayPtr();

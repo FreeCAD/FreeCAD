@@ -222,7 +222,7 @@ void
 SoFCRenderCache::Material::init(SoState * state)
 {
   this->depthtest = true;
-  this->depthclamp = true;
+  this->depthclamp = false;
   this->depthfunc = SoDepthBuffer::LEQUAL;
   this->depthwrite = true;
   this->order = 0;
@@ -1108,12 +1108,15 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
                                      int order,
                                      const SoDetail * detail,
                                      uint32_t color,
-                                     bool checkindices,
-                                     bool wholeontop)
+                                     int flags)
 {
   VertexCacheMap res;
   uint32_t alpha = color & 0xff;
   color &= 0xffffff00;
+
+  bool checkindices = (flags & CheckIndices) ? true : false;
+  bool wholeontop = (flags & WholeOnTop) ? true : false;
+  bool preselect = (flags & PreselectHighlight) ? true : false;
 
   const SoPointDetail * pd = nullptr;
   const SoLineDetail * ld = nullptr;
@@ -1140,6 +1143,7 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
   bool bboxinited = false;
   Material bboxmaterial;
   SbBox3f bbox;
+  const VertexCacheEntry *detailentry = nullptr;
   for (auto & child : getVertexCaches(true)) {
     if (!wholeontop && detail) {
       // We are doing partial highlight, 'wholeontop' indicates that we shall
@@ -1190,8 +1194,9 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
         }
       }
 
-      if (color && (material.selectstyle == Material::Box
-                    || ViewParams::getShowSelectionBoundingBox()))
+      if ((color & ~0xff) && (material.selectstyle == Material::Box
+                              || (ViewParams::getShowSelectionBoundingBox()
+                                  && (!detail || !preselect))))
       {
         if (!bboxinited) {
           bboxinited = true;
@@ -1200,16 +1205,25 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
         const SbMatrix *matrix = ventry.identity ? nullptr : &ventry.matrix;
         switch(material.type) {
         case Material::Point:
-          ventry.cache->getPointsBoundingBox(
-              matrix, bbox, pd ? pd->getCoordinateIndex() : -1);
+          if (pd && pd->getCoordinateIndex() >= 0) {
+            detailentry = &ventry;
+            ventry.cache->getPointsBoundingBox(nullptr, bbox, pd->getCoordinateIndex());
+          } else if (!detail)
+            ventry.cache->getPointsBoundingBox(matrix, bbox);
           break;
         case Material::Line:
-          ventry.cache->getLinesBoundingBox(
-              matrix, bbox, ld ? ld->getLineIndex() : -1);
+          if (ld && ld->getLineIndex() >= 0) {
+            detailentry = &ventry;
+            ventry.cache->getLinesBoundingBox(nullptr, bbox, ld->getLineIndex());
+          } else if (!detail)
+            ventry.cache->getLinesBoundingBox(matrix, bbox);
           break;
         case Material::Triangle:
-          ventry.cache->getTrianglesBoundingBox(
-              matrix, bbox, fd ? fd->getPartIndex() : -1);
+          if (fd && fd->getPartIndex() >= 0) {
+            detailentry = &ventry;
+            ventry.cache->getTrianglesBoundingBox(nullptr, bbox, fd->getPartIndex());
+          } else if (!detail)
+            ventry.cache->getTrianglesBoundingBox(matrix, bbox);
           break;
         }
         continue;
@@ -1381,7 +1395,6 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
   if (!bbox.isEmpty()) {
     SbVec3f unitsize(1.f, 1.f, 1.f);
     auto size = bbox.getSize();
-    SbMatrix matrix;
     int cacheid = 0;
     if (size[0] < 1e-6f) {
       unitsize[0] = 0.f;
@@ -1419,13 +1432,16 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
     if (!cache) 
       cache = new SoFCVertexCache(SbBox3f(SbVec3f(0.f, 0.f, 0.f), unitsize));
 
-    matrix.setTransform(bbox.getCenter(), SbRotation(), size, SbRotation());
+    SbMatrix matrix;
+    matrix.setTransform(bbox.getMin(), SbRotation(), size, SbRotation());
+    if (detailentry && !detailentry->identity)
+      matrix.multRight(detailentry->matrix);
 
     bboxmaterial.type = cache->getNumLineIndices() ? Material::Line : Material::Point;
     bboxmaterial.diffuse = color | 0xff;
     bboxmaterial.linewidth = ViewParams::instance()->getSelectionBBoxLineWidth();
     bboxmaterial.pointsize = bboxmaterial.linewidth * 2;
-    bboxmaterial.depthclamp = false;
+    bboxmaterial.depthclamp = true;
 
     res[bboxmaterial].emplace_back(cache, matrix, false, false, CacheKeyPtr());
   }

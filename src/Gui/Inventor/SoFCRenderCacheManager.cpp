@@ -409,7 +409,10 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
     int order = ontop ? 1 : 0;
     PRIVATE(this)->renderer->setHighlight(
           cache->buildHighlightCache(
-            PRIVATE(this)->sharedcache, order, detail, color, true, wholeontop),
+            PRIVATE(this)->sharedcache, order, detail, color,
+            SoFCRenderCache::PreselectHighlight
+            | SoFCRenderCache::CheckIndices
+            | (wholeontop ? SoFCRenderCache::WholeOnTop : 0)),
           wholeontop);
   }
 }
@@ -449,9 +452,13 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
   sensor->cache = cache;
   for (auto & v : sensor->elements) {
     auto & elentry = v.second;
+    int flags = 0;
+    if (ViewParams::highlightIndicesOnFullSelect())
+      flags |= SoFCRenderCache::CheckIndices;
+    if (elentry.id > 0)
+      flags |= SoFCRenderCache::WholeOnTop;
     elentry.vcachemap = sensor->cache->buildHighlightCache(
-        self->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
-        ViewParams::highlightIndicesOnFullSelect(), elentry.id > 0);
+        self->sharedcache, elentry.id, elentry.detail.get(), elentry.color, flags);
     self->renderer->addSelection(elentry.id, elentry.vcachemap);
   }
 }
@@ -538,9 +545,13 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
         PRIVATE(this)->selpaths[elentry.id] = selpath;
 
       if (sensor->cache) {
+        int flags = 0;
+        if (ViewParams::highlightIndicesOnFullSelect())
+          flags |= SoFCRenderCache::CheckIndices;
+        if (elentry.id > 0)
+          flags |= SoFCRenderCache::WholeOnTop;
         elentry.vcachemap = sensor->cache->buildHighlightCache(
-            PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
-            ViewParams::highlightIndicesOnFullSelect(), elentry.id > 0);
+            PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color, flags);
         PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
       }
     }
@@ -564,9 +575,13 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
   elentry.color = color;
   elentry.detail.reset(detail ? detail->copy() : nullptr);
   if (sensor->cache) {
+    int flags = 0;
+    if (ViewParams::highlightIndicesOnFullSelect())
+      flags |= SoFCRenderCache::CheckIndices;
+    if (elentry.id > 0)
+      flags |= SoFCRenderCache::WholeOnTop;
     elentry.vcachemap = sensor->cache->buildHighlightCache(
-        PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
-        ViewParams::highlightIndicesOnFullSelect(), elentry.id>0);
+        PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color, flags);
     PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
   }
 
@@ -641,7 +656,8 @@ SoFCRenderCacheManager::removeSelection(const std::string & key,
         elentry.id &= ~(SoFCRenderer::SelIdSelected);
         elentry.color &= 0xff;
         elentry.vcachemap = sensor.cache->buildHighlightCache(
-            PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color, false, elentry.id>0);
+            PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
+            elentry.id>0 ? SoFCRenderCache::WholeOnTop : 0);
         PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
       }
       ++itpath;
@@ -707,7 +723,8 @@ SoFCRenderCacheManager::clearSelection(bool alt)
             elentry.color &= 0xff;
             if (sensor.cache) {
               elentry.vcachemap = sensor.cache->buildHighlightCache(
-                  PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color, false, elentry.id>0);
+                  PRIVATE(this)->sharedcache, elentry.id, elentry.detail.get(), elentry.color,
+                  elentry.id>0 ? SoFCRenderCache::WholeOnTop : 0);
               PRIVATE(this)->renderer->addSelection(elentry.id, elentry.vcachemap);
             }
           }
