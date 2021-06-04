@@ -75,11 +75,4 @@ class SketcherSketchObjectGuiTools(GuiTools):
             obj.movePoint(0, 2, v)
         obj.recompute()
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
-
 ## @}
