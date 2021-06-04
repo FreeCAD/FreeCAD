@@ -1070,36 +1070,54 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
         }
     }
 
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+    static FC_COIN_THREAD_LOCAL SoGetBoundingBoxAction *bboxAction;
+    if (!bboxAction)
+        bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
+    bboxAction->setViewportRegion(viewer->getSoRenderManager()->getViewportRegion());
 
-    SoTempPath path(3);
+    static FC_COIN_THREAD_LOCAL SoTempPath path(20);
     path.ref();
-    SoSelectionElementAction selAction(SoSelectionElementAction::Append,true,true);
+    path.truncate(0);
+    static FC_COIN_THREAD_LOCAL CoinPtr<SoGroup> fakeRoot;
+    if (!fakeRoot) 
+        fakeRoot = new SoGroup;
+    coinRemoveAllChildren(fakeRoot);
+    fakeRoot->addChild(viewer->getSoRenderManager()->getCamera());
+    fakeRoot->addChild(pcRoot);
+    path.append(fakeRoot);
+
+    static FC_COIN_THREAD_LOCAL SoSelectionElementAction selAction(
+            SoSelectionElementAction::Append,true,true);
+
     SoDetail *det=0;
     if(subname && subname[0]) {
         if(!getDetailPath(subname,&path,true,det)) {
+            path.truncate(0);
             path.unrefNoDelete();
+            coinRemoveAllChildren(fakeRoot);
             return Base::BoundBox3d();
         }
         if(det) {
+            selAction.setType(SoSelectionElementAction::Append);
             selAction.setElement(det);
             SoFCSwitch::switchOverride(&selAction);
             selAction.apply(&path);
         }
     }
-    SoTempPath resetPath(3);
+    static FC_COIN_THREAD_LOCAL SoTempPath resetPath(3);
     resetPath.ref();
+    resetPath.truncate(0);
     if(!transform) {
         resetPath.append(pcRoot);
         resetPath.append(pcModeSwitch);
-        bboxAction.setResetPath(&resetPath,true,SoGetBoundingBoxAction::TRANSFORM);
+        bboxAction->setResetPath(&resetPath,true,SoGetBoundingBoxAction::TRANSFORM);
     }
-    if(!path.getLength()) {
+    if(path.getLength() == 1) {
         path.append(pcRoot);
         path.append(pcModeSwitch);
     }
-    SoFCSwitch::switchOverride(&bboxAction);
-    bboxAction.apply(&path);
+    SoFCSwitch::switchOverride(bboxAction);
+    bboxAction->apply(&path);
 
     if(det) {
         delete det;
@@ -1109,10 +1127,13 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
         selAction.apply(&path);
     }
 
+    resetPath.truncate(0);
     resetPath.unrefNoDelete();
+    path.truncate(0);
     path.unrefNoDelete();
+    coinRemoveAllChildren(fakeRoot);
 
-    auto xbbox = bboxAction.getXfBoundingBox();
+    auto xbbox = bboxAction->getXfBoundingBox();
     if(mat)
         xbbox.transform(convert(*mat));
     auto bbox = xbbox.project();
