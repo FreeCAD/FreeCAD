@@ -171,6 +171,7 @@ class OpPrototype(object):
             'App::PropertyVectorDistance':      Property,
             'App::PropertyVectorList':          Property,
             'Part::PropertyPartShape':          Property,
+            'App::PropertyPythonObject':        PropertyString,
             }
 
     def __init__(self, name):
