@@ -192,7 +192,7 @@ public:
                      bool transp,
                      int pass = RenderPassNormal);
 
-  void setupMatrix(SoState * state, const VertexCacheEntry * ventry);
+  void setupMatrix(SoGLRenderAction * action, const DrawEntry &draw_entry);
 
   void updateSelection();
 
@@ -1086,19 +1086,30 @@ SoFCRenderer::getBoundingBox(SbBox3f & bbox) const
 }
 
 void inline 
-SoFCRendererP::setupMatrix(SoState * state, const VertexCacheEntry * ventry)
+SoFCRendererP::setupMatrix(SoGLRenderAction * action, const DrawEntry &draw_entry)
 {
-  if (this->identity) {
-    if (ventry->identity)
-      SoModelMatrixElement::makeIdentity(state, NULL);
-    else
-      SoModelMatrixElement::set(state, NULL, ventry->matrix);
-  } else if (ventry->identity)
-    SoModelMatrixElement::set(state, NULL, this->matrix);
-  else {
-    SbMatrix mat = this->matrix;
-    SoModelMatrixElement::set(state, NULL, mat.multLeft(ventry->matrix));
+  SoState *state = action->getState();
+  const VertexCacheEntry *ventry = draw_entry.ventry;
+
+  SoModelMatrixElement::makeIdentity(state, NULL);
+  if (!this->identity)
+    SoModelMatrixElement::mult(state, NULL, this->matrix);
+
+  if (draw_entry.material->autozoom.getNum()) {
+    for (auto &info : draw_entry.material->autozoom.getData()) {
+      if (info.resetmatrix) {
+        if (info.identity)
+          SoModelMatrixElement::makeIdentity(state, NULL);
+        else
+          SoModelMatrixElement::set(state, NULL, info.matrix);
+      } else if (!info.identity)
+        SoModelMatrixElement::mult(state, NULL, info.matrix);
+      info.node->GLRender(action);
+    }
   }
+
+  if (!ventry->identity)
+    SoModelMatrixElement::mult(state, NULL, ventry->matrix);
 }
 
 void
@@ -1467,7 +1478,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
       this->recheckmaterial = false;
       this->prevmaterial = draw_entry.material;
     }
-    setupMatrix(state, draw_entry.ventry);
+    setupMatrix(action, draw_entry);
 
     int array = SoFCVertexCache::ALL;
     if (!this->material.pervertexcolor)
@@ -1584,7 +1595,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
       this->recheckmaterial = false;
       this->prevmaterial = draw_entry.material;
     }
-    setupMatrix(state, draw_entry.ventry);
+    setupMatrix(action, draw_entry);
 
     int array = SoFCVertexCache::ALL;
     if (!this->material.pervertexcolor)

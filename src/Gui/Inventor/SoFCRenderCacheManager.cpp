@@ -28,6 +28,7 @@
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoResetTransform.h>
@@ -160,6 +161,8 @@ public:
   static SoCallbackAction::Response preShape(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postShape(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postClipPlane(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response preAutoZoom(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postAutoZoom(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postLightModel(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postLight(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postMaterial(void *, SoCallbackAction *action, const SoNode * node);
@@ -326,6 +329,8 @@ void SoFCRenderCacheManagerP::initAction()
   this->action->addPostCallback(SoDepthBuffer::getClassTypeId(), &postDepthBuffer, this);
   this->action->addPostCallback(SoLight::getClassTypeId(), &postLight, this);
   this->action->addPostCallback(SoClipPlane::getClassTypeId(), &postClipPlane, this);
+  this->action->addPreCallback(SoAutoZoomTranslation::getClassTypeId(), &preAutoZoom, this);
+  this->action->addPostCallback(SoAutoZoomTranslation::getClassTypeId(), &postAutoZoom, this);
 
   this->action->addTriangleCallback(SoShape::getClassTypeId(), &addTriangle, this);
   this->action->addLineSegmentCallback(SoShape::getClassTypeId(), &addLine, this);
@@ -1057,6 +1062,39 @@ SoFCRenderCacheManagerP::postClipPlane(void *userdata,
 
   assert(node && node->isOfType(SoClipPlane::getClassTypeId()));
   self->stack.back()->addClipPlane(action->getState(), static_cast<const SoClipPlane*>(node));
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::preAutoZoom(void *userdata,
+                                     SoCallbackAction *action,
+                                     const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  assert(node && node->isOfType(SoAutoZoomTranslation::getClassTypeId()));
+  self->stack.back()->addAutoZoom(action->getState(), static_cast<const SoAutoZoomTranslation*>(node));
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postAutoZoom(void *userdata,
+                                      SoCallbackAction *action,
+                                      const SoNode * node)
+{
+  (void)node;
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  auto state = action->getState();
+
+  // reset to identity matrix because auto zoom will dynamically adjust scale
+  // factor of the current transform depending on the current view, so must
+  // evaluate on each frame
+  SoModelMatrixElement::makeIdentity(state, nullptr);
   return SoCallbackAction::CONTINUE;
 }
 

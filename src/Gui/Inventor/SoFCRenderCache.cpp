@@ -103,7 +103,7 @@ public:
   void captureMaterial(SoState * state);
 
   Material mergeMaterial(const SbMatrix &matrix,
-                         bool identity,
+                         bool &identity,
                          const Material &parent,
                          const Material &child);
 
@@ -510,7 +510,7 @@ SoFCRenderCache::decreaseRenderingOrder(int priority)
 
 SoFCRenderCache::Material
 SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
-                                bool identity,
+                                bool &identity,
                                 const Material &parent,
                                 const Material &child)
 {
@@ -555,6 +555,23 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
   };
   res.clippers = parent.clippers;
   mergeNodeInfo(res.clippers, child.clippers);
+
+  res.autozoom = parent.autozoom;
+  auto childzoom = child.autozoom;
+  if (childzoom.getNum() && !identity) {
+    const auto &info = childzoom.get(0);
+    if (!info.resetmatrix) {
+      auto copy = info;
+      if (copy.identity)
+        copy.matrix = matrix;
+      else
+        copy.matrix.multRight(matrix);
+      copy.identity = false;
+      childzoom.set(0, copy);
+    }
+    identity = true;
+  }
+  mergeNodeInfo(res.autozoom, childzoom);
   
   copyMaterial(res, parent, &Material::depthtest, 0, Material::FLAG_DEPTH_TEST);
   copyMaterial(res, parent, &Material::depthfunc, 0, Material::FLAG_DEPTH_FUNC);
@@ -954,9 +971,30 @@ SoFCRenderCache::addClipPlane(SoState * state, const SoClipPlane * node)
 }
 
 void
+SoFCRenderCache::addAutoZoom(SoState * state, const SoAutoZoomTranslation * node)
+{
+  (void)state;
+
+  NodeInfo info;
+  info.node = const_cast<SoAutoZoomTranslation*>(node);
+  info.resetmatrix = PRIVATE(this)->resetmatrix;
+
+  auto elem = constElement<SoModelMatrixElement>(state);
+  if (elem->getModelMatrix() == matrixidentity)
+    info.identity = true;
+  else {
+    info.identity = false;
+    info.matrix = elem->getModelMatrix();
+  }
+
+  PRIVATE(this)->material.autozoom.append(info);
+}
+
+void
 SoFCRenderCache::resetMatrix()
 {
   PRIVATE(this)->resetmatrix = true;
+  PRIVATE(this)->material.autozoom.clear();
 }
 
 inline void

@@ -189,6 +189,13 @@ public:
     return (*this->data)[idx];
   }
 
+  void set(int idx, const ValueT &v) {
+    assert(this->data);
+    if (this->data.use_count() > 1)
+      this->data = std::make_shared<VectorT>(*this->data);
+    (*this->data)[idx] = v;
+  }
+
   void erase(int idx) const {
     if (!this->data) return;
     if (idx < 0 || idx >= this->getNum()) return;

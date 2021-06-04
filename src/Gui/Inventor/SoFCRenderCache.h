@@ -33,6 +33,7 @@
 #include "COWData.h"
 #include "SoFCVertexCache.h"
 #include "SoFCRenderCacheManager.h"
+#include "SoAutoZoomTranslation.h"
 
 class SoFCRenderCacheP;
 class SoState;
@@ -250,6 +251,7 @@ public:
     TextureMap textures;
     NodeInfoArray lights;
     NodeInfoArray clippers;
+    NodeInfoArray autozoom;
 
     void init(SoState * state = nullptr);
 
@@ -268,6 +270,8 @@ public:
       if (annotation > other.annotation) return false;
       if (clippers < other.clippers) return true;
       if (clippers > other.clippers) return false;
+      if (autozoom < other.autozoom) return true;
+      if (autozoom > other.autozoom) return false;
       if (type < other.type) return true;
       if (type > other.type) return false;
       if (depthtest < other.depthtest) return true;
@@ -390,6 +394,8 @@ public:
   void addTextureTransform(SoState * state, const SoNode *);
 
   void addClipPlane(SoState * state, const SoClipPlane * light);
+
+  void addAutoZoom(SoState * state, const Gui::SoAutoZoomTranslation * node);
 
   void addLight(SoState * state, const SoLight * light);
 
