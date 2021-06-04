@@ -550,5 +550,6 @@ aTooltip.triggered.connect(onTooltip)
 menuOrbit.aboutToShow.connect(onOrbitShow)
 menu.aboutToHide.connect(indicator.clearFocus)
 
+timer.setParent(indicator)
 timer.timeout.connect(setCurrent)
 timer.start(10000)
