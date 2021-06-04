@@ -2855,7 +2855,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
     <message>
         <location filename="../../../PathScripts/PathThreadMilling.py" line="186"/>
-        <source>Devfines which standard thread was chosen</source>
+        <source>Defines which standard thread was chosen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

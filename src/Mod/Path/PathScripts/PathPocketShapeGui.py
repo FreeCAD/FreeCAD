@@ -75,7 +75,7 @@ class _Extension(object):
         hnt = coin.SoShapeHints()
 
         if not ext is None:
-            numVert = list()  # track number of verticies in each polygon face
+            numVert = list()  # track number of vertices in each polygon face
             try:
                 wire =  ext.getWire()
             except FreeCAD.Base.FreeCADError:
