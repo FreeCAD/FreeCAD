@@ -5207,6 +5207,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
     if (geoIdDiameterMap.empty() && externalGeoIdDiameterMap.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Select one or more arcs or circles from the sketch."));
+        return;
     }
 
     bool commitNeeded=false;
@@ -5253,35 +5254,20 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
     if(!geoIdDiameterMap.empty())
     {
-        bool constrainEqual = false;
         if (geoIdDiameterMap.size() > 1 && constraintCreationMode==Driving) {
-            int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Constrain equal"),
-                                            QObject::tr("Do you want to share the same diameter for all selected elements?"),
-                                            QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
-            // use an equality constraint
-            if (ret == QMessageBox::Yes) {
-                constrainEqual = true;
-            }
-            else if (ret == QMessageBox::Cancel) {
-                // do nothing
-                return;
-            }
-        }
 
-        if (constrainEqual) {
-            // Create the one radius constraint now
             int refGeoId = geoIdDiameterMap.front().first;
             double diameter = geoIdDiameterMap.front().second;
 
             if(!commandopened)
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
-
-            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", refGeoId,diameter);
-
+            
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdDiameterMap.begin()+1; it != geoIdDiameterMap.end(); ++it) {
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ", refGeoId,it->first);
             }
+
+            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", refGeoId,diameter);
         }
         else {
             // Create the diameter constraints now
@@ -5318,80 +5304,8 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             }
             vp->draw(false,false); // Redraw
         }
-
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
-        // Ask for the value of the diameter immediately
-        if (show && constraintCreationMode==Driving) {
-            QDialog dlg(Gui::getMainWindow());
-            Ui::InsertDatum ui_Datum;
-            ui_Datum.setupUi(&dlg);
-            dlg.setWindowTitle(EditDatumDialog::tr("Change diameter"));
-            ui_Datum.label->setText(EditDatumDialog::tr("Diameter:"));
-            Base::Quantity init_val;
-            init_val.setUnit(Base::Unit::Length);
-            init_val.setValue(geoIdDiameterMap.front().second);
-
-            ui_Datum.labelEdit->setValue(init_val);
-            ui_Datum.labelEdit->selectNumber();
-            if (constrainEqual || geoIdDiameterMap.size() == 1)
-                ui_Datum.labelEdit->bind(Obj->Constraints.createPath(indexConstr));
-            else
-                ui_Datum.name->setDisabled(true);
-
-            if (dlg.exec() == QDialog::Accepted) {
-                Base::Quantity newQuant = ui_Datum.labelEdit->value();
-                double newDiameter = newQuant.getValue();
-
-                try {
-                    if (constrainEqual || geoIdDiameterMap.size() == 1) {
-                        Gui::cmdAppObjectArgs(Obj, "setDatum(%i,App.Units.Quantity('%f %s'))",
-                                  indexConstr, newDiameter, (const char*)newQuant.getUnit().getString().toUtf8());
-
-                        QString constraintName = ui_Datum.name->text().trimmed();
-                        if (Base::Tools::toStdString(constraintName) != Obj->Constraints[indexConstr]->Name) {
-                            std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                            Gui::cmdAppObjectArgs(Obj, "renameConstraint(%d, u'%s')", indexConstr, escapedstr.c_str());
-                        }
-                    }
-                    else {
-                        for (std::size_t i=0; i<geoIdDiameterMap.size();i++) {
-                            Gui::cmdAppObjectArgs(Obj, "setDatum(%i,App.Units.Quantity('%f %s'))",
-                                      indexConstr+i, newDiameter, (const char*)newQuant.getUnit().getString().toUtf8());
-                        }
-                    }
-
-                    commitCommand();
-
-                    if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
-                        Obj->ExpressionEngine.execute();
-                        Obj->solve();
-                    }
-
-                    tryAutoRecompute(Obj);
-
-                    commitNeeded=false;
-                    updateNeeded=false;
-                }
-                catch (const Base::Exception& e) {
-                    QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
-                    abortCommand();
-
-                    tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
-                }
-            }
-            else {
-                // command canceled
-                abortCommand();
-
-                updateNeeded=true;
-            }
-        }
-        else {
-            // now dialog was shown so commit the command
-            commitCommand();
-            commitNeeded=false;
-        }
+        finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
+        
         //updateActive();
         getSelection().clearSelection();
     }
@@ -5447,7 +5361,6 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
 
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            int indexConstr = ConStr.size() - 1;
             bool fixed = isPointOrSegmentFixed(Obj,GeoId);
             if(fixed || constraintCreationMode==Reference) {
                 Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1, "False");
@@ -5465,69 +5378,9 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
                 constr->LabelDistance = 2. * sf;
                 vp->draw(); // Redraw
             }
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
-            // Ask for the value of the diameter immediately
-            if (show && constraintCreationMode==Driving && !fixed) {
-                QDialog dlg(Gui::getMainWindow());
-                Ui::InsertDatum ui_Datum;
-                ui_Datum.setupUi(&dlg);
-                dlg.setWindowTitle(EditDatumDialog::tr("Change diameter"));
-                ui_Datum.label->setText(EditDatumDialog::tr("Diameter:"));
-                Base::Quantity init_val;
-                init_val.setUnit(Base::Unit::Length);
-                init_val.setValue(diameter);
-
-                ui_Datum.labelEdit->setValue(init_val);
-                ui_Datum.labelEdit->selectNumber();
-                ui_Datum.labelEdit->bind(Obj->Constraints.createPath(indexConstr));
-
-                if (dlg.exec() == QDialog::Accepted) {
-                    Base::Quantity newQuant = ui_Datum.labelEdit->value();
-                    double newDiameter = newQuant.getValue();
-
-                    try {
-                        Gui::cmdAppObjectArgs(Obj, "setDatum(%i,App.Units.Quantity('%f %s'))",
-                                  indexConstr, newDiameter, (const char*)newQuant.getUnit().getString().toUtf8());
-
-                        QString constraintName = ui_Datum.name->text().trimmed();
-                        if (Base::Tools::toStdString(constraintName) != Obj->Constraints[indexConstr]->Name) {
-                            std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                            Gui::cmdAppObjectArgs(Obj, "renameConstraint(%d, u'%s')", indexConstr, escapedstr.c_str());
-                        }
-
-                        commitCommand();
-
-                        if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
-                            Obj->ExpressionEngine.execute();
-                            Obj->solve();
-                        }
-
-                        tryAutoRecompute(Obj);
-
-                        commitNeeded=false;
-                        updateNeeded=false;
-                    }
-                    catch (const Base::Exception& e) {
-                        QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
-                        abortCommand();
-
-                        tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
-                    }
-                }
-                else {
-                    // command canceled
-                    abortCommand();
-
-                    updateNeeded=true;
-                }
-            }
-            else {
-                // now dialog was shown so commit the command
-                commitCommand();
-                commitNeeded=false;
-            }
+            if(!fixed)
+                finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
+            
             //updateActive();
             getSelection().clearSelection();
 
