@@ -1546,6 +1546,11 @@ The array can be turned into a polar or a circular array by changing its type.</
         <source>Error: json module not found. Unable to save style</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="gui_setstyle.py" line="267"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DraftCircularArrayTaskPanel</name>
@@ -2380,9 +2385,6 @@ Objects added to this layer can share the same visual properties such as line co
         <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>Draft_Lineremover</name>
 </context>
 <context>
     <name>Draft_LinkArray</name>
@@ -6272,22 +6274,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_edit_draft_objects.py" line="509"/>
+        <location filename="gui_edit_draft_objects.py" line="569"/>
         <source>This object does not support possible coincident points, please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_edit_draft_objects.py" line="559"/>
+        <location filename="gui_edit_draft_objects.py" line="608"/>
         <source>Active object must have more than two points/nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_edit_draft_objects.py" line="673"/>
+        <location filename="gui_edit_draft_objects.py" line="722"/>
         <source>Selection is not a Knot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_edit_draft_objects.py" line="700"/>
+        <location filename="gui_edit_draft_objects.py" line="749"/>
         <source>Endpoint of BezCurve can&apos;t be smoothed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6627,7 +6629,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_stretch.py" line="472"/>
+        <location filename="gui_stretch.py" line="474"/>
         <source>Stretch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6727,12 +6729,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_edit.py" line="561"/>
+        <location filename="gui_edit.py" line="563"/>
         <source>No edit point found for selected object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_edit.py" line="942"/>
+        <location filename="gui_edit.py" line="823"/>
         <source>: this object is not editable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7166,7 +7168,7 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_edit.py" line="934"/>
+        <location filename="gui_edit.py" line="815"/>
         <source>Too many objects selected, max number set to:</source>
         <translation type="unfinished"></translation>
     </message>
