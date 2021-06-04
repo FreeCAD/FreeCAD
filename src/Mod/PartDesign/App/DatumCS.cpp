@@ -89,18 +89,29 @@ App::DocumentObject *CoordinateSystem::getSubObject(const char *subname,
     if(!pyObj)
         return const_cast<CoordinateSystem*>(this);
 
+    static TopoDS_Shape _shape;
+    TopoDS_Shape *shape = &_shape;
     gp_Dir dir(0,0,1);
     if(subname) {
-        if(strcmp(subname,"X")==0)
+        if(strcmp(subname,"X")==0) {
+            static TopoDS_Shape _shape;
+            shape = &_shape;
             dir = gp_Dir(1,0,0);
-        else if(strcmp(subname,"Y")==0)
+        } else if(strcmp(subname,"Y")==0) {
+            static TopoDS_Shape _shape;
+            shape = &_shape;
             dir = gp_Dir(0,1,0);
+        }
+    }
+    if (shape->IsNull()) {
+        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
+        *shape = builder.Shape();
+        shape->Infinite(Standard_True);
     }
 
     Base::PyGILStateLocker lock;
     PY_TRY {
-        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), dir));
-        Part::TopoShape ts(builder.Shape());
+        Part::TopoShape ts(*shape);
         ts.Tag = getID();
         if(pmat)
             ts.transformShape(*pmat,false,true);
