@@ -980,7 +980,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
 
 bool CenterLine::Circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
 {
-    // the determinant of this matrix calculates the aread of a triangle, see
+    // the determinant of this matrix calculates the area of a triangle, see
     // https://en.wikipedia.org/wiki/Triangle#Using_coordinates
     // a 3x3 matrix would also do the job, but FC supports only 4x4 matrixes
     Base::Matrix4D CircMatrix(
@@ -1686,5 +1686,4 @@ bool CosmeticVertex::restoreCosmetic(void)
     bool result = hGrp->GetBool("restoreCosmetic", true);
     return result;
 }
-
 
