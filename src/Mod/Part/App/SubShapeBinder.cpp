@@ -1230,7 +1230,8 @@ SubShapeBinder::import(const App::SubObjectT &feature,
 
     for (auto o : objs) {
         auto binder = Base::freecad_dynamic_cast<Part::SubShapeBinder>(o);
-        if (!binder || !boost::starts_with(o->getNameInDocument(), "Import"))
+        if (!binder || (!boost::starts_with(o->getNameInDocument(), "Import")
+                        && !boost::starts_with(o->getNameInDocument(), "BaseFeature")))
             continue;
         if (binder->Support.getSize() != 1)
             continue;
