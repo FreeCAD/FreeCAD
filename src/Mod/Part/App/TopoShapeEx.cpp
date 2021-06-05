@@ -1790,7 +1790,7 @@ void GenericShapeMapper::init(const TopoShape &src, const TopoDS_Shape &dst)
     }
 }
 
-TopoShape &TopoShape::makEPrism(const TopoShape &base,
+TopoShape &TopoShape::makEPrism(const TopoShape &_base,
                                 const TopoShape& profileshape,
                                 const TopoShape& supportface,
                                 const TopoShape& uptoface,
@@ -1802,6 +1802,10 @@ TopoShape &TopoShape::makEPrism(const TopoShape &base,
     if(!op) op = TOPOP_PRISM;
 
     BRepFeat_MakePrism PrismMaker;
+
+    TopoShape base(_base);
+    if (base.isNull() && !uptoface.isNull())
+        base.makEPrism(uptoface, direction);
 
     TopoDS_Shape res = base.getShape();
     for (auto &face : profileshape.getSubTopoShapes(TopAbs_FACE)) {
@@ -1837,6 +1841,9 @@ TopoShape &TopoShape::makEPrism(const TopoShape &base,
     src = src.makECompound(srcShapes, nullptr, false);
     mapper.init(src, res);
     this->makESHAPE(res,mapper,{src},op);
+
+    if (_base.isNull())
+        this->makECut({*this, base});
     return *this;
 }
 
