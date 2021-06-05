@@ -478,6 +478,20 @@ Part::Feature *ProfileBased::getBaseObject(bool silent) const
             rv = static_cast<Part::Feature*>(spt);
         } else {
             err = "No base set, sketch support is not Part::Feature";
+            // Use the body base feature if we are the first solid feature in the sibling group
+            if (body && body->BaseFeature.getValue()) {
+                for (auto obj : body->getSiblings(const_cast<ProfileBased*>(this))) {
+                    if (Body::isSolidFeature(obj)) {
+                        if (obj == this) {
+                            rv = Base::freecad_dynamic_cast<Part::Feature>(
+                                    body->BaseFeature.getValue());
+                            if (rv)
+                                err = nullptr;
+                        }
+                        break;
+                    }
+                }
+            }
         }
     } else {
         err = "No base set, no sketch support either";
