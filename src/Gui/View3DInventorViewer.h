@@ -236,6 +236,7 @@ public:
     /** @name Selection methods */
     //@{
     void startSelection(SelectionMode = Lasso);
+    void abortSelection();
     void stopSelection();
     bool isSelecting() const;
     std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
