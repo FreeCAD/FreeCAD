@@ -659,7 +659,16 @@ std::vector<TopoShape> TopoShape::searchSubShape(
         std::unique_ptr<Geometry> g;
         bool isLine = false;
         bool isPlane = false;
-        if(checkGeometry) {
+
+        std::vector<TopoDS_Shape> vertices;
+        TopoShape wire;
+        if(shapeType == TopAbs_FACE) {
+            wire = subshape.splitWires();
+            vertices = wire.getSubShapes(TopAbs_VERTEX);
+        } else
+            vertices = subshape.getSubShapes(TopAbs_VERTEX);
+
+        if(vertices.empty() || checkGeometry) {
             g = Geometry::fromShape(subshape.getShape());
             if(!g)
                 return res;
@@ -670,17 +679,41 @@ std::vector<TopoShape> TopoShape::searchSubShape(
                 isPlane = g->isDerivedFrom(GeomPlane::getClassTypeId());
         }
 
-        std::vector<TopoDS_Shape> vertices;
-        TopoShape wire;
-        if(shapeType == TopAbs_FACE) {
-            wire = subshape.splitWires();
-            vertices = wire.getSubShapes(TopAbs_VERTEX);
-        } else
-            vertices = subshape.getSubShapes(TopAbs_VERTEX);
+        auto compareGeometry = [&](const TopoShape &s, bool strict) {
+            std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape()));
+            if (!g2)
+                return false;
+            if (isLine && !strict) {
+                // For lines, don't compare geometry, just check the
+                // vertices below instead, because the exact same edge
+                // may have different geometrical representation.
+                if (!g2->isDerivedFrom(GeomLine::getClassTypeId())
+                        && !g2->isDerivedFrom(GeomLineSegment::getClassTypeId()))
+                    return false;
+            } else if (isPlane && !strict) {
+                // For planes, don't compare geometry either, so that
+                // we don't need to worry about orientation and so on.
+                // Just check the edges.
+                if (!g2->isDerivedFrom(GeomPlane::getClassTypeId()))
+                    return false;
+            } else if(!g2 || !g2->isSame(*g,tol,atol))
+                return false;
+            return true;
+        };
 
-        //TODO: no implementation for infinite edge/face, which does not have vertex
-        if(vertices.empty())
+        if(vertices.empty()) {
+            // Probably an infinite shape, so we have to search by geometry
+            int idx = 0;
+            for (auto &s : getSubTopoShapes(shapeType)) {
+                ++idx;
+                if (!s.countSubShapes(TopAbs_VERTEX) && compareGeometry(s, true)) {
+                    if(names)
+                        names->push_back(shapeName(shapeType) + std::to_string(idx));
+                    res.push_back(s);
+                }
+            }
             break;
+        }
 
         // The basic idea of shape search is about the same for both edge and face.
         // * Search the first vertex, which is done with tolerance.
@@ -705,26 +738,8 @@ std::vector<TopoShape> TopoShape::searchSubShape(
                     otherVertices = s.getSubShapes(TopAbs_VERTEX);
                 if (otherVertices.size() != vertices.size())
                     continue;
-                if(checkGeometry) {
-                    std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape()));
-                    if (!g2)
-                        continue;
-                    if (isLine) {
-                        // For lines, don't compare geometry, just check the
-                        // vertices below instead, because the exact same edge
-                        // may have different geometrical representation.
-                        if (!g2->isDerivedFrom(GeomLine::getClassTypeId())
-                                && !g2->isDerivedFrom(GeomLineSegment::getClassTypeId()))
-                            continue;
-                    } else if (isPlane) {
-                        // For planes, don't compare geometry either, so that
-                        // we don't need to worry about orientation and so on.
-                        // Just check the edges.
-                        if (!g2->isDerivedFrom(GeomPlane::getClassTypeId()))
-                            continue;
-                    } else if(!g2 || !g2->isSame(*g,tol,atol))
-                        continue;
-                }
+                if(checkGeometry && !compareGeometry(s, false))
+                    continue;
                 unsigned i = 0;
                 bool matched = true;
                 for(auto &v : vertices) {
