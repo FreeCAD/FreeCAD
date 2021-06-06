@@ -69,6 +69,7 @@ class SketcherSketchObjectGuiTools(GuiTools):
         0 : startpoint
         1 : endpoint
         """
+        import Sketcher
         if node_idx == 0:
             obj.movePoint(0, 1, v)
         elif node_idx == 1:

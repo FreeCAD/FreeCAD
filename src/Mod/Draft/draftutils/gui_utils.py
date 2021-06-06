@@ -129,6 +129,9 @@ def autogroup(obj):
         if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
             active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+            if obj in active_arch_obj.InListRecursive:
+                # do not autogroup if obj points to active_arch_obj to prevent cyclic references
+                return
             active_arch_obj.addObject(obj)
 
         elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
@@ -136,6 +139,9 @@ def autogroup(obj):
             # so object does not jump to different position, works with App::Link
             # if not scaled. Modified accordingly to realthunder suggestions
             active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            if obj in active_part.InListRecursive:
+                # do not autogroup if obj points to active_part to prevent cyclic references
+                return
             matrix = parent.getSubObject(sub, retType=4)
             if matrix.hasScale() == 1:
                 err = translate("Draft",
