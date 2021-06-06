@@ -233,6 +233,21 @@ inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarIte
     geom    << "Sketcher_CompCreateRegularPolygon";
 }
 
+template <typename T>
+void SketcherAddWorkspaceRectangles(T& geom);
+
+template <>
+inline void SketcherAddWorkspaceRectangles<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom    << "Sketcher_CreateRectangle"
+            << "Sketcher_CreateOblong";
+}
+
+template <>
+inline void SketcherAddWorkspaceRectangles<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompCreateRectangles";
+}
 
 template <typename T>
 void SketcherAddWorkspaceFillets(T& geom);
@@ -257,8 +272,8 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             << "Sketcher_CreateLine";
     SketcherAddWorkspaceArcs(geom);
     geom    << "Separator"
-            << "Sketcher_CreatePolyline"
-            << "Sketcher_CreateRectangle";
+            << "Sketcher_CreatePolyline";
+    SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     geom    << "Sketcher_CreateSlot"
             << "Separator";
