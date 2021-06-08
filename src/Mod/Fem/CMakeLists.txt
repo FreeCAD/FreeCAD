@@ -260,6 +260,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/constraint_sectionprint.inp
     femtest/data/calculix/constraint_selfweight_cantilever.inp
     femtest/data/calculix/constraint_tie.inp
+    femtest/data/calculix/frequency_beamsimple.inp
     femtest/data/calculix/material_multiple_bendingbeam_fiveboxes.inp
     femtest/data/calculix/material_multiple_bendingbeam_fivefaces.inp
     femtest/data/calculix/material_multiple_tensionrod_twoboxes.inp
