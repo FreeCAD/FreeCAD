@@ -1276,15 +1276,6 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
-    #INSTALL(FILES Icons/freecad.xpm
-    #    Icons/freecad-icon-16.png
-    #    Icons/freecad-icon-32.png
-    #    Icons/freecad-icon-48.png
-    #    Icons/freecad-icon-64.png
-    #    Icons/freecad.svg
-    #    Icons/freecad-doc.png
-    #    DESTINATION ${CMAKE_INSTALL_DATADIR}
-    #)
     INSTALL(FILES Icons/freecad-icon-16.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps RENAME freecad.png)
     INSTALL(FILES Icons/freecad-icon-32.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps RENAME freecad.png)
     INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME freecad.png)
