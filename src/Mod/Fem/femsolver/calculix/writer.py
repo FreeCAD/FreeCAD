@@ -1953,7 +1953,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 # M .. Material
 # B .. Beam
 # R .. BeamRotation
-# D ..Direction
+# D .. Direction
 # F .. Fluid
 # S .. Shell,
 # TODO write comment into input file to elset ids and elset attributes
