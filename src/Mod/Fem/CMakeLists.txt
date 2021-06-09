@@ -44,6 +44,7 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/boxanalysis_static.py
     femexamples/boxanalysis_frequency.py
+    femexamples/ccx_buckling_flexuralbuckling.py
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_hexa20faceload.py
@@ -85,6 +86,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
     femexamples/meshes/mesh_eigenvalue_of_elastic_beam_tetra10.py
     femexamples/meshes/mesh_electricforce_elmer_nongui6_tetra10.py
+    femexamples/meshes/mesh_flexural_buckling.py
     femexamples/meshes/mesh_multibodybeam_tetra10.py
     femexamples/meshes/mesh_multibodybeam_tria6.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
