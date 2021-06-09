@@ -258,7 +258,7 @@ def makeConstraintSelfWeight(
     name="ConstraintSelfWeight"
 ):
     """makeConstraintSelfWeight(document, [name]):
-    creates an self weight object to define a gravity load"""
+    creates a self weight object to define a gravity load"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_selfweight
     constraint_selfweight.ConstraintSelfWeight(obj)
@@ -326,7 +326,7 @@ def makeElementFluid1D(
     name="ElementFluid1D"
 ):
     """makeElementFluid1D(document, [name]):
-    creates an 1D fluid element object to define 1D flow"""
+    creates a 1D fluid element object to define 1D flow"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_fluid1D
     element_fluid1D.ElementFluid1D(obj)
@@ -344,7 +344,7 @@ def makeElementGeometry1D(
     name="ElementGeometry1D"
 ):
     """makeElementGeometry1D(document, [width], [height], [name]):
-    creates an 1D geometry element object to define a cross section"""
+    creates a 1D geometry element object to define a cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_geometry1D
     element_geometry1D.ElementGeometry1D(obj)
@@ -371,7 +371,7 @@ def makeElementGeometry2D(
     name="ElementGeometry2D"
 ):
     """makeElementGeometry2D(document, [thickness], [name]):
-    creates an 2D geometry element object to define a plate thickness"""
+    creates a 2D geometry element object to define a plate thickness"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_geometry2D
     element_geometry2D.ElementGeometry2D(obj)
@@ -387,7 +387,7 @@ def makeElementRotation1D(
     name="ElementRotation1D"
 ):
     """makeElementRotation1D(document, [name]):
-    creates an 1D geometry rotation element object to rotate a 1D cross section"""
+    creates a 1D geometry rotation element object to rotate a 1D cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_rotation1D
     element_rotation1D.ElementRotation1D(obj)
@@ -580,7 +580,7 @@ def makeResultMechanical(
     name="ResultMechanical"
 ):
     """makeResultMechanical(document, [name]):
-    creates an mechanical result object to hold FEM results"""
+    creates a mechanical result object to hold FEM results"""
     obj = doc.addObject("Fem::FemResultObjectPython", name)
     from femobjects import result_mechanical
     result_mechanical.ResultMechanical(obj)
@@ -596,7 +596,7 @@ def makePostVtkFilterClipRegion(
     name="VtkFilterClipRegion"
 ):
     """makePostVtkFilterClipRegion(document, base_vtk_result, [name]):
-    creates an FEM post processing region clip filter object (vtk based)"""
+    creates a FEM post processing region clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -611,7 +611,7 @@ def makePostVtkFilterClipScalar(
     name="VtkFilterClipScalar"
 ):
     """makePostVtkFilterClipScalar(document, base_vtk_result, [name]):
-    creates an FEM post processing scalar clip filter object (vtk based)"""
+    creates a FEM post processing scalar clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostScalarClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -626,7 +626,7 @@ def makePostVtkFilterCutFunction(
     name="VtkFilterCutFunction"
 ):
     """makePostVtkFilterCutFunction(document, base_vtk_result, [name]):
-    creates an FEM post processing cut function filter object (vtk based)"""
+    creates a FEM post processing cut function filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -641,7 +641,7 @@ def makePostVtkFilterWarp(
     name="VtkFilterWarp"
 ):
     """makePostVtkFilterWarp(document, base_vtk_result, [name]):
-    creates an FEM post processing warp filter object (vtk based)"""
+    creates a FEM post processing warp filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostWarpVectorFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -656,7 +656,7 @@ def makePostVtkResult(
     name="VtkResult"
 ):
     """makePostVtkResult(document, base_result, [name]):
-    creates an FEM post processing result object (vtk based) to hold FEM results"""
+    creates a FEM post processing result object (vtk based) to hold FEM results"""
     obj = doc.addObject("Fem::FemPostPipeline", name)
     obj.load(base_result)
     return obj
