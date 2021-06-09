@@ -24,22 +24,39 @@
 
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+import PathScripts.PathLog as PathLog
+import PathScripts.PathGeom as PathGeom
 import Path
 import FreeCAD
-import FreeCADGui
-from FreeCAD import Console
 import time
 import json
 import math
 import area
-from pivy import coin
+
+from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader('Part', globals(), 'Part')
-TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
+# TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
+FeatureExtensions = LazyLoader('PathScripts.PathFeatureExtensions',
+                               globals(),
+                               'PathScripts.PathFeatureExtensions')
+
+if FreeCAD.GuiUp:
+    from pivy import coin
+    import FreeCADGui
 
 __doc__ = "Class and implementation of the Adaptive path operation."
+
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
+
+# Qt translation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 def convertTo2d(pathArray):
@@ -386,22 +403,25 @@ def Execute(op, obj):
     global sceneGraph
     global topZ
 
-    sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+    if FreeCAD.GuiUp:
+        sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
 
-    Console.PrintMessage("*** Adaptive toolpath processing started...\n")
+    PathLog.info("*** Adaptive toolpath processing started...\n")
 
     # hide old toolpaths during recalculation
     obj.Path = Path.Path("(Calculating...)")
 
-    # store old visibility state
-    job = op.getJob(obj)
-    oldObjVisibility = obj.ViewObject.Visibility
-    oldJobVisibility = job.ViewObject.Visibility
+    if FreeCAD.GuiUp:
+        #store old visibility state
+        job = op.getJob(obj)
+        oldObjVisibility = obj.ViewObject.Visibility
+        oldJobVisibility = job.ViewObject.Visibility
 
-    obj.ViewObject.Visibility = False
-    job.ViewObject.Visibility = False
+        obj.ViewObject.Visibility = False
+        job.ViewObject.Visibility = False
 
-    FreeCADGui.updateGui()
+        FreeCADGui.updateGui()
+
     try:
         helixDiameter = obj.HelixDiameterLimit.Value
         topZ = op.stock.Shape.BoundBox.ZMax
@@ -411,12 +431,15 @@ def Execute(op, obj):
             obj.Tolerance = 0.001
 
         # Get list of working edges for adaptive algorithm
-        pathArray = _get_working_edges(op, obj)
+        pathArray = op.pathArray
+        if not pathArray:
+            PathLog.error("No wire data returned.")
+            return
 
         path2d = convertTo2d(pathArray)
 
         stockPaths = []
-        if op.stock.StockType == "CreateCylinder":
+        if hasattr(op.stock, "StockType") and op.stock.StockType == "CreateCylinder":
             stockPaths.append([discretize(op.stock.Shape.Edges[0])])
 
         else:
@@ -479,14 +502,15 @@ def Execute(op, obj):
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            for path in tpaths:  # path[0] contains the MotionType, #path[1] contains list of points
-                if path[0] == area.AdaptiveMotionType.Cutting:
-                    sceneDrawPath(path[1], (0, 0, 1))
+            if FreeCAD.GuiUp:
+                for path in tpaths: #path[0] contains the MotionType, #path[1] contains list of points
+                    if path[0] == area.AdaptiveMotionType.Cutting:
+                        sceneDrawPath(path[1],(0,0,1))
 
-                else:
-                    sceneDrawPath(path[1], (1, 0, 1))
+                    else:
+                        sceneDrawPath(path[1],(1,0,1))
 
-            FreeCADGui.updateGui()
+                FreeCADGui.updateGui()
 
             return obj.StopProcessing
 
@@ -520,17 +544,18 @@ def Execute(op, obj):
         GenerateGCode(op, obj, adaptiveResults, helixDiameter)
 
         if not obj.StopProcessing:
-            Console.PrintMessage("*** Done. Elapsed time: %f sec\n\n" % (time.time()-start))
+            PathLog.info("*** Done. Elapsed time: %f sec\n\n" % (time.time()-start))
             obj.AdaptiveOutputState = adaptiveResults
             obj.AdaptiveInputState = inputStateObject
 
         else:
-            Console.PrintMessage("*** Processing cancelled (after: %f sec).\n\n" % (time.time()-start))
+            PathLog.info("*** Processing cancelled (after: %f sec).\n\n" % (time.time()-start))
 
     finally:
-        obj.ViewObject.Visibility = oldObjVisibility
-        job.ViewObject.Visibility = oldJobVisibility
-        sceneClean()
+        if FreeCAD.GuiUp:
+            obj.ViewObject.Visibility = oldObjVisibility
+            job.ViewObject.Visibility = oldJobVisibility
+            sceneClean()
 
 
 def _get_working_edges(op, obj):
@@ -540,26 +565,52 @@ def _get_working_edges(op, obj):
     Additional modifications to selected region(face), such as extensions,
     should be placed within this function.
     """
-    pathArray = list()
+    regions = list()
+    all_regions = list()
+    edge_list = list()
+    avoidFeatures = list()
 
+    # Get extensions and identify faces to avoid
+    extensions = FeatureExtensions.getExtensions(obj)
+    for e in extensions:
+        if e.avoid:
+            avoidFeatures.append(e.feature)
+
+    # Get faces selected by user
     for base, subs in obj.Base:
         for sub in subs:
-            if obj.UseOutline:
-                face = base.Shape.getElement(sub)
-                zmin = face.BoundBox.ZMin
-                # get face outline with same method in PocketShape
-                wire = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
-                shape = Part.Face(wire)
-                # translate to face height if necessary
-                if shape.BoundBox.ZMin != zmin:
-                    shape.translate(FreeCAD.Vector(0.0, 0.0, zmin - shape.BoundBox.ZMin))
-            else:
-                shape = base.Shape.getElement(sub)
+            if sub not in avoidFeatures:
+                if obj.UseOutline:
+                    face = base.Shape.getElement(sub)
+                    # get outline with wire_A method used in PocketShape, but it does not play nicely later
+                    # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
+                    wire_B = face.Wires[0]
+                    shape = Part.Face(wire_B)
+                else:
+                    shape = base.Shape.getElement(sub)
+                regions.append(shape)
+    # Efor
 
-            for edge in shape.Edges:
-                pathArray.append([discretize(edge)])
+    # Return Extend Outline extension, OR regular edge extension
+    all_regions = regions
+    # Apply regular Extensions
+    op.exts = [] # pylint: disable=attribute-defined-outside-init
+    for ext in extensions:
+        if not ext.avoid:
+            wire = ext.getWire()
+            if wire:
+                for f in ext.getExtensionFaces(wire):
+                    op.exts.append(f)
+                    all_regions.append(f)
 
-    return pathArray
+    # Second face-combining method attempted
+    horizontal = PathGeom.combineHorizontalFaces(all_regions)
+    for f in horizontal:
+        for w in f.Wires:
+            for e in w.Edges:
+                edge_list.append([discretize(e)])
+
+    return edge_list
 
 
 class PathAdaptive(PathOp.ObjectOp):
@@ -567,7 +618,9 @@ class PathAdaptive(PathOp.ObjectOp):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
         The default implementation returns "FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint"
         Should be overwritten by subclasses.'''
-        return PathOp.FeatureTool | PathOp.FeatureBaseEdges | PathOp.FeatureDepths | PathOp.FeatureFinishDepth | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureBaseGeometry | PathOp.FeatureCoolant
+        return PathOp.FeatureTool | PathOp.FeatureBaseEdges | PathOp.FeatureDepths \
+               | PathOp.FeatureFinishDepth | PathOp.FeatureStepDown | PathOp.FeatureHeights \
+               | PathOp.FeatureBaseGeometry | PathOp.FeatureCoolant | PathOp.FeatureLocations
 
     def initOperation(self, obj):
         '''initOperation(obj) ... implement to create additional properties.
@@ -609,6 +662,8 @@ class PathAdaptive(PathOp.ObjectOp):
 
         obj.addProperty("App::PropertyBool", "UseOutline", "Adaptive", "Uses the outline of the base geometry.")
 
+        FeatureExtensions.initialize_properties(obj)
+
     def opSetDefaultValues(self, obj, job):
         obj.Side = "Inside"
         obj.OperationType = "Clearing"
@@ -629,11 +684,14 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.KeepToolDownRatio = 3.0
         obj.UseHelixArcs = False
         obj.UseOutline = False
+        FeatureExtensions.set_default_property_values(obj, job)
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
+
+        self.pathArray = _get_working_edges(self, obj)
         Execute(self, obj)
 
     def opOnDocumentRestored(self, obj):
@@ -645,6 +703,17 @@ class PathAdaptive(PathOp.ObjectOp):
                             "UseOutline",
                             "Adaptive",
                             "Uses the outline of the base geometry.")
+        FeatureExtensions.initialize_properties(obj)
+
+
+def SetupProperties():
+    setup = ["Side", "OperationType", "Tolerance", "StepOver",
+             "LiftDistance", "KeepToolDownRatio", "StockToLeave",
+             "ForceInsideOut", "FinishingProfile", "Stopped",
+             "StopProcessing", "UseHelixArcs", "AdaptiveInputState",
+             "AdaptiveOutputState", "HelixAngle", "HelixConeAngle",
+             "HelixDiameterLimit", "UseOutline"]
+    return setup
 
 
 def Create(name, obj=None):
