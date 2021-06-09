@@ -396,4 +396,3 @@ class _TaskPanel:
 
     def select_buckling_analysis(self):
         self.select_analysis_type("buckling")
-
