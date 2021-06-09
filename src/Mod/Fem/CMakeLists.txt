@@ -251,6 +251,8 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/box_static_expected_values
     femtest/data/calculix/box_static.FCStd
     femtest/data/calculix/box.FCStd
+    femtest/data/calculix/ccx_buckling_flexuralbuckling.dat
+    femtest/data/calculix/ccx_buckling_flexuralbuckling.inp
     femtest/data/calculix/ccxcantilever_faceload.inp
     femtest/data/calculix/ccxcantilever_hexa20.inp
     femtest/data/calculix/ccxcantilever_nodeload.inp
