@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *   Copyright (c) 2021 Tobias Vaara <t@vaara.se>                          *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -44,23 +43,24 @@ import ObjectsFem
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 # Example geometry input
-
-b = 1.5             # Width
-h = 8               # Height
-l = 1               # Length
+example_b = 1.5             # Width
+example_h = 8               # Height
+example_l = 1               # Length
 
 
 def addbox(
-        docxx, height, width, length, 
+        docxx, height, width, length,
         x, y, z, box_name):
 
-    box_obj = docxx.addObject('Part::Box', box_name)
+    box_obj = docxx.addObject("Part::Box", box_name)
     box_obj.Height = height
     box_obj.Width = width
     box_obj.Length = length
     box_obj.Placement = FreeCAD.Placement(
-            FreeCAD.Vector(x, y, z), 
-            FreeCAD.Rotation(0, 0, 0))
+        FreeCAD.Vector(x, y, z),
+        FreeCAD.Rotation(0, 0, 0)
+    )
+    return box_obj
 
 
 def init_doc(doc=None):
@@ -70,14 +70,15 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Flexural Buckling Analysis",
-            "meshtype": "solid",
-            "meshelement": "Hexa8",
-            "constraints": ["force", "displacement"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
+    info = {
+        "name": "Flexural Buckling Analysis",
+        "meshtype": "solid",
+        "meshelement": "Hexa8",
+        "constraints": ["force", "displacement"],
+        "solvers": ["calculix"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
     return info
 
 
@@ -87,12 +88,8 @@ def setup_base(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    addbox(doc, h, b, l, 0, 0, 0, 'beam')
-
+    geom_obj = addbox(doc, example_h, example_b, example_l, 0, 0, 0, "beam")
     doc.recompute()
-
-    geom_obj = doc.beam
-
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
@@ -123,12 +120,11 @@ def setup_base(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = doc.beam
 
-
     return doc
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    #setup
+    # setup
 
     doc = setup_base(doc, solvertype)
 
@@ -174,4 +170,3 @@ def setup(doc=None, solvertype="ccxtools"):
     doc.recompute()
 
     return doc
-

@@ -880,7 +880,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_selfweight(self, f):
         if not self.selfweight_objects:
             return
-        if not (self.analysis_type == "static" or self.analysis_type == "thermomech" or self.analysis_type == "buckling"):
+        if not (
+            self.analysis_type == "static"
+            or self.analysis_type == "thermomech"
+            or self.analysis_type == "buckling"
+        ):
             return
 
         # write constraint to file
@@ -914,7 +918,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_force(self, f, inpfile_split=None):
         if not self.force_objects:
             return
-        if not (self.analysis_type == "static" or self.analysis_type == "thermomech" or self.analysis_type == "buckling"):
+        if not (
+            self.analysis_type == "static"
+            or self.analysis_type == "thermomech"
+            or self.analysis_type == "buckling"
+        ):
             return
 
         # check shape type of reference shape and get node loads
@@ -963,7 +971,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_pressure(self, f, inpfile_split=None):
         if not self.pressure_objects:
             return
-        if not (self.analysis_type == "static" or self.analysis_type == "thermomech" or self.analysis_type == "buckling"):
+        if not (
+            self.analysis_type == "static"
+            or self.analysis_type == "thermomech"
+            or self.analysis_type == "buckling"
+        ):
             return
 
         # get the faces and face numbers
@@ -1176,7 +1188,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.solver_obj.IterationsThermoMechMaximum:
             if self.analysis_type == "thermomech":
                 step += ", INC=" + str(self.solver_obj.IterationsThermoMechMaximum)
-            elif self.analysis_type == "static" or self.analysis_type == "frequency" or self.analysis_type == "buckling":
+            elif (
+                self.analysis_type == "static"
+                or self.analysis_type == "frequency"
+                or self.analysis_type == "buckling"
+            ):
                 # parameter is for thermomechanical analysis only, see ccx manual *STEP
                 pass
         # write step line
@@ -1230,7 +1246,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 # Set time to 1 and ignore user inputs for steady state
                 self.solver_obj.TimeInitialStep = 1.0
                 self.solver_obj.TimeEnd = 1.0
-            elif self.analysis_type == "static" or self.analysis_type == "frequency" or self.analysis_type == "buckling":
+            elif (
+                self.analysis_type == "static"
+                or self.analysis_type == "frequency"
+                or self.analysis_type == "buckling"
+            ):
                 pass  # not supported for static and frequency!
         # ANALYSIS parameter line
         analysis_parameter = ""
