@@ -24,12 +24,16 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
+#include "ViewProviderPage.h"
+
 #include <Gui/MDIView.h>
 #include <Gui/Selection.h>
 
 #include <QPrinter>
 #include <QGraphicsScene>
 #include <QPointF>
+
+#include <Mod/TechDraw/App/DrawPage.h>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -90,6 +94,7 @@ public:
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
     PyObject* getPyObject();
+    TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
     QGVPage* getQGVPage(void) {return m_view;};
 
