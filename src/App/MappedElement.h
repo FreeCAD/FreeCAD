@@ -320,10 +320,23 @@ public:
 
     bool operator==(const MappedName & other) const
     {
-        if (this->data.size() != other.data.size()
-                || this->postfix.size() != other.postfix.size())
+        if (this->size() != other.size())
             return false;
-        return this->data == other.data && this->postfix == other.postfix;
+        if (this->data.size() == other.data.size())
+            return this->data == other.data && this->postfix == other.postfix;
+        const auto &a = this->data.size() < other.data.size() ? *this : other;
+        const auto &b = this->data.size() < other.data.size() ? other: *this;
+        if (!b.data.startsWith(a.data))
+            return false;
+        QByteArray tmp = QByteArray::fromRawData(
+                b.data.constData() + a.data.size(),
+                b.data.size() - a.data.size());
+        if (!a.postfix.startsWith(tmp))
+            return false;
+        tmp = QByteArray::fromRawData(
+                a.postfix.constData() + tmp.size(),
+                a.postfix.size() - tmp.size());
+        return tmp == b.postfix;
     }
 
     bool operator!=(const MappedName & other) const
