@@ -47,6 +47,7 @@
 #include <math.h>
 
 #include "MDIViewPage.h"
+#include "MDIViewPagePy.h"
 
 #include <Base/Stream.h>
 #include <Base/Tools.h>
@@ -794,7 +795,11 @@ void MDIViewPage::print(QPrinter* printer)
 
 PyObject* MDIViewPage::getPyObject()
 {
-    return Gui::MDIView::getPyObject();
+    if (!pythonObject)
+        pythonObject = new MDIViewPagePy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
