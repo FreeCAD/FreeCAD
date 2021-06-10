@@ -57,12 +57,6 @@ class PartLineGuiTools(GuiTools):
             obj.Y2 = v.y
             obj.Z2 = v.z
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class PartBoxGuiTools(GuiTools):
 
@@ -90,12 +84,6 @@ class PartBoxGuiTools(GuiTools):
             _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
             obj.Height = _vector.Length
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class PartCylinderGuiTools(GuiTools):
 
@@ -118,12 +106,6 @@ class PartCylinderGuiTools(GuiTools):
         elif node_idx == 2:
             _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
             obj.Height = _vector.Length
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 
 class PartConeGuiTools(GuiTools):
@@ -151,12 +133,6 @@ class PartConeGuiTools(GuiTools):
             _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
             obj.Height = _vector.Length
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class PartSphereGuiTools(GuiTools):
 
@@ -175,11 +151,5 @@ class PartSphereGuiTools(GuiTools):
         elif node_idx == 1:
             if v.Length > 0.0:
                 obj.Radius = v.Length # TODO: Perhaps better to project on the face?
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 ## @}

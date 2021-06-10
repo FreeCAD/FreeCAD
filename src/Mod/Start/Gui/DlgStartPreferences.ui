@@ -159,6 +159,9 @@ By using ";;" to separate paths, you can add several folders here</string>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
+        <property name="toolTip">
+         <string>Displays help tips in the Start workbench Documents tab</string>
+        </property>
         <property name="text">
          <string/>
         </property>

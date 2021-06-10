@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Dxf-fájl mentése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -850,7 +850,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="551"/>
       <source>Create Annotation</source>
-      <translation type="unfinished">Create Annotation</translation>
+      <translation>Széljegyzet létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="333"/>
@@ -862,113 +862,108 @@
       <location filename="../../CommandCreateDims.cpp" line="935"/>
       <location filename="../../CommandCreateDims.cpp" line="1362"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Méret létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="251"/>
       <source>Create Hatch</source>
-      <translation type="unfinished">Create Hatch</translation>
+      <translation>Kitöltés létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="354"/>
       <source>Create GeomHatch</source>
-      <translation type="unfinished">Create GeomHatch</translation>
+      <translation>Geometriai nyílás létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="422"/>
       <source>Create Image</source>
-      <translation type="unfinished">Create Image</translation>
+      <translation>Kép létrehozás</translation>
     </message>
     <message>
       <location filename="../../QGIViewBalloon.cpp" line="518"/>
       <source>Drag Balloon</source>
-      <translation type="unfinished">Drag Balloon</translation>
+      <translation>Léggömb ballon húzása</translation>
     </message>
     <message>
       <location filename="../../QGIViewDimension.cpp" line="687"/>
       <source>Drag Dimension</source>
-      <translation type="unfinished">Drag Dimension</translation>
+      <translation>Dimenzió húzása</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="1201"/>
       <location filename="../../QGVPage.cpp" line="1204"/>
       <source>Create Balloon</source>
-      <translation type="unfinished">Create Balloon</translation>
+      <translation>Ballon létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="191"/>
       <source>Create ActiveView</source>
-      <translation type="unfinished">Create ActiveView</translation>
+      <translation>Aktív nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="346"/>
+      <location filename="../../TaskCenterLine.cpp" line="331"/>
       <source>Create CenterLine</source>
-      <translation type="unfinished">Create CenterLine</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.cpp" line="391"/>
-      <source>Edit CenterLine</source>
-      <translation type="unfinished">Edit CenterLine</translation>
+      <translation>Középvonal létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="271"/>
       <source>Update CosmeticLine</source>
-      <translation type="unfinished">Update CosmeticLine</translation>
+      <translation>Segédvonalak aktualizálása</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="472"/>
       <source>Create Detail View</source>
-      <translation type="unfinished">Create Detail View</translation>
+      <translation>Részlet nézet létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="509"/>
       <source>Update Detail</source>
-      <translation type="unfinished">Update Detail</translation>
+      <translation>Részletek frissítése</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="400"/>
       <source>Create Leader</source>
-      <translation type="unfinished">Create Leader</translation>
+      <translation>Vezérvonal létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="456"/>
       <source>Edit Leader</source>
-      <translation type="unfinished">Edit Leader</translation>
+      <translation>Vezérvonal szerkesztése</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="356"/>
       <source>Create Anno</source>
-      <translation type="unfinished">Create Anno</translation>
+      <translation>Jegyzet létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="415"/>
       <source>Edit Anno</source>
-      <translation type="unfinished">Edit Anno</translation>
+      <translation>Jegyzet szerkesztése</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="354"/>
       <source>Apply Quick</source>
-      <translation type="unfinished">Apply Quick</translation>
+      <translation>Gyors alkalmazása</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="380"/>
       <source>Apply Aligned</source>
-      <translation type="unfinished">Apply Aligned</translation>
+      <translation>Igazítás alkalmazása</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="403"/>
       <source>Create SectionView</source>
-      <translation type="unfinished">Create SectionView</translation>
+      <translation>Szakasznézet létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="652"/>
       <source>Create WeldSymbol</source>
-      <translation type="unfinished">Create WeldSymbol</translation>
+      <translation>Hegesztési szimbólum létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="660"/>
       <source>Edit WeldSymbol</source>
-      <translation type="unfinished">Edit WeldSymbol</translation>
+      <translation>Hegesztési szimbólum szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -1714,7 +1709,7 @@
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="117"/>
       <source>No Drawing Pages in document.</source>
-      <translation type="unfinished">No Drawing Pages in document.</translation>
+      <translation>A dokumentumban nincsenek rajzok.</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="130"/>
@@ -1729,7 +1724,7 @@
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="140"/>
       <source>Select only 1 page.</source>
-      <translation type="unfinished">Select only 1 page.</translation>
+      <translation>Csak 1 oldalt válasszon.</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="131"/>
@@ -1767,7 +1762,7 @@
       <location filename="../../ViewProviderProjGroup.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="204"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Biztosan folytatja?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="249"/>
@@ -1813,38 +1808,38 @@
     <message>
       <location filename="../../SymbolChooser.cpp" line="62"/>
       <source>Select a symbol</source>
-      <translation type="unfinished">Select a symbol</translation>
+      <translation>Szimbólum kiválasztása</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="111"/>
       <source>ActiveView to TD View</source>
-      <translation type="unfinished">ActiveView to TD View</translation>
+      <translation>Az aktív nézet Műszakirajz nézetté válik</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="177"/>
+      <location filename="../../TaskCenterLine.cpp" line="200"/>
       <source>Create Center Line</source>
-      <translation type="unfinished">Create Center Line</translation>
+      <translation>Középvonal létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="217"/>
+      <location filename="../../TaskCenterLine.cpp" line="230"/>
       <source>Edit Center Line</source>
-      <translation type="unfinished">Edit Center Line</translation>
+      <translation>Középvonal szerkesztése</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="160"/>
       <source>Create Section View</source>
-      <translation type="unfinished">Create Section View</translation>
+      <translation>Szakasznézet létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="179"/>
       <location filename="../../TaskSectionView.cpp" line="362"/>
       <source>Select at first an orientation</source>
-      <translation type="unfinished">Select at first an orientation</translation>
+      <translation>Először válassza ki a tájolást</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="195"/>
       <source>Edit Section View</source>
-      <translation type="unfinished">Edit Section View</translation>
+      <translation>Szakasznézet szerkesztése</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="478"/>
@@ -1854,22 +1849,22 @@
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="206"/>
       <source>Create Welding Symbol</source>
-      <translation type="unfinished">Create Welding Symbol</translation>
+      <translation>Hegesztési szimbólum létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="225"/>
       <source>Edit Welding Symbol</source>
-      <translation type="unfinished">Edit Welding Symbol</translation>
+      <translation>Hegesztési szimbólum szerkesztése</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="150"/>
       <source>Create Cosmetic Line</source>
-      <translation type="unfinished">Create Cosmetic Line</translation>
+      <translation>Segédvonal létrehozása</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="185"/>
       <source>Edit Cosmetic Line</source>
-      <translation type="unfinished">Edit Cosmetic Line</translation>
+      <translation>Segédvonal szerkesztése</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="125"/>
@@ -1896,8 +1891,8 @@
       <location filename="../../ViewProviderLeader.cpp" line="253"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
-      <translation type="unfinished">You cannot delete this leader line because
-it has a weld symbol that would become broken.</translation>
+      <translation>Nem törölheti ezt a vezérvonalat, mert
+olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLeader.cpp" line="256"/>
@@ -1919,13 +1914,13 @@ it has a weld symbol that would become broken.</translation>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <source>You cannot delete the anchor view of a projection group.</source>
-      <translation type="unfinished">You cannot delete the anchor view of a projection group.</translation>
+      <translation>A vetítési csoport 'Lehorgonyzott nézete' nem törölhető.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="185"/>
       <location filename="../../ViewProviderViewPart.cpp" line="352"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a section view that would become broken.</translation>
+      <translation>Ezt a nézetet nem törölheti, mert olyan szakasznézete van, amely megtörne.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="193"/>
@@ -1978,7 +1973,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="26"/>
       <source>ActiveView to TD View</source>
-      <translation type="unfinished">ActiveView to TD View</translation>
+      <translation>Az aktív nézet Műszakirajz nézetté válik</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="38"/>
@@ -3464,7 +3459,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="857"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Dxf-fájl mentése</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="859"/>
@@ -3760,18 +3755,6 @@ Szeretné folytatni?</translation>
       <location filename="../../TaskCenterLine.ui" line="327"/>
       <source>Continuous</source>
       <translation type="unfinished">Continuous</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="380"/>
-      <source>Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-      <translation type="unfinished">Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="384"/>
-      <source>Flip Ends</source>
-      <translation type="unfinished">Flip Ends</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="336"/>

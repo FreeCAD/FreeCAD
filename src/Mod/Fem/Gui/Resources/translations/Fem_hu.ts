@@ -72,7 +72,7 @@
     <message>
       <location filename="selection_widgets.py" line="274"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
+      <translation>Geometria hivatkozás választó ehhez</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
@@ -92,22 +92,22 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+      <translation>Kattintson a "Hozzáadás" gombra, és jelölje ki a geometriai elemeket a listához adáshoz.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on 'Add' and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+      <translation>Kattintson a 'Hozzáadás' gombra, és jelölje ki a geometriai elemeket a listához adáshoz.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+      <translation>A következő geometriai elemek közül választhat: </translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>Ha nincs geometria hozzáadva a listához, az összes többit használja.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>

@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Sartu adierazpen bat...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Adierazpena: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCADik ez litzateke egongo honakoen laguntzarik gabe:</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Banakoak</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Erakundeak</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Kode-lerroak zenbakituta egongo dira</translation>
     </message>
   </context>
   <context>
@@ -2646,15 +2646,15 @@ Aukera hau aldatzeko, aplikazioa berrabiarazi behar da.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Zein motatako lagin anitzeko antialiasing-a ari den erabiltzen</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Begien arteko distantzia proiekzio estereoetarako.
+Zehaztutako balioa unean bistaratzen ari den 3D objektuaren
+muga-koadroaren tamainarekin biderkatuko den faktore bat da.</translation>
     </message>
   </context>
   <context>
@@ -3598,25 +3598,25 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Egoera posible hurbilenera biratzen du kuboaren aurpegi batean klik egitean</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Biratu hurbilenera</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Kubo-tamaina</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Nabigazio-kuboaren tamaina</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Zenbateko zooma egingo den.
+'1' mailako zoomak 7,5eko faktorea da zoom-maila bakoitzerako.</translation>
     </message>
   </context>
   <context>
@@ -3934,7 +3934,7 @@ Hobespen-sistema hobespen orokorretan ezarritakoa da.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>Unitate ezezaguna:</translation>
     </message>
   </context>
   <context>
@@ -6962,9 +6962,9 @@ Bide-izena: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Bide-izen fisikoa: </translation>
     </message>
   </context>
   <context>
@@ -7436,7 +7436,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Birkalkulatu elementua edo dokumentua</translation>
+      <translation>Birkalkulatu ezaugarria edo dokumentua</translation>
     </message>
   </context>
   <context>

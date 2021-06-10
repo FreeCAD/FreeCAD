@@ -51,7 +51,7 @@
     <message>
       <location filename="TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation>Seiten für neue Anwender</translation>
+      <translation>Benutzer-Hub</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="52"/>
@@ -292,8 +292,8 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>Ein optionaler benutzerdefinierter Ordner, der unten auf der ersten Seite angezeigt wird.
+Wenn Sie ";;" verwenden, um Pfade zu trennen, können Sie hier mehrere Ordner hinzufügen</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -303,192 +303,197 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>Zeigt ein Notizblock neben den Datei Vorschaubildern an, wo Sie Notizen über einzelne Sitzungen behalten können</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>Tipps anzeigen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="182"/>
+      <location filename="../../DlgStartPreferences.ui" line="163"/>
+      <source>Displays help tips in the Start workbench Documents tab</source>
+      <translation>Zeigt Hilfe-Tipps im Dokumente Tab des Start Arbeitsbereich</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="185"/>
       <source>Fonts and colors</source>
       <translation>Schriftarten und Farben</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="194"/>
+      <location filename="../../DlgStartPreferences.ui" line="197"/>
       <source>The background of the main start page area</source>
       <translation>Hintergrund des Startseiten-Hauptbereichs</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="214"/>
+      <location filename="../../DlgStartPreferences.ui" line="217"/>
       <source>Background color</source>
       <translation>Hintergrundfarbe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="226"/>
+      <location filename="../../DlgStartPreferences.ui" line="229"/>
       <source>in FreeCAD</source>
       <translation>in FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="245"/>
+      <location filename="../../DlgStartPreferences.ui" line="248"/>
       <source>In external browser</source>
       <translation>In externem Browser öffnen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="263"/>
+      <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>Hintergrundfarbverlauf unten</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <location filename="../../DlgStartPreferences.ui" line="279"/>
       <source>The color of the version text</source>
       <translation>Die Farbe des Versions-Texts</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="296"/>
+      <location filename="../../DlgStartPreferences.ui" line="299"/>
       <source>Link color</source>
       <translation>Link-Farbe</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="303"/>
+      <location filename="../../DlgStartPreferences.ui" line="306"/>
       <source>An optional image to display as background</source>
       <translation>Ein alternatives Hintergrundbild</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="316"/>
+      <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>Wenn diese Option aktiviert und in den allgemeinen Einstellungen ein Stylesheet angegeben ist, werden die Farben durch die hier angegebenen überschrieben</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="335"/>
+      <location filename="../../DlgStartPreferences.ui" line="338"/>
       <source>Page background color</source>
       <translation>Hintergrundfarbe der Seite</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <location filename="../../DlgStartPreferences.ui" line="351"/>
       <source>The color of the text on the main pages</source>
       <translation>Die Textfarbe auf den Hauptseiten</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="368"/>
+      <location filename="../../DlgStartPreferences.ui" line="371"/>
       <source>Background image</source>
       <translation>Hintergrundbild</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="375"/>
+      <location filename="../../DlgStartPreferences.ui" line="378"/>
       <source>Page text color</source>
       <translation>Textfarbe auf Seiten</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="388"/>
+      <location filename="../../DlgStartPreferences.ui" line="391"/>
       <source>The color of the links</source>
       <translation>Die Farbe der Links</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="414"/>
+      <location filename="../../DlgStartPreferences.ui" line="417"/>
       <source>The background color of the boxes inside the pages</source>
       <translation>Die Hintergrundfarbe der Kästen auf den Seiten</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="434"/>
+      <location filename="../../DlgStartPreferences.ui" line="437"/>
       <source>Box background color</source>
       <translation>Hintergrundfarbe der Kästen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="447"/>
+      <location filename="../../DlgStartPreferences.ui" line="450"/>
       <source>The background color behind the panels</source>
       <translation>Die Hintergrundfarbe hinter den Paneelen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="476"/>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>The down gradient for the background color (currently unsupported)</source>
       <translation>Der Farbverlauf (abwärts) der Hintergrundfarbe (zur Zeit nicht unterstützt)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="499"/>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>Open links</source>
       <translation>Links öffnen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="506"/>
+      <location filename="../../DlgStartPreferences.ui" line="509"/>
       <source>Background text color</source>
       <translation>Hintergrundfarbe des Textes</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="513"/>
+      <location filename="../../DlgStartPreferences.ui" line="516"/>
       <source>Use FreeCAD style sheet</source>
       <translation>FreeCAD-Stylesheet verwenden</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="520"/>
+      <location filename="../../DlgStartPreferences.ui" line="523"/>
       <source>Font family</source>
       <translation>Schriftartfamilie</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="529"/>
+      <location filename="../../DlgStartPreferences.ui" line="532"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
       <translation>Die auf der Startseite verwendete Schriftfamilie. Kann eine Schriftart oder eine durch Kommata getrennte Liste von Ausweichschriftarten sein</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="535"/>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Arial,Helvetica,sans</source>
       <translation>Arial, Helvetica, sans</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="548"/>
+      <location filename="../../DlgStartPreferences.ui" line="551"/>
       <source>The base font size to use for all texts of the Start page</source>
       <translation>Die Basis-Schriftgröße für Text auf der Startseite</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="569"/>
+      <location filename="../../DlgStartPreferences.ui" line="572"/>
       <source>Use gradient for New File icon</source>
       <translation>Farbverlauf für neues Datei-Icon verwenden</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="576"/>
+      <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>Wenn diese Option ausgewählt ist, zeigt das 'Neue Datei' Symbol ein Verlaufssymbol anstelle des normalen Symbols</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="598"/>
+      <location filename="../../DlgStartPreferences.ui" line="601"/>
       <source>Options</source>
       <translation>Optionen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="604"/>
+      <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>Wählen Sie aus, welcher Arbeitsbereich nach dem Programmstart aktiv ist</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="611"/>
+      <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>Wenn aktiviert, wird die Startseite beim Start von FreeCAD automatisch geschlossen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="630"/>
+      <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
       <translation>Nach dem Laden Arbeitsbereich wechseln</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="637"/>
+      <location filename="../../DlgStartPreferences.ui" line="640"/>
       <source>Close start page after loading</source>
       <translation>Nach dem Laden Startseite schließen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="644"/>
+      <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>Datei öffnen bewirkt Schließen und Wechseln</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="651"/>
+      <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>Wenn die Anwendung durch Öffnen einer Datei gestartet wird, gelten die beiden obigen Einstellungen</translation>
     </message>
   </context>
 </TS>

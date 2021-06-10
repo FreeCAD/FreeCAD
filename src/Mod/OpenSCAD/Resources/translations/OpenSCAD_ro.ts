@@ -142,12 +142,12 @@
       <translation>Selectati mai intai 3 obiecte</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Functia nu este suportata</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Apasati Ok</translation>
     </message>
@@ -202,14 +202,9 @@
       <translation type="unfinished">Save</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="345"/>
+      <location filename="OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>Reîmprospătare</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
     </message>
   </context>
   <context>

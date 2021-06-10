@@ -86,6 +86,7 @@ class Text(gui_base_original.Creator):
     def createObject(self):
         """Create the actual object in the current document."""
         text_list = self.text
+        text_list = [text.replace("\"","\\\"") for text in text_list]
 
         # If the last element is an empty string "" we remove it
         if not text_list[-1]:

@@ -1870,12 +1870,12 @@ Cela effacera la propriété 'Support', le cas échéant.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6005"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Arête divisée</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6006"/>
       <source>Splits an edge into two while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
+      <translation>Divise une arête en deux tout en préservant les contraintes</translation>
     </message>
   </context>
   <context>
@@ -2220,7 +2220,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4230"/>
       <source>Swap PointOnObject+tangency with point to curve tangency</source>
-      <translation type="unfinished">Swap PointOnObject+tangency with point to curve tangency</translation>
+      <translation>Échanger PointOnObject+tangence avec la tangence du point à la courbe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4325"/>
@@ -2439,7 +2439,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5977"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Arête divisée</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6152"/>
@@ -2543,22 +2543,22 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Renommer la contrainte d'esquisse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="851"/>
+      <location filename="../../ViewProviderSketch.cpp" line="853"/>
       <source>Drag Point</source>
       <translation>Faire glisser le Point</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="882"/>
+      <location filename="../../ViewProviderSketch.cpp" line="884"/>
       <source>Drag Curve</source>
       <translation>Faire glisser la Courbe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="933"/>
+      <location filename="../../ViewProviderSketch.cpp" line="935"/>
       <source>Drag Constraint</source>
       <translation>Faire glisser la Contrainte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1109"/>
       <source>Modify sketch constraints</source>
       <translation>Modifier les contraintes d'esquisse</translation>
     </message>
@@ -3279,22 +3279,22 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandConstraints.cpp" line="675"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation type="unfinished">Sketcher Constraint Substitution</translation>
+      <translation>Substitution de la contrainte d'esquisse</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="681"/>
       <source>Keep notifying me of constraint substitutions</source>
-      <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
+      <translation>Continuer à me notifier des substitutions de contraintes</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2674"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied instead.</translation>
+      <translation>Le point de terminaison de la tangence des arêtes a été appliqué à la place.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4242"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
+      <translation>Le point de fin de tangence des arêtes a été appliqué. Le point sur la contrainte d'objet a été supprimé.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4923"/>
@@ -4209,12 +4209,12 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="20"/>
       <source>Working colors</source>
-      <translation type="unfinished">Working colors</translation>
+      <translation>Couleurs de travail</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
       <source>Coordinate text</source>
-      <translation type="unfinished">Coordinate text</translation>
+      <translation>Texte des coordonnées</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
@@ -4224,27 +4224,27 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
+      <translation>Création de la ligne</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="115"/>
       <source>Cursor crosshair</source>
-      <translation type="unfinished">Cursor crosshair</translation>
+      <translation>Réticule du curseur</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="140"/>
       <source>Geometric element colors</source>
-      <translation type="unfinished">Geometric element colors</translation>
+      <translation>Couleurs des éléments géométriques</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="154"/>
       <source>Internal alignment edge</source>
-      <translation type="unfinished">Internal alignment edge</translation>
+      <translation>Arête d’alignement interne</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="167"/>
       <source>Unconstrained</source>
-      <translation type="unfinished">Unconstrained</translation>
+      <translation>Non Contraint</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="180"/>
@@ -4286,12 +4286,12 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="678"/>
       <source>Deactivated constraint</source>
-      <translation type="unfinished">Deactivated constraint</translation>
+      <translation>Contrainte désactivée</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="723"/>
       <source>Colors outside Sketcher</source>
-      <translation type="unfinished">Colors outside Sketcher</translation>
+      <translation>Couleurs en dehors de l'esquisse</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="279"/>
@@ -4306,7 +4306,7 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="442"/>
       <source>Constrained</source>
-      <translation type="unfinished">Constrained</translation>
+      <translation>Contrainte</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="466"/>
@@ -4316,7 +4316,7 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="479"/>
       <source>Fully constrained Sketch</source>
-      <translation type="unfinished">Fully constrained Sketch</translation>
+      <translation>Esquisse entièrement contrainte</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
@@ -4351,12 +4351,12 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="556"/>
       <source>Constraint colors</source>
-      <translation type="unfinished">Constraint colors</translation>
+      <translation>Couleur des contraintes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="570"/>
       <source>Constraint symbols</source>
-      <translation type="unfinished">Constraint symbols</translation>
+      <translation>Symboles de contrainte</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="577"/>
@@ -4371,7 +4371,7 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="651"/>
       <source>Expression dependent constraint</source>
-      <translation type="unfinished">Expression dependent constraint</translation>
+      <translation>Contrainte dépendant de l'expression</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="658"/>
@@ -4458,12 +4458,12 @@ Supporte tous les systèmes d'unité sauf 'US customary' et 'Building US/Euro'.<
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="98"/>
       <source>Use Diameter as default constraint for arcs and circles instead of Radius.</source>
-      <translation type="unfinished">Use Diameter as default constraint for arcs and circles instead of Radius.</translation>
+      <translation>Utiliser le diamètre comme contrainte par défaut pour les arcs et les cercles au lieu du rayon.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="101"/>
       <source>Use diameter as default constraint for arcs and circles</source>
-      <translation type="unfinished">Use diameter as default constraint for arcs and circles</translation>
+      <translation>Utiliser le diamètre comme contrainte par défaut pour les arcs et les cercles</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="120"/>
@@ -4506,27 +4506,27 @@ Supporte tous les systèmes d'unité sauf 'US customary' et 'Building US/Euro'.<
       <translation>Afficher les objets auxquels l'esquisse est attachée</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
-      <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
-      <translation type="unfinished">By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</translation>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <source>Force orthographic camera when entering edit</source>
+      <translation>Forcer la caméra orthographique lors du passage en mode édition</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
       <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <translation>Ouvrir l'esquisse en mode Vue en coupe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="282"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Remarque: ces paramètres sont des valeurs par défaut appliquées aux nouvelles esquisses. Chaque esquisse se comporte individuellement en fonction des propriétés définies dans l’onglet Vue.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
       <source>View scale ratio</source>
       <translation>Echelle de la vue</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="376"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="397"/>
       <source>The 3D view is scaled based on this factor</source>
       <translation>La vue 3D est mise à l'échelle en fonction de ce facteur</translation>
     </message>
@@ -4541,52 +4541,66 @@ Supporte tous les systèmes d'unité sauf 'US customary' et 'Building US/Euro'.<
       <translation>Restaurer la position de la caméra après l’édition</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
+      <source>When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</source>
+      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
+      <source>Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</source>
+      <translation type="unfinished">Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="301"/>
       <source>Applies current visibility automation settings to all sketches in open documents</source>
       <translation>Appliquer les paramètres d'automatisation de visibilité à tous les sketchs des documents ouverts</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="283"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="304"/>
       <source>Apply to existing sketches</source>
       <translation>Appliquer aux esquisses existantes</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="293"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="314"/>
       <source>Font size used for labels and constraints</source>
       <translation>Taille de police utilisée pour les étiquettes et les contraintes</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="317"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="339"/>
       <source>Current sketcher creation tool will remain active after creation</source>
       <translation>L'outil de création de géométrie en cours restera actif après la création</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="321"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="342"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Création de géométrie en mode continu</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="358"/>
       <source>Grid line pattern</source>
       <translation>Motif des lignes de grille</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="344"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="365"/>
       <source>Number of polygons for geometry approximation</source>
       <translation>Nombre de polygones pour l'approximation de géométrie</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="225"/>
+      <location filename="../../SketcherSettings.cpp" line="230"/>
       <source>Unexpected C++ exception</source>
       <translation>Exception C++ inattendue</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="233"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -5149,136 +5163,136 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6242"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6244"/>
       <source>Edit sketch</source>
       <translation>Modifier l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6258"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6257"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6259"/>
       <source>Do you want to close this dialog?</source>
       <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6271"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
       <source>Invalid sketch</source>
       <translation>Esquisse non valide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6272"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6274"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Voulez-vous ouvrir l'outil de validation d'esquisse ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6275"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>L'esquisse n'est pas valide et ne peut pas être éditée.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6490"/>
       <source>Please remove the following constraint:</source>
       <translation>Veuillez supprimer la contrainte suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6491"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Veuillez supprimer au moins une des contraintes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6497"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Veuillez supprimer la contrainte redondante suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6496"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6498"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Veuillez supprimer les contraintes redondantes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6504"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La contrainte suivante est partiellement redondante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6503"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6505"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Les contraintes suivantes sont partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6511"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Veuillez supprimer la contrainte malformée suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6512"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Veuillez supprimer les contraintes malformées suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6547"/>
       <source>Empty sketch</source>
       <translation>Esquisse vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6554"/>
       <source>Over-constrained sketch</source>
-      <translation type="unfinished">Over-constrained sketch</translation>
+      <translation>Esquisse sur-contrainte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6561"/>
       <source>Sketch contains malformed constraints</source>
-      <translation type="unfinished">Sketch contains malformed constraints</translation>
+      <translation>L'esquisse contient des contraintes malformées</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6566"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6568"/>
       <source>Sketch contains conflicting constraints</source>
-      <translation type="unfinished">Sketch contains conflicting constraints</translation>
+      <translation>L'esquisse contient des contraintes contradictoires</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6574"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6576"/>
       <source>Sketch contains redundant constraints</source>
-      <translation type="unfinished">Sketch contains redundant constraints</translation>
+      <translation>L'esquisse contient des contraintes redondantes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6583"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
       <source>Sketch contains partially redundant constraints</source>
-      <translation type="unfinished">Sketch contains partially redundant constraints</translation>
+      <translation>L'esquisse contient des contraintes partiellement redondantes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6553"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6560"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6567"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6575"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6584"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6555"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6562"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6569"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6577"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6586"/>
       <source>(click to select)</source>
       <translation>(cliquez pour sélectionner)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6595"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6597"/>
       <source>Fully constrained sketch</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6604"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Esquisse sous-contrainte avec &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degré&lt;/span&gt;&lt;/a&gt; de liberté</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6605"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Esquisse sous-contrainte avec &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrés&lt;/span&gt;&lt;/a&gt; de liberté</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6610"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6612"/>
       <source>Solved in %1 sec</source>
       <translation>Résolu en %1 secondes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6613"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Non résolu (%1 sec)</translation>
     </message>

@@ -40,8 +40,9 @@ Available commands:
     status:              prints a status of the translations
     update:              updates crowdin the current version of .ts files found in the source code
     build:               builds a new downloadable package on crowdin with all translated strings
+    build-status:        shows the status of the current builds available on crowdin
     download [build_id]: downloads build specified by 'build_id' or latest if build_id is left blank
-    apply:               applies downloaded translations to source code (runs updatefromcrowdin.py)
+    apply / install:     applies downloaded translations to source code (runs updatefromcrowdin.py)
 
 Example:
 
@@ -252,12 +253,12 @@ if __name__ == "__main__":
         main_ts_files = list(filter(lambda f: not [a for a in ts_files_wo_ext if a in f and f != a], ts_files_wo_ext))
         # Create tuples to map Crowdin name with local path name
         names_and_path = [(f'{basename(f)}.ts', f'{f}.ts') for f in main_ts_files]
-        # Accomodate for legacy naming
+        # Accommodate for legacy naming
         ts_files = [TsFile(LEGACY_NAMING_MAP[a] if a in LEGACY_NAMING_MAP else a, b) for (a, b) in names_and_path]
 
         updater.update(ts_files)
 
-    elif command == "apply":
+    elif command in ["apply","install"]:
         import updatefromcrowdin
         updatefromcrowdin.run()
 

@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Enregistrez le fichier Dxf</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -901,14 +901,9 @@
       <translation>Créer une vue active</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="346"/>
+      <location filename="../../TaskCenterLine.cpp" line="331"/>
       <source>Create CenterLine</source>
       <translation>Créer une trait d'axe</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.cpp" line="391"/>
-      <source>Edit CenterLine</source>
-      <translation>Editer un trait d'axe</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="271"/>
@@ -1822,12 +1817,12 @@
       <translation>De vue active à vue TD</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="177"/>
+      <location filename="../../TaskCenterLine.cpp" line="200"/>
       <source>Create Center Line</source>
       <translation>Créer une ligne centrale</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="217"/>
+      <location filename="../../TaskCenterLine.cpp" line="230"/>
       <source>Edit Center Line</source>
       <translation>Modifier la ligne centrale</translation>
     </message>
@@ -3457,7 +3452,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="857"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Enregistrez le fichier Dxf</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="859"/>
@@ -3753,18 +3748,6 @@ Do you want to continue?</source>
       <location filename="../../TaskCenterLine.ui" line="327"/>
       <source>Continuous</source>
       <translation>Continue</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="380"/>
-      <source>Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-      <translation>Inverser les points d'extrémité des lignes sélectionnées pour la création du trait d'axe,
-voir le Wiki FreeCAD &apos;ligne centrale entre 2 arêtes&apos; pour une description</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="384"/>
-      <source>Flip Ends</source>
-      <translation>Inverser les extrémités</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="336"/>

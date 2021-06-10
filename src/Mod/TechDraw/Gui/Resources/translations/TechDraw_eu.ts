@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Gorde DXF fitxategia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -901,14 +901,9 @@
       <translation>Sortu bista aktiboa</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="346"/>
+      <location filename="../../TaskCenterLine.cpp" line="331"/>
       <source>Create CenterLine</source>
       <translation>Sortu erdiko lerroa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.cpp" line="391"/>
-      <source>Edit CenterLine</source>
-      <translation>Editatu erdiko lerroa</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="271"/>
@@ -1821,12 +1816,12 @@
       <translation>Bista aktiboa TD bistara</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="177"/>
+      <location filename="../../TaskCenterLine.cpp" line="200"/>
       <source>Create Center Line</source>
       <translation>Sortu erdiko lerroa</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="217"/>
+      <location filename="../../TaskCenterLine.cpp" line="230"/>
       <source>Edit Center Line</source>
       <translation>Editatu erdiko lerroa</translation>
     </message>
@@ -3465,7 +3460,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="857"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Gorde DXF fitxategia</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="859"/>
@@ -3761,18 +3756,6 @@ Jarraitu nahi duzu?</translation>
       <location filename="../../TaskCenterLine.ui" line="327"/>
       <source>Continuous</source>
       <translation>Jarraia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="380"/>
-      <source>Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-      <translation>Lerro hautatuen amaiera-puntuak iraultzen ditu erdiko lerroa sortzeko,
-ikusi FreeCADen wikiko &apos;2LineCenterLine&apos; deskribapen baterako</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="384"/>
-      <source>Flip Ends</source>
-      <translation>Irauli amaierak</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="336"/>

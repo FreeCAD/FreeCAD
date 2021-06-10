@@ -6385,7 +6385,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>%1</source>
-      <translation type="unfinished">%1</translation>
+      <translation>%1</translation>
     </message>
     <message>
       <source>Exception</source>

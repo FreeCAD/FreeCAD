@@ -199,6 +199,9 @@ def findDistance(point, edge, strict=False):
 def get_spline_normal(edge, tol=-1):
     """Find the normal of a BSpline edge."""
 
+    if edge.isNull():
+        return None
+
     if is_straight_line(shape, tol):
         return None
 
@@ -230,9 +233,11 @@ def get_normal(shape, tol=-1):
                 return None
 
     # for shapes
-    if is_straight_line(shape, tol):
+    if shape.isNull():
         return None
 
+    if is_straight_line(shape, tol):
+        return None
     else:
         plane = find_plane(shape, tol)
         if plane:
@@ -273,6 +278,7 @@ def is_planar(shape, tol=-1):
             poly = Part.makePolygon(shape)
             if is_straight_line(poly, tol):
                 return True
+
             plane = poly.findPlane(tol)
             if plane:
                 return True
@@ -280,6 +286,9 @@ def is_planar(shape, tol=-1):
                 return False
 
     # for shapes
+    if shape.isNull():
+        return False
+
     # because Part.Shape.findPlane return None for Vertex and straight edges
     if shape.ShapeType == "Vertex":
         return True
@@ -299,6 +308,9 @@ def is_straight_line(shape, tol=-1):
     function used in other methods because Part.Shape.findPlane assign a
     plane and normal to straight wires creating privileged directions
     and to deal with straight wires with overlapped edges."""
+
+    if shape.isNull():
+        return False
 
     if len(shape.Faces) != 0:
         return False
@@ -331,6 +343,9 @@ def is_straight_line(shape, tol=-1):
 
 def are_coplanar(shape_a, shape_b, tol=-1):
     """Return True if exist a plane containing both shapes."""
+
+    if shape_a.isNull() or shape_b.isNull():
+        return False
 
     if not is_planar(shape_a, tol) or not is_planar(shape_b, tol):
         return False
@@ -391,6 +406,9 @@ def get_spline_surface_normal(shape, tol=-1):
     """Check if shape formed by BSpline surfaces is planar and get normal.
     If shape is not planar return None."""
 
+    if shape.isNull():
+        return None
+
     if len(shape.Faces) == 0:
         return None
 
@@ -430,6 +448,9 @@ def find_plane(shape, tol=-1):
     """Find the plane containing the shape if possible.
     Use this function as a workaround due Part.Shape.findPlane
     fail to find plane on BSpline surfaces."""
+
+    if shape.isNull():
+        return None
 
     if shape.ShapeType == "Vertex":
         return None

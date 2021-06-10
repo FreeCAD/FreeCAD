@@ -142,12 +142,12 @@
       <translation>Сначала необходимо выбрать 3 объекта</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Неподдерживаемая функция</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Нажмите кнопку OK</translation>
     </message>
@@ -202,14 +202,9 @@
       <translation type="unfinished">Save</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="345"/>
+      <location filename="OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>Обновить</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
     </message>
   </context>
   <context>

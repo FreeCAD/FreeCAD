@@ -568,74 +568,74 @@ Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Vstavi zgoraj %n vrsto</numerusform>
+        <numerusform>Vstavi zgoraj %n vrsti</numerusform>
+        <numerusform>Vstavi zgoraj %n vrste</numerusform>
+        <numerusform>Vstavi zgoraj %n vrst</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Vstavi spodaj %n vrsto</numerusform>
+        <numerusform>Vstavi spodaj %n vrsti</numerusform>
+        <numerusform>Vstavi spodaj %n vrste</numerusform>
+        <numerusform>Vstavi spodaj %n vrst</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>Vstavi %n nezvezno vrstico</numerusform>
+        <numerusform>Vstavi %n nezvezni vrstici</numerusform>
+        <numerusform>Vstavi %n nezvezne vrstice</numerusform>
+        <numerusform>Vstavi %n nezveznih vrstic</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>Odstrani vrstico</numerusform>
+        <numerusform>Odstrani vrstici</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Vstavi %n stolpec levo</numerusform>
+        <numerusform>Vstavi %n stolpca levo</numerusform>
+        <numerusform>Vstavi %n stolpce levo</numerusform>
+        <numerusform>Vstavi %n stolpcev levo</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Vstavi %n stolpec desno</numerusform>
+        <numerusform>Vstavi %n stolpca desno</numerusform>
+        <numerusform>Vstavi %n stolpce desno</numerusform>
+        <numerusform>Vstavi %n stolpcev desno</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Vstavi %n nezvezen stolpec</numerusform>
+        <numerusform>Vstavi %n nezvezna stolpca</numerusform>
+        <numerusform>Vstavi %n nezvezne stolpce</numerusform>
+        <numerusform>Vstavi %n nezveznih stolpcev</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Odstrani stolpec</numerusform>
+        <numerusform>Odstrani stolpca</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
       </translation>
     </message>
   </context>

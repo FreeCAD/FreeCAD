@@ -115,6 +115,11 @@ class _TaskPanel:
             self.select_check_mesh
         )
         QtCore.QObject.connect(
+            self.form.rb_buckling_analysis,
+            QtCore.SIGNAL("clicked()"),
+            self.select_buckling_analysis
+        )
+        QtCore.QObject.connect(
             self.Calculix,
             QtCore.SIGNAL("started()"),
             self.calculixStarted
@@ -161,6 +166,8 @@ class _TaskPanel:
             self.form.rb_thermomech_analysis.setChecked(True)
         elif self.fea.solver.AnalysisType == "check":
             self.form.rb_check_mesh.setChecked(True)
+        elif self.fea.solver.AnalysisType == "buckling":
+            self.form.rb_buckling_analysis.setChecked(True)
         return
 
     def femConsoleMessage(self, message="", color="#000000"):
@@ -386,3 +393,6 @@ class _TaskPanel:
 
     def select_check_mesh(self):
         self.select_analysis_type("check")
+
+    def select_buckling_analysis(self):
+        self.select_analysis_type("buckling")

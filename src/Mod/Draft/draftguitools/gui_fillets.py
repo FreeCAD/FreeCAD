@@ -61,6 +61,7 @@ class Fillet(gui_base_original.Creator):
         """Set icon, menu and tooltip.""" 
 
         return {'Pixmap': 'Draft_Fillet',
+                'Accel':'F,I',
                 'MenuText': QT_TRANSLATE_NOOP("Draft", "Fillet"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates a fillet between two selected wires or edges.")}
 

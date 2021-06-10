@@ -1077,31 +1077,36 @@ beyond the dimension line</source>
     <message>
       <location filename="pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>O objeto de base que será duplicado.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Número de Pastas a serem Criadas.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Fator de rotação do array torcido.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Preencha as letras com faces</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="216"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>Uma unidade para expressar a medida.
+Deixe em branco para o padrão do sistema.
+Use 'arch' para forçar a notação de arco dos EUA</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="102"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
   </context>
   <context>
@@ -1602,22 +1607,22 @@ isto é, as cópias seguem a direção especificada nos eixos X, Y, Z.
 A rede pode ser transformada em uma rede polar ou circular alterando seu tipo.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="64"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Filete</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Cria um filete entre dois arames ou arestas.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
       <translation>Excluir objetos originais</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
       <translation>Criar chanfro</translation>
     </message>
@@ -1627,24 +1632,24 @@ A rede pode ser transformada em uma rede polar ou circular alterando seu tipo.</
       <translation>Direção do deslocamento não definida. Por favor, mova o mouse de ambos os lados do objeto primeiro para indicar uma direção</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="233"/>
+      <location filename="gui_setstyle.py" line="259"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Salvar estilos</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="234"/>
+      <location filename="gui_setstyle.py" line="260"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Nome deste novo estilo:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="242"/>
+      <location filename="gui_setstyle.py" line="268"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Nome existente. Sobrescrever?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="277"/>
+      <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Erro: módulo json não encontrado. Não foi possível salvar o estilo</translation>
     </message>
   </context>
   <context>
@@ -2542,6 +2547,9 @@ Objetos adicionados a esta camada podem compartilhar as mesmas propriedades visu
     </message>
   </context>
   <context>
+    <name>Draft_Lineremover</name>
+  </context>
+  <context>
     <name>Draft_LinkArray</name>
     <message>
       <location filename="gui_array_simple.py" line="119"/>
@@ -2792,10 +2800,10 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</source>
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
 those that are at the same level as this object, including the upper group that contains them all.</source>
-      <translation type="unfinished">If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+      <translation>Se a seleção for um grupo, selecionará todos os objetos que estão dentro deste grupo, incluindo os em subgrupos aninhados.
 
-If the selection is a simple object inside a group, it will select the "brother" objects, that is,
-those that are at the same level as this object, including the upper group that contains them all.</translation>
+Se a seleção for um objeto simples dentro de um grupo, selecione os objetos "irmão", isto é,
+aqueles que estão no mesmo nível que este objeto, incluindo o grupo superior que contém todos eles.</translation>
     </message>
   </context>
   <context>
@@ -3699,11 +3707,6 @@ usando as teclas [ and ] enquanto está desenhando</translation>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="349"/>
-      <source>Apply to selected objects</source>
-      <translation>Aplicar aos objetos selecionados</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
       <translation>Linhas e caras</translation>
@@ -3721,17 +3724,32 @@ usando as teclas [ and ] enquanto está desenhando</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="22"/>
       <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+      <translation>Preenche os valores abaixo com uma estilo predefinido armazenado</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>Carregar perfil</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>Salvar estilo atual como perfil...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation>Aplicar o estilo acima ao(s) objeto(s) selecionado(s)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <source>Selected</source>
+      <translation>Selecionado</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <source>Texts/dims</source>
+      <translation>Textos/escurecimentos</translation>
     </message>
   </context>
   <context>
@@ -3860,7 +3878,7 @@ such as "Arial:Bold"</source>
       <translation>Tolerância</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>Juntar a geometria</translation>
     </message>
@@ -3955,12 +3973,12 @@ such as "Arial:Bold"</source>
       <translation>Direito</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation>Agrupar camadas em blocos</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Exportar objetos 3D como malhas Polifacetadas</translation>
     </message>
@@ -3990,17 +4008,17 @@ such as "Arial:Bold"</source>
       <translation>Se selecionado, a rede de pontos do Projeto será sempre visível quando a bancada de trabalho estiver ativa. Caso contrário, somente a partir de um comando</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation>Usar o tamanho padrão de fonte para textos</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Importar limites das hachuras como arames</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation>Renderizar polilinhas com largura</translation>
     </message>
@@ -4045,32 +4063,32 @@ such as "Arial:Bold"</source>
       <translation>Cor da geometria de construção</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>Importar</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>textos e cotas</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>pontos</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation>layouts</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation>*blocos</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation>Projetar objetos exportados na direção da vista atual</translation>
     </message>
@@ -4170,32 +4188,32 @@ such as "Arial:Bold"</source>
       <translation>Preencher objetos com faces sempre que possível</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>Criar</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
       <translation>peças simples</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation>Objetos de rascunho</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
       <translation>Esboços</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation>Obter cores originais do arquivo DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Tratar elipses e splines como polilinhas</translation>
     </message>
@@ -4210,7 +4228,7 @@ such as "Arial:Bold"</source>
       <translation>Mostrar o sufixo das unidades nas dimensões</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Permitir que o FreeCAD baixe e atualize automaticamente as bibliotecas DXF</translation>
     </message>
@@ -4360,7 +4378,7 @@ such as "Arial:Bold"</source>
       <translation>Opções de importação</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation>Use o antigo importador em python</translation>
     </message>
@@ -4385,22 +4403,22 @@ such as "Arial:Bold"</source>
       <translation>Desativar a conversão de unidades</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation>Exportar vistas do desenho como blocos</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation>Nota: Nem todas as opções abaixo já estão usadas pelo importador novo</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Mostrar esta caixa de diálogo durante a importação e exportação</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation>Atualização automática (apenas importador antigo)</translation>
     </message>
@@ -4410,7 +4428,7 @@ such as "Arial:Bold"</source>
       <translation>Prefixo para rótulos de clones:</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Fator de escala a ser aplicado aos arquivos importados</translation>
     </message>
@@ -4530,12 +4548,12 @@ such as "Arial:Bold"</source>
       <translation>O caminho para o executável do Conversor de Arquivos do ODA (antigo Teigha)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>A exportação de elipses ainda não funciona sempre corretamente. Use esta opção para exportá-las como polilinhas.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation>Segmento de Spline máximo:</translation>
     </message>
@@ -4552,7 +4570,7 @@ Values with differences below this value will be treated as same. This value wil
 Valores com diferenças menores serão tratados como iguais. Esse valor será depreciado em breve, o nível de precisão controlará ambos.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation>Use o importador python antigo (legacy)</translation>
     </message>
@@ -4889,27 +4907,19 @@ Note que isto não é suportado por todas as ferramentas, e muitos objetos não 
       <translation>Caminho para conversor de arquivo ODA</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Esta caixa de diálogo de preferências será mostrada ao importar/exportar arquivos DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>O importador Python é usado, caso contrário, o importador C++ mais recente é utilizado.
 Nota: O importador C++ é mais rápido, mas não tem muitos recursos ainda</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation>O exportador Python é usado, caso contrário, o importador C++ mais recente é utilizado.
-Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda      </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4918,42 +4928,42 @@ Você também pode fazer isso manualmente instalando a bancada "dxf_library"
 do Gerenciador de Complementos.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Se desmarcado, textos e mtexts não serão importados</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Se desmarcado, os pontos não serão importados</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Se marcado, objetos do paper space serão importados também</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Se você deseja que os blocos não nomeados (começando com um *) também sejam importados</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Apenas objetos Peça padrão serão criados (mais rápido)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Objetos paramétricos do Esboço serão criados sempre que possível</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Desenhos serão criados sempre que possível</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4964,76 +4974,76 @@ Exemplo: para arquivos em milímetros: 1, em centímetros: 10,
                              em metros: 1000, em polegadas: 25,4, em pés: 304,8</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation>As cores serão recuperadas dos objetos DXF sempre que possível.
 Caso contrário, as cores padrão serão aplicadas. </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>O FreeCAD tentará juntar objetos coincidentes em fios.
 Observe que isso pode demorar um pouco!</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
       <translation>Objetos das mesmas camadas serão juntados em Blocos de Esboço,
 agilizando a exibição, mas tornando-os menos fáceis de editar </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Textos importados obterão o tamanho padrão de Texto de Esboço,
 em vez do tamanho que têm no documento DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Se marcado, camadas DXF serão importadas como Camadas de Esboço</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation>Usar Camadas</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Sombreados serão convertidos em arames simples</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Se polilinhas tiverem uma largura definida, elas serão renderizadas
 como arames fechados com largura correta</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Comprimento máximo de cada um dos segmentos de polilinha.
 Se definido como '0' toda a spline é tratada como um segmento reto.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Todos os objetos contendo faces serão exportados como polifaces 3D</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Vistas de Desenho serão exportadas como blocos.
 Isto pode falhar para modelos DXF R12.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Objetos exportados serão projetados para refletir a direção da vista atual</translation>
     </message>
@@ -5136,7 +5146,14 @@ Esse valor é o comprimento máximo do segmento. </translation>
     <message>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation>O exportador Python é usado, caso contrário, o exportador C++ mais recente é utilizado.
+Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda</translation>
     </message>
   </context>
   <context>
@@ -5149,7 +5166,7 @@ Esse valor é o comprimento máximo do segmento. </translation>
     <message>
       <location filename="importDWG.py" line="276"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Convertendo:</translation>
     </message>
   </context>
   <context>
@@ -5704,7 +5721,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Mudar estilo padrão para novos objetos</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
       <translation>Nenhum documento ativo. Abortando.</translation>
     </message>
@@ -5814,11 +5831,6 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Os dois pontos são coincidentes</translation>
     </message>
     <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation>espelhado)</translation>
-    </message>
-    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation>Um bloco encontrado: Explosão</translation>
@@ -5864,7 +5876,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Não há mais rebaixamento possível</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
       <translation>Entrada errada: objeto não está no documento.</translation>
     </message>
@@ -5874,7 +5886,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Entrada errada: objeto ponto não tem 'Geometry', 'Links', ou 'Components'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Entrada errada: deve ser um localizador, um vetor ou uma rotação.</translation>
     </message>
@@ -5892,11 +5904,6 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>Entrada errada: tipo de pontos incorreto.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation>Não é possível gerar uma forma: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -5959,7 +5966,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Objetos originais removidos.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Entrada errada: deve ser uma lista de textos ou um único texto.</translation>
     </message>
@@ -5979,7 +5986,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Entrada errada: deve ser um número inteiro.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Entrada errada: deve ser um vetor.</translation>
     </message>
@@ -5989,7 +5996,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Rede polar</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
       <translation>Entrada errada: deve ser um número.</translation>
     </message>
@@ -6004,7 +6011,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Use um dos 'make_linear_dimension', ou 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
       <translation>Entrada errada: o objeto não deve ser uma lista.</translation>
     </message>
@@ -6099,7 +6106,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Entrada errada: deve ser um número entre 0 e 100.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Entrada errada: deve ser uma lista ou tupla de textos ou um único texto.</translation>
     </message>
@@ -6170,37 +6177,32 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Rede retangular 2D</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Entrada errada: o subelemento não está no objeto.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Entrada errada: deve ser um texto: 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', ou 'Material'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation>Entrada errada: deve ser um texto.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation>Entrada errada: deve ser um texto: 'Horizontal', 'Vertical', ou 'Custom'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
       <translation>Entrada errada: deve ser uma lista de pelo menos dois vetores.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation>A direção não é personalizada; os pontos não serão usados.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation>Entrada errada: deve ser uma lista de dois elementos. Por exemplo, [object, 'Edge1'].</translation>
     </message>
@@ -7125,52 +7127,52 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Dividir linha</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Raio do filete</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
       <translation>Raio do filete</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
       <translation>Indique o raio.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
       <translation>Excluir objetos originais:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
       <translation>Modo de chanfro:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
       <translation>São necessários dois elementos.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="160"/>
+      <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
       <translation>Objeto de teste</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="161"/>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
       <translation>Objeto de teste removido</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
       <translation>Não é possível criar um filete</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>Criar filete</translation>
     </message>
@@ -7285,7 +7287,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Indique o ponto de localização</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="115"/>
+      <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
       <translation>Criar texto</translation>
     </message>
@@ -7344,87 +7346,96 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="DraftGui.py" line="739"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>Coordenadas relativas ao último ponto ou para coordenar a origem do sistema
+se é o primeiro ponto a definir</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="744"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Coordenadas relativas ao sistema global de coordenadas.
+Desmarque para usar o plano de trabalho do sistema de coordenada</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="750"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <translation>Marque esta opção se o objeto deve aparecer como preenchido. Caso contrário, ele aparecerá como wireframe. Não disponível se a opção rascunho 'Usar Primitivas' esta ativada</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="762"/>
       <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+      <translation>Selecionado, o offset será feito no modo OCC em vez do modo clássico</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1240"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Local u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1241"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Local u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1242"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Local u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1248"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Global u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Global u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Global u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2050"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Auto Agrupar:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Pontos:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="138"/>
       <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
+      <translation>Posicionamento:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="333"/>
       <source>Unable to scale object:</source>
-      <translation type="unfinished">Unable to scale object:</translation>
+      <translation>Não é possível redimensionar objetos:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="337"/>
       <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
+      <translation>Não é possível redimensionar objetos:</translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="934"/>
       <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+      <translation>Muitos objetos selecionados, número máximo definido é:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation>espelhado</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation>Não é possível gerar uma forma:</translation>
     </message>
   </context>
   <context>
@@ -7442,7 +7453,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
-      <translation type="unfinished">successfully exported</translation>
+      <translation>exportado com sucesso</translation>
     </message>
   </context>
 </TS>

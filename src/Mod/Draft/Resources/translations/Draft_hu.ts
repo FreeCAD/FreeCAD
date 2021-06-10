@@ -1084,31 +1084,36 @@ a méretvonalon túl</translation>
     <message>
       <location filename="pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>A másolandó alap objektum.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>A létrehozni kívánt másolatok száma.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>A csavart tömb forgatási tényezője.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Betűk kitöltése felületekkel</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="216"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>Egy egység, amely kifejezi a mérést.
+Hagyja üresen a rendszer alapértelmezetthez.
+Használja az 'arch' kifejezést amerikai US arch jelölésének kikényszerítésére</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="102"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
   </context>
   <context>
@@ -1609,22 +1614,22 @@ Ez azt jelenti, hogy a másolatok az X-Y, Z tengelyek megadott irányát követi
 Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megváltoztatásával.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="64"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Lekerekítés</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Lekerekítése hoz létre két kijelölt vonal vagy él között.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
       <translation>Eredeti tárgyak törlése</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
       <translation>Letörés létrehozása</translation>
     </message>
@@ -1634,24 +1639,24 @@ Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megv
       <translation>Az eltolás iránya nem meghatérozott. Először mozgassa az egeret a tárgy egyik oldalára, hogy meghatározza az irányt</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="233"/>
+      <location filename="gui_setstyle.py" line="259"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Stílus mentése</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="234"/>
+      <location filename="gui_setstyle.py" line="260"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Az új stílus neve:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="242"/>
+      <location filename="gui_setstyle.py" line="268"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>A név már létezik. Felülírjuk?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="277"/>
+      <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Hiba: a json modul nem található. A stílus mentése sikertelen</translation>
     </message>
   </context>
   <context>
@@ -2552,6 +2557,9 @@ A réteghez hozzáadott tárgyak ugyanazokat a vizuális tulajdonságokat osztj�
     </message>
   </context>
   <context>
+    <name>Draft_Lineremover</name>
+  </context>
+  <context>
     <name>Draft_LinkArray</name>
     <message>
       <location filename="gui_array_simple.py" line="119"/>
@@ -2802,10 +2810,10 @@ CTRL illesztéshez, SHIFT a kényszerítéshez, ALT másoláshoz.</translation>
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
 those that are at the same level as this object, including the upper group that contains them all.</source>
-      <translation type="unfinished">If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+      <translation>Ha a kijelölés csoport, akkor kijelöli a csoporton belüli összes objektumot, beleértve a beágyazott alcsoportok objektumait is.
 
-If the selection is a simple object inside a group, it will select the "brother" objects, that is,
-those that are at the same level as this object, including the upper group that contains them all.</translation>
+Ha a kijelölés egy csoporton belüli egyszerű objektum, akkor kiválasztja a 'testvér' objektumokat, azaz
+azokat, amelyek ugyanazon a szinten vannak, mint ez az objektum, beleértve a felső csoportot, amely mindet tartalmazza.</translation>
     </message>
   </context>
   <context>
@@ -3043,7 +3051,7 @@ egyenes piszkozatvonalak működik jól. A program figyelmen kívül hagyja a ne
     <message>
       <location filename="gui_snaps.py" line="150"/>
       <source>Midpoint</source>
-      <translation type="unfinished">Midpoint</translation>
+      <translation>Felezőpont</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="153"/>
@@ -3095,7 +3103,7 @@ egyenes piszkozatvonalak működik jól. A program figyelmen kívül hagyja a ne
     <message>
       <location filename="gui_snaps.py" line="180"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Merőleges</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="183"/>
@@ -3709,11 +3717,6 @@ módosíthatja rajzolás közben</translation>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="349"/>
-      <source>Apply to selected objects</source>
-      <translation>Alkalmazza a kijelölt objektumokon</translation>
-    </message>
-    <message>
       <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
       <translation>Egyenesek és felületek</translation>
@@ -3731,17 +3734,32 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="22"/>
       <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+      <translation>Az alábbi értékeket egy tárolt stíluskészlettel tölti ki</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>Sablon betöltése</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>Mentse az aktuális stílust előre beállítottként...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation>A fenti stílus alkalmazása kijelölt tárgy(ak)ra</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <source>Selected</source>
+      <translation>Kiválasztott</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <source>Texts/dims</source>
+      <translation>Szöveg / méretek</translation>
     </message>
   </context>
   <context>
@@ -3873,7 +3891,7 @@ mint a " Arial: Dőlt "</translation>
       <translation>Tűrés</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>Geometria csatlakoztatása</translation>
     </message>
@@ -3968,12 +3986,12 @@ mint a " Arial: Dőlt "</translation>
       <translation>Jobb</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation>Csoport rétegek tömbökké</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>3D objektum exportálása többfelületű hálórajzzá</translation>
     </message>
@@ -4003,17 +4021,17 @@ mint a " Arial: Dőlt "</translation>
       <translation>Ha kijelölt, a Tervrajz rács mindig látható lesz, ha a Tervrajz munkafelület aktív. Egyébként csak akkor, ha parancsot használ</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation>Használja az alap betűméretet a szövegekhez</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Kitöltési határok importálása vonalként</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation>Összekapcsolt vonalláncok vastagságának igazítása</translation>
     </message>
@@ -4058,32 +4076,32 @@ mint a " Arial: Dőlt "</translation>
       <translation>Építési geometria színe</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>Importálás</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>szövegek és méretek</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>pontok</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation>elrendezések</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation>*blokkok</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation>Exportált objektumok kivetítése az aktuális nézet iránya mentén</translation>
     </message>
@@ -4183,32 +4201,32 @@ mint a " Arial: Dőlt "</translation>
       <translation>Töltse ki a tárgyakat felületekkel amikor csak lehetséges</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>Létrehozás</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
       <translation>egyszerű alkatrész alakzatok</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation>Tervezet tárgyak</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
       <translation>Vázlatok</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation>A DXF fájl eredeti színeit vegye</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Ellipsziseket és görbe vonalakat vonalláncokként kezelje</translation>
     </message>
@@ -4223,7 +4241,7 @@ mint a " Arial: Dőlt "</translation>
       <translation>A dimenziók mértékegység utótagjainak megjelenítése</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Engedélyezze a FreeCAD-hoz az automatikus DXF-könyvtárak letöltését és frissítését</translation>
     </message>
@@ -4373,7 +4391,7 @@ mint a " Arial: Dőlt "</translation>
       <translation>Importálási beállítások</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation>Használj örökölt python importálót</translation>
     </message>
@@ -4398,22 +4416,22 @@ mint a " Arial: Dőlt "</translation>
       <translation>Tiltsa le a mértékegység léptékezését</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation>Rajz nézetek exportálása blokkokként</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation>Megjegyzés: Még nem az összes alábbi lehetőséget használja új importőr</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Importálás és Exportálás alatt ezt a párbeszédpanelt mutassa</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation>Automatikus frissítés (csak az örökölt importálása)</translation>
     </message>
@@ -4423,7 +4441,7 @@ mint a " Arial: Dőlt "</translation>
       <translation>Klónozás ezzel előtag felirattal:</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Importált fájlokra vonatkozó méretezési léptéktényező</translation>
     </message>
@@ -4543,12 +4561,12 @@ mint a " Arial: Dőlt "</translation>
       <translation>Az ODA (korábban Teigha) fájl konverter végrehajtható fájl elérési útja</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Ellipszis exportot kevésbé támogatja. Ennek segítségével exportálhatja vonalláncokként.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation>Max görbületi szegmens:</translation>
     </message>
@@ -4565,7 +4583,7 @@ Values with differences below this value will be treated as same. This value wil
 A fenti értéknél kisebb különbségű értékeket azonos értékekként fogja kezelni. Ez az érték hamarosan elavulnak, így a pontossági szint mindkettőt felülértékeli.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation>Használj örökölt python exportálót</translation>
     </message>
@@ -4905,28 +4923,19 @@ Ne feledje, hogy ez nem teljes mértékben támogatott, és sok tárgy nem szerk
       <translation>ODA fájlkonverter elérési útja</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Ez a beállítás párbeszédpanel a DXF-fájlok importálása/exportálásakor jelenik meg</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Python importőrt használnak, ellenkező esetben az újabb C++-t használják.
 Megjegyzés: A C++ importőr gyorsabb, de még nem olyan jellemző</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation>A Python exportőrt használják, ellenkező esetben az újabb C++ használható.
-Megjegyzés: A C++ exportálás gyorsabb, de még nem működik
-      </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4935,42 +4944,42 @@ Ezt manuálisan is megteheti a "dxf_library" munkafelülettel
 a Kiegészítők kezelőjéből.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Ha nincs bejelölve, a szövegeket és az bekezdéseket nem importálja</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Ha nincs bejelölve, a pontokat nem importálja</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Ha bejelölt, a papír területek tárgyait is importálja</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Ha importálni szeretné a név nélküli blokkokat (*-al kezdődő) is</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Csak az általános alkatrész tárgyakat hozza létre (leggyorsabb)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Parametrikus tervrajt tárgyak jönnek létre, amikor csak lehetséges</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Vázlatok jönnek létre, amikor csak lehetséges</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4981,76 +4990,76 @@ Példa: milliméterben lévő fájlokhoz: 1, centiméterben: 10,
                              méterben: 1000, hüvelykben: 25,4, lábban: 304,8</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation>A színek lehetőség szerint a DXF-tárgyakból kerülnek beolvasásra.
 Ellenkező esetben az alapértelmezett színeket alkalmazza. </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>A FreeCAD megpróbálja az egybeeső tárgyakat dróthálóba illeszteni.
 Ne feledje, hogy ez egy ideig is tart!</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
       <translation>Az azonos rétegekből származó tárgyak tervrajz blokkokba egyesülnek,
 gyorsabban megjeleníthetővé, de kevésbé könnyen szerkeszthetővé válik </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Az importált szövegek a szabványos tervrajz szöveg méretet kapják,
 a DXF-dokumentumban található méret helyett</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Ha ez bejelölt, a DXF-rétegek tervrajz rétegekként kerülnek importálva</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation>Rétegek használata</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>A straffozási minták egyszerű vonalakká alakulnak át</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Ha a megadott vonalláncnak van szélesség meghatározva, 
 akkor összeolvasztja a vonalakat a megfelelő vastagság használatával</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Az egyes vonalláncszegmensek maximális hossza.
 Ha '0'-ra van állítva, a teljes csíkozást egyenes szakaszként kezeli.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>A felületeket tartalmazó összes objektum 3D többfelületűként exportálja</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>A rajznézetek blokként exportálja.
 Ez sikertelen lehet a DXF R12 utáni sablonokon.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Az exportált objektumok kivetítve az aktuális nézet irányát tükrözik</translation>
     </message>
@@ -5153,7 +5162,14 @@ Ez az érték egy szegmens maximális hossza. </translation>
     <message>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation>Ha a lehetőséget választja, a Python exportőrt használja, ellenkező esetben egy újabb C++ exportőrt használ.
+Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translation>
     </message>
   </context>
   <context>
@@ -5166,7 +5182,7 @@ Ez az érték egy szegmens maximális hossza. </translation>
     <message>
       <location filename="importDWG.py" line="276"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Átváltás:</translation>
     </message>
   </context>
   <context>
@@ -5722,7 +5738,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Új objektumok alapértelmezett stílusának módosítása</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
       <translation>Nincs aktív dokumentum. Megszakítás.</translation>
     </message>
@@ -5832,11 +5848,6 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>A két pont egybeesik</translation>
     </message>
     <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation>tükröz)</translation>
-    </message>
-    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation>Talált 1 blokkot: szétrobbantom</translation>
@@ -5882,7 +5893,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Nem lehet tovább visszaminősíteni</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
       <translation>Helytelen bemenet: az tárgy nincs a dokumentumban.</translation>
     </message>
@@ -5892,7 +5903,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Helytelen bemenet: a pont tárgy nem rendelkezik 'Geometriával', 'Hivatkozásokkal' vagy 'Összetevőkkel'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Helytelen bemenet: elhelyezésnek, vektornak vagy forgatásnak kell lennie.</translation>
     </message>
@@ -5910,11 +5921,6 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>Helytelen bemenet: helytelen pont.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation>Az alakzat generálása sikertelen: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -5977,7 +5983,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Eredeti objektumok eltávolítása.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Helytelen bemenet: karakterláncnak vagy egyetlen karakternek kell lennie.</translation>
     </message>
@@ -5997,7 +6003,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Helytelen bemenet: egész számnak kell lennie.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Rossz bemenet: vektornak kell lennie.</translation>
     </message>
@@ -6007,7 +6013,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Poláris elrendezés</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
       <translation>Rossz bemenet: számnak kell lennie.</translation>
     </message>
@@ -6022,7 +6028,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Használja ezt 'make_linear_dimension', vagy ezt 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
       <translation>Helytelen bemenet: a tárgy nem lehet lista.</translation>
     </message>
@@ -6117,7 +6123,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Hibás bemenet: 0 és 100 közötti számnak kell lennie.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Helytelen bemenet: karakter rekord listának vagy egyetlen karakternek kell lennie.</translation>
     </message>
@@ -6188,37 +6194,32 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Négyszögletes elrendezés 2D</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Hibás bemenet: az al elem nincs az objektumban.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Helytelen bemenet: karakterláncnak, 'Egyéni', 'Név', 'Felirat', 'Pozíció', 'Hossz', 'Terület', 'Térfogat', 'Címke' vagy "Anyag" karakterláncnak kell lennie.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation>Helytelen bemenet: karakterláncnak kell lennie.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation>Helytelen bemenet: karakterláncnak kell lennie, 'Vízszintes', 'Függőleges' vagy 'Egyéni'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
       <translation>Helytele bemenet: legalább két vektorból kell állnia.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation>Az irány nem 'Egyéni'; a pontokat nem fogja használni.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation>Helytelen bemenet: két elemből kell állnia. Például [tárgy, 'Él1'].</translation>
     </message>
@@ -6290,7 +6291,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="init_draft_statusbar.py" line="147"/>
       <source>custom</source>
-      <translation type="unfinished">custom</translation>
+      <translation>egyéni</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="133"/>
@@ -6585,7 +6586,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="gui_dimensions.py" line="294"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Méretek létrehozása</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="309"/>
@@ -7143,52 +7144,52 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Vonal felosztása</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Lekerekítés sugara</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
       <translation>Lekerekítés sugara</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
       <translation>Sugár megadása.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
       <translation>Eredeti tárgyak törlése:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
       <translation>Letörés mód:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
       <translation>Két elem szükséges.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="160"/>
+      <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
       <translation>Teszt tárgy</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="161"/>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
       <translation>Teszt tárgy eltávolítva</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
       <translation>Nem hozható létre lekerekítés</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>Lekerekítés létrehozása</translation>
     </message>
@@ -7303,7 +7304,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Válasszon ki pozíciót</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="115"/>
+      <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
       <translation>Szöveg létrehozása</translation>
     </message>
@@ -7363,87 +7364,97 @@ A végső szög lesz az alapszög plusz ez az összege.</translation>
       <location filename="DraftGui.py" line="739"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>Koordináták az utolsó ponthoz vagy a rendszer kezdő koordinátáihoz
+ha az első beállítási pont</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="744"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Koordináták a globális koordináta-rendszerhez viszonyítva.
+A munkasík koordináta-rendszerének használatának feloldása</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="750"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <translation>Jelölje be, ha a tárgynak kitöltöttként kell megjelennie, különben drótvázként jelenik meg.
+Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve van</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="762"/>
       <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+      <translation>Ha kijelölt, egy OCC-stílusú eltolás kerül végrehajtásra a klasszikus eltolás helyett</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1240"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Helyi u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1241"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Helyi u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1242"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Helyi u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1248"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Globális u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Globális u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Globális u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2050"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Autocsoport:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Pontok:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="138"/>
       <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
+      <translation>Elhelyezés:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="333"/>
       <source>Unable to scale object:</source>
-      <translation type="unfinished">Unable to scale object:</translation>
+      <translation>A tárgy méretezése sikertelen:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="337"/>
       <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
+      <translation>A tárgyak méretezése sikertelen:</translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="934"/>
       <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+      <translation>Túl sok tárgy van kijelölve, a beállított maximális szám:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation>tükrözött</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation>Az alakzat nem hozható létre:</translation>
     </message>
   </context>
   <context>
@@ -7461,7 +7472,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
-      <translation type="unfinished">successfully exported</translation>
+      <translation>sikeresen exportálva</translation>
     </message>
   </context>
 </TS>

@@ -72,7 +72,7 @@
     <message>
       <location filename="selection_widgets.py" line="274"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
+      <translation>Określenie odniesienia do geometrii dla</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
@@ -92,22 +92,22 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+      <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on 'Add' and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+      <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+      <translation>Można wybrać następujące elementy geometrii: </translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>Jeśli żadna geometria nie zostanie dodana do listy, wszystkie pozostałe zostaną użyte.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -130,7 +130,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Wybierz elementy część ciała stałe, które dodaje się do listy. Taniej, niż dodać solid kliknij przycisk "Dodaj".</translation>
+      <translation>Wybierz elementy wchodzące w skład bryły, które mają być dodane do listy. Aby dodać bryłę należy kliknąć "Dodaj".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>

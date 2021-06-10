@@ -156,7 +156,7 @@ def make_arc_3points(points, placement=None, face=False,
     try:
         _edge = Part.Arc(p1, p2, p3)
     except Part.OCCError as error:
-        _err(translate("draft","Cannot generate shape: ") + "{}".format(error))
+        _err(translate("draft","Cannot generate shape:") + " " + "{}".format(error))
         return None
 
     edge = _edge.toShape()

@@ -19,12 +19,12 @@
       <translation>Длина координатных осей</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="301"/>
+      <location filename="ArchAxis.py" line="314"/>
       <source>The size of the axis bubbles</source>
       <translation>Размер осевых маркеров</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="304"/>
+      <location filename="ArchAxis.py" line="317"/>
       <source>The numbering style</source>
       <translation>Стиль нумерации</translation>
     </message>
@@ -1064,17 +1064,17 @@
       <translation>Метка каждой оси</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="330"/>
+      <location filename="ArchAxis.py" line="343"/>
       <source>If true, show the labels</source>
       <translation>Показать метки, если истина</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="332"/>
+      <location filename="ArchAxis.py" line="345"/>
       <source>A transformation to apply to each label</source>
       <translation>Преобразование, применяемое к каждой метке</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="804"/>
+      <location filename="ArchAxis.py" line="867"/>
       <source>The axes this system is made of</source>
       <translation>Оси, составляющие эту систему</translation>
     </message>
@@ -1169,42 +1169,42 @@
       <translation>Необязательный заданный пользователем номер осевого маркера</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="308"/>
+      <location filename="ArchAxis.py" line="321"/>
       <source>The type of line to draw this axis</source>
       <translation>Тип линии для рисования этой оси</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="312"/>
+      <location filename="ArchAxis.py" line="325"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>Где добавить осевые маркеры на этой оси: в начале, в конце, и там и там или нигде</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="315"/>
+      <location filename="ArchAxis.py" line="328"/>
       <source>The line width to draw this axis</source>
       <translation>Ширина линии для рисования этой оси</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="318"/>
+      <location filename="ArchAxis.py" line="331"/>
       <source>The color of this axis</source>
       <translation>Цвет этой оси</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="321"/>
+      <location filename="ArchAxis.py" line="334"/>
       <source>The number of the first axis</source>
       <translation>Количество первой оси</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="324"/>
+      <location filename="ArchAxis.py" line="337"/>
       <source>The font to use for texts</source>
       <translation>Шрифт, используемый для текста</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="327"/>
+      <location filename="ArchAxis.py" line="340"/>
       <source>The font size</source>
       <translation>Размер шрифта</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="806"/>
+      <location filename="ArchAxis.py" line="869"/>
       <source>The placement of this axis system</source>
       <translation>Размещение этой системы осей</translation>
     </message>
@@ -1679,7 +1679,7 @@
       <translation>Включить резку при активации этого уровня</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1160"/>
+      <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Использовать цвет материала как цвет формы этого объекта, если доступно</translation>
     </message>
@@ -1996,42 +1996,47 @@
     <message>
       <location filename="ArchStairs.py" line="324"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>'Абсолютный' верхний уровень лестничного пролета ведет к </translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>«Левый контур» лестницы </translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>«Левый контур» всех сегментов лестницы </translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>"Правый контур" всех сегментов лестниц </translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>Толщина сляба этажа ниже</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>Толщина сляба этажа выше</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>Тип связи между нижним слябом и началом лестницы</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>Тип связи между концом лестницы и слябом верхнего этажа.</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="221"/>
+      <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
+      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
     </message>
   </context>
   <context>
@@ -2042,12 +2047,12 @@
       <translation>Компоненты</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1945"/>
+      <location filename="ArchComponent.py" line="1939"/>
       <source>Components of this object</source>
       <translation>Компоненты этого объекта</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1049"/>
+      <location filename="ArchAxis.py" line="1112"/>
       <source>Axes</source>
       <translation>Оси</translation>
     </message>
@@ -2057,27 +2062,27 @@
       <translation>Создать координатную ось</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1050"/>
+      <location filename="ArchAxis.py" line="1113"/>
       <source>Remove</source>
       <translation>Удалить</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1051"/>
+      <location filename="ArchAxis.py" line="1114"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="785"/>
+      <location filename="ArchAxis.py" line="848"/>
       <source>Axis</source>
       <translation>Ось</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="786"/>
+      <location filename="ArchAxis.py" line="849"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="787"/>
+      <location filename="ArchAxis.py" line="850"/>
       <source>Angle</source>
       <translation>Угол</translation>
     </message>
@@ -2127,22 +2132,22 @@
       <translation>Сетку — в Фигуру</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1946"/>
+      <location filename="ArchComponent.py" line="1940"/>
       <source>Base component</source>
       <translation>Базовый компонент</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1947"/>
+      <location filename="ArchComponent.py" line="1941"/>
       <source>Additions</source>
       <translation>Дополнения</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1948"/>
+      <location filename="ArchComponent.py" line="1942"/>
       <source>Subtractions</source>
       <translation>Вычеты</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1949"/>
+      <location filename="ArchComponent.py" line="1943"/>
       <source>Objects</source>
       <translation>Объекты</translation>
     </message>
@@ -2277,7 +2282,7 @@
       <translation>Пожалуйста, выберите базовый объект</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1952"/>
+      <location filename="ArchComponent.py" line="1946"/>
       <source>Fixtures</source>
       <translation>Зажимы</translation>
     </message>
@@ -2337,12 +2342,12 @@
       <translation>Объединить Стены</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="784"/>
+      <location filename="ArchAxis.py" line="847"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Расстояния (мм) и углы (градусы) между осями</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="912"/>
+      <location filename="ArchComponent.py" line="910"/>
       <source>Error computing the shape of this object</source>
       <translation>Ошибка при расчёте формы этого объекта</translation>
     </message>
@@ -2367,17 +2372,17 @@
       <translation>Включение BREP-флага объекта</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="933"/>
+      <location filename="ArchComponent.py" line="931"/>
       <source>has no solid</source>
       <translation>не имеет замкнутую форму</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="940"/>
+      <location filename="ArchComponent.py" line="938"/>
       <source>has an invalid shape</source>
       <translation>имеет неправильную фигуру</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="942"/>
+      <location filename="ArchComponent.py" line="940"/>
       <source>has a null shape</source>
       <translation>имеет пустую форму</translation>
     </message>
@@ -2532,7 +2537,7 @@
       <translation>Создать Здание</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1953"/>
+      <location filename="ArchComponent.py" line="1947"/>
       <source>Group</source>
       <translation>Группа</translation>
     </message>
@@ -2859,67 +2864,67 @@
       <translation>Создать Сетку</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="788"/>
+      <location filename="ArchAxis.py" line="851"/>
       <source>Label</source>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1052"/>
+      <location filename="ArchAxis.py" line="1115"/>
       <source>Axis system components</source>
       <translation>Компоненты системы координат</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1378"/>
+      <location filename="ArchAxis.py" line="1441"/>
       <source>Grid</source>
       <translation>Сетка</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1379"/>
+      <location filename="ArchAxis.py" line="1442"/>
       <source>Total width</source>
       <translation>Общая ширина</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1380"/>
+      <location filename="ArchAxis.py" line="1443"/>
       <source>Total height</source>
       <translation>Общая высота</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1381"/>
+      <location filename="ArchAxis.py" line="1444"/>
       <source>Add row</source>
       <translation>Добавить строку</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1382"/>
+      <location filename="ArchAxis.py" line="1445"/>
       <source>Del row</source>
       <translation>Удалить строку</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1383"/>
+      <location filename="ArchAxis.py" line="1446"/>
       <source>Add col</source>
       <translation>Добавить колонку</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1384"/>
+      <location filename="ArchAxis.py" line="1447"/>
       <source>Del col</source>
       <translation>Удалить колонку</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1385"/>
+      <location filename="ArchAxis.py" line="1448"/>
       <source>Create span</source>
       <translation>Создать промежуток</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1386"/>
+      <location filename="ArchAxis.py" line="1449"/>
       <source>Remove span</source>
       <translation>Удалить промежуток</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1387"/>
+      <location filename="ArchAxis.py" line="1450"/>
       <source>Rows</source>
       <translation>Строки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1387"/>
+      <location filename="ArchAxis.py" line="1450"/>
       <source>Columns</source>
       <translation>Столбцы</translation>
     </message>
@@ -2989,7 +2994,7 @@
       <translation>Итог</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1954"/>
+      <location filename="ArchComponent.py" line="1948"/>
       <source>Hosts</source>
       <translation>Источники</translation>
     </message>
@@ -3004,22 +3009,22 @@
       <translation>Пожалуйста, выберите по крайней мере одну ось</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1114"/>
+      <location filename="ArchAxis.py" line="1177"/>
       <source>Auto height is larger than height</source>
       <translation>Автоматическая высота больше, чем пользовательская</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1123"/>
+      <location filename="ArchAxis.py" line="1186"/>
       <source>Total row size is larger than height</source>
       <translation>Общий размер строки больше высоты</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1145"/>
+      <location filename="ArchAxis.py" line="1208"/>
       <source>Auto width is larger than width</source>
       <translation>Автоматическая ширина больше, чем пользовательская</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1154"/>
+      <location filename="ArchAxis.py" line="1217"/>
       <source>Total column size is larger than width</source>
       <translation>Общий размер столбца больше высоты</translation>
     </message>
@@ -3049,57 +3054,57 @@
       <translation>Объект не имеет атрибута IfcProperties. Отменить создание таблицы для объекта:</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1512"/>
+      <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
       <translation>Переключить подкомпоненты</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1635"/>
+      <location filename="ArchComponent.py" line="1629"/>
       <source>Closing Sketch edit</source>
       <translation>Закрытие редактирования эскиза</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1942"/>
+      <location filename="ArchComponent.py" line="1936"/>
       <source>Component</source>
       <translation>Компонент</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1955"/>
+      <location filename="ArchComponent.py" line="1949"/>
       <source>Edit IFC properties</source>
       <translation>Редактировать IFC свойства</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1956"/>
+      <location filename="ArchComponent.py" line="1950"/>
       <source>Edit standard code</source>
       <translation>Изменить код компонента</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2002"/>
+      <location filename="ArchComponent.py" line="1996"/>
       <source>Property</source>
       <translation>Свойство</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2007"/>
+      <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
       <translation>Добавить свойство...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2008"/>
+      <location filename="ArchComponent.py" line="2002"/>
       <source>Add property set...</source>
       <translation>Добавить набор свойств...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2009"/>
+      <location filename="ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>Создать...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2151"/>
+      <location filename="ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation>Новое свойство</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2186"/>
+      <location filename="ArchComponent.py" line="2180"/>
       <source>New property set</source>
       <translation>Новый набор свойств</translation>
     </message>
@@ -3932,7 +3937,7 @@ Floor creation aborted.</source>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="ArchAxis.py" line="1554"/>
+      <location filename="ArchAxis.py" line="1617"/>
       <source>Axis tools</source>
       <translation>Инстументы осей</translation>
     </message>
@@ -4106,62 +4111,62 @@ Floor creation aborted.</source>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="ArchAxis.py" line="1068"/>
+      <location filename="ArchAxis.py" line="1131"/>
       <source>The number of rows</source>
       <translation>Количество строк</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1070"/>
+      <location filename="ArchAxis.py" line="1133"/>
       <source>The number of columns</source>
       <translation>Количество столбцов</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1072"/>
+      <location filename="ArchAxis.py" line="1135"/>
       <source>The sizes for rows</source>
       <translation>Размеры строк</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1074"/>
+      <location filename="ArchAxis.py" line="1137"/>
       <source>The sizes of columns</source>
       <translation>Размеры столбцов</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1076"/>
+      <location filename="ArchAxis.py" line="1139"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Диапазоны промежутка ячеек, которые объединяются вместе</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1078"/>
+      <location filename="ArchAxis.py" line="1141"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Тип 3D-точек, созданных объектом сетки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1081"/>
+      <location filename="ArchAxis.py" line="1144"/>
       <source>The total width of this grid</source>
       <translation>Общая ширина сетки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1083"/>
+      <location filename="ArchAxis.py" line="1146"/>
       <source>The total height of this grid</source>
       <translation>Общая высота сетки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1085"/>
+      <location filename="ArchAxis.py" line="1148"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Создаёт автоматические подразделения столбцов (задайте 0 для отключения)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1087"/>
+      <location filename="ArchAxis.py" line="1150"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Создаёт автоматические подразделения строк (задайте 0 для отключения)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1089"/>
+      <location filename="ArchAxis.py" line="1152"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>В режиме серединной точки ребра. Должна ли сетка переориентировать свои дочерние элементы вдоль нормалей ребра или нет</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1091"/>
+      <location filename="ArchAxis.py" line="1154"/>
       <source>The indices of faces to hide</source>
       <translation>Индексы граней для скрытия</translation>
     </message>

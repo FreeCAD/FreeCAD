@@ -142,12 +142,12 @@
       <translation>Παρακαλώ επιλέξτε πρώτα 3 αντικείμενα</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Μη υποστηριζόμενη Λειτουργία</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Πιέστε το OK</translation>
     </message>
@@ -202,14 +202,9 @@
       <translation type="unfinished">Save</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="345"/>
+      <location filename="OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>Ανανέωση</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
     </message>
   </context>
   <context>

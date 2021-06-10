@@ -64,11 +64,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyLength", "StepOver", "Helix Drill", translate("PathHelix", "Radius increment (must be smaller than tool diameter)"))
         obj.addProperty("App::PropertyLength", "StartRadius", "Helix Drill", translate("PathHelix", "Starting Radius"))
 
-        # Rotation related properties
-        if not hasattr(obj, 'EnableRotation'):
-            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
-            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
-
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, 'StartRadius'):
             obj.addProperty("App::PropertyLength", "StartRadius", "Helix Drill", translate("PathHelix", "Starting Radius"))
@@ -209,21 +204,12 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StartSide = "Inside"
         obj.StepOver = 100
 
-        # Initial setting for EnableRotation is taken from Job SetupSheet
-        # User may override on per-operation basis as needed.
-        parentJob = findParentJob(obj)  # PathUtils.findParentJob(obj)
-        if hasattr(parentJob.SetupSheet, 'SetupEnableRotation'):
-            obj.EnableRotation = parentJob.SetupSheet.SetupEnableRotation
-        else:
-            obj.EnableRotation = 'Off'
-
 
 def SetupProperties():
     setup = []
     setup.append("Direction")
     setup.append("StartSide")
     setup.append("StepOver")
-    setup.append("EnableRotation")
     setup.append("StartRadius")
     return setup
 

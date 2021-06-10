@@ -29,49 +29,9 @@
       <translation>Dropcutter-linjer skapas parallellt med den här axeln.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
-      <source>The direction along which dropcutter lines are created</source>
-      <translation>Riktningen längs vilken dropcutter linjer skapas</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
-      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
-      <translation>Ska operationen begränsas av stamobjektet eller av grundobjektets begränsningsruta</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="75"/>
       <source>Additional offset to the selected bounding box</source>
       <translation>Ytterligare förskjutning till den markerade begränsningsramen</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
-      <source>Step over percentage of the drop cutter path</source>
-      <translation>Steg över procent av drop cutter-banan</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
-      <source>Z-axis offset from the surface of the object</source>
-      <translation>Z-axelförskjutning från objektets yta</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
-      <source>The Sample Interval. Small values cause long wait times</source>
-      <translation>Exempelintervallet. Små värden orsakar långa väntetider</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
-      <source>Enable optimization which removes unnecessary points from G-Code output</source>
-      <translation>Aktivera optimering som tar bort onödiga punkter från G-Code-utdata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
-      <source>The completion mode for the operation: single or multi-pass</source>
-      <translation>Kompletteringsläget för operationen: enkel- eller flerpasspass</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
-      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
-      <translation>Den riktning som verktygsbanan ska gå runt delen: Klättra(Medurs) eller Konventionell(Moturs)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="132"/>
@@ -82,21 +42,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="133"/>
       <source>Start index(angle) for rotational scan</source>
       <translation>Startindex(vinkel) för rotationsgenomsökning</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
-      <source>Ignore areas that proceed below specified depth.</source>
-      <translation>Ignorera områden som fortsätter under angivet djup.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
-      <source>Depth used to identify waste areas to ignore.</source>
-      <translation>Djup som används för att identifiera avfallsområden att ignorera.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
-      <source>Cut through waste to depth at model edge, releasing the model.</source>
-      <translation>Skär genom avfall till djup vid modellkanten, släppa modellen.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="128"/>
@@ -444,26 +389,6 @@
       <translation>Hur långt borrdjupet är förlängt</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathHelix.py" line="71"/>
-      <source>Enable rotation to gain access to pockets/areas not normal to Z axis.</source>
-      <translation>Aktivera rotation för att få tillgång till fickor / områden som inte är normala till Z-axeln.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="89"/>
-      <source>Reverse direction of pocket operation.</source>
-      <translation>Omvänd riktning för fickdrift.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="91"/>
-      <source>Inverse the angle. Example: -22.5 -&gt; 22.5 degrees.</source>
-      <translation>Omvänd vinkeln. Exempel: -22,5 -&gt; 22,5 grader.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="90"/>
-      <source>Attempt the inverse angle for face access if original rotation fails.</source>
-      <translation>Försök den omvända vinkeln för ansikte åtkomst om ursprungliga rotation misslyckas.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPlane.py" line="38"/>
       <source>Orientation plane of CNC path</source>
       <translation type="unfinished">Orientation plane of CNC path</translation>
@@ -507,11 +432,6 @@
       <location filename="../../../PathScripts/PathWaterline.py" line="160"/>
       <source>Ignore outer waterlines above this height.</source>
       <translation>Ignorera yttre vattenlinjer över denna höjd.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="92"/>
-      <source>Enforce the Z-depth of the selected face as the lowest value for final depth. Higher user values will be observed.</source>
-      <translation>Framtvinga Z-djupet för det valda ansiktet som det lägsta värdet för slutdjup. Högre användarvärden kommer att observeras.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathCollision.py" line="64"/>
@@ -624,9 +544,64 @@
       <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="42"/>
+      <source>The path(s) to array</source>
+      <translation type="unfinished">The path(s) to array</translation>
+    </message>
+    <message>
       <location filename="PathArray.py" line="43"/>
       <source>Pattern method</source>
       <translation>Mönstermetod</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="46"/>
+      <source>The spacing between the array copies in Linear pattern</source>
+      <translation type="unfinished">The spacing between the array copies in Linear pattern</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="48"/>
+      <source>The number of copies in X direction in Linear pattern</source>
+      <translation type="unfinished">The number of copies in X direction in Linear pattern</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="50"/>
+      <source>The number of copies in Y direction in Linear pattern</source>
+      <translation type="unfinished">The number of copies in Y direction in Linear pattern</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="52"/>
+      <source>Total angle in Polar pattern</source>
+      <translation type="unfinished">Total angle in Polar pattern</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="54"/>
+      <source>The number of copies in Linear 1D and Polar pattern</source>
+      <translation type="unfinished">The number of copies in Linear 1D and Polar pattern</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="56"/>
+      <source>The centre of rotation in Polar pattern</source>
+      <translation type="unfinished">The centre of rotation in Polar pattern</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="58"/>
+      <source>Make copies in X direction before Y in Linear 2D pattern</source>
+      <translation type="unfinished">Make copies in X direction before Y in Linear 2D pattern</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="60"/>
+      <source>Percent of copies to randomly offset</source>
+      <translation type="unfinished">Percent of copies to randomly offset</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="62"/>
+      <source>Maximum random offset of copies</source>
+      <translation type="unfinished">Maximum random offset of copies</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="199"/>
+      <source>Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</source>
+      <translation type="unfinished">Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="106"/>
@@ -672,6 +647,86 @@
       <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
       <source>Make True, if using Cutter Radius Compensation</source>
       <translation>Gör True, om du använder Cutter Radius Compensation</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
+      <source>The direction along which dropcutter lines are created</source>
+      <translation>Riktningen längs vilken dropcutter linjer skapas</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
+      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
+      <translation>Ska operationen begränsas av stamobjektet eller av grundobjektets begränsningsruta</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
+      <source>Step over percentage of the drop cutter path</source>
+      <translation>Steg över procent av drop cutter-banan</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
+      <source>Z-axis offset from the surface of the object</source>
+      <translation>Z-axelförskjutning från objektets yta</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
+      <source>The Sample Interval. Small values cause long wait times</source>
+      <translation>Exempelintervallet. Små värden orsakar långa väntetider</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
+      <source>Enable optimization which removes unnecessary points from G-Code output</source>
+      <translation>Aktivera optimering som tar bort onödiga punkter från G-Code-utdata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
+      <source>The completion mode for the operation: single or multi-pass</source>
+      <translation>Kompletteringsläget för operationen: enkel- eller flerpasspass</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
+      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
+      <translation>Den riktning som verktygsbanan ska gå runt delen: Klättra(Medurs) eller Konventionell(Moturs)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
+      <source>Ignore areas that proceed below specified depth.</source>
+      <translation>Ignorera områden som fortsätter under angivet djup.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
+      <source>Depth used to identify waste areas to ignore.</source>
+      <translation>Djup som används för att identifiera avfallsområden att ignorera.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
+      <source>Cut through waste to depth at model edge, releasing the model.</source>
+      <translation>Skär genom avfall till djup vid modellkanten, släppa modellen.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelix.py" line="71"/>
+      <source>Enable rotation to gain access to pockets/areas not normal to Z axis.</source>
+      <translation>Aktivera rotation för att få tillgång till fickor / områden som inte är normala till Z-axeln.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="89"/>
+      <source>Reverse direction of pocket operation.</source>
+      <translation>Omvänd riktning för fickdrift.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="90"/>
+      <source>Attempt the inverse angle for face access if original rotation fails.</source>
+      <translation>Försök den omvända vinkeln för ansikte åtkomst om ursprungliga rotation misslyckas.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="91"/>
+      <source>Inverse the angle. Example: -22.5 -&gt; 22.5 degrees.</source>
+      <translation>Omvänd vinkeln. Exempel: -22,5 -&gt; 22,5 grader.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="92"/>
+      <source>Enforce the Z-depth of the selected face as the lowest value for final depth. Higher user values will be observed.</source>
+      <translation>Framtvinga Z-djupet för det valda ansiktet som det lägsta värdet för slutdjup. Högre användarvärden kommer att observeras.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="55"/>
@@ -922,19 +977,29 @@
       <translation>Ogiltig Skäreggsvinkel %.2f, måste vara &gt;0° och &lt;=180°</translation>
     </message>
     <message>
+      <location filename="PathUtils.py" line="750"/>
+      <source>Legacy Tools not supported</source>
+      <translation type="unfinished">Legacy Tools not supported</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="754"/>
+      <source>Selected tool is not a drill</source>
+      <translation type="unfinished">Selected tool is not a drill</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="808"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
       <translation>Ogiltig Skäreggsvinkel %.2f, måste vara &gt;0Â° och &lt;=180Â°</translation>
     </message>
     <message>
-      <location filename="PathUtils.py" line="767"/>
-      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
-      <translation>Skäreggsvinkel (%.2f) ger negativt verktygsspetslängd</translation>
-    </message>
-    <message>
       <location filename="PathUtils.py" line="762"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
       <translation>Ogiltig Skäreggsvinkel %.2f, måste vara &lt;90Â° och &gt;=0Â°</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="767"/>
+      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
+      <translation>Skäreggsvinkel (%.2f) ger negativt verktygsspetslängd</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="397"/>
@@ -1032,99 +1097,6 @@
       <translation>Välj startpunkt</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
-      <source>Processing model as a whole ...</source>
-      <translation>Bearbetningsmodell som helhet ...</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="781"/>
-      <source>Can not identify loop.</source>
-      <translation>Kan inte identifiera loop.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
-      <source>
-&lt;br&gt;Pocket is based on extruded surface.</source>
-      <translation>
-&lt;br&gt;Pocket är baserad på strängpressad yta.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="344"/>
-      <source>
-&lt;br&gt;Bottom of pocket might be non-planar and/or not normal to spindle axis.</source>
-      <translation>
-&lt;br&gt;Botten av fickan kan vara icke-planar och / eller inte normalt att spindel axel.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="345"/>
-      <source>
-&lt;br&gt;
-&lt;br&gt;&lt;i&gt;3D pocket bottom is NOT available in this operation&lt;/i&gt;.</source>
-      <translation>
-&lt;br&gt;
-&lt;br&gt;&lt;i&gt;3D-fickbotten finns INTE i denna operation&lt;/i&gt;.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
-      <source>Processing subs individually ...</source>
-      <translation>Bearbetning subs individuellt ...</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
-      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
-      <translation>Överväg att växla egenskapen InverseAngle och omfördela åtgärden.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
-      <source>Verify final depth of pocket shaped by vertical faces.</source>
-      <translation>Verifiera sista djupet av fickan formad av vertikala ansikten.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
-      <source>Depth Warning</source>
-      <translation>Djup Varning</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="835"/>
-      <source>Selected faces form loop. Processing looped faces.</source>
-      <translation>Markerade ansikten bildar loop. Bearbetning loopade ansikten.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
-      <source>Face appears misaligned after initial rotation.</source>
-      <translation>Ansikte visas feljusterade efter inledande rotation.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
-      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
-      <translation>Tänk att växla "InverseAngle" egendom och omjäntar.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
-      <source>Multiple faces in Base Geometry.</source>
-      <translation>Flera ansikten i Basgeometri.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
-      <source>Depth settings will be applied to all faces.</source>
-      <translation>Djupinställningar kommer att tillämpas på alla ansikten.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
-      <source>EnableRotation property is 'Off'.</source>
-      <translation>EnableRotation-egenskapen är 'Av'.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="575"/>
-      <source>Applying inverse angle automatically.</source>
-      <translation>Tillämpa inversvinkel automatiskt.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="579"/>
-      <source>Applying inverse angle manually.</source>
-      <translation>Tillämpa invers vinkel manuellt.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocket.py" line="267"/>
       <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
       <translation>En planar adaptiv start är inte tillgänglig. Den icke-planar kommer att försöka.</translation>
@@ -1140,26 +1112,6 @@
       <translation>Ogiltigt filnamn</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
-      <source>Rotated to inverse angle.</source>
-      <translation>Roteras till omvänd vinkel.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Roteras till 'InverseAngle' för att försöka komma åt.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
-      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
-      <translation>Markerad(a) funktion(er) kräver 'Aktivera rotation: A(x)' för åtkomst.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
-      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
-      <translation>Markerad(a) funktion(er) kräver 'Aktivera rotation: B(y)' för åtkomst.</translation>
-    </message>
-    <message>
       <location filename="PathCircularHoleBase.py" line="60"/>
       <source>List of disabled features</source>
       <translation>Lista över inaktiverade funktioner</translation>
@@ -1173,18 +1125,6 @@
       <location filename="PathCircularHoleBase.py" line="120"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>Funktionen %s.%s kan inte bearbetas som ett cirkulärt hål - ta bort från listan med basgeometri.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
-      <source>Always select the bottom edge of the hole when using an edge.</source>
-      <translation>Välj alltid hålets bottenkant när du använder en kant.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
-      <source>Start depth &lt;= face depth.
-Increased to stock top.</source>
-      <translation type="unfinished">Start depth &lt;= face depth.
-Increased to stock top.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
@@ -1255,6 +1195,131 @@ Increased to stock top.</translation>
       <location filename="../../../InitGui.py" line="158"/>
       <source>Utils</source>
       <translation type="unfinished">Utils</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
+      <source>
+&lt;br&gt;Pocket is based on extruded surface.</source>
+      <translation>
+&lt;br&gt;Pocket är baserad på strängpressad yta.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="344"/>
+      <source>
+&lt;br&gt;Bottom of pocket might be non-planar and/or not normal to spindle axis.</source>
+      <translation>
+&lt;br&gt;Botten av fickan kan vara icke-planar och / eller inte normalt att spindel axel.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="345"/>
+      <source>
+&lt;br&gt;
+&lt;br&gt;&lt;i&gt;3D pocket bottom is NOT available in this operation&lt;/i&gt;.</source>
+      <translation>
+&lt;br&gt;
+&lt;br&gt;&lt;i&gt;3D-fickbotten finns INTE i denna operation&lt;/i&gt;.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
+      <source>Processing subs individually ...</source>
+      <translation>Bearbetning subs individuellt ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
+      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
+      <translation>Överväg att växla egenskapen InverseAngle och omfördela åtgärden.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
+      <source>Verify final depth of pocket shaped by vertical faces.</source>
+      <translation>Verifiera sista djupet av fickan formad av vertikala ansikten.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
+      <source>Depth Warning</source>
+      <translation>Djup Varning</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
+      <source>Processing model as a whole ...</source>
+      <translation>Bearbetningsmodell som helhet ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="781"/>
+      <source>Can not identify loop.</source>
+      <translation>Kan inte identifiera loop.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="835"/>
+      <source>Selected faces form loop. Processing looped faces.</source>
+      <translation>Markerade ansikten bildar loop. Bearbetning loopade ansikten.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
+      <source>Face appears misaligned after initial rotation.</source>
+      <translation>Ansikte visas feljusterade efter inledande rotation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
+      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
+      <translation>Tänk att växla "InverseAngle" egendom och omjäntar.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
+      <source>Multiple faces in Base Geometry.</source>
+      <translation>Flera ansikten i Basgeometri.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
+      <source>Depth settings will be applied to all faces.</source>
+      <translation>Djupinställningar kommer att tillämpas på alla ansikten.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
+      <source>EnableRotation property is 'Off'.</source>
+      <translation>EnableRotation-egenskapen är 'Av'.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="575"/>
+      <source>Applying inverse angle automatically.</source>
+      <translation>Tillämpa inversvinkel automatiskt.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="579"/>
+      <source>Applying inverse angle manually.</source>
+      <translation>Tillämpa invers vinkel manuellt.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
+      <source>Rotated to inverse angle.</source>
+      <translation>Roteras till omvänd vinkel.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Roteras till 'InverseAngle' för att försöka komma åt.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
+      <source>Always select the bottom edge of the hole when using an edge.</source>
+      <translation>Välj alltid hålets bottenkant när du använder en kant.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
+      <source>Start depth &lt;= face depth.
+Increased to stock top.</source>
+      <translation type="unfinished">Start depth &lt;= face depth.
+Increased to stock top.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
+      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
+      <translation>Markerad(a) funktion(er) kräver 'Aktivera rotation: A(x)' för åtkomst.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
+      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
+      <translation>Markerad(a) funktion(er) kräver 'Aktivera rotation: B(y)' för åtkomst.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1980,6 +2045,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">When enabled connected extension edges are combined to wires.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="474"/>
+      <source>Face appears to NOT be horizontal AFTER rotation applied.</source>
+      <translation>Ytan verkar INTE vara horisontell efter att rotation tillämpats.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="670"/>
       <source>Start Depth is lower than face depth. Setting to </source>
       <translation>Startdjup är lägre än ytans djup. Ställer in det till </translation>
@@ -1988,11 +2058,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathPocketShape.py" line="454"/>
       <source>Start Depth is lower than face depth. Setting to:</source>
       <translation type="unfinished">Start Depth is lower than face depth. Setting to:</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="474"/>
-      <source>Face appears to NOT be horizontal AFTER rotation applied.</source>
-      <translation>Ytan verkar INTE vara horisontell efter att rotation tillämpats.</translation>
     </message>
   </context>
   <context>
@@ -2335,14 +2400,24 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Inget basgeometriobjekt i operationen.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSlot.py" line="448"/>
-      <source>Custom points not at same Z height.</source>
-      <translation>Anpassade punkter inte på samma Z-höjd.</translation>
+      <location filename="../../../PathScripts/PathSlot.py" line="720"/>
+      <source>The selected face is not oriented horizontally or vertically.</source>
+      <translation>Den valda ytan är inte horisontellt eller vertikalt orienterat.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1638"/>
       <source>Current offset value is not possible.</source>
       <translation>Nuvarande offsetvärde är inte möjligt.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="441"/>
+      <source>Custom points are identical.</source>
+      <translation type="unfinished">Custom points are identical.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSlot.py" line="448"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>Anpassade punkter inte på samma Z-höjd.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="493"/>
@@ -2365,9 +2440,9 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">Verify slot path start and end points.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSlot.py" line="720"/>
-      <source>The selected face is not oriented horizontally or vertically.</source>
-      <translation>Den valda ytan är inte horisontellt eller vertikalt orienterat.</translation>
+      <location filename="PathSlot.py" line="752"/>
+      <source>The selected face is inaccessible.</source>
+      <translation type="unfinished">The selected face is inaccessible.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="737"/>
@@ -3272,6 +3347,16 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathArray.py" line="107"/>
       <source>Creates an array from a selected path</source>
       <translation>Skapar en matris från en vald väg</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="296"/>
+      <source>Creates an array from selected path(s)</source>
+      <translation type="unfinished">Creates an array from selected path(s)</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="313"/>
+      <source>Arrays can be created only from Path operations.</source>
+      <translation type="unfinished">Arrays can be created only from Path operations.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="262"/>
@@ -4188,11 +4273,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Minsta Z-höjd</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation type="unfinished">The Job has no selected Base object.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="224"/>
       <source>Maximum Z Height</source>
       <translation>Maximal Z-höjd</translation>
@@ -4361,6 +4441,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathSanity.py" line="345"/>
       <source>Date</source>
       <translation>Datum</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation type="unfinished">The Job has no selected Base object.</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="50"/>

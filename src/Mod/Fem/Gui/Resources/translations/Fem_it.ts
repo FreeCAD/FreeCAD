@@ -72,7 +72,7 @@
     <message>
       <location filename="selection_widgets.py" line="274"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
+      <translation>Selettore della geometria di riferimento per</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
@@ -92,12 +92,12 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli all'elenco.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on 'Add' and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli all'elenco.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="281"/>

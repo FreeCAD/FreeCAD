@@ -8,6 +8,13 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
+generate_from_xml(SpreadsheetViewPy)
+
+# The XML files
+set(SpreadsheetGui_XML_SRCS
+    SpreadsheetViewPy.xml
+)
+
 set(SpreadsheetGui_LIBS
     Spreadsheet
     FreeCADGui
@@ -54,6 +61,7 @@ endif()
 
 SET(SpreadsheetGui_SRCS
     ${SpreadsheetGui_QRC_SRCS}
+    ${SpreadsheetGui_XML_SRCS}
     AppSpreadsheetGui.cpp
     Command.cpp
     LineEdit.h
@@ -63,6 +71,7 @@ SET(SpreadsheetGui_SRCS
     Resources/Spreadsheet.qrc
     SpreadsheetView.cpp
     SpreadsheetView.h
+    SpreadsheetViewPyImp.cpp
     SpreadsheetDelegate.h
     SpreadsheetDelegate.cpp
     SheetTableView.cpp

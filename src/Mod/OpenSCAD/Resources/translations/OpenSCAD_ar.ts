@@ -142,12 +142,12 @@
       <translation>يرجي اختيار ثلاثة اعضاء اولا</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>وظيفة غير مدعومة</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>إضغط على 'موافق'</translation>
     </message>
@@ -202,14 +202,9 @@
       <translation type="unfinished">Save</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="345"/>
+      <location filename="OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>تحديث</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
     </message>
   </context>
   <context>

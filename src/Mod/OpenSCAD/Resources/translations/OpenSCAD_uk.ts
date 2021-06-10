@@ -142,12 +142,12 @@
       <translation>Будь ласка, оберіть спочатку 3 об'єкти</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Непідтримувані функції</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Натисніть OK</translation>
     </message>
@@ -194,22 +194,17 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Завантажити</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="345"/>
-      <source>Refresh</source>
-      <translation>Оновити</translation>
+      <translation>Зберегти</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
+      <source>Refresh</source>
+      <translation>Оновити</translation>
     </message>
   </context>
   <context>

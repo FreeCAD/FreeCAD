@@ -142,12 +142,12 @@
       <translation>まず最初にオブジェクトを3つ選択してください</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>サポートされていない関数です</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>OKを押してください</translation>
     </message>
@@ -194,22 +194,17 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>読み込み</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="345"/>
-      <source>Refresh</source>
-      <translation>更新</translation>
+      <translation>保存</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
+      <source>Refresh</source>
+      <translation>更新</translation>
     </message>
   </context>
   <context>

@@ -258,7 +258,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         s = Gui.Selection.getSelection()
         if len(s) == 1:
             if (utils.get_type(s[0]) == "Layer") or \
--               (App.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups", False)
+                (App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("AutogroupAddGroups", False)
              and (s[0].isDerivedFrom("App::DocumentObjectGroup")
                   or utils.get_type(s[0]) in ["Site", "Building",
                                               "Floor", "BuildingPart"])):
@@ -269,7 +269,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         # including the options "None" and "Add new layer".
         self.groups = ["None"]
         gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
-        if App.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups", False):
+        if App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("AutogroupAddGroups", False):
             gn.extend(groups.get_group_names())
         if gn:
             self.groups.extend(gn)

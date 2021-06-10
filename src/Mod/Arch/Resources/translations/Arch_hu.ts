@@ -19,12 +19,12 @@
       <translation>A tengelyek hossza</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="301"/>
+      <location filename="ArchAxis.py" line="314"/>
       <source>The size of the axis bubbles</source>
       <translation>A tengely buborékok mérete</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="304"/>
+      <location filename="ArchAxis.py" line="317"/>
       <source>The numbering style</source>
       <translation>Számozási stílus</translation>
     </message>
@@ -1064,17 +1064,17 @@
       <translation>Minden egyes tengely címkéje</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="330"/>
+      <location filename="ArchAxis.py" line="343"/>
       <source>If true, show the labels</source>
       <translation>Ha igaz, mutatja a feliratokat</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="332"/>
+      <location filename="ArchAxis.py" line="345"/>
       <source>A transformation to apply to each label</source>
       <translation>Egy átalakítás mely az összes címkére vonatkozik</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="804"/>
+      <location filename="ArchAxis.py" line="867"/>
       <source>The axes this system is made of</source>
       <translation>Tengelyek melyekre a rendszer épült</translation>
     </message>
@@ -1169,42 +1169,42 @@
       <translation>Egy kötelező egyéni buborék szám</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="308"/>
+      <location filename="ArchAxis.py" line="321"/>
       <source>The type of line to draw this axis</source>
       <translation>Ennek a tengelynek a rajzolásához használt egyenes típusa</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="312"/>
+      <location filename="ArchAxis.py" line="325"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>Hová tegye a buborékot a tengelyhez: kezdete, vége, mindkettő vagy egyiksem</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="315"/>
+      <location filename="ArchAxis.py" line="328"/>
       <source>The line width to draw this axis</source>
       <translation>Ennek a tengelynek a rajzolásához használt egyenes szélessége</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="318"/>
+      <location filename="ArchAxis.py" line="331"/>
       <source>The color of this axis</source>
       <translation>Ennek a tengelynek a színe</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="321"/>
+      <location filename="ArchAxis.py" line="334"/>
       <source>The number of the first axis</source>
       <translation>Az első tengely száma</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="324"/>
+      <location filename="ArchAxis.py" line="337"/>
       <source>The font to use for texts</source>
       <translation>A szöveghez használandó betűtípus</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="327"/>
+      <location filename="ArchAxis.py" line="340"/>
       <source>The font size</source>
       <translation>A betűméret</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="806"/>
+      <location filename="ArchAxis.py" line="869"/>
       <source>The placement of this axis system</source>
       <translation>Ennek a tengely rendszernek az elhelyezése</translation>
     </message>
@@ -1679,7 +1679,7 @@
       <translation>Ezen szint aktiválásakor a vágás bekapcsolása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1160"/>
+      <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Az anyagszín használata az objektum alakzatszíneként, ha rendelkezésre áll</translation>
     </message>
@@ -1996,42 +1996,47 @@
     <message>
       <location filename="ArchStairs.py" line="324"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>A lépcsősor legteteje ide vezet:</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>A lépcső bal széle</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>A lépcső valamennyi szegmensének bal széle</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>A lépcső valamennyi szegmensének jobb széle</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>Az alsó szint födém vastagsága</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>A felső emeleti födém vastagsága</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>Az alsó födém és a lépcső kezdete közötti kapcsolat típusa</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>A lépcső vége és a felső emeleti födém közötti kapcsolat típusa</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="221"/>
+      <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
+      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
     </message>
   </context>
   <context>
@@ -2042,12 +2047,12 @@
       <translation>Összetevők</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1945"/>
+      <location filename="ArchComponent.py" line="1939"/>
       <source>Components of this object</source>
       <translation>Az objektum elemei</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1049"/>
+      <location filename="ArchAxis.py" line="1112"/>
       <source>Axes</source>
       <translation>Tengelyek</translation>
     </message>
@@ -2057,27 +2062,27 @@
       <translation>Tengelyek létrehozása</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1050"/>
+      <location filename="ArchAxis.py" line="1113"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1051"/>
+      <location filename="ArchAxis.py" line="1114"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="785"/>
+      <location filename="ArchAxis.py" line="848"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="786"/>
+      <location filename="ArchAxis.py" line="849"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="787"/>
+      <location filename="ArchAxis.py" line="850"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
@@ -2127,22 +2132,22 @@
       <translation>Hálókat alakzatokká</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1946"/>
+      <location filename="ArchComponent.py" line="1940"/>
       <source>Base component</source>
       <translation>Alap-összetevő</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1947"/>
+      <location filename="ArchComponent.py" line="1941"/>
       <source>Additions</source>
       <translation>Kiegészítők</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1948"/>
+      <location filename="ArchComponent.py" line="1942"/>
       <source>Subtractions</source>
       <translation>Kivonás</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1949"/>
+      <location filename="ArchComponent.py" line="1943"/>
       <source>Objects</source>
       <translation>Objektumok</translation>
     </message>
@@ -2277,7 +2282,7 @@
       <translation>Kérjük válassza ki az alap tárgyat</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1952"/>
+      <location filename="ArchComponent.py" line="1946"/>
       <source>Fixtures</source>
       <translation>Berendezési tárgyak</translation>
     </message>
@@ -2337,12 +2342,12 @@
       <translation>Falak egyesítése</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="784"/>
+      <location filename="ArchAxis.py" line="847"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Tengelyek közti távolságok (mm) és szögek (fokban)</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="912"/>
+      <location filename="ArchComponent.py" line="910"/>
       <source>Error computing the shape of this object</source>
       <translation>Hiba a tárgy alakjának számítása közben</translation>
     </message>
@@ -2367,17 +2372,17 @@
       <translation>Brep erő jelző engedélyezése a tárgyon</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="933"/>
+      <location filename="ArchComponent.py" line="931"/>
       <source>has no solid</source>
       <translation>nem szilárd test</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="940"/>
+      <location filename="ArchComponent.py" line="938"/>
       <source>has an invalid shape</source>
       <translation>egy érvénytelen alak</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="942"/>
+      <location filename="ArchComponent.py" line="940"/>
       <source>has a null shape</source>
       <translation>van egy null alakja</translation>
     </message>
@@ -2532,7 +2537,7 @@
       <translation>Épület létrehozása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1953"/>
+      <location filename="ArchComponent.py" line="1947"/>
       <source>Group</source>
       <translation>Csoport</translation>
     </message>
@@ -2859,67 +2864,67 @@
       <translation>Rács létrehozása</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="788"/>
+      <location filename="ArchAxis.py" line="851"/>
       <source>Label</source>
       <translation>Címke</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1052"/>
+      <location filename="ArchAxis.py" line="1115"/>
       <source>Axis system components</source>
       <translation>Tengely rendszer komponensei</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1378"/>
+      <location filename="ArchAxis.py" line="1441"/>
       <source>Grid</source>
       <translation>Rács</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1379"/>
+      <location filename="ArchAxis.py" line="1442"/>
       <source>Total width</source>
       <translation>Teljes szélesség</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1380"/>
+      <location filename="ArchAxis.py" line="1443"/>
       <source>Total height</source>
       <translation>Teljes magasság</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1381"/>
+      <location filename="ArchAxis.py" line="1444"/>
       <source>Add row</source>
       <translation>Sor hozzáadás</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1382"/>
+      <location filename="ArchAxis.py" line="1445"/>
       <source>Del row</source>
       <translation>Sor törlés</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1383"/>
+      <location filename="ArchAxis.py" line="1446"/>
       <source>Add col</source>
       <translation>Oszlop hozzáadás</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1384"/>
+      <location filename="ArchAxis.py" line="1447"/>
       <source>Del col</source>
       <translation>Oszlop törlés</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1385"/>
+      <location filename="ArchAxis.py" line="1448"/>
       <source>Create span</source>
       <translation>Kiforgatás létrehozás</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1386"/>
+      <location filename="ArchAxis.py" line="1449"/>
       <source>Remove span</source>
       <translation>Kiforgatás eltávolítás</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1387"/>
+      <location filename="ArchAxis.py" line="1450"/>
       <source>Rows</source>
       <translation>Sorok</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1387"/>
+      <location filename="ArchAxis.py" line="1450"/>
       <source>Columns</source>
       <translation>Oszlopok</translation>
     </message>
@@ -2989,7 +2994,7 @@
       <translation>Összesen</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1954"/>
+      <location filename="ArchComponent.py" line="1948"/>
       <source>Hosts</source>
       <translation>Állomások</translation>
     </message>
@@ -3004,22 +3009,22 @@
       <translation>Kérlek válassz legalább egy tengelyt</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1114"/>
+      <location filename="ArchAxis.py" line="1177"/>
       <source>Auto height is larger than height</source>
       <translation>Automatikus magasság nagyobb, mint a magasság</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1123"/>
+      <location filename="ArchAxis.py" line="1186"/>
       <source>Total row size is larger than height</source>
       <translation>Teljes sor mérete nagyobb, mint a magasság</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1145"/>
+      <location filename="ArchAxis.py" line="1208"/>
       <source>Auto width is larger than width</source>
       <translation>Automatikus szélessége nagyobb, mint a szélesség</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1154"/>
+      <location filename="ArchAxis.py" line="1217"/>
       <source>Total column size is larger than width</source>
       <translation>Teljes oszlop mérete nagyobb, mint a szélesség</translation>
     </message>
@@ -3049,57 +3054,57 @@
       <translation>Az objektum nem rendelkezik IfcProperties attribútummal. Mégse hozzon létre számolótáblát ehhez az objektumhoz:</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1512"/>
+      <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
       <translation>Al-összetevők ki-/ bekapcsolása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1635"/>
+      <location filename="ArchComponent.py" line="1629"/>
       <source>Closing Sketch edit</source>
       <translation>Vázlat szerkesztés bezárása</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1942"/>
+      <location filename="ArchComponent.py" line="1936"/>
       <source>Component</source>
       <translation>Összetevő</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1955"/>
+      <location filename="ArchComponent.py" line="1949"/>
       <source>Edit IFC properties</source>
       <translation>IFC tulajdonságok szerkesztése</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="1956"/>
+      <location filename="ArchComponent.py" line="1950"/>
       <source>Edit standard code</source>
       <translation>Szabványos kód szerkesztése</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2002"/>
+      <location filename="ArchComponent.py" line="1996"/>
       <source>Property</source>
       <translation>Tulajdonság</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2007"/>
+      <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
       <translation>Tulajdonság hozzádása...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2008"/>
+      <location filename="ArchComponent.py" line="2002"/>
       <source>Add property set...</source>
       <translation>Tulajdonság készlet hozzádása...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2009"/>
+      <location filename="ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>Új...</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2151"/>
+      <location filename="ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation>Új tulajdonság</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="2186"/>
+      <location filename="ArchComponent.py" line="2180"/>
       <source>New property set</source>
       <translation>Új tulajdonság készlet</translation>
     </message>
@@ -3935,7 +3940,7 @@ Szint létrehozása megszakítva.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="ArchAxis.py" line="1554"/>
+      <location filename="ArchAxis.py" line="1617"/>
       <source>Axis tools</source>
       <translation>Tengely eszközök</translation>
     </message>
@@ -4109,62 +4114,62 @@ Szint létrehozása megszakítva.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="ArchAxis.py" line="1068"/>
+      <location filename="ArchAxis.py" line="1131"/>
       <source>The number of rows</source>
       <translation>A sorok száma</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1070"/>
+      <location filename="ArchAxis.py" line="1133"/>
       <source>The number of columns</source>
       <translation>Az oszlopok száma</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1072"/>
+      <location filename="ArchAxis.py" line="1135"/>
       <source>The sizes for rows</source>
       <translation>Mértek a sorokhoz</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1074"/>
+      <location filename="ArchAxis.py" line="1137"/>
       <source>The sizes of columns</source>
       <translation>Méretek az oszlopokhoz</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1076"/>
+      <location filename="ArchAxis.py" line="1139"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Az összefőzött cellák kitöltési határai</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1078"/>
+      <location filename="ArchAxis.py" line="1141"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>A rács tárgy által létrehozott 3D pontok típusa</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1081"/>
+      <location filename="ArchAxis.py" line="1144"/>
       <source>The total width of this grid</source>
       <translation>Ennek a rácsnak a teljes szélessége</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1083"/>
+      <location filename="ArchAxis.py" line="1146"/>
       <source>The total height of this grid</source>
       <translation>Ennek a rácsnak a teljes magassága</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1085"/>
+      <location filename="ArchAxis.py" line="1148"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Automatikus oszlop kiosztást hoz létre (állítsa 0-ra a kikapcsoláshoz)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1087"/>
+      <location filename="ArchAxis.py" line="1150"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Automatikus sor kiosztást hoz létre (állítsa 0-ra a kikapcsoláshoz)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1089"/>
+      <location filename="ArchAxis.py" line="1152"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Az élfelezőpont módban, ha a rácsnak el kell fordítania az elágazásait az aktuális él mentén, vagy nem</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1091"/>
+      <location filename="ArchAxis.py" line="1154"/>
       <source>The indices of faces to hide</source>
       <translation>A felületek jelöléseinek elrejtése</translation>
     </message>

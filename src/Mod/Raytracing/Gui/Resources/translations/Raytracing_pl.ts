@@ -126,7 +126,7 @@
     <message>
       <location filename="../../Command.cpp" line="864"/>
       <source>Sets the camera of the selected Raytracing project to match the current view</source>
-      <translation>Ustawia widok kamery z wybranego projektu Raytracing i dopasowuje go do bieżącego widoku</translation>
+      <translation>Ustawia ujęcie widoku z wybranego projektu Raytracing i dopasowuje go do bieżącego widoku</translation>
     </message>
   </context>
   <context>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Export camera to POV-Ray...</source>
-      <translation>Eksport widoku kamery do POV-Ray ...</translation>
+      <translation>Eksport ujęcia widoku do POV-Ray ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation>Eksportowanie pozycji kamery aktywnego widoku 3D w formacie POV-Ray do pliku</translation>
+      <translation>Eksportowanie ujęcia aktywnego widoku 3D do pliku, w formacie POV-Ray</translation>
     </message>
   </context>
   <context>
@@ -181,7 +181,7 @@
       <location filename="../../Command.cpp" line="335"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Aktywnym widokiem nie jest perspektywa co powoduje, że obraz POV-Ray może wyglądać inaczej niż oczekiwano.
+      <translation>Aktywnym ujęciem widoku nie jest perspektywa co powoduje, że obraz POV-Ray może wyglądać inaczej niż oczekiwano.
 Czy chcesz kontynuować?</translation>
     </message>
     <message>
@@ -197,7 +197,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-      <translation>Zapisz aktywny widok 3D z kamery i całą jego zawartość do pliku POV-Ray</translation>
+      <translation>Zapisz ujęcie aktywnego widoku 3D i całą jego zawartość do pliku POV-Ray</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="349"/>
@@ -215,7 +215,7 @@ Czy chcesz kontynuować?</translation>
       <location filename="../../Command.cpp" line="766"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Aktywnym widokiem nie jest perspektywa co powoduje, że obraz luxrender może wyglądać inaczej niż oczekiwano.
+      <translation>Aktywnym ujęciem widoku nie jest perspektywa co powoduje, że obraz luxrender może wyglądać inaczej niż oczekiwano.
 Czy chcesz kontynuować?</translation>
     </message>
   </context>
@@ -367,7 +367,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>
       <source>Do not calculate vertex normals</source>
-      <translation>Nie przeliczaj 'normalnych' wierzchołków</translation>
+      <translation>Nie przeliczaj wierzchołków normalnych</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="93"/>
@@ -442,7 +442,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="265"/>
       <source>Camera file name:</source>
-      <translation>Nazwa pliku Kamery:</translation>
+      <translation>Nazwa pliku dla ujęcia widoku:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="275"/>

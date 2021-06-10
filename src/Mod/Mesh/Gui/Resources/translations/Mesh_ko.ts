@@ -1594,7 +1594,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="346"/>
       <source> °</source>
-      <translation type="unfinished"> °</translation>
+      <translation> °</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="362"/>
@@ -1642,7 +1642,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu:</source>
-      <translation type="unfinished">Mu:</translation>
+      <translation>Mu:</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>

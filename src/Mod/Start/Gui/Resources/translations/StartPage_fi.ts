@@ -310,182 +310,187 @@ By using ";;" to separate paths, you can add several folders here</translation>
       <translation type="unfinished">Show tips</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="182"/>
+      <location filename="../../DlgStartPreferences.ui" line="163"/>
+      <source>Displays help tips in the Start workbench Documents tab</source>
+      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="185"/>
       <source>Fonts and colors</source>
       <translation>Kirjasimet ja värit</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="194"/>
+      <location filename="../../DlgStartPreferences.ui" line="197"/>
       <source>The background of the main start page area</source>
       <translation>Aloituspääsivun tausta</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="214"/>
+      <location filename="../../DlgStartPreferences.ui" line="217"/>
       <source>Background color</source>
       <translation>Taustaväri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="226"/>
+      <location filename="../../DlgStartPreferences.ui" line="229"/>
       <source>in FreeCAD</source>
       <translation>FreeCAD: ssä</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="245"/>
+      <location filename="../../DlgStartPreferences.ui" line="248"/>
       <source>In external browser</source>
       <translation>Ulkoisessa selaimessa</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="263"/>
+      <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
       <translation type="unfinished">Background color down gradient</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <location filename="../../DlgStartPreferences.ui" line="279"/>
       <source>The color of the version text</source>
       <translation>Versiotekstin väri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="296"/>
+      <location filename="../../DlgStartPreferences.ui" line="299"/>
       <source>Link color</source>
       <translation>Linkkien väri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="303"/>
+      <location filename="../../DlgStartPreferences.ui" line="306"/>
       <source>An optional image to display as background</source>
       <translation>Valinnainen kuva näytetään taustakuvana</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="316"/>
+      <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
       <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="335"/>
+      <location filename="../../DlgStartPreferences.ui" line="338"/>
       <source>Page background color</source>
       <translation>Sivun taustaväri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <location filename="../../DlgStartPreferences.ui" line="351"/>
       <source>The color of the text on the main pages</source>
       <translation>Pääsivuilla olevan tekstin väri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="368"/>
+      <location filename="../../DlgStartPreferences.ui" line="371"/>
       <source>Background image</source>
       <translation>Taustakuva</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="375"/>
+      <location filename="../../DlgStartPreferences.ui" line="378"/>
       <source>Page text color</source>
       <translation>Sivun tekstin väri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="388"/>
+      <location filename="../../DlgStartPreferences.ui" line="391"/>
       <source>The color of the links</source>
       <translation>Linkkien väri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="414"/>
+      <location filename="../../DlgStartPreferences.ui" line="417"/>
       <source>The background color of the boxes inside the pages</source>
       <translation>Sivujen sisällä olevien laatikoiden taustaväri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="434"/>
+      <location filename="../../DlgStartPreferences.ui" line="437"/>
       <source>Box background color</source>
       <translation>Laatikon taustaväri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="447"/>
+      <location filename="../../DlgStartPreferences.ui" line="450"/>
       <source>The background color behind the panels</source>
       <translation>Paneelien takana oleva taustaväri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="476"/>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>The down gradient for the background color (currently unsupported)</source>
       <translation>Värisävyn alennus taustavärille (ei tällä hetkellä tuettu)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="499"/>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>Open links</source>
       <translation>Avaa linkit</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="506"/>
+      <location filename="../../DlgStartPreferences.ui" line="509"/>
       <source>Background text color</source>
       <translation>Taustan tekstin väri</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="513"/>
+      <location filename="../../DlgStartPreferences.ui" line="516"/>
       <source>Use FreeCAD style sheet</source>
       <translation>Käytä FreeCAD tyylilomaketta</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="520"/>
+      <location filename="../../DlgStartPreferences.ui" line="523"/>
       <source>Font family</source>
       <translation type="unfinished">Font family</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="529"/>
+      <location filename="../../DlgStartPreferences.ui" line="532"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
       <translation>Aloitussivulla käytettävät kirjasimet (fontit). Se voi olla kirjasimen nimi tai pilkulla erotettu kirjasinten sarja</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="535"/>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Arial,Helvetica,sans</source>
       <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="548"/>
+      <location filename="../../DlgStartPreferences.ui" line="551"/>
       <source>The base font size to use for all texts of the Start page</source>
       <translation>Peruskirjasimen koko, jota käytetään kaikkiin aloitussivun teksteihin</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="569"/>
+      <location filename="../../DlgStartPreferences.ui" line="572"/>
       <source>Use gradient for New File icon</source>
       <translation>Käytä kaltevuutta (gradient) uuteen tiedostokuvakkeeseen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="576"/>
+      <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
       <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="598"/>
+      <location filename="../../DlgStartPreferences.ui" line="601"/>
       <source>Options</source>
       <translation>Asetukset</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="604"/>
+      <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
       <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="611"/>
+      <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
       <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="630"/>
+      <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
       <translation>Vaihda työpöytä latauksen jälkeen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="637"/>
+      <location filename="../../DlgStartPreferences.ui" line="640"/>
       <source>Close start page after loading</source>
       <translation>Sulje aloitussivu latauksen jälkeen</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="644"/>
+      <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
       <translation type="unfinished">Close and switch on opening file</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="651"/>
+      <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
       <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
     </message>

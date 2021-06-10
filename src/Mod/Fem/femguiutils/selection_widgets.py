@@ -280,7 +280,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
         helpTextPart1 = self.tr(
-            "Click on 'Add' and select geometric elements to add them to the list."
+            'Click on "Add" and select geometric elements to add to the list.'
         )
         helpTextPart2 = self.tr(
             "The following geometry elements are allowed to select: "

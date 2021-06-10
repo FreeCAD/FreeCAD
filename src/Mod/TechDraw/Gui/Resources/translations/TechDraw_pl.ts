@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Zapisz plik Dxf</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -901,14 +901,9 @@
       <translation>Utwórz aktywny widok</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="346"/>
+      <location filename="../../TaskCenterLine.cpp" line="331"/>
       <source>Create CenterLine</source>
       <translation>Utwórz linię środkową</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.cpp" line="391"/>
-      <source>Edit CenterLine</source>
-      <translation>Edytuj linię środkową</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="271"/>
@@ -1371,13 +1366,13 @@
       <location filename="../../CommandCreateDims.cpp" line="427"/>
       <location filename="../../CommandCreateDims.cpp" line="438"/>
       <source>BSpline Curve Warning</source>
-      <translation>Ostrzeżenie o krzywych BSpline</translation>
+      <translation>Ostrzeżenie o łukach krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="306"/>
       <location filename="../../CommandCreateDims.cpp" line="317"/>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
-      <translation>Wybrana krawędź to BSpline. Promień będzie przybliżony. Kontynuować?</translation>
+      <translation>Wybrana krawędź to krzywa złożona. Promień będzie przybliżony. Kontynuować?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="417"/>
@@ -1388,7 +1383,7 @@
       <location filename="../../CommandCreateDims.cpp" line="428"/>
       <location filename="../../CommandCreateDims.cpp" line="439"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
-      <translation>Wybrana krawędź to BSpline. Średnica będzie przybliżona. Kontynuować?</translation>
+      <translation>Wybrana krawędź to krzywa złożona. Średnica będzie przybliżona. Kontynuować?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="842"/>
@@ -1821,12 +1816,12 @@
       <translation>Widok ActiveView do TechDraw</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="177"/>
+      <location filename="../../TaskCenterLine.cpp" line="200"/>
       <source>Create Center Line</source>
       <translation>Utwórz linię środkową</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="217"/>
+      <location filename="../../TaskCenterLine.cpp" line="230"/>
       <source>Edit Center Line</source>
       <translation>Edytuj linię środkową</translation>
     </message>
@@ -2070,7 +2065,7 @@ górnej i lewej krawędzi</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="237"/>
       <source>Hidden Line</source>
-      <translation>Ukryta linia</translation>
+      <translation>Cieniowany z ukrytymi krawędziami</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="242"/>
@@ -2155,7 +2150,7 @@ górnej i lewej krawędzi</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="232"/>
       <source>Adds the &apos;Field Weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation>Dodaj &apos;Pole spoiny&apos; symbol (flaga)
+      <translation>Dodaj symbol &apos;Pola spoiny&apos; (flaga)
 na węźle w linii odniesienia</translation>
     </message>
     <message>
@@ -2167,7 +2162,7 @@ na węźle w linii odniesienia</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="243"/>
       <source>Adds the &apos;All Around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation>Dodaj &apos;Całe wokoło&apos; symbol (okręg)
+      <translation>Dodaj symbol &apos;Wszystko wokół&apos; (okręg)
 na węźle w linii odniesienia</translation>
     </message>
     <message>
@@ -2683,7 +2678,7 @@ Szerokość każdej jednostki wynosi ok. 0,1 mm</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
       <source>Hidden Line</source>
-      <translation>Ukryta linia</translation>
+      <translation>Cieniowany z ukrytymi krawędziami</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="112"/>
@@ -2904,7 +2899,7 @@ Mnożnik &apos;Rozmiar czcionki&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="283"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
-      <translation>Liczba miejsc po przecinku, jeśli &apos;Użycie globalnych miejsc po przecinku&apos; nie jest używane</translation>
+      <translation>Liczba miejsc po przecinku, jeśli &apos;Użycie globalnych miejsc po przecinku&apos; nie jest brane pod uwagę</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="389"/>
@@ -2983,8 +2978,8 @@ Mnożnik &apos;Rozmiar czcionki&apos;</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation>Tak czy owak -&apos;s &apos;Zachowaj aktualizację&apos; właściwość
-może zastąpić globalny &apos;Aktualizuj z 3D&apos; parametr</translation>
+      <translation>Tak czy owak strona właściwości &apos;s &apos;Zachowaj aktualizację&apos; 
+może zastąpić globalny parametr &apos;Aktualizuj z 3D&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
@@ -3120,7 +3115,7 @@ dla grup projektowych</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="573"/>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
-      <translation>Katalog startowy dla menu &apos;Wstaw stronę za pomocą szablonu&apos;</translation>
+      <translation>Katalog domyślny dla menu &apos;Wstaw stronę za pomocą szablonu&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="600"/>
@@ -3348,7 +3343,7 @@ Szybko, ale wynikiem jest kolekcja krótkich linii prostych.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
       <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
-      <translation>Domyślna skala dla wyświetleń, jeśli &apos;Typ skali widoku&apos; jest &apos;inny&apos;</translation>
+      <translation>Domyślna skala dla widoku, jeśli &apos;Typ skalowania widoku&apos; ma wartość &apos;Niestandardowy&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="238"/>
@@ -3464,7 +3459,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="857"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Zapisz plik Dxf</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="859"/>
@@ -3762,18 +3757,6 @@ Czy chcesz kontynuować?</translation>
       <translation>Ciągła</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="380"/>
-      <source>Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-      <translation>Odwraca punkty końcowe wybranych linii do tworzenia linii środkowej
-zobacz FreeCAD Wiki &apos;2LineCenterLine&apos; dla opisu</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="384"/>
-      <source>Flip Ends</source>
-      <translation>Odwróć zakończenia</translation>
-    </message>
-    <message>
       <location filename="../../TaskCenterLine.ui" line="336"/>
       <source>Dash</source>
       <translation>Kreska</translation>
@@ -4057,9 +4040,9 @@ Niestandardowy: stosuje się współczynnik skalowania niestandardowego</transla
       <source>Overtolerance value
 If &apos;Equal Tolerance&apos; is checked this is also
 the negated value for &apos;Under Tolerance&apos;.</source>
-      <translation>Wartość przekroczenia tolerancji
-Jeśli &apos;Równa Tolerancja&apos; jest sprawdzona, to jest również
-wartość negowana dla wartości &apos;Pod tolerancji&apos;.</translation>
+      <translation>Wartość odchyłki tolerancji
+Jeżeli opcja &apos; odchyłki symetrycznej &apos; jest zaznaczona, zostanie ona zastąpiona
+przez zanegowaną wartość &apos; dolnej tolerancji&apos;.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
@@ -4095,7 +4078,8 @@ przez ujemną wartość &apos; górnej tolerancji&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
 be used instead if the dimension value</source>
-      <translation>Jeśli zawartość jest sprawdzona/zaznaczona &apos;Specyfikacje Formatu&apos; zostanie użyta zamiast jeśli wartość wymiaru</translation>
+      <translation>Jeśli opcja jest zaznaczona, zawartość &apos;Specyfikacji formatu&apos; 
+zostanie użyta, jeśli wartość wymiaru</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="141"/>
@@ -4500,12 +4484,12 @@ Możesz wybrać kolejne punkty, aby zdobyć segmenty linii.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="191"/>
       <source>False</source>
-      <translation>Fałsz</translation>
+      <translation>Nie</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="196"/>
       <source>True</source>
-      <translation>Prawda</translation>
+      <translation>Tak</translation>
     </message>
   </context>
   <context>
@@ -4808,7 +4792,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="53"/>
       <source>Base Feature</source>
-      <translation>Własność podstawowa</translation>
+      <translation>Cecha podstawowa</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="74"/>

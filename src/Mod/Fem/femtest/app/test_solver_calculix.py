@@ -96,6 +96,14 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_ccx_buckling_flexuralbuckling(
+            self
+    ):
+        from femexamples.ccx_buckling_flexuralbuckling import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def test_ccxcantilever_faceload(
         self
     ):
@@ -167,6 +175,14 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.constraint_tie import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_frequency_beamsimple(
+        self
+    ):
+        from femexamples.frequency_beamsimple import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
