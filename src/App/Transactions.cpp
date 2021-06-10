@@ -362,7 +362,8 @@ void Transaction::addObjectNew(TransactionalObject *Obj)
     if (pos != index.end()) {
         if (pos->second->status == TransactionObject::Del) {
             delete pos->second;
-            delete pos->first;
+            Obj->detachFromDocument();
+            delete Obj;
             index.erase(pos);
         }
         else {
