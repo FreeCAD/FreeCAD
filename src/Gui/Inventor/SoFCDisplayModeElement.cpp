@@ -83,7 +83,10 @@ SoFCDisplayModeElement::set(SoState * const state,
         element->faceColor.setPackedValue(ViewParams::getHiddenLineFaceColor(),f);
       if((element->hasLineColor = ViewParams::getHiddenLineOverrideColor()))
         element->lineColor.setPackedValue(ViewParams::getHiddenLineColor(),f);
-      element->transp = ViewParams::getHiddenLineTransparency();
+      if (ViewParams::getHiddenLineOverrideTransparency())
+        element->transp = ViewParams::getHiddenLineTransparency();
+      else
+        element->transp = -1.0f;
       element->outline = outline;
     }
     else {

@@ -914,7 +914,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
 
     int pushed = 0;
     auto dispModeElement = SoFCDisplayModeElement::getInstance(state);
-    if (dispModeElement->getTransparency() != 0.0 || dispModeElement->getFaceColor()) {
+    if (dispModeElement->getTransparency() >= 0.0 || dispModeElement->getFaceColor()) {
 
         overrideTransparency = dispModeElement->getTransparency();
         const SbColor *color = dispModeElement->getFaceColor();

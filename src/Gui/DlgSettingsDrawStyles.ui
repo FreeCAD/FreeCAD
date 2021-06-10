@@ -403,13 +403,6 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Transparency</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="Gui::ColorButton" name="HiddenLineFaceColor">
           <property name="enabled">
@@ -485,6 +478,13 @@
          <widget class="QCheckBox" name="HiddenLineHideFace">
           <property name="text">
            <string>Hide face</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QCheckBox" name="HiddenLineOverrideTransparency">
+          <property name="text">
+           <string>Override transparency</string>
           </property>
          </widget>
         </item>
@@ -1012,6 +1012,22 @@
     <hint type="destinationlabel">
      <x>303</x>
      <y>114</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>HiddenLineOverrideTransparency</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>HiddenLineTransparency</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>680</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>680</y>
     </hint>
    </hints>
   </connection>

@@ -113,6 +113,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
 
 #define FC_DRAW_STYLE_PARAMS \
     FC_DRAW_STYLE_PARAM(HiddenLineTransparency, value, setValue) \
+    FC_DRAW_STYLE_PARAM(HiddenLineOverrideTransparency, isChecked, setChecked) \
     FC_DRAW_STYLE_PARAM(ShowSelectionOnTop, isChecked, setChecked) \
     FC_DRAW_STYLE_PARAM(HiddenLineSelectionOnTop, isChecked, setChecked) \
     FC_DRAW_STYLE_PARAM(SelectElementOnTop, isChecked, setChecked) \
@@ -194,6 +195,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     ui->HiddenLineColor->setEnabled(ui->HiddenLineOverrideColor->isChecked());
     ui->HiddenLineFaceColor->setEnabled(ui->HiddenLineOverrideFaceColor->isChecked());
     ui->HiddenLineBackground->setEnabled(ui->HiddenLineOverrideBackground->isChecked());
+    ui->HiddenLineTransparency->setEnabled(ui->HiddenLineOverrideTransparency->isChecked());
 }
 
 /** 

@@ -132,6 +132,7 @@ public:
 
   Material material;
   uint32_t facecolor;
+  float facetransp;
   bool resetmatrix;
 };
 
@@ -683,26 +684,22 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
   SoCacheElement::set(state, this);
 
   PRIVATE(this)->facecolor = 0;
+  PRIVATE(this)->facetransp = -1.f;
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
   PRIVATE(this)->material.selectstyle = selectstyle;
 
   SbBool outline = FALSE;
   if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state, &outline)) {
-    float t = SoFCDisplayModeElement::getTransparency(state);
-    uint8_t alpha = static_cast<uint8_t>(std::min(std::max(1.f-t, 1.f), 0.f) * 255.f);
-    PRIVATE(this)->material.diffuse = (PRIVATE(this)->material.diffuse & 0xffffff00) | alpha;
-    PRIVATE(this)->material.overrideflags.set(Material::FLAG_TRANSPARENCY);
     PRIVATE(this)->material.outline = outline;
     PRIVATE(this)->material.linewidth = SoLineWidthElement::get(state);
 
+    PRIVATE(this)->facetransp = SoFCDisplayModeElement::getTransparency(state);
     const SbColor * color = SoFCDisplayModeElement::getFaceColor(state);
     if (color)
-      PRIVATE(this)->facecolor = color->getPackedValue(t);
+      PRIVATE(this)->facecolor = color->getPackedValue(0.f);
     color = SoFCDisplayModeElement::getLineColor(state);
-    if (color) {
-      t = 1.0f;
-      PRIVATE(this)->material.hiddenlinecolor = color->getPackedValue(t);
-    }
+    if (color)
+      PRIVATE(this)->material.hiddenlinecolor = color->getPackedValue(0.f);
   }
 
   // Call SoState::getElement() here to force create SoOverrideElement at the
@@ -1006,7 +1003,14 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
   if (material.type == Material::Triangle) {
     if (this->facecolor) {
       material.pervertexcolor = false;
-      material.diffuse = this->facecolor;
+      material.diffuse = this->facecolor | (material.diffuse & 0xff);
+      material.overrideflags.set(Material::FLAG_DIFFUSE);
+    }
+    if (this->facetransp >= 0.f && this->facetransp <= 1.f) {
+      uint8_t alpha = static_cast<uint8_t>(
+          std::max(std::min(1.f-this->facetransp, 1.f), 0.f) * 255.f);
+      material.diffuse = (material.diffuse & ~0xff) | alpha;
+      material.overrideflags.set(Material::FLAG_TRANSPARENCY);
     }
   }
   else if (this->material.hiddenlinecolor) {

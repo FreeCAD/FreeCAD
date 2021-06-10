@@ -177,7 +177,9 @@ public:
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5, \
        QT_TRANSLATE_NOOP("ViewParams", "Automatically make all object transparent except the one in edit"))\
     FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.4, \
-       QT_TRANSLATE_NOOP("ViewParams","Override transparency of all objects in the scene."))\
+       QT_TRANSLATE_NOOP("ViewParams","Overridden transparency value of all objects in the scene."))\
+    FC_VIEW_PARAM(HiddenLineOverrideTransparency,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams","Whether to override transparency of all objects in the scene."))\
     FC_VIEW_PARAM(HiddenLineFaceColor,unsigned long,Unsigned,0xffffffff, "") \
     FC_VIEW_PARAM(HiddenLineOverrideFaceColor,bool,Bool,true, \
        QT_TRANSLATE_NOOP("ViewParams","Enable preselection and highlight by specified color."))\
