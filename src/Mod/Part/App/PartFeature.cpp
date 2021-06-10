@@ -336,7 +336,7 @@ Feature::getElementFromSource(App::DocumentObject *obj,
 
     int tagChanges;
     Data::MappedElement element;
-    const char *checkingSubname = "";
+    Data::IndexedName checkingSubname;
     std::string sub = Data::ComplexGeoData::noElementName(subname);
     auto checkHistory = [&](const Data::MappedName &name, size_t, long, long tag) {
         if (std::abs(tag) == owner->getID()) {
@@ -350,7 +350,7 @@ Feature::getElementFromSource(App::DocumentObject *obj,
         if (name == element.name) {
             std::pair<std::string, std::string> objElement;
             std::size_t len = sub.size();
-            sub += checkingSubname;
+            checkingSubname.toString(sub);
             GeoFeature::resolveElement(obj, sub.c_str(), objElement);
             sub.resize(len);
             if (objElement.second.size()) {
@@ -384,6 +384,7 @@ Feature::getElementFromSource(App::DocumentObject *obj,
     // confirm.
     if (element.name && shape.countSubShapes(type) == srcShape.countSubShapes(type)) {
         tagChanges = 0;
+        checkingSubname = element.index;
         auto mapped = shape.getMappedName(element.index);
         shape.traceElement(mapped, checkHistory);
         if (res.size())
@@ -411,8 +412,8 @@ Feature::getElementFromSource(App::DocumentObject *obj,
     // instance.
     const char *shapetype = TopoShape::shapeName(type).c_str();
     for (int i=0, count=shape.countSubShapes(type); i<count; ++i) {
-        auto indexed = Data::IndexedName::fromConst(shapetype, i);
-        auto mapped = shape.getMappedName(indexed);
+        checkingSubname = Data::IndexedName::fromConst(shapetype, i);
+        auto mapped = shape.getMappedName(checkingSubname);
         tagChanges = 0;
         shape.traceElement(mapped, checkHistory);
         if (single && res.size())
