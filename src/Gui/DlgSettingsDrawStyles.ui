@@ -1031,5 +1031,53 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>HiddenLineShowOutline</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>HiddenLineHideFace</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>563</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>141</x>
+     <y>592</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>HiddenLineShowOutline</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>HiddenLineHideVertex</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>563</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>141</x>
+     <y>650</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>HiddenLineShowOutline</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>HiddenLineHideSeam</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>563</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>141</x>
+     <y>621</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>
