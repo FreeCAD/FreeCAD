@@ -1115,7 +1115,7 @@ Utilice 'arch' para forzar notación de arco de Estados Unidos</translation>
     <message>
       <location filename="shape2dview.py" line="102"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Una lista de puntos de exclusión. No se trazará cualquier borde que toque alguno de esos puntos.</translation>
     </message>
   </context>
   <context>
@@ -1483,7 +1483,7 @@ desde el menú Herramientas -&gt; Administrador de complementos</translation>
       <translation>Activa / desactiva restringir al plano de trabajo</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>No se puede insertar un nuevo objeto en una parte escalada</translation>
     </message>
@@ -1659,6 +1659,11 @@ La matriz puede convertirse en una matriz polar o circular cambiando su tipo.</t
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Error: módulo json no encontrado. Incapaz de guardar el estilo</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>Aviso</translation>
     </message>
   </context>
   <context>
@@ -2557,9 +2562,6 @@ Los objetos añadidos a esta capa pueden compartir las mismas propiedades visual
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Crea una línea de 2 puntos. CTRL para ajustar, MAYÚS para restringir.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5679,22 +5681,22 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Si está marcado, los subelementos serán modificados en lugar de objetos enteros</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Alzado</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Lado</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Plano de trabajo actual</translation>
     </message>
@@ -6538,22 +6540,22 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Convertir en Alambre</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Este objeto no soporta posibles puntos coincidentes, por favor inténtalo de nuevo.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Objeto activo debe tener más de dos puntos/nodos</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>La selección no es un nudo</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Extremo de BezCurve no puede ser suavizado</translation>
     </message>
@@ -6893,7 +6895,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Invertir dimensión</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Estirar</translation>
     </message>
@@ -6993,12 +6995,12 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Seleccione un objeto Borrador para editar</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>No se encontró ningún punto de edición para el objeto seleccionado</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: este objeto no es editable</translation>
     </message>
@@ -7088,22 +7090,22 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Crear B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Elige una cara, 3 vértices o un proxy WP para definir el plano de dibujo</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Plano de trabajo alineado a la colocación global de</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Personalizado</translation>
     </message>
@@ -7435,7 +7437,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>No se puede escalar objetos:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Demasiados objetos seleccionados, número máximo establecido en:</translation>
     </message>
@@ -7448,6 +7450,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation>La forma no se puede generar:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

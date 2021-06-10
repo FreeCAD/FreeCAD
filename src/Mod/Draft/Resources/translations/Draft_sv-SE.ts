@@ -1475,7 +1475,7 @@ menyverktyg -&gt; Insticksmodulshanterare</translation>
       <translation>Växlar Begränsning till arbetsplan på/av</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Kan inte infoga nytt objekt i en skalad del</translation>
     </message>
@@ -1650,6 +1650,11 @@ Matrisen kan förvandlas till en polär eller en cirkulär matris genom att änd
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
     </message>
   </context>
   <context>
@@ -2545,9 +2550,6 @@ Objekt som läggs till detta lager kan dela samma visuella egenskaper som linjef
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Skapar en 2-punkts linje. CTRL för att snäppa, SKIFT för att begränsa.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5665,22 +5667,22 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Om detta är ikryssat kommer underelement modifieras istället för hela objekt</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Topp</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Front</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Sida</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Nuvarande arbetsplan</translation>
     </message>
@@ -6526,22 +6528,22 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Konvertera till tråd</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Detta objekt stöder inte möjliga sammanfallningspunkter, vänligen försök igen.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Aktivt objekt måste ha mer än två punkter/noder</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>Markering är inte en knut</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Slutpunkt på bezierkurva kan inte jämnas till</translation>
     </message>
@@ -6881,7 +6883,7 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Växla riktning på dimension</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Töj ut</translation>
     </message>
@@ -6981,12 +6983,12 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Välj ett Draft-objekt att redigera</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>Ingen redigeringspunkt hittad för markerat objekt</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: detta objekt går inte att redigera</translation>
     </message>
@@ -7076,22 +7078,22 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Skapa B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Välj en yta, 3 hörn eller ett arbetsplan Proxy för att definiera ritningsplanet</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Arbetsplan justerad till global placering av</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Riktning</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Anpassad</translation>
     </message>
@@ -7424,7 +7426,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7437,6 +7439,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

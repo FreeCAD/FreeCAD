@@ -3280,11 +3280,6 @@ click again to end selection</source>
       <translation>Impossible d'utiliser cette commande car il n'y a pas de solide à soustraire.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Assurez-vous que le corps contient une fonction avant de tenter une commande soustractive.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Impossible d'utiliser l'objet sélectionné. L'objet sélectionné doit appartenir au corps actif</translation>
@@ -3342,6 +3337,11 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>La sélection n’est pas dans le corps actif</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Assurez-vous que le corps contient une fonctionnalité avant de tenter une commande soustractive.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>

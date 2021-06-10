@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Якщо не нуль, осі будуть позначені не в вигляді одного повного рядка, а у вигляді двох рядків заданої довжини</translation>
     </message>
   </context>
   <context>
@@ -3126,67 +3126,67 @@
     <message>
       <location filename="ArchPipe.py" line="163"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Оберіть тільки обʼєкт Труба</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="221"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>Не вдалося створити базовий шлях</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="237"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Не вдається побудувати профіль</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="269"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Неможливо побудувати трубу</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="288"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>Базовий об'єкт не є частиною</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="291"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Забагато каркасів у базовій формі</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="294"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Базова сітка закрита</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="308"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>Профіль не є двомірною частиною</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="311"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>Профіль не закритий</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="379"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>Будуть підключені лише 3 перші сітки</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="443"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>Звичайна вершина не знайдена</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="415"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Труби вже вирівняні</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="455"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>Принаймні 2 труби повинні вирівнюватися</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="513"/>
@@ -3196,42 +3196,42 @@
     <message>
       <location filename="ArchRebar.py" line="151"/>
       <source>Please select a base face on a structural object</source>
-      <translation type="unfinished">Please select a base face on a structural object</translation>
+      <translation>Будь ласка, виберіть базову грань на структурному об'єкті</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="689"/>
       <source>Create external reference</source>
-      <translation type="unfinished">Create external reference</translation>
+      <translation>Створити зовнішнє посилання</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1503"/>
       <source>Section plane settings</source>
-      <translation type="unfinished">Section plane settings</translation>
+      <translation>Налаштування площини перетину</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1508"/>
       <source>Objects seen by this section plane:</source>
-      <translation type="unfinished">Objects seen by this section plane:</translation>
+      <translation>Видимі об'єкти на площині перетину:</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Section plane placement:</source>
-      <translation type="unfinished">Section plane placement:</translation>
+      <translation>Розміщення площини перетину:</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1510"/>
       <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
+      <translation>Повернути по осі Х</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1512"/>
       <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
+      <translation>Повернути по осі Y</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1514"/>
       <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
+      <translation>Повернути по осі Z</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1516"/>
@@ -3246,7 +3246,7 @@
     <message>
       <location filename="ArchStructure.py" line="1141"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Виберіть інший Конструктивний об'єкт:</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1146"/>
@@ -3256,57 +3256,57 @@
     <message>
       <location filename="ArchStructure.py" line="1149"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Вибраний об'єкт не має структурних вузлів</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1152"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Один з цих об'єктів має більше 2 вузлів</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1159"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Не вдається знайти відповідну точку перетину</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1162"/>
       <source>Intersection found.</source>
-      <translation type="unfinished">Intersection found.</translation>
+      <translation>Виявлено перетин.</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="665"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation type="unfinished">The selected wall contains no subwall to merge</translation>
+      <translation>Виділена стіна не містить вкладених стін для об'єднання</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="922"/>
       <source>Cannot compute blocks for wall</source>
-      <translation type="unfinished">Cannot compute blocks for wall</translation>
+      <translation>Не можна обчислити блоки для стіни</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="236"/>
       <source>Choose a face on an existing object or select a preset</source>
-      <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
+      <translation>Виберіть грань на існуючому об'єкті або виберіть заготовку</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1597"/>
       <source>Unable to create component</source>
-      <translation type="unfinished">Unable to create component</translation>
+      <translation>Неможливо створити торрент</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1637"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
+      <translation>Щільність сітки, що визначає отвір у хост-об'єкті. Значення нуля автоматично приймає найбільшу сітку</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1656"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ за замовчуванням</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1655"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
+      <translation>Якщо це позначено, значення кадру за замовчуванням цього вікна буде додано до значення, введеного тут</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1657"/>

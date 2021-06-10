@@ -569,37 +569,37 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Txertatu errenkada %n goian</numerusform>
         <numerusform>Txertatu %n errenkada goian</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Txertatu errenkada %n behean</numerusform>
         <numerusform>Txertatu %n errenkada behean</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>Txertatu elkarren ondoan ez dagoen errenkada %n</numerusform>
         <numerusform>Txertatu elkarren ondoan ez dauden %n errenkada</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>Kendu errenkada</numerusform>
         <numerusform>Kendu errenkadak</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Txertatu zutabe %n ezkerrean</numerusform>
+        <numerusform>Txertatu %n zutabe ezkerrean</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -618,9 +618,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Kendu zutabea(k)</numerusform>
+        <numerusform>Kendu zutabeak</numerusform>
       </translation>
     </message>
   </context>

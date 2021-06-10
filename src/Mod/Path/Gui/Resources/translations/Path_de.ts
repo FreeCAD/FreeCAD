@@ -9,6 +9,36 @@
       <translation>Zeigt im DEBUG-Modus den temporären Objekte Pfad-konstruktion.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
+      <source>The direction along which dropcutter lines are created</source>
+      <translation>Die Richtung, entlang der Drop-Cutter Bahnen erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
+      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
+      <translation>Soll die Operation durch das Grundobjekt oder durch die Begrenzungsbox des Basisobjekts eingeschränkt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
+      <source>Step over percentage of the drop cutter path</source>
+      <translation>Überlappung des Drop-Cutter Pfads in Prozent</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
+      <source>Z-axis offset from the surface of the object</source>
+      <translation>Z-Achsenversatz von der Oberfläche des Objekts</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
+      <source>The Sample Interval. Small values cause long wait times</source>
+      <translation>Das Abtastintervall. Kleine Werte führen zu langer Wartezeit</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
+      <source>Enable optimization which removes unnecessary points from G-Code output</source>
+      <translation>Aktivieren Sie die Optimierung, um unnötige Punkte aus der G-Code-Ausgabe zu entfernen</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="124"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
       <translation>Kleinere Werte liefern ein feineres, genaueres Netz - bei höherem Rechenaufwand (Cpu).</translation>
@@ -19,9 +49,34 @@
       <translation>Kleinere Werte liefern ein feineres, genaueres Netz. Geringere Werte erhöhen die Verarbeitungszeit unerheblich.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
+      <source>The completion mode for the operation: single or multi-pass</source>
+      <translation>Der Vervollständigungsmodus für die Operation: einfach oder mehrfach</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
+      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
+      <translation>Umlaufrichtung des Werkzeugs um das Werkstück: Gleichlauf (Uhrzeigersinn) oder Gegenlauf (entgegen des Uhrzeigersinns)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="135"/>
       <source>Stop index(angle) for rotational scan</source>
       <translation>Stopp-Index(Winkel) für Rotationssuche</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
+      <source>Ignore areas that proceed below specified depth.</source>
+      <translation>Ignoriere Bereiche, die unterhalb der angegebenen Tiefe fortfahren.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
+      <source>Depth used to identify waste areas to ignore.</source>
+      <translation>Tiefe zum Ermitteln von überschüssigen Flächen, um diese auszulassen.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
+      <source>Cut through waste to depth at model edge, releasing the model.</source>
+      <translation>Schneide durch überschüssiges Material bis zur Werkstückkante, um dieses zu befreien.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="131"/>
@@ -651,59 +706,9 @@ nur unwesentlich.</translation>
       <translation>Auf Wahr setzen, wenn die Fräser-Radiuskompensation verwendet werden soll</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
-      <source>The direction along which dropcutter lines are created</source>
-      <translation>Die Richtung, entlang der Drop-Cutter Bahnen erstellt werden</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
-      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
-      <translation>Soll die Operation durch das Grundobjekt oder durch die Begrenzungsbox des Basisobjekts eingeschränkt werden</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
-      <source>Step over percentage of the drop cutter path</source>
-      <translation>Überlappung des Drop-Cutter Pfads in Prozent</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
-      <source>Z-axis offset from the surface of the object</source>
-      <translation>Z-Achsenversatz von der Oberfläche des Objekts</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
-      <source>The Sample Interval. Small values cause long wait times</source>
-      <translation>Das Abtastintervall. Kleine Werte führen zu langer Wartezeit</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
-      <source>Enable optimization which removes unnecessary points from G-Code output</source>
-      <translation>Aktivieren Sie die Optimierung, um unnötige Punkte aus der G-Code-Ausgabe zu entfernen</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
-      <source>The completion mode for the operation: single or multi-pass</source>
-      <translation>Der Vervollständigungsmodus für die Operation: einfach oder mehrfach</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
-      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
-      <translation>Umlaufrichtung des Werkzeugs um das Werkstück: Gleichlauf (Uhrzeigersinn) oder Gegenlauf (entgegen des Uhrzeigersinns)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
-      <source>Ignore areas that proceed below specified depth.</source>
-      <translation>Ignoriere Bereiche, die unterhalb der angegebenen Tiefe fortfahren.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
-      <source>Depth used to identify waste areas to ignore.</source>
-      <translation>Tiefe zum Ermitteln von überschüssigen Flächen, um diese auszulassen.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
-      <source>Cut through waste to depth at model edge, releasing the model.</source>
-      <translation>Schneide durch überschüssiges Material bis zur Werkstückkante, um dieses zu befreien.</translation>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Algorithmus zum berechnen des Werkzeugweges</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="71"/>
@@ -729,11 +734,6 @@ nur unwesentlich.</translation>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="92"/>
       <source>Enforce the Z-depth of the selected face as the lowest value for final depth. Higher user values will be observed.</source>
       <translation>Erzwinge die Z-Tiefe der ausgewählten Fläche als niedrigsten Wert für die Endtiefe. Höhere Benutzerwerte werden beobachtet.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Algorithmus zum berechnen des Werkzeugweges</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
@@ -1124,6 +1124,33 @@ nur unwesentlich.</translation>
       <translation>Der Lochdurchmesser kann aufgrund der Tessellation (Kantigkeit) an der Fläche oder Kante ungenau sein.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Auf 'umgekehrten Winkel' gedreht, um den Zugriff zu versuchen.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
+      <source>Always select the bottom edge of the hole when using an edge.</source>
+      <translation>Wählen Sie immer den unteren Rand des Lochs aus, wenn Sie eine Kante verwenden.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
+      <source>Start depth &lt;= face depth.
+Increased to stock top.</source>
+      <translation>Starttiefe &lt;= Oberflächentiefe.
+Wurde auf Grundkörperoberseite erhöht.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
+      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
+      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation A(x)' für die Erreichbarkeit.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
+      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
+      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation B(y)' für die Erreichbarkeit.</translation>
+    </message>
+    <message>
       <location filename="PathCircularHoleBase.py" line="120"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>Funktion %s.%s lässt sich nicht als ein kreisrundes Loch verarbeiten - bitte aus der Basisgeometrie-Liste entfernen.</translation>
@@ -1199,6 +1226,31 @@ nur unwesentlich.</translation>
       <translation>Werkzeuge</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
+      <source>Face appears misaligned after initial rotation.</source>
+      <translation>Die Fläche erscheint nach der ersten Rotation falsch ausgerichtet zu sein.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
+      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
+      <translation>Ziehen Sie in Betracht die Eigenschaft "Umgekehrter Winkel" umzuschalten und berechnen Sie die Operation neu.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
+      <source>Multiple faces in Base Geometry.</source>
+      <translation>Mehrere Oberflächen in der Basisgeometrie.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
+      <source>Depth settings will be applied to all faces.</source>
+      <translation>Tiefeneinstellungen werden auf alle Teilflächen angewendet.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
+      <source>EnableRotation property is 'Off'.</source>
+      <translation>Die Eigenschaft "Rotation zulassen" ist deaktiviert.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
       <source>
 &lt;br&gt;Pocket is based on extruded surface.</source>
@@ -1257,31 +1309,6 @@ nur unwesentlich.</translation>
       <translation>Ausgewählte Flächen bilden eine Schleife. Verarbeite Flächen.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
-      <source>Face appears misaligned after initial rotation.</source>
-      <translation>Die Fläche erscheint nach der ersten Rotation falsch ausgerichtet zu sein.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
-      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
-      <translation>Ziehen Sie in Betracht die Eigenschaft "Umgekehrter Winkel" umzuschalten und berechnen Sie die Operation neu.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
-      <source>Multiple faces in Base Geometry.</source>
-      <translation>Mehrere Oberflächen in der Basisgeometrie.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
-      <source>Depth settings will be applied to all faces.</source>
-      <translation>Tiefeneinstellungen werden auf alle Teilflächen angewendet.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
-      <source>EnableRotation property is 'Off'.</source>
-      <translation>Die Eigenschaft "Rotation zulassen" ist deaktiviert.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="575"/>
       <source>Applying inverse angle automatically.</source>
       <translation>Der winkel wird Automatisch gedreht.</translation>
@@ -1295,33 +1322,6 @@ nur unwesentlich.</translation>
       <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
       <source>Rotated to inverse angle.</source>
       <translation>Rotation im umgedrehten winkel.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Auf 'umgekehrten Winkel' gedreht, um den Zugriff zu versuchen.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
-      <source>Always select the bottom edge of the hole when using an edge.</source>
-      <translation>Wählen Sie immer den unteren Rand des Lochs aus, wenn Sie eine Kante verwenden.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
-      <source>Start depth &lt;= face depth.
-Increased to stock top.</source>
-      <translation>Starttiefe &lt;= Oberflächentiefe.
-Wurde auf Grundkörperoberseite erhöht.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
-      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
-      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation A(x)' für die Erreichbarkeit.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
-      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
-      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation B(y)' für die Erreichbarkeit.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1355,6 +1355,19 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <location filename="PathProfileEdges.py" line="430"/>
       <source>Create a Profile based on edge selection</source>
       <translation>Profil mit ausgewählten Kanten erzeugen</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="382"/>
+      <source>Extend Outline error</source>
+      <translation type="unfinished">Extend Outline error</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive</source>
+      <translation>Adaptiv</translation>
     </message>
   </context>
   <context>
@@ -1519,6 +1532,34 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
     </message>
   </context>
   <context>
+    <name>PathFeatureExtensions</name>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="717"/>
+      <source>Click to enable Extensions</source>
+      <translation type="unfinished">Click to enable Extensions</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="733"/>
+      <source>Click to include Edges/Wires</source>
+      <translation type="unfinished">Click to include Edges/Wires</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="710"/>
+      <source>Extensions enabled</source>
+      <translation type="unfinished">Extensions enabled</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="730"/>
+      <source>Including Edges/Wires</source>
+      <translation type="unfinished">Including Edges/Wires</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="421"/>
+      <source>Waterline error</source>
+      <translation type="unfinished">Waterline error</translation>
+    </message>
+  </context>
+  <context>
     <name>PathGeom</name>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="152"/>
@@ -1549,6 +1590,11 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <location filename="PathGeom.py" line="542"/>
       <source>%s not supported for flipping</source>
       <translation>%s unterstützt keine Spiegelung</translation>
+    </message>
+    <message>
+      <location filename="PathGeom.py" line="595"/>
+      <source>Zero working area to process. Check your selection and settings.</source>
+      <translation type="unfinished">Zero working area to process. Check your selection and settings.</translation>
     </message>
   </context>
   <context>
@@ -1936,6 +1982,21 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
   <context>
     <name>PathPocket</name>
     <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="145"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="100"/>
       <source>Pocket does not support shape %s.%s</source>
       <translation>Die Tasche unterstützt nicht die Form %s.%s</translation>
@@ -1969,21 +2030,6 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
       <location filename="../../../PathScripts/PathPocket.py" line="110"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
       <translation>Gesamttiefe unter ZMin von Fläche(n) ausgewählt.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
-      <source>Normal</source>
-      <translation>Normal</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="145"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
-      <source>Y</source>
-      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
@@ -2026,11 +2072,6 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
   <context>
     <name>PathPocketShape</name>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
-      <source>Uses the outline of the base geometry.</source>
-      <translation>Benutzt die Kontur der Basisgeometrie.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="215"/>
       <source>Default length of extensions.</source>
       <translation>Standardlänge der Verlängerung/Erweiterungen.</translation>
@@ -2054,6 +2095,11 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
       <location filename="../../../PathScripts/PathPocketShape.py" line="670"/>
       <source>Start Depth is lower than face depth. Setting to </source>
       <translation>Die Starthöhe ist Tiefer als die Model Oberkante </translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
+      <source>Uses the outline of the base geometry.</source>
+      <translation>Benutzt die Kontur der Basisgeometrie.</translation>
     </message>
     <message>
       <location filename="PathPocketShape.py" line="454"/>
@@ -2870,18 +2916,13 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="186"/>
-      <source>Devfines which standard thread was chosen</source>
-      <translation>Definiert, welche Standard-Gewinde gewählt wurde</translation>
+      <source>Defines which standard thread was chosen</source>
+      <translation>Definiert, welches Standard-Gewinde gewählt wurde</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="190"/>
       <source>Set thread's tpi - used for imperial threads</source>
       <translation>TPI - für imperiale Gewinde verwendet</translation>
-    </message>
-    <message>
-      <location filename="PathThreadMilling.py" line="186"/>
-      <source>Defines which standard thread was chosen</source>
-      <translation>Definiert, welches Standard-Gewinde gewählt wurde</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="187"/>
@@ -4186,6 +4227,11 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>Dem Job wurde kein Basisobjekt zugeordnet.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
       <translation>Prüfe das Path-Projekt auf bekannte Fehler</translation>
@@ -4434,11 +4480,6 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
       <location filename="../../../PathScripts/PathSanity.py" line="345"/>
       <source>Date</source>
       <translation>Datum</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>Dem Job wurde kein Basisobjekt zugeordnet.</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="50"/>
@@ -4977,14 +5018,6 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
       <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
       <source>Create custom gcode snippet</source>
       <translation>Benutzerdefinierten G-Code Ausschnitt erstellen</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathAdaptive</name>
-    <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive</source>
-      <translation>Adaptiv</translation>
     </message>
   </context>
   <context>

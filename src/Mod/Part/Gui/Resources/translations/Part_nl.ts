@@ -350,16 +350,6 @@ Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt 
       <translation>Versnijden tot groep</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleaanse fragmenten</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Splits voorwerpen waar ze overlappen</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -395,6 +385,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 of met de vormen in een samenstelling.
 Dit betekent dat de overlappende volumes van de vormen worden verwijderd.
 Een 'Samengestelde Filter' kan worden gebruikt om de resterende stukken uit te pakken.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleaanse fragmenten</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Splits voorwerpen waar ze overlappen</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

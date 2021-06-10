@@ -349,16 +349,6 @@ Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela 
       <translation>Xerratu konposatua</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Zati boolearrak</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Zatitu objektuak haiek ebakitzen diren gunean</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -394,6 +384,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 edo konposatu baten barruko formekin.
 Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
 'Konposatu-iragazki' bat erabili daiteke gainerako piezak erauzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Zati boolearrak</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Zatitu objektuak haiek ebakitzen diren gunean</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

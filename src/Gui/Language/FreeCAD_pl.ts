@@ -580,7 +580,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Flip</source>
-      <translation>Obróć</translation>
+      <translation>Odwróć</translation>
     </message>
     <message>
       <source>Offset</source>
@@ -7392,7 +7392,7 @@ Physical path: </source>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
@@ -7546,7 +7546,7 @@ Physical path: </source>
     <name>StdCmdGroup</name>
     <message>
       <source>Structure</source>
-      <translation>Struktura</translation>
+      <translation>Konstrukcja</translation>
     </message>
     <message>
       <source>Create group</source>

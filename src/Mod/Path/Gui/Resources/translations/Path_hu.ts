@@ -9,6 +9,36 @@
       <translation>Az ideiglenes építőobjektumok megjelenítésének útvonala, ha a modul DEBUG módban van.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
+      <source>The direction along which dropcutter lines are created</source>
+      <translation>Az stancoló egyenesei mentén az irányok létrehozva</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
+      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
+      <translation>A műveletet korlátozza az alaptest állomány objektum vagy az alap objektum határolókerete</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
+      <source>Step over percentage of the drop cutter path</source>
+      <translation>Átléptetési százalék a stancoló útvonalán</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
+      <source>Z-axis offset from the surface of the object</source>
+      <translation>Z-tengely eltolása a tárgy felületétől</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
+      <source>The Sample Interval. Small values cause long wait times</source>
+      <translation>A Mintavételezési időköz. Kisebb értékek hosszú várakozást okoznak</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
+      <source>Enable optimization which removes unnecessary points from G-Code output</source>
+      <translation>Engedélyezi az optimalizálást, amely eltávolítja a szükségtelen pontokat a G-kód kimenetéről</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="124"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
       <translation>A kisebb értékek finomabb, pontosabb hálót eredményeznek. A kisebb értékek jelentősen növelik a feldolgozási időt.</translation>
@@ -19,9 +49,34 @@
       <translation>A kisebb értékek finomabb, pontosabb hálót eredményeznek. A kisebb értékek nem növelik jelentősen a feldolgozási időt.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
+      <source>The completion mode for the operation: single or multi-pass</source>
+      <translation>A művelet befejezési módja: egy vagy több-áthaladású</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
+      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
+      <translation>Szerszámmozgás irányának a tárgy körül kell lennie: Mászó(Óramutató járásával egyező(Cw)) vagy agyományos(Ellentétes(Ccw))</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="135"/>
       <source>Stop index(angle) for rotational scan</source>
       <translation>A körforgó letapogatás végpont indexe (szöge)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
+      <source>Ignore areas that proceed below specified depth.</source>
+      <translation>Hagyja figyelmen kívül azokat a területeket, amelyek a megadott mélység alatt haladnak.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
+      <source>Depth used to identify waste areas to ignore.</source>
+      <translation>Hulladékterületek figyelmen kívül hagyáshoz használt mélység.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
+      <source>Cut through waste to depth at model edge, releasing the model.</source>
+      <translation>Átvág a hulladékon a mélységgel a modell élénél, a modell kiadásához.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="131"/>
@@ -649,59 +704,9 @@
       <translation>Állítsa igazra, ha sugár vágó kompenzációt alkalmaz</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
-      <source>The direction along which dropcutter lines are created</source>
-      <translation>Az stancoló egyenesei mentén az irányok létrehozva</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
-      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
-      <translation>A műveletet korlátozza az alaptest állomány objektum vagy az alap objektum határolókerete</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
-      <source>Step over percentage of the drop cutter path</source>
-      <translation>Átléptetési százalék a stancoló útvonalán</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
-      <source>Z-axis offset from the surface of the object</source>
-      <translation>Z-tengely eltolása a tárgy felületétől</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
-      <source>The Sample Interval. Small values cause long wait times</source>
-      <translation>A Mintavételezési időköz. Kisebb értékek hosszú várakozást okoznak</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
-      <source>Enable optimization which removes unnecessary points from G-Code output</source>
-      <translation>Engedélyezi az optimalizálást, amely eltávolítja a szükségtelen pontokat a G-kód kimenetéről</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
-      <source>The completion mode for the operation: single or multi-pass</source>
-      <translation>A művelet befejezési módja: egy vagy több-áthaladású</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
-      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
-      <translation>Szerszámmozgás irányának a tárgy körül kell lennie: Mászó(Óramutató járásával egyező(Cw)) vagy agyományos(Ellentétes(Ccw))</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
-      <source>Ignore areas that proceed below specified depth.</source>
-      <translation>Hagyja figyelmen kívül azokat a területeket, amelyek a megadott mélység alatt haladnak.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
-      <source>Depth used to identify waste areas to ignore.</source>
-      <translation>Hulladékterületek figyelmen kívül hagyáshoz használt mélység.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
-      <source>Cut through waste to depth at model edge, releasing the model.</source>
-      <translation>Átvág a hulladékon a mélységgel a modell élénél, a modell kiadásához.</translation>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Az elérési út létrehozásához használt könyvtár</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="71"/>
@@ -727,11 +732,6 @@
       <location filename="../../../PathScripts/PathProfileFaces.py" line="92"/>
       <source>Enforce the Z-depth of the selected face as the lowest value for final depth. Higher user values will be observed.</source>
       <translation>A kijelölt felület z-mélységének kényszerítése a végső mélység legalacsonyabb értékeként. Magasabb felhasználói értékek kerülnek megfigyelésre.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Az elérési út létrehozásához használt könyvtár</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
@@ -1122,6 +1122,33 @@
       <translation>A furatátmérő pontatlan lehet a felületen lévő hálózófaktor miatt. Fontolja meg a furatél kiválasztását.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>'Fordított szögre' forgatva a hozzáférés kipróbálása érdekében.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
+      <source>Always select the bottom edge of the hole when using an edge.</source>
+      <translation>Él használatakor mindig jelölje ki a furat alsó élét.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
+      <source>Start depth &lt;= face depth.
+Increased to stock top.</source>
+      <translation>Indításmélység &lt;= felületmélység.
+Az alaptest tetejére emelve.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
+      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
+      <translation>A kijelölt elem(ek) hez 'A(x) elforgatás engedélyezésére' van szükség a kisegítő lehetőségekhez.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
+      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
+      <translation>A kijelölt elem(ek) re 'B(y) elforgatás engedélyezésére' van szükség a kisegítő lehetőségekhez.</translation>
+    </message>
+    <message>
       <location filename="PathCircularHoleBase.py" line="120"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>A %s.%s funkciót nem lehet feldolgozni kör alakú mélyedésként - távolítsa el az alap geometriai listából.</translation>
@@ -1197,6 +1224,31 @@
       <translation>Munkaeszközök</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
+      <source>Face appears misaligned after initial rotation.</source>
+      <translation>Az felületet a kezdeti forgatás után rosszul igazítja a program.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
+      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
+      <translation>Fontolja meg a "InverseAngle" tulajdonság és a újraszámítás kapcsolását.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
+      <source>Multiple faces in Base Geometry.</source>
+      <translation>Többszörös felületek az alap geometriában.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
+      <source>Depth settings will be applied to all faces.</source>
+      <translation>A mélységbeállítás mindegyik felületre érvényes lesz.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
+      <source>EnableRotation property is 'Off'.</source>
+      <translation>Az Forgatásbekapcsolás tulajdonság értéke ' Ki '.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
       <source>
 &lt;br&gt;Pocket is based on extruded surface.</source>
@@ -1255,31 +1307,6 @@
       <translation>A kijelölt felületek hurkot alkotnak. Ismétlődő felületek feldolgozása.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
-      <source>Face appears misaligned after initial rotation.</source>
-      <translation>Az felületet a kezdeti forgatás után rosszul igazítja a program.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
-      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
-      <translation>Fontolja meg a "InverseAngle" tulajdonság és a újraszámítás kapcsolását.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
-      <source>Multiple faces in Base Geometry.</source>
-      <translation>Többszörös felületek az alap geometriában.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
-      <source>Depth settings will be applied to all faces.</source>
-      <translation>A mélységbeállítás mindegyik felületre érvényes lesz.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
-      <source>EnableRotation property is 'Off'.</source>
-      <translation>Az Forgatásbekapcsolás tulajdonság értéke ' Ki '.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="575"/>
       <source>Applying inverse angle automatically.</source>
       <translation>Inverz szög automatikus alkalmazása.</translation>
@@ -1293,33 +1320,6 @@
       <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
       <source>Rotated to inverse angle.</source>
       <translation>Fordított szögre forgatva.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>'Fordított szögre' forgatva a hozzáférés kipróbálása érdekében.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
-      <source>Always select the bottom edge of the hole when using an edge.</source>
-      <translation>Él használatakor mindig jelölje ki a furat alsó élét.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
-      <source>Start depth &lt;= face depth.
-Increased to stock top.</source>
-      <translation>Indításmélység &lt;= felületmélység.
-Az alaptest tetejére emelve.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
-      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
-      <translation>A kijelölt elem(ek) hez 'A(x) elforgatás engedélyezésére' van szükség a kisegítő lehetőségekhez.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
-      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
-      <translation>A kijelölt elem(ek) re 'B(y) elforgatás engedélyezésére' van szükség a kisegítő lehetőségekhez.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1354,6 +1354,19 @@ Az alaptest tetejére emelve.</translation>
       <location filename="PathProfileEdges.py" line="430"/>
       <source>Create a Profile based on edge selection</source>
       <translation>Hozzon létre egy profilt a kiválasztott él alapján</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="382"/>
+      <source>Extend Outline error</source>
+      <translation type="unfinished">Extend Outline error</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive</source>
+      <translation>Adaptív</translation>
     </message>
   </context>
   <context>
@@ -1518,6 +1531,34 @@ Az alaptest tetejére emelve.</translation>
     </message>
   </context>
   <context>
+    <name>PathFeatureExtensions</name>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="717"/>
+      <source>Click to enable Extensions</source>
+      <translation type="unfinished">Click to enable Extensions</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="733"/>
+      <source>Click to include Edges/Wires</source>
+      <translation type="unfinished">Click to include Edges/Wires</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="710"/>
+      <source>Extensions enabled</source>
+      <translation type="unfinished">Extensions enabled</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="730"/>
+      <source>Including Edges/Wires</source>
+      <translation type="unfinished">Including Edges/Wires</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="421"/>
+      <source>Waterline error</source>
+      <translation type="unfinished">Waterline error</translation>
+    </message>
+  </context>
+  <context>
     <name>PathGeom</name>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="152"/>
@@ -1548,6 +1589,11 @@ Az alaptest tetejére emelve.</translation>
       <location filename="PathGeom.py" line="542"/>
       <source>%s not supported for flipping</source>
       <translation>%s nem támogatott az átfordításhoz</translation>
+    </message>
+    <message>
+      <location filename="PathGeom.py" line="595"/>
+      <source>Zero working area to process. Check your selection and settings.</source>
+      <translation type="unfinished">Zero working area to process. Check your selection and settings.</translation>
     </message>
   </context>
   <context>
@@ -1935,6 +1981,21 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>PathPocket</name>
     <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
+      <source>Normal</source>
+      <translation>Alapértelmezett</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="145"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="100"/>
       <source>Pocket does not support shape %s.%s</source>
       <translation>Zseb nem támogatja ezt az alakzatot %s.%s</translation>
@@ -1968,21 +2029,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathPocket.py" line="110"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
       <translation>A kiválasztott felület(ek) ZMin alatti végső mélysége.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
-      <source>Normal</source>
-      <translation>Alapértelmezett</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="145"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
-      <source>Y</source>
-      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
@@ -2025,11 +2071,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>PathPocketShape</name>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
-      <source>Uses the outline of the base geometry.</source>
-      <translation>Használja az alap geometria körvonalát.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="215"/>
       <source>Default length of extensions.</source>
       <translation>Meghosszabbítások alapértelmezett hossza.</translation>
@@ -2053,6 +2094,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathPocketShape.py" line="670"/>
       <source>Start Depth is lower than face depth. Setting to </source>
       <translation>Az indítási mélység alacsonyabb, mint a felület mélység. Beállítás erre </translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
+      <source>Uses the outline of the base geometry.</source>
+      <translation>Használja az alap geometria körvonalát.</translation>
     </message>
     <message>
       <location filename="PathPocketShape.py" line="454"/>
@@ -2877,18 +2923,13 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="186"/>
-      <source>Devfines which standard thread was chosen</source>
+      <source>Defines which standard thread was chosen</source>
       <translation>Meghatározza, hogy melyik szabványos menetet választotta ki</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="190"/>
       <source>Set thread's tpi - used for imperial threads</source>
       <translation>TPI - angolszász menethez használt</translation>
-    </message>
-    <message>
-      <location filename="PathThreadMilling.py" line="186"/>
-      <source>Defines which standard thread was chosen</source>
-      <translation>Meghatározza, hogy melyik szabványos menetet választotta ki</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="187"/>
@@ -4195,6 +4236,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>A feladatnak nincs kijelölt alap objektuma.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
       <translation>Ellenőrizze a szerszámpálya útvonalát a gyakori hibákra</translation>
@@ -4443,11 +4489,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathSanity.py" line="345"/>
       <source>Date</source>
       <translation>Dátum</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>A feladatnak nincs kijelölt alap objektuma.</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="50"/>
@@ -4992,14 +5033,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
       <source>Create custom gcode snippet</source>
       <translation>Saját Gkód létrehozása</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathAdaptive</name>
-    <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive</source>
-      <translation>Adaptív</translation>
     </message>
   </context>
   <context>

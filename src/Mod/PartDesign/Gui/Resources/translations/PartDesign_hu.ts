@@ -3276,11 +3276,6 @@ click again to end selection</source>
       <translation>Ez a parancs nem használható, mert nincs olyan tömör test, amiből ki lehet vonni.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Szubtraktív parancs kiadása előtt a testnek kell, hogy legyen jellemzője.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>A kiválasztott objektum nem használható, mert az aktív testhez kell tartoznia</translation>
@@ -3338,6 +3333,11 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Kijelölés nem szerepel az aktív testben</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>

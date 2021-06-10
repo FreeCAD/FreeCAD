@@ -350,16 +350,6 @@ clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para
       <translation>Fatia para composto</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmentos de booleano</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Separa os objetos, onde eles se intercetam</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -395,6 +385,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 ou com as formas contidas num composto.
 Isso significa que os volumes sobrepostos das formas serão removidos.
 Um 'Filtro de Composto' pode ser usado para extrair as partes restantes.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmentos de booleano</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Separa os objetos, onde eles se intercetam</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

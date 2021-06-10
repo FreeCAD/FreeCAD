@@ -350,16 +350,6 @@ Faceţi clic pe "Continuaţi" pentru a crea forma oricum sau pe 'Abandonați' pe
       <translation>Slice to compound</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmente booleene</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Separă obiectele acolo unde se intersectează</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -395,6 +385,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 sau cu formele din interiorul unui compus.
 Acest lucru înseamnă că volumele de forme care se suprapun vor fi șterse.
 Un "Filtru combinat" poate fi folosit pentru a extrage secțiunile rămase.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmente booleene</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Separă obiectele acolo unde se intersectează</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

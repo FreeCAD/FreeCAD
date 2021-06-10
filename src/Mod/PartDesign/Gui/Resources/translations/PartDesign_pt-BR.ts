@@ -570,7 +570,7 @@
     <message>
       <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
+      <translation>Varrer (sweep) um esboço selecionado ao longo de uma espiral e removê-lo do corpo</translation>
     </message>
   </context>
   <context>
@@ -740,17 +740,17 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>Editar FormaVinculada (ShapeBinder)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>Criar FormaVinculada (ShapeBinder)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>Criar SubFormaVinculada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -3282,11 +3282,6 @@ click again to end selection</translation>
       <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature  before attempting a subtractive command.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
@@ -3344,6 +3339,11 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>A seleção não está no corpo ativo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Certifique-se de que o corpo contém um objeto antes de tentar um comando subtrativo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3714,7 +3714,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Sincronizar</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>

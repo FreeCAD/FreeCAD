@@ -2360,7 +2360,7 @@ Pythonove ukazne mize na ploščo poročevalnega pogleda</translation>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
       <translation>Notranja Pythonova sporočila o napakah bodo preusmerjena
-s Pythonove ukzne mize na ploščo poročevalnega pogleda</translation>
+s Pythonove ukazne mize na ploščo poročevalnega pogleda</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>

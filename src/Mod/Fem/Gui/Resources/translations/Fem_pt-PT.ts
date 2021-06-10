@@ -96,6 +96,11 @@
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Clique em "Adicionar" e selecione os elementos geométricos para adicionar à lista.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
       <source>Click on 'Add' and select geometric elements to add them to the list.</source>
       <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
     </message>

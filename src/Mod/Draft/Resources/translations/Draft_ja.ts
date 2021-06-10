@@ -1462,7 +1462,7 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>作業平面への拘束のオン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>拡大縮小したパートに新しいオブジェクトを挿入できません。</translation>
     </message>
@@ -1636,6 +1636,11 @@ X、Y、Zの軸の指定方向にコピーを並べます。
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>警告</translation>
     </message>
   </context>
   <context>
@@ -2528,9 +2533,6 @@ Objects added to this layer can share the same visual properties such as line co
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>2点を指定して線を作成します。CTRLでスナップ、SHIFTで拘束。</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5637,22 +5639,22 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>チェックされている場合、オブジェクト全体ではなくサブ要素が変更されます。</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>上面図</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>正面図</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>サイド</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>現在の作業平面</translation>
     </message>
@@ -6498,22 +6500,22 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>ワイヤーに変換</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>このオブジェクトは一致点をサポートしていません。もう一度やり直してください。</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>アクティブなオブジェクトには２つ以上の点/節点が必要です。</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>ノットが選択されていません。</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>ベジエ曲線の端点はスムージングできません。</translation>
     </message>
@@ -6853,7 +6855,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>寸法を反転</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>伸縮</translation>
     </message>
@@ -6953,12 +6955,12 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>編集するDraftオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>選択オブジェクトの中に編集点がありません。</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: このオブジェクトは編集できません</translation>
     </message>
@@ -7048,22 +7050,22 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>B-スプラインを作成</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>描画平面を定義する面、3つの頂点、またはWPプロキシを選択</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>作業平面は以下のグローバル位置に配置されました：</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>カスタム設定</translation>
     </message>
@@ -7396,7 +7398,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7409,6 +7411,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

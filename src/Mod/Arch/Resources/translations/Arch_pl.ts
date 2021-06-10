@@ -1116,7 +1116,7 @@
     <message>
       <location filename="ArchPanel.py" line="1247"/>
       <source>A list of possible rotations for the nester</source>
-      <translation>Lista możliwych rotacji dla nestera</translation>
+      <translation>Lista możliwych rotacji dla zagnieżdżenia</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1396"/>
@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Jeśli wartość nie jest równa zero, osie nie są przedstawiane jako jedna pełna linia, lecz jako dwie linie o podanej długości</translation>
     </message>
   </context>
   <context>
@@ -3376,7 +3376,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1506"/>
       <source>Add selected</source>
-      <translation>Dodaj wybrane</translation>
+      <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1507"/>
@@ -3809,7 +3809,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchMaterial.ui" line="44"/>
       <source>Copy values from an existing material in the document</source>
-      <translation>Skopiuj wartości z istniejącego materiału w dokumencie</translation>
+      <translation>Skopiuj wartości z materiału istniejącego w dokumencie</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="65"/>
@@ -4236,7 +4236,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchMaterial.py" line="149"/>
       <source>Multi-Material</source>
-      <translation>Multi-Materiał</translation>
+      <translation>Materiał złożony</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="153"/>
@@ -4254,7 +4254,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchPanel.py" line="1522"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation>Gniazduje serię wybranych kształtów w pojemniku</translation>
+      <translation>Zagnieżdża serię wybranych kształtów w pojemniku</translation>
     </message>
   </context>
   <context>
@@ -5032,7 +5032,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="ArchMultiMaterial.ui" line="49"/>
       <source>Composition:</source>
-      <translation>Kompozycja:</translation>
+      <translation>Skład:</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="68"/>
@@ -5077,7 +5077,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation>Dodaj wybrane</translation>
+      <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="64"/>
@@ -5107,7 +5107,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="ArchNest.ui" line="103"/>
       <source>Closer than this, two points are considered equal</source>
-      <translation>Bliżej niż to dwa punkty są traktowane jako równe</translation>
+      <translation>Bliżej tego punktu, dwa punkty uważa się za identyczne</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="116"/>

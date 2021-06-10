@@ -1467,7 +1467,7 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <translation>Activa o desactiva la restricció al pla de treball</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>No es pot inserir un nou objecte a una part escalada</translation>
     </message>
@@ -1640,6 +1640,11 @@ La matriu es pot convertir en polar o circular canviant-ne el tipus.</translatio
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Error: no s'ha trobat el mòdul json. Impossible salvar l'estil</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
     </message>
   </context>
   <context>
@@ -2527,9 +2532,6 @@ Els objectes afegits a aquesta capa poden compartir les mateixes propietats com 
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Crea una línia de 2 punts. CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5620,22 +5622,22 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Si està marcat, els sub-elements es modificaran en lloc dels objectes sencers</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Alçat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Costat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Pla de treball actual</translation>
     </message>
@@ -6481,22 +6483,22 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Converteix en filferro</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Aquest objecte no suporta possibles punts coincidents, si us plau, torneu a provar-ho.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>L'objecte actiu ha de tenir més de dos punts/nodes</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>La selecció no és un nus</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>El punt final d'una corba Bézier no es pot suavitzar</translation>
     </message>
@@ -6836,7 +6838,7 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Inverteix l'acotació</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Estira</translation>
     </message>
@@ -6936,12 +6938,12 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Seleccioneu un objecte Esbós per editar</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>No s`ha trobat cap punt d'edició per l'objecte seleccionat</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: aquest objete no es editable</translation>
     </message>
@@ -7031,22 +7033,22 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Crea un B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Trieu una cara, 3 vèrtexs o un Proxi de PT per definir el pla del dibuix</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>El pla de treball s'ha alineat al posicionament global de</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Personalitzat</translation>
     </message>
@@ -7379,7 +7381,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>No es poden escalar els objectes:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>S'han seleccionat massa objectes, el màxim està establert en:</translation>
     </message>
@@ -7392,6 +7394,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

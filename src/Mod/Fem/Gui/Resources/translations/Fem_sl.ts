@@ -96,6 +96,11 @@
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Kliknite na "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
       <source>Click on 'Add' and select geometric elements to add them to the list.</source>
       <translation>Kliknite na "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.</translation>
     </message>

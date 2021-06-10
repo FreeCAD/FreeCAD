@@ -350,16 +350,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Разрезать и в соединение</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Булевы фрагменты</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Разделение объектов там, где они пересекаются</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -394,6 +384,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <translation>Выполнит логическую операцию 'эксклюзивное OR' с двумя или более выбранными объектами или фигурами внутри соединения.
 Это означает, что накладываемые объёмы фигур будут удалены.
 Для извлечения оставшихся элементов можно использовать 'Фильтр соединений'.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Булевы фрагменты</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Разделение объектов там, где они пересекаются</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

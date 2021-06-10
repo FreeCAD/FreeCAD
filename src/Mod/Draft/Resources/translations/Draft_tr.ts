@@ -1478,7 +1478,7 @@ menüden Araçlar -&gt; Eklenti Yöneticisi</translation>
       <translation>Çalışma Düzlemine Kısıtlamayı Açma / Kapatma</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Ölçeklenmiş bir parçaya yeni nesne eklenemez</translation>
     </message>
@@ -1654,6 +1654,11 @@ Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürüle
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
     </message>
   </context>
   <context>
@@ -2553,9 +2558,6 @@ Bu katmana eklenen nesneler, çizgi rengi, çizgi kalınlığı ve şekil rengi 
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>2 noktalı bir çizgi oluşturur. Nokta Yakalamak için CTRL, kısıtlamak için SHIFT.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5678,22 +5680,22 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>İşaretlenirse, nesnelerin tamamı yerine alt öğeler değiştirilir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>üst</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Ön</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Yan</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Mevcut çalışma düzlemi</translation>
     </message>
@@ -6539,22 +6541,22 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Tel'e dönüştür</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Bu nesne olası çakışma noktalarını desteklemiyor, lütfen tekrar deneyin.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Etkin nesnenin ikiden fazla noktası / düğümü olmalıdır</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>Seçim, bir düğüm değil</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>BezCurve'un uç noktası yumuşatılamıyor</translation>
     </message>
@@ -6894,7 +6896,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Ölçüyü ters çevir</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Uzat</translation>
     </message>
@@ -6994,12 +6996,12 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Düzenlemek için bir taslak nesnesi seçin</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>Seçilen nesne için düzenleme noktası bulunamadı</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: bu nesne düzenlenebilir değil</translation>
     </message>
@@ -7089,22 +7091,22 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>B-spline'ı yarat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Çizim düzlemini tanımlamak için bir yüzey, 3 nokta veya bir WP Proxy seçin</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Global yerleşime hizalanmış çalışma düzlemi</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Yön</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Özel</translation>
     </message>
@@ -7437,7 +7439,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7450,6 +7452,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

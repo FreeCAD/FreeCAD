@@ -1480,7 +1480,7 @@ vanuit het menu Tools -&gt; Addon Manager</translation>
       <translation>Schakelt beperkingen aan naar werkvlak aan/uit</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Kan geen nieuw object in een verschaald deel plaatsen</translation>
     </message>
@@ -1656,6 +1656,11 @@ De reeks kan worden omgezet in een polair of een circulaire reeks door het type 
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>Waarschuwing</translation>
     </message>
   </context>
   <context>
@@ -2554,9 +2559,6 @@ Objecten die aan deze laag worden toegevoegd kunnen dezelfde visuele eigenschapp
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Maakt een 2-puntenlijn aan. CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5680,22 +5682,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Indien aangevinkt, worden subelementen gewijzigd in plaats van hele objecten</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Boven</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Voorkant</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Zijde</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Huidig werkvlak</translation>
     </message>
@@ -6541,22 +6543,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Converteren naar draad</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Dit object ondersteunt geen mogelijke samenvallende punten, probeer het opnieuw.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Het actieve object moet meer dan twee punten/knooppunten bevatten</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>Selectie is geen Knoop</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Het eindpunt van de BezCurve kan niet geëffend worden</translation>
     </message>
@@ -6896,7 +6898,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Afmeting spiegelen</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Uitrekken</translation>
     </message>
@@ -6996,12 +6998,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Selecteer een Draftt object om te bewerken</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>Geen bewerkingspunt gevonden voor het geselecteerde object</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: dit object is niet bewerkbaar</translation>
     </message>
@@ -7091,22 +7093,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Maak B-spline aan</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Kies een vlak, 3 hoekpunten of een WP-Proxy om het tekenvlak te definiëren</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Werkvlak is afgestemd op de globale plaatsing van</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Richting</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Eigen</translation>
     </message>
@@ -7439,7 +7441,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7452,6 +7454,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

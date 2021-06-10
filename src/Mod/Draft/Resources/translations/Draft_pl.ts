@@ -195,7 +195,7 @@ Ta właściwość jest tylko do odczytu, ponieważ liczba zależy od parametrów
     <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation>Normalny kierunek tekstu względem tego wymiaru</translation>
+      <translation>Normalny kierunek tekstu względem wymiaru</translation>
     </message>
     <message>
       <location filename="dimension.py" line="150"/>
@@ -859,12 +859,12 @@ będzie można je edytować tylko przez zmianę stylu za pomocą narzędzia "edy
     <message>
       <location filename="wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation>Jeśli linia łamana jest zamknięta lub nie</translation>
+      <translation>Czy polilinia jest zamknięta, czy też nie</translation>
     </message>
     <message>
       <location filename="wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation>Obiektem podstawowym jest linia łamana, utworzona z 2 obiektów</translation>
+      <translation>Obiektem podstawowym jest polilinia, utworzona z 2 obiektów</translation>
     </message>
     <message>
       <location filename="wire.py" line="61"/>
@@ -1109,7 +1109,7 @@ Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation
     <message>
       <location filename="shape2dview.py" line="102"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Lista punktów wykluczenia. Każda krawędź dotykająca któregokolwiek z tych punktów nie zostanie narysowana.</translation>
     </message>
   </context>
   <context>
@@ -1476,7 +1476,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
       <translation>Przełącza wiązanie do płaszczyzny roboczej włącz / wyłącz</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nie można wstawić nowego obiektu do części skalowanej</translation>
     </message>
@@ -1653,6 +1653,11 @@ Tablicę można przekształcić w tablicę polarną lub okrągłą, zmieniając 
       <source>Error: json module not found. Unable to save style</source>
       <translation>Błąd: nie znaleziono modułu json. Nie można zapisać stylu</translation>
     </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>Ostrzeżenie</translation>
+    </message>
   </context>
   <context>
     <name>DraftCircularArrayTaskPanel</name>
@@ -1725,8 +1730,8 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="TaskPanel_CircularArray.ui" line="186"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation>Odległość od jednego elementu w jednym pierścieniu szyku do następnego elementu w tym samym pierścieniu. 
-Nie może być równa zero.</translation>
+      <translation>Odległość między elementami w jednym pierścieniu szyku.
+Wartość może być równa zero.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="179"/>
@@ -2170,10 +2175,10 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation>Tworzy tablicę z wybranego obiektu.
-Domyślnie jest to tablica ortogonalna 2x2.
-Po utworzeniu tablicy jej typ może zostać zmieniony
-na polarny lub okrągły, a jej właściwości mogą być modyfikowane.</translation>
+      <translation>Tworzy szyk z wybranego obiektu.
+Domyślnie jest to szyk ortogonalny o rozmiarze 2x2.
+Po utworzeniu szyku można zmienić jego typ na
+na biegunowy lub kołowy, a jego właściwości mogą być modyfikowane.</translation>
     </message>
   </context>
   <context>
@@ -2550,9 +2555,6 @@ Obiekty dodane do tej warstwy mogą mieć te same właściwości wizualne, takie
     </message>
   </context>
   <context>
-    <name>Draft_Lineremover</name>
-  </context>
-  <context>
     <name>Draft_LinkArray</name>
     <message>
       <location filename="gui_array_simple.py" line="119"/>
@@ -2619,7 +2621,7 @@ CTRL, aby przyciągnąć, SHIFT, aby ograniczyć. Przytrzymaj ALT i kliknij, aby
     <message>
       <location filename="gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation>Szyk po ścieżce</translation>
+      <translation>Szyk ścieżek</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="76"/>
@@ -2636,7 +2638,7 @@ Najpierw wybierz obiekt, a następnie wybierz ścieżkę.
     <message>
       <location filename="gui_patharray.py" line="163"/>
       <source>Path Link array</source>
-      <translation>Szyk łączy ścieżki</translation>
+      <translation>Szyk łączy ścieżek</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="166"/>
@@ -2721,7 +2723,7 @@ Wybierz obiekt bazowy, a następnie wybierz złożenie lub szkic, aby utworzyć 
     <message>
       <location filename="gui_pointarray.py" line="141"/>
       <source>PointLinkArray</source>
-      <translation>Szyk łączy punktowych</translation>
+      <translation>Szyk łączy punktów</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="144"/>
@@ -3309,7 +3311,7 @@ konwertować zamknięte krawędzie na wypełnione powierzchnie i wielokąty para
     <message>
       <location filename="gui_lines.py" line="310"/>
       <source>Polyline</source>
-      <translation>Linia łamana</translation>
+      <translation>Polilinia</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="313"/>
@@ -3787,7 +3789,7 @@ używając klawisza [ i ] podczas rysowania</translation>
     <message>
       <location filename="preferences-draft.ui" line="304"/>
       <source>Global copy mode</source>
-      <translation>Tryb globalny kopiowania</translation>
+      <translation>Tryb kopiowania globalny</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="40"/>
@@ -4530,7 +4532,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation>Zaznacz to, jeśli chcesz zachować kolory ściany podczas wykonywania obniżania i podnoszenia (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
+      <translation>Zaznacz to pole, jeśli chcesz, zachować kolory powierzchni podczas wykonywania operacji ulepsz / rozbij (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="329"/>
@@ -4540,7 +4542,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation>Zaznacz to pole, jeśli chcesz, aby nazwy ścian pochodziły od nazwy obiektu źródłowego i podobnie podczas wykonywania aktualizacji i przywracania (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
+      <translation>Zaznacz to pole, jeśli chcesz, aby nazwy powierzchni pochodziły od nazwy obiektu źródłowego i podobnie podczas wykonywania operacji ulepsz / rozbij (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="349"/>
@@ -5416,17 +5418,17 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
     <message>
       <location filename="DraftGui.py" line="1252"/>
       <source>Global X</source>
-      <translation>Globalna X</translation>
+      <translation>Globalnie X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1253"/>
       <source>Global Y</source>
-      <translation>Globalna Y</translation>
+      <translation>Globalnie Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1254"/>
       <source>Global Z</source>
-      <translation>Globalna Z</translation>
+      <translation>Globalnie Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1244"/>
@@ -5672,22 +5674,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Jeśli ta opcja jest zaznaczona, modyfikowane będą elementy podrzędne, a nie całe obiekty</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Od góry</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Od przodu</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Strona</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Bieżąca płaszczyzna robocza</translation>
     </message>
@@ -6170,7 +6172,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation>Tablica ortogonalna 2D</translation>
+      <translation>Szyk ortogonalny 2D</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="424"/>
@@ -6305,7 +6307,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_orthoarray.py" line="216"/>
       <source>Selection is not suitable for array.</source>
-      <translation>Wybór nie jest odpowiedni dla tablicy.</translation>
+      <translation>Wybór nie jest odpowiedni dla szyku.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="379"/>
@@ -6340,7 +6342,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_orthoarray.py" line="362"/>
       <source>Create Link array:</source>
-      <translation>Utwórz tablicę odnośników:</translation>
+      <translation>Utwórz szyk odnośników:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="332"/>
@@ -6370,7 +6372,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_circulararray.py" line="234"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation>Odległość radialna wynosi zero. Wynikowa tablica może nie wyglądać poprawnie.</translation>
+      <translation>Wartość odległości kątowej wynosi zero. Otrzymany szyk może nie wyglądać poprawnie.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="236"/>
@@ -6533,22 +6535,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Konwertuj do Linii łamanej</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Ten obiekt nie obsługuje możliwych punktów zbieżnych, proszę spróbować ponownie.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Aktywny obiekt musi mieć więcej niż dwa punkty/węzły</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>Zaznaczenie nie jest Węzłem</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Punkt końcowy krzywej Beziera nie może być wygładzony</translation>
     </message>
@@ -6888,7 +6890,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Odwróć wymiar</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Rozciągnij</translation>
     </message>
@@ -6988,19 +6990,19 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Wybierz obiekt rysunku roboczego do edycji</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>Nie znaleziono punktu edycji dla wybranego obiektu</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: tego obiektu nie można edytować</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="143"/>
       <source>Path array</source>
-      <translation>Szyk po ścieżce</translation>
+      <translation>Szyk ścieżek</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="79"/>
@@ -7083,22 +7085,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Utwórz krzywą złożoną</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Wybierz płaszczyznę, 3 wierzchołki lub proxy WP, aby zdefiniować płaszczyznę rysowania</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
-      <translation>Płaszczyzna robocza wyrównana do położenia globalnego</translation>
+      <translation>Płaszczyzna robocza wyrównana względem globalnego umiejscowienia</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Katalog</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Niestandardowe</translation>
     </message>
@@ -7347,7 +7349,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="DraftGui.py" line="741"/>
       <source>Global</source>
-      <translation>Globalne</translation>
+      <translation>Globalnie</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="739"/>
@@ -7360,8 +7362,8 @@ jeśli jest to pierwszy punkt do ustawienia</translation>
       <location filename="DraftGui.py" line="744"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation>Współrzędne względem globalnego układu współrzędnych.
-Usuń zaznaczenie, aby użyć układu współrzędnych płaszczyzny roboczej</translation>
+      <translation>Współrzędne odnoszą się do globalnego układu współrzędnych.
+Należy usunąć zaznaczenie, aby używać układu współrzędnych płaszczyzny roboczej</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="750"/>
@@ -7431,7 +7433,7 @@ Niedostępne, jeśli opcja preferencji Rysunku Roboczego "używaj elementów pie
       <translation>Nie można skalować obiektów:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Wybrano zbyt wiele obiektów, maksymalna liczba została ustawiona na:</translation>
     </message>
@@ -7444,6 +7446,13 @@ Niedostępne, jeśli opcja preferencji Rysunku Roboczego "używaj elementów pie
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation>Nie można wygenerować kształtu:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

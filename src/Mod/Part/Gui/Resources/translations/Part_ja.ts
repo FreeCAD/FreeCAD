@@ -347,16 +347,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>コンパウンドへスライス</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>ブーリアン演算 フラグメント</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>交差するオブジェクトを切断</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -391,6 +381,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <translation>２つ以上の選択したオブジェクト、またはコンパウンド内部のシェイプを使用して「排他的和」ブール演算を行います。
 これによってシェイプの重なり合った体積が取り除かれます。
 残った断片を取り出すには「コンパウンド・フィルター」を使用します。</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>ブーリアン演算 フラグメント</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>交差するオブジェクトを切断</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

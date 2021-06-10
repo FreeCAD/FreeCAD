@@ -575,7 +575,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Insérer %n ligne(s) ci-dessous</numerusform>
+        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
     </message>
@@ -616,9 +616,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Supprimer une/des colonne(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Supprimer une/des colonne</numerusform>
+        <numerusform>Supprimer une/des colonnes</numerusform>
       </translation>
     </message>
   </context>

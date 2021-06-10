@@ -348,16 +348,6 @@ Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakí
       <translation>Szeletelje összetevőkre</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Logikai töredékek</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -393,6 +383,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 vagy az összetevőn belüli alakzatokkal.
 Ez azt jelenti, hogy az alakzatok egymást átfedő formái törlődnek.
 A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Logikai töredékek</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

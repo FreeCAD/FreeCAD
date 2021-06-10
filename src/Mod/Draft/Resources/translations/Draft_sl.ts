@@ -1108,7 +1108,7 @@ Use 'arch' to force US arch notation</source>
     <message>
       <location filename="shape2dview.py" line="102"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Seznam izključujočih točk. Katerikoli rob bi se dotaknil teh točk, ne bo izrisan.</translation>
     </message>
   </context>
   <context>
@@ -1476,7 +1476,7 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
       <translation>Preklopi omejitve na delovno ravnino Vklop / Izklop</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Novega predmeta ni mogoče vstaviti v prevelikosten del</translation>
     </message>
@@ -1651,6 +1651,11 @@ Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s sprememb
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Napaka: modula JSON ni mogoče najti. Sloga ni mogoče shraniti</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>Opozorilo</translation>
     </message>
   </context>
   <context>
@@ -2547,9 +2552,6 @@ Predmeti, ki so dodeljeni tej plasti, si lahko delijo enake videzne lastnosti, k
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Ustvari daljico z dvema točkama. Ctrl za pripenjanje, PREMAKNI za omejitev.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5677,22 +5679,22 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Če je označeno, bodo namesto celotnega predmeta preoblikovane le podprvine</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Zgoraj</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Spredaj</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Stran</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Trenutna delovna ravnina</translation>
     </message>
@@ -6538,22 +6540,22 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Pretvori v črtovje</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Ta predmet ne podpira možnosti sovpadajočih točk, poskusite ponovno.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Dejavni predmet mora imeti več kot dve točki/vozlišči</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>Izbira ni vozel</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Krajišča bezierjeve krivulje ni mogoče zgladiti</translation>
     </message>
@@ -6893,7 +6895,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Obrni koto</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Raztegni</translation>
     </message>
@@ -6993,12 +6995,12 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Za urejanje izberite predmet osnutka</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>Na izbranem predmetu ni mogoče najti nobene točke za urejanje</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: tega predmeta ni mogoče urejati</translation>
     </message>
@@ -7088,22 +7090,22 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Ustvari B-zlepek</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Za določitev delavne ravnine izberite ploskev, 3 oglišča ali nadomestno DR</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Delovna ravnina priravna obči postavitivi</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Mapa</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Po meri</translation>
     </message>
@@ -7341,8 +7343,8 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <location filename="gui_rotate.py" line="403"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation>Koliko želita zasukati.
-Končni kót bo seštevk izhodišnega in tega kóta.</translation>
+      <translation>Koliko želite zasukati.
+Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="411"/>
@@ -7436,7 +7438,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
       <translation>Predmetov ni mogoče prevelikostiti:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Izbranih je preveč predmetov, največje število je nastavljeno na:</translation>
     </message>
@@ -7449,6 +7451,13 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation>Ni mogoče ustvariti oblike:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

@@ -1112,7 +1112,7 @@ Erabili 'arch' US arku-notazioa behartzeko.</translation>
     <message>
       <location filename="shape2dview.py" line="102"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Esklusio-puntuen zerrenda bat. Puntu horietako edozein ukitzen duten ertzak ez dira marraztuko.</translation>
     </message>
   </context>
   <context>
@@ -1480,7 +1480,7 @@ Instalatu DXF liburutegiaren gehigarria eskuz
       <translation>Laneko planora murriztea aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Ezin izan da objektu berria txertatu eskalatutako piezan</translation>
     </message>
@@ -1656,6 +1656,11 @@ Matrizearen mota aldatu daiteke, polarra edo zirkularra izan dadin.</translation
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Errorea: Ez da aurkitu JSON modulua. Ezin izan da estiloa gorde</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>Abisua</translation>
     </message>
   </context>
   <context>
@@ -2554,9 +2559,6 @@ Geruza horri gehitutako objektuek ikusizko propietate berak partekatuko dituzte,
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Bi puntuko lerro bat sortzen du. Ctrl atxikitzeko, Shift murrizteko.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -3753,7 +3755,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="366"/>
       <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
+      <translation>Testuak/kotak</translation>
     </message>
   </context>
   <context>
@@ -5150,7 +5152,7 @@ Balio hau segmentu-luzera maximoa da. </translation>
     <message>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="71"/>
@@ -5671,22 +5673,22 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Hautatuta badaude, azpi-elementuek objektu osoa ordeztuko dute</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Goikoa</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Aurrekoa</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Aldea</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Uneko laneko planoa</translation>
     </message>
@@ -6532,22 +6534,22 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Bihurtu alanbre</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Objektu honek ez ditu onartzen bat datozen puntu posibleak, saiatu berriro.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Objektu aktiboak bi puntu/nodo baino gehiago eduki behar ditu</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>Hautapena ez da adabegi bat</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Bezier kurbaren amaiera-puntua ezin da leundu</translation>
     </message>
@@ -6887,7 +6889,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Irauli kota</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Luzatu</translation>
     </message>
@@ -6987,12 +6989,12 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Hautatu zirriborro-objektu bat, hura editatzeko</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>Ez da edizio-punturik aurkitu hautatutako objekturako</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: objektu hau ezin da editatu</translation>
     </message>
@@ -7082,22 +7084,22 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Sortu B-spline elementua</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Aukeratu aurpegi bat, 3 erpin edo WP proxy bat marrazte-planoa definitzeko</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Honako objektuaren kokapen globalarekin lerrokatutako laneko area:</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Norab.</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Pertsonalizatua</translation>
     </message>
@@ -7430,7 +7432,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <translation>Ezin dira objektuak eskalatu:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Objektu gehiegi dago hautatuta, kopuru maximoa honakoa izango da:</translation>
     </message>
@@ -7443,6 +7445,13 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation>Ezin da forma sortu:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

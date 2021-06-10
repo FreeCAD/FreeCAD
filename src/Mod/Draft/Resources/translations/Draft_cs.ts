@@ -1481,7 +1481,7 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
       <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation type="unfinished">Unable to insert new object into a scaled part</translation>
     </message>
@@ -1657,6 +1657,11 @@ The array can be turned into a polar or a circular array by changing its type.</
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
     </message>
   </context>
   <context>
@@ -2555,9 +2560,6 @@ Objects added to this layer can share the same visual properties such as line co
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5679,22 +5681,22 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Horní</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Přední</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation type="unfinished">Side</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation type="unfinished">Current working plane</translation>
     </message>
@@ -6540,22 +6542,22 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation type="unfinished">Convert to Wire</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation type="unfinished">Active object must have more than two points/nodes</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation type="unfinished">Selection is not a Knot</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
     </message>
@@ -6895,7 +6897,7 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation type="unfinished">Flip dimension</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Roztáhnout</translation>
     </message>
@@ -6995,12 +6997,12 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation>Vyberte objekt Návrhu k úpravě</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation type="unfinished">No edit point found for selected object</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation type="unfinished">: this object is not editable</translation>
     </message>
@@ -7090,22 +7092,22 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation>Vytvoří B-splajn</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation type="unfinished">Working plane aligned to global placement of</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation type="unfinished">Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Vlastní</translation>
     </message>
@@ -7438,7 +7440,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7451,6 +7453,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

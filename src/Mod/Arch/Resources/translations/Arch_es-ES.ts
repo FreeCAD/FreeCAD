@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Si no es cero, los ejes no estarán representados como una línea completa sino como dos líneas de la longitud dada</translation>
     </message>
   </context>
   <context>

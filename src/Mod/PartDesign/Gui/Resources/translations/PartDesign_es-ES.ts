@@ -3284,11 +3284,6 @@ haga clic de nuevo para finalizar la selección</translation>
       <translation>No se puede usar este comando ya que no hay un sólido del que restar.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Asegúrese de que el cuerpo contenga una característica antes de intentar un comando sustractivo.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>No se puede utilizar el objeto seleccionado. El objeto seleccionado debe pertenecer al cuerpo activo</translation>
@@ -3346,6 +3341,11 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>La selección no está en un Cuerpo Activo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Asegúrate de que el cuerpo contenga una característica antes de intentar un comando sustractivo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>

@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation>Referencja{i}</translation>
+      <translation>Odniesienie{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
@@ -350,16 +350,6 @@ Kliknij "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby a
       <translation>Krojenie na kształty złożone</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -395,6 +385,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 lub z kształtami wewnątrz bryły złożonej.
 Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
 Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -519,7 +519,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="71"/>
       <location filename="../../TaskAttacher.cpp" line="104"/>
       <source>No reference selected</source>
-      <translation>Nie wybrano referencji</translation>
+      <translation>Nie wybrano odniesienia</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="80"/>
@@ -712,12 +712,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Not Connected</source>
-      <translation>Niepołączone</translation>
+      <translation>Nie połączono</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Sub Shape Not In Shape</source>
-      <translation>Podrzędna część kształtu nie jest częścią kształtu</translation>
+      <translation>Kształt podrzędny nie jest częścią kształtu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="131"/>
@@ -1662,7 +1662,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="174"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Płaszczyzna zbudowana na drugiej i trzeciej osi głównej inercji (przechodzi przez centrum bryły).</translation>
+      <translation>Płaszczyzna zbudowana na drugiej i trzeciej głównej osi bezwładności (przechodzi przez środek masy).</translation>
     </message>
   </context>
   <context>
@@ -2068,7 +2068,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../DlgBlock.ui" line="214"/>
       <location filename="../../DlgBlock.ui" line="309"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
@@ -2568,7 +2568,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1048"/>
       <source>Export CAD...</source>
-      <translation>Eksport CAD...</translation>
+      <translation>Eksport projektu do CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1049"/>
@@ -2627,7 +2627,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Make a union of several shapes</source>
-      <translation>Utwórz sumę kilku obiektów</translation>
+      <translation>Utwórz sumę kilku kształtów</translation>
     </message>
   </context>
   <context>
@@ -2640,7 +2640,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="988"/>
       <source>Import CAD...</source>
-      <translation>Import CAD ...</translation>
+      <translation>Import projektu CAD ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="989"/>
@@ -3509,7 +3509,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="14"/>
       <source>Fillet Edges</source>
-      <translation>Zaokrąglij Krawędzie</translation>
+      <translation>Zaokrąglenie krawędzi</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
@@ -3524,12 +3524,12 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="40"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
       <source>Fillet Parameter</source>
-      <translation>Parametr Zaokrąglenia</translation>
+      <translation>Parametry zaokrąglenia</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -3564,12 +3564,12 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant Radius</source>
-      <translation>Stały Promień</translation>
+      <translation>Promień stały</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable Radius</source>
-      <translation>Zmienny Promień</translation>
+      <translation>Promień zmienny</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
@@ -3584,12 +3584,12 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="266"/>
       <source>Constant Length</source>
-      <translation>Stała długość</translation>
+      <translation>Długość stała</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Variable Length</source>
-      <translation>Zmienna Długość</translation>
+      <translation>Długość zmienna</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
@@ -3679,7 +3679,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
       <source>Units for export of IGES</source>
-      <translation>Jednostki dla eksportu IGES</translation>
+      <translation>Jednostki dla eksportu w formacie IGES</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
@@ -3719,7 +3719,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
       <source>Skip blank entities</source>
-      <translation>Pomiń puste podmioty</translation>
+      <translation>Pomiń puste elementy</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="110"/>
@@ -4351,17 +4351,17 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
       <source>Center X:</source>
-      <translation>Centrum X:</translation>
+      <translation>Środek w X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="139"/>
       <source>Center Y:</source>
-      <translation>Centrum Y:</translation>
+      <translation>Środek w Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="159"/>
       <source>Center Z:</source>
-      <translation>Centrum Z:</translation>
+      <translation>Środek w Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="201"/>
@@ -4372,33 +4372,33 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
       <source>Dir. X:</source>
-      <translation>Dir. X:</translation>
+      <translation>Kierunek w X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="245"/>
       <source>Dir. Y:</source>
-      <translation>Dir. Y:</translation>
+      <translation>Kierunek w Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="283"/>
       <source>Dir. Z:</source>
-      <translation>Dir. Z:</translation>
+      <translation>Kierunek w Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
       <location filename="../../DlgRevolution.cpp" line="448"/>
       <source>Select reference</source>
-      <translation>Wybierz referencję</translation>
+      <translation>Wybierz odniesienie</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation>Jeśli zaznaczone, obrót rozszerzy się do przodu i do tyłu poprzez połowa kąta.</translation>
+      <translation>Jeśli opcja jest zaznaczona, kierunek obrotu będzie przesunięty do przodu i do tyłu o połowę kąta.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
       <source>Symmetric angle</source>
-      <translation>Symetryczny kąt</translation>
+      <translation>Kąt symetrycznie</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
@@ -4424,12 +4424,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>Długość kierunku obrotu osi jest równa zero. Musi być różna od zera.</translation>
+      <translation>Wartość długość kierunku obrotu osi jest równa zero. Musi być różna od zera.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Obrót rozpiętości kąta jest równy zero. Musi być różny od zera.</translation>
+      <translation>Wartość obrotu rozpiętości kąta jest równa zero. Musi być różna od zera.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -4515,12 +4515,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation>Automatycznie sprawdź model po operacji logicznej</translation>
+      <translation>Automatycznie sprawdź model po wykonaniu operacji logicznej</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="39"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Automatycznie dostosuj model po operacji logicznej</translation>
+      <translation>Automatycznie udoskonal model po wykonaniu operacji logicznej</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
@@ -4591,7 +4591,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Kolor okna zakreślania w widoku 3D</translation>
+      <translation>Kolor ramki otaczającej w oknie widoku 3D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
@@ -4805,7 +4805,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="255"/>
       <location filename="../../TaskShapeBuilder.cpp" line="348"/>
       <source>Select one or more edges</source>
-      <translation>Zaznacz jedną lub więcej krawędzi</translation>
+      <translation>Wybierz jedną lub więcej krawędzi</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="296"/>
@@ -4870,7 +4870,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>Sweep path</source>
-      <translation>Ścieżka wycierania</translation>
+      <translation>Ścieżka przeciągania</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
@@ -5199,7 +5199,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
       <source>Join type</source>
-      <translation>Dołącz typ</translation>
+      <translation>Typ dołączenia</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
@@ -5244,7 +5244,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create shape</source>
-      <translation>Utwórz obwiednię</translation>
+      <translation>Utwórz kształt</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
