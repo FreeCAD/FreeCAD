@@ -1219,8 +1219,16 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
                                               SoFCVertexCache::NON_SORTED_ARRAY,
                                               partidx);
   }
-  if (pushed)
+  if (pushed) {
     glPopAttrib();
+    // For some reason, GL_CURRENT_BIT doesn't seem to restore the color?
+    auto col = this->material.diffuse;
+    unsigned char r = (col >> 24) & 0xff;
+    unsigned char g = (col >> 16) & 0xff;
+    unsigned char b = (col >> 8) & 0xff;
+    unsigned char a = col & 0xff;
+    glColor4ub(r, g, b, a);
+  }
 }
 
 bool

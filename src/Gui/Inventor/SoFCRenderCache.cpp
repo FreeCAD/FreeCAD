@@ -132,6 +132,7 @@ public:
 
   Material material;
   uint32_t facecolor;
+  uint32_t hiddenlinecolor;
   float facetransp;
   bool resetmatrix;
 };
@@ -684,6 +685,7 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
   SoCacheElement::set(state, this);
 
   PRIVATE(this)->facecolor = 0;
+  PRIVATE(this)->hiddenlinecolor = 0;
   PRIVATE(this)->facetransp = -1.f;
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
   PRIVATE(this)->material.selectstyle = selectstyle;
@@ -699,7 +701,7 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
       PRIVATE(this)->facecolor = color->getPackedValue(0.f);
     color = SoFCDisplayModeElement::getLineColor(state);
     if (color)
-      PRIVATE(this)->material.hiddenlinecolor = color->getPackedValue(0.f);
+      PRIVATE(this)->hiddenlinecolor = color->getPackedValue(0.f);
   }
 
   // Call SoState::getElement() here to force create SoOverrideElement at the
@@ -1013,9 +1015,13 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
       material.overrideflags.set(Material::FLAG_TRANSPARENCY);
     }
   }
-  else if (this->material.hiddenlinecolor) {
-    material.pervertexcolor = false;
-    material.diffuse = this->material.hiddenlinecolor;
+
+  if (this->hiddenlinecolor) {
+    material.hiddenlinecolor = this->hiddenlinecolor;
+    if (material.type != Material::Triangle) {
+      material.pervertexcolor = false;
+      material.diffuse = material.hiddenlinecolor;
+    }
   }
 
   // if (material.pervertexcolor && material.maskflags.test(Material::FLAG_TRANSPARENCY))
