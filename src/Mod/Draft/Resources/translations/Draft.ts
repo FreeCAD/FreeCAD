@@ -1378,7 +1378,7 @@ from menu Tools -&gt; Addon Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_utils.py" line="143"/>
+        <location filename="gui_utils.py" line="150"/>
         <source>Unable to insert new object into a scaled part</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5416,22 +5416,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="364"/>
+        <location filename="gui_selectplane.py" line="367"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="376"/>
+        <location filename="gui_selectplane.py" line="379"/>
         <source>Front</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="388"/>
+        <location filename="gui_selectplane.py" line="391"/>
         <source>Side</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="531"/>
+        <location filename="gui_selectplane.py" line="534"/>
         <source>Current working plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6824,22 +6824,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="89"/>
+        <location filename="gui_selectplane.py" line="144"/>
         <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="264"/>
+        <location filename="gui_selectplane.py" line="267"/>
         <source>Working plane aligned to global placement of</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="513"/>
+        <location filename="gui_selectplane.py" line="516"/>
         <source>Dir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="529"/>
+        <location filename="gui_selectplane.py" line="532"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7180,6 +7180,12 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
     <message>
         <location filename="make_arc_3points.py" line="159"/>
         <source>Cannot generate shape:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="WorkingPlane.py" line="696"/>
+        <source>Selected Shapes must define a plane
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
