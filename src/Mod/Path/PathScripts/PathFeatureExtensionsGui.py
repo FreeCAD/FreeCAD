@@ -75,7 +75,7 @@ class _Extension(object):
         crd = coin.SoCoordinate3()
         fce = coin.SoFaceSet()
         hnt = coin.SoShapeHints()
-        numVert = list()  # track number of verticies in each polygon face
+        numVert = list()  # track number of vertices in each polygon face
 
         try:
             wire = ext.getWire()
@@ -285,7 +285,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         Subroutine called inside `setFields()` to initialize Extensions efficiently."""
         if self.enabled:
             self.extensions = FeatureExtensions.getExtensions(obj)
-        elif len(obj.ExtensionFeature) > 0:  # latter test loads pre-existing extensions (editting of existing operation)
+        elif len(obj.ExtensionFeature) > 0:  # latter test loads pre-existing extensions (editing of existing operation)
             noEdges = True
             for (__, __, subFeat) in FeatureExtensions.readObjExtensionFeature(obj):
                 if subFeat.startswith("Edge") or subFeat.startswith("Wire"):
