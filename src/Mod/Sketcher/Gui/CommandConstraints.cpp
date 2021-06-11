@@ -5594,6 +5594,9 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
     std::vector< std::pair<int, double> > geoIdRadiamMap;
     std::vector< std::pair<int, double> > externalGeoIdRadiamMap;
 
+    bool poles = false;
+    bool nonpoles = false;
+
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
         bool issegmentfixed = false;
         int GeoId;
@@ -5615,10 +5618,15 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
         if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arcir = static_cast<const Part::GeomArcOfCircle *>(geom);
             radius = arcir->getRadius();
+            nonpoles = true;
         }
         else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
             const Part::GeomCircle *arcir = static_cast<const Part::GeomCircle *>(geom);
             radius = arcir->getRadius();
+            if(isBsplinePole(geom))
+                poles = true;
+            else
+                nonpoles = true;
         }
         else
             continue;
@@ -5636,6 +5644,12 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
                              QObject::tr("Select one or more arcs or circles from the sketch."));
         return;
     }
+    
+    if(poles && nonpoles) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed."));
+        return;
+    }
 
     bool commitNeeded=false;
     bool updateNeeded=false;
@@ -5648,12 +5662,17 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
         unsigned int constrSize = 0;
 
         for (std::vector< std::pair<int, double> >::iterator it = externalGeoIdRadiamMap.begin(); it != externalGeoIdRadiamMap.end(); ++it) {
-            if (Obj->getGeometry(it->first)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() or isBsplinePole(Obj, it->first)) {
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", it->first,it->second);
+            if (Obj->getGeometry(it->first)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                if(nonpoles) {
+                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", it->first, it->second);
+                }
+                else {
+                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ", it->first, it->second);
+                }
             }
             else
             {
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", it->first,it->second*2);
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", it->first, it->second*2);
             }
 
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
@@ -5700,8 +5719,13 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ", refGeoId,it->first);
             }
             
-            if (Obj->getGeometry(refGeoId)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() or isBsplinePole(Obj, refGeoId)) {
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", refGeoId, radiam);
+            if (Obj->getGeometry(refGeoId)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                if(nonpoles) {
+                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", refGeoId, radiam);
+                }
+                else {
+                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ", refGeoId, radiam);
+                }
             }
             else
             {
@@ -5714,11 +5738,16 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiamMap.begin(); it != geoIdRadiamMap.end(); ++it) {
                 if (Obj->getGeometry(it->first)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() or isBsplinePole(Obj, it->first)) {
-                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", it->first,it->second);
+                    if(nonpoles) {
+                        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", it->first, it->second);
+                    }
+                    else {
+                        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ", it->first, it->second);
+                    }
                 }
                 else
                 {
-                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", it->first,it->second*2);
+                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", it->first, it->second*2);
                 }
 
                 if(constraintCreationMode==Reference) {
@@ -5772,13 +5801,15 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
 
     bool commitNeeded=false;
     bool updateNeeded=false;
+    
+    bool isCircle = false;
+    bool isPole = false;
 
     switch (seqIndex) {
         case 0: // {SelEdge}
         case 1: // {SelExternalEdge}
         {
             const Part::Geometry *geom = Obj->getGeometry(GeoId);
-            bool isCircleNotPole = false;
             if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                 const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
                 radiam = arc->getRadius();
@@ -5786,8 +5817,9 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
             else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                 const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geom);
                 radiam = circle->getRadius();
-                if (!isBsplinePole(geom))
-                    isCircleNotPole = true;
+                isCircle = true;
+                if (isBsplinePole(geom))
+                    isPole = true;
             }
             else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -5797,12 +5829,15 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
 
             // Create the radiam constraint now
             openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
-            if (!isCircleNotPole) {
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", GeoId, radiam);
+
+            if (isPole) {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ", GeoId, radiam);
             }
-            else
-            {
+            else if (isCircle) {
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", GeoId, radiam*2);
+            }
+            else {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", GeoId, radiam);
             }
 
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
