@@ -49,6 +49,7 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/misc/SoTempPath.h>
+#include <Inventor/misc/SoChildList.h>
 #include <Inventor/errors/SoDebugError.h>
 
 #include <unordered_map>
@@ -117,21 +118,59 @@ struct ElementEntry {
 
 class SelectionSensor : public SoPathSensor {
 public:
-  SelectionSensor() {
+  SelectionSensor()
+    :tmpPath(10)
+  {
     setTriggerFilter(SoPathSensor::NODES);
     ontop = false;
+    tmpPath.ref();
   }
 
-  void clear(SoFCRenderer * renderer) {
-    if (this->cache)
-      return;
-    this->cache.reset();
-    for (auto & v : this->elements) {
-      renderer->removeSelection(v.second.id);
-      v.second.vcachemap.clear();
+  ~SelectionSensor() {
+    tmpPath.unrefNoDelete();
+  }
+
+  void attachPath(SoPath *path)
+  {
+    tmpPath.truncate(0);
+    tmpPath.append(path);
+    this->attach(path);
+  }
+
+  void refresh(SoFCRenderer * renderer) {
+    SoPath *path = this->getAttachedPath();
+    // rebuild path in case of any transient changes like reordered children
+    if (path->getLength() && path->getLength() < tmpPath.getLength()) {
+      auto node = tmpPath.getNode(path->getLength()-1);
+      for (int i=path->getLength(), c=tmpPath.getLength(); i<c; ++i) {
+        auto child = tmpPath.getNode(i);
+        auto children = node->getChildren();
+        if (!children)
+          break;
+        bool found = false;
+        for (int j=0, n=children->getLength(); j<n; ++j) {
+          if ((*children)[j] == child) {
+            found = true;
+            path->append(j);
+            break;
+          }
+        }
+        if (!found)
+          break;
+        node = child;
+      }
+    }
+
+    if (this->cache) {
+      this->cache.reset();
+      for (auto & v : this->elements) {
+        renderer->removeSelection(v.second.id);
+        v.second.vcachemap.clear();
+      }
     }
   }
 
+  SoTempPath tmpPath;
   std::unordered_map<std::string, ElementEntry> elements;
   RenderCachePtr cache;
   bool ontop;
@@ -435,7 +474,7 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
   SelectionSensor * sensor = static_cast<SelectionSensor*>(_sensor);
 
   SoPath * path = sensor->getAttachedPath();
-  sensor->clear(self->renderer);
+  sensor->refresh(self->renderer);
   if (!path->getLength())
     return;
 
@@ -494,7 +533,7 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
   else {
     selpath = detailpath->copy();
     sensor = &paths[selpath];
-    sensor->attach(selpath);
+    sensor->attachPath(selpath);
     sensor->setFunction(&SoFCRenderCacheManagerP::updateSelection);
     sensor->setData(PRIVATE(this));
     update = true;
