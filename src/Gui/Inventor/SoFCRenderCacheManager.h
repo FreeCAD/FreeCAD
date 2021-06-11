@@ -72,7 +72,7 @@ public:
                        const std::string & element,
                        bool alt = false);
 
-  void clearSelection(bool alt = false);
+  int clearSelection(bool alt = false);
 
   bool isOnTop(const std::string & key, bool altonly = true);
 

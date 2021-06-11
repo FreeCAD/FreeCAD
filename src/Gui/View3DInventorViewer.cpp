@@ -1039,8 +1039,8 @@ void View3DInventorViewer::OnTopInfo::clearElements() {
 void View3DInventorViewer::clearGroupOnTop(bool alt) {
     auto manager = selectionRoot->getRenderManager();
     if (manager) {
-        if (alt)
-            manager->clearSelection(true);
+        if (alt && manager->clearSelection(true))
+            redraw();
     }
 
     if(objectsOnTopSel.empty() && objectsOnTopPreSel.empty())
@@ -1156,6 +1156,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                 SoDetail *detail = nullptr;
                 SoFullPath * nodePath = _pimpl->tmpPath.get();
                 nodePath->truncate(0);
+                nodePath->append(selectionRoot);
                 vp->getDetailPath(Reason.Object.getSubNameNoElement().c_str(), nodePath, true, detail);
                 delete detail;
                 detail = nullptr;
@@ -1164,6 +1165,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                 if (Reason.Object.hasSubElement()) {
                     detailPath = _pimpl->tmpPath2.get();
                     detailPath->truncate(0);
+                    detailPath->append(selectionRoot);
                     vp->getDetailPath(Reason.pSubName, detailPath, true, detail);
                 }
 

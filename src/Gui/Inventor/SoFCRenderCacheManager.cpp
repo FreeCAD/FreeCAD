@@ -692,9 +692,10 @@ SoFCRenderCacheManager::removeSelection(const std::string & key,
     PRIVATE(this)->selcaches.erase(it);
 }
 
-void
+int
 SoFCRenderCacheManager::clearSelection(bool alt)
 {
+  int res = 0;
   auto itsel = PRIVATE(this)->selcaches.begin();
   while (itsel!=PRIVATE(this)->selcaches.end()) {
     auto & paths = itsel->second;
@@ -709,8 +710,9 @@ SoFCRenderCacheManager::clearSelection(bool alt)
           }
           if (iter->first.empty())
             PRIVATE(this)->selpaths.erase(elentry.id);
+          ++res;
           PRIVATE(this)->renderer->removeSelection(elentry.id);
-          if (elentry.color) {
+          if (elentry.color & ~0xff) {
             elentry.id = ++PRIVATE(this)->selid;
             if (iter->first.empty())
               PRIVATE(this)->selpaths[elentry.id] = itpath->first;
@@ -723,6 +725,7 @@ SoFCRenderCacheManager::clearSelection(bool alt)
         }
         else if (elentry.id & SoFCRenderer::SelIdAlt) {
           if (elentry.id & SoFCRenderer::SelIdSelected) {
+            ++res;
             PRIVATE(this)->renderer->removeSelection(elentry.id);
             elentry.id &= ~(SoFCRenderer::SelIdSelected);
             elentry.color &= 0xff;
@@ -741,6 +744,7 @@ SoFCRenderCacheManager::clearSelection(bool alt)
             PRIVATE(this)->selpaths.erase(elentry.id);
           PRIVATE(this)->renderer->removeSelection(elentry.id);
           iter = sensor.elements.erase(iter);
+          ++res;
         }
       }
       if (sensor.elements.empty())
@@ -755,6 +759,8 @@ SoFCRenderCacheManager::clearSelection(bool alt)
   }
   if (PRIVATE(this)->selcaches.empty())
     PRIVATE(this)->selid = 0;
+
+  return res;
 }
 
 void
