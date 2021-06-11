@@ -39,6 +39,8 @@
         <file>icons/constraints/Constraint_PointToObject.svg</file>
         <file>icons/constraints/Constraint_Radius.svg</file>
         <file>icons/constraints/Constraint_Radius_Driven.svg</file>
+        <file>icons/constraints/Constraint_Radiam.svg</file>
+        <file>icons/constraints/Constraint_Radiam_Driven.svg</file>
         <file>icons/constraints/Constraint_SnellsLaw.svg</file>
         <file>icons/constraints/Constraint_SnellsLaw_Driven.svg</file>
         <file>icons/constraints/Constraint_Symmetric.svg</file>
