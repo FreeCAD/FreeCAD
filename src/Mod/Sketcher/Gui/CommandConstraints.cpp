@@ -5880,6 +5880,9 @@ void CmdSketcherCompConstrainRadDia::activated(int iMsg)
     else if (iMsg==1) {
         rcCmdMgr.runCommandByName("Sketcher_ConstrainDiameter");
     }
+    else if (iMsg==2) {
+        rcCmdMgr.runCommandByName("Sketcher_ConstrainRadiam");
+    }
     else
         return;
 
@@ -5902,6 +5905,8 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
     arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
     QAction* arc2 = pcAction->addAction(QString());
     arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
+    QAction* arc3 = pcAction->addAction(QString());
+    arc3->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
 
     _pcAction = pcAction;
     languageChange();
@@ -5936,11 +5941,13 @@ void CmdSketcherCompConstrainRadDia::updateAction(int mode)
         case Reference:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
+            a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam_Driven"));
             getAction()->setIcon(a[index]->icon());
             break;
         case Driving:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
+            a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
             getAction()->setIcon(a[index]->icon());
             break;
     }
@@ -5963,6 +5970,10 @@ void CmdSketcherCompConstrainRadDia::languageChange()
     arc2->setText(QApplication::translate("CmdSketcherCompConstrainRadDia", "Constrain diameter"));
     arc2->setToolTip(QApplication::translate("Sketcher_ConstrainDiameter", "Fix the diameter of a circle or an arc"));
     arc2->setStatusTip(QApplication::translate("Sketcher_ConstrainDiameter", "Fix the diameter of a circle or an arc"));
+    QAction* arc3 = a[2];
+    arc3->setText(QApplication::translate("CmdSketcherCompConstrainRadDia", "Constrain auto radius/diameter"));
+    arc3->setToolTip(QApplication::translate("Sketcher_ConstraintRadiam", "Fix the radius/diameter of a circle or an arc"));
+    arc3->setStatusTip(QApplication::translate("Sketcher_ConstrainRadiam", "Fix the radius/diameter of a circle or an arc"));
 }
 
 bool CmdSketcherCompConstrainRadDia::isActive(void)
@@ -7677,6 +7688,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainDistanceY");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainRadius");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainDiameter");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainRadiam");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainAngle");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompConstrainRadDia");
   //rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainSnellsLaw");
@@ -7880,6 +7892,7 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainDistanceY());
     rcCmdMgr.addCommand(new CmdSketcherConstrainRadius());
     rcCmdMgr.addCommand(new CmdSketcherConstrainDiameter());
+    rcCmdMgr.addCommand(new CmdSketcherConstrainRadiam());
     rcCmdMgr.addCommand(new CmdSketcherCompConstrainRadDia());
     rcCmdMgr.addCommand(new CmdSketcherConstrainAngle());
     rcCmdMgr.addCommand(new CmdSketcherConstrainEqual());
