@@ -5528,6 +5528,334 @@ void CmdSketcherConstrainDiameter::updateAction(int mode)
 
 // ======================================================================================
 
+class CmdSketcherConstrainRadiam : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainRadiam();
+    virtual ~CmdSketcherConstrainRadiam(){}
+    virtual void updateAction(int mode);
+    virtual const char* className() const
+    { return "CmdSketcherConstrainRadiam"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
+
+CmdSketcherConstrainRadiam::CmdSketcherConstrainRadiam()
+:CmdSketcherConstraint("Sketcher_ConstrainRadiam")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Constrain auto radius/diameter");
+    sToolTipText    = QT_TR_NOOP("Fix automatically diameter on circle and radius on arc/pole");
+    sWhatsThis      = "Sketcher_ConstrainRadiam";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Constraint_Radiam";
+    sAccel          = "";
+    eType           = ForEdit;
+
+    allowedSelSequences = {{SelEdge}, {SelExternalEdge}};
+}
+
+void CmdSketcherConstrainRadiam::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
+
+        if (constraintMode) {
+            ActivateHandler(getActiveGuiDocument(),
+                            new DrawSketchHandlerGenConstraint(this));
+            getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select the right things from the sketch."));
+        }
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select one or more arcs or circles from the sketch."));
+        return;
+    }
+
+    // check for which selected geometry the constraint can be applied
+    std::vector< std::pair<int, double> > geoIdRadiamMap;
+    std::vector< std::pair<int, double> > externalGeoIdRadiamMap;
+
+    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+        bool issegmentfixed = false;
+        int GeoId;
+
+        if (it->size() > 4 && it->substr(0,4) == "Edge") {
+            GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
+            issegmentfixed = isPointOrSegmentFixed(Obj,GeoId);
+        }
+        else if (it->size() > 4 && it->substr(0,12) == "ExternalEdge") {
+            GeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
+            issegmentfixed = true;
+        }
+        else
+            continue;
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId);
+        double radius;
+        
+        if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            const Part::GeomArcOfCircle *arcir = static_cast<const Part::GeomArcOfCircle *>(geom);
+            radius = arcir->getRadius();
+        }
+        else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            const Part::GeomCircle *arcir = static_cast<const Part::GeomCircle *>(geom);
+            radius = arcir->getRadius();
+        }
+        else
+            continue;
+
+        if(issegmentfixed) {
+            externalGeoIdRadiamMap.push_back(std::make_pair(GeoId, radius));
+        }
+        else {
+            geoIdRadiamMap.push_back(std::make_pair(GeoId, radius));
+        }
+    }
+
+    if (geoIdRadiamMap.empty() && externalGeoIdRadiamMap.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select one or more arcs or circles from the sketch."));
+        return;
+    }
+
+    bool commitNeeded=false;
+    bool updateNeeded=false;
+    bool commandopened=false;
+
+    if(!externalGeoIdRadiamMap.empty()) {
+        // Create the non-driving radiam constraints now
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+        commandopened=true;
+        unsigned int constrSize = 0;
+
+        for (std::vector< std::pair<int, double> >::iterator it = externalGeoIdRadiamMap.begin(); it != externalGeoIdRadiamMap.end(); ++it) {
+            if (Obj->getGeometry(it->first)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() or isBsplinePole(Obj, it->first)) {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", it->first,it->second);
+            }
+            else
+            {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", it->first,it->second*2);
+            }
+
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+            constrSize=ConStr.size();
+
+            Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",constrSize-1,"False");
+        }
+
+        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+        std::size_t indexConstr = constrSize - externalGeoIdRadiamMap.size();
+
+        // Guess some reasonable distance for placing the datum text
+        Gui::Document *doc = getActiveGuiDocument();
+        float sf = 1.f;
+        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+            sf = vp->getScaleFactor();
+
+            for (std::size_t i=0; i<externalGeoIdRadiamMap.size();i++) {
+                Sketcher::Constraint *constr = ConStr[indexConstr + i];
+                constr->LabelDistance = 2. * sf;
+            }
+            vp->draw(false,false); // Redraw
+        }
+
+        commitNeeded=true;
+        updateNeeded=true;
+    }
+
+    if(!geoIdRadiamMap.empty())
+    {
+        if (geoIdRadiamMap.size() > 1 && constraintCreationMode==Driving) {
+
+            int refGeoId = geoIdRadiamMap.front().first;
+            double radiam = geoIdRadiamMap.front().second;
+
+            if(!commandopened)
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+            
+            // Add the equality constraints
+            for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiamMap.begin()+1; it != geoIdRadiamMap.end(); ++it) {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ", refGeoId,it->first);
+            }
+            
+            if (Obj->getGeometry(refGeoId)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() or isBsplinePole(Obj, refGeoId)) {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", refGeoId, radiam);
+            }
+            else
+            {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", refGeoId, radiam*2);
+            }
+        }
+        else {
+            // Create the radiam constraints now
+            if(!commandopened)
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+            for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiamMap.begin(); it != geoIdRadiamMap.end(); ++it) {
+                if (Obj->getGeometry(it->first)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() or isBsplinePole(Obj, it->first)) {
+                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", it->first,it->second);
+                }
+                else
+                {
+                    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", it->first,it->second*2);
+                }
+
+                if(constraintCreationMode==Reference) {
+
+                    const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+                    Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1,"False");
+
+                }
+
+            }
+        }
+
+        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+        std::size_t indexConstr = ConStr.size() - geoIdRadiamMap.size();
+
+        // Guess some reasonable distance for placing the datum text
+        Gui::Document *doc = getActiveGuiDocument();
+        float sf = 1.f;
+        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+            sf = vp->getScaleFactor();
+
+            for (std::size_t i=0; i<geoIdRadiamMap.size();i++) {
+                Sketcher::Constraint *constr = ConStr[indexConstr + i];
+                constr->LabelDistance = 2. * sf;
+            }
+            vp->draw(false,false); // Redraw
+        }
+        finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
+        
+        //updateActive();
+        getSelection().clearSelection();
+    }
+
+    if (commitNeeded)
+        commitCommand();
+
+    if(updateNeeded) {
+        tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+    }
+}
+
+void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
+{
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
+    int GeoId = selSeq.at(0).GeoId;
+    double radiam = 0.0;
+
+    bool commitNeeded=false;
+    bool updateNeeded=false;
+
+    switch (seqIndex) {
+        case 0: // {SelEdge}
+        case 1: // {SelExternalEdge}
+        {
+            const Part::Geometry *geom = Obj->getGeometry(GeoId);
+            bool isCircleNotPole = false;
+            if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
+                radiam = arc->getRadius();
+            }
+            else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geom);
+                radiam = circle->getRadius();
+                if (!isBsplinePole(geom))
+                    isCircleNotPole = true;
+            }
+            else {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Constraint only applies to arcs or circles."));
+                return;
+            }
+
+            // Create the radiam constraint now
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+            if (!isCircleNotPole) {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", GeoId, radiam);
+            }
+            else
+            {
+                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", GeoId, radiam*2);
+            }
+
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+            bool fixed = isPointOrSegmentFixed(Obj,GeoId);
+            if(fixed || constraintCreationMode==Reference) {
+                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1, "False");
+                updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
+            }
+
+            // Guess some reasonable distance for placing the datum text
+            Gui::Document *doc = getActiveGuiDocument();
+            float sf = 1.f;
+            if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+                SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+                sf = vp->getScaleFactor();
+
+                Sketcher::Constraint *constr = ConStr[ConStr.size()-1];
+                constr->LabelDistance = 2. * sf;
+                vp->draw(); // Redraw
+            }
+            if(!fixed)
+                finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
+            
+            //updateActive();
+            getSelection().clearSelection();
+
+            if(commitNeeded)
+                commitCommand();
+
+            if(updateNeeded) {
+                tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+            }
+        }
+    }
+}
+
+void CmdSketcherConstrainRadiam::updateAction(int mode)
+{
+    switch (mode) {
+        case Reference:
+            if (getAction())
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam_Driven"));
+            break;
+        case Driving:
+            if (getAction())
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
+            break;
+    }
+}
+
+// ======================================================================================
+
 DEF_STD_CMD_ACLU(CmdSketcherCompConstrainRadDia)
 
 CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
