@@ -132,11 +132,9 @@ private:
 
     std::vector<std::string> m_subNames;
     std::string m_edgeName;
-    double m_extendBy;
     int m_geomIndex;
     TechDraw::CenterLine* m_cl;
     TechDraw::CenterLine orig_cl;
-    int m_clIdx;
     int m_type;
     int m_mode;
     bool m_editMode;
