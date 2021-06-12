@@ -171,13 +171,19 @@ QMenu::indicator:non-exclusive:checked {
 }
 
 /* Fix for elements inside a drop-down menu */
+QMenu QLabel,
 QMenu QRadioButton,
 QMenu QCheckBox,
 QMenu QPushButton,
 QMenu QToolButton {
-    color: white; /* same as regular QRadioButton and QCheckBox */
+    color: #fefefe;
+}
+QMenu QLabel {
+    padding: 2px 16px; /* make room for icon at left */
 }
 
+QMenu QAbstractSpinBox:hover,
+QMenu QLineEdit:hover,
 QMenu QRadioButton:hover,
 QMenu QCheckBox:hover,
 QMenu QPushButton:hover,
@@ -190,16 +196,17 @@ QMenu QToolButton:selected {
     background-color: #2053c0; /* same as QMenu::item:selected and QMenu::item:pressed */
 }
 
+QMenu QLabel:disabled,
 QMenu QRadioButton:disabled,
 QMenu QCheckBox:disabled {
-    color: #fafafa;
+    color: darkgray;
 }
 
 QMenu QRadioButton::indicator:disabled,
 QMenu QCheckBox::indicator:disabled {
-    color: #fafafa;
+    color: darkgray;
     background-color: transparent;
-    border: 1px solid #fafafa;
+    border: 1px solid darkgray;
 }
 
 
@@ -1642,15 +1649,17 @@ QComboBox inside Task Panel content
 /* Fix for QComboBox inside Task Panel due to not correctly styling it with regular */
 /* found inside TechDraw Workbench and "insert multiple views" from toolbar */
 /* TODO: external border not working, in the rest of GUI works setting up Qmenu background color but inside Task Panel it doesn't... */
-QSint--ActionGroup QFrame[class="content"] QMenu,
-QSint--ActionGroup QFrame[class="content"] QMenu::item {
-    background-color: black;
-}
-
 QSint--ActionGroup QFrame[class="content"] QComboBox QAbstractItemView {
     background-color: black;
 }
 
+/*==================================================================================================
+QMenu inside Task Panel content
+==================================================================================================*/
+QSint--ActionGroup QFrame[class="content"] QMenu,
+QSint--ActionGroup QFrame[class="content"] QMenu::item {
+    background-color: #111111;
+}
 
 /*==================================================================================================
 Radio button

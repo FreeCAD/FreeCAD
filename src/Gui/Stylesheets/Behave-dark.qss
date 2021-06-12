@@ -204,13 +204,19 @@ QMenu::indicator:non-exclusive:checked {
 }
 
 /* Fix for elements inside a drop-down menu */
+QMenu QLabel,
 QMenu QRadioButton,
 QMenu QCheckBox,
 QMenu QPushButton,
 QMenu QToolButton {
-    color: white; /* same as regular QRadioButton and QCheckBox */
+    color: #D2D8E1;
+}
+QMenu QLabel {
+    padding: 2px 16px; /* make room for icon at left */
 }
 
+QMenu QAbstractSpinBox:hover,
+QMenu QLineEdit:hover,
 QMenu QRadioButton:hover,
 QMenu QCheckBox:hover,
 QMenu QPushButton:hover,
@@ -220,19 +226,20 @@ QMenu QToolButton:pressed,
 QMenu QPushButton:selected,
 QMenu QToolButton:selected {
     color: white;
-    background-color: #65A2E5; /* same as QMenu::item:selected and QMenu::item:pressed */
+    background-color: #2C333D; /*Drop-down hover etc*/
 }
 
+QMenu QLabel:disabled,
 QMenu QRadioButton:disabled,
 QMenu QCheckBox:disabled {
-    color: #588AC2;
+    color: darkgray;
 }
 
 QMenu QRadioButton::indicator:disabled,
 QMenu QCheckBox::indicator:disabled {
-    color: #588AC2;
+    color: darkgray;
     background-color: transparent;
-    border: 1px solid #588AC2;
+    border: 1px solid darkgray;
 }
 
 

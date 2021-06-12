@@ -171,13 +171,19 @@ QMenu::indicator:non-exclusive:checked {
 }
 
 /* Fix for elements inside a drop-down menu */
+QMenu QLabel,
 QMenu QRadioButton,
 QMenu QCheckBox,
 QMenu QPushButton,
 QMenu QToolButton {
     color: black; /* same as regular QRadioButton and QCheckBox */
 }
+QMenu QLabel {
+    padding: 2px 16px; /* make room for icon at left */
+}
 
+QMenu QAbstractSpinBox:hover,
+QMenu QLineEdit:hover,
 QMenu QRadioButton:hover,
 QMenu QCheckBox:hover,
 QMenu QPushButton:hover,
