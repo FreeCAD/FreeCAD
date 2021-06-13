@@ -855,7 +855,7 @@ class DraftToolBar:
         self.reset_ui_values()
         if self.taskmode:
             self.isTaskOn = True
-            todo.delay(FreeCADGui.Control.closeDialog,None)
+            todo.delay(FreeCADGui.Control.closeDialog)
             self.baseWidget = DraftBaseWidget()
             self.layout = QtGui.QVBoxLayout(self.baseWidget)
             self.setupToolBar(task=True)
@@ -1012,7 +1012,7 @@ class DraftToolBar:
         self.z = 0
         self.pointButton.show()
         if rel: self.isRelative.show()
-        todo.delay(self.setFocus,None)
+        todo.delay(self.setFocus)
         self.xValue.selectAll()
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
@@ -1042,11 +1042,11 @@ class DraftToolBar:
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        todo.delay(self.radiusValue.setFocus,None)
+        todo.delay(self.radiusValue.setFocus)
         self.radiusValue.selectAll()
 
     def offUi(self):
-        todo.delay(FreeCADGui.Control.closeDialog,None)
+        todo.delay(FreeCADGui.Control.closeDialog)
         self.cancel = None
         self.sourceCmd = None
         self.pointcallback = None
@@ -1100,7 +1100,7 @@ class DraftToolBar:
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        todo.delay(self.radiusValue.setFocus,None)
+        todo.delay(self.radiusValue.setFocus)
         self.radiusValue.selectAll()
 
     def radiusUi(self):
@@ -1110,7 +1110,7 @@ class DraftToolBar:
         self.labelRadius.show()
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()
-        todo.delay(self.radiusValue.setFocus,None)
+        todo.delay(self.radiusValue.setFocus)
         self.radiusValue.selectAll()
 
     def textUi(self):
@@ -1118,7 +1118,7 @@ class DraftToolBar:
         self.textValue.show()
         self.textOkButton.show()
         self.textValue.setText('')
-        todo.delay(self.textValue.setFocus,None)
+        todo.delay(self.textValue.setFocus)
         self.textbuffer=[]
         self.textline=0
         self.continueCmd.show()
@@ -1131,7 +1131,7 @@ class DraftToolBar:
         self.labelSString.show()
         self.SStringValue.show()
         self.SStringValue.setText('')
-        todo.delay(self.SStringValue.setFocus,None)
+        todo.delay(self.SStringValue.setFocus)
         self.continueCmd.hide()
 
     def SSizeUi(self):
@@ -1142,7 +1142,7 @@ class DraftToolBar:
         self.labelSSize.show()
         self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
         self.SSizeValue.show()
-        todo.delay(self.SSizeValue.setFocus,None)
+        todo.delay(self.SSizeValue.setFocus)
 
     def STrackUi(self):
         ''' set up ui for ShapeString tracking entry '''
@@ -1151,7 +1151,7 @@ class DraftToolBar:
         self.labelSTrack.show()
         self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.STrackValue.show()
-        todo.delay(self.STrackValue.setFocus,None)
+        todo.delay(self.STrackValue.setFocus)
 
     def SFileUi(self):
         ''' set up UI for ShapeString font file selection '''
@@ -1162,7 +1162,7 @@ class DraftToolBar:
         self.labelFFile.show()
         self.FFileValue.show()
         self.chooserButton.show()
-        todo.delay(self.FFileValue.setFocus,None)
+        todo.delay(self.FFileValue.setFocus)
 
     def switchUi(self,store=True):
         if store:

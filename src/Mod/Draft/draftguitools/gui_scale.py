@@ -399,8 +399,8 @@ class Scale(gui_base_original.Modifier):
             self.task = task_scale.ScaleTaskPanel()
             self.task.sourceCmd = self
             todo.ToDo.delay(Gui.Control.showDialog, self.task)
-            todo.ToDo.delay(self.task.xValue.selectAll, None)
-            todo.ToDo.delay(self.task.xValue.setFocus, None)
+            todo.ToDo.delay(self.task.xValue.selectAll)
+            todo.ToDo.delay(self.task.xValue.setFocus)
             for ghost in self.ghosts:
                 ghost.on()
         elif len(self.node) == 2:

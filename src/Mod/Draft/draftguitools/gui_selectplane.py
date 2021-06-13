@@ -180,7 +180,7 @@ class Draft_SelectPlane:
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 # Coin detection happens before the selection
                 # got a chance of being updated, so we must delay
-                todo.delay(self.checkSelection, None)
+                todo.delay(self.checkSelection)
 
     def checkSelection(self):
         """Check the selection, if there is a handle, finish the command."""

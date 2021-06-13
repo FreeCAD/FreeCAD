@@ -108,7 +108,7 @@ class Move(gui_base_original.Modifier):
             ghost.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
-                todo.ToDo.delayAfter(self.Activated, [])
+                todo.ToDo.delayAfter(self.Activated)
         super(Move, self).finish()
 
     def action(self, arg):

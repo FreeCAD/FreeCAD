@@ -263,7 +263,7 @@ class Rotate(gui_base_original.Modifier):
             ghost.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
-                todo.ToDo.delayAfter(self.Activated, [])
+                todo.ToDo.delayAfter(self.Activated)
         super(Rotate, self).finish()
         if self.doc:
             self.doc.recompute()
