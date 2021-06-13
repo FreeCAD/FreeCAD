@@ -115,6 +115,7 @@ class ToDo:
     itinerary = []
     commitlist = []
     afteritinerary = []
+    timerpending = False
 
     @staticmethod
     def doTasks():
@@ -197,6 +198,7 @@ class ToDo:
                        "in {1}({2})".format(sys.exc_info()[0], f, arg))
                 _wrn(wrn)
         ToDo.afteritinerary = []
+        ToDo.timerpending = False
 
     @staticmethod
     def delay(f, arg):
@@ -228,8 +230,9 @@ class ToDo:
         if _DEBUG:
             _msg("Debug: delaying.\n"
                  "function: {}\n".format(f))
-        if ToDo.itinerary == []:
+        if not ToDo.timerpending:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
+            ToDo.timerpending = True
         ToDo.itinerary.append((f, arg))
 
     @staticmethod
@@ -258,7 +261,9 @@ class ToDo:
         if _DEBUG:
             _msg("Debug: delaying commit.\n"
                  "commitlist: {}\n".format(cl))
-        QtCore.QTimer.singleShot(0, ToDo.doTasks)
+        if not ToDo.timerpending:
+            QtCore.QTimer.singleShot(0, ToDo.doTasks)
+            ToDo.timerpending = True
         ToDo.commitlist = cl
 
     @staticmethod
@@ -280,8 +285,9 @@ class ToDo:
         if _DEBUG:
             _msg("Debug: delaying after.\n"
                  "function: {}\n".format(f))
-        if ToDo.afteritinerary == []:
+        if not ToDo.timerpending:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
+            ToDo.timerpending = True
         ToDo.afteritinerary.append((f, arg))
 
 
