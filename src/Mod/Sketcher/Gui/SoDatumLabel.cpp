@@ -439,7 +439,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     // because then independent of the camera we get a constant scale factor when panning.
     // If we used (0,0,0) instead then the scale factor would change heavily in perspective
     // rendering mode. See #0002921 and #0002922.
-    SbVec3f center = vv.getSightPoint(vv.getNearDist());
+    SbVec3f center = vv.getSightPoint(vv.getNearDist() + vv.getDepth() * 0.5f);
     float scale = vv.getWorldToScreenScale(center, 1.f);
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
     SbVec2s vp_size = vp.getViewportSizePixels();
