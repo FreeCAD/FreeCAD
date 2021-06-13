@@ -1245,6 +1245,8 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
     unsigned char b = (col >> 8) & 0xff;
     unsigned char a = col & 0xff;
     glColor4ub(r, g, b, a);
+    if (highlight)
+      glLineWidth(this->material.linewidth);
   }
 }
 
@@ -1747,7 +1749,8 @@ SoFCRenderer::render(SoGLRenderAction * action)
 
     PRIVATE(this)->renderOpaque(action,
                                 PRIVATE(this)->slentries,
-                                PRIVATE(this)->opaqueselections);
+                                PRIVATE(this)->opaqueselections,
+                                RenderPassHighlight);
 
     PRIVATE(this)->recheckmaterial = true;
     PRIVATE(this)->notexture = false;
@@ -1835,7 +1838,8 @@ SoFCRenderer::render(SoGLRenderAction * action)
     if (PRIVATE(this)->hlwholeontop) {
         PRIVATE(this)->renderOpaque(action,
                                     PRIVATE(this)->hlentries,
-                                    PRIVATE(this)->opaquehighlight);
+                                    PRIVATE(this)->opaquehighlight,
+                                    RenderPassHighlight);
         PRIVATE(this)->renderTransparency(action,
                                           PRIVATE(this)->hlentries,
                                           PRIVATE(this)->transphighlight,
