@@ -1426,7 +1426,8 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
       glBindTexture(GL_TEXTURE_2D, hatch->texture);
 
     SbViewVolume vv = SoViewVolumeElement::get(action->getState());
-    SbVec3f center = vv.getSightPoint(vv.getNearDist());
+    // Using sight point behaves badly in perspective view
+    SbVec3f center = vv.getSightPoint(vv.getNearDist() + vv.getDepth() * 0.5f);
     const SbViewportRegion & vp = SoViewportRegionElement::get(action->getState());
     SbVec2s vp_size = vp.getViewportSizePixels();
     float scale = hatchscale * vv.getWorldToScreenScale(center, 1.f);
