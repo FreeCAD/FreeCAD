@@ -354,6 +354,8 @@ public:
         auto color = item->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, parent);
         cd.setOptions(QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
+        // Seems some version of Qt has to explicitly set the current color
+        cd.setCurrentColor(color);
         if (cd.exec()!=QDialog::Accepted || color==cd.selectedColor())
             return;
         color = cd.selectedColor();
@@ -537,6 +539,8 @@ void ElementColors::on_addSelection_clicked()
         auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, this);
         cd.setOptions(QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
+        // Seems some version of Qt has to explicitly set the current color
+        cd.setCurrentColor(color);
         if (cd.exec()!=QDialog::Accepted)
             return;
         color = cd.selectedColor();
