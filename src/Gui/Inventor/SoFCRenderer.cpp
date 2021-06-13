@@ -71,6 +71,7 @@
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -204,6 +205,7 @@ public:
 
   void renderOutline(SoGLRenderAction *action, DrawEntry &draw_entry, bool highlight);
 
+  void pauseShadowRender(SoState *state, bool paused);
   void renderLines(SoState *state, int array, DrawEntry &draw_entry);
   void renderPoints(SoState *state, int array, DrawEntry &draw_entry);
 
@@ -274,6 +276,7 @@ public:
   bool depthwriteonly;
   bool hlwholeontop = false;
 
+  bool shadowrenderpaused = false;
   bool shadowrendering = false;
   bool shadowmapping = false;
   bool transpshadowmapping = false;
@@ -1113,6 +1116,15 @@ SoFCRendererP::setupMatrix(SoGLRenderAction * action, const DrawEntry &draw_entr
 }
 
 void
+SoFCRendererP::pauseShadowRender(SoState *state, bool paused)
+{
+  if (!this->shadowrendering || this->shadowrenderpaused == paused)
+    return;
+  this->shadowrenderpaused = paused;
+  SoGLShaderProgramElement::enable(state, paused ? FALSE: TRUE);
+}
+
+void
 SoFCRendererP::renderLines(SoState *state, int array, DrawEntry &draw_entry)
 {
   if (this->depthwriteonly || this->shadowmapping)
@@ -1120,6 +1132,7 @@ SoFCRendererP::renderLines(SoState *state, int array, DrawEntry &draw_entry)
   bool noseam = ViewParams::getHiddenLineHideSeam()
     && draw_entry.ventry->partidx < 0
     && draw_entry.material->outline;
+  pauseShadowRender(state, true);
   draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx, noseam);
 }
 
@@ -1130,8 +1143,10 @@ SoFCRendererP::renderPoints(SoState *state, int array, DrawEntry &draw_entry)
     return;
   if (!ViewParams::getHiddenLineHideVertex()
       || draw_entry.ventry->partidx >= 0
-      || !draw_entry.material->outline)
+      || !draw_entry.material->outline) {
+    pauseShadowRender(state, true);
     draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
+  }
 }
 
 void
@@ -1181,6 +1196,8 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
           | GL_STENCIL_BUFFER_BIT
           | GL_CURRENT_BIT
           | GL_POLYGON_BIT);
+
+      pauseShadowRender(state, true);
 
       glEnable(GL_STENCIL_TEST);
       glDisable(GL_LIGHTING);
@@ -1383,6 +1400,16 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   if (!ViewParams::getSectionHatchTextureEnable())
     hatch = nullptr;
   if (hatch) {
+    pauseShadowRender(action->getState(), true);
+#ifdef FC_OS_WIN32
+    static PFNGLACTIVETEXTUREPROC glActiveTexture;
+    if (!glActiveTexture) {
+      const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+      glActiveTexture = (PFNGLACTIVETEXTUREPROC)cc_glglue_getprocaddress(glue, "glActiveTexture");
+    }
+    if(glActiveTexture)
+#endif
+    glActiveTexture(GL_TEXTURE0);
     glEnable(GL_TEXTURE_2D);
     if (hatch->texture == 0) {
       glGenTextures(1, &hatch->texture);
@@ -1469,6 +1496,8 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
   if (this->transpshadowmapping)
     return;
 
+  bool pauseshadow = (&draw_entries == &this->slentries || &draw_entries == &this->hlentries);
+
   SoState * state = action->getState();
   for (std::size_t idx : indices) {
     auto & draw_entry = draw_entries[idx];
@@ -1519,6 +1548,10 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
             && draw_entry.material->outline
             && ViewParams::getHiddenLineHideFace())
           continue;
+
+        pauseShadowRender(state, pauseshadow
+            || !(draw_entry.material->shadowstyle & SoShadowStyleElement::SHADOWED));
+
         if (!draw_entry.ventry->cache->hasTransparency())
           draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
         else if (!this->material.pervertexcolor) {
@@ -1561,6 +1594,8 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
 
   if (this->shadowmapping && !this->transpshadowmapping)
     return;
+
+  bool pauseshadow = (&draw_entries == &this->slentries || &draw_entries == &this->hlentries);
 
   bool notriangle = false;
   if (&draw_entries != &this->slentries
@@ -1645,6 +1680,9 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
               array |= SoFCVertexCache::FULL_SORTED_ARRAY;
             else
               array |= SoFCVertexCache::SORTED_ARRAY;
+
+            pauseShadowRender(state, pauseshadow
+                || !(draw_entry.material->shadowstyle & SoShadowStyleElement::SHADOWED));
             draw_entry.ventry->cache->renderTriangles(state,
                                                       array,
                                                       draw_entry.ventry->partidx,
@@ -1677,6 +1715,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
   unsigned int shapestyleflags = shapestyle->getFlags();
 
+  PRIVATE(this)->shadowrenderpaused = false;
   PRIVATE(this)->shadowrendering = (shapestyleflags & SoShapeStyleElement::SHADOWS) ? true : false;
   PRIVATE(this)->shadowmapping = (shapestyleflags & SoShapeStyleElement::SHADOWMAP) ? true : false;
   PRIVATE(this)->transpshadowmapping = PRIVATE(this)->shadowmapping && (shapestyleflags & 0x01000000);
