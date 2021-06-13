@@ -216,7 +216,8 @@ class ToDo:
         if not ToDo.timerpending:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
             ToDo.timerpending = True
-        ToDo.commitlist = cl
+        for item in cl:
+            ToDo.commitlist.append(item)
 
     @staticmethod
     def delayAfter(f, *args):
