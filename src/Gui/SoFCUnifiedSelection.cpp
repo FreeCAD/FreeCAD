@@ -225,7 +225,7 @@ public:
         currentHighlight->truncate(0);
     }
 
-    bool setHighlight(const PickedInfo &);
+    bool setHighlight(PickedInfo &&);
 
     bool setHighlight(SoFullPath *path,
                       const SoDetail *det, 
@@ -1054,7 +1054,7 @@ void SoFCUnifiedSelection::Private::onPreselectTimer() {
 
     auto infos = getPickedList(preselPos, preselViewport, true);
     if(infos.size())
-        setHighlight(infos[0]);
+        setHighlight(std::move(infos[0]));
     else {
         // Do not remove preslection in case of dock overlay mouse pass through
         if (!OverlayManager::instance()->isUnderOverlay())
@@ -1064,10 +1064,16 @@ void SoFCUnifiedSelection::Private::onPreselectTimer() {
     preselTime = SbTime::getTimeOfDay();
 }
 
-bool SoFCUnifiedSelection::Private::setHighlight(const PickedInfo &info) {
+bool SoFCUnifiedSelection::Private::setHighlight(PickedInfo &&info) {
     if(!info.pp) {
         return setHighlight(0,0,0,0,0.0,0.0,0.0);
     }
+    // It is possible for the following call of setHighlight() calling
+    // Gui::setPreseleciton() and trigger other calls to
+    // SoFCUnifiedSelection::getPickedList() and hence invalidatte any
+    // non-copied picked points. So make sure to copy it here.
+    if (!info.ppCopy)
+        info.copy();
     const auto &pt = info.pp->getPoint();
     const SoDetail *det = info.pp->getDetail();
     if(det && !Data::ComplexGeoData::hasElementName(info.subname.c_str()))
