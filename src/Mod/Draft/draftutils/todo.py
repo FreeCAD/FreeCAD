@@ -122,19 +122,12 @@ class ToDo:
                          "queue contains a deleted object, skipping")
 
         if commitlist:
-            for name, func in commitlist:
+            for name, func, args in commitlist:
                 if _DEBUG_inner:
                     _msg("Debug: committing.\n"
                          "name: {}\n".format(name))
                 try:
-                    name = str(name)
-                    App.activeDocument().openTransaction(name)
-                    if isinstance(func, list):
-                        for string in func:
-                            Gui.doCommand(string)
-                    else:
-                        func()
-                    App.activeDocument().commitTransaction()
+                    func(*args)
                 except Exception:
                     _log(traceback.format_exc())
                     _err(traceback.format_exc())
@@ -187,6 +180,17 @@ class ToDo:
         ToDo.itinerary.append((f, args))
 
     @staticmethod
+    def _doCommit(name, func_or_list):
+        name = str(name)
+        App.activeDocument().openTransaction(name)
+        if isinstance(func_or_list, list):
+            for cmd in func_or_list:
+                Gui.doCommand(cmd)
+        else:
+            func_or_list()
+        App.activeDocument().commitTransaction()
+
+    @staticmethod
     def delayCommit(cl):
         """Execute the other lists, and add to the commit list.
 
@@ -216,8 +220,8 @@ class ToDo:
         if not ToDo.timerpending:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
             ToDo.timerpending = True
-        for item in cl:
-            ToDo.commitlist.append(item)
+        for (name, func_or_list) in cl:
+            ToDo.commitlist.append((ToDo._doCommit, (name, func_or_list)))
 
     @staticmethod
     def delayAfter(f, *args):
