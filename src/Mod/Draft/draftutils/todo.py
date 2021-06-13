@@ -136,26 +136,26 @@ class ToDo:
                  "afteritinerary: {2}\n".format(itinerary,
                                                 commitlist,
                                                 afteritinerary))
-        try:
-            for f, arg in itinerary:
+        for f, arg in itinerary:
+            try:
+                if _DEBUG_inner:
+                    _msg("Debug: executing.\n"
+                         "function: {}\n".format(f))
+                if arg or (arg is False):
+                    f(arg)
+                else:
+                    f()
+            except Exception:
                 try:
-                    if _DEBUG_inner:
-                        _msg("Debug: executing.\n"
-                             "function: {}\n".format(f))
-                    if arg or (arg is False):
-                        f(arg)
-                    else:
-                        f()
-                except Exception:
                     _log(traceback.format_exc())
                     _err(traceback.format_exc())
                     wrn = ("ToDo.doTasks, Unexpected error:\n"
                            "{0}\n"
                            "in {1}({2})".format(sys.exc_info()[0], f, arg))
                     _wrn(wrn)
-        except ReferenceError:
-            _wrn("Debug: ToDo.doTasks: "
-                 "queue contains a deleted object, skipping")
+                except ReferenceError:
+                    _wrn("Debug: ToDo.doTasks: "
+                         "queue contains a deleted object, skipping")
 
         if commitlist:
             for name, func in commitlist:
