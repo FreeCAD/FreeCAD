@@ -76,40 +76,13 @@ class ToDo:
             name()
 
     commitlist: list of tuples
-        Each tuple is of the form `(name, command_list)`.
-        The `name` is a string identifier or description of the commands
-        that will be run, and `command_list` is a list of strings
-        that indicate the Python instructions that will be executed,
-        or a reference to a single function that will be executed.
-
-        If `command_list` is a list, the program opens a transaction,
-        then runs all commands in the list in sequence,
-        and finally commits the transaction.
-        ::
-            command_list = ["command1", "command2", "..."]
-            App.activeDocument().openTransaction(name)
-            Gui.doCommand("command1")
-            Gui.doCommand("command2")
-            Gui.doCommand("...")
-            App.activeDocument().commitTransaction()
-
-        If `command_list` is a reference to a function
-        the function is executed directly.
-        ::
-            command_list = function
-            App.activeDocument().openTransaction(name)
-            function()
-            App.activeDocument().commitTransaction()
+        Each tuple is of the form `(name, func_or_list)`.
+        The `name` is a string identifier, `func_or_list` is a python
+        function or a list of strings with python code to be executed.
 
     afteritinerary: list of tuples
         Each tuple is of the form `(name, arg)`.
         This list is used just like `itinerary`.
-
-    Lists
-    -----
-    The lists contain tuples. Each tuple contains a `name` which is just
-    a string to identify the operation, and a `command_list` which is
-    a list of strings, each string an individual Python instruction.
     """
 
     itinerary = []
@@ -215,13 +188,6 @@ class ToDo:
         Schedule geometry manipulation that would crash Coin if done
         in the event callback.
 
-        If the `itinerary` list is empty, it will call
-        `QtCore.QTimer.singleShot(0, ToDo.doTasks)`
-        to execute the commands in the other lists.
-
-        Finally, it will build the tuple `(f, arg)`
-        and append it to the `itinerary` list.
-
         Parameters
         ----------
         f: function reference
@@ -250,21 +216,22 @@ class ToDo:
         Schedule geometry manipulation that would crash Coin if done
         in the event callback.
 
-        First it calls
-        `QtCore.QTimer.singleShot(0, ToDo.doTasks)`
-        to execute the commands in all lists.
-
-        Then the `cl` list is assigned as the new commit list.
-
         Parameters
         ----------
         cl: list of tuples
-            Each tuple is of the form `(name, command_list)`.
-            The `name` is a string identifier or description of the commands
-            that will be run, and `command_list` is a list of strings
-            that indicate the Python instructions that will be executed.
+            Each tuple is of the form `(name, func_or_list)`.
 
-            See the attributes of the `ToDo` class for more information.
+            The `name` is a string identifier or description of the commands
+            that will be run (used as the name of the transaction), and
+            `func_or_list` indicates what needs to be executed.
+
+            If `func_or_list` is a list, all items must be strings
+            containing python code. The program then opens a transaction,
+            runs each string using Gui.doCommand and finally commits the
+            transaction.
+
+            If `func_or_list` is a reference to a function
+            the function is executed directly (also within a transaction).
         """
         if _DEBUG:
             _msg("Debug: delaying commit.\n"
@@ -282,13 +249,6 @@ class ToDo:
         in the event callback.
 
         Works the same as `delay`.
-
-        If the `afteritinerary` list is empty, it will call
-        `QtCore.QTimer.singleShot(0, ToDo.doTasks)`
-        to execute the commands in the other lists.
-
-        Finally, it will build the tuple `(f, arg)`
-        and append it to the `afteritinerary` list.
         """
         if _DEBUG:
             _msg("Debug: delaying after.\n"
