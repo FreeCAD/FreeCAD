@@ -64,15 +64,10 @@ class ToDo:
     Attributes
     ----------
     itinerary: list of tuples
-        Each tuple is of the form `(name, arg)`.
-        The `name` is a reference (pointer) to a function,
-        and `arg` is the corresponding argument that is passed
-        to that function.
-        It then tries executing the function with the argument,
-        if available, or without it, if not available.
-        ::
-            name(arg)
-            name()
+        Each tuple is of the form `(func, args)`. `func` is a function
+        to be called, `args` is an iterable of function argumenst (empty
+        for no arguments). Each tuple will be executed in turn as::
+            func(*args)
 
     commitlist: list of tuples
         Each tuple is of the form `(name, func_or_list)`.
@@ -80,7 +75,7 @@ class ToDo:
         function or a list of strings with python code to be executed.
 
     afteritinerary: list of tuples
-        Each tuple is of the form `(name, arg)`.
+        Each tuple is of the form `(func, args)`.
         This list is used just like `itinerary`.
     """
 
@@ -108,22 +103,19 @@ class ToDo:
                  "afteritinerary: {2}\n".format(itinerary,
                                                 commitlist,
                                                 afteritinerary))
-        for f, arg in itinerary:
+        for f, args in itinerary:
             try:
                 if _DEBUG_inner:
                     _msg("Debug: executing.\n"
                          "function: {}\n".format(f))
-                if arg or (arg is False):
-                    f(arg)
-                else:
-                    f()
+                f(*args)
             except Exception:
                 try:
                     _log(traceback.format_exc())
                     _err(traceback.format_exc())
                     wrn = ("ToDo.doTasks, Unexpected error:\n"
                            "{0}\n"
-                           "in {1}({2})".format(sys.exc_info()[0], f, arg))
+                           "in {1} with args {2}".format(sys.exc_info()[0], f, args))
                     _wrn(wrn)
                 except ReferenceError:
                     _wrn("Debug: ToDo.doTasks: "
@@ -154,21 +146,18 @@ class ToDo:
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.restack()
 
-        for f, arg in afteritinerary:
+        for f, args in afteritinerary:
             try:
                 if _DEBUG_inner:
                     _msg("Debug: executing after.\n"
                          "function: {}\n".format(f))
-                if arg:
-                    f(arg)
-                else:
-                    f()
+                f(*args)
             except Exception:
                 _log(traceback.format_exc())
                 _err(traceback.format_exc())
                 wrn = ("ToDo.doTasks, Unexpected error:\n"
                        "{0}\n"
-                       "in {1}({2})".format(sys.exc_info()[0], f, arg))
+                       "in {1} with args {2}".format(sys.exc_info()[0], f, args))
                 _wrn(wrn)
 
         if ToDo.itinerary or ToDo.commitlist or ToDo.afteritinerary:
@@ -178,24 +167,16 @@ class ToDo:
             ToDo.timerpending = False
 
     @staticmethod
-    def delay(f, arg):
-        """Add the function and argument to the itinerary list.
+    def delay(f, *args):
+        """Add the function and any number of arguments to the itinerary list.
 
         Schedule geometry manipulation that would crash Coin if done
         in the event callback.
 
         Parameters
         ----------
-        f: function reference
-            A reference (pointer) to a Python command
-            which can be executed directly.
-            ::
-                f()
-
-        arg: argument reference
-            A reference (pointer) to the argument to the `f` function.
-            ::
-                f(arg)
+        f: function to be executed later
+        args: zero or more arguments to be passed to f
         """
         if _DEBUG:
             _msg("Debug: delaying.\n"
@@ -203,7 +184,7 @@ class ToDo:
         if not ToDo.timerpending:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
             ToDo.timerpending = True
-        ToDo.itinerary.append((f, arg))
+        ToDo.itinerary.append((f, args))
 
     @staticmethod
     def delayCommit(cl):
@@ -238,7 +219,7 @@ class ToDo:
         ToDo.commitlist = cl
 
     @staticmethod
-    def delayAfter(f, arg):
+    def delayAfter(f, *args):
         """Add the function and argument to the afteritinerary list.
 
         Schedule geometry manipulation that would crash Coin if done
@@ -252,7 +233,7 @@ class ToDo:
         if not ToDo.timerpending:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
             ToDo.timerpending = True
-        ToDo.afteritinerary.append((f, arg))
+        ToDo.afteritinerary.append((f, args))
 
 
 # Alias for compatibility with v0.18 and earlier
