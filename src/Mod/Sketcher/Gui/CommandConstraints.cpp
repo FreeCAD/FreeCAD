@@ -5917,6 +5917,10 @@ void CmdSketcherCompConstrainRadDia::activated(int iMsg)
     else
         return;
 
+    //Save new choice as default
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    hGrp->SetInt("CurRadDiaCons", iMsg);
+    
     // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
@@ -5943,18 +5947,20 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
     languageChange();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool defDiaConstrain = hGrp->GetBool("DefaultDiaConstraint", false);
+    int curRadDiaCons = hGrp->GetInt("CurRadDiaCons", -1);
 
-    if (defDiaConstrain) {
-        pcAction->setIcon(arc2->icon());
-        int defaultId = 1;
-        pcAction->setProperty("defaultAction", QVariant(defaultId));
-    } else {
-        pcAction->setIcon(arc1->icon());
-        int defaultId = 0;
-        pcAction->setProperty("defaultAction", QVariant(defaultId));
+    switch (curRadDiaCons) {
+        case 0:
+            pcAction->setIcon(arc1->icon());
+            break;
+        case 1:
+            pcAction->setIcon(arc2->icon());
+            break;
+        default:
+            pcAction->setIcon(arc3->icon());
+            curRadDiaCons = 2;
     }
-
+    pcAction->setProperty("defaultAction", QVariant(curRadDiaCons));
     pcAction->setShortcut(QString::fromLatin1(getAccel()));
 
     return pcAction;
