@@ -85,6 +85,26 @@ class ToDo:
     timerpending = False
 
     @staticmethod
+    def _process_list(queue, debug):
+        for f, args in queue:
+            try:
+                if _DEBUG_inner:
+                    _msg("Debug: executing {}.\n"
+                         "function: {}\n".format(debug, f))
+                f(*args)
+            except Exception:
+                try:
+                    _log(traceback.format_exc())
+                    _err(traceback.format_exc())
+                    wrn = ("ToDo.doTasks, Unexpected error:\n"
+                           "{0}\n"
+                           "in {1} with args {2}".format(sys.exc_info()[0], f, args))
+                    _wrn(wrn)
+                except ReferenceError:
+                    _wrn("Debug: ToDo.doTasks: "
+                         "queue contains a deleted object, skipping")
+
+    @staticmethod
     def doTasks():
         """Execute the commands stored in the lists.
 
@@ -103,61 +123,33 @@ class ToDo:
                  "afteritinerary: {2}\n".format(itinerary,
                                                 commitlist,
                                                 afteritinerary))
-        for f, args in itinerary:
-            try:
-                if _DEBUG_inner:
-                    _msg("Debug: executing.\n"
-                         "function: {}\n".format(f))
-                f(*args)
-            except Exception:
-                try:
-                    _log(traceback.format_exc())
-                    _err(traceback.format_exc())
-                    wrn = ("ToDo.doTasks, Unexpected error:\n"
-                           "{0}\n"
-                           "in {1} with args {2}".format(sys.exc_info()[0], f, args))
-                    _wrn(wrn)
-                except ReferenceError:
-                    _wrn("Debug: ToDo.doTasks: "
-                         "queue contains a deleted object, skipping")
+
+        ToDo._process_list(itinerary, "delayed")
 
         if commitlist:
-            for name, func, args in commitlist:
-                if _DEBUG_inner:
-                    _msg("Debug: committing.\n"
-                         "name: {}\n".format(name))
-                try:
-                    func(*args)
-                except Exception:
-                    _log(traceback.format_exc())
-                    _err(traceback.format_exc())
-                    wrn = ("ToDo.doTasks, Unexpected error:\n"
-                           "{0}\n"
-                           "in {1}".format(sys.exc_info()[0], func))
-                    _wrn(wrn)
+            ToDo._process_list(commitlist, "commit")
+
             # Restack Draft screen widgets after creation
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.restack()
 
-        for f, args in afteritinerary:
-            try:
-                if _DEBUG_inner:
-                    _msg("Debug: executing after.\n"
-                         "function: {}\n".format(f))
-                f(*args)
-            except Exception:
-                _log(traceback.format_exc())
-                _err(traceback.format_exc())
-                wrn = ("ToDo.doTasks, Unexpected error:\n"
-                       "{0}\n"
-                       "in {1} with args {2}".format(sys.exc_info()[0], f, args))
-                _wrn(wrn)
+        ToDo._process_list(afteritinerary, "after")
 
         if ToDo.itinerary or ToDo.commitlist or ToDo.afteritinerary:
             # New items were queued while processing, run again later
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
         else:
             ToDo.timerpending = False
+
+    @staticmethod
+    def _add_to_list(queue, debug, f, *args):
+        if _DEBUG:
+            _msg("Debug: delaying {}.\n"
+                 "function: {}\n".format(debug, f))
+        if not ToDo.timerpending:
+            QtCore.QTimer.singleShot(0, ToDo.doTasks)
+            ToDo.timerpending = True
+        queue.append((f, args))
 
     @staticmethod
     def delay(f, *args):
@@ -171,13 +163,7 @@ class ToDo:
         f: function to be executed later
         args: zero or more arguments to be passed to f
         """
-        if _DEBUG:
-            _msg("Debug: delaying.\n"
-                 "function: {}\n".format(f))
-        if not ToDo.timerpending:
-            QtCore.QTimer.singleShot(0, ToDo.doTasks)
-            ToDo.timerpending = True
-        ToDo.itinerary.append((f, args))
+        ToDo._add_to_list(ToDo.itinerary, "delayed", f, *args)
 
     @staticmethod
     def _doCommit(name, func_or_list):
@@ -214,14 +200,8 @@ class ToDo:
             If `func_or_list` is a reference to a function
             the function is executed directly (also within a transaction).
         """
-        if _DEBUG:
-            _msg("Debug: delaying commit.\n"
-                 "commitlist: {}\n".format(cl))
-        if not ToDo.timerpending:
-            QtCore.QTimer.singleShot(0, ToDo.doTasks)
-            ToDo.timerpending = True
         for (name, func_or_list) in cl:
-            ToDo.commitlist.append((ToDo._doCommit, (name, func_or_list)))
+            ToDo._add_to_list(ToDo.commitlist, "commit", ToDo._doCommit, name, func_or_list)
 
     @staticmethod
     def delayAfter(f, *args):
@@ -232,13 +212,7 @@ class ToDo:
 
         Works the same as `delay`.
         """
-        if _DEBUG:
-            _msg("Debug: delaying after.\n"
-                 "function: {}\n".format(f))
-        if not ToDo.timerpending:
-            QtCore.QTimer.singleShot(0, ToDo.doTasks)
-            ToDo.timerpending = True
-        ToDo.afteritinerary.append((f, args))
+        ToDo._add_to_list(ToDo.afteritinerary, "after", f, *args)
 
 
 # Alias for compatibility with v0.18 and earlier
