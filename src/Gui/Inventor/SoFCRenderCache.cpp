@@ -1151,6 +1151,32 @@ SoFCRenderCache::getVertexCaches(bool finalize, int depth)
   return vcachemap;
 }
 
+bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor &other) {
+    float h,s,v;
+    color.getHSVValue(h,s,v);
+    float h2,s2,v2;
+    other.getHSVValue(h2,s2,v2);
+
+    if(fabs(h-h2) + fabs(s-s2) > 0.2f)
+        return false;
+    h += 0.3f;
+    if(h>1.0f)
+        h = 1.0f-h;
+    res.setHSVValue(h,s,1.0f);
+    return true;
+}
+
+bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other) {
+    SbColor r, c, o;
+    float t;
+    o.setPackedValue(other,t);
+    c.setPackedValue(color,t);
+    if(!makeDistinctColor(r,c,o))
+        return false;
+    res = r.getPackedValue(t);
+    return true;
+}
+
 SoFCRenderCache::VertexCacheMap
 SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
                                      int order,
@@ -1231,15 +1257,20 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
       material.order = order;
       material.depthfunc = SoDepthBuffer::LEQUAL;
 
-      if (color) {
+      if (color & ~0xff) {
+        if (order <= 0 && detail)
+            material.polygonoffsetstyle = 0;
         if (material.type != Material::Triangle)
           material.lightmodel = SoLazyElement::BASE_COLOR;
-        if (material.lightmodel != SoLazyElement::BASE_COLOR && detail)
+        if (material.lightmodel != SoLazyElement::BASE_COLOR && detail) {
           material.emissive = color | 0xff;
-        else {
+          makeDistinctColor(material.emissive, color|0xff, material.diffuse);
+        } 
+        uint32_t c = material.diffuse;
+        material.diffuse = (color & ~0xff) | (material.diffuse & 0xff);
+        makeDistinctColor(material.diffuse, material.diffuse, c);
+        if (!detail)
           material.pervertexcolor = false;
-          material.diffuse = color | (material.diffuse & 0xff);
-        }
       }
 
       if ((color & ~0xff) && (material.selectstyle == Material::Box
@@ -1425,14 +1456,11 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
             }
           }
         }
-        if (color && newentry.partidx >= 0) {
+        if ((color & ~0xff) && newentry.partidx >= 0) {
           uint32_t col = newentry.cache->getFaceColor(newentry.partidx);
-          if ((col & 0xff) == 0xff && alpha == 0xff) {
-            if (material.lightmodel == SoLazyElement::BASE_COLOR)
-              material.diffuse = color;
-            else
-              material.diffuse = col;
-          }
+          makeDistinctColor(material.diffuse, material.diffuse, col);
+          if (material.lightmodel != SoLazyElement::BASE_COLOR)
+            material.emissive = material.diffuse | 0xff;
         }
         break;
       }
