@@ -178,11 +178,12 @@ VectorTableDelegate::VectorTableDelegate(int decimals, QObject *parent)
 QWidget *VectorTableDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &/* option */,
                                            const QModelIndex & /*index*/) const
 {
-    QDoubleSpinBox *editor = new QDoubleSpinBox(parent);
+    auto *editor = new PrefDoubleSpinBox(parent);
     editor->setDecimals(decimals);
     editor->setMinimum(INT_MIN);
     editor->setMaximum(INT_MAX);
     editor->setSingleStep(0.1);
+    editor->setEntryName("VectorTable");
 
     return editor;
 }
@@ -226,10 +227,13 @@ VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
 
     ui->coordX->setRange(INT_MIN, INT_MAX);
     ui->coordX->setDecimals(decimals);
+    ui->coordX->setEntryName("VectorTable");
     ui->coordY->setRange(INT_MIN, INT_MAX);
     ui->coordY->setDecimals(decimals);
+    ui->coordY->setEntryName("VectorTable");
     ui->coordZ->setRange(INT_MIN, INT_MAX);
     ui->coordZ->setDecimals(decimals);
+    ui->coordZ->setEntryName("VectorTable");
 
     ui->toolButtonMouse->setDisabled(true);
 

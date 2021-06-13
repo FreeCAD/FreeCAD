@@ -28,7 +28,10 @@
 # include <QMessageBox>
 #endif
 
+#include <QWidgetAction>
+
 #include <cstring>
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -54,6 +57,8 @@ PrefWidget::~PrefWidget()
 {
   if (getWindowParameter().isValid())
     getWindowParameter()->Detach(this);
+  if (m_EntryHandle)
+    m_EntryHandle->Detach(this);
 }
 
 /** Sets the preference name to \a name. */
@@ -108,6 +113,14 @@ void PrefWidget::OnChange(Base::Subject<const char*> &rCaller, const char * sRea
     Q_UNUSED(rCaller);
     if (std::strcmp(sReason,m_sPrefName) == 0)
         restorePreferences();
+    else {
+      if (sReason && sReason[0] == 0)
+        sReason = nullptr;
+      for (auto &entry : m_SubEntries) {
+        if (restoreSubEntry(entry, sReason))
+          break;
+      }
+    }
 }
 
 /**
@@ -117,12 +130,262 @@ void PrefWidget::OnChange(Base::Subject<const char*> &rCaller, const char * sRea
 void PrefWidget::onSave()
 {
   savePreferences();
-  if (getWindowParameter().isValid())
-    getWindowParameter()->Notify( entryName() );
 #ifdef FC_DEBUG
-  else
+  if (m_SubEntries.isEmpty() && !getWindowParameter().isValid())
     qFatal( "No parameter group specified!" );
 #endif
+}
+
+static inline ParameterGrp::handle _getEntryParameter() {
+    return App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/WidgetEntries");
+}
+
+ParameterGrp::handle PrefWidget::getEntryParameter() {
+  if (!m_EntryHandle) {
+    m_EntryHandle = _getEntryParameter();
+    m_EntryHandle->Attach(this);
+  }
+  return m_EntryHandle;
+}
+
+void PrefWidget::setSubEntryValidate(const SubEntryValidate &validate)
+{
+  m_Validate = validate;
+}
+
+void PrefWidget::resetSubEntries()
+{
+  _getEntryParameter()->Clear();
+}
+
+QVariant PrefWidget::getSubEntryValue(const QByteArray &entryName,
+                                      const QByteArray &name,
+                                      EntryType type,
+                                      const QVariant &defvalue)
+{
+  static ParameterGrp::handle _handle;
+  if (!_handle)
+    _handle = _getEntryParameter();
+  QVariant v;
+  QByteArray n;
+  if (entryName.size())
+    n = entryName + "_" + name;
+  else
+    n = name;
+  switch(type) {
+    case EntryBool:
+      v = _handle->GetBool(n, defvalue.toBool());
+      break;
+    case EntryInt:
+      v = (int)_handle->GetInt(n, defvalue.toInt());
+      break;
+    case EntryDouble:
+      v = _handle->GetFloat(n, defvalue.toReal());
+      break;
+    case EntryString:
+      v = QString::fromUtf8(_handle->GetASCII(
+            n, defvalue.toString().toUtf8().constData()).c_str());
+      break;
+  }
+  return v;
+}
+
+QByteArray PrefWidget::entryPrefix()
+{
+  QByteArray prefix = entryName();
+  if (prefix.isEmpty() && getWindowParameter().isValid())
+    prefix = getWindowParameter()->GetGroupName();
+  if (!prefix.isEmpty())
+    prefix += "_";
+  return prefix;
+}
+      
+const QVector<PrefWidget::SubEntry> & PrefWidget::subEntries() const
+{
+  return m_SubEntries;
+}
+
+void PrefWidget::setSubEntries(QObject *base, const QVector<SubEntry> &entries)
+{
+  m_Base = base;
+  m_SubEntries.clear();
+  for (auto &entry : entries) {
+    if (base->property(entry.name).isValid())
+      m_SubEntries.push_back(entry);
+  }
+  restoreSubEntries();
+}
+
+void PrefWidget::setupSubEntries(QObject *base, int flags)
+{
+    QVector<SubEntry> entries;
+
+    if (flags & EntryDecimals) {
+      SubEntry info;
+      info.name = "decimals";
+      info.defvalue = base->property(info.name);
+      if (info.defvalue.isValid()) {
+        info.displayName = QObject::tr("Decimals");
+        info.type = PrefWidget::EntryInt;
+        entries.push_back(info);
+      }
+    }
+
+    if (flags & EntryMinimum) {
+      SubEntry info;
+      info.name = "minimum";
+      info.defvalue = base->property(info.name);
+      if (info.defvalue.isValid()) {
+        info.displayName = QObject::tr("Minimum");
+        info.type = PrefWidget::EntryDouble;
+        entries.push_back(info);
+      }
+    }
+
+    if (flags & EntryMaximum) {
+      SubEntry info;
+      info.name = "maximum";
+      info.defvalue = base->property(info.name);
+      if (info.defvalue.isValid()) {
+        info.displayName = QObject::tr("Maximum");
+        info.type = PrefWidget::EntryDouble;
+        entries.push_back(info);
+      }
+    }
+
+    if (flags & EntryStep) {
+      SubEntry info;
+      info.name = "singleStep";
+      info.defvalue = base->property(info.name);
+      if (info.defvalue.isValid()) {
+        info.displayName = QObject::tr("Single step");
+        info.type = PrefWidget::EntryDouble;
+        entries.push_back(info);
+      }
+    }
+
+    setSubEntries(base, entries);
+}
+
+
+void PrefWidget::buildContextMenu(QMenu *menu)
+{
+  if (m_SubEntries.isEmpty())
+    return;
+  menu->addSeparator();
+  QByteArray prefix = entryPrefix();
+  for (auto &entry : m_SubEntries) {
+    auto action = new QWidgetAction(menu);
+    action->setText(entry.displayName);
+    QWidget *widget = nullptr;
+    QHBoxLayout *layout = nullptr;
+    QByteArray name = entry.name;
+    if (entry.type != EntryBool) {
+        widget = new QWidget(menu);
+        layout = new QHBoxLayout(widget);
+        auto label = new QLabel(widget);
+        label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        label->setText(entry.displayName);
+        layout->addWidget(label);
+    }
+    switch(entry.type) {
+      case EntryBool: {
+        auto checkbox = new QCheckBox(menu);
+        widget = checkbox;
+        checkbox->setChecked(m_Base->property(entry.name).toBool());
+        checkbox->setText(entry.displayName);
+        QObject::connect(checkbox, &QCheckBox::toggled,
+          [=](bool value) {
+             QVariant v = value;
+             if (!m_Validate || m_Validate(name, v))
+               getEntryParameter()->SetBool(prefix + name, v.toBool());
+          });
+        break;
+      }
+      case EntryInt: {
+        auto spinbox = new QSpinBox(widget);
+        spinbox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        layout->addWidget(spinbox);
+        spinbox->setValue(m_Base->property(entry.name).toInt());
+        spinbox->setRange(INT_MIN, INT_MAX);
+        QObject::connect(spinbox, QOverload<int>::of(&QSpinBox::valueChanged),
+          [=](int value) {
+             QVariant v = value;
+             if (!m_Validate || m_Validate(name, v))
+               getEntryParameter()->SetInt(prefix + name, v.toInt());
+          });
+        break;
+      }
+      case EntryDouble: {
+        auto spinbox = new QDoubleSpinBox(widget);
+        spinbox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        layout->addWidget(spinbox);
+        spinbox->setValue(m_Base->property(entry.name).toReal());
+        spinbox->setRange(-DBL_MAX, DBL_MAX);
+        int decimals = m_Base->property("decimals").toInt();
+        spinbox->setDecimals(std::max(16, decimals));
+        QObject::connect(spinbox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          [=](double value) {
+             QVariant v = value;
+             if (!m_Validate || m_Validate(name, v))
+               getEntryParameter()->SetFloat(prefix + name, v.toReal());
+          });
+        break;
+      }
+      case EntryString: {
+        auto lineedit = new QLineEdit(widget);
+        lineedit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        layout->addWidget(lineedit);
+        lineedit->setText(m_Base->property(entry.name).toString());
+        QObject::connect(lineedit, &QLineEdit::textChanged,
+          [=](const QString &value) {
+             QVariant v = value;
+             if (!m_Validate || m_Validate(name, v))
+               getEntryParameter()->SetASCII(prefix + name, v.toString().toUtf8().constData());
+          });
+        break;
+      }
+    }
+    action->setDefaultWidget(widget);
+    menu->addAction(action);
+  }
+}
+
+void PrefWidget::restoreSubEntries()
+{
+  for (auto &entry : m_SubEntries)
+    restoreSubEntry(entry);
+}
+
+bool PrefWidget::restoreSubEntry(const SubEntry &entry, const char *change)
+{
+  if (!m_Base || m_SubEntries.isEmpty())
+    return true;
+  if (change && !boost::ends_with(change, entry.name.constData()))
+    return false;
+  QByteArray name = entryPrefix() + entry.name;
+  if (change && name != change)
+    return false;
+  QVariant v;
+  switch(entry.type) {
+  case EntryBool:
+    v = getEntryParameter()->GetBool(name, entry.defvalue.toBool());
+    break;
+  case EntryInt:
+    v = (int)getEntryParameter()->GetInt(name, entry.defvalue.toInt());
+    break;
+  case EntryDouble:
+    v = getEntryParameter()->GetFloat(name, entry.defvalue.toReal());
+    break;
+  case EntryString:
+    v = QString::fromUtf8(getEntryParameter()->GetASCII(
+          name, entry.defvalue.toString().toUtf8().constData()).c_str());
+    break;
+  }
+  if (!m_Validate || m_Validate(entry.name, v))
+    m_Base->setProperty(entry.name, v);
+  return true;
 }
 
 /**
@@ -156,13 +419,40 @@ void PrefWidget::failedToRestore(const QString& name) const
 // --------------------------------------------------------------------
 
 PrefSpinBox::PrefSpinBox ( QWidget * parent )
-  : QSpinBox(parent), PrefWidget()
+  : IntSpinBox(parent), PrefWidget()
 {
     LineEditStyle::setup(lineEdit());
 }
 
 PrefSpinBox::~PrefSpinBox()
 {
+}
+
+void PrefSpinBox::setEntryName( const QByteArray& name )
+{
+  PrefWidget::setEntryName(name);
+  if (subEntries().isEmpty())
+    setupSubEntries(this);
+}
+
+void PrefSpinBox::contextMenuEvent(QContextMenuEvent *event)
+{
+  if (subEntries().isEmpty()) {
+    inherited::contextMenuEvent(event);
+    return;
+  }
+    
+  auto edit = lineEdit();
+  QPointer<QMenu> menu = edit->createStandardContextMenu();
+  if (!menu)
+    return;
+
+  buildContextMenu(menu);
+  const QPoint pos = (event->reason() == QContextMenuEvent::Mouse)
+      ? event->globalPos() : mapToGlobal(QPoint(event->pos().x(), 0)) + QPoint(width() / 2, height() / 2);
+  menu->exec(pos);
+  delete static_cast<QMenu *>(menu);
+  event->accept();
 }
 
 void PrefSpinBox::restorePreferences()
@@ -173,7 +463,7 @@ void PrefSpinBox::restorePreferences()
     return;
   }
 
-  int nVal = getWindowParameter()->GetInt( entryName(), QSpinBox::value() );
+  int nVal = getWindowParameter()->GetInt( entryName(), inherited::value() );
   setValue( nVal );
 }
 
@@ -191,13 +481,40 @@ void PrefSpinBox::savePreferences()
 // --------------------------------------------------------------------
 
 PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
-  : QDoubleSpinBox(parent), PrefWidget()
+  : DoubleSpinBox(parent), PrefWidget()
 {
     LineEditStyle::setup(lineEdit());
 }
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox()
 {
+}
+
+void PrefDoubleSpinBox::setEntryName( const QByteArray& name )
+{
+  PrefWidget::setEntryName(name);
+  if (subEntries().isEmpty())
+    setupSubEntries(this);
+}
+
+void PrefDoubleSpinBox::contextMenuEvent(QContextMenuEvent *event)
+{
+  if (subEntries().isEmpty()) {
+    inherited::contextMenuEvent(event);
+    return;
+  }
+    
+  auto edit = lineEdit();
+  QPointer<QMenu> menu = edit->createStandardContextMenu();
+  if (!menu)
+    return;
+
+  buildContextMenu(menu);
+  const QPoint pos = (event->reason() == QContextMenuEvent::Mouse)
+      ? event->globalPos() : mapToGlobal(QPoint(event->pos().x(), 0)) + QPoint(width() / 2, height() / 2);
+  menu->exec(pos);
+  delete static_cast<QMenu *>(menu);
+  event->accept();
 }
 
 void PrefDoubleSpinBox::restorePreferences()
@@ -490,6 +807,33 @@ PrefUnitSpinBox::~PrefUnitSpinBox()
 {
 }
 
+void PrefUnitSpinBox::setEntryName( const QByteArray& name )
+{
+  PrefWidget::setEntryName(name);
+  if (subEntries().isEmpty())
+    setupSubEntries(this);
+}
+
+void PrefUnitSpinBox::contextMenuEvent(QContextMenuEvent *event)
+{
+  if (subEntries().isEmpty()) {
+    QuantitySpinBox::contextMenuEvent(event);
+    return;
+  }
+    
+  auto edit = lineEdit();
+  QPointer<QMenu> menu = edit->createStandardContextMenu();
+  if (!menu)
+    return;
+
+  buildContextMenu(menu);
+  const QPoint pos = (event->reason() == QContextMenuEvent::Mouse)
+      ? event->globalPos() : mapToGlobal(QPoint(event->pos().x(), 0)) + QPoint(width() / 2, height() / 2);
+  menu->exec(pos);
+  delete static_cast<QMenu *>(menu);
+  event->accept();
+}
+
 void PrefUnitSpinBox::restorePreferences()
 {
     if (getWindowParameter().isNull()) {
@@ -533,7 +877,7 @@ public:
 }
 
 PrefQuantitySpinBox::PrefQuantitySpinBox (QWidget * parent)
-  : QuantitySpinBox(parent), d_ptr(new PrefQuantitySpinBoxPrivate())
+  : PrefUnitSpinBox(parent), d_ptr(new PrefQuantitySpinBoxPrivate())
 {
 }
 
@@ -550,6 +894,9 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     QMenu* menu = new QMenu(QString::fromLatin1("PrefQuantitySpinBox"));
 
     menu->addMenu(editMenu);
+
+    buildContextMenu(menu);
+
     menu->addSeparator();
 
     // datastructure to remember actions for values
@@ -619,12 +966,12 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     delete menu;
 }
 
-void PrefQuantitySpinBox::onSave()
+void PrefQuantitySpinBox::savePreferences()
 {
     pushToHistory();
 }
 
-void PrefQuantitySpinBox::onRestore()
+void PrefQuantitySpinBox::restorePreferences()
 {
     setToLastUsedValue();
 }
@@ -643,10 +990,11 @@ void PrefQuantitySpinBox::pushToHistory()
         return;
 
     std::string value(val.toUtf8().constData());
-    if (d->handle.isValid()) {
+    auto handle = getWindowParameter();
+    if (handle.isValid()) {
         try {
             // Search the history for the same value and move to the top if found.
-            std::string tHist = d->handle->GetASCII("Hist0");
+            std::string tHist = handle->GetASCII("Hist0");
             if (tHist != value) {
                 int offset = 0;
                 QByteArray hist("Hist");
@@ -654,11 +1002,11 @@ void PrefQuantitySpinBox::pushToHistory()
                 for (int i = 0 ; i < d->historySize ;++i) {
                     std::string tNext;
                     for (; i + offset < d->historySize; ++offset) {
-                        tNext = d->handle->GetASCII(hist+QByteArray::number(i+offset));
+                        tNext = handle->GetASCII(hist+QByteArray::number(i+offset));
                         if (tNext != value)
                             break;
                     }
-                    d->handle->SetASCII(hist+QByteArray::number(i), tHist);
+                    handle->SetASCII(hist+QByteArray::number(i), tHist);
                     tHist = std::move(tNext);
                 }
             }
@@ -674,12 +1022,13 @@ QStringList PrefQuantitySpinBox::getHistory() const
     Q_D(const PrefQuantitySpinBox);
     QStringList res;
 
-    if (d->handle.isValid()) {
+    auto handle = const_cast<PrefQuantitySpinBox*>(this)->getWindowParameter();
+    if (handle.isValid()) {
         std::string tmp;
         for (int i = 0 ; i< d->historySize ;i++) {
             QByteArray hist = "Hist";
             hist.append(QByteArray::number(i));
-            tmp = d->handle->GetASCII(hist);
+            tmp = handle->GetASCII(hist);
             if (!tmp.empty())
                 res.push_back(QString::fromUtf8(tmp.c_str()));
             else
@@ -697,26 +1046,6 @@ void PrefQuantitySpinBox::setToLastUsedValue()
         lineEdit()->setText(hist[0]);
 }
 
-void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& path)
-{
-    Q_D(PrefQuantitySpinBox);
-    QByteArray groupPath = path;
-    if (!groupPath.startsWith("User parameter:")) {
-        groupPath.prepend("User parameter:BaseApp/Preferences/");
-    }
-    d->handle = App::GetApplication().GetParameterGroupByPath(groupPath);
-    if (d->handle.isValid())
-        d->prefGrp = path;
-}
-
-QByteArray PrefQuantitySpinBox::paramGrpPath() const
-{
-    Q_D(const PrefQuantitySpinBox);
-    if (d->handle.isValid())
-        return d->prefGrp;
-    return QByteArray();
-}
-
 int PrefQuantitySpinBox::historySize() const
 {
     Q_D(const PrefQuantitySpinBox);
@@ -727,6 +1056,14 @@ void PrefQuantitySpinBox::setHistorySize(int i)
 {
     Q_D(PrefQuantitySpinBox);
     d->historySize = i;
+}
+
+void PrefQuantitySpinBox::setParamGrpPath( const QByteArray& path )
+{
+    PrefUnitSpinBox::setParamGrpPath(path);
+
+    if (subEntries().isEmpty())
+        setupSubEntries(this);
 }
 
 // --------------------------------------------------------------------
@@ -771,3 +1108,4 @@ void PrefFontBox::savePreferences()
 }
 
 #include "moc_PrefWidgets.cpp"
+// vim: noai:ts=2:sw=2

@@ -41,6 +41,7 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBind
     Q_OBJECT
 
     Q_PROPERTY(QString unit READ unitText WRITE setUnitText)
+    Q_PROPERTY(int decimals READ decimals WRITE setDecimals)
     Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
     Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)

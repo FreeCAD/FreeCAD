@@ -239,11 +239,16 @@ void PropertyEditor::closeEditor()
     if (editingIndex.isValid()) {
         Base::StateLocker guard(closingEditor);
         bool hasFocus = activeEditor && activeEditor->hasFocus();
+        PropertyItem* item = static_cast<PropertyItem*>(editingIndex.internalPointer());
+        int decimals = item->decimals();
         closePersistentEditor(editingIndex);
         editingIndex = QPersistentModelIndex();
         activeEditor = nullptr;
         if(hasFocus)
             setFocus();
+
+        if (editingDecimals != decimals)
+            propertyModel->updateDecimals();
     }
 }
 

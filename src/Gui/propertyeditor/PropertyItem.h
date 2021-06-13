@@ -65,6 +65,7 @@ void _class_::init(void) { \
 }
 
 namespace Gui {
+class PrefWidget;
 
 namespace Dialog { 
 class TaskPlacement; 
@@ -133,6 +134,9 @@ public:
     virtual QVariant editorData(QWidget *editor) const;
     virtual bool isSeparator() const { return false; }
 
+    const QByteArray &getEntryName() const;
+    void setEntryName(const QByteArray &name);
+
     QWidget* createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     void setExpressionEditorData(QWidget *editor, const QVariant& data) const;
     QVariant expressionEditorData(QWidget *editor) const;
@@ -157,6 +161,7 @@ public:
     bool testStatus(App::Property::Status pos) const;
     void setDecimals(int);
     int decimals() const;
+    bool updateDecimals();
 
     void setLinked(bool);
     bool isLinked() const;
@@ -193,6 +198,8 @@ protected:
     //gets called when the bound expression is changed
     virtual void onChange();
 
+    void setupWidgetEntry(PrefWidget *widget) const;
+
 protected:
     QString propName;
     QString displayText;
@@ -200,9 +207,13 @@ protected:
     PropertyItem *parentItem;
     QList<PropertyItem*> childItems;
     bool readonly;
-    int precision;
     bool linked;
     bool expanded;
+
+private:
+    QByteArray _entryName;
+    int precision;
+    int user_precision = -1;
 };
 
 /**

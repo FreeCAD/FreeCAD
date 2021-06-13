@@ -38,7 +38,7 @@ class QDoubleSpinBox;
 class QComboBox;
 
 namespace Gui {
-class QuantitySpinBox;
+class PrefUnitSpinBox;
 
 class GuiExport LocationWidget : public QWidget
 {
@@ -68,9 +68,9 @@ private:
     QLabel *yLabel;
     QLabel *zLabel;
     QLabel *dLabel;
-    QuantitySpinBox *xValue;
-    QuantitySpinBox *yValue;
-    QuantitySpinBox *zValue;
+    PrefUnitSpinBox *xValue;
+    PrefUnitSpinBox *yValue;
+    PrefUnitSpinBox *zValue;
     QComboBox *dValue;
 };
 

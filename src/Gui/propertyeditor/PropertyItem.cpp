@@ -52,6 +52,7 @@
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Widgets.h>
+#include <Gui/PrefWidgets.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
@@ -105,6 +106,50 @@ PropertyItem::PropertyItem() : parentItem(0), readonly(false), linked(false), ex
 PropertyItem::~PropertyItem()
 {
     qDeleteAll(childItems);
+}
+
+const QByteArray &PropertyItem::getEntryName() const
+{
+    return _entryName;
+}
+
+void PropertyItem::setupWidgetEntry(PrefWidget *widget) const
+{
+    widget->setSubEntryValidate(
+        [this](const QByteArray &name, QVariant &v) {
+            if (name == "decimals") {
+                int d = v.toInt();
+                if (d < Base::UnitsApi::getDecimals()) {
+                    d = Base::UnitsApi::getDecimals();
+                    v = d;
+                }
+                if (d != this->user_precision) {
+                    const_cast<PropertyItem*>(this)->user_precision = d;
+                }
+            }
+            return true;
+        });
+    widget->setEntryName(getEntryName());
+}
+
+void PropertyItem::setEntryName(const QByteArray &name)
+{
+    _entryName = name;
+    updateDecimals();
+}
+
+bool PropertyItem::updateDecimals()
+{
+    int d = PrefWidget::getSubEntryValue(_entryName,
+                                         "decimals",
+                                         PrefWidget::EntryInt,
+                                         this->precision).toInt();
+    if (d < Base::UnitsApi::getDecimals())
+        d = Base::UnitsApi::getDecimals();
+    if (d == this->user_precision)
+        return false;
+    this->user_precision = d;
+    return true;
 }
 
 void PropertyItem::initialize()
@@ -332,6 +377,8 @@ void PropertyItem::setDecimals(int prec)
 
 int PropertyItem::decimals() const
 {
+    if (user_precision >= 0)
+        return user_precision;
     return precision;
 }
 
@@ -851,6 +898,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerItem)
 
 PropertyIntegerItem::PropertyIntegerItem()
 {
+    setEntryName("PropertyInteger");
 }
 
 QVariant PropertyIntegerItem::value(const App::Property* prop) const
@@ -875,7 +923,8 @@ void PropertyIntegerItem::setValue(const QVariant& value)
 
 QWidget* PropertyIntegerItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Gui::IntSpinBox *sb = new Gui::IntSpinBox(parent);
+    auto *sb = new PrefSpinBox(parent);
+    setupWidgetEntry(sb);
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
@@ -918,6 +967,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerConstraintItem)
 
 PropertyIntegerConstraintItem::PropertyIntegerConstraintItem()
 {
+    setEntryName("PropertyInteger");
 }
 
 QVariant PropertyIntegerConstraintItem::value(const App::Property* prop) const
@@ -942,7 +992,8 @@ void PropertyIntegerConstraintItem::setValue(const QVariant& value)
 
 QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Gui::IntSpinBox *sb = new Gui::IntSpinBox(parent);
+    auto *sb = new PrefSpinBox(parent);
+    setupWidgetEntry(sb);
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
@@ -1001,6 +1052,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatItem)
 
 PropertyFloatItem::PropertyFloatItem()
 {
+    setEntryName(getEntryName());
 }
 
 QVariant PropertyFloatItem::toString(const QVariant& prop) const
@@ -1036,9 +1088,10 @@ void PropertyFloatItem::setValue(const QVariant& value)
 
 QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Gui::DoubleSpinBox *sb = new Gui::DoubleSpinBox(parent);
+    auto *sb = new PrefDoubleSpinBox(parent);
     sb->setFrame(false);
     sb->setDecimals(decimals());
+    setupWidgetEntry(sb);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
 
@@ -1070,11 +1123,15 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyUnitItem)
 
 PropertyUnitItem::PropertyUnitItem()
 {
+    setEntryName("PropertyUnit");
 }
 
 QVariant PropertyUnitItem::toString(const QVariant& prop) const
 {
-    const Base::Quantity& unit = prop.value<Base::Quantity>();
+    Base::Quantity unit = prop.value<Base::Quantity>();
+    auto format = unit.getFormat();
+    format.precision = decimals();
+    unit.setFormat(format);
     QString string = unit.getUserString();
     if (hasExpression())
         string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -1105,7 +1162,8 @@ void PropertyUnitItem::setValue(const QVariant& value)
 
 QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Gui::QuantitySpinBox *infield = new Gui::QuantitySpinBox(parent);
+    auto *infield = new PrefUnitSpinBox(parent);
+    setupWidgetEntry(infield);
     infield->setFrame(false);
     infield->setMinimumHeight(0);
     infield->setReadOnly(isReadOnly());
@@ -1180,6 +1238,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatConstraintItem)
 
 PropertyFloatConstraintItem::PropertyFloatConstraintItem()
 {
+    setEntryName("PropertyFloat");
 }
 
 QVariant PropertyFloatConstraintItem::toString(const QVariant& prop) const
@@ -1211,8 +1270,9 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
 
 QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Gui::DoubleSpinBox *sb = new Gui::DoubleSpinBox(parent);
+    auto *sb = new PrefDoubleSpinBox(parent);
     sb->setDecimals(decimals());
+    setupWidgetEntry(sb);
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
@@ -1262,6 +1322,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyPrecisionItem)
 PropertyPrecisionItem::PropertyPrecisionItem()
 {
     setDecimals(16);
+    setEntryName("PropertyPrecision");
 }
 
 // --------------------------------------------------------------------
@@ -1270,6 +1331,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyAngleItem)
 
 PropertyAngleItem::PropertyAngleItem()
 {
+    setEntryName("PropertyAngle");
 }
 
 void PropertyAngleItem::setEditorData(QWidget *editor, const QVariant& data) const
@@ -1382,6 +1444,11 @@ PropertyVectorItem::PropertyVectorItem()
     m_z->setParent(this);
     m_z->setPropertyName(QLatin1String("z"));
     this->appendChild(m_z);
+
+    QByteArray entryName("PropertyVector");
+    for (auto child : childItems)
+        child->setEntryName(entryName);
+    setEntryName(entryName);
 }
 
 QVariant PropertyVectorItem::toString(const QVariant& prop) const
@@ -1569,6 +1636,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
 
 PropertyVectorListItem::PropertyVectorListItem()
 {
+    setEntryName("PropertyVector");
 }
 
 QVariant PropertyVectorListItem::toString(const QVariant& prop) const
@@ -1657,6 +1725,8 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
     m_z->setParent(this);
     m_z->setPropertyName(QLatin1String("z"));
     this->appendChild(m_z);
+
+    setEntryName("PropertyUnit");
 }
 
 QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
@@ -1853,6 +1923,11 @@ PropertyMatrixItem::PropertyMatrixItem()
     m_a44->setPropertyName(QLatin1String("A44"));
     m_a44->setDecimals(decimals);
     this->appendChild(m_a44);
+
+    QByteArray entryName("PropertyMatrix");
+    for (auto child : childItems)
+        child->setEntryName(entryName);
+    setEntryName(entryName);
 }
 
 QVariant PropertyMatrixItem::toString(const QVariant& prop) const
@@ -2212,6 +2287,8 @@ PropertyPlacementItem::PropertyPlacementItem() : init_axis(false), changed_value
     m_p->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Position")));
     m_p->setReadOnly(true);
     this->appendChild(m_p);
+
+    setEntryName("PropertyUnit");
 }
 
 PropertyPlacementItem::~PropertyPlacementItem()
@@ -2677,6 +2754,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatListItem)
 
 PropertyFloatListItem::PropertyFloatListItem()
 {
+    setEntryName("PropertyFloat");
 }
 
 QWidget* PropertyFloatListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const

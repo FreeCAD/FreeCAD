@@ -27,7 +27,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipZ"/>
+       <widget class="PrefDoubleSpinBox" name="clipZ"/>
       </item>
       <item row="0" column="3">
        <widget class="QPushButton" name="flipClipZ">
@@ -72,7 +72,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipX"/>
+       <widget class="PrefDoubleSpinBox" name="clipX"/>
       </item>
       <item row="0" column="3">
        <widget class="QPushButton" name="flipClipX">
@@ -117,7 +117,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipY"/>
+       <widget class="PrefDoubleSpinBox" name="clipY"/>
       </item>
       <item row="0" column="3">
        <widget class="QPushButton" name="flipClipY">
@@ -257,13 +257,13 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="0">
-          <widget class="QDoubleSpinBox" name="dirX"/>
+          <widget class="PrefDoubleSpinBox" name="dirX"/>
          </item>
          <item row="0" column="1">
-          <widget class="QDoubleSpinBox" name="dirY"/>
+          <widget class="PrefDoubleSpinBox" name="dirY"/>
          </item>
          <item row="0" column="2">
-          <widget class="QDoubleSpinBox" name="dirZ"/>
+          <widget class="PrefDoubleSpinBox" name="dirZ"/>
          </item>
         </layout>
        </widget>
@@ -276,7 +276,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QDoubleSpinBox" name="clipView"/>
+       <widget class="PrefDoubleSpinBox" name="clipView"/>
       </item>
      </layout>
     </widget>
@@ -299,6 +299,11 @@
    <extends>QWidget</extends>
    <header>Gui/FileDialog.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -231,6 +231,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         }
         parentEditor->activeEditor = editor;
         parentEditor->editingIndex = index;
+        parentEditor->editingDecimals = childItem->decimals();
     }
 
     return editor;

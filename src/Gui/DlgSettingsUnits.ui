@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>472</height>
+    <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,31 +33,26 @@
         </property>
        </spacer>
       </item>
-      <item row="3" column="0">
-       <widget class="QTableWidget" name="tableWidget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <column>
-         <property name="text">
-          <string>Magnitude</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Unit</string>
-         </property>
-        </column>
-       </widget>
-      </item>
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="toolTip">
+           <string>Number of decimals when showing coordinates in preselection message.
+Set to -1 to use the same setting of the above 'Number of decimals'.</string>
+          </property>
+          <property name="text">
+           <string>Decimals in pre-selection:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Minimum fractional inch:</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QSpinBox" name="spinBoxDecimals">
           <property name="toolTip">
@@ -71,20 +66,6 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Unit system:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QComboBox" name="comboBox_ViewSystem">
-          <property name="toolTip">
-           <string>Unit system that should be used for all parts the application</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
@@ -92,14 +73,41 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Minimum fractional inch:</string>
+           <string>Unit system:</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="1" column="2">
+         <widget class="QPushButton" name="resetUserDecimals">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear user defined decimals and single step settings in all input fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Reset user defines</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="QComboBox" name="comboBox_ViewSystem">
+          <property name="toolTip">
+           <string>Unit system that should be used for all parts the application</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QSpinBox" name="spinBoxPreSel">
+          <property name="minimum">
+           <number>-1</number>
+          </property>
+          <property name="value">
+           <number>-1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
          <widget class="QComboBox" name="comboBox_FracInch">
           <property name="toolTip">
            <string>Minimum fractional inch to be displayed</string>
@@ -141,28 +149,30 @@
           </item>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="toolTip">
-           <string>Number of decimals when showing coordinates in preselection message.
-Set to -1 to use the same setting of the above 'Number of decimals'.</string>
-          </property>
-          <property name="text">
-           <string>Decimals in pre-selection:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QSpinBox" name="spinBoxPreSel">
-          <property name="minimum">
-           <number>-1</number>
-          </property>
-          <property name="value">
-           <number>-1</number>
-          </property>
-         </widget>
-        </item>
        </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QTableWidget" name="tableWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <column>
+         <property name="text">
+          <string>Magnitude</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Unit</string>
+         </property>
+        </column>
+       </widget>
       </item>
      </layout>
     </widget>

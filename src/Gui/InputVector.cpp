@@ -26,6 +26,7 @@
 # include <QComboBox>
 #endif
 
+#include "PrefWidgets.h"
 #include "InputVector.h"
 #include "ui_InputVector.h"
 #include "QuantitySpinBox.h"
@@ -38,21 +39,24 @@ LocationWidget::LocationWidget (QWidget * parent)
 {
     box = new QGridLayout();
 
-    xValue = new QuantitySpinBox(this);
+    xValue = new PrefUnitSpinBox(this);
+    xValue->setEntryName("LocationX");
     xValue->setMinimum(-2.14748e+09);
     xValue->setMaximum(2.14748e+09);
     xLabel = new QLabel(this);
     box->addWidget(xLabel, 0, 0, 1, 1);
     box->addWidget(xValue, 0, 1, 1, 1);
 
-    yValue = new QuantitySpinBox(this);
+    yValue = new PrefUnitSpinBox(this);
+    yValue->setEntryName("LocationY");
     yValue->setMinimum(-2.14748e+09);
     yValue->setMaximum(2.14748e+09);
     yLabel = new QLabel(this);
     box->addWidget(yLabel, 1, 0, 1, 1);
     box->addWidget(yValue, 1, 1, 1, 1);
 
-    zValue = new QuantitySpinBox(this);
+    zValue = new PrefUnitSpinBox(this);
+    zValue->setEntryName("LocationZ");
     zValue->setMinimum(-2.14748e+09);
     zValue->setMaximum(2.14748e+09);
     zLabel = new QLabel(this);

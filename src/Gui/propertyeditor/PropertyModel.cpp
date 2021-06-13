@@ -564,4 +564,17 @@ bool PropertyModel::removeRows(int row, int count, const QModelIndex& parent)
     return true;
 }
 
+void PropertyModel::updateDecimals(const QModelIndex &idx)
+{
+    PropertyItem *item;
+    if (!idx.isValid())
+        item = rootItem;
+    else
+        item = static_cast<PropertyItem*>(idx.internalPointer());
+    if (item->updateDecimals())
+        dataChanged(idx, idx);
+    for (int i=0, c=item->childCount(); i<c; ++i)
+        updateDecimals(this->index(i, 0, idx));
+}
+
 #include "moc_PropertyModel.cpp"

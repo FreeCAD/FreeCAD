@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>288</width>
-    <height>476</height>
+    <height>479</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QDoubleSpinBox" name="coordX"/>
+      <widget class="PrefDoubleSpinBox" name="coordX"/>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
@@ -51,7 +51,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QDoubleSpinBox" name="coordY"/>
+      <widget class="PrefDoubleSpinBox" name="coordY"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
@@ -61,7 +61,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QDoubleSpinBox" name="coordZ"/>
+      <widget class="PrefDoubleSpinBox" name="coordZ"/>
      </item>
     </layout>
    </item>
@@ -196,6 +196,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>spinBox</tabstop>
   <tabstop>coordX</tabstop>

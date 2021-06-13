@@ -141,6 +141,7 @@ private:
 
     QPointer<QWidget> activeEditor;
     QPersistentModelIndex editingIndex;
+    int editingDecimals;
     int removingRows = 0;
 
     friend class Gui::PropertyView;

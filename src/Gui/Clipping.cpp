@@ -213,6 +213,20 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
         d->ui.clipY->setDecimals(minDecimals);
         d->ui.clipZ->setDecimals(minDecimals);
     }
+
+    auto setupSpinBox = [](PrefDoubleSpinBox *spinbox, const char *name) {
+        spinbox->setParamGrpPath("View/Clipping");
+        spinbox->setEntryName(name);
+        spinbox->onRestore();
+    };
+    setupSpinBox(d->ui.clipView, "ClipView");
+    setupSpinBox(d->ui.clipX, "ClipX");
+    setupSpinBox(d->ui.clipY, "ClipY");
+    setupSpinBox(d->ui.clipZ, "ClipZ");
+    setupSpinBox(d->ui.dirX, "DirX");
+    setupSpinBox(d->ui.dirY, "DirY");
+    setupSpinBox(d->ui.dirZ, "DirZ");
+
 }
 
 static QPointer<QDockWidget> _DockWidget;
@@ -294,6 +308,12 @@ Clipping::~Clipping()
         d->node->removeChild(d->clipView);
     }
     d->node->unref();
+    d->ui.clipX->onSave();
+    d->ui.clipY->onSave();
+    d->ui.clipZ->onSave();
+    d->ui.dirX->onSave();
+    d->ui.dirY->onSave();
+    d->ui.dirZ->onSave();
     delete d;
 }
 

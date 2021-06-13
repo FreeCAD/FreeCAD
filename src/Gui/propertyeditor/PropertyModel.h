@@ -68,6 +68,8 @@ public:
     QStringList propertyPathFromIndex(const QModelIndex&) const;
     QModelIndex propertyIndexFromPath(const QStringList&) const;
 
+    void updateDecimals(const QModelIndex &idx = QModelIndex());
+
 private:
     void updateChildren(PropertyItem* item, int column, const QModelIndex& parent);
 

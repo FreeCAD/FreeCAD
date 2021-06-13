@@ -305,6 +305,7 @@ end:
     QString userUnitStr;
     double userScale;
     bool ignoreSizeHint;
+    int decimals = -1;
 };
 }
 
@@ -549,7 +550,15 @@ void QuantitySpinBox::updateText(const Quantity &quant)
     Q_D(QuantitySpinBox);
 
     double dFactor;
-    QString txt = getUserString(quant, dFactor, d->unitStr);
+    QString txt;
+    if (d->decimals >=0 ) {
+        auto f = quant.getFormat();
+        f.precision = d->decimals;
+        Quantity q(quant);
+        q.setFormat(f);
+        txt = getUserString(q, dFactor, d->unitStr);
+    } else
+        txt = getUserString(quant, dFactor, d->unitStr);
     d->unitValue = quant.getValue()/dFactor;
     lineEdit()->setText(txt);
     handlePendingEmit();
@@ -779,15 +788,15 @@ void QuantitySpinBox::setRange(double minimum, double maximum)
 int QuantitySpinBox::decimals() const
 {
     Q_D(const QuantitySpinBox);
+    if (d->decimals >= 0)
+        return d->decimals;
     return d->quantity.getFormat().precision;
 }
 
 void QuantitySpinBox::setDecimals(int v)
 {
     Q_D(QuantitySpinBox);
-    Base::QuantityFormat f = d->quantity.getFormat();
-    f.precision = v;
-    d->quantity.setFormat(f);
+    d->decimals = v;
     updateText(d->quantity);
 }
 

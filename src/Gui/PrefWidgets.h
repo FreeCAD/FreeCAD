@@ -24,6 +24,7 @@
 #ifndef GUI_PREFWIDGETS_H
 #define GUI_PREFWIDGETS_H
 
+#include <QVector>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QRadioButton>
@@ -57,15 +58,52 @@ class WidgetFactoryInst;
 class GuiExport PrefWidget : public WindowParameter
 {
 public:
-  void setEntryName( const QByteArray& name );
+  virtual void setEntryName( const QByteArray& name );
   QByteArray entryName() const;
 
-  void setParamGrpPath( const QByteArray& path );
+  virtual void setParamGrpPath( const QByteArray& path );
   QByteArray paramGrpPath() const;
 
   virtual void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
   void onSave();
   void onRestore();
+
+  enum EntryType {
+      EntryBool,
+      EntryInt,
+      EntryDouble,
+      EntryString,
+  };
+  struct SubEntry {
+      QByteArray name;
+      QString displayName;
+      EntryType type;
+      QVariant defvalue;
+  };
+  void setSubEntries(QObject *base, const QVector<SubEntry> &entires);
+
+  enum EntryFlag {
+    EntryDecimals = 1,
+    EntryMinimum = 2,
+    EntryMaximum = 4,
+    EntryStep = 8,
+    EntryAll = EntryDecimals|EntryMinimum|EntryMaximum|EntryStep,
+  };
+  void setupSubEntries(QObject *base, int entires = EntryDecimals|EntryStep);
+
+  typedef std::function<bool(const QByteArray &, QVariant &)>  SubEntryValidate;
+  void setSubEntryValidate(const SubEntryValidate &);
+
+  const QVector<SubEntry> & subEntries() const;
+
+  static QVariant getSubEntryValue(const QByteArray &entryName,
+                                   const QByteArray &name,
+                                   EntryType type,
+                                   const QVariant &defvalue);
+  static void resetSubEntries();
+
+  void restoreSubEntries();
+  void saveSubEntries();
 
 protected:
   /** Restores the preferences
@@ -83,12 +121,23 @@ protected:
    */
   void failedToRestore(const QString&) const;
 
+  void buildContextMenu(QMenu *menu);
+
+  bool restoreSubEntry(const SubEntry &, const char *change = nullptr);
+
+  QByteArray entryPrefix();
+  ParameterGrp::handle getEntryParameter();
+
   PrefWidget();
   virtual ~PrefWidget();
 
 private:
+  QObject *m_Base = nullptr;
   QByteArray m_sPrefName;
   QByteArray m_sPrefGrp;
+  QVector<SubEntry> m_SubEntries;
+  SubEntryValidate m_Validate;
+  ParameterGrp::handle m_EntryHandle;
 
   // friends
   friend class Gui::WidgetFactoryInst;
@@ -97,8 +146,10 @@ private:
 /** The PrefSpinBox class.
  * \author Werner Mayer
  */
-class GuiExport PrefSpinBox : public QSpinBox, public PrefWidget
+class GuiExport PrefSpinBox : public IntSpinBox, public PrefWidget
 {
+  typedef IntSpinBox inherited;
+
   Q_OBJECT
 
   Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
@@ -108,17 +159,22 @@ public:
   PrefSpinBox ( QWidget * parent = 0 );
   virtual ~PrefSpinBox();
 
+  virtual void setEntryName( const QByteArray& name );
+
 protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+  void contextMenuEvent(QContextMenuEvent *event);
 };
 
 /** The PrefDoubleSpinBox class.
  * \author Werner Mayer
  */
-class GuiExport PrefDoubleSpinBox : public QDoubleSpinBox, public PrefWidget
+class GuiExport PrefDoubleSpinBox : public DoubleSpinBox, public PrefWidget
 {
+  typedef DoubleSpinBox inherited;
+
   Q_OBJECT
 
   Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
@@ -128,10 +184,13 @@ public:
   PrefDoubleSpinBox ( QWidget * parent = 0 );
   virtual ~PrefDoubleSpinBox();
 
+  virtual void setEntryName( const QByteArray& name );
+
 protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+  void contextMenuEvent(QContextMenuEvent *event);
 };
 
 /**
@@ -297,10 +356,13 @@ public:
     PrefUnitSpinBox ( QWidget * parent = 0 );
     virtual ~PrefUnitSpinBox();
 
+    virtual void setEntryName( const QByteArray& name );
+
 protected:
     // restore from/save to parameters
     void restorePreferences();
     void savePreferences();
+    void contextMenuEvent(QContextMenuEvent *event);
 };
 
 class PrefQuantitySpinBoxPrivate;
@@ -309,11 +371,10 @@ class PrefQuantitySpinBoxPrivate;
  * The PrefQuantitySpinBox class.
  * \author Werner Mayer
  */
-class GuiExport PrefQuantitySpinBox : public QuantitySpinBox
+class GuiExport PrefQuantitySpinBox : public PrefUnitSpinBox
 {
     Q_OBJECT
 
-    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath)
     Q_PROPERTY(int historySize READ historySize WRITE setHistorySize)
 
 public:
@@ -326,25 +387,21 @@ public:
     int historySize() const;
     /// set the value of the history size property
     void setHistorySize(int);
-    /// Convenience method as offered by PrefWidget. Does the same as pushToHistory().
-    void onSave();
-    /// Convenience method as offered by PrefWidget. Does the same as setToLastUsedValue().
-    void onRestore();
 
     /** @name history and default management */
     //@{
-    /// the param group path where the widget writes and reads the default values
-    QByteArray paramGrpPath() const;
-    /// set the param group path where the widget writes and reads the default values
-    void  setParamGrpPath(const QByteArray& name);
     /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToHistory();
     /// get the history of the field, newest first
     QStringList getHistory() const;
     //@}
 
+    virtual void setParamGrpPath( const QByteArray& path );
+
 protected:
     virtual void contextMenuEvent(QContextMenuEvent * event);
+    void restorePreferences();
+    void savePreferences();
 
 private:
     QScopedPointer<PrefQuantitySpinBoxPrivate> d_ptr;

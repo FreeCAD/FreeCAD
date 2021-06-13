@@ -97,6 +97,11 @@ DlgSettingsUnitsImp::~DlgSettingsUnitsImp()
     delete ui;
 }
 
+void DlgSettingsUnitsImp::on_resetUserDecimals_pressed()
+{
+    PrefWidget::resetSubEntries();
+}
+
 void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
 {
     if (index < 0)

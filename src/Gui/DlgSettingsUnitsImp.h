@@ -51,6 +51,7 @@ protected:
 
 public Q_SLOTS:
     void on_comboBox_ViewSystem_currentIndexChanged(int index);
+    void on_resetUserDecimals_pressed();
 
 private:
     Ui_DlgSettingsUnits* ui;
