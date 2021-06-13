@@ -123,15 +123,21 @@ class ToDo:
 
         The lists are `itinerary`, `commitlist` and `afteritinerary`.
         """
+        # Work on local versions on the list, so any new items added
+        # during processing will be added to new lists to be processed
+        # later.
+        itinerary, commitlist, afteritinerary = ToDo.itinerary, ToDo.commitlist, ToDo.afteritinerary
+        todo.itinerary, todo.commitlist, todo.afteritinerary = [], [], []
+
         if _DEBUG:
             _msg("Debug: doing delayed tasks.\n"
                  "itinerary: {0}\n"
                  "commitlist: {1}\n"
-                 "afteritinerary: {2}\n".format(todo.itinerary,
-                                                todo.commitlist,
-                                                todo.afteritinerary))
+                 "afteritinerary: {2}\n".format(itinerary,
+                                                commitlist,
+                                                afteritinerary))
         try:
-            for f, arg in ToDo.itinerary:
+            for f, arg in itinerary:
                 try:
                     if _DEBUG_inner:
                         _msg("Debug: executing.\n"
@@ -150,10 +156,9 @@ class ToDo:
         except ReferenceError:
             _wrn("Debug: ToDo.doTasks: "
                  "queue contains a deleted object, skipping")
-        ToDo.itinerary = []
 
-        if ToDo.commitlist:
-            for name, func in ToDo.commitlist:
+        if commitlist:
+            for name, func in commitlist:
                 if six.PY2:
                     if isinstance(name, six.text_type):
                         name = name.encode("utf8")
@@ -179,9 +184,8 @@ class ToDo:
             # Restack Draft screen widgets after creation
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.restack()
-        ToDo.commitlist = []
 
-        for f, arg in ToDo.afteritinerary:
+        for f, arg in afteritinerary:
             try:
                 if _DEBUG_inner:
                     _msg("Debug: executing after.\n"
@@ -197,8 +201,12 @@ class ToDo:
                        "{0}\n"
                        "in {1}({2})".format(sys.exc_info()[0], f, arg))
                 _wrn(wrn)
-        ToDo.afteritinerary = []
-        ToDo.timerpending = False
+
+        if ToDo.itinerary or ToDo.commitlist or ToDo.afteritinerary:
+            # New items were queued while processing, run again later
+            QtCore.QTimer.singleShot(0, ToDo.doTasks)
+        else:
+            ToDo.timerpending = False
 
     @staticmethod
     def delay(f, arg):
