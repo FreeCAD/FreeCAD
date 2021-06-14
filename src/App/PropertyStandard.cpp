@@ -332,18 +332,22 @@ PropertyEnumeration::~PropertyEnumeration()
 
 void PropertyEnumeration::setEnums(const char **plEnums)
 {
-    // Setting the enum is done only once inside the constructor
-    // but before the current index is already set. So, this needs
-    // to be preserved.
-    int index = _enum._index;
+    // For backward compatibility, if the property container is not attached to
+    // any document (i.e. its full name starts with '?'), do not notify, or
+    // else existing code may crash.
+    bool notify = !boost::starts_with(getFullName(), "?");
+    if (notify)
+        aboutToSetValue();
     _enum.setEnums(plEnums);
-    // Make sure not to set an index out of range
-    int max = _enum.maxValue();
-    _enum._index = std::min<int>(index, max);
+    if (notify)
+        hasSetValue();
 }
 
 void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
 {
+    // _enum.setEnums() will preserve old value possible, so no need to do it
+    // here
+#if 0
     if (_enum.isValid()) {
         const std::string &index = getValueAsString();
         _enum.setEnums(Enums);
@@ -351,6 +355,9 @@ void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
     } else {
         _enum.setEnums(Enums);
     }
+#else
+    setEnumVector(Enums);
+#endif
 }
 
 void PropertyEnumeration::setValue(const char *value)
@@ -408,7 +415,15 @@ std::vector<std::string> PropertyEnumeration::getEnumVector(void) const
 
 void PropertyEnumeration::setEnumVector(const std::vector<std::string> &values)
 {
+    // For backward compatibility, if the property container is not attached to
+    // any document (i.e. its full name starts with '?'), do not notify, or
+    // else existing code may crash.
+    bool notify = !boost::starts_with(getFullName(), "?");
+    if (notify)
+        aboutToSetValue();
     _enum.setEnums(values);
+    if (notify)
+        hasSetValue();
 }
 
 const char ** PropertyEnumeration::getEnums(void) const
@@ -452,6 +467,8 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
     // get the value of my Attribute
     long val = reader.getAttributeAsInteger("value");
 
+    aboutToSetValue();
+
     if (reader.hasAttribute("CustomEnum")) {
         reader.readElement("CustomEnumList");
         int count = reader.getAttributeAsInteger("count");
@@ -474,7 +491,8 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
         val = getValue();
     }
 
-    setValue(val);
+    _enum.setValue(val);
+    hasSetValue();
 }
 
 PyObject * PropertyEnumeration::getPyObject(void)
