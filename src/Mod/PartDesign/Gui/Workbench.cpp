@@ -439,7 +439,7 @@ void Workbench::activated()
         "PartDesign_MultiTransform",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT PartDesign::Feature",
+        "SELECT PartDesign::Feature COUNT 1..",
         Transformed,
         "Transformation tools",
         "PartDesign_MultiTransform"

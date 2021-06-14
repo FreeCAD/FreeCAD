@@ -2005,6 +2005,44 @@ bool CmdPartDesignThickness::isActive(void)
 // Common functions for all Transformed features
 //===========================================================================
 
+static void setOrigins(App::DocumentObject *feat,
+                       const std::vector<App::DocumentObject*> &features,
+                       std::vector<App::SubObjectT> &subfeatures,
+                       bool all)
+{
+    std::vector<App::DocumentObject *> origins;
+    for (auto obj : features) {
+        if (std::find(origins.begin(), origins.end(), obj) != origins.end())
+            continue;
+        origins.push_back(obj);
+    }
+    for (auto it=subfeatures.begin(); it!=subfeatures.end();) {
+        auto obj = it->getObject();
+        if (!obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+            ++it;
+            continue;
+        }
+        if (all || subfeatures.size() > 1 || origins.empty()) {
+            if (std::find(origins.begin(), origins.end(), obj) == origins.end())
+                origins.push_back(obj);
+            if (subfeatures.size() > 1) {
+                it = subfeatures.erase(it);
+                continue;
+            }
+        }
+        ++it;
+    }
+
+    if (origins.empty())
+        return;
+    std::stringstream ss;
+    ss << feat->getFullName(true) << ".Originals = [";
+    for (auto obj : origins)
+        ss << obj->getFullName(true) << ", ";
+    ss << "]";
+    Gui::Command::doCommand(Gui::Command::Doc, ss.str().c_str());
+}
+
 template<class F>
 void prepareTransformed(PartDesign::Body *pcActiveBody,
                         Gui::Command* cmd,
@@ -2012,37 +2050,10 @@ void prepareTransformed(PartDesign::Body *pcActiveBody,
 {
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
-    auto worker = [=](const std::vector<App::DocumentObject*> & features) {
-        std::stringstream str;
-        str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
-        for (auto obj : features) {
-            str << cmd->getObjectCmd(obj) << ",";
-        }
-        str << "]";
-
-        std::string msg("Make ");
-        msg += which;
-        Gui::Command::openCommand(msg.c_str());
-        Gui::cmdAppObject(pcActiveBody, std::ostringstream()
-                << "newObjectAt('PartDesign::" << which << "','" << FeatName << "', "
-                            <<  "FreeCADGui.Selection.getSelection())");
-#if 0
-        // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
-        // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
-        Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
-#endif
-        Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
-
-        auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-        if (Feat) {
-            func(Feat, features);
-            Gui::Command::updateActive();
-        }
-    };
-
     PartDesign::Body* activeBody = PartDesignGui::getBody(true);
 
     std::vector<App::DocumentObject*> features;
+    std::vector<App::SubObjectT> subfeatures;
 
     // We now allow no selection for transformed feature, in which case the tip
     // will be used for transformation.
@@ -2050,16 +2061,30 @@ void prepareTransformed(PartDesign::Body *pcActiveBody,
         auto obj = sel.getObject();
         if (!obj)
             continue;
-        if (!obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
-                || activeBody != PartDesign::Body::findBodyOf(obj))
-        {
+        if (activeBody != PartDesign::Body::findBodyOf(obj)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
-                QObject::tr("Please select only feature(s) in the active body."));
+                QObject::tr("Please select only feature(s) in the active body.\n"
+                            "Or use SubShapeBinder to import it into the body"));
             return;
         }
-        features.push_back(obj);
+        if (!obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) || sel.getSubName().size())
+            subfeatures.push_back(sel);
+        else
+            features.push_back(obj);
     }
-    worker(features);
+
+    std::string msg("Make ");
+    msg += which;
+    Gui::Command::openCommand(msg.c_str());
+    Gui::cmdAppObject(pcActiveBody, std::ostringstream()
+            << "newObjectAt('PartDesign::" << which << "','" << FeatName << "', "
+                        <<  "FreeCADGui.Selection.getSelection())");
+
+    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    if (Feat) {
+        func(Feat, features, subfeatures);
+        Gui::Command::updateActive();
+    }
 }
 
 void finishTransformed(Gui::Command* cmd, App::DocumentObject *Feat)
@@ -2102,10 +2127,17 @@ void CmdPartDesignMirrored::activated(int iMsg)
 
     Gui::Command* cmd = this;
     auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
-                                      const std::vector<App::DocumentObject*> &features)
+                                      const std::vector<App::DocumentObject*> &features,
+                                      std::vector<App::SubObjectT> &subfeatures)
     {
+        setOrigins(Feat, features, subfeatures, false);
         bool direction = false;
-        if (features.size()
+        if (subfeatures.size()) {
+            Gui::cmdAppObject(Feat, std::ostringstream()
+                    <<"MirrorPlane = " << subfeatures[0].getSubObjectPython());
+            direction = true;
+        }
+        else if (features.size()
                 && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId()))
         {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
@@ -2162,10 +2194,17 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 
     Gui::Command* cmd = this;
     auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
-                                      const std::vector<App::DocumentObject*> &features)
+                                      const std::vector<App::DocumentObject*> &features,
+                                      std::vector<App::SubObjectT> &subfeatures)
     {
+        setOrigins(Feat, features, subfeatures, false);
         bool direction = false;
-        if (features.size()
+        if (subfeatures.size()) {
+            Gui::cmdAppObject(Feat, std::ostringstream()
+                    <<"Direction = " << subfeatures[0].getSubObjectPython());
+            direction = true;
+        }
+        else if (features.size()
                 && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId()))
         {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
@@ -2225,9 +2264,10 @@ void CmdPartDesignGenericPattern::activated(int iMsg)
 
     Gui::Command* cmd = this;
     auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
-                                      const std::vector<App::DocumentObject*> &features)
+                                      const std::vector<App::DocumentObject*> &features,
+                                      std::vector<App::SubObjectT> &subfeatures)
     {
-        (void)features;
+        setOrigins(Feat, features, subfeatures, false);
         finishTransformed(cmd, Feat);
     };
 
@@ -2271,10 +2311,17 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
 
     Gui::Command* cmd = this;
     auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
-                                      const std::vector<App::DocumentObject*> &features)
+                                      const std::vector<App::DocumentObject*> &features,
+                                      std::vector<App::SubObjectT> &subfeatures)
     {
+        setOrigins(Feat, features, subfeatures, false);
         bool direction = false;
-        if (features.size()
+        if (subfeatures.size()) {
+            Gui::cmdAppObject(Feat, std::ostringstream()
+                    <<"Axis = " << subfeatures[0].getSubObjectPython());
+            direction = true;
+        }
+        else if (features.size()
                 && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
@@ -2331,10 +2378,10 @@ void CmdPartDesignScaled::activated(int iMsg)
 
     Gui::Command* cmd = this;
     auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
-                                      const std::vector<App::DocumentObject*> &features)
+                                      const std::vector<App::DocumentObject*> &features,
+                                      std::vector<App::SubObjectT> &subfeatures)
     {
-        if (!Feat || features.empty())
-            return;
+        setOrigins(Feat, features, subfeatures, false);
 
         Gui::cmdAppObject(Feat, std::ostringstream() <<"Factor = 2");
         Gui::cmdAppObject(Feat, std::ostringstream() <<"Occurrences = 2");
@@ -2433,11 +2480,13 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     } else {
         Gui::Command* cmd = this;
         auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat,
-                                          const std::vector<App::DocumentObject*> & features)
+                                          const std::vector<App::DocumentObject*> & features,
+                                          std::vector<App::SubObjectT> &subfeatures)
         {
-            (void)features;
             if (!Feat)
                 return;
+
+            setOrigins(Feat, features, subfeatures, true);
 
             // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
             App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
