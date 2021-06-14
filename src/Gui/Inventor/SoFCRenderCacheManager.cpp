@@ -442,11 +442,15 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
   RenderCachePtr cache = new SoFCRenderCache(state, path->getHead());
   cache->open(state);
   PRIVATE(this)->stack.resize(1, cache);
-  if (ontop)
+  if (ontop) {
     SoFCSwitch::setOverrideSwitch(state, true);
+    SoFCSwitch::pushSwitchPath(path);
+  }
   PRIVATE(this)->action->apply(path);
-  if (ontop)
+  if (ontop) {
+    SoFCSwitch::popSwitchPath();
     SoFCSwitch::setOverrideSwitch(state, false);
+  }
   cache->close(state);
   PRIVATE(this)->stack.clear();
   if (!cache->isEmpty()) {
@@ -482,11 +486,15 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
   RenderCachePtr cache = new SoFCRenderCache(state, path->getHead());
   cache->open(state);
   self->stack.resize(1, cache);
-  if (sensor->ontop)
+  if (sensor->ontop) {
     SoFCSwitch::setOverrideSwitch(state, true);
+    SoFCSwitch::pushSwitchPath(path);
+  }
   self->action->apply(path);
-  if (sensor->ontop)
+  if (sensor->ontop) {
+    SoFCSwitch::popSwitchPath();
     SoFCSwitch::setOverrideSwitch(state, false);
+  }
   cache->close(state);
   self->stack.clear();
 
