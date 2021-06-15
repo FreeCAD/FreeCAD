@@ -68,7 +68,7 @@ def setup(doc=None, solvertype="ccxtools"):
         doc = init_doc()
 
     # geometric object
-    geom_obj = doc.addObject("Part::Box", "beam")
+    geom_obj = doc.addObject("Part::Box", "Beam")
     geom_obj.Length = 1
     geom_obj.Width = 1.5
     geom_obj.Height = 8
@@ -111,13 +111,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    # FIXME: wrong obj name, fix unit test as well
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "FemConstraintDisplacement")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     con_fixed.References = [(geom_obj, "Face5")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "FemConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     con_force.References = [(geom_obj, "Face6")]
     con_force.Force = 21
     con_force.Reversed = True
