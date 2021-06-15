@@ -49,7 +49,7 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {
+    return {
         "name": "Constraint Self Weight Cantilever",
         "meshtype": "solid",
         "meshelement": "Tet10",
@@ -58,22 +58,19 @@ def get_information():
         "material": "solid",
         "equation": "mechanical"
     }
-    return info
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup self weight cantilever base model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
-    # name is important because the other method in this module use obj name
+    # geometric object
     geom_obj = doc.addObject("Part::Box", "Box")
     geom_obj.Height = geom_obj.Width = 1000
     geom_obj.Length = 32000
     doc.recompute()
-
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
@@ -83,19 +80,13 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     elif solvertype == "elmer":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        )[0]
-        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_obj)
         eq_obj.LinearSolverType = "Direct"
     else:
         FreeCAD.Console.PrintWarning(
@@ -103,35 +94,33 @@ def setup(doc=None, solvertype="ccxtools"):
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
-    )[0]
-    mat = material_object.Material
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    mat = material_obj.Material
     mat["Name"] = "CalculiX-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Face1")]
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [(geom_obj, "Face1")]
+    analysis.addObject(con_fixed)
 
-    # selfweight_constraint
-    selfweight = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintSelfWeight(doc)
-    )[0]
-    selfweight.Gravity_z = -1.00
+    # constraint selfweight
+    con_selfweight = ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")
+    con_selfweight.Gravity_z = -1.00
+    analysis.addObject(con_selfweight)
 
     # mesh
     from .meshes.mesh_selfweight_cantilever_tetra10 import create_nodes, create_elements
@@ -142,9 +131,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, mesh_name))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

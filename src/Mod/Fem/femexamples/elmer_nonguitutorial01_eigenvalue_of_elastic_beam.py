@@ -57,18 +57,17 @@ def get_information():
 
 
 def setup(doc=None, solvertype="elmer"):
-    # setup model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # geometric object
     geom_obj = doc.addObject("Part::Box", "Box")
     geom_obj.Length = 1000
     geom_obj.Width = 200
     geom_obj.Height = 100
     doc.recompute()
-
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
@@ -78,19 +77,13 @@ def setup(doc=None, solvertype="elmer"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     elif solvertype == "elmer":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        )[0]
-        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_obj)
         eq_obj.LinearSolverType = "Direct"
         # direct solver was used in the tutorial, thus used here too
         # the iterative is much faster and gives the same results
@@ -102,39 +95,37 @@ def setup(doc=None, solvertype="elmer"):
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "frequency"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 5
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.01
+        solver_obj.AnalysisType = "frequency"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.EigenmodesCount = 5
+        solver_obj.EigenmodeHighLimit = 1000000.0
+        solver_obj.EigenmodeLowLimit = 0.01
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
-    )[0]
-    mat = material_object.Material
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
+    mat = material_obj.Material
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "100 GPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "2330 kg/m^3"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="FemConstraintFixed")
-    )[0]
-    fixed_constraint.References = [
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [
         (geom_obj, "Face1"),
         (geom_obj, "Face2")
     ]
+    analysis.addObject(con_fixed)
 
     # mesh
     from .meshes.mesh_eigenvalue_of_elastic_beam_tetra10 import create_nodes
     from .meshes.mesh_eigenvalue_of_elastic_beam_tetra10 import create_elements
-
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

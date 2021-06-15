@@ -33,31 +33,26 @@ import FreeCAD
 
 import Fem
 
-from . import ccx_cantilever_faceload as faceload
+from .ccx_cantilever_faceload import setup as setup_with_faceload
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
-
-
 def get_information():
-    info = {"name": "CCX cantilever hexa20 face load",
-            "meshtype": "solid",
-            "meshelement": "Hexa20",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix", "z88", "elmer"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "CCX cantilever hexa20 face load",
+        "meshtype": "solid",
+        "meshelement": "Hexa20",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix", "z88", "elmer"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    doc = faceload.setup(doc, solvertype)
+
+    doc = setup_with_faceload(doc, solvertype)
 
     # load the hexa20 mesh
     from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements

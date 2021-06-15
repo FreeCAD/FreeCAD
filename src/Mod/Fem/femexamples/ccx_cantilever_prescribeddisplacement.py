@@ -29,7 +29,7 @@ setup()
 
 """
 
-import FreeCAD
+# import FreeCAD
 
 import ObjectsFem
 
@@ -38,22 +38,16 @@ from .ccx_cantilever_faceload import setup_cantileverbase
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
-
-
 def get_information():
-    info = {"name": "CCX cantilever prescibed displacement",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "displacement"],
-            "solvers": ["calculix", "elmer"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "CCX cantilever prescibed displacement",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "displacement"],
+        "solvers": ["calculix", "elmer"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -66,15 +60,16 @@ def setup(doc=None, solvertype="ccxtools"):
         solvertype = "z88_not_valid"
 
     doc = setup_cantileverbase(doc, solvertype)
+    analysis = doc.Analysis
+    geom_obj = doc.Box
 
-    # displacement_constraint
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    )[0]
-    displacement_constraint.References = [(doc.Box, "Face2")]
-    displacement_constraint.zFix = False
-    displacement_constraint.zFree = False
-    displacement_constraint.zDisplacement = -250.0
+    # constraint displacement
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
+    con_disp.References = [(geom_obj, "Face2")]
+    con_disp.zFix = False
+    con_disp.zFree = False
+    con_disp.zDisplacement = -250.0
+    analysis.addObject(con_disp)
 
     doc.recompute()
     return doc

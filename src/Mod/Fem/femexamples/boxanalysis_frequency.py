@@ -29,7 +29,7 @@ setup()
 
 """
 
-import FreeCAD
+# import FreeCAD
 
 import ObjectsFem
 
@@ -38,49 +38,40 @@ from .boxanalysis_static import setup_base
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
-
-
 def get_information():
-    info = {"name": "Box Analysis Frequency",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": [],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "frequency"
-            }
-    return info
+    return {
+        "name": "Box Analysis Frequency",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": [],
+        "solvers": ["calculix"],
+        "material": "solid",
+        "equation": "frequency"
+    }
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup box frequency, change solver attributes
 
+    # setup box frequency, change solver attributes
     doc = setup_base(doc, solvertype)
     analysis = doc.Analysis
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "frequency"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 10
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.01
+        solver_obj.AnalysisType = "frequency"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.EigenmodesCount = 10
+        solver_obj.EigenmodeHighLimit = 1000000.0
+        solver_obj.EigenmodeLowLimit = 0.01
+    analysis.addObject(solver_obj)
 
     doc.recompute()
     return doc

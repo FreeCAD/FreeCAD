@@ -29,7 +29,7 @@ setup()
 
 """
 
-import FreeCAD
+# import FreeCAD
 
 import ObjectsFem
 
@@ -38,43 +38,37 @@ from .ccx_cantilever_faceload import setup_cantileverbase
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
-
-
 def get_information():
-    info = {"name": "CCX cantilever node load",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix", "z88", "elmer"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "CCX cantilever node load",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix", "z88", "elmer"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
 
 
 def setup(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
 
     doc = setup_cantileverbase(doc, solvertype)
+    analysis = doc.Analysis
+    geom_obj = doc.Box
 
-    # force_constraint
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    # should be possible in one tuple too
-    force_constraint.References = [
-        (doc.Box, "Vertex5"),
-        (doc.Box, "Vertex6"),
-        (doc.Box, "Vertex7"),
-        (doc.Box, "Vertex8")
+    # constraint force
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force.References = [
+        (geom_obj, "Vertex5"),
+        (geom_obj, "Vertex6"),
+        (geom_obj, "Vertex7"),
+        (geom_obj, "Vertex8")
     ]
-    force_constraint.Force = 9000000.0
-    force_constraint.Direction = (doc.Box, ["Edge5"])
-    force_constraint.Reversed = True
+    con_force.Force = 9000000.0
+    con_force.Direction = (doc.Box, ["Edge5"])
+    con_force.Reversed = True
+    analysis.addObject(con_force)
 
     doc.recompute()
     return doc

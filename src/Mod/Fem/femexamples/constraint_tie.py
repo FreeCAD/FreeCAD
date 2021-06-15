@@ -50,24 +50,24 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Constraint Tie",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "force", "tie"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Constraint Tie",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "force", "tie"],
+        "solvers": ["calculix"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry objects
+    # geometric objects
     # cones cut
     cone_outer_sh = Part.makeCone(1100, 1235, 1005, Vector(0, 0, 0), Vector(0, 0, 1), 359)
     cone_inner_sh = Part.makeCone(1050, 1185, 1005, Vector(0, 0, 0), Vector(0, 0, 1), 359)
@@ -83,7 +83,7 @@ def setup(doc=None, solvertype="ccxtools"):
     line_force_obj = doc.addObject("Part::Feature", "Line_Force")
     line_force_obj.Shape = line_force_sh
 
-    geom_obj = SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+    geom_obj = SplitFeatures.makeBooleanFragments(name="BooleanFragments")
     geom_obj.Objects = [cone_cut_obj, line_fix_obj, line_force_obj]
     if FreeCAD.GuiUp:
         cone_cut_obj.ViewObject.hide()
@@ -100,31 +100,26 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+    analysis.addObject(solver_obj)
 
     # material
-    material_obj = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
-    )[0]
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
     mat = material_obj.Material
     mat["Name"] = "Calculix-Steel"
     mat["YoungsModulus"] = "210000 MPa"
@@ -133,29 +128,26 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    )[0]
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     con_fixed.References = [(geom_obj, "Edge1")]
+    analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     con_force.References = [(geom_obj, "Edge2")]
     con_force.Force = 10000.0  # 10000 N = 10 kN
     con_force.Direction = (geom_obj, ["Edge2"])
     con_force.Reversed = False
+    analysis.addObject(con_force)
 
     # constraint tie
-    con_tie = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintTie(doc, name="ConstraintTie")
-    )[0]
+    con_tie = ObjectsFem.makeConstraintTie(doc, "ConstraintTie")
     con_tie.References = [
         (geom_obj, "Face5"),
         (geom_obj, "Face7"),
     ]
     con_tie.Tolerance = 25.0
+    analysis.addObject(con_tie)
 
     # mesh
     from .meshes.mesh_constraint_tie_tetra10 import create_nodes, create_elements
@@ -166,9 +158,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, mesh_name))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

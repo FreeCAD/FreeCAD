@@ -26,7 +26,6 @@
 """
 from femexamples.material_nl_platewithhole import setup
 setup()
-
 """
 
 # Nonlinear material example, plate with hole.
@@ -63,24 +62,24 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Material NL Plate with Hole",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix"],
-            "material": "multimaterial",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Material NL Plate with Hole",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix"],
+        "material": "multimaterial",
+        "equation": "mechanical"
+    }
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry objects
+    # geometric object
     v1 = vec(-200, -100, 0)
     v2 = vec(200, -100, 0)
     v3 = vec(200, 100, 0)
@@ -105,61 +104,55 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver.SplitInputWriter = False
-        solver.AnalysisType = "static"
-        solver.GeometricalNonlinearity = "linear"
-        solver.ThermoMechSteadyState = False
-        solver.MatrixSolverType = "default"
-        solver.IterationsControlParameterTimeUse = False
-        solver.GeometricalNonlinearity = 'nonlinear'
-        solver.MaterialNonlinearity = 'nonlinear'
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.GeometricalNonlinearity = 'nonlinear'
+        solver_obj.MaterialNonlinearity = 'nonlinear'
+    analysis.addObject(solver_obj)
 
     # linear material
-    matprop = {}
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "Material_lin")
+    matprop = material_obj.Material
     matprop["Name"] = "CalculiX-Steel"
     matprop["YoungsModulus"] = "210000 MPa"
     matprop["PoissonRatio"] = "0.30"
     matprop["Density"] = "7900 kg/m^3"
-    material = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "Material_lin")
-    )[0]
-    material.Material = matprop
+    material_obj.Material = matprop
+    analysis.addObject(material_obj)
 
     # nonlinear material
-    nonlinear_material = analysis.addObject(
-        ObjectsFem.makeMaterialMechanicalNonlinear(doc, material, "Material_nonlin")
-    )[0]
-    nonlinear_material.YieldPoint1 = '240.0, 0.0'
-    nonlinear_material.YieldPoint2 = '270.0, 0.025'
+    name_nlm = "Material_nonlin"
+    nonlinear_mat = ObjectsFem.makeMaterialMechanicalNonlinear(doc, material_obj, name_nlm)
+    nonlinear_mat.YieldPoint1 = '240.0, 0.0'
+    nonlinear_mat.YieldPoint2 = '270.0, 0.025'
+    analysis.addObject(nonlinear_mat)
     # check solver attributes, Nonlinearity needs to be set to nonlinear
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Face4")]
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [(geom_obj, "Face4")]
+    analysis.addObject(con_fixed)
 
-    # force constraint
-    pressure_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
-    )[0]
-    pressure_constraint.References = [(geom_obj, "Face2")]
-    pressure_constraint.Pressure = 130.0
-    pressure_constraint.Reversed = True
+    # pressure constraint
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_pressure.References = [(geom_obj, "Face2")]
+    con_pressure.Pressure = 130.0
+    con_pressure.Reversed = True
+    analysis.addObject(con_pressure)
 
     # mesh
     from .meshes.mesh_platewithhole_tetra10 import create_nodes, create_elements
@@ -170,9 +163,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, mesh_name))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
