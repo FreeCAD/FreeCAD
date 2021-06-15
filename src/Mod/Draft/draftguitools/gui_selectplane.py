@@ -137,7 +137,7 @@ class Draft_SelectPlane:
                 self.display(FreeCAD.DraftWorkingPlane.axis)
             return None
 
-        # Execute the actual task panel delayed to catch posible active Draft command
+        # Execute the actual task panel delayed to catch possible active Draft command
         todo.delay(FreeCADGui.Control.showDialog, self.taskd)
         _msg(translate(
                 "draft",

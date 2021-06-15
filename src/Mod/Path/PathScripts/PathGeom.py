@@ -582,7 +582,7 @@ def combineHorizontalFaces(faces):
     topFace = None
     innerFaces = list()
 
-    # Verify all incomming faces are at Z=0.0
+    # Verify all incoming faces are at Z=0.0
     for f in faces:
         if f.BoundBox.ZMin != 0.0:
             f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))

@@ -102,7 +102,7 @@ def extendWire(feature, wire, length):
         off2D = wire.makeOffset2D(length)
     except FreeCAD.Base.FreeCADError as ee:
         return None
-    endPts = endPoints(wire)  # Asumes wire is NOT closed
+    endPts = endPoints(wire)  # Assumes wire is NOT closed
     if endPts:
         edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
         wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
@@ -245,7 +245,7 @@ class Extension(object):
     def getExtensionFaces(self, extensionWire):
         '''getExtensionFace(extensionWire)...
         A public helper method to retrieve the requested extension as a face,
-        rather than a wire becuase some extensions require a face shape
+        rather than a wire because some extensions require a face shape
         for definition that allows for two wires for boundary definition.
         '''
 
@@ -471,7 +471,7 @@ class Extension(object):
 
 
 def initialize_properties(obj):
-    """initialize_properties(obj)... Adds feature propeties to object argument"""
+    """initialize_properties(obj)... Adds feature properties to object argument"""
     if not hasattr(obj, 'ExtensionLengthDefault'):
         obj.addProperty('App::PropertyDistance', 'ExtensionLengthDefault', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Default length of extensions.'))
     if not hasattr(obj, 'ExtensionFeature'):
