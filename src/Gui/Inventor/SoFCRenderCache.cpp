@@ -1257,25 +1257,24 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
       material.order = order;
       material.depthfunc = SoDepthBuffer::LEQUAL;
 
-      if (color & ~0xff) {
+      if (color) {
         if (order <= 0 && detail)
             material.polygonoffsetstyle = 0;
         if (material.type != Material::Triangle)
           material.lightmodel = SoLazyElement::BASE_COLOR;
         if (material.lightmodel != SoLazyElement::BASE_COLOR && detail) {
           material.emissive = color | 0xff;
-          makeDistinctColor(material.emissive, color|0xff, material.diffuse);
+          makeDistinctColor(material.emissive, material.emissive, material.diffuse);
         } 
         uint32_t c = material.diffuse;
-        material.diffuse = (color & ~0xff) | (material.diffuse & 0xff);
+        material.diffuse = color | (material.diffuse & 0xff);
         makeDistinctColor(material.diffuse, material.diffuse, c);
-        if (!detail)
-          material.pervertexcolor = false;
+        material.pervertexcolor = false;
       }
 
-      if ((color & ~0xff) && (material.selectstyle == Material::Box
-                              || (ViewParams::getShowSelectionBoundingBox()
-                                  && (!detail || !preselect))))
+      if (color && (material.selectstyle == Material::Box
+                    || (ViewParams::getShowSelectionBoundingBox()
+                        && (!detail || !preselect))))
       {
         if (!bboxinited) {
           bboxinited = true;
@@ -1456,8 +1455,12 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
             }
           }
         }
-        if ((color & ~0xff) && newentry.partidx >= 0) {
+        if (color && newentry.partidx >= 0) {
           uint32_t col = newentry.cache->getFaceColor(newentry.partidx);
+          if ((col & 0xff) != 0xff && alpha == 0xff) {
+            uint32_t a = static_cast<uint32_t>(ViewParams::getSelectionTransparency() * 255);
+            material.diffuse = (material.diffuse & ~0xff) | std::max(a, col&0xff);
+          }
           makeDistinctColor(material.diffuse, material.diffuse, col);
           if (material.lightmodel != SoLazyElement::BASE_COLOR)
             material.emissive = material.diffuse | 0xff;
