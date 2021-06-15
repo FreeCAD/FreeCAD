@@ -2955,6 +2955,8 @@ bool CDxfRead::ReadInsert()
                 // scale z
                 get_line();
                 ss.str(m_str); ss >> s[2]; if(ss.fail()) return false;
+                if (std::abs(s[2]) < 1e-7)
+                    s[2] = 1.0;
                 break;
             case 50:
                 // rotation

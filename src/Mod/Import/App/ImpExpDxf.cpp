@@ -274,17 +274,19 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
 }
 
 
-void ImpExpDxfRead::OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double /*start_angle*/, double /*end_angle*/, bool dir)
+void ImpExpDxfRead::OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir)
 {
     gp_Dir up(0, 0, 1);
     if(!dir)
         up = -up;
     gp_Pnt pc = makePoint(c);
     gp_Elips ellipse(gp_Ax2(pc, up), major_radius * optionScaling, minor_radius * optionScaling);
-    ellipse.Rotate(gp_Ax1(pc,up),rotation);
     if (ellipse.MinorRadius() > 0) {
-        BRepBuilderAPI_MakeEdge makeEdge(ellipse);
+        BRepBuilderAPI_MakeEdge makeEdge(ellipse, start_angle, end_angle);
         TopoDS_Edge edge = makeEdge.Edge();
+        gp_Trsf trsf;
+        trsf.SetRotation(gp_Ax1(pc,up),rotation);
+        edge.Location(trsf);
         AddObject(new Part::TopoShape(edge));
     }
     else {
