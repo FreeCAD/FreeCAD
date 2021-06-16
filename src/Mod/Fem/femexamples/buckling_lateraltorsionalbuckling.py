@@ -28,9 +28,7 @@ setup()
 
 """
 
-# Forum discussion
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=110#p510526
-
+import json
 
 import FreeCAD
 import Fem
@@ -52,11 +50,39 @@ def get_information():
     }
 
 
+def get_explanation():
+    return """{name}
+
+{information}
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=110#p510526
+
+Simple supported I-beam with a fork support modelled with shell elements.
+Loaded with constant bending moment.
+The moment loads are done by line loads at the end of flanges.
+
+analytical solution:
+Mcr = 43.28 kNm = 43'280'000 Nmm
+
+flange load for a buckling factor of 1.00:
+43280000 Nmm / 278.6 mm = 155348 N
+
+""".format(name=get_information()["name"], information=json.dumps(get_information(), indent=4))
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    text_obj = doc.addObject("App::TextDocument", "Explanation_Report")
+    text_obj.Text = get_explanation()
+    text_obj.setPropertyStatus("Text", "ReadOnly")  # set property editor readonly
+    if FreeCAD.GuiUp:
+        text_obj.ViewObject.ReadOnly = True  # set editor view readonly
 
     # geometric objects
     bottom_flange = doc.addObject("Part::Plane", "Bottom_Flange")
@@ -142,14 +168,14 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraints force
     con_force_in_x = ObjectsFem.makeConstraintForce(doc, "Force_in_X")
     con_force_in_x.References = [(geom_obj, ("Edge3", "Edge7", "Edge8", "Edge12"))]
-    con_force_in_x.Force = 155350  # 43280000 Nmm / 278.6 mm
+    con_force_in_x.Force = 155350
     con_force_in_x.Reversed = False
     con_force_in_x.Direction = (geom_obj, ["Edge4"])
     analysis.addObject(con_force_in_x)
 
     con_force_rev_x = ObjectsFem.makeConstraintForce(doc, "Force_rev_X")
     con_force_rev_x.References = [(geom_obj, ("Edge1", "Edge5", "Edge10", "Edge14"))]
-    con_force_rev_x.Force = 155350  # 43280000 Nmm / 278.6 mm
+    con_force_rev_x.Force = 155350
     con_force_rev_x.Reversed = True
     con_force_rev_x.Direction = (geom_obj, ["Edge4"])
     analysis.addObject(con_force_rev_x)
