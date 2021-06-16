@@ -181,7 +181,7 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
 
     if (feature == nextSolid) {
         return true;
-    } else if (!nextSolid) { // the tip is last solid, we can't be plased after it
+    } else if (!nextSolid) { // the tip is last solid, we can't be placed after it
         return false;
     } else {
         return isAfter ( feature, nextSolid );
