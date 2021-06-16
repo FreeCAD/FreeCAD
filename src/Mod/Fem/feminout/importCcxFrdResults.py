@@ -165,15 +165,15 @@ def importFrd(
                         if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
                             has_reinforced_mat = True
                             Console.PrintLog(
-                                "Reinfoced material object detected, "
+                                "Reinforced material object detected, "
                                 "reinforced principal stresses and standard principal "
-                                " stresses will be added.\n"
+                                "stresses will be added.\n"
                             )
                             resulttools.add_principal_stress_reinforced(res_obj)
                             break
                     if has_reinforced_mat is False:
                         Console.PrintLog(
-                            "No einfoced material object detected, "
+                            "No reinforced material object detected, "
                             "standard principal stresses will be added.\n"
                         )
                         # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
