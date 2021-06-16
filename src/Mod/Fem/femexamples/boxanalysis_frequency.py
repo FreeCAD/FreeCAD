@@ -35,8 +35,6 @@ import ObjectsFem
 
 from .boxanalysis_static import setup_base
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
 
 def get_information():
     return {

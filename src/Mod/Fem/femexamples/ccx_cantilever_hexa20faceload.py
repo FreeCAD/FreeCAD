@@ -35,7 +35,7 @@ import Fem
 
 from .ccx_cantilever_faceload import setup as setup_with_faceload
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+from .manager import get_meshname
 
 
 def get_information():
@@ -53,19 +53,20 @@ def get_information():
 def setup(doc=None, solvertype="ccxtools"):
 
     doc = setup_with_faceload(doc, solvertype)
+    femmesh_obj = doc.getObject(get_meshname())
 
     # load the hexa20 mesh
     from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
+    new_fem_mesh = Fem.FemMesh()
+    control = create_nodes(new_fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
+    control = create_elements(new_fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
 
     # overwrite mesh with the hexa20 mesh
-    doc.getObject(mesh_name).FemMesh = fem_mesh
+    femmesh_obj.FemMesh = new_fem_mesh
 
     doc.recompute()
     return doc

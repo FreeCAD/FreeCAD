@@ -35,8 +35,6 @@ import ObjectsFem
 
 from .ccx_cantilever_faceload import setup_cantileverbase
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
 
 def get_information():
     return {

@@ -22,21 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-# run examples
-"""
-# all examples
-from femexamples.manager import *
-run_all()
+# this module was used before there was a examples gui
+# and before there where the unit tests
+# it is not really needed and maintained anymore
+# general method for the examples are saved here
+# see comment at run examples end to run examples
 
-
-# one special example
-from femexamples.manager import run_example as run
-
-doc = run("boxanalysis_static")
-doc = run("boxanalysis_frequency")
-
-...
-"""
 
 import FreeCAD
 
@@ -127,3 +118,31 @@ def run_all():
     run_example("thermomech_spine")
     run_example("boxanalysis_frequency")
     run_example("boxanalysis_frequency")
+
+
+"""
+# all examples
+from femexamples.manager import *
+run_all()
+
+
+# one special example
+from femexamples.manager import run_example as run
+
+doc = run("boxanalysis_static")
+doc = run("boxanalysis_frequency")
+
+"""
+
+
+# ************************************************************************************************
+# helper
+def init_doc(doc=None):
+    if doc is None:
+        doc = FreeCAD.newDocument()
+    return doc
+
+
+def get_meshname():
+    # needs to be "Mesh" to work with unit tests
+    return "Mesh"
