@@ -406,6 +406,8 @@ public:
     };
     SoSFEnum selectionStyle;
 
+    SoSFBool resetClipPlane;
+
     static bool renderBBox(SoGLRenderAction *action, SoNode *node,
             const SbColor &color, const SbMatrix *mat=0, bool force=false);
 

@@ -66,6 +66,7 @@ public:
     App::PropertyEnumeration SelectionStyle;
     App::PropertyBool Selectable;
     App::PropertyEnumeration ShadowStyle;
+    App::PropertyBool ResetClipPlane;
 
     virtual bool isSelectable(void) const override {return Selectable.getValue();}
 

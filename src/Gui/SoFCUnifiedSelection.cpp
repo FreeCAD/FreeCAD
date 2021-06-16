@@ -1835,6 +1835,7 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider *vp)
     :SoFCSeparator(trackCacheMode), viewProvider(vp)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
+    SO_NODE_ADD_FIELD(resetClipPlane,(FALSE));
     SO_NODE_ADD_FIELD(selectionStyle,(Full));
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Full);
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Box);
@@ -2239,6 +2240,16 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
             return false;
     }
 
+    if (resetClipPlane.getValue()) {
+        if (!pushed) {
+            pushed = true;
+            state->push();
+        }
+        auto element = static_cast<SoClipPlaneElement*>(
+                state->getElement(SoClipPlaneElement::getClassStackIndex()));
+        element->init(state);
+    }
+
     SelContextPtr ctx = getRenderContext<SelContext>(this);
 
     int style = selectionStyle.getValue();
@@ -2511,6 +2522,12 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
             return;
         if(action->isOfType(SoHighlightElementAction::getClassTypeId()))
             return;
+    }
+    if (resetClipPlane.getValue()) {
+        auto state = action->getState();
+        auto element = static_cast<SoClipPlaneElement*>(
+                state->getElement(SoClipPlaneElement::getClassStackIndex()));
+        element->init(state);
     }
     BEGIN_ACTION
     if(doActionPrivate(stack,action))

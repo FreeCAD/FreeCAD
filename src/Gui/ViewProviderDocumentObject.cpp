@@ -103,6 +103,9 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
             "Shadowed: Only receive shadow, but not cast any shadow.\n"
             "No shadowing: Neither cast nor receive any shadow.");
 
+    ADD_PROPERTY_TYPE(ResetClipPlane, (false), dogroup, App::Prop_None,
+            "Clear current clipping plans");
+
     ADD_PROPERTY_TYPE(Selectable, (true), sgroup, App::Prop_None, "Set if the object is selectable in the 3d view");
     Selectable.setValue(ViewParams::instance()->getEnableSelection());
 
@@ -252,6 +255,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             else {
                 getObject()->Visibility.setValue(Visibility.getValue());
             }
+        }
+    }
+    else if (prop == &ResetClipPlane) {
+        if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+            auto root = static_cast<SoFCSelectionRoot*>(getRoot());
+            root->resetClipPlane.setValue(ResetClipPlane.getValue());
         }
     }
     else if (prop == &SelectionStyle || prop == &Selectable) {

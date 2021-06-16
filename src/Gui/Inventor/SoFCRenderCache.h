@@ -246,6 +246,7 @@ public:
     bool culling;
     bool twoside;
     bool outline;
+    bool resetclip;
 
     TextureMatrixMap texturematrices;
     TextureMap textures;
@@ -418,7 +419,10 @@ public:
                                      uint32_t color,
                                      int flags = 0);
 
-  void open(SoState * state, int selectstyle = Material::Full, bool initmaterial = true);
+  void open(SoState * state,
+            int selectstyle = Material::Full,
+            bool resetclip = false,
+            bool initmaterial = true);
   void close(SoState * state);
 
   void beginChildCaching(SoState * state, SoFCRenderCache * cache);

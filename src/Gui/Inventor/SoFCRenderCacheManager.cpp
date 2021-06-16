@@ -897,7 +897,7 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
   if (currentcache)
     currentcache->beginChildCaching(state, cache);
   self->stack.push_back(cache);
-  cache->open(state, selectstyle, false);
+  cache->open(state, selectstyle, selroot->resetClipPlane.getValue(), false);
   return SoCallbackAction::CONTINUE;
 }
 

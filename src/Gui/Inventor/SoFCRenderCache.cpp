@@ -135,6 +135,7 @@ public:
   uint32_t hiddenlinecolor;
   float facetransp;
   bool resetmatrix;
+  bool resetclip = false;
 };
 
 template<class T>
@@ -223,6 +224,7 @@ getOverrideFlags(SoState * state)
 void
 SoFCRenderCache::Material::init(SoState * state)
 {
+  this->resetclip = false;
   this->depthtest = true;
   this->depthclamp = false;
   this->depthfunc = SoDepthBuffer::LEQUAL;
@@ -555,8 +557,12 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
       }
     }
   };
-  res.clippers = parent.clippers;
-  mergeNodeInfo(res.clippers, child.clippers);
+  if (child.resetclip)
+    res.resetclip = true;
+  else {
+    res.clippers = parent.clippers;
+    mergeNodeInfo(res.clippers, child.clippers);
+  }
 
   res.autozoom = parent.autozoom;
   auto childzoom = child.autozoom;
@@ -680,7 +686,7 @@ SoFCRenderCache::isValid(const SoState * state) const
 }
 
 void
-SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
+SoFCRenderCache::open(SoState *state, int selectstyle, bool resetclip, bool initmaterial)
 {
   SoCacheElement::set(state, this);
 
@@ -689,6 +695,7 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
   PRIVATE(this)->facetransp = -1.f;
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
   PRIVATE(this)->material.selectstyle = selectstyle;
+  PRIVATE(this)->material.resetclip = resetclip;
 
   SbBool outline = FALSE;
   if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state, &outline)) {
