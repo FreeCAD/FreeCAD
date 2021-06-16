@@ -61,6 +61,13 @@ class Proxy(solverbase.Proxy):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
         add_attributes(obj, ccx_prefs)
 
+    def onDocumentRestored(self, obj):
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        # since it is needed for the ccxtools solver too
+        # the method is implemented outside of the class
+        # thus we need to pass the prefs
+        on_restore_of_document(obj, ccx_prefs)
+
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
             solver=obj, directory=directory,
@@ -87,8 +94,52 @@ class ViewProxy(solverbase.ViewProxy):
     pass
 
 
-# helper add properties, this is outside of the class to be able
-# to use the attribute setter from framework solver and ccxtools solver
+# ************************************************************************************************
+# helper
+# these methods are outside of the class to be able
+# to use them from framework solver and ccxtools solver
+
+
+def on_restore_of_document(obj, ccx_prefs):
+
+    # ANALYSIS_TYPES
+    # They have been extended. If file was saved with a old FC version
+    # not all enum types are available, because they are saved in the FC file
+    # thus refresh the list of known ANALYSIS_TYPES
+    # print("onRestoredFromSuperClass")
+    # print(obj.AnalysisType)
+    # print(obj.getEnumerationsOfProperty("AnalysisType"))
+
+    temp_analysis_type = obj.AnalysisType
+    # self.add_properties(obj)
+    obj.AnalysisType = ANALYSIS_TYPES
+    if temp_analysis_type in ANALYSIS_TYPES:
+        obj.AnalysisType = temp_analysis_type
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Analysis type {} not found. Standard is used.\n"
+            .format(temp_analysis_type)
+        )
+        analysis_type = ccx_prefs.GetInt("AnalysisType", 0)
+        obj.AnalysisType = ANALYSIS_TYPES[analysis_type]
+
+    # BucklingFactors
+    # TODO
+    # just call add_attributes but in add_attributes
+    # every attribute needs to be checked if exist
+    # see object mesh_gmsh for information
+    # HACK
+    if not hasattr(obj, "BucklingFactors"):
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "BucklingFactors",
+            "Fem",
+            "Calculates the lowest buckling modes to the corresponding buckling factors"
+        )
+        bckl = ccx_prefs.GetInt("BucklingFactors", 1)
+        obj.BucklingFactors = bckl
+
+
 def add_attributes(obj, ccx_prefs):
 
     obj.addProperty(
