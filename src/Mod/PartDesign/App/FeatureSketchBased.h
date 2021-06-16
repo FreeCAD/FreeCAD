@@ -65,6 +65,8 @@ public:
     App::PropertyDistance    InnerFit;
     App::PropertyEnumeration InnerFitJoin;
 
+    App::PropertyInteger _ProfileBasedVersion;
+
     short mustExecute() const;
 
     void setupObject();
@@ -102,7 +104,7 @@ public:
      *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
-    TopoShape getVerifiedFace(bool silent = false) const;
+    TopoShape getVerifiedFace(bool silent = false, bool dofit = true) const;
     TopoDS_Shape getVerifiedFaceOld(bool silent = false) const;
     
     /// Returns the wires the sketch is composed of
@@ -114,7 +116,7 @@ public:
     /// Returns the face of the sketch support (if any)
     TopoShape getSupportFace() const;
     
-    Base::Vector3d getProfileNormal(const TopoShape &profileShape = TopoShape()) const;
+    Base::Vector3d getProfileNormal() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;

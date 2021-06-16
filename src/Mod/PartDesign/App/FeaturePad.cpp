@@ -181,7 +181,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
     // get the Sketch plane
     Base::Placement SketchPos = obj->Placement.getValue();
     // get the normal vector of the sketch
-    Base::Vector3d SketchVector = getProfileNormal(sketchshape);
+    Base::Vector3d SketchVector = getProfileNormal();
 
     try {
         this->positionByPrevious();
