@@ -29,11 +29,9 @@ setup()
 
 """
 
-# import FreeCAD
-
 import ObjectsFem
 
-from .ccx_cantilever_faceload import setup_cantileverbase
+from .ccx_cantilever_base import setup_cantileverbase
 
 
 def get_information():

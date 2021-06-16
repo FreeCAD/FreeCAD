@@ -34,7 +34,6 @@ import FreeCAD
 import Fem
 
 from .ccx_cantilever_faceload import setup as setup_with_faceload
-
 from .manager import get_meshname
 
 

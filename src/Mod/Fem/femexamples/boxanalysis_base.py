@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,50 +22,59 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.ccx_cantilever_prescribeddisplacement import setup
-setup()
+import FreeCAD
 
-"""
-
+import Fem
 import ObjectsFem
 
-from .ccx_cantilever_base import setup_cantileverbase
+from .manager import get_meshname
+from .manager import init_doc
 
 
-def get_information():
-    return {
-        "name": "CCX cantilever prescibed displacement",
-        "meshtype": "solid",
-        "meshelement": "Tet10",
-        "constraints": ["fixed", "displacement"],
-        "solvers": ["calculix", "elmer"],
-        "material": "solid",
-        "equation": "mechanical"
-    }
+def setup_boxanalysisbase(doc=None, solvertype="ccxtools"):
 
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
 
-def setup(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever
-    # apply a prescribed displacement of 250 mm in -z on the front end face
+    # geometric objects
+    # object name is important in this base setup method
+    # all module which use this base setup, use the object name to find the object
+    geom_obj = doc.addObject("Part::Box", "Box")
+    geom_obj.Height = geom_obj.Width = geom_obj.Length = 10
+    doc.recompute()
 
-    if solvertype == "z88":
-        # constraint displacement is not supported for Z88
-        # pass a not valid solver name for z88, thus no solver is created
-        solvertype = "z88_not_valid"
+    if FreeCAD.GuiUp:
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().fitAll()
 
-    doc = setup_cantileverbase(doc, solvertype)
-    analysis = doc.Analysis
-    geom_obj = doc.Box
+    # analysis
+    analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
-    # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    con_disp.References = [(geom_obj, "Face2")]
-    con_disp.zFix = False
-    con_disp.zFree = False
-    con_disp.zDisplacement = -250.0
-    analysis.addObject(con_disp)
+    # material
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
+    mat = material_obj.Material
+    mat["Name"] = "Steel-Generic"
+    mat["YoungsModulus"] = "200000 MPa"
+    mat["PoissonRatio"] = "0.30"
+    mat["Density"] = "7900 kg/m^3"
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
+
+    # mesh
+    from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
+    fem_mesh = Fem.FemMesh()
+    control = create_nodes(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating nodes.\n")
+    control = create_elements(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
+    femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.CharacteristicLengthMin = "8.0 mm"
 
     doc.recompute()
     return doc

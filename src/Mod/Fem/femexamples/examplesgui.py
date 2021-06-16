@@ -54,11 +54,13 @@ class FemExamples(QtGui.QWidget):
         path = os.path.dirname(os.path.realpath(__file__))
         files = [f for f in os.listdir(str(path))]
         not_files = [
+            "__init__.py",
+            "__pycache__",
+            "boxanalysis_base.py",
+            "ccx_cantilever_base.py",
             "examplesgui.py",
             "manager.py",
             "meshes",
-            "__init__.py",
-            "__pycache__",
         ]
 
         files = [str(f) for f in files if f not in not_files]

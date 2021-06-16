@@ -42,11 +42,13 @@ SET(FemCommands_SRCS
 
 SET(FemExamples_SRCS
     femexamples/__init__.py
+    femexamples/boxanalysis_base.py
     femexamples/boxanalysis_static.py
     femexamples/boxanalysis_frequency.py
     femexamples/buckling_platebuckling.py
     femexamples/buckling_lateraltorsionalbuckling.py
     femexamples/ccx_buckling_flexuralbuckling.py
+    femexamples/ccx_cantilever_base.py
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_hexa20faceload.py

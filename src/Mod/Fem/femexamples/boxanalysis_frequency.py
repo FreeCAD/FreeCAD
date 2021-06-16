@@ -29,11 +29,9 @@ setup()
 
 """
 
-# import FreeCAD
-
 import ObjectsFem
 
-from .boxanalysis_static import setup_base
+from .boxanalysis_base import setup_boxanalysisbase
 
 
 def get_information():
@@ -51,7 +49,7 @@ def get_information():
 def setup(doc=None, solvertype="ccxtools"):
 
     # setup box frequency, change solver attributes
-    doc = setup_base(doc, solvertype)
+    doc = setup_boxanalysisbase(doc, solvertype)
     analysis = doc.Analysis
 
     # solver
