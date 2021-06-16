@@ -85,7 +85,7 @@ def setup(doc=None, solvertype="ccxtools"):
     face_obj5.Placement.Base = (80, 0, 0)
     doc.recompute()
 
-    # make a Shell out of the facees, to be able to remesh with GUI
+    # make a Shell out of the faces, to be able to remesh with GUI
     geom_obj = doc.addObject("Part::MultiFuse", "Fusion")
     geom_obj.Shapes = [face_obj1, face_obj2, face_obj3, face_obj4, face_obj5]
     if FreeCAD.GuiUp:
