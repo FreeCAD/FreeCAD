@@ -43,7 +43,7 @@ from .manager import init_doc
 def get_information():
     return {
         "name": "Square Pipe End Twisted Nodeforces",
-        "meshtype": "solid",
+        "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["force", "fixed"],
         "solvers": ["calculix"],

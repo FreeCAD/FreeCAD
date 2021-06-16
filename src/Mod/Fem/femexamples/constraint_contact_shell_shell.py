@@ -47,7 +47,7 @@ from .manager import init_doc
 def get_information():
     return {
         "name": "Constraint Constact Shell Shell",
-        "meshtype": "solid",
+        "meshtype": "face",
         "meshelement": "Tria3",
         "constraints": ["fixed", "force", "contact"],
         "solvers": ["calculix"],

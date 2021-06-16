@@ -46,7 +46,7 @@ from .manager import init_doc
 def get_information():
     return {
         "name": "Thermomech Flow 1D",
-        "meshtype": "solid",
+        "meshtype": "edge",
         "meshelement": "Seg3",
         "constraints": ["self weight"],
         "solvers": ["calculix"],

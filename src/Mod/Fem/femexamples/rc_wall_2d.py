@@ -47,7 +47,7 @@ from .manager import init_doc
 def get_information():
     return {
         "name": "RC Wall 2D",
-        "meshtype": "solid",
+        "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["fixed", "force", "displacement"],
         "solvers": ["calculix"],

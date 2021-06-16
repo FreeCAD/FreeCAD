@@ -41,7 +41,7 @@ from .manager import init_doc
 def get_information():
     return {
         "name": "Multimaterial bending beam 5 faces",
-        "meshtype": "solid",
+        "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["fixed", "force"],
         "solvers": ["calculix"],
