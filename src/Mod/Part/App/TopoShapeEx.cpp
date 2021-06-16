@@ -152,6 +152,7 @@
 # include <ShapeFix_Face.hxx>
 # include <ShapeFix_Shell.hxx>
 # include <ShapeFix_Solid.hxx>
+# include <ShapeFix_Shape.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
 # include <Standard_Version.hxx>
@@ -2082,7 +2083,6 @@ TopoShape &TopoShape::makEOffsetFace(const TopoShape &shape,
             res.push_back(makEOffset2D(face, offset, joinType, false, false, false, op));
             continue;
         }
-
         if (outerWire.isNull())
             FC_THROWM(Base::CADKernelError, "makeOffsetFace: missing outer wire!");
 
@@ -2546,6 +2546,13 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes,
     setShape(ret._Shape);
     Hasher = ret.Hasher;
     resetElementMap(ret.elementMap());
+    if (!isValid()) {
+        // In some cases, the OCC reports the returned shape having invalid
+        // tolerance. Not sure about the real cause.
+        ShapeFix_Shape fixer(getShape());
+        fixer.Perform();
+        setShape(fixer.Shape(), false);
+    }
     return *this;
 }
 
