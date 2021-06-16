@@ -404,9 +404,8 @@ protected:
     void savePreferences();
 
 private:
-    QScopedPointer<PrefQuantitySpinBoxPrivate> d_ptr;
+    int _historySize;
     Q_DISABLE_COPY(PrefQuantitySpinBox)
-    Q_DECLARE_PRIVATE(PrefQuantitySpinBox)
 };
 
 /** The PrefFontBox class.

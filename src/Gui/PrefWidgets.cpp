@@ -858,26 +858,8 @@ void PrefUnitSpinBox::savePreferences()
 
 // --------------------------------------------------------------------
 
-namespace Gui {
-class PrefQuantitySpinBoxPrivate
-{
-public:
-    PrefQuantitySpinBoxPrivate() :
-      historySize(5)
-    {
-    }
-    ~PrefQuantitySpinBoxPrivate()
-    {
-    }
-
-    QByteArray prefGrp;
-    ParameterGrp::handle handle;
-    int historySize;
-};
-}
-
 PrefQuantitySpinBox::PrefQuantitySpinBox (QWidget * parent)
-  : PrefUnitSpinBox(parent), d_ptr(new PrefQuantitySpinBoxPrivate())
+  : PrefUnitSpinBox(parent), _historySize(5)
 {
 }
 
@@ -887,8 +869,6 @@ PrefQuantitySpinBox::~PrefQuantitySpinBox()
 
 void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 {
-    Q_D(PrefQuantitySpinBox);
-
     QMenu *editMenu = lineEdit()->createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
     QMenu* menu = new QMenu(QString::fromLatin1("PrefQuantitySpinBox"));
@@ -939,7 +919,9 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
         pushToHistory();
     }
     else if (userAction == clearListAction) {
-        d->handle->Clear();
+        auto handle = getWindowParameter();
+        if (handle.isValid())
+            handle->Clear();
     }
     else {
         int i=0;
@@ -978,8 +960,6 @@ void PrefQuantitySpinBox::restorePreferences()
 
 void PrefQuantitySpinBox::pushToHistory()
 {
-    Q_D(PrefQuantitySpinBox);
-
     QString val;
     if (hasExpression(false))
         val = QString::fromLatin1("=%1").arg(QString::fromUtf8(getExpressionString().c_str()));
@@ -999,9 +979,9 @@ void PrefQuantitySpinBox::pushToHistory()
                 int offset = 0;
                 QByteArray hist("Hist");
                 tHist = value;
-                for (int i = 0 ; i < d->historySize ;++i) {
+                for (int i = 0 ; i < _historySize ;++i) {
                     std::string tNext;
-                    for (; i + offset < d->historySize; ++offset) {
+                    for (; i + offset < _historySize; ++offset) {
                         tNext = handle->GetASCII(hist+QByteArray::number(i+offset));
                         if (tNext != value)
                             break;
@@ -1019,13 +999,12 @@ void PrefQuantitySpinBox::pushToHistory()
 
 QStringList PrefQuantitySpinBox::getHistory() const
 {
-    Q_D(const PrefQuantitySpinBox);
     QStringList res;
 
     auto handle = const_cast<PrefQuantitySpinBox*>(this)->getWindowParameter();
     if (handle.isValid()) {
         std::string tmp;
-        for (int i = 0 ; i< d->historySize ;i++) {
+        for (int i = 0 ; i< _historySize ;i++) {
             QByteArray hist = "Hist";
             hist.append(QByteArray::number(i));
             tmp = handle->GetASCII(hist);
@@ -1048,14 +1027,12 @@ void PrefQuantitySpinBox::setToLastUsedValue()
 
 int PrefQuantitySpinBox::historySize() const
 {
-    Q_D(const PrefQuantitySpinBox);
-    return d->historySize;
+    return _historySize;
 }
 
 void PrefQuantitySpinBox::setHistorySize(int i)
 {
-    Q_D(PrefQuantitySpinBox);
-    d->historySize = i;
+    _historySize = i;
 }
 
 void PrefQuantitySpinBox::setParamGrpPath( const QByteArray& path )
