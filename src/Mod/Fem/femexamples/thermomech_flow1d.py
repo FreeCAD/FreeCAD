@@ -35,9 +35,10 @@ setup()
 import FreeCAD
 from FreeCAD import Vector as vec
 
+from Draft import makeWire
+
 import Fem
 import ObjectsFem
-from Draft import makeWire
 
 from .manager import get_meshname
 from .manager import init_doc

@@ -38,13 +38,14 @@ import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
-import Fem
-import ObjectsFem
 import Part
 import Sketcher
 from BOPTools.SplitFeatures import makeBooleanFragments
 from BOPTools.SplitFeatures import makeSlice
 from CompoundTools.CompoundFilter import makeCompoundFilter
+
+import Fem
+import ObjectsFem
 
 from .manager import get_meshname
 from .manager import init_doc

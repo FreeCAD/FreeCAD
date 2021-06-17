@@ -31,10 +31,11 @@ setup()
 
 import FreeCAD
 
-import Fem
-import ObjectsFem
 from BOPTools import SplitFeatures
 from CompoundTools import CompoundFilter
+
+import Fem
+import ObjectsFem
 
 from .manager import get_meshname
 from .manager import init_doc

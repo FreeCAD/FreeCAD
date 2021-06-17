@@ -31,9 +31,10 @@ setup()
 
 import FreeCAD
 
+import BOPTools.SplitFeatures
+
 import Fem
 import ObjectsFem
-import BOPTools.SplitFeatures
 
 from .manager import get_meshname
 from .manager import init_doc

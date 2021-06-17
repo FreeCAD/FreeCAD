@@ -35,9 +35,10 @@ import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
+from CompoundTools import CompoundFilter
+
 import Fem
 import ObjectsFem
-from CompoundTools import CompoundFilter
 
 from .manager import get_meshname
 from .manager import init_doc

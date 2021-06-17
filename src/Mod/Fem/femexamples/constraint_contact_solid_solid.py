@@ -36,9 +36,10 @@ import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
+import Part
+
 import Fem
 import ObjectsFem
-import Part
 
 from .manager import get_meshname
 from .manager import init_doc

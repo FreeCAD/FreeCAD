@@ -46,11 +46,12 @@ setup()
 import FreeCAD
 from FreeCAD import Vector as vec
 
-import Fem
-import ObjectsFem
 import Part
 from Part import makeCircle as ci
 from Part import makeLine as ln
+
+import Fem
+import ObjectsFem
 
 from .manager import get_meshname
 from .manager import init_doc

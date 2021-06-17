@@ -38,9 +38,10 @@ import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
+from BOPTools import SplitFeatures
+
 import Fem
 import ObjectsFem
-from BOPTools import SplitFeatures
 
 from .manager import get_meshname
 from .manager import init_doc

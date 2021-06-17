@@ -35,10 +35,11 @@ setup()
 
 import FreeCAD
 
-import Fem
-import ObjectsFem
 import Part
 from BOPTools import SplitFeatures
+
+import Fem
+import ObjectsFem
 
 from .manager import get_meshname
 from .manager import init_doc
