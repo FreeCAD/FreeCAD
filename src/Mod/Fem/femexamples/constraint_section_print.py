@@ -22,16 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.constraint_section_print import setup
-setup()
-
-"""
-
-# constraint section print with volume elements
-# https://forum.freecadweb.org/viewtopic.php?t=43044
-
 import math
 
 import FreeCAD
@@ -47,6 +37,7 @@ from CompoundTools.CompoundFilter import makeCompoundFilter
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -63,11 +54,31 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.constraint_section_print import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?t=43044
+
+constraint section print with volume elements
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric objects
     # the part sketch

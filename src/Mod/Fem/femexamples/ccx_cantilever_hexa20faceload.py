@@ -22,19 +22,14 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.ccx_cantilever_hexa20faceload import setup
-setup()
-
-"""
-
 import FreeCAD
 
 import Fem
 
+from . import manager
 from .ccx_cantilever_faceload import setup as setup_with_faceload
 from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
@@ -49,8 +44,31 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.ccx_cantilever_hexa20faceload import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # setup cantilever faceload and exchange the mesh
     doc = setup_with_faceload(doc, solvertype)
     femmesh_obj = doc.getObject(get_meshname())
 

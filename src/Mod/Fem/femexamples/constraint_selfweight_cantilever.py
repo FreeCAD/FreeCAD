@@ -21,23 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.constraint_selfweight_cantilever import setup
-setup()
-
-"""
-
-# cantilever under self weight made from steel grad 235
-# l = 32 m, yields just from self weight, means max sigma around 235 n/mm2
-# max deformation = 576.8 mm
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=48513
-
 import FreeCAD
 
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -54,11 +43,33 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.constraint_selfweight_cantilever import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=48513
+
+cantilever under self weight made from steel grad 235
+l = 32 m, yields just from self weight, means max sigma around 235 n/mm2
+max deformation = 576.8 mm
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric object
     geom_obj = doc.addObject("Part::Box", "Box")

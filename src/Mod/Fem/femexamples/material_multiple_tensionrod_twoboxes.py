@@ -22,13 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.material_multiple_tensionrod_twoboxes import setup
-setup()
-
-"""
-
 import FreeCAD
 
 from BOPTools import SplitFeatures
@@ -37,6 +30,7 @@ from CompoundTools import CompoundFilter
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -53,11 +47,29 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.material_multiple_tensionrod_twoboxes import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric objects
     # two boxes

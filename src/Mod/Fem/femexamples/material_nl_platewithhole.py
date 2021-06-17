@@ -28,21 +28,6 @@ from femexamples.material_nl_platewithhole import setup
 setup()
 """
 
-# Nonlinear material example, plate with hole.
-
-# https://forum.freecadweb.org/viewtopic.php?f=24&t=31997&start=30
-# https://forum.freecadweb.org/viewtopic.php?t=33974&start=90
-# https://forum.freecadweb.org/viewtopic.php?t=35893
-# https://forum.freecadweb.org/viewtopic.php?t=23101
-
-# plate: 400x200x10 mm
-# hole: diameter 100 mm (half cross section)
-# load: 130 MPa tension
-# linear material: Steel, E = 210000 MPa, my = 0.3
-# nonlinear material: '240.0, 0.0' to '270.0, 0.025'
-# TODO nonlinear material: give more information, use values from harry
-# TODO compare results with example from HarryvL
-
 import FreeCAD
 from FreeCAD import Vector as vec
 
@@ -53,6 +38,7 @@ from Part import makeLine as ln
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -69,11 +55,42 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.material_nl_platewithhole import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=24&t=31997&start=30
+https://forum.freecadweb.org/viewtopic.php?t=33974&start=90
+https://forum.freecadweb.org/viewtopic.php?t=35893
+https://forum.freecadweb.org/viewtopic.php?t=23101
+
+Nonlinear material example, plate with hole.
+
+plate: 400x200x10 mm
+hole: diameter 100 mm (half cross section)
+load: 130 MPa tension
+linear material: Steel, E = 210000 MPa, my = 0.3
+nonlinear material: '240.0, 0.0' to '270.0, 0.025'
+TODO nonlinear material: give more information, use values from harry
+TODO compare results with example from HarryvL
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric object
     v1 = vec(-200, -100, 0)

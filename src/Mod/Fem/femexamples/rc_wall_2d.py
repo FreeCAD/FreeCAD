@@ -22,16 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.rc_wall_2d import setup
-setup()
-
-"""
-
-# example from Harry's epic topic: Concrete branch ready for testing
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=80#p296469
-
 import FreeCAD
 from FreeCAD import Vector as vec
 
@@ -41,6 +31,7 @@ from Part import makeLine as ln
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -57,11 +48,31 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.rc_wall_2d import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=80#p296469
+
+example from Harry's epic topic: Concrete branch ready for testing
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric object
     v1 = vec(0, -2000, 0)

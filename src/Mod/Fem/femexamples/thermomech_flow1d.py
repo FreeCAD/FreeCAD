@@ -22,16 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.thermomech_flow1d import setup
-setup()
-
-"""
-
-# topic about the 1D flow analysis
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=20076
-
 import FreeCAD
 from FreeCAD import Vector as vec
 
@@ -40,6 +30,7 @@ from Draft import makeWire
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -56,11 +47,30 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.thermomech_flow1d import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=20076
+
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric objects
     p1 = vec(0, 0, 50)

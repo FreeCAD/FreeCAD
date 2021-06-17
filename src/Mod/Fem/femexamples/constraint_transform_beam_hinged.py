@@ -22,15 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.constraint_transform_beam_hinged import setup
-setup()
-
-"""
-# Constraint transform on a beam
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=20238#p157643
-
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
@@ -40,6 +31,7 @@ from CompoundTools import CompoundFilter
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -56,11 +48,31 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.constraint_transform_beam_hinged import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=20238#p157643
+
+Constraint transform on a beam
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric object
     # name is important because the other method in this module use obj name

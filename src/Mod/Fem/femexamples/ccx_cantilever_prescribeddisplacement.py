@@ -22,16 +22,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.ccx_cantilever_prescribeddisplacement import setup
-setup()
-
-"""
-
 import ObjectsFem
 
+from . import manager
 from .ccx_cantilever_base import setup_cantileverbase
+from .manager import init_doc
 
 
 def get_information():
@@ -46,15 +41,37 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.ccx_cantilever_prescribeddisplacement import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever
-    # apply a prescribed displacement of 250 mm in -z on the front end face
 
     if solvertype == "z88":
         # constraint displacement is not supported for Z88
         # pass a not valid solver name for z88, thus no solver is created
         solvertype = "z88_not_valid"
 
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # setup CalculiX cantilever
+    # apply a prescribed displacement of 250 mm in -z on the front end face
     doc = setup_cantileverbase(doc, solvertype)
     analysis = doc.Analysis
     geom_obj = doc.Box

@@ -22,15 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.equation_electrostatics_capacitance_two_balls import setup
-setup()
-
-"""
-# Electrostatics equation in FreeCAD FEM-Elmer
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
-
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
@@ -38,6 +29,7 @@ from FreeCAD import Vector
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -54,11 +46,31 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.equation_electrostatics_capacitance_two_balls import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
+
+Electrostatics equation in FreeCAD FEM-Elmer
+
+"""
+
+
 def setup(doc=None, solvertype="elmer"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric objects
     small_sphere1 = doc.addObject("Part::Sphere", "Small_Sphere1")

@@ -22,16 +22,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.boxanalysis_frequency import setup
-setup()
-
-"""
-
 import ObjectsFem
 
+from . import manager
 from .boxanalysis_base import setup_boxanalysisbase
+from .manager import init_doc
 
 
 def get_information():
@@ -46,7 +41,29 @@ def get_information():
     }
 
 
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.boxanalysis_frequency import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
+
+
 def setup(doc=None, solvertype="ccxtools"):
+
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # setup box frequency, change solver attributes
     doc = setup_boxanalysisbase(doc, solvertype)
