@@ -21,19 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.buckling_lateraltorsionalbuckling import setup
-setup()
-
-"""
-
-import json
-
 import FreeCAD
+
 import Fem
 import ObjectsFem
 
+from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
@@ -50,10 +43,13 @@ def get_information():
     }
 
 
-def get_explanation():
-    return """{name}
+def get_explanation(header=""):
+    return header + """
 
-{information}
+To run the example from Python console use:
+from femexamples.buckling_lateraltorsionalbuckling import setup
+setup()
+
 
 See forum topic post:
 https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=110#p510526
@@ -68,7 +64,7 @@ Mcr = 43.28 kNm = 43'280'000 Nmm
 flange load for a buckling factor of 1.00:
 43280000 Nmm / 278.6 mm = 155348 N
 
-""".format(name=get_information()["name"], information=json.dumps(get_information(), indent=4))
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -78,11 +74,8 @@ def setup(doc=None, solvertype="ccxtools"):
         doc = init_doc()
 
     # explanation object
-    text_obj = doc.addObject("App::TextDocument", "Explanation_Report")
-    text_obj.Text = get_explanation()
-    text_obj.setPropertyStatus("Text", "ReadOnly")  # set property editor readonly
-    if FreeCAD.GuiUp:
-        text_obj.ViewObject.ReadOnly = True  # set editor view readonly
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric objects
     bottom_flange = doc.addObject("Part::Plane", "Bottom_Flange")

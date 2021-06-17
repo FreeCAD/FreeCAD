@@ -146,3 +146,33 @@ def init_doc(doc=None):
 def get_meshname():
     # needs to be "Mesh" to work with unit tests
     return "Mesh"
+
+
+def get_header(information):
+    return """{name}
+
+{information}""".format(name=information["name"], information=print_info_dict(information))
+
+
+def print_info_dict(information):
+    the_text = ""
+    for k, v in information.items():
+        value_text = ""
+        if isinstance(v, list):
+            for j in v:
+                value_text += "{}, ".format(j)
+            value_text = value_text.rstrip(", ")
+        else:
+            value_text = v
+        the_text += "{} --> {}\n".format(k, value_text)
+    # print(the_text)
+    return the_text
+
+
+def add_explanation_obj(doc, the_text):
+    text_obj = doc.addObject("App::TextDocument", "Explanation_Report")
+    text_obj.Text = the_text
+    text_obj.setPropertyStatus("Text", "ReadOnly")  # set property editor readonly
+    if FreeCAD.GuiUp:
+        text_obj.ViewObject.ReadOnly = True  # set editor view readonly
+    return text_obj
