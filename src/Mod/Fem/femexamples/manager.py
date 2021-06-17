@@ -22,17 +22,100 @@
 # *                                                                         *
 # ***************************************************************************
 
-# this module was used before there was a examples gui
-# and before there where the unit tests
-# it is not really needed and maintained anymore
-# general method for the examples are saved here
-# see comment at run examples end to run examples
-
-
 import FreeCAD
 
 
-def run_analysis(doc, base_name, filepath=""):
+# ************************************************************************************************
+# setup and run examples by Python
+
+# TODO: use method from examples gui to collect all examples in run_all method
+# FreeCAD Gui update between the examples would makes sense too
+
+"""
+# setup all examples
+from femexamples.manager import *
+setup_all()
+
+
+# run all examples
+from femexamples.manager import *
+run_all()
+
+
+# one special example
+from femexamples.manager import run_example as run
+
+doc = run("boxanalysis_static")
+doc = run("boxanalysis_frequency")
+
+"""
+
+
+def run_all():
+    run_example("boxanalysis_frequency", run_solver=True)
+    run_example("boxanalysis_static", run_solver=True)
+    run_example("buckling_lateraltorsionalbuckling", run_solver=True)
+    run_example("buckling_platebuckling", run_solver=True)
+    run_example("ccx_buckling_flexuralbuckling", run_solver=True)
+    run_example("ccx_cantilever_faceload", run_solver=True)
+    run_example("ccx_cantilever_hexa20faceload", run_solver=True)
+    run_example("ccx_cantilever_nodeload", run_solver=True)
+    run_example("ccx_cantilever_prescribeddisplacement", run_solver=True)
+    run_example("constraint_contact_shell_shell", run_solver=True)
+    run_example("constraint_contact_solid_solid", run_solver=True)
+    run_example("constraint_section_print", run_solver=True)
+    run_example("constraint_selfweight_cantilever", run_solver=True)
+    run_example("constraint_tie", run_solver=True)
+    run_example("constraint_transform_beam_hinged", run_solver=True)
+    run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam", run_solver=True)
+    run_example("equation_electrostatics_capacitance_two_balls", run_solver=True)
+    run_example("equation_electrostatics_electricforce_elmer_nongui6", run_solver=True)
+    run_example("frequency_beamsimple", run_solver=True)
+    run_example("material_multiple_bendingbeam_fiveboxes", run_solver=True)
+    run_example("material_multiple_bendingbeam_fivefaces", run_solver=True)
+    run_example("material_multiple_tensionrod_twoboxes", run_solver=True)
+    run_example("material_nl_platewithhole", run_solver=True)
+    run_example("rc_wall_2d", run_solver=True)
+    run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
+    run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
+    run_example("thermomech_bimetall", run_solver=True)
+    run_example("thermomech_flow1d", run_solver=True)
+    run_example("thermomech_spine", run_solver=True)
+
+
+def setup_all():
+    run_example("boxanalysis_frequency")
+    run_example("boxanalysis_static")
+    run_example("buckling_lateraltorsionalbuckling")
+    run_example("buckling_platebuckling")
+    run_example("ccx_buckling_flexuralbuckling")
+    run_example("ccx_cantilever_faceload")
+    run_example("ccx_cantilever_hexa20faceload")
+    run_example("ccx_cantilever_nodeload")
+    run_example("ccx_cantilever_prescribeddisplacement")
+    run_example("constraint_contact_shell_shell")
+    run_example("constraint_contact_solid_solid")
+    run_example("constraint_section_print")
+    run_example("constraint_selfweight_cantilever")
+    run_example("constraint_tie")
+    run_example("constraint_transform_beam_hinged")
+    run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam")
+    run_example("equation_electrostatics_capacitance_two_balls")
+    run_example("equation_electrostatics_electricforce_elmer_nongui6")
+    run_example("frequency_beamsimple")
+    run_example("material_multiple_bendingbeam_fiveboxes")
+    run_example("material_multiple_bendingbeam_fivefaces")
+    run_example("material_multiple_tensionrod_twoboxes")
+    run_example("material_nl_platewithhole")
+    run_example("rc_wall_2d")
+    run_example("square_pipe_end_twisted_edgeforces")
+    run_example("square_pipe_end_twisted_nodeforces")
+    run_example("thermomech_bimetall")
+    run_example("thermomech_flow1d")
+    run_example("thermomech_spine")
+
+
+def run_analysis(doc, base_name, filepath="", run_solver=False):
 
     from os.path import join, exists
     from os import makedirs
@@ -71,13 +154,14 @@ def run_analysis(doc, base_name, filepath=""):
 
     # run analysis
     from femsolver.run import run_fem_solver
-    run_fem_solver(solver, working_dir)
+    if run_solver is True:
+        run_fem_solver(solver, working_dir)
 
     # save doc once again with results
     doc.save()
 
 
-def run_example(example, solver=None, base_name=None):
+def run_example(example, solver=None, base_name=None, run_solver=False):
 
     from importlib import import_module
     module = import_module("femexamples." + example)
@@ -94,49 +178,15 @@ def run_example(example, solver=None, base_name=None):
         base_name = example
         if solver is not None:
             base_name += "_" + solver
-    run_analysis(doc, base_name)
+    run_analysis(doc, base_name, run_solver=run_solver)
     doc.recompute()
 
     return doc
 
 
-def run_all():
-    run_example("boxanalysis_static")
-    run_example("boxanalysis_frequency")
-    run_example("ccx_cantilever_faceload")
-    run_example("ccx_cantilever_nodeload")
-    run_example("ccx_cantilever_prescribeddisplacement")
-    run_example("ccx_cantilever_hexa20faceload")
-    run_example("constraint_contact_shell_shell")
-    run_example("constraint_contact_solid_solid")
-    run_example("constraint_tie")
-    run_example("material_multiple_twoboxes")
-    run_example("material_nl_platewithhole")
-    run_example("rc_wall_2d")
-    run_example("thermomech_bimetall")
-    run_example("thermomech_flow1d")
-    run_example("thermomech_spine")
-    run_example("boxanalysis_frequency")
-    run_example("boxanalysis_frequency")
-
-
-"""
-# all examples
-from femexamples.manager import *
-run_all()
-
-
-# one special example
-from femexamples.manager import run_example as run
-
-doc = run("boxanalysis_static")
-doc = run("boxanalysis_frequency")
-
-"""
-
 
 # ************************************************************************************************
-# helper
+# helper used from examples
 def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
