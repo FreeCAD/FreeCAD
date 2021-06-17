@@ -25,6 +25,7 @@ import six
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import Plot_rc  # include resources, icons, ui files
 
 from PySide import QtGui, QtCore
 
@@ -32,9 +33,15 @@ import Plot
 from plotUtils import Paths
 
 
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Plot_rc.__name__)
+
+
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/plotAxes/TaskPanel.ui"
+        self.name = "plot axes"
+        self.ui = ":/ui/TaskPanel_plotAxes.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
         self.skip = False
 
     def accept(self):
@@ -65,27 +72,24 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        self.form = form
-        form.axId = self.widget(QtGui.QSpinBox, "axesIndex")
-        form.new = self.widget(QtGui.QPushButton, "newAxesButton")
-        form.remove = self.widget(QtGui.QPushButton, "delAxesButton")
-        form.all = self.widget(QtGui.QCheckBox, "allAxes")
-        form.xMin = self.widget(QtGui.QSlider, "posXMin")
-        form.xMax = self.widget(QtGui.QSlider, "posXMax")
-        form.yMin = self.widget(QtGui.QSlider, "posYMin")
-        form.yMax = self.widget(QtGui.QSlider, "posYMax")
-        form.xAlign = self.widget(QtGui.QComboBox, "xAlign")
-        form.yAlign = self.widget(QtGui.QComboBox, "yAlign")
-        form.xOffset = self.widget(QtGui.QSpinBox, "xOffset")
-        form.yOffset = self.widget(QtGui.QSpinBox, "yOffset")
-        form.xAuto = self.widget(QtGui.QCheckBox, "xAuto")
-        form.yAuto = self.widget(QtGui.QCheckBox, "yAuto")
-        form.xSMin = self.widget(QtGui.QLineEdit, "xMin")
-        form.xSMax = self.widget(QtGui.QLineEdit, "xMax")
-        form.ySMin = self.widget(QtGui.QLineEdit, "yMin")
-        form.ySMax = self.widget(QtGui.QLineEdit, "yMax")
+        self.form.axId = self.widget(QtGui.QSpinBox, "axesIndex")
+        self.form.new = self.widget(QtGui.QPushButton, "newAxesButton")
+        self.form.remove = self.widget(QtGui.QPushButton, "delAxesButton")
+        self.form.all = self.widget(QtGui.QCheckBox, "allAxes")
+        self.form.xMin = self.widget(QtGui.QSlider, "posXMin")
+        self.form.xMax = self.widget(QtGui.QSlider, "posXMax")
+        self.form.yMin = self.widget(QtGui.QSlider, "posYMin")
+        self.form.yMax = self.widget(QtGui.QSlider, "posYMax")
+        self.form.xAlign = self.widget(QtGui.QComboBox, "xAlign")
+        self.form.yAlign = self.widget(QtGui.QComboBox, "yAlign")
+        self.form.xOffset = self.widget(QtGui.QSpinBox, "xOffset")
+        self.form.yOffset = self.widget(QtGui.QSpinBox, "yOffset")
+        self.form.xAuto = self.widget(QtGui.QCheckBox, "xAuto")
+        self.form.yAuto = self.widget(QtGui.QCheckBox, "yAuto")
+        self.form.xSMin = self.widget(QtGui.QLineEdit, "xMin")
+        self.form.xSMax = self.widget(QtGui.QLineEdit, "xMax")
+        self.form.ySMin = self.widget(QtGui.QLineEdit, "yMin")
+        self.form.ySMax = self.widget(QtGui.QLineEdit, "yMax")
         self.retranslateUi()
         # Look for active axes if can
         axId = 0
@@ -93,57 +97,57 @@ class TaskPanel:
         if plt:
             while plt.axes != plt.axesList[axId]:
                 axId = axId + 1
-            form.axId.setValue(axId)
+            self.form.axId.setValue(axId)
         self.updateUI()
-        QtCore.QObject.connect(form.axId,
+        QtCore.QObject.connect(self.form.axId,
                                QtCore.SIGNAL('valueChanged(int)'),
                                self.onAxesId)
-        QtCore.QObject.connect(form.new,
+        QtCore.QObject.connect(self.form.new,
                                QtCore.SIGNAL("pressed()"),
                                self.onNew)
-        QtCore.QObject.connect(form.remove,
+        QtCore.QObject.connect(self.form.remove,
                                QtCore.SIGNAL("pressed()"),
                                self.onRemove)
-        QtCore.QObject.connect(form.xMin,
+        QtCore.QObject.connect(self.form.xMin,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.onDims)
-        QtCore.QObject.connect(form.xMax,
+        QtCore.QObject.connect(self.form.xMax,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.onDims)
-        QtCore.QObject.connect(form.yMin,
+        QtCore.QObject.connect(self.form.yMin,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.onDims)
-        QtCore.QObject.connect(form.yMax,
+        QtCore.QObject.connect(self.form.yMax,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.onDims)
-        QtCore.QObject.connect(form.xAlign,
+        QtCore.QObject.connect(self.form.xAlign,
                                QtCore.SIGNAL("currentIndexChanged(int)"),
                                self.onAlign)
-        QtCore.QObject.connect(form.yAlign,
+        QtCore.QObject.connect(self.form.yAlign,
                                QtCore.SIGNAL("currentIndexChanged(int)"),
                                self.onAlign)
-        QtCore.QObject.connect(form.xOffset,
+        QtCore.QObject.connect(self.form.xOffset,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.onOffset)
-        QtCore.QObject.connect(form.yOffset,
+        QtCore.QObject.connect(self.form.yOffset,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.onOffset)
-        QtCore.QObject.connect(form.xAuto,
+        QtCore.QObject.connect(self.form.xAuto,
                                QtCore.SIGNAL("stateChanged(int)"),
                                self.onScales)
-        QtCore.QObject.connect(form.yAuto,
+        QtCore.QObject.connect(self.form.yAuto,
                                QtCore.SIGNAL("stateChanged(int)"),
                                self.onScales)
-        QtCore.QObject.connect(form.xSMin,
+        QtCore.QObject.connect(self.form.xSMin,
                                QtCore.SIGNAL("editingFinished()"),
                                self.onScales)
-        QtCore.QObject.connect(form.xSMax,
+        QtCore.QObject.connect(self.form.xSMax,
                                QtCore.SIGNAL("editingFinished()"),
                                self.onScales)
-        QtCore.QObject.connect(form.ySMin,
+        QtCore.QObject.connect(self.form.ySMin,
                                QtCore.SIGNAL("editingFinished()"),
                                self.onScales)
-        QtCore.QObject.connect(form.ySMax,
+        QtCore.QObject.connect(self.form.ySMax,
                                QtCore.SIGNAL("editingFinished()"),
                                self.onScales)
         QtCore.QObject.connect(
@@ -296,16 +300,11 @@ class TaskPanel:
                 self.updateUI()
                 self.skip = False
                 return
-            # Get again all the subwidgets (to avoid PySide Pitfalls)
-            mw = self.getMainWindow()
-            form = mw.findChild(QtGui.QWidget, "TaskPanel")
-            form.axId = self.widget(QtGui.QSpinBox, "axesIndex")
-
-            form.axId.setMaximum(len(plt.axesList))
-            if form.axId.value() >= len(plt.axesList):
-                form.axId.setValue(len(plt.axesList) - 1)
+            self.form.axId.setMaximum(len(plt.axesList))
+            if self.form.axId.value() >= len(plt.axesList):
+                self.form.axId.setValue(len(plt.axesList) - 1)
             # Send new control to Plot instance
-            plt.setActiveAxes(form.axId.value())
+            plt.setActiveAxes(self.form.axId.value())
             self.updateUI()
             self.skip = False
 
@@ -316,13 +315,9 @@ class TaskPanel:
         if not plt:
             self.updateUI()
             return
-        # Get again all the subwidgets (to avoid PySide Pitfalls)
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.axId = self.widget(QtGui.QSpinBox, "axesIndex")
 
         Plot.addNewAxes()
-        form.axId.setValue(len(plt.axesList) - 1)
+        self.form.axId.setValue(len(plt.axesList) - 1)
         plt.update()
 
     def onRemove(self):
@@ -332,13 +327,9 @@ class TaskPanel:
         if not plt:
             self.updateUI()
             return
-        # Get again all the subwidgets (to avoid PySide Pitfalls)
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.axId = self.widget(QtGui.QSpinBox, "axesIndex")
 
         # Don't remove first axes
-        if not form.axId.value():
+        if not self.form.axId.value():
             msg = QtGui.QApplication.translate(
                 "plot_console",
                 "Axes 0 can not be deleted",
@@ -348,10 +339,10 @@ class TaskPanel:
         # Remove axes
         ax = plt.axes
         ax.set_axis_off()
-        plt.axesList.pop(form.axId.value())
+        plt.axesList.pop(self.form.axId.value())
         # Ensure that active axes is correct
-        index = min(form.axId.value(), len(plt.axesList) - 1)
-        form.axId.setValue(index)
+        index = min(self.form.axId.value(), len(plt.axesList) - 1)
+        self.form.axId.setValue(index)
         plt.update()
 
     def onDims(self, value):
@@ -361,23 +352,15 @@ class TaskPanel:
         if not plt:
             self.updateUI()
             return
-        # Get again all the subwidgets (to avoid PySide Pitfalls)
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.all = self.widget(QtGui.QCheckBox, "allAxes")
-        form.xMin = self.widget(QtGui.QSlider, "posXMin")
-        form.xMax = self.widget(QtGui.QSlider, "posXMax")
-        form.yMin = self.widget(QtGui.QSlider, "posYMin")
-        form.yMax = self.widget(QtGui.QSlider, "posYMax")
 
         axesList = [plt.axes]
-        if form.all.isChecked():
+        if self.form.all.isChecked():
             axesList = plt.axesList
         # Set new dimensions
-        xmin = form.xMin.value() / 100.0
-        xmax = form.xMax.value() / 100.0
-        ymin = form.yMin.value() / 100.0
-        ymax = form.yMax.value() / 100.0
+        xmin = self.form.xMin.value() / 100.0
+        xmax = self.form.xMax.value() / 100.0
+        ymin = self.form.yMin.value() / 100.0
+        ymax = self.form.yMax.value() / 100.0
         for axes in axesList:
             axes.set_position([xmin, ymin, xmax - xmin, ymax - ymin])
         plt.update()
@@ -389,19 +372,13 @@ class TaskPanel:
         if not plt:
             self.updateUI()
             return
-        # Get again all the subwidgets (to avoid PySide Pitfalls)
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.all = self.widget(QtGui.QCheckBox, "allAxes")
-        form.xAlign = self.widget(QtGui.QComboBox, "xAlign")
-        form.yAlign = self.widget(QtGui.QComboBox, "yAlign")
 
         axesList = [plt.axes]
-        if form.all.isChecked():
+        if self.form.all.isChecked():
             axesList = plt.axesList
         # Set new alignment
         for axes in axesList:
-            if form.xAlign.currentIndex() == 0:
+            if self.form.xAlign.currentIndex() == 0:
                 axes.xaxis.tick_bottom()
                 axes.spines['bottom'].set_color((0.0, 0.0, 0.0))
                 axes.spines['top'].set_color('none')
@@ -413,7 +390,7 @@ class TaskPanel:
                 axes.spines['bottom'].set_color('none')
                 axes.xaxis.set_ticks_position('top')
                 axes.xaxis.set_label_position('top')
-            if form.yAlign.currentIndex() == 0:
+            if self.form.yAlign.currentIndex() == 0:
                 axes.yaxis.tick_left()
                 axes.spines['left'].set_color((0.0, 0.0, 0.0))
                 axes.spines['right'].set_color('none')
@@ -434,15 +411,9 @@ class TaskPanel:
         if not plt:
             self.updateUI()
             return
-        # Get again all the subwidgets (to avoid PySide Pitfalls)
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.all = self.widget(QtGui.QCheckBox, "allAxes")
-        form.xOffset = self.widget(QtGui.QSpinBox, "xOffset")
-        form.yOffset = self.widget(QtGui.QSpinBox, "yOffset")
 
         axesList = [plt.axes]
-        if form.all.isChecked():
+        if self.form.all.isChecked():
             axesList = plt.axesList
         # Set new offset
         for axes in axesList:
@@ -452,9 +423,9 @@ class TaskPanel:
             y = axes.get_ylabel()
             for loc, spine in axes.spines.items():
                 if loc in ['bottom', 'top']:
-                    spine.set_position(('outward', form.xOffset.value()))
+                    spine.set_position(('outward', self.form.xOffset.value()))
                 if loc in ['left', 'right']:
-                    spine.set_position(('outward', form.yOffset.value()))
+                    spine.set_position(('outward', self.form.yOffset.value()))
             # Now we can restore axes labels
             Plot.xlabel(six.text_type(x))
             Plot.ylabel(six.text_type(y))
@@ -467,68 +438,58 @@ class TaskPanel:
         if not plt:
             self.updateUI()
             return
-        # Get again all the subwidgets (to avoid PySide Pitfalls)
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.all = self.widget(QtGui.QCheckBox, "allAxes")
-        form.xAuto = self.widget(QtGui.QCheckBox, "xAuto")
-        form.yAuto = self.widget(QtGui.QCheckBox, "yAuto")
-        form.xSMin = self.widget(QtGui.QLineEdit, "xMin")
-        form.xSMax = self.widget(QtGui.QLineEdit, "xMax")
-        form.ySMin = self.widget(QtGui.QLineEdit, "yMin")
-        form.ySMax = self.widget(QtGui.QLineEdit, "yMax")
 
         axesList = [plt.axes]
-        if form.all.isChecked():
+        if self.form.all.isChecked():
             axesList = plt.axesList
         if not self.skip:
             self.skip = True
             # X axis
-            if form.xAuto.isChecked():
+            if self.form.xAuto.isChecked():
                 for ax in axesList:
                     ax.set_autoscalex_on(True)
-                form.xSMin.setEnabled(False)
-                form.xSMax.setEnabled(False)
+                self.form.xSMin.setEnabled(False)
+                self.form.xSMax.setEnabled(False)
                 lim = plt.axes.get_xlim()
-                form.xSMin.setText(str(lim[0]))
-                form.xSMax.setText(str(lim[1]))
+                self.form.xSMin.setText(str(lim[0]))
+                self.form.xSMax.setText(str(lim[1]))
             else:
-                form.xSMin.setEnabled(True)
-                form.xSMax.setEnabled(True)
+                self.form.xSMin.setEnabled(True)
+                self.form.xSMax.setEnabled(True)
                 try:
-                    xMin = float(form.xSMin.text())
+                    xMin = float(self.form.xSMin.text())
                 except:
                     xMin = plt.axes.get_xlim()[0]
-                    form.xSMin.setText(str(xMin))
+                    self.form.xSMin.setText(str(xMin))
                 try:
-                    xMax = float(form.xSMax.text())
+                    xMax = float(self.form.xSMax.text())
                 except:
                     xMax = plt.axes.get_xlim()[1]
-                    form.xSMax.setText(str(xMax))
+                    self.form.xSMax.setText(str(xMax))
                 for ax in axesList:
                     ax.set_xlim((xMin, xMax))
             # Y axis
-            if form.yAuto.isChecked():
+            if self.form.yAuto.isChecked():
                 for ax in axesList:
                     ax.set_autoscaley_on(True)
-                form.ySMin.setEnabled(False)
-                form.ySMax.setEnabled(False)
+                self.form.ySMin.setEnabled(False)
+                self.form.ySMax.setEnabled(False)
                 lim = plt.axes.get_ylim()
-                form.ySMin.setText(str(lim[0]))
-                form.ySMax.setText(str(lim[1]))
+                self.form.ySMin.setText(str(lim[0]))
+                self.form.ySMax.setText(str(lim[1]))
             else:
-                form.ySMin.setEnabled(True)
-                form.ySMax.setEnabled(True)
+                self.form.ySMin.setEnabled(True)
+                self.form.ySMax.setEnabled(True)
                 try:
-                    yMin = float(form.ySMin.text())
+                    yMin = float(self.form.ySMin.text())
                 except:
                     yMin = plt.axes.get_ylim()[0]
-                    form.ySMin.setText(str(yMin))
+                    self.form.ySMin.setText(str(yMin))
                 try:
-                    yMax = float(form.ySMax.text())
+                    yMax = float(self.form.ySMax.text())
                 except:
                     yMax = plt.axes.get_ylim()[1]
-                    form.ySMax.setText(str(yMax))
+                    self.form.ySMax.setText(str(yMax))
                 for ax in axesList:
                     ax.set_ylim((yMin, yMax))
             plt.update()
@@ -547,97 +508,76 @@ class TaskPanel:
     def updateUI(self):
         """Setup UI controls values if possible"""
         plt = Plot.getPlot()
-        # Get again all the subwidgets (to avoid PySide Pitfalls)
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.axId = self.widget(QtGui.QSpinBox, "axesIndex")
-        form.new = self.widget(QtGui.QPushButton, "newAxesButton")
-        form.remove = self.widget(QtGui.QPushButton, "delAxesButton")
-        form.all = self.widget(QtGui.QCheckBox, "allAxes")
-        form.xMin = self.widget(QtGui.QSlider, "posXMin")
-        form.xMax = self.widget(QtGui.QSlider, "posXMax")
-        form.yMin = self.widget(QtGui.QSlider, "posYMin")
-        form.yMax = self.widget(QtGui.QSlider, "posYMax")
-        form.xAlign = self.widget(QtGui.QComboBox, "xAlign")
-        form.yAlign = self.widget(QtGui.QComboBox, "yAlign")
-        form.xOffset = self.widget(QtGui.QSpinBox, "xOffset")
-        form.yOffset = self.widget(QtGui.QSpinBox, "yOffset")
-        form.xAuto = self.widget(QtGui.QCheckBox, "xAuto")
-        form.yAuto = self.widget(QtGui.QCheckBox, "yAuto")
-        form.xSMin = self.widget(QtGui.QLineEdit, "xMin")
-        form.xSMax = self.widget(QtGui.QLineEdit, "xMax")
-        form.ySMin = self.widget(QtGui.QLineEdit, "yMin")
-        form.ySMax = self.widget(QtGui.QLineEdit, "yMax")
         # Enable/disable them
-        form.axId.setEnabled(bool(plt))
-        form.new.setEnabled(bool(plt))
-        form.remove.setEnabled(bool(plt))
-        form.all.setEnabled(bool(plt))
-        form.xMin.setEnabled(bool(plt))
-        form.xMax.setEnabled(bool(plt))
-        form.yMin.setEnabled(bool(plt))
-        form.yMax.setEnabled(bool(plt))
-        form.xAlign.setEnabled(bool(plt))
-        form.yAlign.setEnabled(bool(plt))
-        form.xOffset.setEnabled(bool(plt))
-        form.yOffset.setEnabled(bool(plt))
-        form.xAuto.setEnabled(bool(plt))
-        form.yAuto.setEnabled(bool(plt))
-        form.xSMin.setEnabled(bool(plt))
-        form.xSMax.setEnabled(bool(plt))
-        form.ySMin.setEnabled(bool(plt))
-        form.ySMax.setEnabled(bool(plt))
+        self.form.axId.setEnabled(bool(plt))
+        self.form.new.setEnabled(bool(plt))
+        self.form.remove.setEnabled(bool(plt))
+        self.form.all.setEnabled(bool(plt))
+        self.form.xMin.setEnabled(bool(plt))
+        self.form.xMax.setEnabled(bool(plt))
+        self.form.yMin.setEnabled(bool(plt))
+        self.form.yMax.setEnabled(bool(plt))
+        self.form.xAlign.setEnabled(bool(plt))
+        self.form.yAlign.setEnabled(bool(plt))
+        self.form.xOffset.setEnabled(bool(plt))
+        self.form.yOffset.setEnabled(bool(plt))
+        self.form.xAuto.setEnabled(bool(plt))
+        self.form.yAuto.setEnabled(bool(plt))
+        self.form.xSMin.setEnabled(bool(plt))
+        self.form.xSMax.setEnabled(bool(plt))
+        self.form.ySMin.setEnabled(bool(plt))
+        self.form.ySMax.setEnabled(bool(plt))
         if not plt:
-            form.axId.setValue(0)
+            self.form.axId.setValue(0)
             return
         # Ensure that active axes is correct
-        index = min(form.axId.value(), len(plt.axesList) - 1)
-        form.axId.setValue(index)
+        index = min(self.form.axId.value(), len(plt.axesList) - 1)
+        self.form.axId.setValue(index)
         # Set dimensions
         ax = plt.axes
         bb = ax.get_position()
-        form.xMin.setValue(int(100 * bb._get_xmin()))
-        form.xMax.setValue(int(100 * bb._get_xmax()))
-        form.yMin.setValue(int(100 * bb._get_ymin()))
-        form.yMax.setValue(int(100 * bb._get_ymax()))
+        self.form.xMin.setValue(int(100 * bb.min[0]))
+        self.form.xMax.setValue(int(100 * bb.max[0]))
+        self.form.yMin.setValue(int(100 * bb.min[1]))
+        self.form.yMax.setValue(int(100 * bb.max[1]))
         # Set alignment and offset
         xPos = ax.xaxis.get_ticks_position()
         yPos = ax.yaxis.get_ticks_position()
         xOffset = ax.spines['bottom'].get_position()[1]
         yOffset = ax.spines['left'].get_position()[1]
         if xPos == 'bottom' or xPos == 'default':
-            form.xAlign.setCurrentIndex(0)
+            self.form.xAlign.setCurrentIndex(0)
         else:
-            form.xAlign.setCurrentIndex(1)
-        form.xOffset.setValue(xOffset)
+            self.form.xAlign.setCurrentIndex(1)
+        self.form.xOffset.setValue(xOffset)
         if yPos == 'left' or yPos == 'default':
-            form.yAlign.setCurrentIndex(0)
+            self.form.yAlign.setCurrentIndex(0)
         else:
-            form.yAlign.setCurrentIndex(1)
-        form.yOffset.setValue(yOffset)
+            self.form.yAlign.setCurrentIndex(1)
+        self.form.yOffset.setValue(yOffset)
         # Set scales
         if ax.get_autoscalex_on():
-            form.xAuto.setChecked(True)
-            form.xSMin.setEnabled(False)
-            form.xSMax.setEnabled(False)
+            self.form.xAuto.setChecked(True)
+            self.form.xSMin.setEnabled(False)
+            self.form.xSMax.setEnabled(False)
         else:
-            form.xAuto.setChecked(False)
-            form.xSMin.setEnabled(True)
-            form.xSMax.setEnabled(True)
+            self.form.xAuto.setChecked(False)
+            self.form.xSMin.setEnabled(True)
+            self.form.xSMax.setEnabled(True)
         lim = ax.get_xlim()
-        form.xSMin.setText(str(lim[0]))
-        form.xSMax.setText(str(lim[1]))
+        self.form.xSMin.setText(str(lim[0]))
+        self.form.xSMax.setText(str(lim[1]))
         if ax.get_autoscaley_on():
-            form.yAuto.setChecked(True)
-            form.ySMin.setEnabled(False)
-            form.ySMax.setEnabled(False)
+            self.form.yAuto.setChecked(True)
+            self.form.ySMin.setEnabled(False)
+            self.form.ySMax.setEnabled(False)
         else:
-            form.yAuto.setChecked(False)
-            form.ySMin.setEnabled(True)
-            form.ySMax.setEnabled(True)
+            self.form.yAuto.setChecked(False)
+            self.form.ySMin.setEnabled(True)
+            self.form.ySMax.setEnabled(True)
         lim = ax.get_ylim()
-        form.ySMin.setText(str(lim[0]))
-        form.ySMax.setText(str(lim[1]))
+        self.form.ySMin.setText(str(lim[0]))
+        self.form.ySMax.setText(str(lim[1]))
 
 
 def createTask():

@@ -22,10 +22,16 @@
 #***************************************************************************
 
 
+import os
+
+
 class PlotWorkbench(Workbench):
     """Workbench of Plot module."""
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Plot/resources/icons/PlotWorkbench.svg"
+        __dirname__ = os.path.join(FreeCAD.getResourceDir(), "Mod", "Plot")
+        self.__class__.Icon = os.path.join(__dirname__,
+                                           "resources", "icons",
+                                           "Plot_Workbench.svg")
         self.__class__.MenuText = "Plot"
         self.__class__.ToolTip = "The Plot module is used to edit/save output plots performed by other tools"
 

@@ -48,7 +48,7 @@ class Save:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             "Plot_SaveFig",
             "Save the plot as an image file")
-        return {'Pixmap': 'Save',
+        return {'Pixmap': 'Plot_Save',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -65,7 +65,7 @@ class Axes:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             "Plot_Axes",
             "Configure the axes parameters")
-        return {'Pixmap': 'Axes',
+        return {'Pixmap': 'Plot_Axes',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -84,7 +84,7 @@ class Series:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             "Plot_Series",
             "Configure series drawing style and label")
-        return {'Pixmap': 'Series',
+        return {'Pixmap': 'Plot_Series',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -112,7 +112,7 @@ class Grid:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             "Plot_Grid",
             "Show/Hide grid on selected plot")
-        return {'Pixmap': 'Grid',
+        return {'Pixmap': 'Plot_Grid',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -138,7 +138,7 @@ class Legend:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             "Plot_Legend",
             "Show/Hide legend on selected plot")
-        return {'Pixmap': 'Legend',
+        return {'Pixmap': 'Plot_Legend',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -155,7 +155,7 @@ class Labels:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             "Plot_Labels",
             "Set title and axes labels")
-        return {'Pixmap': 'Labels',
+        return {'Pixmap': 'Plot_Labels',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -172,7 +172,7 @@ class Positions:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             "Plot_Positions",
             "Set labels and legend positions and sizes")
-        return {'Pixmap': 'Positions',
+        return {'Pixmap': 'Plot_Positions',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 

@@ -27,6 +27,7 @@ import six
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import Plot_rc  # include resources, icons, ui files
 
 from PySide import QtGui, QtCore
 
@@ -34,9 +35,15 @@ import Plot
 from plotUtils import Paths
 
 
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Plot_rc.__name__)
+
+
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/plotSave/TaskPanel.ui"
+        self.name = "plot save"
+        self.ui = ":/ui/TaskPanel_plotSave.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
         plt = Plot.getPlot()
@@ -47,15 +54,9 @@ class TaskPanel:
                 None)
             App.Console.PrintError(msg + "\n")
             return False
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.path = self.widget(QtGui.QLineEdit, "path")
-        form.sizeX = self.widget(QtGui.QDoubleSpinBox, "sizeX")
-        form.sizeY = self.widget(QtGui.QDoubleSpinBox, "sizeY")
-        form.dpi = self.widget(QtGui.QSpinBox, "dpi")
-        path = six.text_type(form.path.text())
-        size = (form.sizeX.value(), form.sizeY.value())
-        dpi = form.dpi.value()
+        path = six.text_type(self.form.path.text())
+        size = (self.form.sizeX.value(), self.form.sizeY.value())
+        dpi = self.form.dpi.value()
         Plot.save(path, size, dpi)
         return True
 
@@ -84,26 +85,23 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.path = self.widget(QtGui.QLineEdit, "path")
-        form.pathButton = self.widget(QtGui.QPushButton, "pathButton")
-        form.sizeX = self.widget(QtGui.QDoubleSpinBox, "sizeX")
-        form.sizeY = self.widget(QtGui.QDoubleSpinBox, "sizeY")
-        form.dpi = self.widget(QtGui.QSpinBox, "dpi")
-        self.form = form
+        self.form.path = self.widget(QtGui.QLineEdit, "path")
+        self.form.pathButton = self.widget(QtGui.QPushButton, "pathButton")
+        self.form.sizeX = self.widget(QtGui.QDoubleSpinBox, "sizeX")
+        self.form.sizeY = self.widget(QtGui.QDoubleSpinBox, "sizeY")
+        self.form.dpi = self.widget(QtGui.QSpinBox, "dpi")
         self.retranslateUi()
+        home = os.getenv('USERPROFILE') or os.getenv('HOME')
+        self.form.path.setText(os.path.join(home, "plot.png"))
+        self.updateUI()
         QtCore.QObject.connect(
-            form.pathButton,
+            self.form.pathButton,
             QtCore.SIGNAL("pressed()"),
             self.onPathButton)
         QtCore.QObject.connect(
             Plot.getMdiArea(),
             QtCore.SIGNAL("subWindowActivated(QMdiSubWindow*)"),
             self.onMdiArea)
-        home = os.getenv('USERPROFILE') or os.getenv('HOME')
-        form.path.setText(os.path.join(home, "plot.png"))
-        self.updateUI()
         return False
 
     def getMainWindow(self):
@@ -169,34 +167,24 @@ class TaskPanel:
 
     def updateUI(self):
         """ Setup UI controls values if possible """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.path = self.widget(QtGui.QLineEdit, "path")
-        form.pathButton = self.widget(QtGui.QPushButton, "pathButton")
-        form.sizeX = self.widget(QtGui.QDoubleSpinBox, "sizeX")
-        form.sizeY = self.widget(QtGui.QDoubleSpinBox, "sizeY")
-        form.dpi = self.widget(QtGui.QSpinBox, "dpi")
         plt = Plot.getPlot()
-        form.path.setEnabled(bool(plt))
-        form.pathButton.setEnabled(bool(plt))
-        form.sizeX.setEnabled(bool(plt))
-        form.sizeY.setEnabled(bool(plt))
-        form.dpi.setEnabled(bool(plt))
+        self.form.path.setEnabled(bool(plt))
+        self.form.pathButton.setEnabled(bool(plt))
+        self.form.sizeX.setEnabled(bool(plt))
+        self.form.sizeY.setEnabled(bool(plt))
+        self.form.dpi.setEnabled(bool(plt))
         if not plt:
             return
         fig = plt.fig
         size = fig.get_size_inches()
         dpi = fig.get_dpi()
-        form.sizeX.setValue(size[0])
-        form.sizeY.setValue(size[1])
-        form.dpi.setValue(dpi)
+        self.form.sizeX.setValue(size[0])
+        self.form.sizeY.setValue(size[1])
+        self.form.dpi.setValue(dpi)
 
     def onPathButton(self):
         """Executed when the path selection button is pressed."""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.path = self.widget(QtGui.QLineEdit, "path")
-        path = form.path.text()
+        path = self.form.path.text()
         file_choices = ("Portable Network Graphics (*.png)|*.png;;"
                         "Portable Document Format (*.pdf)|*.pdf;;"
                         "PostScript (*.ps)|*.ps;;"
@@ -205,8 +193,8 @@ class TaskPanel:
                                                  'Save figure',
                                                  path,
                                                  file_choices)
-        if path:
-            form.path.setText(path)
+        if path and path[0]:
+            self.form.path.setText(path[0])
 
     def onMdiArea(self, subWin):
         """Executed when a new window is selected on the mdi area.

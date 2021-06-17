@@ -1,14 +1,14 @@
 <RCC>
-    <qresource prefix="Plot">
-        <file>icons/Axes.svg</file>
-        <file>icons/Grid.svg</file>
-        <file>icons/Icon.svg</file>
-        <file>icons/Labels.svg</file>
-        <file>icons/Legend.svg</file>
-        <file>icons/Positions.svg</file>
-        <file>icons/Save.svg</file>
-        <file>icons/Series.svg</file>
-        <file>icons/PlotWorkbench.svg</file>
+    <qresource>
+        <file>icons/Plot_Axes.svg</file>
+        <file>icons/Plot_Grid.svg</file>
+        <file>icons/Plot_Icon.svg</file>
+        <file>icons/Plot_Labels.svg</file>
+        <file>icons/Plot_Legend.svg</file>
+        <file>icons/Plot_Positions.svg</file>
+        <file>icons/Plot_Save.svg</file>
+        <file>icons/Plot_Series.svg</file>
+        <file>icons/Plot_Workbench.svg</file>
         <file>translations/Plot_af.qm</file>
         <file>translations/Plot_cs.qm</file>
         <file>translations/Plot_de.qm</file>
@@ -46,5 +46,10 @@
         <file>translations/Plot_val-ES.qm</file>
         <file>translations/Plot_ar.qm</file>
         <file>translations/Plot_vi.qm</file>
+        <file>ui/TaskPanel_plotAxes.ui</file>
+        <file>ui/TaskPanel_plotLabels.ui</file>
+        <file>ui/TaskPanel_plotPositions.ui</file>
+        <file>ui/TaskPanel_plotSave.ui</file>
+        <file>ui/TaskPanel_plotSeries.ui</file>
     </qresource>
 </RCC>

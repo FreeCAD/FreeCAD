@@ -23,6 +23,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import Plot_rc  # include resources, icons, ui files
 
 from PySide import QtGui, QtCore
 
@@ -34,9 +35,15 @@ from matplotlib.lines import Line2D
 import matplotlib.colors as Colors
 
 
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Plot_rc.__name__)
+
+
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/plotSeries/TaskPanel.ui"
+        self.name = "plot series editor"
+        self.ui = ":/ui/TaskPanel_plotSeries.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
         self.skip = False
         self.item = 0
         self.plt = None
@@ -69,55 +76,52 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.items = self.widget(QtGui.QListWidget, "items")
-        form.label = self.widget(QtGui.QLineEdit, "label")
-        form.isLabel = self.widget(QtGui.QCheckBox, "isLabel")
-        form.style = self.widget(QtGui.QComboBox, "lineStyle")
-        form.marker = self.widget(QtGui.QComboBox, "markers")
-        form.width = self.widget(QtGui.QDoubleSpinBox, "lineWidth")
-        form.size = self.widget(QtGui.QSpinBox, "markerSize")
-        form.color = self.widget(QtGui.QPushButton, "color")
-        form.remove = self.widget(QtGui.QPushButton, "remove")
-        self.form = form
+        self.form.items = self.widget(QtGui.QListWidget, "items")
+        self.form.label = self.widget(QtGui.QLineEdit, "label")
+        self.form.isLabel = self.widget(QtGui.QCheckBox, "isLabel")
+        self.form.style = self.widget(QtGui.QComboBox, "lineStyle")
+        self.form.marker = self.widget(QtGui.QComboBox, "markers")
+        self.form.width = self.widget(QtGui.QDoubleSpinBox, "lineWidth")
+        self.form.size = self.widget(QtGui.QSpinBox, "markerSize")
+        self.form.color = self.widget(QtGui.QPushButton, "color")
+        self.form.remove = self.widget(QtGui.QPushButton, "remove")
         self.retranslateUi()
         self.fillStyles()
         self.updateUI()
         QtCore.QObject.connect(
-            form.items,
+            self.form.items,
             QtCore.SIGNAL("currentRowChanged(int)"),
             self.onItem)
         QtCore.QObject.connect(
-            form.label,
+            self.form.label,
             QtCore.SIGNAL("editingFinished()"),
             self.onData)
         QtCore.QObject.connect(
-            form.isLabel,
+            self.form.isLabel,
             QtCore.SIGNAL("stateChanged(int)"),
             self.onData)
         QtCore.QObject.connect(
-            form.style,
+            self.form.style,
             QtCore.SIGNAL("currentIndexChanged(int)"),
             self.onData)
         QtCore.QObject.connect(
-            form.marker,
+            self.form.marker,
             QtCore.SIGNAL("currentIndexChanged(int)"),
             self.onData)
         QtCore.QObject.connect(
-            form.width,
+            self.form.width,
             QtCore.SIGNAL("valueChanged(double)"),
             self.onData)
         QtCore.QObject.connect(
-            form.size,
+            self.form.size,
             QtCore.SIGNAL("valueChanged(int)"),
             self.onData)
         QtCore.QObject.connect(
-            form.color,
+            self.form.color,
             QtCore.SIGNAL("pressed()"),
             self.onColor)
         QtCore.QObject.connect(
-            form.remove,
+            self.form.remove,
             QtCore.SIGNAL("pressed()"),
             self.onRemove)
         QtCore.QObject.connect(
@@ -218,24 +222,16 @@ class TaskPanel:
 
     def fillStyles(self):
         """Fill the style combo boxes with the available ones."""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.style = self.widget(QtGui.QComboBox, "lineStyle")
-        form.marker = self.widget(QtGui.QComboBox, "markers")
         # Line styles
-        linestyles = Line2D.lineStyles.keys()
-        for i in range(0, len(linestyles)):
-            style = linestyles[i]
+        for style in Line2D.lineStyles.keys():
             string = "\'" + str(style) + "\'"
             string += " (" + Line2D.lineStyles[style] + ")"
-            form.style.addItem(string)
+            self.form.style.addItem(string)
         # Markers
-        markers = Line2D.markers.keys()
-        for i in range(0, len(markers)):
-            marker = markers[i]
+        for marker in Line2D.markers.keys():
             string = "\'" + str(marker) + "\'"
             string += " (" + Line2D.markers[marker] + ")"
-            form.marker.addItem(string)
+            self.form.marker.addItem(string)
 
     def onItem(self, row):
         """Executed when the selected item is modified."""
@@ -255,36 +251,28 @@ class TaskPanel:
             if not plt:
                 self.updateUI()
                 return
-            mw = self.getMainWindow()
-            form = mw.findChild(QtGui.QWidget, "TaskPanel")
-            form.label = self.widget(QtGui.QLineEdit, "label")
-            form.isLabel = self.widget(QtGui.QCheckBox, "isLabel")
-            form.style = self.widget(QtGui.QComboBox, "lineStyle")
-            form.marker = self.widget(QtGui.QComboBox, "markers")
-            form.width = self.widget(QtGui.QDoubleSpinBox, "lineWidth")
-            form.size = self.widget(QtGui.QSpinBox, "markerSize")
             # Ensure that selected serie exist
             if self.item >= len(Plot.series()):
                 self.updateUI()
                 return
             # Set label
             serie = Plot.series()[self.item]
-            if(form.isLabel.isChecked()):
+            if(self.form.isLabel.isChecked()):
                 serie.name = None
-                form.label.setEnabled(False)
+                self.form.label.setEnabled(False)
             else:
-                serie.name = form.label.text()
-                form.label.setEnabled(True)
+                serie.name = self.form.label.text()
+                self.form.label.setEnabled(True)
             # Set line style and marker
-            style = form.style.currentIndex()
-            linestyles = Line2D.lineStyles.keys()
+            style = self.form.style.currentIndex()
+            linestyles = list(Line2D.lineStyles.keys())
             serie.line.set_linestyle(linestyles[style])
-            marker = form.marker.currentIndex()
-            markers = Line2D.markers.keys()
+            marker = self.form.marker.currentIndex()
+            markers = list(Line2D.markers.keys())
             serie.line.set_marker(markers[marker])
             # Set line width and marker size
-            serie.line.set_linewidth(form.width.value())
-            serie.line.set_markersize(form.size.value())
+            serie.line.set_linewidth(self.form.width.value())
+            serie.line.set_markersize(self.form.size.value())
             plt.update()
             # Regenerate series labels
             self.setList()
@@ -296,9 +284,6 @@ class TaskPanel:
         if not plt:
             self.updateUI()
             return
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.color = self.widget(QtGui.QPushButton, "color")
 
         # Ensure that selected serie exist
         if self.item >= len(Plot.series()):
@@ -309,7 +294,7 @@ class TaskPanel:
         # Send color to widget and serie
         if col.isValid():
             serie = plt.series[self.item]
-            form.color.setStyleSheet(
+            self.form.color.setStyleSheet(
                 "background-color: rgb({}, {}, {});".format(col.red(),
                                                             col.green(),
                                                             col.blue()))
@@ -344,75 +329,60 @@ class TaskPanel:
 
     def updateUI(self):
         """ Setup UI controls values if possible """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.items = self.widget(QtGui.QListWidget, "items")
-        form.label = self.widget(QtGui.QLineEdit, "label")
-        form.isLabel = self.widget(QtGui.QCheckBox, "isLabel")
-        form.style = self.widget(QtGui.QComboBox, "lineStyle")
-        form.marker = self.widget(QtGui.QComboBox, "markers")
-        form.width = self.widget(QtGui.QDoubleSpinBox, "lineWidth")
-        form.size = self.widget(QtGui.QSpinBox, "markerSize")
-        form.color = self.widget(QtGui.QPushButton, "color")
-        form.remove = self.widget(QtGui.QPushButton, "remove")
         plt = Plot.getPlot()
-        form.items.setEnabled(bool(plt))
-        form.label.setEnabled(bool(plt))
-        form.isLabel.setEnabled(bool(plt))
-        form.style.setEnabled(bool(plt))
-        form.marker.setEnabled(bool(plt))
-        form.width.setEnabled(bool(plt))
-        form.size.setEnabled(bool(plt))
-        form.color.setEnabled(bool(plt))
-        form.remove.setEnabled(bool(plt))
+        self.form.items.setEnabled(bool(plt))
+        self.form.label.setEnabled(bool(plt))
+        self.form.isLabel.setEnabled(bool(plt))
+        self.form.style.setEnabled(bool(plt))
+        self.form.marker.setEnabled(bool(plt))
+        self.form.width.setEnabled(bool(plt))
+        self.form.size.setEnabled(bool(plt))
+        self.form.color.setEnabled(bool(plt))
+        self.form.remove.setEnabled(bool(plt))
         if not plt:
             self.plt = plt
-            form.items.clear()
+            self.form.items.clear()
             return
         self.skip = True
         # Refill list
-        if self.plt != plt or len(Plot.series()) != form.items.count():
+        if self.plt != plt or len(Plot.series()) != self.form.items.count():
             self.plt = plt
             self.setList()
         # Ensure that have series
         if not len(Plot.series()):
-            form.label.setEnabled(False)
-            form.isLabel.setEnabled(False)
-            form.style.setEnabled(False)
-            form.marker.setEnabled(False)
-            form.width.setEnabled(False)
-            form.size.setEnabled(False)
-            form.color.setEnabled(False)
-            form.remove.setEnabled(False)
+            self.form.label.setEnabled(False)
+            self.form.isLabel.setEnabled(False)
+            self.form.style.setEnabled(False)
+            self.form.marker.setEnabled(False)
+            self.form.width.setEnabled(False)
+            self.form.size.setEnabled(False)
+            self.form.color.setEnabled(False)
+            self.form.remove.setEnabled(False)
             return
         # Set label
         serie = Plot.series()[self.item]
         if serie.name is None:
-            form.isLabel.setChecked(True)
-            form.label.setEnabled(False)
-            form.label.setText("")
+            self.form.isLabel.setChecked(True)
+            self.form.label.setEnabled(False)
+            self.form.label.setText("")
         else:
-            form.isLabel.setChecked(False)
-            form.label.setText(serie.name)
+            self.form.isLabel.setChecked(False)
+            self.form.label.setText(serie.name)
         # Set line style and marker
-        form.style.setCurrentIndex(0)
-        linestyles = Line2D.lineStyles.keys()
-        for i in range(0, len(linestyles)):
-            style = linestyles[i]
+        self.form.style.setCurrentIndex(0)
+        for i, style in enumerate(Line2D.lineStyles.keys()):
             if style == serie.line.get_linestyle():
-                form.style.setCurrentIndex(i)
-        form.marker.setCurrentIndex(0)
-        markers = Line2D.markers.keys()
-        for i in range(0, len(markers)):
-            marker = markers[i]
+                self.form.style.setCurrentIndex(i)
+        self.form.marker.setCurrentIndex(0)
+        for i, marker in enumerate(Line2D.markers.keys()):
             if marker == serie.line.get_marker():
-                form.marker.setCurrentIndex(i)
+                self.form.marker.setCurrentIndex(i)
         # Set line width and marker size
-        form.width.setValue(serie.line.get_linewidth())
-        form.size.setValue(serie.line.get_markersize())
+        self.form.width.setValue(serie.line.get_linewidth())
+        self.form.size.setValue(serie.line.get_markersize())
         # Set color
         color = Colors.colorConverter.to_rgb(serie.line.get_color())
-        form.color.setStyleSheet("background-color: rgb({}, {}, {});".format(
+        self.form.color.setStyleSheet("background-color: rgb({}, {}, {});".format(
             int(color[0] * 255),
             int(color[1] * 255),
             int(color[2] * 255)))
@@ -422,8 +392,8 @@ class TaskPanel:
         """Setup the UI control values if it is possible."""
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.items = self.widget(QtGui.QListWidget, "items")
-        form.items.clear()
+        self.form.items = self.widget(QtGui.QListWidget, "items")
+        self.form.items.clear()
         series = Plot.series()
         for i in range(0, len(series)):
             serie = series[i]
@@ -432,11 +402,11 @@ class TaskPanel:
                 string = string + '\"No label\"'
             else:
                 string = string + serie.name
-            form.items.addItem(string)
+            self.form.items.addItem(string)
         # Ensure that selected item is correct
         if len(series) and self.item >= len(series):
             self.item = len(series) - 1
-            form.items.setCurrentIndex(self.item)
+            self.form.items.setCurrentIndex(self.item)
 
 
 def createTask():
