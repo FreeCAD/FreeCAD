@@ -901,7 +901,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="331"/>
+        <location filename="../../TaskCenterLine.cpp" line="327"/>
         <source>Create CenterLine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1816,12 +1816,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="200"/>
+        <location filename="../../TaskCenterLine.cpp" line="196"/>
         <source>Create Center Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="230"/>
+        <location filename="../../TaskCenterLine.cpp" line="226"/>
         <source>Edit Center Line</source>
         <translation type="unfinished"></translation>
     </message>
