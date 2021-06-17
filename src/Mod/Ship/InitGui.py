@@ -22,10 +22,16 @@
 #***************************************************************************
 
 
+import os
+
+
 class ShipWorkbench(Workbench):
     """Ships design workbench."""
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Ship/resources/icons/ShipWorkbench.svg"
+        __dirname__ = os.path.join(FreeCAD.getResourceDir(), "Mod", "Ship")
+        self.__class__.Icon = os.path.join(__dirname__,
+                                           "resources", "icons",
+                                           "Ship_Workbench.svg")
         self.__class__.MenuText = "Ship"
         self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
 

@@ -48,7 +48,7 @@ def createShip(solids, L, B, T):
     Units.parseQuantity method, e.g. The following obfuscated code snippet build
     such variables:
 
-    import Units
+    from FreeCAD import Units
     L = Units.parseQuantity("25.5 m")
     B = Units.parseQuantity("3.9 m")
     T = Units.parseQuantity("1.0 m")

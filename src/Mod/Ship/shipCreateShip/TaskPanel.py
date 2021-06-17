@@ -23,6 +23,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import Ship_rc  # include resources, icons, ui files
 from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Preview
@@ -32,25 +33,25 @@ from shipUtils import Paths
 import shipUtils.Units as USys
 import shipUtils.Locale as Locale
 
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Ship_rc.__name__)
+
+
 class TaskPanel:
     def __init__(self):
         """Constructor"""
-        self.ui = Paths.modulePath() + "/shipCreateShip/TaskPanel.ui"
+        self.name = "ship creation"
+        self.ui = ":/ui/TaskPanel_shipCreateShip.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
         self.preview = Preview.Preview()
 
     def accept(self):
         """Create the ship instance"""
         self.preview.clean()
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QLineEdit, "Length")
-        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
-        form.draft = self.widget(QtGui.QLineEdit, "Draft")
-
         Tools.createShip(self.solids,
-                         Locale.fromString(form.length.text()),
-                         Locale.fromString(form.breadth.text()),
-                         Locale.fromString(form.draft.text()))
+                         Locale.fromString(self.form.length.text()),
+                         Locale.fromString(self.form.breadth.text()),
+                         Locale.fromString(self.form.draft.text()))
         return True
 
     def reject(self):
@@ -81,28 +82,25 @@ class TaskPanel:
 
     def setupUi(self):
         """Create and configurate the user interface"""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QLineEdit, "Length")
-        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
-        form.draft = self.widget(QtGui.QLineEdit, "Draft")
-        form.mainLogo = self.widget(QtGui.QLabel, "MainLogo")
-        form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
-        self.form = form
+        self.form.length = self.widget(QtGui.QLineEdit, "Length")
+        self.form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
+        self.form.draft = self.widget(QtGui.QLineEdit, "Draft")
+        self.form.mainLogo = self.widget(QtGui.QLabel, "MainLogo")
+        self.form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
         if self.initValues():
             return True
         self.retranslateUi()
         self.preview.update(self.L, self.B, self.T)
         QtCore.QObject.connect(
-            form.length,
+            self.form.length,
             QtCore.SIGNAL("valueChanged(double)"),
             self.onData)
         QtCore.QObject.connect(
-            form.breadth,
+            self.form.breadth,
             QtCore.SIGNAL("valueChanged(double)"),
             self.onData)
         QtCore.QObject.connect(
-            form.draft,
+            self.form.draft,
             QtCore.SIGNAL("valueChanged(double)"),
             self.onData)
 
@@ -191,22 +189,16 @@ class TaskPanel:
 
         input_format = USys.getLengthFormat()
 
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QLineEdit, "Length")
-        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
-        form.draft = self.widget(QtGui.QLineEdit, "Draft")
-
         qty = Units.Quantity(self.bounds[0], Units.Length)
-        form.length.setText(Locale.toString(input_format.format(
+        self.form.length.setText(Locale.toString(input_format.format(
             qty.getValueAs(USys.getLengthUnits()).Value)))
         self.L = self.bounds[0] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[1], Units.Length)
-        form.breadth.setText(Locale.toString(input_format.format(
+        self.form.breadth.setText(Locale.toString(input_format.format(
             qty.getValueAs(USys.getLengthUnits()).Value)))
         self.B = self.bounds[1] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[2], Units.Length)
-        form.draft.setText(Locale.toString(input_format.format(
+        self.form.draft.setText(Locale.toString(input_format.format(
             0.5 * qty.getValueAs(USys.getLengthUnits()).Value)))
         self.T = 0.5 * self.bounds[2] / Units.Metre.Value
         return False
@@ -250,27 +242,21 @@ class TaskPanel:
         value -- Edited value. This parameter is required in order to use this
         method as a callback function, but it is not useful.
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QLineEdit, "Length")
-        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
-        form.draft = self.widget(QtGui.QLineEdit, "Draft")
-
-        qty = Units.Quantity(Locale.fromString(form.length.text()))
+        qty = Units.Quantity(Locale.fromString(self.form.length.text()))
         val_min = 0.001
         val_max = self.bounds[0] / Units.Metre.Value
         val = qty.getValueAs('m').Value
-        self.L = self.clampVal(form.length, val_min, val_max, val)
-        qty = Units.Quantity(Locale.fromString(form.breadth.text()))
+        self.L = self.clampVal(self.form.length, val_min, val_max, val)
+        qty = Units.Quantity(Locale.fromString(self.form.breadth.text()))
         val_min = 0.001
         val_max = self.bounds[1] / Units.Metre.Value
         val = qty.getValueAs('m').Value
-        self.B = self.clampVal(form.breadth, val_min, val_max, val)
-        qty = Units.Quantity(Locale.fromString(form.draft.text()))
+        self.B = self.clampVal(self.form.breadth, val_min, val_max, val)
+        qty = Units.Quantity(Locale.fromString(self.form.draft.text()))
         val_min = 0.001
         val_max = self.bounds[2] / Units.Metre.Value
         val = qty.getValueAs('m').Value
-        self.T = self.clampVal(form.draft, val_min, val_max, val)
+        self.T = self.clampVal(self.form.draft, val_min, val_max, val)
         self.preview.update(self.L, self.B, self.T)
 
     def getSolids(self, obj):

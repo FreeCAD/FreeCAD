@@ -23,28 +23,31 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import Ship_rc  # include resources, icons, ui files
 from PySide import QtGui, QtCore
 from shipUtils import Paths
 
 
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Ship_rc.__name__)
+
+
 class TaskPanel:
     def __init__(self):
-        """Constructor."""
-        self.ui = Paths.modulePath() + "/shipLoadExample/TaskPanel.ui"
+        self.name = "Example ships loader"
+        self.ui = ":/ui/TaskPanel_shipLoadExample.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
         """Load the selected hull example."""
         path = Paths.modulePath() + "/resources/examples/"
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
-        if(form.ship.currentIndex() == 0):     # s60 from Iowa University
+        if(self.form.ship.currentIndex() == 0):     # s60 from Iowa University
             App.open(path + "s60.fcstd")
-        elif(form.ship.currentIndex() == 1):   # Wigley canonical ship
+        elif(self.form.ship.currentIndex() == 1):   # Wigley canonical ship
             App.open(path + "wigley.fcstd")
-        elif(form.ship.currentIndex() == 2):   # s60 (Katamaran)
+        elif(self.form.ship.currentIndex() == 2):   # s60 (Katamaran)
             App.open(path + "s60_katamaran.fcstd")
-        elif(form.ship.currentIndex() == 3):   # Wigley (Katamaran)
+        elif(self.form.ship.currentIndex() == 3):   # Wigley (Katamaran)
             App.open(path + "wigley_katamaran.fcstd")
         return True
 
@@ -75,12 +78,9 @@ class TaskPanel:
 
     def setupUi(self):
         """Setup the task panel user interface."""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
-        form.mainLogo = self.widget(QtGui.QLabel, "MainLogo")
-        form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
-        self.form = form
+        self.form.ship = self.widget(QtGui.QComboBox, "Ship")
+        self.form.mainLogo = self.widget(QtGui.QLabel, "MainLogo")
+        self.form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
         self.retranslateUi()
 
     def getMainWindow(self):

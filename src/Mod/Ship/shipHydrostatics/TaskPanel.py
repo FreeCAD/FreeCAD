@@ -25,6 +25,7 @@
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
+import Ship_rc  # include resources, icons, ui files
 from FreeCAD import Base, Vector
 import Part
 from FreeCAD import Units
@@ -37,9 +38,15 @@ import shipUtils.Locale as Locale
 from . import Tools
 
 
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Ship_rc.__name__)
+
+
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/shipHydrostatics/TaskPanel.ui"
+        self.name = "ship hydrostatic curves plotter"
+        self.ui = ":/ui/TaskPanel_shipHydrostatics.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
         self.ship = None
         self.running = False
 
@@ -50,17 +57,10 @@ class TaskPanel:
             return
         self.save()
 
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
-        form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
-
-        trim = Units.parseQuantity(Locale.fromString(form.trim.text()))
-        min_draft = Units.parseQuantity(Locale.fromString(form.minDraft.text()))
-        max_draft = Units.parseQuantity(Locale.fromString(form.maxDraft.text()))
-        n_draft = form.nDraft.value()
+        trim = Units.parseQuantity(Locale.fromString(self.form.trim.text()))
+        min_draft = Units.parseQuantity(Locale.fromString(self.form.minDraft.text()))
+        max_draft = Units.parseQuantity(Locale.fromString(self.form.maxDraft.text()))
+        n_draft = self.form.nDraft.value()
 
         draft = min_draft
         drafts = [draft]
@@ -142,25 +142,22 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
-        form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
-        self.form = form
+        self.form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        self.form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
+        self.form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
+        self.form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
         # Initial values
         if self.initValues():
             return True
         self.retranslateUi()
         # Connect Signals and Slots
-        QtCore.QObject.connect(form.trim,
+        QtCore.QObject.connect(self.form.trim,
                                QtCore.SIGNAL("valueChanged(double)"),
                                self.onData)
-        QtCore.QObject.connect(form.minDraft,
+        QtCore.QObject.connect(self.form.minDraft,
                                QtCore.SIGNAL("valueChanged(double)"),
                                self.onData)
-        QtCore.QObject.connect(form.maxDraft,
+        QtCore.QObject.connect(self.form.maxDraft,
                                QtCore.SIGNAL("valueChanged(double)"),
                                self.onData)
 
@@ -185,13 +182,6 @@ class TaskPanel:
     def initValues(self):
         """ Set initial values for fields
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
-        form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
-
         selObjs = Gui.Selection.getSelection()
         if not selObjs:
             msg = QtGui.QApplication.translate(
@@ -235,32 +225,32 @@ class TaskPanel:
 
         try:
             props.index("HydrostaticsTrim")
-            form.trim.setText(Locale.toString(angle_format.format(
+            self.form.trim.setText(Locale.toString(angle_format.format(
                 self.ship.HydrostaticsTrim.getValueAs(
                     USys.getLengthUnits()).Value)))
         except ValueError:
-            form.trim.setText(Locale.toString(angle_format.format(0.0)))
+            self.form.trim.setText(Locale.toString(angle_format.format(0.0)))
 
         try:
             props.index("HydrostaticsMinDraft")
-            form.minDraft.setText(Locale.toString(length_format.format(
+            self.form.minDraft.setText(Locale.toString(length_format.format(
                 self.ship.HydrostaticsMinDraft.getValueAs(
                     USys.getLengthUnits()).Value)))
         except ValueError:
-            form.minDraft.setText(Locale.toString(length_format.format(
+            self.form.minDraft.setText(Locale.toString(length_format.format(
                 0.9 * self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
         try:
             props.index("HydrostaticsMaxDraft")
-            form.maxDraft.setText(Locale.toString(length_format.format(
+            self.form.maxDraft.setText(Locale.toString(length_format.format(
                 self.ship.HydrostaticsMaxDraft.getValueAs(
                     USys.getLengthUnits()).Value)))
         except ValueError:
-            form.maxDraft.setText(Locale.toString(length_format.format(
+            self.form.maxDraft.setText(Locale.toString(length_format.format(
                 1.1 * self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
 
         try:
             props.index("HydrostaticsNDraft")
-            form.nDraft.setValue(self.ship.HydrostaticsNDraft)
+            self.form.nDraft.setValue(self.ship.HydrostaticsNDraft)
         except ValueError:
             pass
 
@@ -269,9 +259,7 @@ class TaskPanel:
     def retranslateUi(self):
         """ Set user interface locale strings.
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.setWindowTitle(QtGui.QApplication.translate(
+        self.form.setWindowTitle(QtGui.QApplication.translate(
             "ship_hydrostatic",
             "Plot hydrostatics",
             None))
@@ -322,64 +310,59 @@ class TaskPanel:
         """
         if not self.ship:
             return
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
 
         # Get the values (or fix them in bad setting case)
         try:
             trim = Units.Quantity(Locale.fromString(
-                form.trim.text())).getValueAs('deg').Value
+                self.form.trim.text())).getValueAs('deg').Value
         except:
             trim = 0.0
             input_format = USys.getAngleFormat()
             qty = Units.Quantity('{} deg'.format(trim))
-            form.trim.setText(Locale.toString(input_format.format(
+            self.form.trim.setText(Locale.toString(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
             min_draft = Units.Quantity(Locale.fromString(
-                form.minDraft.text())).getValueAs('m').Value
+                self.form.minDraft.text())).getValueAs('m').Value
         except:
             min_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
             qty = Units.Quantity('{} m'.format(min_draft))
-            form.minDraft.setText(Locale.toString(input_format.format(
+            self.form.minDraft.setText(Locale.toString(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
             max_draft = Units.Quantity(Locale.fromString(
-                form.minDraft.text())).getValueAs('m').Value
+                self.form.minDraft.text())).getValueAs('m').Value
         except:
             max_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
             qty = Units.Quantity('{} m'.format(max_draft))
-            form.maxDraft.setText(Locale.toString(input_format.format(
+            self.form.maxDraft.setText(Locale.toString(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value)))
 
         # Clamp the values to the bounds
         bbox = self.ship.Shape.BoundBox
         draft_min = bbox.ZMin / Units.Metre.Value
         draft_max = bbox.ZMax / Units.Metre.Value
-        min_draft = self.clampLength(form.minDraft,
+        min_draft = self.clampLength(self.form.minDraft,
                                      draft_min,
                                      draft_max,
                                      min_draft)
-        max_draft = self.clampLength(form.maxDraft,
+        max_draft = self.clampLength(self.form.maxDraft,
                                      draft_min,
                                      draft_max,
                                      max_draft)
         trim_min = -180.0
         trim_max = 180.0
-        trim = self.clampAngle(form.trim, trim_min, trim_max, trim)
+        trim = self.clampAngle(self.form.trim, trim_min, trim_max, trim)
 
         # Clamp draft values to assert that the minimum value is lower than
         # the maximum one
-        min_draft = self.clampLength(form.minDraft,
+        min_draft = self.clampLength(self.form.minDraft,
                                      draft_min,
                                      max_draft,
                                      min_draft)
-        max_draft = self.clampLength(form.maxDraft,
+        max_draft = self.clampLength(self.form.maxDraft,
                                      min_draft,
                                      draft_max,
                                      max_draft)
@@ -388,20 +371,18 @@ class TaskPanel:
     def save(self):
         """ Saves data into ship instance.
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
-        form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
+        self.form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        self.form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
+        self.form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
+        self.form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
 
         trim = Units.Quantity(Locale.fromString(
-            form.trim.text())).getValueAs('deg').Value
+            self.form.trim.text())).getValueAs('deg').Value
         min_draft = Units.Quantity(Locale.fromString(
-            form.minDraft.text())).getValueAs('m').Value
+            self.form.minDraft.text())).getValueAs('m').Value
         max_draft = Units.Quantity(Locale.fromString(
-            form.maxDraft.text())).getValueAs('m').Value
-        n_draft = form.nDraft.value()
+            self.form.maxDraft.text())).getValueAs('m').Value
+        n_draft = self.form.nDraft.value()
 
         props = self.ship.PropertiesList
         try:
@@ -454,7 +435,7 @@ class TaskPanel:
                                   "HydrostaticsNDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsNDraft = form.nDraft.value()
+        self.ship.HydrostaticsNDraft = self.form.nDraft.value()
 
     def lineFaceSection(self, line, surface):
         """ Returns the point of section of a line with a face

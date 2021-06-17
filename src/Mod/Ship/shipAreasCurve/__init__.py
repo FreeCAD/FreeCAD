@@ -21,9 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-from . import TaskPanel
+from .TaskPanel import createTask
 
 
 def load():
-    """ Loads the tool """
-    TaskPanel.createTask()
+    createTask()

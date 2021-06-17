@@ -23,7 +23,7 @@
 
 
 import FreeCAD as App
-import Units
+from FreeCAD import Units
 import WeightInstance as Instance
 import shipUtils.Units as USys
 

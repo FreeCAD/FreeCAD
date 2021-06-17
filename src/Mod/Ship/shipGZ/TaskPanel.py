@@ -24,6 +24,7 @@
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
+import Ship_rc  # include resources, icons, ui files
 from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import PlotAux
@@ -33,24 +34,24 @@ import shipUtils.Units as USys
 import shipUtils.Locale as Locale
 
 
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Ship_rc.__name__)
+
+
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/shipGZ/TaskPanel.ui"
+        self.name = "ship GZ stability curve plotter"
+        self.ui = ":/ui/TaskPanel_shipGZ.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
         if self.lc is None:
             return False
         self.save()
 
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
-        form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
-
-        roll = Units.Quantity(Locale.fromString(form.angle.text()))
-        n_points = form.n_points.value()
-        var_trim = form.var_trim.isChecked()
+        roll = Units.Quantity(Locale.fromString(self.form.angle.text()))
+        n_points = self.form.n_points.value()
+        var_trim = self.form.var_trim.isChecked()
 
         rolls = []
         for i in range(n_points):
@@ -94,13 +95,9 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-
-        form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
-        form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
-        self.form = form
+        self.form.angle = self.widget(QtGui.QLineEdit, "Angle")
+        self.form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
+        self.form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
         if self.initValues():
             return True
         self.retranslateUi()
@@ -200,32 +197,30 @@ class TaskPanel:
 
         # We have a valid loading condition, let's set the initial field values
         angle_format = USys.getAngleFormat()
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
-        form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
-        form.angle.setText(Locale.toString(angle_format.format(90.0)))
+        self.form.angle = self.widget(QtGui.QLineEdit, "Angle")
+        self.form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
+        self.form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
+        self.form.angle.setText(Locale.toString(angle_format.format(90.0)))
         # Try to use saved values
         props = self.ship.PropertiesList
         try:
             props.index("GZAngle")
-            form.angle.setText(Locale.toString(angle_format.format(
+            self.form.angle.setText(Locale.toString(angle_format.format(
                 self.ship.GZAngle.getValueAs(
                     USys.getAngleUnits()).Value)))
         except:
             pass
         try:
             props.index("GZNumPoints")
-            form.n_points.setValue(self.ship.GZNumPoints)
+            self.form.n_points.setValue(self.ship.GZNumPoints)
         except ValueError:
             pass
         try:
             props.index("GZVariableTrim")
             if self.ship.GZVariableTrim:
-                form.var_trim.setCheckState(QtCore.Qt.Checked)
+                self.form.var_trim.setCheckState(QtCore.Qt.Checked)
             else:
-                form.var_trim.setCheckState(QtCore.Qt.Unchecked)
+                self.form.var_trim.setCheckState(QtCore.Qt.Unchecked)
         except ValueError:
             pass
 
@@ -234,9 +229,7 @@ class TaskPanel:
 
     def retranslateUi(self):
         """ Set user interface locale strings. """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.setWindowTitle(QtGui.QApplication.translate(
+        self.form.setWindowTitle(QtGui.QApplication.translate(
             "ship_gz",
             "Plot the GZ curve",
             None))
@@ -265,16 +258,14 @@ class TaskPanel:
 
     def save(self):
         """ Saves the data into ship instance. """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
-        form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
+        self.form.angle = self.widget(QtGui.QLineEdit, "Angle")
+        self.form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
+        self.form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
 
         angle = Units.Quantity(Locale.fromString(
-            form.angle.text())).getValueAs('deg').Value
-        n_points = form.n_points.value()
-        var_trim = form.var_trim.isChecked()
+            self.form.angle.text())).getValueAs('deg').Value
+        n_points = self.form.n_points.value()
+        var_trim = self.form.var_trim.isChecked()
 
         props = self.ship.PropertiesList
         try:

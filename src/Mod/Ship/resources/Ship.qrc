@@ -12,7 +12,7 @@
         <file>icons/Ship_OutlineDraw.svg</file>
         <file>icons/Ship_Tank.svg</file>
         <file>icons/Ship_Weight.svg</file>
-        <file>icons/ShipWorkbench.svg</file>
+        <file>icons/Ship_Workbench.svg</file>
         <file>translations/Ship.qm</file>
         <file>translations/Ship_af.qm</file>
         <file>translations/Ship_cs.qm</file>
@@ -51,5 +51,14 @@
         <file>translations/Ship_val-ES.qm</file>
         <file>translations/Ship_ar.qm</file>
         <file>translations/Ship_vi.qm</file>
+        <file>ui/TaskPanel_shipAreasCurve.ui</file>
+        <file>ui/TaskPanel_shipCapacityCurve.ui</file>
+        <file>ui/TaskPanel_shipCreateShip.ui</file>
+        <file>ui/TaskPanel_shipCreateTank.ui</file>
+        <file>ui/TaskPanel_shipCreateWeight.ui</file>
+        <file>ui/TaskPanel_shipGZ.ui</file>
+        <file>ui/TaskPanel_shipHydrostatics.ui</file>
+        <file>ui/TaskPanel_shipLoadExample.ui</file>
+        <file>ui/TaskPanel_shipOutlineDraw.ui</file>
     </qresource>
 </RCC>

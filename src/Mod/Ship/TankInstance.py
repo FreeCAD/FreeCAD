@@ -28,7 +28,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Base, Vector, Matrix, Placement, Rotation
 import Part
-import Units
+from FreeCAD import Units
 from shipUtils import Paths, Math
 import shipUtils.Units as USys
 
@@ -47,10 +47,10 @@ class Tank:
         ship -- Ship where the tank is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "ship_tank",
             "True if it is a valid tank instance, False otherwise",
-            None))
+            None)
         obj.addProperty("App::PropertyBool",
                         "IsTank",
                         "Tank",

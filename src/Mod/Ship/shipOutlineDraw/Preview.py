@@ -133,7 +133,7 @@ class Preview(object):
         obj = sections[0]
         for i in range(1, len(sections)):
             # Just create a group of edges
-            obj = obj.oldFuse(sections[i])
+            obj = obj.multiFuse([sections[i]])
         Part.show(obj)
         objs = FreeCAD.ActiveDocument.Objects
         self.obj = objs[len(objs) - 1]

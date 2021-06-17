@@ -41,69 +41,69 @@ class Ship:
         solids -- Set of solids which will compound the ship hull.
         """
         # Add an unique property to identify the Ship instances
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "True if it is a valid ship instance, False otherwise",
-            None))
+            None)
         obj.addProperty("App::PropertyBool",
                         "IsShip",
                         "Ship",
                         tooltip).IsShip = True
         # Add the main dimensions
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "Ship length [m]",
-            None))
+            None)
         obj.addProperty("App::PropertyLength",
                         "Length",
                         "Ship",
                         tooltip).Length = 0.0
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "Ship breadth [m]",
-            None))
+            None)
         obj.addProperty("App::PropertyLength",
                         "Breadth",
                         "Ship",
                         tooltip).Breadth = 0.0
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "Ship draft [m]",
-            None))
+            None)
         obj.addProperty("App::PropertyLength",
                         "Draft",
                         "Ship",
                         tooltip).Draft = 0.0
         # Add the subshapes
         obj.Shape = Part.makeCompound(solids)
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "Set of external faces of the ship hull",
-            None))
+            None)
         obj.addProperty("Part::PropertyPartShape",
                         "ExternalFaces",
                         "Ship",
                         tooltip)
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "Set of weight instances",
-            None))
+            None)
         obj.addProperty("App::PropertyStringList",
                         "Weights",
                         "Ship",
                         tooltip).Weights = []
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "Set of tank instances",
-            None))
+            None)
         obj.addProperty("App::PropertyStringList",
                         "Tanks",
                         "Ship",
                         tooltip).Tanks = []
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "Ship",
             "Set of load conditions",
-            None))
+            None)
         obj.addProperty("App::PropertyStringList",
                         "LoadConditions",
                         "Ship",
@@ -130,7 +130,7 @@ class Ship:
         # Filter out the duplicated elements
         filtered_list = []
         [filtered_list.append(x) for x in fp.Weights if x not in filtered_list]
-        if cmp(fp.Weights, filtered_list):
+        if len(fp.Weights) != len(filtered_list):
             fp.Weights = filtered_list
         # Filter out the removed/non-valid objects
         object_names = []
@@ -146,7 +146,7 @@ class Ship:
                         except:
                             pass
                         break
-        if cmp(fp.Weights, filtered_list):
+        if len(fp.Weights) != len(filtered_list):
             fp.Weights = filtered_list
 
     def cleanTanks(self, fp):
@@ -158,7 +158,7 @@ class Ship:
         # Filter out the duplicated elements
         filtered_list = []
         [filtered_list.append(x) for x in fp.Tanks if x not in filtered_list]
-        if cmp(fp.Tanks, filtered_list):
+        if len(fp.Tanks) != len(filtered_list):
             fp.Tanks = filtered_list
         # Filter out the removed/non-valid objects
         object_names = []
@@ -174,7 +174,7 @@ class Ship:
                         except:
                             pass
                         break
-        if cmp(fp.Tanks, filtered_list):
+        if len(fp.Tanks) != len(filtered_list):
             fp.Tanks = filtered_list
 
     def cleanLoadConditions(self, fp):
@@ -186,7 +186,7 @@ class Ship:
         # Filter out the duplicated elements
         filtered_list = []
         [filtered_list.append(x) for x in fp.LoadConditions if x not in filtered_list]
-        if cmp(fp.LoadConditions, filtered_list):
+        if len(fp.LoadConditions) != len(filtered_list):
             fp.LoadConditions = filtered_list
         # Filter out the removed/non-valid objects
         object_names = []
@@ -203,7 +203,7 @@ class Ship:
                         except:
                             pass
                         break
-        if cmp(fp.LoadConditions, filtered_list):
+        if len(fp.LoadConditions) != len(filtered_list):
             fp.LoadConditions = filtered_list
 
     def execute(self, fp):
