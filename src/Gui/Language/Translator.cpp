@@ -245,6 +245,7 @@ QStringList Translator::directories() const
 void Translator::addPath(const QString& path)
 {
     d->paths.push_back(path);
+    refresh();
 }
 
 void Translator::installQMFiles(const QDir& dir, const char* locale)

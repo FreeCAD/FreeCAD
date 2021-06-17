@@ -1376,6 +1376,7 @@ PythonCommand::~PythonCommand()
 {
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcPyCommand);
+    Py_DECREF(_pcPyResourceDict);
     free(const_cast<char*>(sName));
     sName = 0;
 }
@@ -1454,6 +1455,9 @@ bool PythonCommand::isActive(void)
 void PythonCommand::languageChange()
 {
     if (_pcAction) {
+        Base::PyGILStateLocker lock;
+        Py_DECREF(_pcPyResourceDict);
+        _pcPyResourceDict = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
         applyCommandData(getName(), _pcAction);
     }
 }
