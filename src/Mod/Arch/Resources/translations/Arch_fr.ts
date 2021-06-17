@@ -3364,7 +3364,7 @@
       <translation>Une forme contenant des courbes a été trouvé : triangulation en cours</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Importé avec succès</translation>
     </message>

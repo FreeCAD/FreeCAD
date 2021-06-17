@@ -901,7 +901,7 @@
       <translation>创建活动视图</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>创建中心线</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation type="unfinished">ActiveView to TD View</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>创建中心线</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>编辑中心线</translation>
     </message>

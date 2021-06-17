@@ -2205,7 +2205,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
-      <translation type="unfinished">Sync sub-object selection</translation>
+      <translation>Sincronizar seleção de sub-objeto</translation>
     </message>
     <message>
       <source>Reset</source>

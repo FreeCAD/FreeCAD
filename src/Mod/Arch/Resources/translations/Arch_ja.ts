@@ -3364,7 +3364,7 @@
       <translation>三角分割および曲線を含む図形が見つかりました</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>インポート成功</translation>
     </message>

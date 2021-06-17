@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria wsteczna</translation>
+      <translation>Inżynieria Wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <translation>Rozkład Poissona ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation>Dopasuj cylinder</translation>
+      <translation>Dopasuj walec</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>u-Direction</source>
-      <translation>u-Direction</translation>
+      <translation>Kierunek - U</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
@@ -275,7 +275,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>v-Direction</source>
-      <translation>kierunek - v</translation>
+      <translation>Kierunek - V</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -320,12 +320,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
-      <translation>Użytkownik zdefiniował kierunki u/v</translation>
+      <translation>Kierunki U / V zdefiniowane przez użytkownika</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation>Utwórz umieszczenie</translation>
+      <translation>Utwórz umiejscowienie</translation>
     </message>
   </context>
   <context>
@@ -352,7 +352,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation>Poisson</translation>
+      <translation>Rozkład Poissona</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -367,7 +367,7 @@
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation>Podział solvera</translation>
+      <translation>Podział solwera</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>

@@ -3364,7 +3364,7 @@
       <translation>Form mit Kurven gefunden, Trianguliere (annäherung mittels Geraden)</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Erfolgreich importiert</translation>
     </message>

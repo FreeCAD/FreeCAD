@@ -24,32 +24,32 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>Jarak [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>Pilih titik pertama</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Pilih jarak&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Pilih ImagePlane&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>Pilih titik kedua</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>Pilih bidang gambar dan tipe jarak</translation>
     </message>
   </context>
   <context>

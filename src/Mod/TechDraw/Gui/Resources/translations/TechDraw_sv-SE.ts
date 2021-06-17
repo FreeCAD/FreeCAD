@@ -901,7 +901,7 @@
       <translation>Skapa ActiveView</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>Skapa CenterLine</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation>ActiveView till TD-vy</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>Skapa mittlinje</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>Redigera mittlinje</translation>
     </message>

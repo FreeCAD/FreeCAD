@@ -75,11 +75,6 @@
       <translation>Geometria hivatkozás választó ehhez</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometria hivatkozás kiválasztó ehhez </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
@@ -97,7 +92,7 @@
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on "Add" and select geometric elements to add to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add to the list.</translation>
+      <translation>Kattintson a "Hozzáadás" gombra, és jelölje ki a geometriai elemeket a listához adáshoz.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
@@ -123,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Szilárd test</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometria hivatkozás kiválasztó ehhez </translation>
     </message>
   </context>
   <context>

@@ -3364,7 +3364,7 @@
       <translation>Atopouse unha forma que contén curvas, triangulando</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Importados con éxito</translation>
     </message>

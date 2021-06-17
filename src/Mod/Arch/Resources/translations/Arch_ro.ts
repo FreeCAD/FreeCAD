@@ -3364,7 +3364,7 @@
       <translation>S-a găsit o formă care conține curbe, se triangulează</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Import efectuat cu succes</translation>
     </message>

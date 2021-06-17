@@ -901,7 +901,7 @@
       <translation>Crea vista attiva</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>Crea linea di mezzeria</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation>Vista attiva in vista TechDraw</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>Crea linea centrale</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>Modifica linea centrale</translation>
     </message>

@@ -901,7 +901,7 @@
       <translation>Ustvari DejavniPogled</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>Ustvari Središčnico</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation>Dejavni pogled v pogled tehnične risbe</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>Ustvari središčnico</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>Uredi središčnico</translation>
     </message>

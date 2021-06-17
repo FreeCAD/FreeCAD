@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation>Załącznik...</translation>
+      <translation>Dołączenie ...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation>{obj} nie może być załączony. Nadal możesz użyć okna dialogowego edytora załączników, aby wyrównać obiekt, ale załącznik nie będzie parametryczny.</translation>
+      <translation>{obj} nie jest możliwe do dołączenia. Nadal można użyć okna edytora dołączania, aby wyrównać obiekt, ale dołączenie nie będzie parametryczne.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Załącznik</translation>
+      <translation>Dołączenie</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation>{obj1} zależy od dołączonego obiektu, nie można go użyć do załącznika</translation>
+      <translation>{obj1} zależy od dołączanego obiektu, nie można go używać do dołączania</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odsunięcie załącznika (według lokalnych współrzędnych):</translation>
+      <translation>Odsunięcie dołączenia (według lokalnych współrzędnych):</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
+      <translation>Fragmentacja funkcją logiczną</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
@@ -364,6 +364,16 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
       <translation>Pokrój</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -385,16 +395,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 lub z kształtami wewnątrz bryły złożonej.
 Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
 Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -702,7 +702,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Unorientable Shape</source>
-      <translation>Kształt bez możliwości ustawienia</translation>
+      <translation>Kształt niemożliwy do przewidzenia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
@@ -1235,7 +1235,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Załącznik jest nieaktywny. Linia może być przeniesiona przez właściwą edycję umiejscowienia.</translation>
+      <translation>Dołączanie jest wyłączone. Linia może zostać przesunięta poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
@@ -1480,7 +1480,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="126"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Załącznik jest nieaktywny. Linia może być przeniesiona przez właściwą edycję położenia.</translation>
+      <translation>Dołączanie jest wyłączone. Obiekt może zostać przesunięty poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -1632,7 +1632,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normalna do 3 punktów</translation>
+      <translation>Normalny do 3 punktów</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="168"/>
@@ -1677,7 +1677,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="51"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Załącznik jest nieaktywny. Linia może być przeniesiona przez właściwą edycję położenia.</translation>
+      <translation>Dołączanie jest wyłączone. Obiekt może zostać przesunięty poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -1853,7 +1853,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Inercjalny CS</translation>
+      <translation>Inercyjny CS</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="99"/>
@@ -2425,7 +2425,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Narzędzia do przesuwania kształtów (konstrukcja równoległych kształtów)</translation>
+      <translation>Narzędzia do odsuwania kształtów (konstrukcja równoległych kształtów)</translation>
     </message>
   </context>
   <context>
@@ -2443,7 +2443,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Kształtuj dzielące się narzędzia. Tworzenie narzędzi Compsolid. OCC 6.9.0 lub późniejsze jest wymagane.</translation>
+      <translation>Narzędzia do dzielenia kształtów. Narzędzia do tworzenia brył złożonych. Wymagana jest wersja OCC 6.9.0 lub nowsza.</translation>
     </message>
   </context>
   <context>
@@ -2748,7 +2748,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1623"/>
       <source>3D Offset...</source>
-      <translation>Przesunięcie 3D ...</translation>
+      <translation>Odsunięcie 3D ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
@@ -2766,7 +2766,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation>Wyrównanie 2D...</translation>
+      <translation>Odsunięcie 2D ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
@@ -3081,7 +3081,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb załączników:</translation>
+      <translation>Tryb dołączenia:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
@@ -3704,12 +3704,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation>Grupy Przyciętych Powierzchni (typ 144)</translation>
+      <translation>Grupy przyciętych powierzchni (typ 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation>Bryły (typ 186) i Powłoki (typ 514) / tryb B-REP</translation>
+      <translation>Bryły (typ 186) i powłoki (typ 514) / tryb B-REP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="94"/>
@@ -4964,7 +4964,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb załączników:</translation>
+      <translation>Tryb dołączenia:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
@@ -5025,7 +5025,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
       <source>Attachment mode failed: %1</source>
-      <translation>Tryb załącznika nie powiódł się: %1</translation>
+      <translation>Tryb dołączania nie powiódł się: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="311"/>
@@ -5035,7 +5035,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="315"/>
       <source>Attached with mode %1</source>
-      <translation>Dołączony z trybem %1</translation>
+      <translation>Dołączony w trybie %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
@@ -5424,7 +5424,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Boolean</source>
-      <translation>Logiczne</translation>
+      <translation>Funkcje logiczne</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>

@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation>Mérés beszúrása</translation>
+      <translation>Méret beszúrása</translation>
     </message>
     <message>
       <source>Insert text document</source>
@@ -3456,7 +3456,7 @@ Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis.</source>
       <translation>Rotációs elforgatási stílus.
 Hanyattegér: Ha vízszintesen mozgatja az egeret, az alkatrész az y tengely körül forog
-Forgóasztal: az alkatrész a z tengely körül forog.</translation>
+Forgóasztal: az alkatrész a tengely körül forog.</translation>
     </message>
     <message>
       <source>Turntable</source>
@@ -3631,7 +3631,7 @@ Az '1' nagyítási lépés minden nagyítási lépésnél 7,5-ös tényezőt jel
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Kijelölés rögzításe a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
+      <translation>Kijelölés rögzítése a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
@@ -3742,7 +3742,7 @@ Az '1' nagyítási lépés minden nagyítási lépésnél 7,5-ös tényezőt jel
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation>FEM (mm, N, sek)</translation>
+      <translation>FEM (mm, N, mp)</translation>
     </message>
   </context>
   <context>
@@ -7803,7 +7803,7 @@ Fizikai útvonal: </translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation>Csatolás távolról futó hibakeresőhez</translation>
+      <translation>Csatolás távolról futó hibakeresőhöz</translation>
     </message>
   </context>
   <context>
@@ -9071,7 +9071,7 @@ Fizikai útvonal: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation>Nézet forgatása 90°-kal az óramutató járásával ellentétesen</translation>
+      <translation>Nézet forgatása 90°-al az óramutató járásával ellentétesen</translation>
     </message>
   </context>
   <context>
@@ -9322,7 +9322,7 @@ Fizikai útvonal: </translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Kijelölés rögzításe a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
+      <translation>Kijelölés rögzítése a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
     </message>
   </context>
   <context>

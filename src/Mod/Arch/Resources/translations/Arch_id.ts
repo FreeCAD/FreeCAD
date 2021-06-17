@@ -1176,7 +1176,7 @@
     <message>
       <location filename="ArchAxis.py" line="325"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
-      <translation type="unfinished">Where to add bubbles to this axis: Start, end, both or none</translation>
+      <translation>Dimana tambahkan gelembung pada sumbu ini: Awal, akhir, keduanya, atau tidak ada</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="328"/>
@@ -1211,47 +1211,47 @@
     <message>
       <location filename="ArchBuildingPart.py" line="339"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
+      <translation>Level titik (0,0,0) dari level ini</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="921"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>Bentuk dari objek ini</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1013"/>
       <source>The line width of this object</source>
-      <translation type="unfinished">The line width of this object</translation>
+      <translation>Tebal gari dari objek ini</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="503"/>
       <source>An optional unit to express levels</source>
-      <translation type="unfinished">An optional unit to express levels</translation>
+      <translation>Unit opsional untuk mengekspresikan level</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="505"/>
       <source>A transformation to apply to the level mark</source>
-      <translation type="unfinished">A transformation to apply to the level mark</translation>
+      <translation>Menerapkan transformasi untuk setiap tanda level</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="508"/>
       <source>If true, show the level</source>
-      <translation type="unfinished">If true, show the level</translation>
+      <translation>Jika benar, tampilkan levelnya</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="511"/>
       <source>If true, show the unit on the level tag</source>
-      <translation type="unfinished">If true, show the unit on the level tag</translation>
+      <translation>Jika benar, tampilkan unit di label level</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="528"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation type="unfinished">If true, when activated, the working plane will automatically adapt to this level</translation>
+      <translation>Jika benar, saat diaktifkan, bidang kerja akan otomatis menyesuaikan ke level ini</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="518"/>
       <source>The font to be used for texts</source>
-      <translation type="unfinished">The font to be used for texts</translation>
+      <translation>Fon akan digunakan untuk teks</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="521"/>
@@ -1261,37 +1261,37 @@
     <message>
       <location filename="ArchBuildingPart.py" line="533"/>
       <source>Camera position data associated with this object</source>
-      <translation type="unfinished">Camera position data associated with this object</translation>
+      <translation>Data posisi kamera yang diasosiasikan ke objek ini</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="536"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
-      <translation type="unfinished">If set, the view stored in this object will be restored on double-click</translation>
+      <translation>Jika diatur, tampilan yang disimpan pada objek ini akan dipulihkan dengan dobel klik</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="524"/>
       <source>The individual face colors</source>
-      <translation type="unfinished">The individual face colors</translation>
+      <translation>Warna muka individu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="531"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
-      <translation type="unfinished">If set to True, the working plane will be kept on Auto mode</translation>
+      <translation>Jika diatur ke Benar, bidang kerja akan tetap dalam mode Auto</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="204"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
-      <translation type="unfinished">An optional standard (OmniClass, etc...) code for this component</translation>
+      <translation>Kode standar (OmniClass, dll...) opsional untuk komponen ini</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="291"/>
       <source>The URL of the product page of this equipment</source>
-      <translation type="unfinished">The URL of the product page of this equipment</translation>
+      <translation>URL untuk halaman produk peralatan ini</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="290"/>
       <source>A URL where to find information about this material</source>
-      <translation type="unfinished">A URL where to find information about this material</translation>
+      <translation>URL untuk mencari informasi tentang material ini</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="419"/>
@@ -1301,12 +1301,12 @@
     <message>
       <location filename="ArchPanel.py" line="426"/>
       <source>If the wave also affects the bottom side or not</source>
-      <translation type="unfinished">If the wave also affects the bottom side or not</translation>
+      <translation>Apakah gelombang juga memengaruhi bagian bawah atau tidak</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1229"/>
       <source>The font file</source>
-      <translation type="unfinished">The font file</translation>
+      <translation>Berkas fon</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="961"/>
@@ -1326,22 +1326,22 @@
     <message>
       <location filename="ArchReference.py" line="94"/>
       <source>The base file this component is built upon</source>
-      <translation type="unfinished">The base file this component is built upon</translation>
+      <translation>Berkas dasar untuk membangun komponen ini</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="96"/>
       <source>The part to use from the base file</source>
-      <translation type="unfinished">The part to use from the base file</translation>
+      <translation>Bagian yang digunakan dari berkas dasar</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="326"/>
       <source>The latest time stamp of the linked file</source>
-      <translation type="unfinished">The latest time stamp of the linked file</translation>
+      <translation>Cap waktu terakhir dari berkas terhubung</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="329"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
+      <translation>Jika benar, warna dari berkas terhubung akan tetap diperbaharui</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="923"/>
@@ -1371,7 +1371,7 @@
     <message>
       <location filename="ArchSite.py" line="597"/>
       <source>The region, province or county of this site</source>
-      <translation type="unfinished">The region, province or county of this site</translation>
+      <translation>Wilayah, provinsi, atau negara dari halaman ini</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="612"/>
@@ -1446,22 +1446,22 @@
     <message>
       <location filename="ArchWall.py" line="757"/>
       <source>The size of the joints between each block</source>
-      <translation type="unfinished">The size of the joints between each block</translation>
+      <translation>Ukuran sambungan antara setiap blok</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="759"/>
       <source>The number of entire blocks</source>
-      <translation type="unfinished">The number of entire blocks</translation>
+      <translation>Jumlah seluruh blok</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="762"/>
       <source>The number of broken blocks</source>
-      <translation type="unfinished">The number of broken blocks</translation>
+      <translation>Jumlah blok rusak</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="540"/>
       <source>The components of this window</source>
-      <translation type="unfinished">The components of this window</translation>
+      <translation>Komponen jendela ini</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="543"/>
@@ -1476,12 +1476,12 @@
     <message>
       <location filename="ArchWindow.py" line="547"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>Lebar jendela ini</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="549"/>
       <source>The height of this window</source>
-      <translation type="unfinished">The height of this window</translation>
+      <translation>Tinggi jendela ini</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="553"/>
@@ -1501,12 +1501,12 @@
     <message>
       <location filename="ArchWindow.py" line="562"/>
       <source>The width of louvre elements</source>
-      <translation type="unfinished">The width of louvre elements</translation>
+      <translation>Lebar elemen louvre</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="564"/>
       <source>The space between louvre elements</source>
-      <translation type="unfinished">The space between louvre elements</translation>
+      <translation>Jarak antar elemen louvre</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="568"/>
@@ -1546,17 +1546,17 @@
     <message>
       <location filename="ArchSite.py" line="635"/>
       <source>The type of this object</source>
-      <translation type="unfinished">The type of this object</translation>
+      <translation>Tipe objek ini</translation>
     </message>
     <message>
       <location filename="ArchIFC.py" line="66"/>
       <source>IFC data</source>
-      <translation type="unfinished">IFC data</translation>
+      <translation>Data IFC</translation>
     </message>
     <message>
       <location filename="ArchIFC.py" line="73"/>
       <source>IFC properties of this object</source>
-      <translation type="unfinished">IFC properties of this object</translation>
+      <translation>Properti IFC dari objek ini</translation>
     </message>
     <message>
       <location filename="ArchIFC.py" line="297"/>
@@ -1581,7 +1581,7 @@
     <message>
       <location filename="ArchSite.py" line="852"/>
       <source>Show compass or not</source>
-      <translation type="unfinished">Show compass or not</translation>
+      <translation>Tampilkan kompas atau tidak</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="854"/>
@@ -1611,17 +1611,17 @@
     <message>
       <location filename="ArchBuildingPart.py" line="551"/>
       <source>The line width of child objects</source>
-      <translation type="unfinished">The line width of child objects</translation>
+      <translation>Tebal garis dari objek turunan</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="554"/>
       <source>The line color of child objects</source>
-      <translation type="unfinished">The line color of child objects</translation>
+      <translation>Warna garis dari objek turunan</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="558"/>
       <source>The shape color of child objects</source>
-      <translation type="unfinished">The shape color of child objects</translation>
+      <translation>Warna bentuk dari objek turunan</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="562"/>
@@ -1681,12 +1681,12 @@
     <message>
       <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+      <translation>Gunakan warna material sebagai bentuk warna objek, jika tersedia</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="179"/>
       <source>The number of vertical mullions</source>
-      <translation type="unfinished">The number of vertical mullions</translation>
+      <translation>Jumlah tiang jendela vertikal</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="183"/>
@@ -1706,7 +1706,7 @@
     <message>
       <location filename="ArchCurtainWall.py" line="205"/>
       <source>The number of horizontal mullions</source>
-      <translation type="unfinished">The number of horizontal mullions</translation>
+      <translation>Jumlah tiang jendela horizontal</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="209"/>
@@ -1726,7 +1726,7 @@
     <message>
       <location filename="ArchCurtainWall.py" line="231"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>Jumlah tiang jendela diagonal</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="235"/>
@@ -1741,22 +1741,22 @@
     <message>
       <location filename="ArchCurtainWall.py" line="242"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>Jumlah panel</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="246"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>Ketebalan panel</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="250"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>Tukar garis horizontal dan vertikal</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="253"/>
       <source>Perform subtractions between components so none overlap</source>
-      <translation type="unfinished">Perform subtractions between components so none overlap</translation>
+      <translation>Lakukan pengurangan antara komponen agar tidak ada timpang tindih</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="256"/>
@@ -3364,7 +3364,7 @@
       <translation type="unfinished">Found a shape containing curves, triangulating</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Berhasil diimpor</translation>
     </message>

@@ -3364,7 +3364,7 @@
       <translation>Najdena oblika, ki vsebuje krivulje. Trikotenje ...</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Uspešno uvožen</translation>
     </message>

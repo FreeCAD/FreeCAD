@@ -901,7 +901,7 @@
       <translation type="unfinished">Create ActiveView</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation type="unfinished">Create CenterLine</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation type="unfinished">ActiveView to TD View</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation type="unfinished">Create Center Line</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation type="unfinished">Edit Center Line</translation>
     </message>
@@ -2055,7 +2055,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="227"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="232"/>
@@ -3728,7 +3728,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="209"/>
       <source>Rotate</source>
-      <translation>Memutar</translation>
+      <translation>Putar</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="222"/>

@@ -901,7 +901,7 @@
       <translation>Aktuelle Ansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>Mittellinie erstellen</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation>Aktive Ansicht wird TD-Ansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>Mittellinie erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>Mittellinie bearbeiten</translation>
     </message>

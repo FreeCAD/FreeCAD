@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Ha nem nulla, akkor a tengelyek nem egy teljes vonalként, hanem az adott hossz két vonalaként ábrázoltak</translation>
     </message>
   </context>
   <context>
@@ -3364,7 +3364,7 @@
       <translation>Találtam egy görbét tartalmazó alakzatot, háromszögesítés</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Sikeresen importálva</translation>
     </message>

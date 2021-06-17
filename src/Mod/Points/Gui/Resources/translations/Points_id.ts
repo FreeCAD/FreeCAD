@@ -6,18 +6,18 @@
     <message>
       <location filename="../../Command.cpp" line="189"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
-      <translation>Convert to points...</translation>
+      <translation>Ubah ke titik...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
-      <translation>Mengkonversi ke poin</translation>
+      <translation>Ubah ke titik</translation>
     </message>
   </context>
   <context>
@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="113"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -101,18 +101,18 @@
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Awan titik terstruktur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <location filename="../../Command.cpp" line="367"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Ubah poin menjadi awan titik terstruktur</translation>
     </message>
   </context>
   <context>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../Command.cpp" line="152"/>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="153"/>
@@ -139,23 +139,23 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Impor poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Ubah poin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <source>Convert to points</source>
-      <translation>Mengkonversi ke poin</translation>
+      <translation>Ubah ke titik</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="468"/>
       <location filename="../../ViewProvider.cpp" line="627"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Potong poin</translation>
     </message>
   </context>
   <context>

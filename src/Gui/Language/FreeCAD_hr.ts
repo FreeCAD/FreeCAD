@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Unesite izraz...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Izraz:</translation>
     </message>
   </context>
   <context>
@@ -3975,7 +3975,7 @@ Sustav preferencija je onaj skup postavki  koji se nalazi u općim preferencijam
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>nepoznata mjerna jedinica:</translation>
     </message>
   </context>
   <context>
@@ -5459,7 +5459,7 @@ Kako želite nastaviti?</translation>
     </message>
     <message>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Automatski proširi</translation>
     </message>
   </context>
   <context>

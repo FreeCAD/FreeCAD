@@ -36,7 +36,7 @@
       <location filename="../../Command.cpp" line="527"/>
       <location filename="../../Command.cpp" line="529"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Wstawia grupę klipu do aktywnego rysunku</translation>
+      <translation>Wstawia grupę wycinków do aktywnego rysunku</translation>
     </message>
   </context>
   <context>
@@ -343,7 +343,7 @@ Czy chcesz kontynuować?</translation>
       <location filename="../../DrawingView.cpp" line="587"/>
       <location filename="../../DrawingView.cpp" line="595"/>
       <source>Different paper size</source>
-      <translation>Inny rozmiar papieru</translation>
+      <translation>Odmienny format papieru</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="588"/>
