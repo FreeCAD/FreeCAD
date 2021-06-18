@@ -184,7 +184,6 @@ def run_example(example, solver=None, base_name=None, run_solver=False):
     return doc
 
 
-
 # ************************************************************************************************
 # helper used from examples
 def init_doc(doc=None):
