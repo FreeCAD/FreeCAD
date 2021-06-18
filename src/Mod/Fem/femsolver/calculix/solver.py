@@ -124,9 +124,10 @@ def on_restore_of_document(obj, ccx_prefs):
         obj.AnalysisType = ANALYSIS_TYPES[analysis_type]
 
     # add missing properties
-    # for example BucklingFactors for all files created before buckle analysis was introduced
+    # for example BucklingFactors will be added
+    # for all files created before buckle analysis was introduced
     add_attributes(obj, ccx_prefs)
-    
+
 
 def add_attributes(obj, ccx_prefs):
 
@@ -272,49 +273,19 @@ def add_attributes(obj, ccx_prefs):
         obj.SplitInputWriter = split
 
     if not hasattr(obj, "IterationsControlParameterIter"):
-        ccx_default_time_incrementation_control_parameter = {
-            # iteration parameter
-            "I_0": 4,
-            "I_R": 8,
-            "I_P": 9,
-            "I_C": 200,  # ccx default = 16
-            "I_L": 10,
-            "I_G": 400,  # ccx default = 4
-            "I_S": None,
-            "I_A": 200,  # ccx default = 5
-            "I_J": None,
-            "I_T": None,
-            # cutback parameter
-            "D_f": 0.25,
-            "D_C": 0.5,
-            "D_B": 0.75,
-            "D_A": 0.85,
-            "D_S": None,
-            "D_H": None,
-            "D_D": 1.5,
-            "W_G": None}
-        p = ccx_default_time_incrementation_control_parameter
-        p_iter = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}".format(
-            p["I_0"],
-            p["I_R"],
-            p["I_P"],
-            p["I_C"],
-            p["I_L"],
-            p["I_G"],
-            "",
-            p["I_A"],
-            "",
-            ""
-        )
-        p_cutb = "{0},{1},{2},{3},{4},{5},{6},{7}".format(
-            p["D_f"],
-            p["D_C"],
-            p["D_B"],
-            p["D_A"],
-            "",
-            "",
-            p["D_D"],
-            ""
+        control_parameter_iterations = (
+            "{I_0},{I_R},{I_P},{I_C},{I_L},{I_G},{I_S},{I_A},{I_J},{I_T}".format(
+                I_0=4,
+                I_R=8,
+                I_P=9,
+                I_C=200,  # ccx default = 16
+                I_L=10,
+                I_G=400,  # ccx default = 4
+                I_S="",
+                I_A=200,  # ccx default = 5
+                I_J="",
+                I_T="",
+            )
         )
         obj.addProperty(
             "App::PropertyString",
@@ -322,16 +293,28 @@ def add_attributes(obj, ccx_prefs):
             "Fem",
             "User defined time incrementation iterations control parameter"
         )
-        obj.IterationsControlParameterIter = p_iter
+        obj.IterationsControlParameterIter = control_parameter_iterations
 
     if not hasattr(obj, "IterationsControlParameterCutb"):
+        control_parameter_cutback = (
+            "{D_f},{D_C},{D_B},{D_A},{D_S},{D_H},{D_D},{W_G}".format(
+                D_f=0.25,
+                D_C=0.5,
+                D_B=0.75,
+                D_A=0.85,
+                D_S="",
+                D_H="",
+                D_D=1.5,
+                W_G="",
+            )
+        )
         obj.addProperty(
             "App::PropertyString",
             "IterationsControlParameterCutb",
             "Fem",
             "User defined time incrementation cutbacks control parameter"
         )
-        obj.IterationsControlParameterCutb = p_cutb
+        obj.IterationsControlParameterCutb = control_parameter_cutback
 
     if not hasattr(obj, "IterationsUserDefinedIncrementations"):
         stringIterationsUserDefinedIncrementations = (
