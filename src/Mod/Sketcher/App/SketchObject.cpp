@@ -4537,6 +4537,137 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
 }
 
+
+int SketchObject::removeAxesAlignment(const std::vector<int> &geoIdList)
+{
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+    const std::vector< Constraint * > &constrvals = this->Constraints.getValues();
+
+    unsigned int nhoriz = 0;
+    unsigned int nvert = 0;
+
+    bool changed = false;
+
+    std::vector<std::pair<size_t, Sketcher::ConstraintType>> changeConstraintIndices;
+
+    for (size_t i = 0; i < constrvals.size(); i++) {
+        for( auto geoid : geoIdList) {
+            if (constrvals[i]->First == geoid || constrvals[i]->Second == geoid || constrvals[i]->Third == geoid) {
+                switch(constrvals[i]->Type) {
+                    case Sketcher::Horizontal:
+                         if( constrvals[i]->FirstPos == Sketcher::none &&
+                             constrvals[i]->SecondPos == Sketcher::none ) {
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                            nhoriz++;
+                         }
+                        break;
+                    case Sketcher::Vertical:
+                         if( constrvals[i]->FirstPos == Sketcher::none &&
+                             constrvals[i]->SecondPos == Sketcher::none ) {
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                            nvert++;
+                         }
+                        break;
+                    case Sketcher::Symmetric: // only remove symmetric to axes
+                        if( (constrvals[i]->Third == GeoEnum::HAxis || constrvals[i]->Third == GeoEnum::VAxis) &&
+                            constrvals[i]->ThirdPos == Sketcher::none )
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                        break;
+                    case Sketcher::PointOnObject:
+                        if( (constrvals[i]->Second == GeoEnum::HAxis || constrvals[i]->Second == GeoEnum::VAxis) &&
+                            constrvals[i]->SecondPos == Sketcher::none )
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                        break;
+                    case Sketcher::DistanceX:
+                    case Sketcher::DistanceY:
+                        changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    if(changeConstraintIndices.empty())
+        return 0; // nothing to be done
+
+    std::vector< Constraint * > newconstrVals;
+    newconstrVals.reserve(constrvals.size());
+
+    int referenceHorizontal = Constraint::GeoUndef;
+    int referenceVertical = Constraint::GeoUndef;
+
+    int cindex = 0;
+    for (size_t i = 0; i < constrvals.size(); i++) {
+        if ( i == changeConstraintIndices[cindex].first ) {
+            if(changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
+                changed = true;
+                if(referenceHorizontal == Constraint::GeoUndef) {
+                    referenceHorizontal = constrvals[i]->First;
+                }
+                else {
+
+                    auto newConstr = new Constraint();
+
+                    newConstr->Type = Sketcher::Parallel;
+                    newConstr->First = referenceHorizontal;
+                    newConstr->Second = constrvals[i]->First;
+
+                    newconstrVals.push_back(newConstr);
+                }
+            }
+            else if(changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
+                changed = true;
+                if(referenceVertical == Constraint::GeoUndef) {
+                    referenceVertical = constrvals[i]->First;;
+                }
+                else {
+                    auto newConstr = new Constraint();
+
+                    newConstr->Type = Sketcher::Parallel;
+                    newConstr->First = referenceVertical;
+                    newConstr->Second = constrvals[i]->First;
+
+                    newconstrVals.push_back(newConstr);
+                }
+            }
+            else if(changeConstraintIndices[cindex].second == Sketcher::Symmetric ||
+                    changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
+                changed = true; // We remove symmetric on axes
+            }
+            else if(changeConstraintIndices[cindex].second == Sketcher::DistanceX ||
+                    changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
+                changed = true; // We remove symmetric on axes
+                newconstrVals.push_back(constrvals[i]->clone());
+                newconstrVals.back()->Type = Sketcher::Distance;
+            }
+
+            cindex++;
+        }
+        else {
+            newconstrVals.push_back(constrvals[i]);
+        }
+    }
+
+    if( nhoriz > 0 && nvert > 0 ) {
+        auto newConstr = new Constraint();
+
+        newConstr->Type = Sketcher::Perpendicular;
+        newConstr->First = referenceVertical;
+        newConstr->Second = referenceHorizontal;
+
+        newconstrVals.push_back(newConstr);
+    }
+
+    if(changed)
+        Constraints.setValues(std::move(newconstrVals));
+
+    return 0;
+
+}
+
 int SketchObject::exposeInternalGeometry(int GeoId)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
