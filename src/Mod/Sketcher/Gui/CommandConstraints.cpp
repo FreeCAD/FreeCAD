@@ -5048,7 +5048,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
             if(!commandopened)
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
-            
+
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin()+1; it != geoIdRadiusMap.end(); ++it) {
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -5100,7 +5100,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         }
 
         finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
-        
+
         //updateActive();
         getSelection().clearSelection();
     }
@@ -5179,7 +5179,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
         if(!fixed)
             finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
-        
+
         //updateActive();
         getSelection().clearSelection();
 
@@ -5379,7 +5379,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
             if(!commandopened)
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
-            
+
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdDiameterMap.begin()+1; it != geoIdDiameterMap.end(); ++it) {
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ", refGeoId,it->first);
@@ -5423,7 +5423,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             vp->draw(false,false); // Redraw
         }
         finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
-        
+
         //updateActive();
         getSelection().clearSelection();
     }
@@ -5498,7 +5498,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             }
             if(!fixed)
                 finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
-            
+
             //updateActive();
             getSelection().clearSelection();
 
@@ -5614,7 +5614,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
 
         const Part::Geometry *geom = Obj->getGeometry(GeoId);
         double radius;
-        
+
         if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arcir = static_cast<const Part::GeomArcOfCircle *>(geom);
             radius = arcir->getRadius();
@@ -5644,7 +5644,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
                              QObject::tr("Select one or more arcs or circles from the sketch."));
         return;
     }
-    
+
     if(poles && nonpoles) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed."));
@@ -5713,12 +5713,12 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
 
             if(!commandopened)
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
-            
+
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiamMap.begin()+1; it != geoIdRadiamMap.end(); ++it) {
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ", refGeoId,it->first);
             }
-            
+
             if(poles) {
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ", refGeoId, radiam);
             }
@@ -5774,7 +5774,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             vp->draw(false,false); // Redraw
         }
         finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
-        
+
         //updateActive();
         getSelection().clearSelection();
     }
@@ -5797,7 +5797,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
 
     bool commitNeeded=false;
     bool updateNeeded=false;
-    
+
     bool isCircle = false;
     bool isPole = false;
 
@@ -5857,7 +5857,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
             }
             if(!fixed)
                 finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
-            
+
             //updateActive();
             getSelection().clearSelection();
 
@@ -5920,7 +5920,7 @@ void CmdSketcherCompConstrainRadDia::activated(int iMsg)
     //Save new choice as default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     hGrp->SetInt("CurRadDiaCons", iMsg);
-    
+
     // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
@@ -5947,7 +5947,7 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
     languageChange();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    int curRadDiaCons = hGrp->GetInt("CurRadDiaCons", -1);
+    int curRadDiaCons = hGrp->GetInt("CurRadDiaCons", 2);
 
     switch (curRadDiaCons) {
         case 0:
