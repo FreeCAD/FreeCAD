@@ -30,6 +30,8 @@
 
 #include <Inventor/SbMatrix.h>
 #include <Inventor/caches/SoCache.h>
+
+#include "../SoFCUnifiedSelection.h"
 #include "COWData.h"
 #include "SoFCVertexCache.h"
 #include "SoFCRenderCacheManager.h"
@@ -351,7 +353,7 @@ public:
     }
   };
 
-  typedef std::vector<intptr_t> CacheKey;
+  typedef Gui::SoFCSelectionRoot::Stack CacheKey;
   typedef std::shared_ptr<CacheKey> CacheKeyPtr;
 
   struct VertexCacheEntry {
@@ -379,7 +381,7 @@ public:
 
   typedef std::map<Material, std::vector<VertexCacheEntry> > VertexCacheMap;
 
-  SoFCRenderCache(SoState * state, const SoNode *node);
+  SoFCRenderCache(SoState * state, SoNode *node);
   virtual ~SoFCRenderCache();
 
   static void initClass();
@@ -406,7 +408,7 @@ public:
 
   void setDepthBuffer(SoState *state, const SoDepthBuffer *);
 
-  const VertexCacheMap & getVertexCaches(bool finalize=false, int depth=0);
+  const VertexCacheMap & getVertexCaches(int depth=0);
 
   enum HighlightFlag {
     PreselectHighlight = 1,
@@ -421,9 +423,10 @@ public:
 
   void open(SoState * state,
             int selectstyle = Material::Full,
-            bool resetclip = false,
             bool initmaterial = true);
   void close(SoState * state);
+
+  void resetNode();
 
   void beginChildCaching(SoState * state, SoFCRenderCache * cache);
   void beginChildCaching(SoState * state, SoFCVertexCache * cache);

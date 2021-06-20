@@ -23,6 +23,7 @@
 #define FC_SOPEVERTEXCACHE_H
 
 #include <set>
+#include <map>
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/system/gl.h>
@@ -42,7 +43,7 @@ class SbBox3f;
 class GuiExport SoFCVertexCache : public SoCache {
   typedef SoCache inherited;
 public:
-  SoFCVertexCache(SoState * state, const SoNode * node, SoFCVertexCache *prev=NULL);
+  SoFCVertexCache(SoState * state, SoNode * node, SoFCVertexCache *prev=NULL);
   SoFCVertexCache(SoFCVertexCache & prev);
   SoFCVertexCache(const SbBox3f &bbox); // create a cache for rendering a wireframe cube
 
@@ -72,12 +73,15 @@ public:
   void renderLines(SoState * state, const int arrays = ALL, int part = -1, bool noseam = false);
   void renderPoints(SoState * state, const int array = ALL, int part = -1);
 
+  void addTriangles(const std::map<int, int> & faces);
   void addTriangles(const std::set<int> & faces);
-  void addTriangles(const std::vector<int> & faces);
+  void addTriangles(const std::vector<int> & faces = {});
+  void addLines(const std::map<int, int> & lines);
   void addLines(const std::set<int> & lines);
-  void addLines(const std::vector<int> & lines);
+  void addLines(const std::vector<int> & lines = {});
+  void addPoints(const std::map<int, int> & points);
   void addPoints(const std::set<int> & points);
-  void addPoints(const std::vector<int> & points);
+  void addPoints(const std::vector<int> & points = {});
 
   SoFCVertexCache * highlightIndices(int * indices = nullptr);
 
@@ -95,6 +99,8 @@ public:
   const SbVec4f * getTexCoordArray(void) const;
   const SbVec2f * getBumpCoordArray(void) const;
   const uint8_t * getColorArray(void) const;
+
+  void setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors, SbFCUniqueId id);
 
   int getNumTriangleIndices(void) const;
   const GLint * getTriangleIndices(void) const;
@@ -116,6 +122,8 @@ public:
   int getNumPointIndices(void) const;
   const GLint * getPointIndices(void) const;
 
+  SoNode *getNode() const;
+  void resetNode();
   SbFCUniqueId getNodeId() const;
   SbFCUniqueId getDiffuseId() const;
   SbFCUniqueId getTransparencyId() const;

@@ -238,7 +238,8 @@ public:
       return;
 
     if (this->numtranspparts == indexer->getNumParts()) {
-      this->numtranspparts = static_cast<int>(faces.size());
+      if (faces.size())
+        this->numtranspparts = static_cast<int>(faces.size());
       return;
     }
 
@@ -305,6 +306,7 @@ public:
   CoinPtr<SoFCVertexCache> prevcache;
   bool prevattached;
 
+  SoNode *node = nullptr;
   SbFCUniqueId nodeid;
   SbFCUniqueId diffuseid;
   SbFCUniqueId transpid;
@@ -386,7 +388,9 @@ public:
   SbBox3f boundbox;
 
   void addVertex(const Vertex & v);
+  void initColor(int n);
 
+  void close(SoState *);
   void checkTransparency();
 
   void render(SoState *state,
@@ -442,10 +446,11 @@ public:
 
 // *************************************************************************
 
-SoFCVertexCache::SoFCVertexCache(SoState * state, const SoNode * node, SoFCVertexCache * prev)
+SoFCVertexCache::SoFCVertexCache(SoState * state, SoNode * node, SoFCVertexCache * prev)
   : SoCache(state),
     pimpl(new SoFCVertexCacheP(this, prev, node->getNodeId()))
 {
+  PRIVATE(this)->node = node;
   PRIVATE(this)->state = state;
   PRIVATE(this)->diffuseid = 0;
   PRIVATE(this)->transpid = 0;
@@ -495,6 +500,7 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
 
   auto pprev = &prev;
 
+  PRIVATE(this)->node = PRIVATE(pprev)->node;
   PRIVATE(this)->diffuseid = PRIVATE(pprev)->diffuseid;
   PRIVATE(this)->transpid = PRIVATE(pprev)->transpid;
 
@@ -508,10 +514,12 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
 
   PRIVATE(this)->numtranspparts = PRIVATE(pprev)->numtranspparts;
   PRIVATE(this)->hastransp = PRIVATE(pprev)->hastransp;
+  PRIVATE(this)->firstcolor = PRIVATE(pprev)->firstcolor;
   PRIVATE(this)->colorpervertex = PRIVATE(pprev)->colorpervertex;
 
   PRIVATE(this)->transppartindices = PRIVATE(pprev)->transppartindices;
   PRIVATE(this)->partcenters = PRIVATE(pprev)->partcenters;
+  PRIVATE(this)->nonflatparts = PRIVATE(pprev)->nonflatparts;
 
   PRIVATE(this)->elementselectable = PRIVATE(pprev)->elementselectable;
   PRIVATE(this)->ontoppattern = PRIVATE(pprev)->ontoppattern;
@@ -568,6 +576,72 @@ SoFCVertexCache::SoFCVertexCache(const SbBox3f &bbox)
 SoFCVertexCache::~SoFCVertexCache()
 {
   delete pimpl;
+}
+
+void
+SoFCVertexCache::setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors,
+                              SbFCUniqueId id)
+{
+  if (!PRIVATE(this)->triangleindexer)
+    return;
+
+  int numparts = PRIVATE(this)->triangleindexer->getNumParts();
+  if (!numparts)
+    return;
+
+  if (colors.empty()) {
+    PRIVATE(this)->colorarray.reset();
+    PRIVATE(this)->colorpervertex = 0;
+    return;
+  }
+
+  auto prev = PRIVATE(this)->prevcache.get();
+  if (!PRIVATE(this)->colorarray || !prev || !PRIVATE(prev)->colorarray) {
+    PRIVATE(this)->colorarray = new ByteArray(id, nullptr);
+    PRIVATE(this)->prevcolorarray.reset();
+    PRIVATE(this)->initColor(PRIVATE(this)->vertexarray->getLength()*4);
+  } else {
+    PRIVATE(this)->colorarray = new ByteArray(id, PRIVATE(prev)->colorarray);
+    PRIVATE(this)->colorarray->copyFromProxy();
+  }
+
+  PRIVATE(this)->colorpervertex = 1;
+  auto indices = PRIVATE(this)->triangleindexer->getIndices();
+  const int *offsets = PRIVATE(this)->triangleindexer->getPartOffsets();
+  PRIVATE(this)->hastransp = false;
+  for (auto &v : colors) {
+    int start, end;
+    if (v.first < 0) {
+      start = 0;
+      end = PRIVATE(this)->vertexarray->getLength();
+    } else {
+      start = v.first ? offsets[v.first-1] : 0;
+      end = offsets[v.first];
+    }
+    uint8_t r,g,b,a;
+    r = (v.second >> 24) & 0xff;
+    g = (v.second >> 16) & 0xff;
+    b = (v.second >> 8) & 0xff;
+    a = (v.second) & 0xff;
+    if (a != 0xff)
+      PRIVATE(this)->hastransp = true;
+    auto &array = *PRIVATE(this)->colorarray;
+    for (int i=start; i<end; ++i) {
+      int idx = indices[i] * 4;
+      array[idx] = r;
+      array[idx+1] = g;
+      array[idx+2] = b;
+      array[idx+3] = a;
+    }
+  }
+  PRIVATE(this)->colorarray = PRIVATE(this)->colorarray->attach();
+  PRIVATE(this)->checkTransparency();
+}
+
+void
+SoFCVertexCache::resetNode()
+{
+  PRIVATE(this)->node = nullptr;
 }
 
 bool
@@ -673,6 +747,12 @@ SoFCVertexCache::getNodeId() const
   return PRIVATE(this)->nodeid;
 }
 
+SoNode *
+SoFCVertexCache::getNode() const
+{
+  return PRIVATE(this)->node;
+}
+
 SbBool 
 SoFCVertexCache::isValid(const SoState * state) const
 {
@@ -685,36 +765,63 @@ void
 SoFCVertexCache::close(SoState * state)
 {
   (void)state;
-  PRIVATE(this)->vhash.clear();
-  if (PRIVATE(this)->vertexarray)
-    PRIVATE(this)->vertexarray = PRIVATE(this)->vertexarray->attach();
-  if (PRIVATE(this)->normalarray) {
-    if (!PRIVATE(this)->triangleindexer) {
+  PRIVATE(this)->close(state);
+}
+
+void
+SoFCVertexCacheP::close(SoState * state)
+{
+  this->vhash.clear();
+  if (this->vertexarray)
+    this->vertexarray = this->vertexarray->attach();
+  if (this->normalarray) {
+    if (!this->triangleindexer) {
       const SoNormalElement *nelem = SoNormalElement::getInstance(state);
       if (nelem->getNum() == 0)
-        PRIVATE(this)->normalarray.reset();
+        this->normalarray.reset();
     }
-    if (PRIVATE(this)->normalarray)
-      PRIVATE(this)->normalarray = PRIVATE(this)->normalarray->attach();
+    if (this->normalarray)
+      this->normalarray = this->normalarray->attach();
   }
-  if (PRIVATE(this)->texcoord0array)
-    PRIVATE(this)->texcoord0array = PRIVATE(this)->texcoord0array->attach();
-  if (PRIVATE(this)->bumpcoordarray)
-    PRIVATE(this)->bumpcoordarray = PRIVATE(this)->bumpcoordarray->attach();
-  if (PRIVATE(this)->colorarray)
-    PRIVATE(this)->colorarray = PRIVATE(this)->colorarray->attach();
-  for (auto & entry : PRIVATE(this)->multitexarray) {
+  if (this->texcoord0array)
+    this->texcoord0array = this->texcoord0array->attach();
+  if (this->bumpcoordarray)
+    this->bumpcoordarray = this->bumpcoordarray->attach();
+  if (this->colorarray)
+    this->colorarray = this->colorarray->attach();
+  for (auto & entry : this->multitexarray) {
     if (entry)
       entry = entry->attach();
   }
-  if (PRIVATE(this)->triangleindexer)
-    PRIVATE(this)->triangleindexer->close(PRIVATE(this)->partindices, PRIVATE(this)->partcount);
-  if (PRIVATE(this)->lineindexer)
-    PRIVATE(this)->lineindexer->close();
-  if (PRIVATE(this)->pointindexer)
-    PRIVATE(this)->pointindexer->close();
+  if (this->triangleindexer)
+    this->triangleindexer->close(this->partindices, this->partcount);
+  if (this->lineindexer)
+    this->lineindexer->close();
+  if (this->pointindexer)
+    this->pointindexer->close();
 
-  PRIVATE(this)->checkTransparency();
+  if (this->triangleindexer && this->triangleindexer->getNumParts()) {
+    const int *parts = this->triangleindexer->getPartOffsets();
+    const GLint *indices = this->triangleindexer->getIndices();
+    const SbVec3f *vertices = this->vertexarray->getArrayPtr();
+    int prev = 0;
+    int numparts = this->triangleindexer->getNumParts();
+    this->partcenters.reserve(numparts);
+    for (int i=0; i<numparts; ++i) {
+      SbBox3f bbox;
+      int n = parts[i]-prev;
+      for (int k=0; k<n; ++k)
+        bbox.extendBy(vertices[indices[k+prev]]);
+      float dx,dy,dz;
+      bbox.getSize(dx, dy, dz);
+      if (dx > 1e-6f && dy > 1e-6f && dz > 1e-6)
+        this->nonflatparts.push_back(i);
+      this->partcenters.emplace_back(bbox.getCenter());
+      prev = parts[i];
+    }
+  }
+
+  this->checkTransparency();
 }
 
 void
@@ -724,24 +831,20 @@ SoFCVertexCacheP::checkTransparency()
   int numparts = this->triangleindexer->getNumParts();
   if (!numparts) return;
 
+  this->opaquepartarray.clear();
+  this->opaquepartcounts.clear();
+  
   const int *parts = this->triangleindexer->getPartOffsets();
-  const GLint *indices = this->triangleindexer->getIndices();
-  this->partcenters.reserve(numparts);
-  const SbVec3f *vertices = this->vertexarray->getArrayPtr();
-  int prev = 0;
-  std::vector<int> transpparts;
-  for (int i=0; i<numparts; ++i) {
-    SbBox3f bbox;
-    int n = parts[i]-prev;
-    for (int k=0; k<n; ++k)
-      bbox.extendBy(vertices[indices[k+prev]]);
-    float dx,dy,dz;
-    bbox.getSize(dx, dy, dz);
-    if (dx > 1e-6f && dy > 1e-6f && dz > 1e-6)
-      this->nonflatparts.push_back(i);
-    this->partcenters.emplace_back(bbox.getCenter());
-    if (this->hastransp && this->colorpervertex> 0) {
+
+  this->transppartindices.clear();
+  if (this->colorpervertex <= 0)
+    this->numtranspparts = this->hastransp ? numparts : 0;
+  else if (this->hastransp) {
+    const GLint *indices = this->triangleindexer->getIndices();
+    int prev = 0;
+    for (int i=0; i<numparts; ++i) {
       bool transp = false;
+      int n = parts[i]-prev;
       for (int k=0; k<n; ++k) {
         if ((*this->colorarray)[indices[k+prev]*4 + 3] != 0xff) {
           transp = true;
@@ -749,18 +852,13 @@ SoFCVertexCacheP::checkTransparency()
         }
       }
       if (transp)
-        transpparts.push_back(i);
+        this->transppartindices.push_back(i);
+      prev = parts[i];
     }
-    prev = parts[i];
+    this->numtranspparts = (int)this->transppartindices.size();
   }
-  
-  if (this->colorpervertex <= 0)
-    this->numtranspparts = numparts;
-  else
-    this->numtranspparts = (int)transpparts.size();
 
-  if (this->numtranspparts != numparts) {
-    this->transppartindices = std::move(transpparts);
+  if (this->numtranspparts && this->numtranspparts != numparts) {
     this->opaquepartarray.reserve(numparts - this->numtranspparts);
     this->opaquepartcounts.reserve(numparts - this->numtranspparts);
     int typesize = this->triangleindexer->useShorts() ? 2 : 4;
@@ -1005,6 +1103,15 @@ SoFCVertexCacheP::prepare()
 }
 
 void
+SoFCVertexCache::addTriangles(const std::map<int, int> & faces)
+{
+  PRIVATE(this)->addTriangles(faces,
+    [](const std::map<int, int> & faces, int idx) {
+      return faces.count(idx)!=0;
+    });
+}
+
+void
 SoFCVertexCache::addTriangles(const std::set<int> & faces)
 {
   PRIVATE(this)->addTriangles(faces,
@@ -1109,6 +1216,12 @@ SoFCVertexCache::addTriangle(const SoPrimitiveVertex * v0,
 }
 
 void
+SoFCVertexCache::addLines(const std::map<int, int> & lineindices)
+{
+  PRIVATE(this)->addLines(lineindices);
+}
+
+void
 SoFCVertexCache::addLines(const std::set<int> & lineindices)
 {
   PRIVATE(this)->addLines(lineindices);
@@ -1199,6 +1312,12 @@ SoFCVertexCache::addLine(const SoPrimitiveVertex * v0,
     PRIVATE(this)->prevlineindices = NULL;
   }
   PRIVATE(this)->lineindexer->addLine(lineindices[0], lineindices[1], ld ? ld->getLineIndex() : -1);
+}
+
+void
+SoFCVertexCache::addPoints(const std::map<int, int> & pointindices)
+{
+  PRIVATE(this)->addPoints(pointindices);
 }
 
 void
@@ -1533,6 +1652,22 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort, const SbPla
 }
 
 void
+SoFCVertexCacheP::initColor(int n)
+{
+  uint8_t r,g,b,a;
+  r = (this->firstcolor >> 24) & 0xff;
+  g = (this->firstcolor >> 16) & 0xff;
+  b = (this->firstcolor >> 8) & 0xff;
+  a = (this->firstcolor) & 0xff;
+  for (int i=0; i<n; i+=4) {
+    this->colorarray->append(r);
+    this->colorarray->append(g);
+    this->colorarray->append(b);
+    this->colorarray->append(a);
+  }
+}
+
+void
 SoFCVertexCacheP::addVertex(const Vertex & v)
 {
   this->vertexarray->append(v.vertex);
@@ -1544,18 +1679,7 @@ SoFCVertexCacheP::addVertex(const Vertex & v)
     SbFCUniqueId id = this->diffuseid + this->transpid + 0xb68cfe55;
     this->colorarray = new ByteArray(id, this->prevcolorarray);
     this->prevcolorarray.reset();
-
-    uint8_t r,g,b,a;
-    r = (this->firstcolor >> 24) & 0xff;
-    g = (this->firstcolor >> 16) & 0xff;
-    b = (this->firstcolor >> 8) & 0xff;
-    a = (this->firstcolor) & 0xff;
-    for (int i=0, n=this->vertexarray->getLength()*4-4; i<n; i+=4) {
-      this->colorarray->append(r);
-      this->colorarray->append(g);
-      this->colorarray->append(b);
-      this->colorarray->append(a);
-    }
+    initColor(this->vertexarray->getLength()*4 - 4);
   }
 
   if (this->colorarray) {

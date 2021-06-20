@@ -96,6 +96,7 @@
 #include <App/MappedElement.h>
 
 #include "Inventor/SoFCRenderCacheManager.h"
+#include "Inventor/SoFCDiffuseElement.h"
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
 #include "MainWindow.h"
@@ -1673,6 +1674,21 @@ const SoDetail* SoSelectionElementAction::getElement() const
     return this->_det;
 }
 
+SoFCSelectionContextExPtr
+SoSelectionElementAction::getRetrievedContext(SoFCDetail::Type *type) const
+{
+    if (type)
+        *type = _seltype;
+    return _selctx;
+}
+
+void SoSelectionElementAction::setRetrivedContext(const SoFCSelectionContextExPtr &ctx,
+                                                  SoFCDetail::Type type)
+{
+    _selctx = ctx;
+    _seltype = type;
+}
+
 // ---------------------------------------------------------------
 
 SO_ACTION_SOURCE(SoVRMLAction)
@@ -1825,6 +1841,8 @@ static void so_bbox_cleanup(void)
 
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
 std::unordered_map<SoAction*,SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
+SoAction *SoFCSelectionRoot::TempAction;
+SoFCSelectionRoot::Stack *SoFCSelectionRoot::TempActionStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
@@ -1842,6 +1860,9 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider *vp)
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, PassThrough);
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Unpickable);
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
+    SO_NODE_ADD_FIELD(overrideColor,(SbColor(0,0,0)));
+    SO_NODE_ADD_FIELD(overrideTransparency,(0.0f));
+    overrideColor.setIgnored(TRUE);
 }
 
 SoFCSelectionRoot::~SoFCSelectionRoot()
@@ -1877,14 +1898,40 @@ SoFCSelectionRoot *SoFCSelectionRoot::getCurrentRoot(bool front, SoFCSelectionRo
 SoFCSelectionRoot *SoFCSelectionRoot::getCurrentActionRoot(
         SoAction *action, bool front, SoFCSelectionRoot *def)
 {
-    auto it = ActionStacks.find(action);
-    if(it == ActionStacks.end() || it->second.empty())
+    auto stack = getActionStack(action);
+    if (!stack || stack->empty())
         return def;
-    return static_cast<SoFCSelectionRoot*>(front?it->second.front():it->second.back());
+    return static_cast<SoFCSelectionRoot*>(front?stack->front():stack->back());
 }
 
 int SoFCSelectionRoot::getRenderPathCode() const {
     return renderPathCode - 1;
+}
+
+SoFCSelectionRoot::Stack *
+SoFCSelectionRoot::getActionStack(SoAction *action, bool create)
+{
+    if (action == TempAction)
+        return TempActionStack;
+    if (create)
+        return &ActionStacks[action];
+    auto it = ActionStacks.find(action);
+    if (it == ActionStacks.end())
+        return nullptr;
+    return &it->second;
+}
+
+void SoFCSelectionRoot::setActionStack(SoAction *action, Stack *stack)
+{
+    if (!stack) {
+        if (TempAction == action) {
+            TempAction = nullptr;
+            TempActionStack = nullptr;
+        }
+    } else {
+        TempAction = action;
+        TempActionStack = stack;
+    }
 }
 
 SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
@@ -1908,7 +1955,10 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
 }
 
 SoFCSelectionContextBasePtr
-SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge)
+SoFCSelectionRoot::getNodeContext2(Stack &stack,
+                                   SoNode *node,
+                                   SoFCSelectionContextBase::MergeFunc *merge,
+                                   bool searchall)
 {
     SoFCSelectionContextBasePtr ret;
     if(stack.empty() || stack.back()->contextMap2.empty())
@@ -1923,6 +1973,8 @@ SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionCont
         SoFCSelectionContextBasePtr ctx;
         if(it!=map.end())
             ctx = it->second;
+        else if (!searchall && stack.offset == 0)
+            break;
         status = merge(status,ret,ctx,stack.offset==stack.size()-1?0:stack[stack.offset]);
         if(status<0)
             break;
@@ -1939,11 +1991,11 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
     if(action->isOfType(SoSelectionElementAction::getClassTypeId()))
         res.first = static_cast<SoSelectionElementAction*>(action)->isSecondary();
 
-    auto it = ActionStacks.find(action);
-    if(it==ActionStacks.end() || it->second.empty())
+    auto _stack = getActionStack(action);
+    if (!_stack || _stack->empty())
         return res;
 
-    auto &stack = it->second;
+    auto &stack = *_stack;
 
     auto node = static_cast<SoFCSelectionRoot*>(_node);
 
@@ -2293,29 +2345,10 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
     // honour the secondary color override.
 
     bool colorPushed = false;
-    if(!ShapeColorNode && overrideColor &&
-        !SoOverrideElement::getDiffuseColorOverride(state) &&
-        (style==SoFCSelectionRoot::Box || !ctx || (!ctx->selAll && !ctx->hideAll)))
-    {
-        ShapeColorNode = this;
-        colorPushed = true;
-        if(!pushed) {
+    if(style==SoFCSelectionRoot::Box || !ctx || (!ctx->selAll && !ctx->hideAll)) {
+        colorPushed = setupColorOverride(state, pushed);
+        if (colorPushed)
             pushed = true;
-            state->push();
-        }
-        auto &packer = ShapeColorNode->shapeColorPacker;
-        auto &trans = ShapeColorNode->transOverride;
-        auto &color = ShapeColorNode->colorOverride;
-        if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
-            SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
-            SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
-        }
-        SoLazyElement::setDiffuse(state, ShapeColorNode, 1, &color, &packer);
-        SoOverrideElement::setDiffuseColorOverride(state,ShapeColorNode,true);
-        SoMaterialBindingElement::set(state, ShapeColorNode, SoMaterialBindingElement::OVERALL);
-        SoOverrideElement::setMaterialBindingOverride(state,ShapeColorNode,true);
-
-        SoTextureEnabledElement::set(state,ShapeColorNode,false);
     }
 
     if(!ctx) {
@@ -2379,27 +2412,39 @@ void SoFCSelectionRoot::GLRenderInPath(SoGLRenderAction * action) {
     renderPrivate(action,true);
 }
 
-bool SoFCSelectionRoot::checkColorOverride(SoState *state) {
-    if(ShapeColorNode) {
-        if(!SoOverrideElement::getDiffuseColorOverride(state)) {
-            state->push();
-            auto &packer = ShapeColorNode->shapeColorPacker;
-            auto &trans = ShapeColorNode->transOverride;
-            auto &color = ShapeColorNode->colorOverride;
-            if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
-                SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
-                SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
-            }
-            SoLazyElement::setDiffuse(state, ShapeColorNode, 1, &color, &packer);
-            SoOverrideElement::setDiffuseColorOverride(state,ShapeColorNode,true);
-            SoMaterialBindingElement::set(state, ShapeColorNode, SoMaterialBindingElement::OVERALL);
-            SoOverrideElement::setMaterialBindingOverride(state,ShapeColorNode,true);
+void SoFCSelectionRoot::resetColorOverride(SoState *) const
+{
+    if(ShapeColorNode == this)
+        ShapeColorNode = nullptr;
+}
 
-            SoTextureEnabledElement::set(state,ShapeColorNode,false);
-            return true;
-        }
+bool SoFCSelectionRoot::setupColorOverride(SoState *state, bool pushed) {
+    if(ShapeColorNode
+            || !hasColorOverride() 
+            || SoOverrideElement::getDiffuseColorOverride(state))
+        return false;
+
+    ShapeColorNode = const_cast<SoFCSelectionRoot*>(this);
+    if (!pushed)
+        state->push();
+    SbFCUniqueId id = this->getNodeId();
+    SoFCDiffuseElement::set(state, &id, &id);
+    auto &packer = ShapeColorNode->shapeColorPacker;
+    static FC_COIN_THREAD_LOCAL float trans;
+    trans = ShapeColorNode->overrideTransparency.getValue();
+    static FC_COIN_THREAD_LOCAL SbColor color;
+    color = ShapeColorNode->overrideColor.getValue();
+    if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+        SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
+        SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
     }
-    return false;
+    SoLazyElement::setDiffuse(state, ShapeColorNode, 1, &color, &packer);
+    SoOverrideElement::setDiffuseColorOverride(state,ShapeColorNode,true);
+    SoMaterialBindingElement::set(state, ShapeColorNode, SoMaterialBindingElement::OVERALL);
+    SoOverrideElement::setMaterialBindingOverride(state,ShapeColorNode,true);
+
+    SoTextureEnabledElement::set(state,ShapeColorNode,false);
+    return true;
 }
 
 void SoFCSelectionRoot::checkSelection(bool &sel, SbColor &selColor, bool &hl, SbColor &hlColor) {
@@ -2416,52 +2461,59 @@ void SoFCSelectionRoot::resetContext() {
 }
 
 void SoFCSelectionRoot::moveActionStack(SoAction *from, SoAction *to, bool erase) {
-    auto it = ActionStacks.find(from);
-    if(it == ActionStacks.end())
+    auto fromstack = getActionStack(from);
+    if (!fromstack)
         return;
     auto &stack = ActionStacks[to];
     assert(stack.empty());
-    stack.swap(it->second);
+    stack.swap(*fromstack);
     if(erase)
-        ActionStacks.erase(it);
+        ActionStacks.erase(from);
 }
 
-#define BEGIN_ACTION \
-    auto &stack = ActionStacks[action];\
-    if(ViewParams::instance()->getCoinCycleCheck() \
-        && !stack.nodeSet.insert(this).second) \
-    {\
-        std::time_t t = std::time(0);\
-        if(_CyclicLastReported < t) {\
-            _CyclicLastReported = t+5;\
-            FC_ERR("Cyclic scene graph: " << getName());\
-        }\
-        return;\
-    }\
-    stack.push_back(this);\
-    auto size = stack.size();
-
-#define END_ACTION \
-    if(stack.size()!=size || stack.back()!=this)\
-        FC_ERR("action stack fault");\
-    else {\
-        stack.nodeSet.erase(this);\
-        stack.pop_back();\
-        if(stack.empty())\
-            ActionStacks.erase(action);\
+SoFCSelectionRoot::Stack &
+SoFCSelectionRoot::beginAction(SoAction *action, bool checkcycle)
+{
+    auto stack = getActionStack(action, true);
+    if(checkcycle
+        && ViewParams::instance()->getCoinCycleCheck()
+        && !stack->nodeSet.insert(this).second)
+    {
+        std::time_t t = std::time(0);
+        if(_CyclicLastReported < t) {
+            _CyclicLastReported = t+5;
+            FC_ERR("Cyclic scene graph: " << getName());
+        }
+        return *stack;
     }
+    stack->push_back(this);
+    return *stack;
+}
+
+void SoFCSelectionRoot::endAction(SoAction *action, Stack &stack, bool checkcycle)
+{
+    if(stack.empty() || stack.back()!=this)
+        FC_ERR("action stack fault");
+    else {
+        if(checkcycle && ViewParams::instance()->getCoinCycleCheck())
+            stack.nodeSet.erase(this);
+        stack.pop_back();
+        if(stack.empty())
+            ActionStacks.erase(action);
+    }
+}
 
 void SoFCSelectionRoot::pick(SoPickAction * action) {
-    BEGIN_ACTION;
+    auto &stack = beginAction(action);
     if(doActionPrivate(stack,action))
         inherited::pick(action);
-    END_ACTION;
+    endAction(action, stack);
 }
 
 void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
     if(selectionStyle.getValue() == Unpickable)
         return;
-    BEGIN_ACTION;
+    auto &stack = beginAction(action);
     if(doActionPrivate(stack,action)) {
         if(action->getCurPathCode() == SoAction::IN_PATH) {
             // skip cached bounding box cull test when traverse in path
@@ -2469,48 +2521,50 @@ void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
         } else
             inherited::rayPick(action);
     }
-    END_ACTION;
+    endAction(action, stack);
 }
 
 void SoFCSelectionRoot::handleEvent(SoHandleEventAction * action) {
-    BEGIN_ACTION;
+    auto &stack = beginAction(action);
     inherited::handleEvent(action);
-    END_ACTION;
+    endAction(action, stack);
 }
 
 void SoFCSelectionRoot::search(SoSearchAction * action) {
-    BEGIN_ACTION;
+    auto &stack = beginAction(action);
     inherited::search(action);
-    END_ACTION;
+    endAction(action, stack);
 }
 
 void SoFCSelectionRoot::getPrimitiveCount(SoGetPrimitiveCountAction * action) {
-    BEGIN_ACTION;
+    auto &stack = beginAction(action);
     inherited::getPrimitiveCount(action);
-    END_ACTION;
+    endAction(action, stack);
 }
 
 void SoFCSelectionRoot::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-    BEGIN_ACTION;
+    auto &stack = beginAction(action);
     if(doActionPrivate(stack,action)) {
         selCounter.checkCache(action->getState(),true);
         inherited::getBoundingBox(action);
     }
-    END_ACTION;
+    endAction(action, stack);
 }
 
 void SoFCSelectionRoot::getMatrix(SoGetMatrixAction * action) {
-    BEGIN_ACTION;
+    auto &stack = beginAction(action);
     if(doActionPrivate(stack,action))
         inherited::getMatrix(action);
-    END_ACTION;
+    endAction(action, stack);
 }
 
 void SoFCSelectionRoot::callback(SoCallbackAction *action) {
-    BEGIN_ACTION;
-    inherited::callback(action);
-    END_ACTION;
+    SoState * state = action->getState();
+    state->push();
+    if (!this->cullTest(state))
+        this->doAction(action);
+    state->pop();
 }
 
 void SoFCSelectionRoot::doAction(SoAction *action) {
@@ -2529,10 +2583,10 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
                 state->getElement(SoClipPlaneElement::getClassStackIndex()));
         element->init(state);
     }
-    BEGIN_ACTION
+    auto &stack = beginAction(action);
     if(doActionPrivate(stack,action))
         inherited::doAction(action);
-    END_ACTION
+    endAction(action, stack);
 }
 
 bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
@@ -2762,6 +2816,13 @@ bool SoFCSelectionRoot::handleSelectionAction(SoAction *action,
 
     SoSelectionElementAction* selaction = static_cast<SoSelectionElementAction*>(action);
     switch(selaction->getType()) {
+    case SoSelectionElementAction::RetrieveAll:
+    case SoSelectionElementAction::Retrieve: {
+        auto ctx = getSecondaryActionContext<SoFCSelectionContextEx>(
+                action, node, selaction->getType() == SoSelectionElementAction::RetrieveAll);
+        selaction->setRetrivedContext(ctx, detailType);
+        break;
+    }
     case SoSelectionElementAction::All: {
         auto ctx = getActionContext(action,node,selContext);
         selCounter.checkAction(selaction,ctx);

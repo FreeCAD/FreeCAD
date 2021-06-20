@@ -57,6 +57,7 @@
 
 #include "../InventorBase.h"
 #include "../ViewParams.h"
+#include "../SoFCUnifiedSelection.h"
 #include "SoFCRenderCache.h"
 #include "SoFCVertexCache.h"
 #include "SoFCDetail.h"
@@ -127,8 +128,11 @@ public:
 
   std::vector<CacheEntry> caches;
   SbFCUniqueId nodeid;
-  intptr_t nodeptr;
+  SoFCSelectionRoot *selnode = nullptr;
+
+#ifdef FCCOIN_TRACE_CACHE_NAME
   SbName nodename;
+#endif
 
   Material material;
   uint32_t facecolor;
@@ -148,16 +152,21 @@ static inline const T * constElement(SoState * state)
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
-SoFCRenderCache::SoFCRenderCache(SoState *state, const SoNode *node)
+SoFCRenderCache::SoFCRenderCache(SoState *state, SoNode *node)
   : SoCache(state), pimpl(new SoFCRenderCacheP)
 {
-  PRIVATE(this)->nodeptr = reinterpret_cast<intptr_t>(node);
   PRIVATE(this)->nodeid = node->getNodeId();
+  if (node && node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+    // DO NOT add reference. The cache will be monitored by a node sensor
+    // inside SoFCRenderCacheManager, which is supposed to release the cache if
+    // the node is destroyed. So must not add reference here.
+    PRIVATE(this)->selnode = static_cast<SoFCSelectionRoot*>(node);
+  }
 
 #ifdef FCCOIN_TRACE_CACHE_NAME
   PRIVATE(this)->nodename = node->getName();
   if (PRIVATE(this)->nodename.getLength() == 0) {
-    auto obj = ViewProviderLink::linkedObjectByNode(const_cast<SoNode*>(node));
+    auto obj = ViewProviderLink::linkedObjectByNode(node);
     if (obj) {
       std::string name("_");
       name += obj->getNameInDocument();
@@ -178,6 +187,11 @@ void SoFCRenderCache::initClass()
 {
   SO_ENABLE(SoCallbackAction, SoShadowStyleElement);
   SoFCDiffuseElement::initClass();
+}
+
+void SoFCRenderCache::resetNode()
+{
+  PRIVATE(this)->selnode = nullptr;
 }
 
 void SoFCRenderCache::cleanup()
@@ -686,16 +700,21 @@ SoFCRenderCache::isValid(const SoState * state) const
 }
 
 void
-SoFCRenderCache::open(SoState *state, int selectstyle, bool resetclip, bool initmaterial)
+SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
 {
   SoCacheElement::set(state, this);
+
+  if (PRIVATE(this)->selnode) {
+    PRIVATE(this)->material.resetclip =
+      PRIVATE(this)->selnode->resetClipPlane.getValue() ? true : false;
+    PRIVATE(this)->selnode->setupColorOverride(state, true);
+  }
 
   PRIVATE(this)->facecolor = 0;
   PRIVATE(this)->hiddenlinecolor = 0;
   PRIVATE(this)->facetransp = -1.f;
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
   PRIVATE(this)->material.selectstyle = selectstyle;
-  PRIVATE(this)->material.resetclip = resetclip;
 
   SbBool outline = FALSE;
   if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state, &outline)) {
@@ -725,16 +744,38 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool resetclip, bool init
 
   if (flags.test(Material::FLAG_AMBIENT))
     SoOverrideElement::setAmbientColorOverride(state, NULL, FALSE);
-  if (flags.test(Material::FLAG_DIFFUSE))
+  if (flags.test(Material::FLAG_DIFFUSE)) {
     SoOverrideElement::setDiffuseColorOverride(state, NULL, FALSE);
+    if (!initmaterial) {
+      SbFCUniqueId diffuseid = SoFCDiffuseElement::get(state, nullptr);
+      if (diffuseid && diffuseid == getNodeId()) {
+        uint32_t diffuse = SoLazyElement::getDiffuse(state, 0).getPackedValue(0.0f);
+        PRIVATE(this)->material.diffuse &= 0xff;
+        PRIVATE(this)->material.diffuse |= diffuse;
+        PRIVATE(this)->material.maskflags.set(Material::FLAG_DIFFUSE);
+      }
+    }
+  }
   if (flags.test(Material::FLAG_SPECULAR))
     SoOverrideElement::setSpecularColorOverride(state, NULL, FALSE);
   if (flags.test(Material::FLAG_EMISSIVE))
     SoOverrideElement::setEmissiveColorOverride(state, NULL, FALSE);
   if (flags.test(Material::FLAG_SHININESS))
     SoOverrideElement::setShininessOverride(state, NULL, FALSE);
-  if (flags.test(Material::FLAG_TRANSPARENCY))
+  if (flags.test(Material::FLAG_TRANSPARENCY)) {
     SoOverrideElement::setTransparencyOverride(state, NULL, FALSE);
+    if (!initmaterial) {
+      SbFCUniqueId transpid = 0;
+      SoFCDiffuseElement::get(state, &transpid);
+      if (transpid && transpid == getNodeId()) {
+        float t = SoLazyElement::getTransparency(state, 0);
+        SbColor color(0,0,0);
+        PRIVATE(this)->material.diffuse &= ~0xff;
+        PRIVATE(this)->material.diffuse |= color.getPackedValue(t);
+        PRIVATE(this)->material.maskflags.set(Material::FLAG_TRANSPARENCY);
+      }
+    }
+  }
   if (flags.test(Material::FLAG_DRAW_STYLE))
     SoOverrideElement::setDrawStyleOverride(state, NULL, FALSE);
   if (flags.test(Material::FLAG_LINE_PATTERN))
@@ -770,7 +811,8 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool resetclip, bool init
 void
 SoFCRenderCache::close(SoState *state)
 {
-  (void)state;
+  if (PRIVATE(this)->selnode)
+    PRIVATE(this)->selnode->resetColorOverride(state);
   PRIVATE(this)->material.init();
 }
 
@@ -1036,7 +1078,7 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
 }
 
 const SoFCRenderCache::VertexCacheMap &
-SoFCRenderCache::getVertexCaches(bool finalize, int depth)
+SoFCRenderCache::getVertexCaches(int depth)
 {
   auto & vcachemap = PRIVATE(this)->vcachemap;
   if (!vcachemap.empty())
@@ -1045,26 +1087,119 @@ SoFCRenderCache::getVertexCaches(bool finalize, int depth)
   std::unordered_map<void *, CacheKeyPtr> keymap;
   CacheKeyPtr selfkey;
 
+  static FC_COIN_THREAD_LOCAL SoSelectionElementAction selaction(
+      SoSelectionElementAction::Retrieve, true);
+  static FC_COIN_THREAD_LOCAL std::vector<std::pair<int, uint32_t> > selcolors;
+
+  auto checkContext = [](Material &material,
+                         const SoFCSelectionContextExPtr &ctx,
+                         VertexCachePtr &vcache)
+  {
+    // Check for secondary selection context for color override and partial rendering
+    // return 0 if should skip this entry, 1 if procceed with same material, -1
+    // if material is changed.
+    if (!ctx)
+      return 1;
+    if (ctx->selectionIndex.empty())
+      return 0;
+    if (ctx->selectionIndex.begin()->first < 0 && ctx->colors.empty())
+      return 1;
+    switch(material.type) {
+      case Material::Triangle: {
+        if (ctx->selectionIndex.begin()->first >= 0) {
+          vcache = new SoFCVertexCache(*vcache);
+          vcache->addTriangles(ctx->selectionIndex);
+        } else {
+          if (ctx->colors.empty())
+            return 1;
+          vcache = new SoFCVertexCache(*vcache);
+          vcache->addTriangles();
+        }
+        if (ctx->colors.empty())
+          return 1;
+        if (ctx->colors.begin()->first < 0 && ctx->colors.size() == 1) {
+          vcache->setFaceColors({}, 0);
+          auto color = ctx->colors.begin()->second;
+          color.a = 1.0 - color.a;
+          uint32_t diffuse = color.getPackedValue();
+          if (diffuse != material.diffuse || material.pervertexcolor) {
+            material.diffuse = diffuse;
+            material.pervertexcolor = false;
+            material.materialbinding = SoMaterialBindingElement::OVERALL;
+            return -1;
+          }
+          return 1;
+        }
+        selcolors.clear();
+        for (auto &v : ctx->colors) {
+          if (v.first < 0)
+            continue;
+          auto color = v.second;
+          color.a = 1.0 - color.a;
+          selcolors.emplace_back(v.first, color.getPackedValue());
+        }
+        vcache->setFaceColors(selcolors, reinterpret_cast<intptr_t>(ctx.get()));
+        if ((material.pervertexcolor && !vcache->colorPerVertex())
+            || (!material.pervertexcolor && vcache->colorPerVertex()))
+        {
+          material.pervertexcolor = !material.pervertexcolor;
+          material.materialbinding = material.pervertexcolor ?
+            SoMaterialBindingElement::PER_PART : SoMaterialBindingElement::OVERALL;
+          return -1;
+        }
+        break;
+      }
+      case Material::Line: {
+        if (ctx->selectionIndex.begin()->first < 0)
+          return 1;
+        vcache = new SoFCVertexCache(*vcache);
+        vcache->addLines(ctx->selectionIndex);
+        break;
+      }
+      case Material::Point: {
+        if (ctx->selectionIndex.begin()->first < 0)
+          return 1;
+        vcache = new SoFCVertexCache(*vcache);
+        vcache->addPoints(ctx->selectionIndex);
+        break;
+      }
+      default:
+        return 0;
+    }
+    return 1;
+  };
+
   for (auto & entry : PRIVATE(this)->caches) {
     if (entry.vcache) {
       if (!selfkey) {
-        if (PRIVATE(this)->nodeptr)
-          selfkey.reset(new CacheKey(1, PRIVATE(this)->nodeptr));
-        else
-          selfkey.reset(new CacheKey);
+        selfkey.reset(new CacheKey);
+        if (PRIVATE(this)->selnode)
+          selfkey->push_back(PRIVATE(this)->selnode);
+      }
+
+      SoFCSelectionContextExPtr ctx;
+      if (PRIVATE(this)->selnode && entry.vcache->getNode()) {
+        SoFCSelectionRoot::setActionStack(&selaction, selfkey.get());
+        selaction.setRetrivedContext();
+        selaction.apply(entry.vcache->getNode());
+        ctx = selaction.getRetrievedContext();
       }
 
       entry.material.pervertexcolor = entry.vcache->colorPerVertex();
 
+      auto vcache = entry.vcache;
+
       if (entry.vcache->getNumTriangleIndices()) {
         Material material = entry.material;
         material.type = Material::Triangle;
-        if (finalize) {
+        if (!checkContext(material, ctx, vcache))
+          continue;
+        if (depth == 0) {
           PRIVATE(this)->finalizeMaterial(material);
           if (!entry.vcache->getNormalArray())
             material.lightmodel = SoLazyElement::BASE_COLOR;
         }
-        vcachemap[material].emplace_back(entry.vcache,
+        vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
                                          entry.identity,
                                          entry.resetmatrix,
@@ -1073,12 +1208,14 @@ SoFCRenderCache::getVertexCaches(bool finalize, int depth)
       if (entry.vcache->getNumLineIndices()) {
         Material material = entry.material;
         material.type = Material::Line;
-        if (finalize) {
+        if (!checkContext(material, ctx, vcache))
+          continue;
+        if (depth == 0) {
           PRIVATE(this)->finalizeMaterial(material);
           if (!entry.vcache->getNormalArray())
             material.lightmodel = SoLazyElement::BASE_COLOR;
         }
-        vcachemap[material].emplace_back(entry.vcache,
+        vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
                                          entry.identity,
                                          entry.resetmatrix,
@@ -1087,12 +1224,14 @@ SoFCRenderCache::getVertexCaches(bool finalize, int depth)
       if (entry.vcache->getNumPointIndices()) {
         Material material = entry.material;
         material.type = Material::Point;
-        if (finalize) {
+        if (!checkContext(material, ctx, vcache))
+          continue;
+        if (depth == 0) {
           PRIVATE(this)->finalizeMaterial(material);
           if (!entry.vcache->getNormalArray())
             material.lightmodel = SoLazyElement::BASE_COLOR;
         }
-        vcachemap[material].emplace_back(entry.vcache,
+        vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
                                          entry.identity,
                                          entry.resetmatrix,
@@ -1101,48 +1240,73 @@ SoFCRenderCache::getVertexCaches(bool finalize, int depth)
       continue;
     }
     auto it = vcachemap.end();
-    const auto & childvcaches = entry.cache->getVertexCaches(false, depth+1); 
+    const auto & childvcaches = entry.cache->getVertexCaches(depth+1); 
     for (const auto & child : childvcaches) {
       Material material = PRIVATE(this)->mergeMaterial(
             entry.matrix, entry.identity, entry.material, child.first);
 
-      if (finalize)
+      if (depth == 0)
         PRIVATE(this)->finalizeMaterial(material);
 
       VertexCacheMap::value_type value(material, {});
-      it = vcachemap.insert(it, value);
       for (const VertexCacheEntry & childentry : child.second) {
+        std::vector<VertexCacheEntry> *ventries = nullptr;
+        if (it != vcachemap.end())
+          ventries = &it->second;
         CacheKeyPtr & key = keymap[childentry.key.get()];
         if (!key) {
           key.reset(new CacheKey);
-          if (PRIVATE(this)->nodeptr) {
+          if (PRIVATE(this)->selnode) {
             key->reserve(childentry.key->size()+1);
-            key->push_back(PRIVATE(this)->nodeptr);
+            key->push_back(PRIVATE(this)->selnode);
           }
           key->insert(key->end(), childentry.key->begin(), childentry.key->end());
         }
+
+        auto vcache = childentry.cache;
+        SoFCSelectionContextExPtr ctx;
+        if (PRIVATE(this)->selnode && vcache->getNode()) {
+          SoFCSelectionRoot::setActionStack(&selaction, key.get());
+          selaction.setRetrivedContext();
+          selaction.apply(vcache->getNode());
+          ctx = selaction.getRetrievedContext();
+        }
+
+        int res = checkContext(material, ctx, vcache);
+        if (!res)
+          continue;
+
+        if (res < 0) {
+          ventries = &vcachemap[material];
+          material = value.first; // revert back to original material
+        } else if (!ventries) {
+          it = vcachemap.insert(it, value);
+          ventries = &it->second;
+        }
+
         if (entry.identity || childentry.resetmatrix)
-          it->second.emplace_back(childentry.cache,
+          ventries->emplace_back(vcache,
                                   childentry.matrix,
                                   childentry.identity,
                                   childentry.resetmatrix,
                                   key);
         else if (childentry.identity)
-          it->second.emplace_back(childentry.cache,
+          ventries->emplace_back(vcache,
                                   entry.matrix,
                                   entry.identity,
                                   false,
                                   key);
         else {
-          it->second.emplace_back(childentry.cache,
+          ventries->emplace_back(vcache,
                                   entry.matrix,
                                   false,
                                   false,
                                   key);
-          it->second.back().matrix.multLeft(childentry.matrix);
+          ventries->back().matrix.multLeft(childentry.matrix);
         }
       }
-      ++it;
+      if (it != vcachemap.end())
+        ++it;
     }
   }
 
@@ -1225,7 +1389,7 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
   Material bboxmaterial;
   SbBox3f bbox;
   const VertexCacheEntry *detailentry = nullptr;
-  for (auto & child : getVertexCaches(true)) {
+  for (auto & child : getVertexCaches()) {
     if (!wholeontop && detail) {
       // We are doing partial highlight, 'wholeontop' indicates that we shall
       // bring the whole object to top with the original color. So if not

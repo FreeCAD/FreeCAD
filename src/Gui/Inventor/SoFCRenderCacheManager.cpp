@@ -255,6 +255,8 @@ public:
     virtual void dyingReference(void) {
       SoNode * node = this->node;
       this->detach();
+      for (auto &cache : caches)
+        cache->resetNode();
       master->cachetable.erase(node);
     }
 
@@ -267,6 +269,8 @@ public:
     virtual void dyingReference(void) {
       SoNode * node = this->node;
       this->detach();
+      for (auto &vcache : caches)
+        vcache->resetNode();
       master->vcachetable.erase(node);
     }
 
@@ -610,16 +614,20 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
   }
 
   auto & elentry = sensor->elements[element];
-  if (elentry.id && elentry.id != id) {
-    if (elentry.id > 0 && element.empty())
-      PRIVATE(this)->selpaths.erase(elentry.id);
-    PRIVATE(this)->renderer->removeSelection(elentry.id);
-  }
+
+  if (elentry.id & SoFCRenderer::SelIdAlt)
+    id |= SoFCRenderer::SelIdAlt;
   if (id > 0 && (color & 0xffffff00)) {
     if (element.empty())
       id |= SoFCRenderer::SelIdFull;
     else
       id |= SoFCRenderer::SelIdPartial;
+  }
+  
+  if (elentry.id && elentry.id != id) {
+    if (elentry.id > 0 && element.empty())
+      PRIVATE(this)->selpaths.erase(elentry.id);
+    PRIVATE(this)->renderer->removeSelection(elentry.id);
   }
   if (id > 0 && element.empty())
     PRIVATE(this)->selpaths[id] = selpath;
@@ -890,14 +898,14 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
     break;
   }
 
-  RenderCachePtr cache(new SoFCRenderCache(state, node));
+  RenderCachePtr cache(new SoFCRenderCache(state, const_cast<SoNode*>(node)));
 
   if (sensor)
     sensor->caches.push_back(cache);
   if (currentcache)
     currentcache->beginChildCaching(state, cache);
   self->stack.push_back(cache);
-  cache->open(state, selectstyle, selroot->resetClipPlane.getValue(), false);
+  cache->open(state, selectstyle, false);
   return SoCallbackAction::CONTINUE;
 }
 
@@ -922,8 +930,8 @@ SoFCRenderCacheManagerP::postSeparator(void *userdata,
 
   self->stack.pop_back();
   if (SoCacheElement::getCurrentCache(state) == cache) {
-    state->pop();
     cache->close(state);
+    state->pop();
     if (self->stack.size())
       self->stack.back()->endChildCaching(state, cache);
   }
@@ -1181,7 +1189,7 @@ SoFCRenderCacheManagerP::preShape(void *userdata,
   }
 
   state->push();
-  self->vcache.reset(new SoFCVertexCache(state, node, prev));
+  self->vcache.reset(new SoFCVertexCache(state, const_cast<SoNode*>(node), prev));
   sensor.caches.emplace_back(self->vcache.get());
 
   currentcache->beginChildCaching(state, self->vcache);

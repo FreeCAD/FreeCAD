@@ -36,6 +36,7 @@
 
 #include <vector>
 #include <set>
+#include <map>
 
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
@@ -51,6 +52,11 @@ public:
   typedef SoFCVertexAttribute<GLint> IndexArray;
 
   SoFCVertexArrayIndexer(SbFCUniqueId dataid, IndexArray * array = nullptr);
+
+  SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
+                         const std::map<int, int> & partindices,
+                         int maxindex,
+                         bool exclude = false);
 
   SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
                          const std::set<int> & partindices,
@@ -106,9 +112,10 @@ public:
   void getBoundingBox(const SbMatrix * matrix, SbBox3f &bbox, const SbVec3f * vertices) const;
 
 private:
-  template<class IndicesT>
+  template<class IndicesT, class GetT>
   void init(const SoFCVertexArrayIndexer & other,
             const IndicesT & partindices,
+            GetT && getT,
             int maxindex,
             bool exclude);
 

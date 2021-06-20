@@ -808,6 +808,11 @@ SoFCRendererP::pushDrawEntry(std::vector<DrawEntry> & draw_entries,
 void
 SoFCRenderer::setScene(const RenderCachePtr &cache)
 {
+  if (!cache) {
+    clear();
+    return;
+  }
+
   PRIVATE(this)->scenebbox = SbBox3f();
   PRIVATE(this)->prevplane = SbPlane();
   PRIVATE(this)->opaquevcache.clear();
@@ -822,7 +827,7 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
   PRIVATE(this)->scene = cache;
   PRIVATE(this)->scenebbox = SbBox3f();
 
-  for (const auto & v : cache->getVertexCaches(true)) {
+  for (const auto & v : cache->getVertexCaches()) {
     auto & material = v.first;
     auto & ventries = v.second;
     if (ventries.empty()) continue;
@@ -987,8 +992,8 @@ SoFCRendererP::updateSelection()
         this->selkey.reset(new CacheKey);
       *this->selkey = *ventry.key;
     }
-    this->selkey->push_back(ventry.cache->getNodeId());
-    this->selkey->push_back(material.type);
+    this->selkey->forcePush(ventry.cache->getNodeId());
+    this->selkey->forcePush(material.type);
     if (this->selectionkeys.insert(ventry.key).second) {
       applyKey(ventry.key);
       renderkeys.insert(this->selkey);

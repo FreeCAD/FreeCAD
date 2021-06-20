@@ -133,6 +133,8 @@ public:
       return;
     assert(this->array.empty());
     auto it = this->proxy->array.begin();
+    this->array.clear();
+    this->len = this->proxy->getLength();
     this->array.insert(this->array.end(), it, it + this->len);
     this->proxy.reset();
   }
@@ -146,7 +148,7 @@ public:
         ++this->len;
         return;
       }
-      copyFromProxy();
+      copyCurrent();
     }
     ++this->len;
     this->array.push_back(item);
@@ -158,7 +160,7 @@ public:
     if (this->proxy) {
       assert(this->proxy->isAttached());
       if (this->proxy->attachtypesize != sizeof(T)) {
-        copyFromProxy();
+        copyCurrent();
         return attach();
       }
       this->attachtypesize = sizeof(T);
@@ -184,7 +186,7 @@ public:
         registerAndAttach();
         return this;
       }
-      copyFromProxy();
+      copyCurrent();
     }
     this->attachtypesize = sizeof(L);
     SoFCVertexAttribute<T> * res = find();
@@ -199,6 +201,18 @@ public:
   }
 
 private:
+  void copyCurrent()
+  {
+    // Copy exiting entry from the proxy before mutating
+    assert(!isAttached());
+    if (!this->proxy)
+      return;
+    assert(this->array.empty());
+    auto it = this->proxy->array.begin();
+    this->array.insert(this->array.end(), it, it + this->len);
+    this->proxy.reset();
+  }
+
   void registerAndAttach() {
     if (!this->len)
       return;

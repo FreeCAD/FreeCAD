@@ -59,9 +59,10 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(SbFCUniqueId _dataid,
     this->previndexarray = prev;
 }
 
-template<class IndicesT> inline void
+template<class IndicesT, class GetT> inline void
 SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
                              const IndicesT & partindices,
+                             GetT && getT,
                              int maxindex,
                              bool exclude)
 {
@@ -71,7 +72,13 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
   this->partarray = other.partarray;
   this->linestripoffsets = other.linestripoffsets;
   this->linestripcounts = other.linestripcounts;
-  if (this->partarray.size()) {
+  if (partindices.empty()) {
+    this->use_shorts = other.use_shorts;
+    this->indexarray = other.indexarray;
+    this->indexarraylength = other.indexarraylength;
+    this->partialindices = other.partialindices;
+  }
+  else if (this->partarray.size()) {
     this->use_shorts = other.use_shorts;
     this->indexarray = other.indexarray;
     this->indexarraylength = other.indexarraylength;
@@ -80,12 +87,15 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
       if (partindices.size() < this->partarray.size())
         this->partialindices.reserve(this->partarray.size() - partindices.size());
       auto it = partindices.begin();
+      auto &filter = other.partialindices;
       for (int i=0; i<maxindex; ++i) {
+        if (filter.size() && !std::binary_search(filter.begin(), filter.end(), i))
+          continue;
         for (; it != partindices.end(); ++it) {
-          if (*it >= i)
+          if (getT(it) >= i)
             break;
         }
-        if (it != partindices.end() && *it == i) {
+        if (it != partindices.end() && getT(it) == i) {
           ++it;
           continue;
         }
@@ -93,7 +103,8 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
       }
     } else {
       this->partialindices.reserve(partindices.size());
-      for (int i : partindices) {
+      for (auto it = partindices.begin(); it != partindices.end(); ++it) {
+        int i = getT(it);
         if (i >=0 && i < maxindex)
           this->partialindices.push_back(i);
       }
@@ -101,9 +112,21 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
   } else {
     this->use_shorts = TRUE;
     this->indexarraylength = 0;
-    for (int i : partindices)
-      addIndex(i);
+    for (auto it = partindices.begin(); it != partindices.end(); ++it)
+      addIndex(getT(it));
   }
+}
+
+SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
+                                               const std::map<int, int> & partindices,
+                                               int maxindex,
+                                               bool exclude)
+{
+  init(other,
+       partindices,
+       [](const std::map<int, int>::const_iterator &it) {return it->first;},
+       maxindex,
+       exclude);
 }
 
 SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
@@ -111,7 +134,11 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & ot
                                                int maxindex,
                                                bool exclude)
 {
-  init(other, partindices, maxindex, exclude);
+  init(other,
+       partindices,
+       [](const std::set<int>::const_iterator &it) {return *it;},
+       maxindex,
+       exclude);
 }
 
 SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
@@ -119,7 +146,11 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & ot
                                                int maxindex,
                                                bool exclude)
 {
-  init(other, partindices, maxindex, exclude);
+  init(other,
+       partindices,
+       [](const std::vector<int>::const_iterator &it) {return *it;},
+       maxindex,
+       exclude);
 }
 
 SoFCVertexArrayIndexer::~SoFCVertexArrayIndexer()

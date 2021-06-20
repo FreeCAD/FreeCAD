@@ -59,6 +59,7 @@ class SbVec2s;
 class SbBox3f;
 class SbMatrix;
 class SoFCRenderCacheManager;
+class SoFCRenderCache;
 
 namespace Gui {
 
@@ -259,6 +260,14 @@ class GuiExport SoFCSelectionRoot : public SoFCSeparator {
     SO_NODE_HEADER(Gui::SoFCSelectionRoot);
 
 public:
+    enum SelectStyles {
+        Full, Box, PassThrough, Unpickable
+    };
+    SoSFEnum selectionStyle;
+    SoSFBool resetClipPlane;
+    SoSFColor overrideColor;
+    SoSFFloat overrideTransparency;
+
     static void initClass(void);
     static void finish(void);
     SoFCSelectionRoot(bool trackCacheMode=false, ViewProvider *vp=0);
@@ -365,11 +374,14 @@ public:
     }
 
     template<class T>
-    static std::shared_ptr<T> getSecondaryActionContext(SoAction *action, SoNode *node) {
-        auto it = ActionStacks.find(action);
-        if(it == ActionStacks.end())
+    static std::shared_ptr<T> getSecondaryActionContext(SoAction *action,
+                                                        SoNode *node,
+                                                        bool searchall = true)
+    {
+        auto stack = getActionStack(action);
+        if (!stack)
             return std::shared_ptr<T>();
-        return std::dynamic_pointer_cast<T>(getNodeContext2(it->second,node,T::merge));
+        return std::dynamic_pointer_cast<T>(getNodeContext2(*stack,node,T::merge,searchall));
     }
 
     static void checkSelection(bool &sel, SbColor &selColor, bool &hl, SbColor &hlColor);
@@ -385,28 +397,19 @@ public:
 
     void resetContext();
 
-    static bool checkColorOverride(SoState *state);
-
     bool hasColorOverride() const {
-        return overrideColor;
+        return !overrideColor.isIgnored();
     }
 
     void setColorOverride(App::Color c) {
-        overrideColor = true;
-        colorOverride = SbColor(c.r,c.g,c.b);
-        transOverride = c.a;
+        overrideColor.setValue(SbColor(c.r, c.g, c.b));
+        overrideTransparency.setValue(c.a);
+        overrideColor.setIgnored(FALSE);
     }
 
     void removeColorOverride() {
-        overrideColor = false;
+        overrideColor.setIgnored(TRUE);
     }
-
-    enum SelectStyles {
-        Full, Box, PassThrough, Unpickable
-    };
-    SoSFEnum selectionStyle;
-
-    SoSFBool resetClipPlane;
 
     static bool renderBBox(SoGLRenderAction *action, SoNode *node,
             const SbColor &color, const SbMatrix *mat=0, bool force=false);
@@ -419,29 +422,46 @@ public:
                                             const uint32_t *color,
                                             bool changeWidth = true);
 
+    friend class ::SoFCRenderCache;
+
 protected:
     virtual ~SoFCSelectionRoot();
 
     void renderPrivate(SoGLRenderAction *, bool inPath);
     bool _renderPrivate(SoGLRenderAction *, bool inPath, bool &pushed);
 
+    bool setupColorOverride(SoState *state, bool pushed);
+    void resetColorOverride(SoState *) const;
+
     class Stack : public std::vector<SoFCSelectionRoot*> {
     public:
+        void forcePush(intptr_t id) {
+            this->push_back(reinterpret_cast<SoFCSelectionRoot*>(id));
+        }
         std::unordered_set<SoFCSelectionRoot*> nodeSet;
         size_t offset = 0;
     };
+
+    static void setActionStack(SoAction *action, Stack *stack);
+    static Stack *getActionStack(SoAction *action, bool create=false);
+
+    Stack &beginAction(SoAction *action, bool checkcycle=true);
+    void endAction(SoAction *action, Stack &stack, bool checkcycle=true);
 
     bool doActionPrivate(Stack &stack, SoAction *);
 
     static SoFCSelectionContextBasePtr getNodeContext(
             Stack &stack, SoNode *node, SoFCSelectionContextBasePtr def);
     static SoFCSelectionContextBasePtr getNodeContext2(
-            Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge);
+            Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge, bool searchall=true);
     static std::pair<bool,SoFCSelectionContextBasePtr*> findActionContext(
             SoAction *action, SoNode *node, bool create, bool erase);
 
     static Stack SelStack;
     static std::unordered_map<SoAction*,Stack> ActionStacks;
+    static SoAction *TempAction;
+    static Stack *TempActionStack;
+
     struct StackComp {
         bool operator()(const Stack &a, const Stack &b) const;
     };
@@ -466,9 +486,6 @@ protected:
     static ColorStack SelColorStack;
     static ColorStack HlColorStack;
     static SoFCSelectionRoot *ShapeColorNode;
-    bool overrideColor = false;
-    SbColor colorOverride;
-    float transOverride = 0.0f;
     SoColorPacker shapeColorPacker;
 
     SoFCSelectionCounter selCounter;
@@ -518,7 +535,7 @@ class GuiExport SoSelectionElementAction : public SoAction
     SO_ACTION_HEADER(SoSelectionElementAction);
 
 public:
-    enum Type {None, Append, Remove, All, Color, Hide, Show};
+    enum Type {None, Append, Remove, All, Color, Hide, Show, Retrieve, RetrieveAll};
 
     SoSelectionElementAction (Type=None, bool secondary = false, bool noTouch = false);
     ~SoSelectionElementAction();
@@ -553,6 +570,10 @@ public:
         _colors.swap(colors);
     }
 
+    SoFCSelectionContextExPtr getRetrievedContext(SoFCDetail::Type *type=nullptr) const;
+    void setRetrivedContext(const SoFCSelectionContextExPtr &ctx = SoFCSelectionContextExPtr(),
+                            SoFCDetail::Type type = SoFCDetail::Face);
+
     static void initClass();
 
 protected:
@@ -566,6 +587,8 @@ private:
     SbColor _color;
     const SoDetail* _det;
     std::map<std::string,App::Color> _colors;
+    SoFCSelectionContextExPtr _selctx;
+    SoFCDetail::Type _seltype;
     bool _secondary;
     bool _noTouch;
 };
