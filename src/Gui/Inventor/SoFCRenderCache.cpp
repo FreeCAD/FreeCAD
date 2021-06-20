@@ -1249,9 +1249,10 @@ SoFCRenderCache::getVertexCaches(int depth)
         PRIVATE(this)->finalizeMaterial(material);
 
       VertexCacheMap::value_type value(material, {});
+      bool entrypushed = false;
       for (const VertexCacheEntry & childentry : child.second) {
         std::vector<VertexCacheEntry> *ventries = nullptr;
-        if (it != vcachemap.end())
+        if (it != vcachemap.end() && entrypushed)
           ventries = &it->second;
         CacheKeyPtr & key = keymap[childentry.key.get()];
         if (!key) {
@@ -1281,6 +1282,7 @@ SoFCRenderCache::getVertexCaches(int depth)
           material = value.first; // revert back to original material
         } else if (!ventries) {
           it = vcachemap.insert(it, value);
+          entrypushed = true;
           ventries = &it->second;
         }
 
