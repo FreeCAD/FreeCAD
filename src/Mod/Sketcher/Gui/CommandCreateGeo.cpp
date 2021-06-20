@@ -731,7 +731,7 @@ CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
     sWhatsThis      = "Sketcher_CreateRectangle_Center";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateRectangle_Center";
-    sAccel          = "R";
+    sAccel          = "";
     eType           = ForEdit;
 }
 
@@ -1181,13 +1181,13 @@ void CmdSketcherCompCreateRectangles::languageChange()
     rectangle1->setToolTip(QApplication::translate("Sketcher_CreateRectangle", "Create a rectangle"));
     rectangle1->setStatusTip(rectangle1->toolTip());
     QAction* rectangle2 = a[1];
-    rectangle2->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Centered Rectangle"));
+    rectangle2->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Centered rectangle"));
     rectangle2->setToolTip(QApplication::translate("Sketcher_CreateRectangle_Center", "Create a centered rectangle"));
     rectangle2->setStatusTip(rectangle2->toolTip());
     QAction* rectangle3 = a[2];
     rectangle3->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Rounded rectangle"));
     rectangle3->setToolTip(QApplication::translate("Sketcher_CreateOblong", "Create a rounded rectangle"));
-    rectangle3->setStatusTip(rectangle2->toolTip());
+    rectangle3->setStatusTip(rectangle3->toolTip());
 }
 
 bool CmdSketcherCompCreateRectangles::isActive(void)
@@ -7709,7 +7709,7 @@ void CmdSketcherCompCreateRegularPolygon::languageChange()
     octagon->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
     octagon->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
     QAction* regular = a[6];
-    regular->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Regular Polygon"));
+    regular->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Regular polygon"));
     regular->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
     regular->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
 }
@@ -7742,6 +7742,8 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
+    rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
+    rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateTriangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateSquare());
@@ -7752,7 +7754,6 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateRectangles());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
-    rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     rcCmdMgr.addCommand(new CmdSketcherCreatePointFillet());
