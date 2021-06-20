@@ -2175,6 +2175,19 @@ void ViewProviderPartExt::reattach(App::DocumentObject *obj)
 void ViewProviderPartExt::finishRestoring()
 {
     inherited::finishRestoring();
+
+    auto syncMaterial = [](const App::Material &Mat, SoMaterial *pcMaterial) {
+        pcMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
+        pcMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
+        pcMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
+        pcMaterial->shininess.setValue(Mat.shininess);
+        if (pcMaterial->diffuseColor.getNum() == 1)
+            pcMaterial->transparency.setValue(Mat.transparency);
+    };
+    syncMaterial(LineMaterial.getValue(), pcLineMaterial);
+    syncMaterial(PointMaterial.getValue(), pcPointMaterial);
+    syncMaterial(ShapeMaterial.getValue(), pcShapeMaterial);
+
     if(VisualTouched && (isUpdateForced() || Visibility.getValue()))
         updateVisual();
 }
