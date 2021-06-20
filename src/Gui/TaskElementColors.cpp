@@ -173,8 +173,9 @@ public:
         int i=0;
         for(auto &v : vp->getElementColors())
             addItem(i++,v.first.c_str());
-        apply();
     }
+
+    void edit(QWidget *parent, bool elementOnly);
 
     void addItem(int i,const char *sub, bool push=false) {
         auto itE = elements.find(sub);
@@ -447,6 +448,7 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
         (&ElementColors::slotDeleteObject, this, bp::_1));
 
     d->populate();
+    QMetaObject::invokeMethod(this, "checkEdit", Qt::QueuedConnection);
 }
 
 ElementColors::~ElementColors()
@@ -454,6 +456,10 @@ ElementColors::~ElementColors()
     d->connectDelDoc.disconnect();
     d->connectDelObj.disconnect();
     Selection().rmvSelectionGate();
+}
+
+void ElementColors::checkEdit() {
+    d->edit(this, true);
 }
 
 void ElementColors::on_recompute_clicked(bool checked) {
@@ -511,45 +517,61 @@ void ElementColors::on_hideSelection_clicked() {
 
 void ElementColors::on_addSelection_clicked()
 {
-    auto sels = Selection().getSelectionEx(d->editDoc.c_str(),App::DocumentObject::getClassTypeId(),0);
-    d->items.clear();
-    if(sels.empty())
-        d->addItem(-1,"Face",true);
-    else {
+    d->edit(this, false);
+}
+
+void ElementColors::Private::edit(QWidget *parent, bool elementOnly)
+{
+    auto sels = Selection().getSelectionEx(editDoc.c_str(),App::DocumentObject::getClassTypeId(),0);
+    int count = ui->elementList->count();
+    items.clear();
+    if(sels.empty()) {
+        if (elementOnly)
+            return;
+        addItem(-1,"Face",true);
+    } else {
         for(auto &sel : sels) {
-            if(d->editObj!=sel.getFeatName())
+            if(editObj!=sel.getFeatName())
                 continue;
             const auto &subs = sel.getSubNames();
             if(subs.empty()) {
-                d->addItem(-1,"Face",true);
+                if (elementOnly)
+                    continue;
+                addItem(-1,"Face",true);
                 break;
             }
             for(auto &sub : subs) {
-                if(!boost::starts_with(sub,d->editSub))
+                if(!boost::starts_with(sub,editSub))
                     continue;
-                std::string s(sub.c_str()+d->editSub.size());
+                std::string s(sub.c_str()+editSub.size());
                 if(s.empty() || s.back() == '.')
                     s += "Face";
-                d->addItem(-1,s.c_str(),true);
+                addItem(-1,s.c_str(),true);
             }
             break;
         }
     }
-    if(d->items.size()) {
-        auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
-        QColorDialog cd(color, this);
+    if(items.size()) {
+        auto color = items.front()->data(Qt::UserRole).value<QColor>();
+        QColorDialog cd(color, parent);
         cd.setOptions(QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
         // Seems some version of Qt has to explicitly set the current color
         cd.setCurrentColor(color);
-        if (cd.exec()!=QDialog::Accepted)
+        if (cd.exec()!=QDialog::Accepted) {
+            while(ui->elementList->count() > count) {
+                auto item = ui->elementList->takeItem(ui->elementList->count()-1);
+                elements.erase(item->data(Qt::UserRole+1).toString().toLatin1().constData());
+            }
+            touched = true;
             return;
-        color = cd.selectedColor();
-        for(auto item : d->items) {
-            item->setData(Qt::UserRole,color);
-            d->px.fill(color);
-            item->setIcon(QIcon(d->px));
         }
-        d->apply();
+        color = cd.selectedColor();
+        for(auto item : items) {
+            item->setData(Qt::UserRole,color);
+            px.fill(color);
+            item->setIcon(QIcon(px));
+        }
+        apply();
     }
 }
 

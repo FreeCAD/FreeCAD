@@ -81,7 +81,7 @@
    <item row="5" column="0">
     <widget class="QCheckBox" name="onTop">
      <property name="text">
-      <string>On-top when selected</string>
+      <string>Show on top</string>
      </property>
     </widget>
    </item>

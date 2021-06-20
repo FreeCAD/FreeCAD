@@ -2898,7 +2898,6 @@ bool ViewProviderLink::setEdit(int ModNum)
             Control().showDialog(dlg);
             return false;
         }
-        Selection().clearSelection();
         return true;
     }
     return inherited::setEdit(ModNum);

@@ -1686,8 +1686,6 @@ bool ViewProviderPartExt::setEdit(int ModNum)
             return false;
         }
 
-        Gui::Selection().clearSelection();
-
         // TaskFaceColors is replaced by TaskElementColors, and is inited in 
         // setEditViewer() in order to handle editing context
         //

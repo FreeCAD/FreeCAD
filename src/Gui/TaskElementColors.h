@@ -44,6 +44,7 @@ public:
     bool reject();
 
 private Q_SLOTS:
+    void checkEdit();
     void on_removeSelection_clicked();
     void on_addSelection_clicked();
     void on_removeAll_clicked();
