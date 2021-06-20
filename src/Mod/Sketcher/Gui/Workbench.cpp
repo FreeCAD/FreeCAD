@@ -240,6 +240,7 @@ template <>
 inline void SketcherAddWorkspaceRectangles<Gui::MenuItem>(Gui::MenuItem& geom)
 {
     geom    << "Sketcher_CreateRectangle"
+            << "Sketcher_CreateRectangle_Center"
             << "Sketcher_CreateOblong";
 }
 
