@@ -289,9 +289,6 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             /*<< "Sketcher_CreateDraftLine"*/;
 }
 
-//template <typename T>
-//void SketcherAddWorkbenchConstraints(T& cons);
-
 template <typename T>
 inline void SketcherAddWorkbenchConstraints(T& cons);
 
