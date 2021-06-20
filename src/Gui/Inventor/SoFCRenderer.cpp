@@ -1689,7 +1689,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
             draw_entry.ventry->cache->renderTriangles(state,
                                                       array,
                                                       draw_entry.ventry->partidx,
-                                                      &this->prevplane);
+                                                      sort ? &this->prevplane : nullptr);
           }
           renderOutline(action, draw_entry, highlight);
         }
