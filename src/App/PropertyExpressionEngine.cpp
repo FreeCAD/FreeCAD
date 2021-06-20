@@ -314,8 +314,12 @@ void PropertyExpressionEngine::Save(Base::Writer &writer) const
         writer.endCharStream() << '\n' <<  writer.ind() << "</Expressions>\n";
     } else {
         for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+            auto key = it->first.toString();
+            // For compatibility with upstream, do not use local property referencing scheme
+            if (key.size() && key[0] == '.')
+                key.erase(key.begin());
             writer.Stream() << writer.ind() << "<Expression path=\"" 
-                << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
+                << Property::encodeAttribute(key) <<"\" expression=\"" 
                 << Property::encodeAttribute(it->second.expression->toString(true)) << "\"";
             if (it->second.expression->comment.size() > 0)
                 writer.Stream() << " comment=\"" 
