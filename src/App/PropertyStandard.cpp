@@ -2903,6 +2903,8 @@ TYPESYSTEM_SOURCE(App::PropertyMaterial , App::Property)
 
 PropertyMaterial::PropertyMaterial()
 {
+    if (DocumentParams::EnableMaterialEdit())
+        setStatus(MaterialEdit, true);
 
 }
 
