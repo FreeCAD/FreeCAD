@@ -2189,7 +2189,7 @@ CmdSketcherRemoveAxesAlignment::CmdSketcherRemoveAxesAlignment()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Remove Axes Alignment");
+    sMenuText       = QT_TR_NOOP("Remove axes alignment");
     sToolTipText    = QT_TR_NOOP("Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection");
     sWhatsThis      = "Sketcher_RemoveAxesAlignment";
     sStatusTip      = sToolTipText;
