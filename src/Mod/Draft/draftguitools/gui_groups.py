@@ -254,14 +254,13 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         # and globally initialized in the `Gui` namespace to run
         # some actions.
         # If there is only a group selected, it runs the `AutoGroup` method.
+        params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         self.ui = Gui.draftToolBar
         s = Gui.Selection.getSelection()
         if len(s) == 1:
-            if (utils.get_type(s[0]) == "Layer") or \
-                (App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("AutogroupAddGroups", False)
-             and (s[0].isDerivedFrom("App::DocumentObjectGroup")
-                  or utils.get_type(s[0]) in ["Site", "Building",
-                                              "Floor", "BuildingPart"])):
+            if (utils.get_type(s[0]) == "Layer"
+                or (params.GetBool("AutogroupAddGroups", False)
+                    and groups.is_group(s[0]))):
                 self.ui.setAutoGroup(s[0].Name)
                 return
 
@@ -269,27 +268,26 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         # including the options "None" and "Add new layer".
         self.groups = ["None"]
         gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
-        if App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("AutogroupAddGroups", False):
+        if params.GetBool("AutogroupAddGroups", False):
             gn.extend(groups.get_group_names())
-        if gn:
-            self.groups.extend(gn)
-            self.labels = [translate("draft", "None")]
-            self.icons = [self.ui.getIcon(":/icons/button_invalid.svg")]
-            for g in gn:
-                o = self.doc.getObject(g)
-                if o:
-                    self.labels.append(o.Label)
-                    self.icons.append(o.ViewObject.Icon)
-            self.labels.append(translate("draft", "Add new Layer"))
-            self.icons.append(self.ui.getIcon(":/icons/document-new.svg"))
+        self.groups.extend(gn)
+        self.labels = [translate("draft", "None")]
+        self.icons = [self.ui.getIcon(":/icons/button_invalid.svg")]
+        for g in gn:
+            o = self.doc.getObject(g)
+            if o:
+                self.labels.append(o.Label)
+                self.icons.append(o.ViewObject.Icon)
+        self.labels.append(translate("draft", "Add new Layer"))
+        self.icons.append(self.ui.getIcon(":/icons/document-new.svg"))
 
-            # With the lists created is uses the interface
-            # to pop up a menu with layer options.
-            # Once the desired option is chosen
-            # it launches the `proceed` method.
-            self.ui.sourceCmd = self
-            pos = self.ui.autoGroupButton.mapToGlobal(QtCore.QPoint(0, self.ui.autoGroupButton.geometry().height()))
-            self.ui.popupMenu(self.labels, self.icons, pos)
+        # With the lists created is uses the interface
+        # to pop up a menu with layer options.
+        # Once the desired option is chosen
+        # it launches the `proceed` method.
+        self.ui.sourceCmd = self
+        pos = self.ui.autoGroupButton.mapToGlobal(QtCore.QPoint(0, self.ui.autoGroupButton.geometry().height()))
+        self.ui.popupMenu(self.labels, self.icons, pos)
 
     def proceed(self, labelname):
         """Set the defined autogroup, or create a new layer.
