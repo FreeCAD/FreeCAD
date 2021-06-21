@@ -608,12 +608,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             auto shape = Part::Feature::getTopoShape(reference.getObject(),
                                                      reference.getSubName().c_str(),
                                                      true);
-            if (shape.isNull() && obj == pcActiveBody) {
-                obj = nullptr;
-                reference = App::SubObjectT();
-            } else {
-                gp_Pln pln;
-                if (!shape.findPlane(pln)) {
+            gp_Pln pln;
+            if (!shape.findPlane(pln)) {
+                if (shape.isNull() || obj == pcActiveBody) {
+                    obj = nullptr;
+                    reference = App::SubObjectT();
+                } else {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
                             QObject::tr("You need a planar face as support for a sketch!"));
                     return;
