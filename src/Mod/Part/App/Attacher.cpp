@@ -830,34 +830,32 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
         geofs[i] = geof;
         Part::TopoShape shape;
         if (geof->isDerivedFrom(Part::Feature::getClassTypeId())){
-            shape = (static_cast<Part::Feature*>(geof)->Shape.getShape());
-            if (shape.isNull()){
-                FC_THROWM(AttachEngineException,"AttachEngine3D: Part has null shape " 
-                        << objs[i]->getNameInDocument());
-            }
-            if (sub[i].length()>0){
-                try{
-                    shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
+            try{
+                shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
+                for(;;) {
                     if (shape.isNull())
                         FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
                                 << objs[i]->getNameInDocument() << '.' << sub[i]);
-                    storage.push_back(shape.getShape());
-                } catch (Standard_Failure &e){
-                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                            << objs[i]->getNameInDocument() << '.' << sub[i] 
-                            << std::endl << e.GetMessageString());
-                } catch (Base::CADKernelError &e){
-                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                            << objs[i]->getNameInDocument() << '.' << sub[i] 
-                            << std::endl << e.what());
+                    if (shape.shapeType() != TopAbs_COMPOUND
+                            || shape.countSubShapes(TopAbs_SHAPE) != 1)
+                        break;
+                    // auto extract the single sub-shape from a compound
+                    shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
                 }
-                if(storage[storage.size()-1].IsNull())
-                    FC_THROWM(AttachEngineException, "AttachEngine3D: null subshape "
-                            << objs[i]->getNameInDocument() << '.' << sub[i]);
-            } else {
                 storage.push_back(shape.getShape());
+            } catch (Standard_Failure &e){
+                FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                        << objs[i]->getNameInDocument() << '.' << sub[i] 
+                        << std::endl << e.GetMessageString());
+            } catch (Base::CADKernelError &e){
+                FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                        << objs[i]->getNameInDocument() << '.' << sub[i] 
+                        << std::endl << e.what());
             }
-            shapes[i] = &(storage[storage.size()-1]);
+            if(storage.back().IsNull())
+                FC_THROWM(AttachEngineException, "AttachEngine3D: null subshape "
+                        << objs[i]->getNameInDocument() << '.' << sub[i]);
+            shapes[i] = &(storage.back());
         } else if (  geof->isDerivedFrom(App::Plane::getClassTypeId())  ){
             //obtain Z axis and origin of placement
             Base::Vector3d norm;
