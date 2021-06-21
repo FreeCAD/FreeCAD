@@ -326,16 +326,19 @@ Base::Vector3d BaseGeom::getEndPoint()
 
 Base::Vector3d BaseGeom::getMidPoint()
 {
-    Base::Vector3d result;
-    BRepAdaptor_Curve adapt(occEdge);
-    double u = adapt.FirstParameter();
-    double v = adapt.LastParameter();
-    double range = v - u;
-    double midParm = u + (range / 2.0);
-    BRepLProp_CLProps prop(adapt,midParm,0,Precision::Confusion());
-    const gp_Pnt& pt = prop.Value();
-    result = Base::Vector3d(pt.X(),pt.Y(), pt.Z());
-    return result;
+    BRepAdaptor_Curve curve(occEdge);
+    double midParam = (curve.FirstParameter() + curve.LastParameter())/2.0;
+
+    GCPnts_AbscissaPoint abscissa(Precision::Confusion(), curve, GCPnts_AbscissaPoint::Length(curve)/2.0,
+                                  curve.FirstParameter());
+    if (abscissa.IsDone()) {
+        midParam = abscissa.Parameter();
+    }
+
+    BRepLProp_CLProps props(curve, midParam, 0, Precision::Confusion());
+    const gp_Pnt &point = props.Value();
+
+    return Base::Vector3d(point.X(), point.Y(), point.Z());
 }
 
 std::vector<Base::Vector3d> BaseGeom::getQuads()
