@@ -39,6 +39,7 @@ public:
     virtual void attach(App::DocumentObject*) override;
     virtual void updateData(const App::Property *) override;
 
+    virtual bool canDelete(App::DocumentObject* obj) const override;
     virtual bool canDragAndDropObject(App::DocumentObject*) const override;
     virtual bool canDropObjects() const override {return true;}
     virtual bool canDropObject(App::DocumentObject *) const override;

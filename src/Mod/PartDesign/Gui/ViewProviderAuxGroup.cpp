@@ -178,3 +178,14 @@ void ViewProviderAuxGroup::updateData(const App::Property *prop)
     }
     inherited::updateData(prop);
 }
+
+bool ViewProviderAuxGroup::canDelete(App::DocumentObject* obj) const
+{
+    auto owner = Base::freecad_dynamic_cast<PartDesign::AuxGroup>(getObject());
+    if (owner) {
+        auto bodyvp = Gui::Application::Instance->getViewProvider(owner->getBody());
+        if (bodyvp)
+            return bodyvp->canDelete(obj);
+    }
+    return true;
+}
