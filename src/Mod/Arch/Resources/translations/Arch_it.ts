@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Se non è zero, gli assi non sono rappresentati come una linea intera ma come due linee della lunghezza indicata</translation>
     </message>
   </context>
   <context>
@@ -3364,7 +3364,7 @@
       <translation>Trovata una forma contenente curve, sarà triangolata</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Importazione riuscita</translation>
     </message>

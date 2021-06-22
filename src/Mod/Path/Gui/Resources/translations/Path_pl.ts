@@ -190,11 +190,6 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Ścieżka do skopiowania</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>Podstawowa geometria tej ścieżki narzędzia</translation>
-    </message>
-    <message>
       <location filename="PathProfileEdges.py" line="70"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>Kontroler, który zostanie użyty do określenia ścieżki</translation>
@@ -510,6 +505,11 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Dodatkowy offset do operacji. Kierunek jest zależny od operacji.</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Biblioteka używana do generowania ścieżki</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Uruchom obróbke kieszeni w centrum lub obwiedni</translation>
@@ -527,7 +527,7 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="79"/>
       <source>Clearing pattern to use</source>
-      <translation>Wzór czyszczenia do użycia</translation>
+      <translation>Wyczyść wzór do użycia</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="82"/>
@@ -547,7 +547,7 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="PathArray.py" line="42"/>
       <source>The path(s) to array</source>
-      <translation type="unfinished">The path(s) to array</translation>
+      <translation>Ścieżki do dodania do szyku</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="43"/>
@@ -557,52 +557,52 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="PathArray.py" line="46"/>
       <source>The spacing between the array copies in Linear pattern</source>
-      <translation type="unfinished">The spacing between the array copies in Linear pattern</translation>
+      <translation>Odstęp między kopiami szyku, we wzorze liniowym</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="48"/>
       <source>The number of copies in X direction in Linear pattern</source>
-      <translation type="unfinished">The number of copies in X direction in Linear pattern</translation>
+      <translation>Liczba kopii w kierunku X wzoru liniowego</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="50"/>
       <source>The number of copies in Y direction in Linear pattern</source>
-      <translation type="unfinished">The number of copies in Y direction in Linear pattern</translation>
+      <translation>Liczba kopii w kierunku Y wzoru liniowego</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="52"/>
       <source>Total angle in Polar pattern</source>
-      <translation type="unfinished">Total angle in Polar pattern</translation>
+      <translation>Całkowity kąt we wzorze biegunowym</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="54"/>
       <source>The number of copies in Linear 1D and Polar pattern</source>
-      <translation type="unfinished">The number of copies in Linear 1D and Polar pattern</translation>
+      <translation>Liczba kopii w jednym kierunku i wzorze polarnym</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="56"/>
       <source>The centre of rotation in Polar pattern</source>
-      <translation type="unfinished">The centre of rotation in Polar pattern</translation>
+      <translation>Środek obrotu wzoru biegunowego</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="58"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
-      <translation type="unfinished">Make copies in X direction before Y in Linear 2D pattern</translation>
+      <translation>Wykonuj najpierw kopie w kierunku X, potem w kierunku Y, w liniowym wzorze 2D</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="60"/>
       <source>Percent of copies to randomly offset</source>
-      <translation type="unfinished">Percent of copies to randomly offset</translation>
+      <translation>Wartość procentowa losowego odsunięcia kopii</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="62"/>
       <source>Maximum random offset of copies</source>
-      <translation type="unfinished">Maximum random offset of copies</translation>
+      <translation>Maksymalna wartość losowego odsunięcia kopii</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="199"/>
       <source>Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</source>
-      <translation type="unfinished">Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</translation>
+      <translation>Tablice ścieżek mające różne kontrolery narzędzi są obsługiwane zgodnie z kontrolerem narzędzia dla pierwszej ścieżki.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="106"/>
@@ -647,7 +647,7 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
       <source>Make True, if using Cutter Radius Compensation</source>
-      <translation>Ustaw True, jeśli używasz kompensacji promienia frezu</translation>
+      <translation>Ustaw wartość Prawda, jeśli używasz kompensacji promienia frezu</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="73"/>
@@ -705,10 +705,14 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Odetnij odpad ne krawędzi modelu by uwolnić model.</translation>
     </message>
     <message>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>Podstawowa geometria tej ścieżki narzędzia</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathHelix.py" line="71"/>
       <source>Enable rotation to gain access to pockets/areas not normal to Z axis.</source>
-      <translation>Włącz rotację/obrót, aby uzyskać dostęp do kieszeni/obszarów które nie są normalne względem osi Z. 
-</translation>
+      <translation>Włącz obrót w celu uzyskania dostępu do kieszeni / obszarów które nie są normalne względem osi Z. </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="89"/>
@@ -731,14 +735,9 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Wymuś głębokość Z wybranej ściany jako najniższą wartość dla głębokości końcowej. Obserwowane będą wyższe wartości użytkownika. </translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Biblioteka używana do generowania ścieżki</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
       <source>Extend the profile clearing beyond the Extra Offset.</source>
-      <translation>Rozszerz czyszczenie profilu poza dodatkowe przesunięcie.</translation>
+      <translation>Rozszerz czyszczenie profilu poza dodatkowe odsunięcie.</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -768,12 +767,12 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="PathToolController.py" line="54"/>
       <source>Rapid rate for vertical moves in Z</source>
-      <translation>Szybki przyrost dla wertykalnych ruchów w Z</translation>
+      <translation>Szybkie tempo dla ruchów pionowych w kierunku osi Z</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="55"/>
       <source>Rapid rate for horizontal moves</source>
-      <translation>Szybki przyrost dla horyzontalnych ruchów</translation>
+      <translation>Szybkie tempo dla ruchów poziomych</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="66"/>
@@ -989,14 +988,14 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Wybrane narzędzie nie jest wiertłem</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
-      <translation>Nieprawidłowy kąt krawędzi cięcia %.2f, musi być  &gt;0Â° i &lt;=180Â°</translation>
-    </message>
-    <message>
       <location filename="PathUtils.py" line="762"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
       <translation>Nieprawidłowy kąt krawędzi tnącej% .2f, musi wynosić &lt;90Â ° i&gt; = 0Â °</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation>Nieprawidłowy kąt krawędzi cięcia %.2f, musi być  &gt;0Â° i &lt;=180Â°</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="767"/>
@@ -1124,6 +1123,33 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Średnica otworu może być niedokładna z powodu występowania teselacji na powierzchni. Rozważ wybranie krawędzi otworu.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Obrócone do pozycji "odwróconego kąta", aby podjąć próbę dostępu.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
+      <source>Always select the bottom edge of the hole when using an edge.</source>
+      <translation>Przy wyborze krawędzi należy zawsze wybierać dolną krawędź otworu.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
+      <source>Start depth &lt;= face depth.
+Increased to stock top.</source>
+      <translation>Głębokość początkowa &lt;= głębokość czołowa.
+Zwiększona do górnej krawędzi materiału.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
+      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
+      <translation>Aby uzyskać dostęp, wybrany element wymaga „Włączenia obrotu: A (x)”.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
+      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
+      <translation>Wybrane funkcje wymagają 'Włącz obrót: B(y)' aby uzyskać dostęp.</translation>
+    </message>
+    <message>
       <location filename="PathCircularHoleBase.py" line="120"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>Funkcja %s.%s nie może być przetworzona jako okrągły otwór - proszę usunąć ją z listy bazy geometrycznej.</translation>
@@ -1132,6 +1158,31 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
       <source>Ignoring non-horizontal Face</source>
       <translation>Ignorowanie niepoziomej ściany</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
+      <source>Face appears misaligned after initial rotation.</source>
+      <translation>Po wstępnym obrocie ściana wydaje się być nieprawidłowo ustawiona.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
+      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
+      <translation>Rozważ przełączenie właściwości „Odwrotny kąt” i ponowne obliczenie.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
+      <source>Multiple faces in Base Geometry.</source>
+      <translation>Wiele ścian w geometrii bazowej.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
+      <source>Depth settings will be applied to all faces.</source>
+      <translation>Ustawienia głębokości zostaną zastosowane do wszystkich ścian.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
+      <source>EnableRotation property is 'Off'.</source>
+      <translation>Właściwość Zezwól na obrót jest wyłączona.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
@@ -1257,31 +1308,6 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Wybrane ściany tworzą pętle. Analiza zapętleń.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
-      <source>Face appears misaligned after initial rotation.</source>
-      <translation>Po wstępnym obrocie ściana wydaje się być nieprawidłowo ustawiona.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
-      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
-      <translation>Rozważ przełączenie właściwości „Odwrotny kąt” i ponowne obliczenie.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
-      <source>Multiple faces in Base Geometry.</source>
-      <translation>Wiele ścian w geometrii bazowej.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
-      <source>Depth settings will be applied to all faces.</source>
-      <translation>Ustawienia głębokości zostaną zastosowane do wszystkich ścian.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
-      <source>EnableRotation property is 'Off'.</source>
-      <translation>Właściwość Zezwól na obrót jest wyłączona.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="575"/>
       <source>Applying inverse angle automatically.</source>
       <translation>Automatyczne ustawienie kąta odwrotnego.</translation>
@@ -1295,33 +1321,6 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
       <source>Rotated to inverse angle.</source>
       <translation>Obróć w przeciwną stronę.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Obrócone do pozycji "odwróconego kąta", aby podjąć próbę dostępu.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
-      <source>Always select the bottom edge of the hole when using an edge.</source>
-      <translation>Przy wyborze krawędzi należy zawsze wybierać dolną krawędź otworu.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
-      <source>Start depth &lt;= face depth.
-Increased to stock top.</source>
-      <translation>Głębokość początkowa &lt;= głębokość czołowa.
-Zwiększona do górnej krawędzi materiału.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
-      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
-      <translation>Aby uzyskać dostęp, wybrany element wymaga „Włączenia obrotu: A (x)”.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
-      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
-      <translation>Wybrane funkcje wymagają 'Włącz obrót: B(y)' aby uzyskać dostęp.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1356,6 +1355,19 @@ Zwiększona do górnej krawędzi materiału.</translation>
       <location filename="PathProfileEdges.py" line="430"/>
       <source>Create a Profile based on edge selection</source>
       <translation>Utwórz profil bazujący na wyborze krawędzi</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="382"/>
+      <source>Extend Outline error</source>
+      <translation>Błąd rozszerzenia konturu</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive</source>
+      <translation>Adaptacyjny</translation>
     </message>
   </context>
   <context>
@@ -1519,6 +1531,34 @@ Zwiększona do górnej krawędzi materiału.</translation>
     </message>
   </context>
   <context>
+    <name>PathFeatureExtensions</name>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="717"/>
+      <source>Click to enable Extensions</source>
+      <translation>Kliknij, aby włączyć rozszerzenia</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="733"/>
+      <source>Click to include Edges/Wires</source>
+      <translation>Kliknij, aby dołączyć krawędzie / polilinie</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="710"/>
+      <source>Extensions enabled</source>
+      <translation>Rozszerzenia włączone</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="730"/>
+      <source>Including Edges/Wires</source>
+      <translation>Dołączanie krawędzi / polilinii</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="421"/>
+      <source>Waterline error</source>
+      <translation>Błąd związany z linią poziomu</translation>
+    </message>
+  </context>
+  <context>
     <name>PathGeom</name>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="152"/>
@@ -1549,6 +1589,11 @@ Zwiększona do górnej krawędzi materiału.</translation>
       <location filename="PathGeom.py" line="542"/>
       <source>%s not supported for flipping</source>
       <translation>%s nie obsługuje odwracania</translation>
+    </message>
+    <message>
+      <location filename="PathGeom.py" line="595"/>
+      <source>Zero working area to process. Check your selection and settings.</source>
+      <translation>Nie ma nic do obróbki. Sprawdź wybór i ustawienia.</translation>
     </message>
   </context>
   <context>
@@ -1935,6 +1980,31 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>PathPocket</name>
     <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Pocket Shape</source>
+      <translation>Kształt kieszeni</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Creates a Path Pocket object from a face or faces</source>
+      <translation>Tworzy obiekt Kierunek ścieżki z twarzy lub twarzy</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
+      <source>Normal</source>
+      <translation>Normalny</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="145"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="100"/>
       <source>Pocket does not support shape %s.%s</source>
       <translation>Kieszeń nie obsługuje kształtu %s.%s</translation>
@@ -1970,31 +2040,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Głębokość końcowa ustawiona poniżej Z min dla wybranej(-ych) powierzchni.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
-      <source>Normal</source>
-      <translation>Normalny</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="145"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Pocket Shape</source>
-      <translation>Kształt kieszeni</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Creates a Path Pocket object from a face or faces</source>
-      <translation>Tworzy obiekt Kierunek ścieżki z twarzy lub twarzy</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
       <source>3D Pocket</source>
       <translation>kieszeń 3D</translation>
@@ -2025,11 +2070,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>PathPocketShape</name>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
-      <source>Uses the outline of the base geometry.</source>
-      <translation>Używa konturu geometrii podstawowej.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="215"/>
       <source>Default length of extensions.</source>
       <translation>Domyślna długość przedłużeń.</translation>
@@ -2053,6 +2093,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathPocketShape.py" line="670"/>
       <source>Start Depth is lower than face depth. Setting to </source>
       <translation>Początkowa głębokość jest niżej niż głębokość ściany. Ustawienie na </translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
+      <source>Uses the outline of the base geometry.</source>
+      <translation>Używa konturu geometrii podstawowej.</translation>
     </message>
     <message>
       <location filename="PathPocketShape.py" line="454"/>
@@ -2878,18 +2923,13 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="186"/>
-      <source>Devfines which standard thread was chosen</source>
+      <source>Defines which standard thread was chosen</source>
       <translation>Określa, który ze standardowych gwintów został wybrany</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="190"/>
       <source>Set thread's tpi - used for imperial threads</source>
       <translation>Ustaw skok gwintu - używane dla gwintów calowych</translation>
-    </message>
-    <message>
-      <location filename="PathThreadMilling.py" line="186"/>
-      <source>Defines which standard thread was chosen</source>
-      <translation>Określa, który ze standardowych gwintów został wybrany</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="187"/>
@@ -3123,12 +3163,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="73"/>
       <source>Rapid rate for vertical moves in Z</source>
-      <translation>Szybki przyrost dla wertykalnych ruchów w Z</translation>
+      <translation>Szybkie tempo dla ruchów pionowych w kierunku osi Z</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="74"/>
       <source>Rapid rate for horizontal moves</source>
-      <translation>Szybki przyrost dla horyzontalnych ruchów</translation>
+      <translation>Szybkie tempo dla ruchów poziomych</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="112"/>
@@ -3355,12 +3395,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathArray.py" line="296"/>
       <source>Creates an array from selected path(s)</source>
-      <translation type="unfinished">Creates an array from selected path(s)</translation>
+      <translation>Tworzy szyk z wybranej ścieżki / ścieżek</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="313"/>
       <source>Arrays can be created only from Path operations.</source>
-      <translation type="unfinished">Arrays can be created only from Path operations.</translation>
+      <translation>Szyki mogą być tworzone tylko na podstawie operacji ścieżki.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="262"/>
@@ -3425,16 +3465,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Ulepszenia</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Tworzy obiekt ścieżki Dess-up z zaznaczonej ścieżki</translation>
-    </message>
-    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3452,6 +3482,16 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Proszę wybrać obiekt-ścieżkę</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Ulepszenia</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Tworzy obiekt ścieżki Dess-up z zaznaczonej ścieżki</translation>
     </message>
   </context>
   <context>
@@ -3926,6 +3966,13 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Tworzy obiekty Path Hop</translation>
     </message>
     <message>
+      <location filename="PathHop.py" line="119"/>
+      <source>The selected object is not a path
+</source>
+      <translation>Wybrany obiekt nie jest ścieżką
+</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
       <source>Please select one path object</source>
       <translation>Proszę wybierz jeden obiekt ścieżki</translation>
@@ -3939,13 +3986,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Utwórz skok</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="119"/>
-      <source>The selected object is not a path
-</source>
-      <translation>Wybrany obiekt nie jest ścieżką
-</translation>
     </message>
   </context>
   <context>
@@ -4612,6 +4652,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_ToolController</name>
     <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Numer narzędzi do wczytania</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Dodaj kontroler narzędzi do zadania</translation>
@@ -4620,11 +4665,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Dodaj kontroler narzędzi</translation>
-    </message>
-    <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Numer narzędzi do wczytania</translation>
     </message>
   </context>
   <context>
@@ -4653,6 +4693,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Tworzy ścieżkę grawerowania linii środkowej</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation>Wycięcie V wymaga frezu do grawerowania z                            kątem cięcia krawędzi</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="309"/>
       <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
       <translation>Wycięcie V wymaga frezu do grawerowania z kątem cięcia krawędzi</translation>
@@ -4661,11 +4706,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
       <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
       <translation>Kąt krawędzi tnącej grawera musi być &lt;180 stopni.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
-      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
-      <translation>Wycięcie V wymaga frezu do grawerowania z                            kątem cięcia krawędzi</translation>
     </message>
   </context>
   <context>
@@ -4702,9 +4742,54 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Zapisz bibliotekę narzędzi</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Tooltable JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD tooltable (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC tooltable (*.tbl)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Otwórz tabelę narzędziową</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Zapisz tabelę narzędziową</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Rename Tooltable</source>
+      <translation>Zmień nazwę tabeli narzędzi</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Enter Name:</source>
+      <translation>Wprowadź nazwę:</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Dodaj nową tabelę narzędzi</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Usuń zaznaczoną tabelę narzędzi</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Zmień nazwę zaznaczonej tabeli narzędzi</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4918,11 +5003,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Zapisz tabelę narzędziową</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Tabela narzędziowa XML (*.xml)</translation>
     </message>
@@ -4935,46 +5015,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>Obiekt nie ma właściwości tooltable</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Rename Tooltable</source>
-      <translation>Zmień nazwę tabeli narzędzi</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Enter Name:</source>
-      <translation>Wprowadź nazwę:</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Dodaj nową tabelę narzędzi</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Usuń zaznaczoną tabelę narzędzi</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Zmień nazwę zaznaczonej tabeli narzędzi</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Tooltable JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD tooltable (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC tooltable (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>
@@ -4993,14 +5033,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
       <source>Create custom gcode snippet</source>
       <translation>Utwórz własny fragment gcode</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathAdaptive</name>
-    <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive</source>
-      <translation>Adaptacyjny</translation>
     </message>
   </context>
   <context>

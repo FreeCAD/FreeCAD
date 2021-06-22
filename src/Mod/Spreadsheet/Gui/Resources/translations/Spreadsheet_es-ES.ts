@@ -577,7 +577,7 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Insertar %n fila(s) debajo</numerusform>
+        <numerusform>Insertar %n fila(s) abajo</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
     </message>
@@ -597,16 +597,16 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insertar %n columna(s) a la izquierda</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Insertar %n columna a la izquierda</numerusform>
+        <numerusform>Insertar %n columnas a la izquierda</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insertar %n columna(s) a la derecha</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Insertar %n columna a la derecha</numerusform>
+        <numerusform>Insertar %n columnas a la derecha</numerusform>
       </translation>
     </message>
     <message numerus="yes">

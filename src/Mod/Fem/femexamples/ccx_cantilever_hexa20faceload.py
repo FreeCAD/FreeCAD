@@ -22,55 +22,68 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.ccx_cantilever_hexa20faceload import setup
-setup()
-
-"""
-
 import FreeCAD
 
 import Fem
 
-from . import ccx_cantilever_faceload as faceload
-
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .ccx_cantilever_faceload import setup as setup_with_faceload
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "CCX cantilever hexa20 face load",
-            "meshtype": "solid",
-            "meshelement": "Hexa20",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix", "z88", "elmer"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "CCX cantilever hexa20 face load",
+        "meshtype": "solid",
+        "meshelement": "Hexa20",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix", "z88", "elmer"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.ccx_cantilever_hexa20faceload import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    doc = faceload.setup(doc, solvertype)
+
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # setup cantilever faceload and exchange the mesh
+    doc = setup_with_faceload(doc, solvertype)
+    femmesh_obj = doc.getObject(get_meshname())
 
     # load the hexa20 mesh
     from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
+    new_fem_mesh = Fem.FemMesh()
+    control = create_nodes(new_fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
+    control = create_elements(new_fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
 
     # overwrite mesh with the hexa20 mesh
-    doc.getObject(mesh_name).FemMesh = fem_mesh
+    femmesh_obj.FemMesh = new_fem_mesh
 
     doc.recompute()
     return doc

@@ -3364,7 +3364,7 @@
       <translation>找到一个包含曲线的形状, 正在变成三角.</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>导入成功</translation>
     </message>

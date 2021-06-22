@@ -64,7 +64,7 @@
     </message>
     <message>
       <source>Visual size of the feature</source>
-      <translation>Wizualny rozmiar funkcji</translation>
+      <translation>Wizualna wielkość cechy</translation>
     </message>
     <message>
       <source>&lt;empty&gt;</source>
@@ -203,7 +203,7 @@
     </message>
     <message>
       <source>Dominant Mode</source>
-      <translation>Tryb Wymuszenia</translation>
+      <translation>Tryb wymuszenia</translation>
     </message>
     <message>
       <source>Flip Y/Z</source>
@@ -390,7 +390,8 @@
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Przewiń środkowym przyciskiem myszki, albo trzymaj wciśnięty środkowy przycisk podczas kliknięcia lewym lub prawym klawiszem myszki i porusz myszką w górę lub dół</translation>
+      <translation>Przewiń środkowy przycisk myszki lub trzymaj naciśnięty
+podczas kliknięcia lewym lub prawym przyciskiem myszki i przesuwaj kursor w górę lub w dół</translation>
     </message>
   </context>
   <context>
@@ -580,7 +581,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Flip</source>
-      <translation>Obróć</translation>
+      <translation>Odwróć</translation>
     </message>
     <message>
       <source>Offset</source>
@@ -3936,7 +3937,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     <message>
       <source>Workbenches</source>
       <translation>Środowiska
-      pracy</translation>
+    pracy</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
@@ -4788,7 +4789,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Selects and fits this object in the 3D window</source>
-      <translation>Wybiera i dopasowuje do tego obiektu w oknie 3D</translation>
+      <translation>Wybiera i lokalizuje ten obiekt w oknie widoku 3D</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -4804,7 +4805,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Reveals this object and its subelements in the python console.</source>
-      <translation>Ujawnia ten obiekt i jego podelementy w konsoli Pythona.</translation>
+      <translation>Pokazuje ten obiekt i jego elementy podrzędne w konsoli Python.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -4988,7 +4989,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Uszczypnięcie (umieść dwa palce na ekranie i przeciągnij je od lub do siebie na wzajem) lub przewijanie środkowym przyciskiem myszy, bądź przyciskami PageUp/PageDown na klawiaturze.</translation>
+      <translation>Uszczypnięcie (umieść dwa palce na ekranie i przeciągnij je od lub do siebie na wzajem) lub przewiń środkowym przyciskiem myszy, bądź użyj przycisków PageUp / PageDown na klawiaturze.</translation>
     </message>
   </context>
   <context>
@@ -5221,11 +5222,11 @@ Czy chcesz zapisać dokument teraz?</translation>
     </message>
     <message>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
-      <translation>Za mało punktów wybranych w prawym widoku. Co najmniej %1 punkt(ów) jest potrzebny(ch).</translation>
+      <translation>Wybrano za mało punktów w lewym widoku. Potrzeba co najmniej %1 punkt/ów.</translation>
     </message>
     <message>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
-      <translation>Za mało punktów wybranych w prawym widoku. Co najmniej %1 punkt(ów) jest potrzebny(ch).</translation>
+      <translation>Wybrano za mało punktów w prawym widoku. Potrzeba co najmniej %1 punkt/ów.</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view.
@@ -5259,7 +5260,7 @@ Jak chcesz kontynuować?</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-      <translation>Różne liczby punktów wybrane w lewym i w prawym widoku. Na lewym widoku wybrano %1 punkt(ów) a na prawym widoku wybrano %2 punkt(ów).</translation>
+      <translation>Wybrano odmienne ilości punktów w lewym i w prawym widoku. Na lewym widoku wybrano %1 punkt(ów) a na prawym widoku %2.</translation>
     </message>
     <message>
       <source>Point picked at (%1,%2,%3)</source>
@@ -5286,7 +5287,7 @@ Jak chcesz kontynuować?</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij ALT + lewy przycisk myszki. W innych trybach jak np. Szkicownik dodatkowo przytrzymaj wciśnięty klawisz Alt.</translation>
+      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij klawisz ALT + lewy przycisk myszki. W innych trybach jak np. Szkicownik dodatkowo przytrzymaj wciśnięty klawisz Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
@@ -6074,7 +6075,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Search...</source>
-      <translation>Szukaj...</translation>
+      <translation>Szukaj ...</translation>
     </message>
     <message>
       <source>Search for objects</source>
@@ -6942,7 +6943,7 @@ Dokument: </translation>
     <message>
       <source>Workbenches</source>
       <translation>Środowiska
-      pracy</translation>
+    pracy</translation>
     </message>
     <message>
       <source>
@@ -7388,11 +7389,11 @@ Physical path: </source>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Eksport obiektu w aktywnym dokumencie</translation>
+      <translation>Eksportuj obiekt z aktywnego dokumentu</translation>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
@@ -7546,7 +7547,7 @@ Physical path: </source>
     <name>StdCmdGroup</name>
     <message>
       <source>Structure</source>
-      <translation>Struktura</translation>
+      <translation>Konstrukcja</translation>
     </message>
     <message>
       <source>Create group</source>
@@ -8972,7 +8973,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Widok buforu czterordzeniowy</translation>
+      <translation>Poczwórny bufor stereo</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>

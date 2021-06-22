@@ -286,6 +286,14 @@ class DraftToolBar:
         self.autogroup = None
         self.isCenterPlane = False
         self.lastMode = None
+        self.input_fields = {
+            "xValue":{"value":"x","unit":"Length"},
+            "yValue":{"value":"y","unit":"Length"},
+            "zValue":{"value":"z","unit":"Length"},
+            "lengthValue":{"value":"lvalue","unit":"Length"},
+            "radiusValue":{"value":"radius","unit":"Length"},
+            "angleValue":{"value":"avalue","unit":"Angle"}
+        }
 
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -580,6 +588,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
+        QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.pointButton,QtCore.SIGNAL("clicked()"),self.validatePoint)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
@@ -1682,7 +1691,8 @@ class DraftToolBar:
             if self.closeButton.isVisible():
                 self.closeLine()
         elif txt.upper().startswith(inCommandShortcuts["SetWP"][0]):
-            self.orientWP()
+            if self.orientWPButton.isVisible():
+                self.orientWP()
             spec = True
         elif txt.upper().startswith(inCommandShortcuts["Copy"][0]):
             if self.isCopy.isVisible():
@@ -1693,27 +1703,14 @@ class DraftToolBar:
                 self.isSubelementMode.setChecked(not self.isSubelementMode.isChecked())
             spec = True
         if spec:
-            for i,k in enumerate([self.xValue,self.yValue,self.zValue,self.lengthValue,self.angleValue]):
-                if (k.property("text") == txt):
-                    #print "debug:matching:",k.property("text")
-                    if i == 0:
-                        v = FreeCAD.Units.Quantity(self.x,FreeCAD.Units.Length)\
-                            .getUserPreferred()[0]
-                    elif i == 1:
-                        v = FreeCAD.Units.Quantity(self.y,FreeCAD.Units.Length)\
-                            .getUserPreferred()[0]
-                    elif i == 2:
-                        v = FreeCAD.Units.Quantity(self.z,FreeCAD.Units.Length)\
-                            .getUserPreferred()[0]
-                    elif i == 3:
-                        v = FreeCAD.Units.Quantity(self.lvalue,FreeCAD.Units.Length)\
-                            .getUserPreferred()[0]
-                    else:
-                        v = FreeCAD.Units.Quantity(self.avalue,FreeCAD.Units.Angle)\
-                            .getUserPreferred()[0]
-                    k.setProperty("text",v)
-                    k.setFocus()
-                    k.selectAll()
+            widget = self.baseWidget.focusWidget()
+            field = self.input_fields[widget.objectName()]
+            value = getattr(self, field["value"])
+            unit = getattr(FreeCAD.Units, field["unit"])
+            v = FreeCAD.Units.Quantity(value, unit).getUserPreferred()[0]
+            widget.setProperty("text",v)
+            widget.setFocus()
+            widget.selectAll()
         self.updateSnapper()
 
     def updateSnapper(self):

@@ -570,7 +570,7 @@
     <message>
       <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
+      <translation>Varrer (sweep) um esboço selecionado ao longo de uma espiral e removê-lo do corpo</translation>
     </message>
   </context>
   <context>
@@ -740,17 +740,17 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>Editar FormaVinculada (ShapeBinder)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>Criar FormaVinculada (ShapeBinder)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>Criar SubFormaVinculada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -1346,17 +1346,17 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="802"/>
       <source>X min must not be equal to X max!</source>
-      <translation type="unfinished">X min must not be equal to X max!</translation>
+      <translation>X min não pode ser igual a X max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="807"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation type="unfinished">Y min must not be equal to Y max!</translation>
+      <translation>Y min não pode ser igual a Y max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="812"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation type="unfinished">Z min must not be equal to Z max!</translation>
+      <translation>Z min não pode ser igual a Z max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="850"/>
@@ -1400,22 +1400,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="75"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>Distância igual</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>Duas distâncias</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="85"/>
       <source>Distance and angle</source>
-      <translation type="unfinished">Distance and angle</translation>
+      <translation>Distância e ângulo</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="98"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>Inverter direção</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="119"/>
@@ -1425,7 +1425,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="158"/>
       <source>Size 2</source>
-      <translation type="unfinished">Size 2</translation>
+      <translation>Tamanho 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
@@ -3282,11 +3282,6 @@ click again to end selection</translation>
       <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature  before attempting a subtractive command.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
@@ -3344,6 +3339,11 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>A seleção não está no corpo ativo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Certifique-se de que o corpo contém um objeto antes de tentar um comando subtrativo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3521,7 +3521,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="936"/>
       <source>Dependency violation</source>
-      <translation type="unfinished">Dependency violation</translation>
+      <translation>Violação de dependência</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="937"/>
@@ -3714,12 +3714,12 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Sincronizar</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
       <source>Select bound object</source>
-      <translation type="unfinished">Select bound object</translation>
+      <translation>Selecionar objeto vinculado</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="173"/>
@@ -3773,7 +3773,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="57"/>
       <source>Edit helix</source>
-      <translation type="unfinished">Edit helix</translation>
+      <translation>Editar hélice</translation>
     </message>
   </context>
   <context>
@@ -3781,7 +3781,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameter</source>
-      <translation type="unfinished">Sprocket parameter</translation>
+      <translation>Parâmetros da roda dentada</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="20"/>
@@ -3796,72 +3796,72 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
       <source>ANSI 25</source>
-      <translation type="unfinished">ANSI 25</translation>
+      <translation>ANSI 25</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="53"/>
       <source>ANSI 35</source>
-      <translation type="unfinished">ANSI 35</translation>
+      <translation>ANSI 35</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="58"/>
       <source>ANSI 41</source>
-      <translation type="unfinished">ANSI 41</translation>
+      <translation>ANSI 41</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="63"/>
       <source>ANSI 40</source>
-      <translation type="unfinished">ANSI 40</translation>
+      <translation>ANSI 40</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="68"/>
       <source>ANSI 50</source>
-      <translation type="unfinished">ANSI 50</translation>
+      <translation>ANSI 50</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="73"/>
       <source>ANSI 60</source>
-      <translation type="unfinished">ANSI 60</translation>
+      <translation>ANSI 60</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="78"/>
       <source>ANSI 80</source>
-      <translation type="unfinished">ANSI 80</translation>
+      <translation>ANSI 80</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="83"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="88"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="98"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="103"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="108"/>
       <source>ANSI 200</source>
-      <translation type="unfinished">ANSI 200</translation>
+      <translation>ANSI 200</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="113"/>
       <source>ANSI 240</source>
-      <translation type="unfinished">ANSI 240</translation>
+      <translation>ANSI 240</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="118"/>
@@ -3876,7 +3876,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
       <source>ISO 606 06B</source>
-      <translation type="unfinished">ISO 606 06B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="133"/>
@@ -3946,17 +3946,17 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
       <source>Chain Pitch:</source>
-      <translation type="unfinished">Chain Pitch:</translation>
+      <translation>Divisão da Corrente:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 pol</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation type="unfinished">Roller Diameter:</translation>
+      <translation>Diâmetro do cilindro:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
@@ -4113,7 +4113,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="87"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>Modelo de Rosca</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="97"/>
@@ -4130,23 +4130,23 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="114"/>
       <source>Customize thread clearance</source>
-      <translation type="unfinished">Customize thread clearance</translation>
+      <translation>Customizar a folga da rosca</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="117"/>
       <source>Custom Thread Clearance</source>
-      <translation type="unfinished">Custom Thread Clearance</translation>
+      <translation>Folga da Rosca Customizada</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="130"/>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Folga</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="149"/>
       <source>Custom Thread clearance value</source>
-      <translation type="unfinished">Custom Thread clearance value</translation>
+      <translation>Valor de folga da Rosca Customizada</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
@@ -4256,7 +4256,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>
       <source>Custom values</source>
-      <translation type="unfinished">Custom values</translation>
+      <translation>Valores personalizados</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="730"/>
@@ -4395,12 +4395,12 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Create an additive feature</source>
-      <translation type="unfinished">Create an additive feature</translation>
+      <translation>Criar um recurso aditivo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Create a subtractive feature</source>
-      <translation type="unfinished">Create a subtractive feature</translation>
+      <translation>Criar um recurso subtrativo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
@@ -4410,7 +4410,7 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a dress-up feature</source>
-      <translation type="unfinished">Apply a dress-up feature</translation>
+      <translation>Aplicar modificação no recurso</translation>
     </message>
   </context>
 </TS>

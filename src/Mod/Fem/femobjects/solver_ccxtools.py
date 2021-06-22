@@ -33,6 +33,7 @@ import FreeCAD
 
 from . import base_fempythonobject
 from femsolver.calculix.solver import add_attributes
+from femsolver.calculix.solver import on_restore_of_document
 
 
 class SolverCcxTools(base_fempythonobject.BaseFemPythonObject):
@@ -46,6 +47,10 @@ class SolverCcxTools(base_fempythonobject.BaseFemPythonObject):
 
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
 
+        # add attributes
+        # implemented in framework calculix solver module
+        add_attributes(obj, ccx_prefs)
+
         obj.addProperty(
             "App::PropertyPath",
             "WorkingDir",
@@ -55,5 +60,9 @@ class SolverCcxTools(base_fempythonobject.BaseFemPythonObject):
         # the working directory is not set, the solver working directory is
         # only used if the preferences working directory is left blank
 
-        # add attributes from framework calculix solver
-        add_attributes(obj, ccx_prefs)
+    def onDocumentRestored(self, obj):
+
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+
+        # implemented in framework calculix solver module
+        on_restore_of_document(obj, ccx_prefs)

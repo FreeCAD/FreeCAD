@@ -30,7 +30,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Export points...</source>
-      <translation>Eksport punktów...</translation>
+      <translation>Eksport punktów ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>

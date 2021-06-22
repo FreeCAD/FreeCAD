@@ -3285,11 +3285,6 @@ click again to end selection</translation>
       <translation>Ezin da komando hau erabili, ez baitago solidorik kenketa egiteko.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Ziurtatu gorputzak elementu bat duela kenketako komandoa erabiltzen saiatu baino lehen.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Ezin da erabili hautatutako objektua. Hautatutako objektuak gorputz aktibokoa izan behar du</translation>
@@ -3347,6 +3342,11 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Hautapena ez da gorputz aktiboa</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3720,12 +3720,12 @@ Elementu hau hautsita dago eta ezin da editatu.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Sinkronizatu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
       <source>Select bound object</source>
-      <translation type="unfinished">Select bound object</translation>
+      <translation>Hautatu muga-objektua</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="173"/>
@@ -3767,9 +3767,9 @@ Elementu hau hautsita dago eta ezin da editatu.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>Oharra: Migratzea aukeratzen baduzu, ezin izango duzu fitxategia FreeCAD bertsio zaharrago batekin editatu.
+Migratzen ez baduzu, ezin izango dituzu PartDesign ezaugarri berriak erabili, esaterako gorputzak eta piezak. Hortaz, ezingo dituzu piezak erabili muntaketarako lan-mahaian.
+Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
@@ -4188,17 +4188,17 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <source>Hole diameter</source>
-      <translation type="unfinished">Hole diameter</translation>
+      <translation>Zulo-diametroa</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="421"/>
       <source>Thread Depth</source>
-      <translation type="unfinished">Thread Depth</translation>
+      <translation>Hari-sakonera</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="441"/>
       <source>Hole depth</source>
-      <translation type="unfinished">Hole depth</translation>
+      <translation>Zulo-sakonera</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="451"/>
@@ -4225,7 +4225,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="789"/>
       <source>Reverses the hole direction</source>
-      <translation type="unfinished">Reverses the hole direction</translation>
+      <translation>Zuloaren norabidea alderantzikatzen du</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="792"/>

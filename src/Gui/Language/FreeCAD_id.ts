@@ -9557,7 +9557,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Points</source>
-      <translation>Points</translation>
+      <translation>Poin</translation>
     </message>
     <message>
       <source>Points mode</source>

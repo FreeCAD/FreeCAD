@@ -75,11 +75,6 @@
       <translation type="unfinished">Geometry reference selector for a</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometriereferentiekeuze voor een </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Toevoegen</translation>
@@ -93,6 +88,11 @@
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
       <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Klik op "Toevoegen" en selecteer geometrische elementen om toe te voegen aan de lijst.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
@@ -118,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Volumemodel</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometriereferentiekeuze voor een </translation>
     </message>
   </context>
   <context>

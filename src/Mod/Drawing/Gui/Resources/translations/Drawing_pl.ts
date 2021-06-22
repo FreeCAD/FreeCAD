@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="479"/>
       <location filename="../../Command.cpp" line="481"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Wstawia widok Adnotacji w aktywnym rysunku</translation>
+      <translation>Wstawia widok adnotacji w aktywnym rysunku</translation>
     </message>
   </context>
   <context>
@@ -36,7 +36,7 @@
       <location filename="../../Command.cpp" line="527"/>
       <location filename="../../Command.cpp" line="529"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Wstawia grupę klipu do aktywnego rysunku</translation>
+      <translation>Wstawia grupę wycinków do aktywnego rysunku</translation>
     </message>
   </context>
   <context>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Open SVG...</source>
-      <translation>Otwórz SVG...</translation>
+      <translation>Otwórz plik w formacie SVG ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="221"/>
       <source>&amp;Outline</source>
-      <translation>&amp;Obwiednia</translation>
+      <translation>&amp;Kontur</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="227"/>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="275"/>
       <source>Open SVG File</source>
-      <translation>Otwórz plik SVG</translation>
+      <translation>Otwórz plik w formacie SVG</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="276"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="363"/>
       <source>&amp;Renderer</source>
-      <translation>&amp;Renderer</translation>
+      <translation>&amp;Renderowanie</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="468"/>
@@ -343,7 +343,7 @@ Czy chcesz kontynuować?</translation>
       <location filename="../../DrawingView.cpp" line="587"/>
       <location filename="../../DrawingView.cpp" line="595"/>
       <source>Different paper size</source>
-      <translation>Inny rozmiar papieru</translation>
+      <translation>Odmienny format papieru</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="588"/>
@@ -404,7 +404,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="421"/>
       <source>Auto scale / position</source>
-      <translation>Auto skala / pozycja</translation>
+      <translation>Automatyczna skala / pozycja</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="436"/>
@@ -439,7 +439,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="587"/>
       <source>Axis out and right</source>
-      <translation>Oś na zewnątrz i prawo</translation>
+      <translation>Oś na zewnątrz i w prawo</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="594"/>
@@ -520,7 +520,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="715"/>
       <location filename="../../TaskOrthoViews.ui" line="738"/>
       <source>Flip</source>
-      <translation>Obróć</translation>
+      <translation>Odwróć</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
@@ -550,7 +550,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="838"/>
       <source>Axis aligned right:</source>
-      <translation>Osie wyrównane do prawej strony:</translation>
+      <translation>Oś wyrównana w prawo:</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="98"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>Aktualnie nie ma aktywnego widoku aby dokończyć operację</translation>
+      <translation>Obecnie nie ma aktywnego widoku do zakończenia operacji</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Landscape</source>
-      <translation>Orientacja Pozioma</translation>
+      <translation>Orientacja pozioma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -701,7 +701,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="585"/>
       <location filename="../../Command.cpp" line="766"/>
       <source>No page found</source>
-      <translation>Nie znaleziono strony</translation>
+      <translation>Strony nie znaleziono</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>

@@ -72,12 +72,7 @@
     <message>
       <location filename="selection_widgets.py" line="274"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Seletor de geometria de referência para um </translation>
+      <translation>Seletor de referência de geometria para um</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -92,12 +87,17 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+      <translation>Clique em "Adicionar" e selecione os elementos geométricos para adicionar à lista.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Clique em "Adicionar" e selecione os elementos geométricos para adicionar à lista.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on 'Add' and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+      <translation>Clique em "Adicionar" e selecione os elementos geométricos para adicionar à lista.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="281"/>
@@ -107,7 +107,7 @@
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>Se nenhuma geometria for adicionada à lista, todas as restantes serão usadas.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -118,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Sólido</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Seletor de geometria de referência para um </translation>
     </message>
   </context>
   <context>

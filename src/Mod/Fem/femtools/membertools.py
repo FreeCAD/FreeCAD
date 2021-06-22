@@ -220,13 +220,17 @@ class AnalysisMember():
             list of pressure constraints from the analysis.
             [{"Object":pressure_obj, "xxxxxxxx":value}, {}, ...]
 
+        constraints_sectionprint : list of dictionaries
+            list of sectionprints for the analysis.
+            [{"Object":sectionprint_obj, "xxxxxxxx":value}, {}, ...]
+
         constraints_selfweight : list of dictionaries
             list of selfweight constraints from the analysis.
             [{"Object":selfweight_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints_temperature : list of dictionaries
             list of temperatures for the analysis.
-            [{"Object":temerature_obj, "xxxxxxxx":value}, {}, ...]
+            [{"Object":temperature_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints_tie : list of dictionaries
             list of ties for the analysis.

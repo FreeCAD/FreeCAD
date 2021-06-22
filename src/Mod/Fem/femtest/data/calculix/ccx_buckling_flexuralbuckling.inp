@@ -704,8 +704,8 @@ Evolumes
 ***********************************************************
 ** constraints fixed node sets
 ** written by write_node_sets_constraints_fixed function
-** FemConstraintDisplacement
-*NSET,NSET=FemConstraintDisplacement
+** ConstraintFixed
+*NSET,NSET=ConstraintFixed
 1,
 4,
 5,
@@ -758,19 +758,19 @@ Evolumes
 ***********************************************************
 ** Fixed Constraints
 ** written by write_constraints_fixed function
-** FemConstraintDisplacement
+** ConstraintFixed
 *BOUNDARY
-FemConstraintDisplacement,1
-FemConstraintDisplacement,2
-FemConstraintDisplacement,3
+ConstraintFixed,1
+ConstraintFixed,2
+ConstraintFixed,3
 
 
 ***********************************************************
 ** constraints force node loads
 ** written by write_constraints_force function
 *CLOAD
-** FemConstraintForce
-** node loads on shape: beam:Face6
+** ConstraintForce
+** node loads on shape: Beam:Face6
 65,3,-3.2812500000000E-01
 66,3,-6.5625000000000E-01
 67,3,-6.5625000000000E-01
@@ -808,7 +808,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=FemConstraintDisplacement, TOTALS=ONLY
+*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
 
@@ -819,9 +819,9 @@ RF
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
-**   written by    --> FreeCAD 0.19.23856 (Git)
-**   written on    --> Tue Mar 30 10:47:39 2021
-**   file name     --> 
+**   written by    --> FreeCAD 0.20.25065 (Git)
+**   written on    --> Tue Jun 15 10:36:32 2021
+**   file name     --> ccx_buckling_flexuralbuckling.FCStd
 **   analysis name --> Analysis
 **
 **

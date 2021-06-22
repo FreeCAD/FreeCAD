@@ -1951,7 +1951,7 @@
     <message>
       <location filename="ArchRoof.py" line="273"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+      <translation>Listan över ID för taksegmentens relativa profilerna</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="278"/>
@@ -1961,17 +1961,17 @@
     <message>
       <location filename="ArchRoof.py" line="283"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+      <translation>Listan över taksegmentens överhäng</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="288"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+      <translation>Listan över taksegmentens beräknade höjder</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="293"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>Antalet ytor på det basobjekt som användes för att skapa taket</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="298"/>
@@ -2469,7 +2469,7 @@
     <message>
       <location filename="ArchRoof.py" line="1015"/>
       <source>Run (mm)</source>
-      <translation type="unfinished">Run (mm)</translation>
+      <translation>Kör (mm)</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="1017"/>
@@ -2549,7 +2549,7 @@
     <message>
       <location filename="ArchPanel.py" line="346"/>
       <source>Create Panel Cut</source>
-      <translation type="unfinished">Create Panel Cut</translation>
+      <translation>Skapa panelsnitt</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="372"/>
@@ -2664,7 +2664,7 @@
     <message>
       <location filename="ArchPrecast.py" line="1003"/>
       <source>Length of down floor</source>
-      <translation type="unfinished">Length of down floor</translation>
+      <translation>Längd på bottenvåningens golv</translation>
     </message>
     <message>
       <location filename="ArchPrecast.py" line="1004"/>
@@ -3364,7 +3364,7 @@
       <translation>Upptäckte en form innehållande kurvor, triangulerar</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Importen lyckades</translation>
     </message>
@@ -3576,7 +3576,7 @@
     <message>
       <location filename="InitGui.py" line="94"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Verktyg för armeringsjärn</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="134"/>
@@ -4288,12 +4288,12 @@ Skapande av golv avbruten.</translation>
     <message>
       <location filename="ArchPanel.py" line="339"/>
       <source>Creates 2D views of selected panels</source>
-      <translation type="unfinished">Creates 2D views of selected panels</translation>
+      <translation>Skapar 2D-vyer av markerade paneler</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="362"/>
       <source>Panel Sheet</source>
-      <translation type="unfinished">Panel Sheet</translation>
+      <translation>Panelblad</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="366"/>
@@ -5577,7 +5577,7 @@ Lämna tomt för att använda alla objekt från dokumentet</translation>
     <message>
       <location filename="preferences-ifc-export.ui" line="131"/>
       <source>Use DAE triangulation options</source>
-      <translation type="unfinished">Use DAE triangulation options</translation>
+      <translation>Använd DAE trianguleringsalternativ</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="149"/>
@@ -5979,22 +5979,22 @@ If this is your case, you can disable this and then all profiles will be exporte
 like IfcWallStandardCase or IfcBeamStandardCase.
 If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
-      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions
-like IfcWallStandardCase or IfcBeamStandardCase.
-If this option is turned on, FreeCAD will automatically export such objects
-as standard cases when the necessary conditions are met.</translation>
+      <translation>Vissa IFC-typer som IfcWall eller IfcBeam har speciella standardversioner
+som IfcWallStandardCase eller IfcBeamStandardCase.
+Om det här alternativet är aktiverat exporterar FreeCAD automatiskt sådana objekt
+som standardfall när de nödvändiga villkoren är uppfyllda.</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="296"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
-      <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
-A site is not mandatory but a common practice is to have at least one in the file.</translation>
+      <translation>Om inget byggarbetsplats finns i FreeCAD-dokumentet kommer en standard att läggas till.
+En byggarbetsplats är inte obligatoriskt utan en vanlig praxis att ha minst en i filen.</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="300"/>
       <source>Add default site if one is not found in the document</source>
-      <translation type="unfinished">Add default site if one is not found in the document</translation>
+      <translation>Lägg till standardbyggarbetsplats om det inte finns någon i dokumentet</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="313"/>
@@ -6035,38 +6035,38 @@ Ett byggnadsplan är inte obligatoriskt utan en vanlig praxis att ha minst en i 
     <message>
       <location filename="preferences-ifc-export.ui" line="388"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>Brittiska måttenheter</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="14"/>
       <source>IFC import</source>
-      <translation type="unfinished">IFC import</translation>
+      <translation>IFC-import</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="41"/>
       <source>Show this dialog when importing</source>
-      <translation type="unfinished">Show this dialog when importing</translation>
+      <translation>Visa denna dialogruta vid import</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation type="unfinished">Shows verbose debug messages during import and export
-of IFC files in the Report view panel</translation>
+      <translation>Visar utförliga debug-meddelanden vid import och export
+av IFC-filer i vypanelen Rapport</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="71"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
-      <translation type="unfinished">Clones are used when objects have shared geometry
-One object is the base object, the others are clones.</translation>
+      <translation>Kloner används när objekt har delad geometri
+Ett objekt är basobjektet, de andra är kloner.</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="265"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
-      <translation type="unfinished">Only subtypes of the specified element will be imported.
-Keep the element IfcProduct to import all building elements.</translation>
+      <translation>Endast undertyper till det angivna elementet kommer att importeras.
+Behåll elementet IfcProduct för att importera alla byggelement.</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="284"/>

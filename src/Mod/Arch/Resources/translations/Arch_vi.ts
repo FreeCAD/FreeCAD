@@ -3364,7 +3364,7 @@
       <translation>Hình thành với các đường cong tìm thấy, triangulation (tiếp cận bằng cách sử dụng đường thẳng)</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Đã nhập thành công</translation>
     </message>

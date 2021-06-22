@@ -164,7 +164,7 @@
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>插入文本文档</translation>
     </message>
     <message>
       <source>Add a part</source>
@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>输入表达式...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>表达式： </translation>
     </message>
   </context>
   <context>
@@ -510,12 +510,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>个人用户</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>组织</translation>
     </message>
   </context>
   <context>
@@ -1739,7 +1739,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>指导式演练</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
@@ -2632,7 +2632,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>使用软件 OpenGL</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
@@ -3570,19 +3570,19 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>旋转模式</translation>
     </message>
     <message>
       <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
+      <translation>窗口中心</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>在光标处拖动</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>对象中心</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
@@ -3594,11 +3594,11 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>立方体大小</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>导航立方体大小</translation>
     </message>
     <message>
       <source>How much will be zoomed.
@@ -7726,11 +7726,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Select all links</source>
-      <translation type="unfinished">Select all links</translation>
+      <translation>选择全部链接</translation>
     </message>
     <message>
       <source>Select all links to the current selected object</source>
-      <translation type="unfinished">Select all links to the current selected object</translation>
+      <translation>选择当前选中对象的所有链接</translation>
     </message>
   </context>
   <context>

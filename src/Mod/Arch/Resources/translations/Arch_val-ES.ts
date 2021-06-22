@@ -3363,7 +3363,7 @@
       <translation>S'ha trobat una forma amb corbes, s'està triangulant</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>S'ha importat correctament</translation>
     </message>

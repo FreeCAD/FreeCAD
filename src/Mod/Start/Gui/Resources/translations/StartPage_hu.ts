@@ -307,7 +307,7 @@ A ";;" útvonalak külön-külön történő használatával több mappát is ho
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation>Tippek mutatása</translation>
+      <translation>Tippek megjelenítése</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
@@ -472,7 +472,7 @@ A ";;" útvonalak külön-külön történő használatával több mappát is ho
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Ha bejelöli, a freeCAD indításakor a kezdőoldal automatikusan bezárul</translation>
+      <translation>Ha bejelöli, a FreeCAD indításakor a kezdőoldal automatikusan bezárul</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>

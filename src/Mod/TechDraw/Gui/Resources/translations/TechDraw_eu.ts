@@ -843,7 +843,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1388"/>
-      <location filename="../../MDIViewPage.cpp" line="873"/>
+      <location filename="../../MDIViewPage.cpp" line="878"/>
       <source>Save page to dxf</source>
       <translation>Gorde orria DXF fitxategi batean</translation>
     </message>
@@ -901,7 +901,7 @@
       <translation>Sortu bista aktiboa</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>Sortu erdiko lerroa</translation>
     </message>
@@ -1732,28 +1732,28 @@
       <translation>Ezin izan da orrialde zuzena zehaztu.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="636"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
-      <location filename="../../MDIViewPage.cpp" line="832"/>
+      <location filename="../../MDIViewPage.cpp" line="637"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>All Files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="637"/>
+      <location filename="../../MDIViewPage.cpp" line="638"/>
       <source>Export Page As PDF</source>
       <translation>Esportatu orrialdea PDF gisa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="831"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="833"/>
+      <location filename="../../MDIViewPage.cpp" line="838"/>
       <source>Export page as SVG</source>
       <translation>Esportatu orrialdea SVG gisa</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation>Bista aktiboa TD bistara</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>Sortu erdiko lerroa</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>Editatu erdiko lerroa</translation>
     </message>
@@ -3399,76 +3399,76 @@ Azkarra, baina lerro zuzen laburren bilduma bat ematen du.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="141"/>
+      <location filename="../../MDIViewPage.cpp" line="142"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Esportatu SVGa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="135"/>
+      <location filename="../../MDIViewPage.cpp" line="136"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Txandakatu &amp;eguneratuta mantentzea</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="138"/>
+      <location filename="../../MDIViewPage.cpp" line="139"/>
       <source>Toggle &amp;Frames</source>
       <translation>Txandakatu &amp;markoak</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="144"/>
+      <location filename="../../MDIViewPage.cpp" line="145"/>
       <source>Export DXF</source>
       <translation>Esportatu DXFa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="147"/>
+      <location filename="../../MDIViewPage.cpp" line="148"/>
       <source>Export PDF</source>
       <translation>Esportatu PDFa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="729"/>
+      <location filename="../../MDIViewPage.cpp" line="730"/>
       <source>Different orientation</source>
       <translation>Orientazio desberdina</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="730"/>
+      <location filename="../../MDIViewPage.cpp" line="731"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Inprimagailuak eta marrazkiak orientazio desberdina dute.
 Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="737"/>
+      <location filename="../../MDIViewPage.cpp" line="738"/>
       <source>Different paper size</source>
       <translation>Paper-tamaina desberdina</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="738"/>
+      <location filename="../../MDIViewPage.cpp" line="739"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Inprimagailuak eta marrazkiak paper-tamaina desberdina dute.
 Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="749"/>
+      <location filename="../../MDIViewPage.cpp" line="750"/>
       <source>Opening file failed</source>
       <translation>Fitxategia irekitzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="750"/>
+      <location filename="../../MDIViewPage.cpp" line="751"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Ezin da %1 fitxategia ireki hura idazteko.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="857"/>
+      <location filename="../../MDIViewPage.cpp" line="862"/>
       <source>Save Dxf File</source>
       <translation>Gorde DXF fitxategia</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="859"/>
+      <location filename="../../MDIViewPage.cpp" line="864"/>
       <source>Dxf (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1344"/>
+      <location filename="../../MDIViewPage.cpp" line="1349"/>
       <source>Selected:</source>
       <translation>Hautatua:</translation>
     </message>

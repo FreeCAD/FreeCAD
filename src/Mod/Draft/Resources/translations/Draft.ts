@@ -1378,7 +1378,7 @@ from menu Tools -&gt; Addon Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_utils.py" line="143"/>
+        <location filename="gui_utils.py" line="150"/>
         <source>Unable to insert new object into a scaled part</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4949,22 +4949,22 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
 <context>
     <name>draft</name>
     <message>
-        <location filename="DraftGui.py" line="322"/>
+        <location filename="DraftGui.py" line="330"/>
         <source>Draft Command Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="823"/>
+        <location filename="DraftGui.py" line="832"/>
         <source>Toggle construction mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="2057"/>
+        <location filename="DraftGui.py" line="2054"/>
         <source>Autogroup off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="713"/>
+        <location filename="DraftGui.py" line="722"/>
         <source>active command:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4974,52 +4974,52 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="715"/>
+        <location filename="DraftGui.py" line="724"/>
         <source>Active Draft command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="716"/>
+        <location filename="DraftGui.py" line="725"/>
         <source>X coordinate of next point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1047"/>
+        <location filename="DraftGui.py" line="1056"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="718"/>
+        <location filename="DraftGui.py" line="727"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="719"/>
+        <location filename="DraftGui.py" line="728"/>
         <source>Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="720"/>
+        <location filename="DraftGui.py" line="729"/>
         <source>Y coordinate of next point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="721"/>
+        <location filename="DraftGui.py" line="730"/>
         <source>Z coordinate of next point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="722"/>
+        <location filename="DraftGui.py" line="731"/>
         <source>Enter point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="724"/>
+        <location filename="DraftGui.py" line="733"/>
         <source>Enter a new point with the given coordinates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="725"/>
+        <location filename="DraftGui.py" line="734"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5029,42 +5029,42 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="727"/>
+        <location filename="DraftGui.py" line="736"/>
         <source>Length of current segment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="728"/>
+        <location filename="DraftGui.py" line="737"/>
         <source>Angle of current segment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1096"/>
+        <location filename="DraftGui.py" line="1105"/>
         <source>Radius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1097"/>
+        <location filename="DraftGui.py" line="1106"/>
         <source>Radius of Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="757"/>
+        <location filename="DraftGui.py" line="766"/>
         <source>If checked, command will not finish until you press the command button again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="763"/>
+        <location filename="DraftGui.py" line="772"/>
         <source>&amp;OCC-style offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="783"/>
+        <location filename="DraftGui.py" line="792"/>
         <source>Sides</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="784"/>
+        <location filename="DraftGui.py" line="793"/>
         <source>Number of sides</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5074,77 +5074,77 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="650"/>
+        <location filename="DraftGui.py" line="659"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="790"/>
+        <location filename="DraftGui.py" line="799"/>
         <source>Text string to draw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="791"/>
+        <location filename="DraftGui.py" line="800"/>
         <source>String</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="792"/>
+        <location filename="DraftGui.py" line="801"/>
         <source>Height of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="793"/>
+        <location filename="DraftGui.py" line="802"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="794"/>
+        <location filename="DraftGui.py" line="803"/>
         <source>Intercharacter spacing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="795"/>
+        <location filename="DraftGui.py" line="804"/>
         <source>Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="796"/>
+        <location filename="DraftGui.py" line="805"/>
         <source>Full path to font file:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="797"/>
+        <location filename="DraftGui.py" line="806"/>
         <source>Open a FileChooser for font file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="935"/>
+        <location filename="DraftGui.py" line="944"/>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="944"/>
+        <location filename="DraftGui.py" line="953"/>
         <source>DWire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="962"/>
+        <location filename="DraftGui.py" line="971"/>
         <source>Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="971"/>
+        <location filename="DraftGui.py" line="980"/>
         <source>Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="978"/>
+        <location filename="DraftGui.py" line="987"/>
         <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1006"/>
+        <location filename="DraftGui.py" line="1015"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5154,87 +5154,87 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1183"/>
+        <location filename="DraftGui.py" line="1192"/>
         <source>Pick Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1189"/>
+        <location filename="DraftGui.py" line="1198"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1252"/>
+        <location filename="DraftGui.py" line="1261"/>
         <source>Global X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1253"/>
+        <location filename="DraftGui.py" line="1262"/>
         <source>Global Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1254"/>
+        <location filename="DraftGui.py" line="1263"/>
         <source>Global Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1244"/>
+        <location filename="DraftGui.py" line="1253"/>
         <source>Local X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1245"/>
+        <location filename="DraftGui.py" line="1254"/>
         <source>Local Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1246"/>
+        <location filename="DraftGui.py" line="1255"/>
         <source>Local Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1487"/>
+        <location filename="DraftGui.py" line="1496"/>
         <source>Invalid Size value. Using 200.0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1495"/>
+        <location filename="DraftGui.py" line="1504"/>
         <source>Invalid Tracking value. Using 0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1509"/>
+        <location filename="DraftGui.py" line="1518"/>
         <source>Please enter a text string.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1518"/>
+        <location filename="DraftGui.py" line="1527"/>
         <source>Select a Font file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1551"/>
+        <location filename="DraftGui.py" line="1560"/>
         <source>Please enter a font file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="2377"/>
+        <location filename="DraftGui.py" line="2374"/>
         <source>Faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="2378"/>
+        <location filename="DraftGui.py" line="2375"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="2379"/>
+        <location filename="DraftGui.py" line="2376"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="2380"/>
+        <location filename="DraftGui.py" line="2377"/>
         <source>Facebinder elements</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5256,17 +5256,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="736"/>
+        <location filename="DraftGui.py" line="745"/>
         <source>Relative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="759"/>
+        <location filename="DraftGui.py" line="768"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="775"/>
+        <location filename="DraftGui.py" line="784"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5311,7 +5311,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="781"/>
+        <location filename="DraftGui.py" line="790"/>
         <source>Select edge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5326,7 +5326,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="777"/>
+        <location filename="DraftGui.py" line="786"/>
         <source>Wipe</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5341,62 +5341,62 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="732"/>
+        <location filename="DraftGui.py" line="741"/>
         <source>Check this to lock the current angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="746"/>
+        <location filename="DraftGui.py" line="755"/>
         <source>Filled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="752"/>
+        <location filename="DraftGui.py" line="761"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="754"/>
+        <location filename="DraftGui.py" line="763"/>
         <source>Finishes the current drawing or editing operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="773"/>
+        <location filename="DraftGui.py" line="782"/>
         <source>&amp;Undo (CTRL+Z)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="774"/>
+        <location filename="DraftGui.py" line="783"/>
         <source>Undo the last segment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="776"/>
+        <location filename="DraftGui.py" line="785"/>
         <source>Finishes and closes the current line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="778"/>
+        <location filename="DraftGui.py" line="787"/>
         <source>Wipes the existing segments of this line and starts again from the last point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="779"/>
+        <location filename="DraftGui.py" line="788"/>
         <source>Set WP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="780"/>
+        <location filename="DraftGui.py" line="789"/>
         <source>Reorients the working plane on the last segment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="782"/>
+        <location filename="DraftGui.py" line="791"/>
         <source>Selects an existing edge to be measured by this dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="787"/>
+        <location filename="DraftGui.py" line="796"/>
         <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5406,32 +5406,32 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="788"/>
+        <location filename="DraftGui.py" line="797"/>
         <source>Modify subelements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="789"/>
+        <location filename="DraftGui.py" line="798"/>
         <source>If checked, subelements will be modified instead of entire objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="364"/>
+        <location filename="gui_selectplane.py" line="367"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="376"/>
+        <location filename="gui_selectplane.py" line="379"/>
         <source>Front</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="388"/>
+        <location filename="gui_selectplane.py" line="391"/>
         <source>Side</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="531"/>
+        <location filename="gui_selectplane.py" line="534"/>
         <source>Current working plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5446,27 +5446,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="798"/>
+        <location filename="DraftGui.py" line="807"/>
         <source>Create text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="799"/>
+        <location filename="DraftGui.py" line="808"/>
         <source>Press this button to create the text object, or finish your text with two blank lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1031"/>
+        <location filename="DraftGui.py" line="1040"/>
         <source>Offset distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1089"/>
+        <location filename="DraftGui.py" line="1098"/>
         <source>Trim distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="822"/>
+        <location filename="DraftGui.py" line="831"/>
         <source>Change default style for new objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6754,7 +6754,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1085"/>
+        <location filename="DraftGui.py" line="1094"/>
         <source>Trimex</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6824,22 +6824,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="89"/>
+        <location filename="gui_selectplane.py" line="144"/>
         <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="264"/>
+        <location filename="gui_selectplane.py" line="267"/>
         <source>Working plane aligned to global placement of</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="513"/>
+        <location filename="gui_selectplane.py" line="516"/>
         <source>Dir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_selectplane.py" line="529"/>
+        <location filename="gui_selectplane.py" line="532"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7085,65 +7085,65 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="741"/>
+        <location filename="DraftGui.py" line="750"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="739"/>
+        <location filename="DraftGui.py" line="748"/>
         <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="744"/>
+        <location filename="DraftGui.py" line="753"/>
         <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="750"/>
+        <location filename="DraftGui.py" line="759"/>
         <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option &apos;Use Part Primitives&apos; is enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="762"/>
+        <location filename="DraftGui.py" line="771"/>
         <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1240"/>
+        <location filename="DraftGui.py" line="1249"/>
         <source>Local u0394X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1241"/>
+        <location filename="DraftGui.py" line="1250"/>
         <source>Local u0394Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1242"/>
+        <location filename="DraftGui.py" line="1251"/>
         <source>Local u0394Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1248"/>
+        <location filename="DraftGui.py" line="1257"/>
         <source>Global u0394X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1249"/>
+        <location filename="DraftGui.py" line="1258"/>
         <source>Global u0394Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1250"/>
+        <location filename="DraftGui.py" line="1259"/>
         <source>Global u0394Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="2050"/>
+        <location filename="DraftGui.py" line="2047"/>
         <source>Autogroup:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7180,6 +7180,12 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
     <message>
         <location filename="make_arc_3points.py" line="159"/>
         <source>Cannot generate shape:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="WorkingPlane.py" line="696"/>
+        <source>Selected Shapes must define a plane
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -343,7 +343,7 @@ class _Examples(CommandManager):
 
     def __init__(self):
         super(_Examples, self).__init__()
-        self.pixmap = "preferences-fem"
+        self.pixmap = "FemWorkbench"
         self.menuetext = "Open FEM examples"
         self.tooltip = "Open FEM examples"
         self.is_active = "always"

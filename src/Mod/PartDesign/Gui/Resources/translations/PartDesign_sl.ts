@@ -3282,11 +3282,6 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Tega ukaza ni mogoče izvesti, ker ni telesa, od katerega bi odštevali.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Preden poskusite z odjemnim ukazom se prepričajte, da telo vsebuje značilnost.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Izbranega predmeta ni mogoče uporabiti. Izbrani predmet mora biti del dejavnega telesa</translation>
@@ -3344,6 +3339,11 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Izbira ni v Aktivnem Telesu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Preden poskusite z odjemnim ukazom se prepričajte, da telo vsebuje značilnost.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>

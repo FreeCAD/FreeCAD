@@ -31,7 +31,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Jeżeli ta opcja jest zaznaczona, Obiekt matrycy wielokrotnej będzie parametryczny</translation>
+      <translation>Jeżeli ta opcja jest zaznaczona, Obiekt matrycy wielokrotnej będzie sparametryzowany</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="113"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation>Minimalny kąt dla fragmentu</translation>
+      <translation>Wartość minimalna kąta dla fragmentu</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation>Minimalny rozmiar dla fragmentu</translation>
+      <translation>Wartość minimalna rozmiaru fragmentu</translation>
     </message>
   </context>
   <context>
@@ -184,12 +184,12 @@
     <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Błąd, wszystkie kształty muszą być albo 2d albo 3d</translation>
+      <translation>Błąd, wszystkie kształty muszą być albo dwuwymiarowe albo oba muszą być trójwymiarowe</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="102"/>
       <source>Unable to explode %s</source>
-      <translation>Nie można rozstrzelić %s</translation>
+      <translation>Nie można rozbić %s</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Dodaj element OpenSCAD wprowadzając i wykonując jego kod</translation>
+      <translation>Dodaj element OpenSCAD, wprowadzając i wykonując jego kod</translation>
     </message>
   </context>
   <context>
@@ -230,7 +230,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="129"/>
       <source>Color Shapes by validity and type</source>
-      <translation>Kolor kształtów poprzez ważność i typ</translation>
+      <translation>Kolory kształtów według kryterium ważności i typu</translation>
     </message>
   </context>
   <context>
@@ -238,7 +238,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="146"/>
       <source>Convert Edges To Faces</source>
-      <translation>Konwersja krawędzi do obszarów</translation>
+      <translation>Konwersja krawędzi na ściany</translation>
     </message>
   </context>
   <context>
@@ -246,12 +246,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="291"/>
       <source>Expand Placements</source>
-      <translation>Rozwiń położenia</translation>
+      <translation>Rozszerzenie umiejscowienia</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="294"/>
       <source>Expand all placements downwards the FeatureTree</source>
-      <translation>Rozwiń wszystkie miejsca docelowe w dół drzewa funkcji</translation>
+      <translation>Rozwiń wszystkie umiejscowienia w głąb drzewa właściwości</translation>
     </message>
   </context>
   <context>
@@ -259,12 +259,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="110"/>
       <source>Explode Group</source>
-      <translation>Rozstrzel Grupę</translation>
+      <translation>Rozbij grupę</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="113"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Usuń połączenie, zastosuj umiejscowienie obiektów-dzieci i kolory losowo</translation>
+      <translation>Usuń połączenie, zastosuj umiejscowienie obiektów pochodnych i pokoloruj losowo</translation>
     </message>
   </context>
   <context>
@@ -272,7 +272,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="552"/>
       <source>Hull</source>
-      <translation>Powłoka</translation>
+      <translation>Kadłub</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="555"/>
@@ -285,12 +285,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="274"/>
       <source>Increase Tolerance Feature</source>
-      <translation>Funkcja powiększenia tolerancji</translation>
+      <translation>Cecha zwiększania tolerancji</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="277"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation>Tworzy Funkcję, która umożliwia zwiększenie tolerancji</translation>
+      <translation>Tworzy cechę, która umożliwia zwiększenie tolerancji</translation>
     </message>
   </context>
   <context>
@@ -298,12 +298,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="532"/>
       <source>Mesh Boolean...</source>
-      <translation>Boolean siatki...</translation>
+      <translation>Funkcje logiczne dla siatki ...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Eksportuje obiekty jako siatki i używa OpenSCAD aby wykonać operację boolean</translation>
+      <translation>Eksportuje obiekty jako siatki i używa OpenSCAD aby wykonać operację logiczną</translation>
     </message>
   </context>
   <context>
@@ -316,7 +316,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="574"/>
       <source>Perform Minkowski</source>
-      <translation>Wykonaj Minkowskiego</translation>
+      <translation>Wykonaj funkcję Minkowskiego</translation>
     </message>
   </context>
   <context>
@@ -329,7 +329,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="198"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation>Twórz właściwości siatki</translation>
+      <translation>Utwórz cechę odbicia lustrzanego dla siatki</translation>
     </message>
   </context>
   <context>
@@ -350,7 +350,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="324"/>
       <source>Remove Objects and their Children</source>
-      <translation>Usuń obiekt wraz z jego potomkami</translation>
+      <translation>Usuń obiekt oraz obiekty pochodne</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="327"/>

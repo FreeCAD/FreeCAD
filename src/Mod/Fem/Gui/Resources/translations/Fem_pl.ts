@@ -75,11 +75,6 @@
       <translation>Określenie odniesienia do geometrii dla</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Selektor odniesienia geometrii dla </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Dodaj</translation>
@@ -93,6 +88,11 @@
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
       <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Kliknij na przycisk "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
@@ -118,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Bryła</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Selektor odniesienia geometrii dla </translation>
     </message>
   </context>
   <context>
@@ -247,7 +252,7 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation>Tworzy wagę własną Ograniczenia FEM</translation>
+      <translation>Tworzy ciężar własny z wiązaniem MES</translation>
     </message>
   </context>
   <context>

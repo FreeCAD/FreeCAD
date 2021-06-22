@@ -1108,7 +1108,7 @@ Utilisez 'arch' pour forcer la notation architecturale US</translation>
     <message>
       <location filename="shape2dview.py" line="102"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Liste de points d’exclusion. Une arête touchant l’un de ces points ne sera pas dessinée.</translation>
     </message>
   </context>
   <context>
@@ -1474,7 +1474,7 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Active/désactive l'Accrochage au Plan de Travail</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Impossible d'insérer un nouvel objet dans une pièce redimensionnée</translation>
     </message>
@@ -1650,6 +1650,11 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Erreur : module json introuvable. Impossible d'enregistrer le style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>Attention</translation>
     </message>
   </context>
   <context>
@@ -2548,9 +2553,6 @@ Les objets ajoutés à ce calque peuvent partager les mêmes propriétés visuel
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Crée une ligne par 2 points. CTRL pour aimanter, SHIFT pour contraindre.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -5198,22 +5200,22 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="322"/>
+      <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
       <translation>Barre de commandes Draft</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="823"/>
+      <location filename="DraftGui.py" line="832"/>
       <source>Toggle construction mode</source>
       <translation>Basculer en mode construction</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2057"/>
+      <location filename="DraftGui.py" line="2054"/>
       <source>Autogroup off</source>
       <translation>Autogroup désactivé</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="713"/>
+      <location filename="DraftGui.py" line="722"/>
       <source>active command:</source>
       <translation>commande active :</translation>
     </message>
@@ -5223,52 +5225,52 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
       <translation>Aucun</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="715"/>
+      <location filename="DraftGui.py" line="724"/>
       <source>Active Draft command</source>
       <translation>Commande active</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="716"/>
+      <location filename="DraftGui.py" line="725"/>
       <source>X coordinate of next point</source>
       <translation>Coordonnée X du prochain point</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1047"/>
+      <location filename="DraftGui.py" line="1056"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="718"/>
+      <location filename="DraftGui.py" line="727"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="719"/>
+      <location filename="DraftGui.py" line="728"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="720"/>
+      <location filename="DraftGui.py" line="729"/>
       <source>Y coordinate of next point</source>
       <translation>Coordonnée Y du prochain point</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="721"/>
+      <location filename="DraftGui.py" line="730"/>
       <source>Z coordinate of next point</source>
       <translation>Coordonnée Z du prochain point</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="722"/>
+      <location filename="DraftGui.py" line="731"/>
       <source>Enter point</source>
       <translation>Entrez le point</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="724"/>
+      <location filename="DraftGui.py" line="733"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Entrez un nouveau point avec les coordonnées données</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="725"/>
+      <location filename="DraftGui.py" line="734"/>
       <source>Length</source>
       <translation>Longueur</translation>
     </message>
@@ -5278,42 +5280,42 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="727"/>
+      <location filename="DraftGui.py" line="736"/>
       <source>Length of current segment</source>
       <translation>Longueur du segment actuel</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="728"/>
+      <location filename="DraftGui.py" line="737"/>
       <source>Angle of current segment</source>
       <translation>Angle du segment actuel</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1096"/>
+      <location filename="DraftGui.py" line="1105"/>
       <source>Radius</source>
       <translation>Rayon</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1097"/>
+      <location filename="DraftGui.py" line="1106"/>
       <source>Radius of Circle</source>
       <translation>Rayon du cercle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="757"/>
+      <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Si cette case est cochée, la commande ne se terminera que si vous appuyez à nouveau sur son icône</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="763"/>
+      <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
       <translation>Décalage de type &amp;OCC</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="783"/>
+      <location filename="DraftGui.py" line="792"/>
       <source>Sides</source>
       <translation>Côtés</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="784"/>
+      <location filename="DraftGui.py" line="793"/>
       <source>Number of sides</source>
       <translation>Nombre de côtés</translation>
     </message>
@@ -5323,77 +5325,77 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
       <translation>Décalage</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="650"/>
+      <location filename="DraftGui.py" line="659"/>
       <source>Auto</source>
       <translation>Plan de travail</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="790"/>
+      <location filename="DraftGui.py" line="799"/>
       <source>Text string to draw</source>
       <translation>Chaîne de texte à dessiner</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="791"/>
+      <location filename="DraftGui.py" line="800"/>
       <source>String</source>
       <translation>Chaîne</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="792"/>
+      <location filename="DraftGui.py" line="801"/>
       <source>Height of text</source>
       <translation>Hauteur du texte</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="793"/>
+      <location filename="DraftGui.py" line="802"/>
       <source>Height</source>
       <translation>Hauteur</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="794"/>
+      <location filename="DraftGui.py" line="803"/>
       <source>Intercharacter spacing</source>
       <translation>Espacement entre les caractères</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="795"/>
+      <location filename="DraftGui.py" line="804"/>
       <source>Tracking</source>
       <translation>Crénage</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="796"/>
+      <location filename="DraftGui.py" line="805"/>
       <source>Full path to font file:</source>
       <translation>Chemin d'accès complet au fichier de police :</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="797"/>
+      <location filename="DraftGui.py" line="806"/>
       <source>Open a FileChooser for font file</source>
       <translation>Ouvre une boîte de dialogue pour choisir le fichier de police</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="935"/>
+      <location filename="DraftGui.py" line="944"/>
       <source>Line</source>
       <translation>Ligne</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="944"/>
+      <location filename="DraftGui.py" line="953"/>
       <source>DWire</source>
       <translation>Filaire</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="962"/>
+      <location filename="DraftGui.py" line="971"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="971"/>
+      <location filename="DraftGui.py" line="980"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="978"/>
+      <location filename="DraftGui.py" line="987"/>
       <source>Point</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1006"/>
+      <location filename="DraftGui.py" line="1015"/>
       <source>Label</source>
       <translation>Étiquette</translation>
     </message>
@@ -5403,87 +5405,87 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
       <translation>Distance</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1183"/>
+      <location filename="DraftGui.py" line="1192"/>
       <source>Pick Object</source>
       <translation>Choisir un objet</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1189"/>
+      <location filename="DraftGui.py" line="1198"/>
       <source>Edit</source>
       <translation>Éditer</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1252"/>
+      <location filename="DraftGui.py" line="1261"/>
       <source>Global X</source>
       <translation>X global</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1253"/>
+      <location filename="DraftGui.py" line="1262"/>
       <source>Global Y</source>
       <translation>Y global</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1254"/>
+      <location filename="DraftGui.py" line="1263"/>
       <source>Global Z</source>
       <translation>Z global</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1244"/>
+      <location filename="DraftGui.py" line="1253"/>
       <source>Local X</source>
       <translation>X local</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1245"/>
+      <location filename="DraftGui.py" line="1254"/>
       <source>Local Y</source>
       <translation>Y local</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1246"/>
+      <location filename="DraftGui.py" line="1255"/>
       <source>Local Z</source>
       <translation>Z local</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1487"/>
+      <location filename="DraftGui.py" line="1496"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Valeur de taille non valide. Utilisation de 200,0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1495"/>
+      <location filename="DraftGui.py" line="1504"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Valeur non valide de crénage. Utilisation de 0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1509"/>
+      <location filename="DraftGui.py" line="1518"/>
       <source>Please enter a text string.</source>
       <translation>Veuillez entrer une chaîne de texte.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1518"/>
+      <location filename="DraftGui.py" line="1527"/>
       <source>Select a Font file</source>
       <translation>Sélectionnez un fichier de police</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1551"/>
+      <location filename="DraftGui.py" line="1560"/>
       <source>Please enter a font file.</source>
       <translation>Veuillez entrer un fichier de police s'il vous plaît</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2377"/>
+      <location filename="DraftGui.py" line="2374"/>
       <source>Faces</source>
       <translation>Faces</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2378"/>
+      <location filename="DraftGui.py" line="2375"/>
       <source>Remove</source>
       <translation>Enlever</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2379"/>
+      <location filename="DraftGui.py" line="2376"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2380"/>
+      <location filename="DraftGui.py" line="2377"/>
       <source>Facebinder elements</source>
       <translation>Surfaces liées: éléments</translation>
     </message>
@@ -5505,17 +5507,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Les bibliothèques d'importation/exportation DXF nécessaires FreeCAD pour manipuler le format DXF ne se trouvaient pas sur ce système. Il vous faut soit activer FreeCAD télécharger ces bibliothèques : plan de travail de charge projet 1 - 2 - Menu Edition &gt; Préférences &gt; Import-Export &gt; DXF &gt; activer les téléchargements ou télécharger ces bibliothèques manuellement, comme expliqué sur https://github.com/yorikvanhavre/Draft-dxf-importer pour FreeCAD activé pour télécharger ces bibliothèques, répondre Oui.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="736"/>
+      <location filename="DraftGui.py" line="745"/>
       <source>Relative</source>
       <translation>Relative</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="759"/>
+      <location filename="DraftGui.py" line="768"/>
       <source>Continue</source>
       <translation>Continuer</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="775"/>
+      <location filename="DraftGui.py" line="784"/>
       <source>Close</source>
       <translation>Fermer</translation>
     </message>
@@ -5560,7 +5562,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Restreindre les Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="781"/>
+      <location filename="DraftGui.py" line="790"/>
       <source>Select edge</source>
       <translation>Sélectionnez les arêtes</translation>
     </message>
@@ -5575,7 +5577,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Mode de longueur</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="777"/>
+      <location filename="DraftGui.py" line="786"/>
       <source>Wipe</source>
       <translation>Effacer</translation>
     </message>
@@ -5590,62 +5592,62 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Alterner entre différents accrochages</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="732"/>
+      <location filename="DraftGui.py" line="741"/>
       <source>Check this to lock the current angle</source>
       <translation>Cochez cette case pour verrouiller l’angle actuel</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="746"/>
+      <location filename="DraftGui.py" line="755"/>
       <source>Filled</source>
       <translation>Rempli</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="752"/>
+      <location filename="DraftGui.py" line="761"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="754"/>
+      <location filename="DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Termine le dessin courant ou opération d’édition</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="773"/>
+      <location filename="DraftGui.py" line="782"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation>&amp; Annuler (CTRL + Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="774"/>
+      <location filename="DraftGui.py" line="783"/>
       <source>Undo the last segment</source>
       <translation>Annuler le dernier segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="776"/>
+      <location filename="DraftGui.py" line="785"/>
       <source>Finishes and closes the current line</source>
       <translation>Finitions et ferme la ligne courante</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="778"/>
+      <location filename="DraftGui.py" line="787"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Essuie les tronçons existants de cette ligne et reprend à partir du dernier point</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="779"/>
+      <location filename="DraftGui.py" line="788"/>
       <source>Set WP</source>
       <translation>Définir le plan de travail</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="780"/>
+      <location filename="DraftGui.py" line="789"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Réoriente le plan de travail sur le dernier segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="782"/>
+      <location filename="DraftGui.py" line="791"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Sélectionne une arête existante qui sera mesurée par cette cote</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="787"/>
+      <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation>Si activé, les objets seront copiés au lieu de déplacés. Préférences-&gt; esquisses-&gt; mode de copie globale pour garder ce mode dans les prochaines commandes</translation>
     </message>
@@ -5655,32 +5657,32 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Mode sous-élément</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="788"/>
+      <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
       <translation>Modifier les sous-éléments</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="789"/>
+      <location filename="DraftGui.py" line="798"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Si coché, les sous-éléments seront modifiés plutôt que les objets en entier</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Dessus</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Côté</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Plan de travail actuel</translation>
     </message>
@@ -5695,27 +5697,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Activer ou désactiver l'accrochage de proximité</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="798"/>
+      <location filename="DraftGui.py" line="807"/>
       <source>Create text</source>
       <translation>Insérer du texte</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="799"/>
+      <location filename="DraftGui.py" line="808"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>Appuyez sur ce bouton pour créer l'objet texte, ou terminez votre texte avec deux lignes vides</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1031"/>
+      <location filename="DraftGui.py" line="1040"/>
       <source>Offset distance</source>
       <translation>Distance de décalage</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1089"/>
+      <location filename="DraftGui.py" line="1098"/>
       <source>Trim distance</source>
       <translation>Distance de coupe</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="822"/>
+      <location filename="DraftGui.py" line="831"/>
       <source>Change default style for new objects</source>
       <translation>Changer le style par défaut pour les nouveaux objets</translation>
     </message>
@@ -6526,22 +6528,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Convertir en Filaire</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation>Cet objet n'accepte pas les éventuels points coïncidents, veuillez réessayer.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>L'objet actif doit avoir plus de deux points / noeuds</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation>La sélection n'est pas un Nœud</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Le point de terminaison de la Courbe de Bézier ne peut pas être lissé</translation>
     </message>
@@ -6881,7 +6883,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Inverser la direction de la cote</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation>Étirer</translation>
     </message>
@@ -6981,12 +6983,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Sélectionner un objet Ébauche à modifier</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation>Aucun point d'édition trouvé pour l'objet sélectionné</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: cet objet n'est pas modifiable</translation>
     </message>
@@ -7006,7 +7008,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Réseau torsadé selon une courbe</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1085"/>
+      <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
       <translation>Ajuste ou Prolonge</translation>
     </message>
@@ -7076,22 +7078,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Créer une B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Sélectionner une face, 3 sommets ou un Proxy WP pour définir le plan de dessin</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Plan de travail aligné sur le placement global de</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation>Répertoire</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Personnalisée</translation>
     </message>
@@ -7338,67 +7340,67 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Sélectionner l’angle de rotation</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="741"/>
+      <location filename="DraftGui.py" line="750"/>
       <source>Global</source>
       <translation>Global</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="739"/>
+      <location filename="DraftGui.py" line="748"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Coordonnées relatives au dernier point ou à l'origine du système de coordonnées
 si c'est le premier point à définir</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="744"/>
+      <location filename="DraftGui.py" line="753"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Coordonnées par rapport au système de coordonnées globales.
 Décocher pour utiliser le système de coordonnées du plan de travail</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="750"/>
+      <location filename="DraftGui.py" line="759"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Cochez ceci si l'objet doit apparaître comme rempli, sinon il apparaîtra comme filaire. Non disponible si l'option de préférence Draft 'Utiliser les Primitives de Part' est activée</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="762"/>
+      <location filename="DraftGui.py" line="771"/>
       <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
       <translation>Si coché, un décalage de style OCC sera effectué à la place du décalage classique</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1240"/>
+      <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
       <translation>Local u0394X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1241"/>
+      <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
       <translation>Local u0394Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1242"/>
+      <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
       <translation>Local u0394Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1248"/>
+      <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
       <translation>Global u0394X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1249"/>
+      <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
       <translation>Global u0394Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1250"/>
+      <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
       <translation>Global u0394Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2050"/>
+      <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
       <translation>Groupement automatique :</translation>
     </message>
@@ -7423,7 +7425,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Impossible de mettre les objets à l'échelle :</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Trop d'objets sélectionnés, le nombre maximum est de :</translation>
     </message>
@@ -7436,6 +7438,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation>Impossible de générer la forme :</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation>Les formes sélectionnées doivent définir un plan
+</translation>
     </message>
   </context>
   <context>

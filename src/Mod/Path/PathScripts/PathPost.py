@@ -288,7 +288,7 @@ class CommandPathPost:
                 for obj in job.Operations.Group:
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None and PathUtil.opProperty(obj, 'Active'):
-                        if tc.ToolNumber != currTool:
+                        if tc.ToolNumber != currTool or split is True:
                             sublist.append(tc)
                             PathLog.debug("Appending TC: {}".format(tc.Name))
                             currTool = tc.ToolNumber

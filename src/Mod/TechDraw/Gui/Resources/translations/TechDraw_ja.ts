@@ -843,7 +843,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1388"/>
-      <location filename="../../MDIViewPage.cpp" line="873"/>
+      <location filename="../../MDIViewPage.cpp" line="878"/>
       <source>Save page to dxf</source>
       <translation>ページをDXFに保存</translation>
     </message>
@@ -901,7 +901,7 @@
       <translation>アクティブビューを作成</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>中心線を作成</translation>
     </message>
@@ -1732,28 +1732,28 @@
       <translation>正しいページを特定できません。</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="636"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
-      <location filename="../../MDIViewPage.cpp" line="832"/>
+      <location filename="../../MDIViewPage.cpp" line="637"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>All Files (*.*)</source>
       <translation>すべてのファイル (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="637"/>
+      <location filename="../../MDIViewPage.cpp" line="638"/>
       <source>Export Page As PDF</source>
       <translation>ページをPDFとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="831"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="833"/>
+      <location filename="../../MDIViewPage.cpp" line="838"/>
       <source>Export page as SVG</source>
       <translation>ページをSVGとしてエクスポート</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation>アクティブビューからTDビューへ</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>中心線を作成</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>中心線を編集</translation>
     </message>
@@ -3389,75 +3389,75 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="141"/>
+      <location filename="../../MDIViewPage.cpp" line="142"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;SVGをエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="135"/>
+      <location filename="../../MDIViewPage.cpp" line="136"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>自動更新を切り替え(&amp;K)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="138"/>
+      <location filename="../../MDIViewPage.cpp" line="139"/>
       <source>Toggle &amp;Frames</source>
       <translation>フレームを切り替え(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="144"/>
+      <location filename="../../MDIViewPage.cpp" line="145"/>
       <source>Export DXF</source>
       <translation>DXFをエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="147"/>
+      <location filename="../../MDIViewPage.cpp" line="148"/>
       <source>Export PDF</source>
       <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="729"/>
+      <location filename="../../MDIViewPage.cpp" line="730"/>
       <source>Different orientation</source>
       <translation>異なる向き</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="730"/>
+      <location filename="../../MDIViewPage.cpp" line="731"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="737"/>
+      <location filename="../../MDIViewPage.cpp" line="738"/>
       <source>Different paper size</source>
       <translation>別の用紙サイズ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="738"/>
+      <location filename="../../MDIViewPage.cpp" line="739"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面とは異なる用紙サイズを使用します。
 続行しますか？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="749"/>
+      <location filename="../../MDIViewPage.cpp" line="750"/>
       <source>Opening file failed</source>
       <translation>ファイルを開けませんでした。</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="750"/>
+      <location filename="../../MDIViewPage.cpp" line="751"/>
       <source>Can not open file %1 for writing.</source>
       <translation>書き込み用ファイル %1 を開くことができません。</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="857"/>
+      <location filename="../../MDIViewPage.cpp" line="862"/>
       <source>Save Dxf File</source>
       <translation>Dxf ファイルを保存</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="859"/>
+      <location filename="../../MDIViewPage.cpp" line="864"/>
       <source>Dxf (*.dxf)</source>
       <translation>Dxf (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1344"/>
+      <location filename="../../MDIViewPage.cpp" line="1349"/>
       <source>Selected:</source>
       <translation>選択:</translation>
     </message>

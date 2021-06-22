@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Якщо не нуль, осі будуть позначені не в вигляді одного повного рядка, а у вигляді двох рядків заданої довжини</translation>
     </message>
   </context>
   <context>
@@ -3056,7 +3056,7 @@
     <message>
       <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Перемкнути підкомпоненти</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="1629"/>
@@ -3126,67 +3126,67 @@
     <message>
       <location filename="ArchPipe.py" line="163"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Оберіть тільки обʼєкт Труба</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="221"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>Не вдалося створити базовий шлях</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="237"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Не вдається побудувати профіль</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="269"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Неможливо побудувати трубу</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="288"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>Базовий об'єкт не є частиною</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="291"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Забагато каркасів у базовій формі</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="294"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Базова сітка закрита</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="308"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>Профіль не є двомірною частиною</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="311"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>Профіль не закритий</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="379"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>Будуть підключені лише 3 перші сітки</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="443"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>Звичайна вершина не знайдена</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="415"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Труби вже вирівняні</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="455"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>Принаймні 2 труби повинні вирівнюватися</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="513"/>
@@ -3196,42 +3196,42 @@
     <message>
       <location filename="ArchRebar.py" line="151"/>
       <source>Please select a base face on a structural object</source>
-      <translation type="unfinished">Please select a base face on a structural object</translation>
+      <translation>Будь ласка, виберіть базову грань на структурному об'єкті</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="689"/>
       <source>Create external reference</source>
-      <translation type="unfinished">Create external reference</translation>
+      <translation>Створити зовнішнє посилання</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1503"/>
       <source>Section plane settings</source>
-      <translation type="unfinished">Section plane settings</translation>
+      <translation>Налаштування площини перетину</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1508"/>
       <source>Objects seen by this section plane:</source>
-      <translation type="unfinished">Objects seen by this section plane:</translation>
+      <translation>Видимі об'єкти на площині перетину:</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Section plane placement:</source>
-      <translation type="unfinished">Section plane placement:</translation>
+      <translation>Розміщення площини перетину:</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1510"/>
       <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
+      <translation>Повернути по осі Х</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1512"/>
       <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
+      <translation>Повернути по осі Y</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1514"/>
       <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
+      <translation>Повернути по осі Z</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1516"/>
@@ -3246,7 +3246,7 @@
     <message>
       <location filename="ArchStructure.py" line="1141"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Виберіть інший Конструктивний об'єкт:</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1146"/>
@@ -3256,122 +3256,122 @@
     <message>
       <location filename="ArchStructure.py" line="1149"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Вибраний об'єкт не має структурних вузлів</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1152"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Один з цих об'єктів має більше 2 вузлів</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1159"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Не вдається знайти відповідну точку перетину</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1162"/>
       <source>Intersection found.</source>
-      <translation type="unfinished">Intersection found.</translation>
+      <translation>Виявлено перетин.</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="665"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation type="unfinished">The selected wall contains no subwall to merge</translation>
+      <translation>Виділена стіна не містить вкладених стін для об'єднання</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="922"/>
       <source>Cannot compute blocks for wall</source>
-      <translation type="unfinished">Cannot compute blocks for wall</translation>
+      <translation>Не можна обчислити блоки для стіни</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="236"/>
       <source>Choose a face on an existing object or select a preset</source>
-      <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
+      <translation>Виберіть грань на існуючому об'єкті або виберіть заготовку</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1597"/>
       <source>Unable to create component</source>
-      <translation type="unfinished">Unable to create component</translation>
+      <translation>Неможливо створити торрент</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1637"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
+      <translation>Щільність сітки, що визначає отвір у хост-об'єкті. Значення нуля автоматично приймає найбільшу сітку</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1656"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ за замовчуванням</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1655"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
+      <translation>Якщо це позначено, значення кадру за замовчуванням цього вікна буде додано до значення, введеного тут</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1657"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
+      <translation>Якщо це позначено, типове значення зміщення у цьому вікні буде додано до введеного тут значення</translation>
     </message>
     <message>
       <location filename="importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
-      <translation type="unfinished">pycollada not found, collada support is disabled.</translation>
+      <translation>pycollada не знайдена, підтримка collada відключена.</translation>
     </message>
     <message>
       <location filename="importGBXML.py" line="49"/>
       <source>This exporter can currently only export one site object</source>
-      <translation type="unfinished">This exporter can currently only export one site object</translation>
+      <translation>Цей експортер наразі може експортувати лише один об'єкт частини</translation>
     </message>
     <message>
       <location filename="importGBXML.py" line="91"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
-      <translation type="unfinished">Error: Space '%s' has no Zone. Aborting.</translation>
+      <translation>Помилка: Пробіл '%sне має Зони. Перервано.</translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="113"/>
       <source>Couldn't locate IfcOpenShell</source>
-      <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
+      <translation>Не вдалося знайти IfcOpenShell</translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="390"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
-      <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
+      <translation>IfcOpenShell не знайдено або вимкнуто, falling back у внутрішньому синтаксичному аналізаторі.</translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="396"/>
       <source>IFC Schema not found, IFC import disabled.</source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
+      <translation>Схема IFC не знайдена. Імпортування IFC вимкнено.</translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="943"/>
       <source>Error: IfcOpenShell is not installed</source>
-      <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
+      <translation>Помилка: IfcOpenShell не встановлено</translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="950"/>
       <source>Error: your IfcOpenShell version is too old</source>
-      <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
+      <translation>Помилка: ваша версія IfcOpenShell застаріла</translation>
     </message>
     <message>
       <location filename="importJSON.py" line="61"/>
       <source>Successfully written</source>
-      <translation type="unfinished">Successfully written</translation>
+      <translation>Успішно записано </translation>
     </message>
     <message>
       <location filename="importOBJ.py" line="94"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>Знайдено форму, яка містить криві, тріангуляція</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
-      <translation type="unfinished">Successfully imported</translation>
+      <translation>Імпорт завершено успішно</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1505"/>
       <source>Remove highlighted objects from the list above</source>
-      <translation type="unfinished">Remove highlighted objects from the list above</translation>
+      <translation>Видаліть виділені об'єкти зі списку вище</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1506"/>
@@ -3381,107 +3381,108 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1507"/>
       <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
+      <translation>Додати вибраний об'єкт(и) до діапазону цієї площини перерізу</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1511"/>
       <source>Rotates the plane along the X axis</source>
-      <translation type="unfinished">Rotates the plane along the X axis</translation>
+      <translation>Обертає площину вздовж осі X</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1513"/>
       <source>Rotates the plane along the Y axis</source>
-      <translation type="unfinished">Rotates the plane along the Y axis</translation>
+      <translation>Обертає площину вздовж осі Y</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1515"/>
       <source>Rotates the plane along the Z axis</source>
-      <translation type="unfinished">Rotates the plane along the Z axis</translation>
+      <translation>Обертає площину вздовж осі Z</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1517"/>
       <source>Resizes the plane to fit the objects in the list above</source>
-      <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
+      <translation>Змінює розмір площини відповідно до об’єктів у списку вище</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1519"/>
       <source>Centers the plane on the objects in the list above</source>
-      <translation type="unfinished">Centers the plane on the objects in the list above</translation>
+      <translation>Центрує площину на об’єктах у списку вище</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="264"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>Перша точка променю</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="266"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Базова точка стовпця</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="279"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>Наступна точка</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="366"/>
       <source>Structure options</source>
-      <translation type="unfinished">Structure options</translation>
+      <translation>Опції структури</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="370"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>Режим креслення</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="371"/>
       <source>Beam</source>
-      <translation type="unfinished">Beam</translation>
+      <translation>Beam</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="372"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Колонна
+</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="389"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Налаштування</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="425"/>
       <source>Switch L/H</source>
-      <translation type="unfinished">Switch L/H</translation>
+      <translation>Перемкнути L/H</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="427"/>
       <source>Switch L/W</source>
-      <translation type="unfinished">Switch L/W</translation>
+      <translation>Перемкнути L/W</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="431"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>Продовжити</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="339"/>
       <source>First point of wall</source>
-      <translation type="unfinished">First point of wall</translation>
+      <translation>Перша точка стіни</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="469"/>
       <source>Wall options</source>
-      <translation type="unfinished">Wall options</translation>
+      <translation>Параметри стіни</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="474"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
-      <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
+      <translation>У цьому списку показані всі об’єкти MultiMaterials цього документа. Створіть кілька для визначення типів стін.</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="506"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>Вирівнювання</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="508"/>
@@ -3496,7 +3497,7 @@
     <message>
       <location filename="ArchWall.py" line="525"/>
       <source>Use sketches</source>
-      <translation type="unfinished">Use sketches</translation>
+      <translation>Використовувати ескізи</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="77"/>
@@ -3511,12 +3512,12 @@
     <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Параметри вікна</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="331"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>Автоматично включати в об'єкт хоста</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="337"/>
@@ -3526,27 +3527,27 @@
     <message>
       <location filename="ArchCurtainWall.py" line="83"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Навісна стіна</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>Будь ласка, виберіть лише один базовий об'єкт або жодного</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="144"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Створити навісну стіну</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="914"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>Загальна товщина</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="928"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>залежить від об’єкта</translation>
     </message>
     <message>
       <location filename="ArchProject.py" line="125"/>
@@ -3556,37 +3557,37 @@
     <message>
       <location filename="ArchSchedule.py" line="562"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Не вдалося розпізнати тип файлу</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="65"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>В'язка</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="125"/>
       <source>Create Truss</source>
-      <translation type="unfinished">Create Truss</translation>
+      <translation>Створити В'язку</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="143"/>
       <source>Arch</source>
-      <translation type="unfinished">Arch</translation>
+      <translation>Арка</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="94"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Арматурні інструменти</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="134"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>Створити профіль</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="142"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>Налаштування профілю</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="188"/>
@@ -3596,52 +3597,52 @@
     <message>
       <location filename="importSHP.py" line="71"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Висота фігур</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="72"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Виберіть, яке поле надає висоту фігур:</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="113"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>У цьому файлі не знайдено форми</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="138"/>
       <source>Shapefile module not found</source>
-      <translation type="unfinished">Shapefile module not found</translation>
+      <translation>Модуль Shapefile не знайдено</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="145"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>Помилка: неможливо завантажити із:</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="157"/>
       <source>Could not download shapefile module. Aborting.</source>
-      <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
+      <translation>Не вдалося завантажити модуль шейп-файлу. Перервати.</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="160"/>
       <source>Shapefile module not downloaded. Aborting.</source>
-      <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
+      <translation>Модуль Shapefile не завантажено. Відміна.</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="163"/>
       <source>Shapefile module not found. Aborting.</source>
-      <translation type="unfinished">Shapefile module not found. Aborting.</translation>
+      <translation>Модуль Shapefile не завантажено. Відміна.</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="164"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
-      <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
+      <translation>Бібліотеку Шейпфайлів можна завантажити за вказаною нижче URL-адресою та встановити у папці макросів:</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="139"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
+      <translation>В вашій системі не було знайдено бібліотеку python файлу. Хочете завантажити її з &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github. om/GeospatialPython/pyshp&lt;/a&gt;? Вона буде розміщена в папці макросів.</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="1012"/>
@@ -3656,17 +3657,17 @@
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>Параметри дахових профілів:
+* Кут: нахил у градусах по відношенню до горизонталі.
+* Біг: горизонтальна відстань між стіною та хребтом.
+* Товщина: товщина даху.
+* Обернути - горизонтальну відстань між карнизом та стіною.
+* Висота гребеня над основою (обчислена автоматично).
+* IdRel : Id відносного профілю, який використовується для автоматичного обчислення.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Якщо Angle = 0 і Виконати = 0, то профіль ідентичний відносному профілю.
+Якщо кут = 0, тоді кут обчислюється так, що висота дорівнює відносному профілю.
+Якщо Run = 0, то пробіл розраховується таким чином, що висота дорівнює відносному профілю.</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="111"/>
@@ -3676,17 +3677,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchWindow.py" line="1171"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Це вікно не позначене відкриватися</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1660"/>
       <source>Invert opening direction</source>
-      <translation type="unfinished">Invert opening direction</translation>
+      <translation>Інвертувати напрям відкриття</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1661"/>
       <source>Invert hinge position</source>
-      <translation type="unfinished">Invert hinge position</translation>
+      <translation>Перевернути положення шарніру</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="242"/>
@@ -3697,22 +3698,22 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
+      <translation>Ви можете помістити все, крім ділянок та будівель, в об'єкт будівлі.
 
-Building object is not allowed to accept Site and Building objects.
+Об’єкт будівлі не може приймати ділянки та об'єкти будівель.
 
-Site and Building objects will be removed from the selection.
+Ділянки та об'єкти будівель буде вилучено з виділеного.
 
-You can change that in the preferences.</translation>
+Ви можете змінити це в налаштуваннях.</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="246"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>У виділенні немає дійсного об’єкта.
 
-Building creation aborted.</translation>
+Створення будівлі перервано.</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="532"/>
@@ -3723,22 +3724,22 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>Будь ласка, оберіть тільки будівельні об'єкти, або нічого!
 
-Site is not allowed to accept any other object besides Building.
+Ділянка не може приймати будь-який інший об'єкт, окрім будівництва.
 
-Other objects will be removed from the selection.
+Інші об'єкти будуть вилучені з виділення.
 
-Note: You can change that in the preferences.</translation>
+Примітка: ви можете змінити це у налаштуваннях.</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="535"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>У вибраному об’єкті немає дійсного об'єкта.
 
-Site creation aborted.</translation>
+Створення ділянки перервано.</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="150"/>
@@ -3749,22 +3750,22 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Ви можете помістити що завгодно, крім таких об’єктів: Ділянка, Будівля та Підлога - в об’єкт Поверх.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+Об’єкт підлоги не може приймати об’єкти ділянки, будівлі чи підлоги.
 
-Site, Building, and Floor objects will be removed from the selection.
+Об'єкти сайту, будівлі та підлоги буде видалено з виділеного.
 
-You can change that in the preferences.</translation>
+Ви можете змінити це в налаштуваннях.</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="154"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>У вибраному об’єкті немає дійсного об'єкта.
 
-Floor creation aborted.</translation>
+Створення поверху перервано.</translation>
     </message>
   </context>
   <context>
@@ -3772,12 +3773,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation type="unfinished">Arch material</translation>
+      <translation>Матеріали арки</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="30"/>
       <source>Choose preset...</source>
-      <translation type="unfinished">Choose preset...</translation>
+      <translation>Виберіть пресет...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="58"/>
@@ -3802,27 +3803,27 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.ui" line="48"/>
       <source>Copy existing...</source>
-      <translation type="unfinished">Copy existing...</translation>
+      <translation>Копіювання вже існує...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation type="unfinished">Choose a preset card</translation>
+      <translation>Виберіть попередньо встановлену карту</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="44"/>
       <source>Copy values from an existing material in the document</source>
-      <translation type="unfinished">Copy values from an existing material in the document</translation>
+      <translation>Копіювати значення з існуючого матеріалу в документ</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="65"/>
       <source>The name/label of this material</source>
-      <translation type="unfinished">The name/label of this material</translation>
+      <translation>Назва/мітка цього матеріалу</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="101"/>
       <source>An optional description for this material</source>
-      <translation type="unfinished">An optional description for this material</translation>
+      <translation>Необов'язковий опис для цього матеріалу</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="125"/>
@@ -3832,47 +3833,47 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.ui" line="163"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Прозорість</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="170"/>
       <source>A transparency value for this material</source>
-      <translation type="unfinished">A transparency value for this material</translation>
+      <translation>Значення прозорості для цього матеріалу</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="184"/>
       <source>Standard code</source>
-      <translation type="unfinished">Standard code</translation>
+      <translation>Стандартний код</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="191"/>
       <source>A standard (MasterFormat, Omniclass...) code for this material</source>
-      <translation type="unfinished">A standard (MasterFormat, Omniclass...) code for this material</translation>
+      <translation>Стандарт (MasterFormat, Omniclass...) коду для цього матеріалу</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="249"/>
       <source>Opens the URL in a browser</source>
-      <translation type="unfinished">Opens the URL in a browser</translation>
+      <translation>Відкриває URL-адресу у браузері</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="236"/>
       <source>A URL describing this material</source>
-      <translation type="unfinished">A URL describing this material</translation>
+      <translation>URL, що описує цей матеріал</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
+      <translation>Відкриває діалог для браузера для вибору класу з стандарту BIM</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="268"/>
       <source>Father</source>
-      <translation type="unfinished">Father</translation>
+      <translation>Родоначальник</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>Колір секції</translation>
     </message>
   </context>
   <context>
@@ -3880,12 +3881,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchEquipment.py" line="224"/>
       <source>3 views from mesh</source>
-      <translation type="unfinished">3 views from mesh</translation>
+      <translation>3 перегляди з полігональної сітки</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="227"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation type="unfinished">Creates 3 views (top, front, side) from a mesh-based object</translation>
+      <translation>Створює 3 види (зверху, на передній біч) з об'єкта, що базується на сітці</translation>
     </message>
   </context>
   <context>
@@ -3916,12 +3917,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchAxis.py" line="179"/>
       <source>Creates a customizable grid object</source>
-      <translation type="unfinished">Creates a customizable grid object</translation>
+      <translation>Створює настроювану сітку об'єкту</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="121"/>
       <source>Creates a set of axes</source>
-      <translation type="unfinished">Creates a set of axes</translation>
+      <translation>Створює набір осей</translation>
     </message>
   </context>
   <context>
@@ -3929,12 +3930,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchAxis.py" line="141"/>
       <source>Axis System</source>
-      <translation type="unfinished">Axis System</translation>
+      <translation>Система осей</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="145"/>
       <source>Creates an axis system from a set of axes</source>
-      <translation type="unfinished">Creates an axis system from a set of axes</translation>
+      <translation>Створює систему осей із набору осей</translation>
     </message>
   </context>
   <context>
@@ -3942,7 +3943,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchAxis.py" line="1617"/>
       <source>Axis tools</source>
-      <translation type="unfinished">Axis tools</translation>
+      <translation>Інструменти осей</translation>
     </message>
   </context>
   <context>
@@ -3968,7 +3969,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchBuildingPart.py" line="295"/>
       <source>Creates a BuildingPart object including selected objects</source>
-      <translation type="unfinished">Creates a BuildingPart object including selected objects</translation>
+      <translation>Створює об’єкт BuildingPart, включаючи вибрані об’єкти</translation>
     </message>
   </context>
   <context>
@@ -3989,12 +3990,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1613"/>
       <source>Clone component</source>
-      <translation type="unfinished">Clone component</translation>
+      <translation>Скопіювати компонент</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1617"/>
       <source>Clones an object as an undefined architectural component</source>
-      <translation type="unfinished">Clones an object as an undefined architectural component</translation>
+      <translation>Клонує об'єкт як невизначений архітектурний компонент</translation>
     </message>
   </context>
   <context>
@@ -4002,7 +4003,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1520"/>
       <source>Close holes</source>
-      <translation type="unfinished">Close holes</translation>
+      <translation>Закрити отвори</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1523"/>
@@ -4020,7 +4021,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1592"/>
       <source>Creates an undefined architectural component</source>
-      <translation type="unfinished">Creates an undefined architectural component</translation>
+      <translation>Створює невизначений архітектурний компонент</translation>
     </message>
   </context>
   <context>
@@ -4028,12 +4029,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Навісна стіна</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>Створює об’єкт навісної стіни з виділеної лінії або з нуля</translation>
     </message>
   </context>
   <context>
@@ -4041,22 +4042,22 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCutPlane.py" line="100"/>
       <source>Cut with plane</source>
-      <translation type="unfinished">Cut with plane</translation>
+      <translation>Вирізати з площиною</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="103"/>
       <source>Cut an object with a plane</source>
-      <translation type="unfinished">Cut an object with a plane</translation>
+      <translation>Вирізати об'єкт з площиною</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
       <source>Cut with a line</source>
-      <translation type="unfinished">Cut with a line</translation>
+      <translation>Вирізати з лінією</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="82"/>
       <source>Cut an object with a line with normal workplane</source>
-      <translation type="unfinished">Cut an object with a line with normal workplane</translation>
+      <translation>Вирізати об'єкт з лінією перпендикулярної робочої площини</translation>
     </message>
   </context>
   <context>
@@ -4069,7 +4070,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchEquipment.py" line="172"/>
       <source>Creates an equipment object from a selected object (Part or Mesh)</source>
-      <translation type="unfinished">Creates an equipment object from a selected object (Part or Mesh)</translation>
+      <translation>Створює об'єкт спорядження з обраного об'єкту (частина або Сітка)</translation>
     </message>
   </context>
   <context>
@@ -4077,12 +4078,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchFence.py" line="388"/>
       <source>Fence</source>
-      <translation type="unfinished">Fence</translation>
+      <translation>Паркан</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="391"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
+      <translation>Створює об'єкт огорожі з вибраного розділу, посту і шляху</translation>
     </message>
   </context>
   <context>
@@ -4095,7 +4096,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchFloor.py" line="116"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
+      <translation>Створює об'єкт з будівельною частиною, який представляє рівень, включаючи обрані об'єкти</translation>
     </message>
   </context>
   <context>
@@ -4108,7 +4109,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchFrame.py" line="81"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
-      <translation type="unfinished">Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</translation>
+      <translation>Створює каркасний об'кт з плаского 2D об’єкту (траєкторія видавлювання) та профілю. Переконайтесь, що об’єкти вибрані в такому порядку.</translation>
     </message>
   </context>
   <context>
@@ -4116,62 +4117,62 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchAxis.py" line="1131"/>
       <source>The number of rows</source>
-      <translation type="unfinished">The number of rows</translation>
+      <translation>Кількість рядків</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1133"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>Кількість стовпців</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1135"/>
       <source>The sizes for rows</source>
-      <translation type="unfinished">The sizes for rows</translation>
+      <translation>Розміри для рядків</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1137"/>
       <source>The sizes of columns</source>
-      <translation type="unfinished">The sizes of columns</translation>
+      <translation>Розміри стовпців</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1139"/>
       <source>The span ranges of cells that are merged together</source>
-      <translation type="unfinished">The span ranges of cells that are merged together</translation>
+      <translation>Масштабні межі клітин, які об'єднані разом</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1141"/>
       <source>The type of 3D points produced by this grid object</source>
-      <translation type="unfinished">The type of 3D points produced by this grid object</translation>
+      <translation>Тип тривимірних точок, утворених цим об'єктом сітки</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1144"/>
       <source>The total width of this grid</source>
-      <translation type="unfinished">The total width of this grid</translation>
+      <translation>Загальна ширина цієї сітки</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1146"/>
       <source>The total height of this grid</source>
-      <translation type="unfinished">The total height of this grid</translation>
+      <translation>Загальна висота цієї сітки</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1148"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
+      <translation>Автоматичне створення підрозділів стовпців (0 вимкнено)</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1150"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
+      <translation>Створює автоматичні поділи рядків (0 - вимкнено)</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1152"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <translation>У режимі середньої точки краю, якщо ця сітка повинна переорієнтувати своїх дітей за крайовими нормалями чи ні</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1154"/>
       <source>The indices of faces to hide</source>
-      <translation type="unfinished">The indices of faces to hide</translation>
+      <translation>Індекси поверхонь, що сховаються</translation>
     </message>
   </context>
   <context>
@@ -4179,12 +4180,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1663"/>
       <source>Create IFC spreadsheet...</source>
-      <translation type="unfinished">Create IFC spreadsheet...</translation>
+      <translation>Створити таблицю IFC ...</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1667"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
-      <translation type="unfinished">Creates a spreadsheet to store IFC properties of an object.</translation>
+      <translation>Створює таблицю для зберігання властивостей IFC об'єкта.</translation>
     </message>
   </context>
   <context>
@@ -4192,7 +4193,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.py" line="119"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>Створює або редагує визначення матеріалу, для обраного об'єкту.</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="115"/>
@@ -4205,7 +4206,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.py" line="986"/>
       <source>Material tools</source>
-      <translation type="unfinished">Material tools</translation>
+      <translation>Інструменти матеріалу</translation>
     </message>
   </context>
   <context>
@@ -4218,7 +4219,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchWall.py" line="631"/>
       <source>Merges the selected walls, if possible</source>
-      <translation type="unfinished">Merges the selected walls, if possible</translation>
+      <translation>По можливості об’єднує вибрані стіни</translation>
     </message>
   </context>
   <context>
@@ -4231,7 +4232,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1444"/>
       <source>Turns selected meshes into Part Shape objects</source>
-      <translation type="unfinished">Turns selected meshes into Part Shape objects</translation>
+      <translation>Перетворює вибрані полігональні сітки у об'єкти фігур</translation>
     </message>
   </context>
   <context>
@@ -4239,12 +4240,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.py" line="149"/>
       <source>Multi-Material</source>
-      <translation type="unfinished">Multi-Material</translation>
+      <translation>Мульти-Матеріал</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="153"/>
       <source>Creates or edits multi-materials</source>
-      <translation type="unfinished">Creates or edits multi-materials</translation>
+      <translation>Створює або редагує мультиматеріали</translation>
     </message>
   </context>
   <context>
@@ -4252,12 +4253,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPanel.py" line="1518"/>
       <source>Nest</source>
-      <translation type="unfinished">Nest</translation>
+      <translation>Гніздо</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1522"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation type="unfinished">Nests a series of selected shapes in a container</translation>
+      <translation>Перетворює серію позначених фігур у контейнер</translation>
     </message>
   </context>
   <context>
@@ -4270,7 +4271,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPanel.py" line="152"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Створює об'єкт панелі з нуля або з вибраного об'єкта (ескіз, дрот, поверхні або суцільний)</translation>
     </message>
   </context>
   <context>
@@ -4278,7 +4279,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPanel.py" line="1689"/>
       <source>Panel tools</source>
-      <translation type="unfinished">Panel tools</translation>
+      <translation>Інструменти панелі</translation>
     </message>
   </context>
   <context>
@@ -4286,7 +4287,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPanel.py" line="335"/>
       <source>Panel Cut</source>
-      <translation type="unfinished">Panel Cut</translation>
+      <translation>Панель різати</translation>
     </message>
   </context>
   <context>
@@ -4294,17 +4295,17 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPanel.py" line="339"/>
       <source>Creates 2D views of selected panels</source>
-      <translation type="unfinished">Creates 2D views of selected panels</translation>
+      <translation>Створює 2D види вибраних панелей</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="362"/>
       <source>Panel Sheet</source>
-      <translation type="unfinished">Panel Sheet</translation>
+      <translation>Панель Листи</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="366"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation type="unfinished">Creates a 2D sheet which can contain panel cuts</translation>
+      <translation>Створює 2D-аркуш, який може містити перетини панелей</translation>
     </message>
   </context>
   <context>
@@ -4317,12 +4318,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPipe.py" line="110"/>
       <source>Creates a pipe object from a given Wire or Line</source>
-      <translation type="unfinished">Creates a pipe object from a given Wire or Line</translation>
+      <translation>Створює трубковий об'єкт з даної ламаної або лінії</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation type="unfinished">Creates a connector between 2 or 3 selected pipes</translation>
+      <translation>Створює з'єднувач між 2 або 3 вибраними трубами</translation>
     </message>
   </context>
   <context>
@@ -4330,7 +4331,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPipe.py" line="145"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>З'єднувач</translation>
     </message>
   </context>
   <context>
@@ -4338,7 +4339,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchPipe.py" line="513"/>
       <source>Pipe tools</source>
-      <translation type="unfinished">Pipe tools</translation>
+      <translation>Інструменти для труб</translation>
     </message>
   </context>
   <context>
@@ -4351,7 +4352,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchProfile.py" line="122"/>
       <source>Creates a profile object</source>
-      <translation type="unfinished">Creates a profile object</translation>
+      <translation>Створює об'єкт профілю</translation>
     </message>
   </context>
   <context>
@@ -4364,7 +4365,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchProject.py" line="100"/>
       <source>Creates a project entity aggregating the selected sites.</source>
-      <translation type="unfinished">Creates a project entity aggregating the selected sites.</translation>
+      <translation>Створює об'єкт, який поєднує обрані ділянки.</translation>
     </message>
   </context>
   <context>
@@ -4372,12 +4373,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of a structural object</translation>
+      <translation>Створює індикатор Підкріплення з вибраного поверхню структурного об'єкту</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="104"/>
       <source>Custom Rebar</source>
-      <translation type="unfinished">Custom Rebar</translation>
+      <translation>Користувацька арматура</translation>
     </message>
   </context>
   <context>
@@ -4385,12 +4386,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchReference.py" line="678"/>
       <source>External reference</source>
-      <translation type="unfinished">External reference</translation>
+      <translation>Зовнішній посилання</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="682"/>
       <source>Creates an external reference object</source>
-      <translation type="unfinished">Creates an external reference object</translation>
+      <translation>Створює зовнішній еталонний об'єкт</translation>
     </message>
   </context>
   <context>
@@ -4429,7 +4430,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchRoof.py" line="210"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation type="unfinished">Creates a roof object from the selected wire.</translation>
+      <translation>Створює дах з вибраного каркасу.</translation>
     </message>
   </context>
   <context>
@@ -4442,7 +4443,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.py" line="65"/>
       <source>Creates a schedule to collect data from the model</source>
-      <translation type="unfinished">Creates a schedule to collect data from the model</translation>
+      <translation>Створює графік для збору даних з моделі</translation>
     </message>
   </context>
   <context>
@@ -4455,7 +4456,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="885"/>
       <source>Creates a section plane object, including the selected objects</source>
-      <translation type="unfinished">Creates a section plane object, including the selected objects</translation>
+      <translation>Створює об'єкт площини розділу, включаючи обрані об'єкти</translation>
     </message>
   </context>
   <context>
@@ -4494,12 +4495,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSpace.py" line="230"/>
       <source>Creates a space object from selected boundary objects</source>
-      <translation type="unfinished">Creates a space object from selected boundary objects</translation>
+      <translation>Створює пропусковий об'єкт з обраних граничних об'єктів</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="221"/>
       <source>Creates a stairs object</source>
-      <translation type="unfinished">Creates a stairs object</translation>
+      <translation>Створює сходові об'єкти</translation>
     </message>
   </context>
   <context>
@@ -4554,12 +4555,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1573"/>
       <source>Toggle IFC Brep flag</source>
-      <translation type="unfinished">Toggle IFC Brep flag</translation>
+      <translation>Перемикач перемикання прапорців IFC</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1576"/>
       <source>Force an object to be exported as Brep or not</source>
-      <translation type="unfinished">Force an object to be exported as Brep or not</translation>
+      <translation>Примусово експортувати об'єкт як Brep чи ні</translation>
     </message>
   </context>
   <context>
@@ -4567,12 +4568,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1689"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Перемкнути підкомпоненти</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1692"/>
       <source>Shows or hides the subcomponents of this object</source>
-      <translation type="unfinished">Shows or hides the subcomponents of this object</translation>
+      <translation>Показує або приховує підкомпоненти цього об’єкта</translation>
     </message>
   </context>
   <context>
@@ -4580,12 +4581,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>В'язка</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="86"/>
       <source>Creates a truss object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a truss object from selected line or from scratch</translation>
+      <translation>Створює об'єкт трасування з вибраної лінії чи з нуля</translation>
     </message>
   </context>
   <context>
@@ -4611,7 +4612,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="158"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
-      <translation type="unfinished">Creates a window object from a selected object (wire, rectangle or sketch)</translation>
+      <translation>Створює віконний об'єкт з обраного об'єкта (дрот, прямокутник або ескіз)</translation>
     </message>
   </context>
   <context>
@@ -4619,7 +4620,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="BimServerTaskPanel.ui" line="14"/>
       <source>BimServer</source>
-      <translation type="unfinished">BimServer</translation>
+      <translation>BimServer</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="20"/>
@@ -4629,17 +4630,17 @@ Floor creation aborted.</translation>
     <message>
       <location filename="BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</source>
-      <translation type="unfinished">The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</translation>
+      <translation>Назва BimServer до якого ви підключаєтесь. Змінити налаштування в параметрах Arch</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="31"/>
       <source>Bim Server</source>
-      <translation type="unfinished">Bim Server</translation>
+      <translation>Бім сервер</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="38"/>
       <source>Connect</source>
-      <translation type="unfinished">Connect</translation>
+      <translation>Підключитися</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="55"/>
@@ -4659,7 +4660,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the Bim Server</source>
-      <translation type="unfinished">The list of projects present on the Bim Server</translation>
+      <translation>Список проектів на Bim Server</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="109"/>
@@ -4669,7 +4670,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="BimServerTaskPanel.ui" line="115"/>
       <source>Available revisions:</source>
-      <translation type="unfinished">Available revisions:</translation>
+      <translation>Доступні перевірки:</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="144"/>
@@ -4679,12 +4680,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="BimServerTaskPanel.ui" line="205"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Вивантажити</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="164"/>
       <source>Root object:</source>
-      <translation type="unfinished">Root object:</translation>
+      <translation>Кореневий об'єкт:</translation>
     </message>
     <message>
       <location filename="BimServerTaskPanel.ui" line="178"/>
@@ -4697,7 +4698,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.ui" line="14"/>
       <source>Schedule definition</source>
-      <translation type="unfinished">Schedule definition</translation>
+      <translation>Визначення розкладу</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="60"/>
@@ -4707,7 +4708,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.ui" line="63"/>
       <source>A description for this operation</source>
-      <translation type="unfinished">A description for this operation</translation>
+      <translation>Опис цієї операції</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="79"/>
@@ -4727,7 +4728,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.ui" line="150"/>
       <source>Adds a line below the selected line/cell</source>
-      <translation type="unfinished">Adds a line below the selected line/cell</translation>
+      <translation>Додає рядок нижче вибраного лінії / секції</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="135"/>
@@ -4737,7 +4738,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.ui" line="165"/>
       <source>Clears the whole list</source>
-      <translation type="unfinished">Clears the whole list</translation>
+      <translation>Очищує весь список</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="168"/>
@@ -4747,12 +4748,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.ui" line="180"/>
       <source>Put selected objects into the "Objects" column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the "Objects" column of the selected row</translation>
+      <translation>Покласти вибрані об'єкти в колонку "Об'єкти" вибраного рядка</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="190"/>
       <source>Imports the contents of a CSV file</source>
-      <translation type="unfinished">Imports the contents of a CSV file</translation>
+      <translation>Імпортує вміст CSV файлу</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="193"/>
@@ -4767,7 +4768,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="DialogBimServerLogin.ui" line="14"/>
       <source>BimServer Login</source>
-      <translation type="unfinished">BimServer Login</translation>
+      <translation>BimServer Login</translation>
     </message>
     <message>
       <location filename="DialogBimServerLogin.ui" line="36"/>
@@ -4787,52 +4788,52 @@ Floor creation aborted.</translation>
     <message>
       <location filename="DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation type="unfinished">BimServer URL:</translation>
+      <translation>URL-адреса BimServer:</translation>
     </message>
     <message>
       <location filename="DialogBimServerLogin.ui" line="62"/>
       <source>Keep me logged in across FreeCAD sessions</source>
-      <translation type="unfinished">Keep me logged in across FreeCAD sessions</translation>
+      <translation>Запам'ятати мене для входу через сеанси FreeCAD</translation>
     </message>
     <message>
       <location filename="DialogIfcProperties.ui" line="14"/>
       <source>IFC properties editor</source>
-      <translation type="unfinished">IFC properties editor</translation>
+      <translation>Редактор властивостей IFC</translation>
     </message>
     <message>
       <location filename="DialogIfcProperties.ui" line="22"/>
       <source>IFC UUID:</source>
-      <translation type="unfinished">IFC UUID:</translation>
+      <translation>Інтерфейс UID:</translation>
     </message>
     <message>
       <location filename="DialogIfcProperties.ui" line="29"/>
       <source>Leave this empty to generate one at export</source>
-      <translation type="unfinished">Leave this empty to generate one at export</translation>
+      <translation>Залиште це поле пустим, щоб згенерувати щось під час експорту</translation>
     </message>
     <message>
       <location filename="DialogIfcProperties.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>Список властивостей IFC для цього об'єкта. Двічі клацніть, перетягніть для редагування</translation>
     </message>
     <message>
       <location filename="DialogIfcProperties.ui" line="63"/>
       <source>Delete selected property/set</source>
-      <translation type="unfinished">Delete selected property/set</translation>
+      <translation>Видалити вибрану властивість/набір</translation>
     </message>
     <message>
       <location filename="DialogIfcProperties.ui" line="76"/>
       <source>Force exporting geometry as BREP</source>
-      <translation type="unfinished">Force exporting geometry as BREP</translation>
+      <translation>Примусово експортувати геометрію як BREP</translation>
     </message>
     <message>
       <location filename="DialogIfcProperties.ui" line="83"/>
       <source>Force export full FreeCAD parametric data</source>
-      <translation type="unfinished">Force export full FreeCAD parametric data</translation>
+      <translation>Примусово експортувати повні параметричні дані FreeCAD</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="22"/>
       <source>Schedule name:</source>
-      <translation type="unfinished">Schedule name:</translation>
+      <translation>Назва розкладу:</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="68"/>
@@ -4842,27 +4843,27 @@ Floor creation aborted.</translation>
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>Опціональна одиниця для вираження отриманого значення. Наприклад: м^3 (ви також можете записати m3 або m3)</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="111"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+      <translation>Якщо цей параметр увімкнено, то асоційована таблиця з якою будуть зберігатися разом з цим об'єктом операцій</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="114"/>
       <source>Associate spreadsheet</source>
-      <translation type="unfinished">Associate spreadsheet</translation>
+      <translation>Пов'язати таблицю</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="121"/>
       <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Якщо це увімкнено, то додаткові лінії будуть заповнені кожним об’єктом розглянуті. Якщо ні, тільки загалом.</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
-      <translation type="unfinished">Detailed results</translation>
+      <translation>Детальні результати</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="153"/>
@@ -5020,7 +5021,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation type="unfinished">Copy existing...</translation>
+      <translation>Копіювання вже існує...</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="29"/>
@@ -5155,7 +5156,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchMultiMaterial.ui" line="59"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>Загальна товщина</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="96"/>
@@ -5453,67 +5454,67 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-ifc.ui" line="221"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
+      <translation>Вказує які об'єкти будуть створені в FreeCAD</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
-      <translation type="unfinished">Parametric Arch objects</translation>
+      <translation>Параметричні об'єкти Arch</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="231"/>
       <source>Non-parametric Arch objects</source>
-      <translation type="unfinished">Non-parametric Arch objects</translation>
+      <translation>Непараметричні об'єкти Arch</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="236"/>
       <source>Simple Part shapes</source>
-      <translation type="unfinished">Simple Part shapes</translation>
+      <translation>Прості форми</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="197"/>
       <source>One compound per floor</source>
-      <translation type="unfinished">One compound per floor</translation>
+      <translation>Одне сполучення на поверх</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="202"/>
       <source>Do not import Arch objects</source>
-      <translation type="unfinished">Do not import Arch objects</translation>
+      <translation>Не імпортувати об’єкти Arch</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="214"/>
       <source>Import struct IFC objects as</source>
-      <translation type="unfinished">Import struct IFC objects as</translation>
+      <translation>Імпорт будівельних об'єктів IFC як</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="241"/>
       <source>One compound for all</source>
-      <translation type="unfinished">One compound for all</translation>
+      <translation>Одне сполучення для всіх</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="246"/>
       <source>Do not import structural objects</source>
-      <translation type="unfinished">Do not import structural objects</translation>
+      <translation>Не імпортувати структурні об'єкти</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="258"/>
       <source>Root element:</source>
-      <translation type="unfinished">Root element:</translation>
+      <translation>Кореневий елемент:</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="305"/>
       <source>Detect extrusions</source>
-      <translation type="unfinished">Detect extrusions</translation>
+      <translation>Виявити видавлювання</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="67"/>
       <source>Mesher</source>
-      <translation type="unfinished">Mesher</translation>
+      <translation>Створення сітки</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="85"/>
       <source>Builtin</source>
-      <translation type="unfinished">Builtin</translation>
+      <translation>Вбудований</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="90"/>
@@ -5528,7 +5529,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-dae.ui" line="108"/>
       <source>Builtin and mefisto mesher options</source>
-      <translation type="unfinished">Builtin and mefisto mesher options</translation>
+      <translation>Вбудовані і параметри mefisto</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="116"/>
@@ -5538,22 +5539,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-dae.ui" line="147"/>
       <source>Netgen mesher options</source>
-      <translation type="unfinished">Netgen mesher options</translation>
+      <translation>Нетгенні параметри сіток</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="155"/>
       <source>Grading</source>
-      <translation type="unfinished">Grading</translation>
+      <translation>Оцінювання</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="187"/>
       <source>Segments per edge</source>
-      <translation type="unfinished">Segments per edge</translation>
+      <translation>Кількість сегментів на ребро</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="217"/>
       <source>Segments per radius</source>
-      <translation type="unfinished">Segments per radius</translation>
+      <translation>Сегмент на радіус</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="250"/>
@@ -5563,7 +5564,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-dae.ui" line="267"/>
       <source>Allows optimization</source>
-      <translation type="unfinished">Allows optimization</translation>
+      <translation>Дозволяє оптимізацію</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="270"/>
@@ -5573,67 +5574,67 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-dae.ui" line="293"/>
       <source>Allow quads</source>
-      <translation type="unfinished">Allow quads</translation>
+      <translation>Дозволити квадрування</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="128"/>
       <source>Use triangulation options set in the DAE options page</source>
-      <translation type="unfinished">Use triangulation options set in the DAE options page</translation>
+      <translation>Використовувати параметри тріангуляції для встановлення на сторінці параметрів ДАЕ</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="131"/>
       <source>Use DAE triangulation options</source>
-      <translation type="unfinished">Use DAE triangulation options</translation>
+      <translation>Використовування ДАЕ опцій тріангуляції</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="149"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation type="unfinished">Join coplanar facets when triangulating</translation>
+      <translation>При триангуляції з’єднайте компланарні грані</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="26"/>
       <source>Object creation</source>
-      <translation type="unfinished">Object creation</translation>
+      <translation>Створення об'єкта</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="64"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation type="unfinished">Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</translation>
+      <translation>Дві можливі стратегії для уникнення циклічних залежностей: Створіть ще один об'єкт (безконтрольно) або видаліть зовнішню геометрію основи ескізу (перевірено)</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="67"/>
       <source>Remove external geometry of base sketches when needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches when needed</translation>
+      <translation>Видалити зовнішню геометрію базових ескізів, коли це необхідно</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="75"/>
       <source>Create clones when objects have shared geometry</source>
-      <translation type="unfinished">Create clones when objects have shared geometry</translation>
+      <translation>Створення клонів, коли об'єкти мають спільну геометрію</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="80"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</translation>
+      <translation>Якщо позначено цей пункт, коли об'єкт Віднімається або Додається до Арки об'єкта, він отримає колір Чернетки креслення.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="83"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation type="unfinished">Apply Draft construction style to subcomponents</translation>
+      <translation>Застосувати стиль створення креслення до підкомпонентів</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="512"/>
       <source>Symbol line thickness ratio</source>
-      <translation type="unfinished">Symbol line thickness ratio</translation>
+      <translation>Коефіцієнт товщини символу</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="625"/>
       <source>Pattern scale</source>
-      <translation type="unfinished">Pattern scale</translation>
+      <translation>Масштаб штриховки</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="713"/>
       <source>Open in external browser</source>
-      <translation type="unfinished">Open in external browser</translation>
+      <translation>Відкрити у зовнішньому браузері</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="731"/>
@@ -5643,12 +5644,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-arch.ui" line="739"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation type="unfinished">If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</translation>
+      <translation>Якщо позначено цей пункт, текст, що розміщується в буфер обміну, буде містити його. В іншому випадку це буде просте число, виражене у внутрішніх одиницях (міліметрах)</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="742"/>
       <source>Include unit when sending measurements to clipboard</source>
-      <translation type="unfinished">Include unit when sending measurements to clipboard</translation>
+      <translation>Включати одиницю вимірювання при відправленні в буфер обміну</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="970"/>
@@ -5658,137 +5659,137 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-archdefaults.ui" line="978"/>
       <source>Diameter:</source>
-      <translation type="unfinished">Diameter:</translation>
+      <translation>Діаметр:</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="318"/>
       <source>Split walls made of multiple layers</source>
-      <translation type="unfinished">Split walls made of multiple layers</translation>
+      <translation>Розділити стіни з декількох шарів</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="321"/>
       <source>Split multilayer walls</source>
-      <translation type="unfinished">Split multilayer walls</translation>
+      <translation>Розділити багатошарові стіни</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="189"/>
       <source>Use IfcOpenShell serializer if available</source>
-      <translation type="unfinished">Use IfcOpenShell serializer if available</translation>
+      <translation>Використовувати серіалізатор IfcOpenShell якщо доступний</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="205"/>
       <source>Export 2D objects as IfcAnnotations</source>
-      <translation type="unfinished">Export 2D objects as IfcAnnotations</translation>
+      <translation>Експортувати 2D об’єкти як IfcAnnotations</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="565"/>
       <source>Hidden geometry pattern</source>
-      <translation type="unfinished">Hidden geometry pattern</translation>
+      <translation>Приховати геометрію шаблонів</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="345"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation type="unfinished">Tolerance value to use when checking if 2 adjacent faces as planar</translation>
+      <translation>Значення точності для використання при перевірці чи 2 суміжні поверхні як площина</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="433"/>
       <source>Fit view while importing</source>
-      <translation type="unfinished">Fit view while importing</translation>
+      <translation>Весь вигляд час імпортування</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="225"/>
       <source>Export full FreeCAD parametric model</source>
-      <translation type="unfinished">Export full FreeCAD parametric model</translation>
+      <translation>Експорт усієї параметричної моделі FreeCAD</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="114"/>
       <source>Do not compute areas for object with more than:</source>
-      <translation type="unfinished">Do not compute areas for object with more than:</translation>
+      <translation>Не обчислюйте області для об'єкту більше, ніж:</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="121"/>
       <source> faces</source>
-      <translation type="unfinished"> faces</translation>
+      <translation> поверхні</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="157"/>
       <source>Interval between file checks for references</source>
-      <translation type="unfinished">Interval between file checks for references</translation>
+      <translation>Інтервал між перевірками файлів</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="164"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation>секунди</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="188"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</translation>
+      <translation>За замовчуванням, нові об'єкти матимуть властивість "Move with host" для False, що означає, що вони не будуть переміщатися, коли об'єкт хост буде переміщений.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation type="unfinished">Set "Move with host" property to True by default</translation>
+      <translation>Встановити параметр "Move with host" значення True за замовчуванням</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="103"/>
       <source>Use sketches</source>
-      <translation type="unfinished">Use sketches</translation>
+      <translation>Використовувати ескізи</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1025"/>
       <source>Helpers (grids, axes, etc...)</source>
-      <translation type="unfinished">Helpers (grids, axes, etc...)</translation>
+      <translation>Помічники (сітки, осі та інше)</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="401"/>
       <source>Exclude list:</source>
-      <translation type="unfinished">Exclude list:</translation>
+      <translation>Список виключень:</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="242"/>
       <source>Reuse similar entities</source>
-      <translation type="unfinished">Reuse similar entities</translation>
+      <translation>Повторно використовувати подібні об'єкти</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="264"/>
       <source>Disable IfcRectangleProfileDef</source>
-      <translation type="unfinished">Disable IfcRectangleProfileDef</translation>
+      <translation>Вимкнути IfcRectangleProfileDef</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation type="unfinished">Set "Move base" property to True by default</translation>
+      <translation>Встановити властивість "Перемістити базу" True за замовчуванням</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>Версія IFC</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="280"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation type="unfinished">The IFC version will change which attributes and products are supported</translation>
+      <translation>Версія IFC зміниться, які атрибути та продукти підтримуються</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="290"/>
       <source>IFC4</source>
-      <translation type="unfinished">IFC4</translation>
+      <translation>IFC4</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="295"/>
       <source>IFC2X3</source>
-      <translation type="unfinished">IFC2X3</translation>
+      <translation>IFC2X3</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1071"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>Області</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1118"/>
       <source>Line style:</source>
-      <translation type="unfinished">Line style:</translation>
+      <translation>Стиль лінії:</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1135"/>
@@ -5798,17 +5799,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-archdefaults.ui" line="1140"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>Пунктирна</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1145"/>
       <source>Dotted</source>
-      <translation type="unfinished">Dotted</translation>
+      <translation>В крапку</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1150"/>
       <source>Dashdot</source>
-      <translation type="unfinished">Dashdot</translation>
+      <translation>Тире крапка</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1158"/>
@@ -5818,22 +5819,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-ifc.ui" line="450"/>
       <source>Import full FreeCAD parametric definitions if available</source>
-      <translation type="unfinished">Import full FreeCAD parametric definitions if available</translation>
+      <translation>Імпорт повних параметрів FreeCAD визначень, якщо доступно</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
+      <translation>Автовизначення та експорт як стандартні випадки при наявності</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="223"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>Якщо позначено цей пункт, коли величина має матеріал, об'єкт буде приймати колір матеріалу. Це може бути перевизначено для кожного об'єкта.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="226"/>
       <source>Use material color as shape color</source>
-      <translation type="unfinished">Use material color as shape color</translation>
+      <translation>Використовувати матеріал як колір форми</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="585"/>

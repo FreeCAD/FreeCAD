@@ -79,23 +79,32 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
-        # HighOrderOptimize was once App::PropertyBool, so check this
-        HighOrderOptimizer = ""
+
+        # HighOrderOptimize
+        # was once App::PropertyBool, so check this
+        high_order_optimizer = ""
         if obj.HighOrderOptimize is True:
-            HighOrderOptimizer = "Optimization"
-            obj.removeProperty("HighOrderOptimize")
+            high_order_optimizer = "Optimization"
         elif obj.HighOrderOptimize is False:
-            HighOrderOptimizer = "None"
-            obj.removeProperty("HighOrderOptimize")
+            high_order_optimizer = "None"
+        obj.removeProperty("HighOrderOptimize")
+        # add new HighOrderOptimize property
         self.add_properties(obj)
+        # write the stored high_order_optimizer
+        if high_order_optimizer:
+            obj.HighOrderOptimize = high_order_optimizer
+
+        # Algorithm3D
         # refresh the list of known 3D algorithms for existing meshes
         # since some algos are meanwhile deprecated and new algos are available
         obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
-        # write the stored HighOrderOptimizer
-        if HighOrderOptimizer:
-            obj.HighOrderOptimize = HighOrderOptimizer
 
     def add_properties(self, obj):
+
+        # this method is called from onDocumentRestored
+        # thus only add and or set a attribute
+        # if the attribute does not exist
+
         if not hasattr(obj, "MeshBoundaryLayerList"):
             obj.addProperty(
                 "App::PropertyLinkList",

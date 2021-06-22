@@ -500,12 +500,12 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="47"/>
       <source>Text string</source>
-      <translation type="unfinished">Text string</translation>
+      <translation>Slova riječi</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="50"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>Ime datoteke pisma</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="53"/>
@@ -515,17 +515,17 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="56"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Unutrašnji razmak između znakova</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Prikaži pojedinačne elemente matrice</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>Osnovni objekt koji će biti dupliciran</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
@@ -549,42 +549,42 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation type="unfinished">The points of the B-spline</translation>
+      <translation>Točke B-krivulje</translation>
     </message>
     <message>
       <location filename="bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
-      <translation type="unfinished">If the B-spline is closed or not</translation>
+      <translation>Dali je B-krivulja zatvorena ili ne</translation>
     </message>
     <message>
       <location filename="bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>Stvaranje lica, ako je ova krivulja zatvorena</translation>
     </message>
     <message>
       <location filename="bspline.py" line="67"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Faktor Parametriranja</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="49"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>Osnovni objekt 2D prikaza mora predstavljati</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="54"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>Projekcijski vektor ovog objekta</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="59"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Način na koji objekt pregleda mora biti projiciran</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="64"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Indeksi lica će biti projicirani u načinu rada pojedinih lica</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="69"/>
@@ -594,33 +594,30 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="shape2dview.py" line="74"/>
       <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
+      <translation>Spoji zid i objekte strukture ako su istog tipa i materijala</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="79"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>Razlaganje elipsa i B-krivulja u linijske segmente</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="85"/>
       <source>For Cutlines and Cutfaces modes, 
                 this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</translation>
+      <translation>Za modalna linijska rezanja i rezanja lica, to ostavlja lica na mjestu reza</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="91"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                 into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</translation>
+      <translation>Dužine segmenta linija ako su presječene elipse ili B-krive u segmentima linija</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="97"/>
       <source>If this is True, this object will be recomputed only if it is 
                 visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                visible</translation>
+      <translation>Ako je ovo istina, ovaj objekt se preraučna samo ako je vidljiv</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -639,12 +636,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>Sporedni polumjer elipse</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>Glavni polumjer elipse</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="61"/>
@@ -659,7 +656,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Stupanj Bezier funkcije</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -669,17 +666,17 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Da li Bezijerova krivulja treba biti zatvorena ili ne</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>Stvaranje lica, ako je ova krivulja zatvorena</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>Dužina ovog objekta</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
@@ -698,7 +695,7 @@ Leave this property empty to create copies along the entire 'Path Object'.</tran
     <message>
       <location filename="patharray.py" line="200"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>Broj kopija koje će biti napravljene</translation>
     </message>
     <message>
       <location filename="patharray.py" line="219"/>
@@ -1040,12 +1037,12 @@ izvan mjerne linije</translation>
     <message>
       <location filename="view_label.py" line="83"/>
       <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
+      <translation>Vrsta pisma teksta</translation>
     </message>
     <message>
       <location filename="view_label.py" line="119"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>Okomito poravnanje teksta</translation>
     </message>
     <message>
       <location filename="view_label.py" line="102"/>
@@ -1055,27 +1052,27 @@ izvan mjerne linije</translation>
     <message>
       <location filename="view_label.py" line="128"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>Razmak između redaka (u odnosu na veličinu fonta)</translation>
     </message>
     <message>
       <location filename="view_label.py" line="111"/>
       <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>Maksimalni broj znakova u svakom retku tekstnog okvira</translation>
     </message>
     <message>
       <location filename="view_label.py" line="139"/>
       <source>The size of the arrow</source>
-      <translation type="unfinished">The size of the arrow</translation>
+      <translation>Veličina strelice</translation>
     </message>
     <message>
       <location filename="view_label.py" line="148"/>
       <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <translation>Vrsta strelice za ovu oznaku</translation>
     </message>
     <message>
       <location filename="view_label.py" line="159"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>Vrsta okvira oko teksta ovog objekta</translation>
     </message>
     <message>
       <location filename="view_label.py" line="168"/>
@@ -1500,7 +1497,7 @@ iz izbornika Alati-&gt; Addon Manager</translation>
       <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="143"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation type="unfinished">Unable to insert new object into a scaled part</translation>
     </message>
@@ -1650,7 +1647,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Napravite žlijeb</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="326"/>
@@ -1660,7 +1657,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_setstyle.py" line="259"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Spremanje stilova</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="260"/>
@@ -1676,6 +1673,11 @@ The array can be turned into a polar or a circular array by changing its type.</
       <location filename="gui_setstyle.py" line="303"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="267"/>
+      <source>Warning</source>
+      <translation>Upozorenje</translation>
     </message>
   </context>
   <context>
@@ -2103,7 +2105,7 @@ Mora biti najmanje 2.
     <message>
       <location filename="gui_groups.py" line="343"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>Dodavanje grupe konstrukcije</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="345"/>
@@ -2120,12 +2122,12 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Dodaj točku</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation type="unfinished">Adds a point to an existing Wire or B-spline.</translation>
+      <translation>Dodaje točku na postojeću žicu ili B-krivulju.</translation>
     </message>
   </context>
   <context>
@@ -2133,12 +2135,12 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_groups.py" line="67"/>
       <source>Ungroup</source>
-      <translation type="unfinished">Ungroup</translation>
+      <translation>Razgrupiraj</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="72"/>
       <source>Move to group</source>
-      <translation type="unfinished">Move to group</translation>
+      <translation>Premjesti u grupu</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="74"/>
@@ -2161,7 +2163,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Primijeni aktualni stil</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
@@ -2180,8 +2182,7 @@ Create a group first to use this tool.</translation>
       <location filename="gui_arcs.py" line="70"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Stvara kružni luk kod točke središta i polumjera. CTRL za privući, SHIFT za ograničiti.</translation>
     </message>
   </context>
   <context>
@@ -2189,7 +2190,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_arcs.py" line="600"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Alati luka</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="603"/>
@@ -2247,7 +2248,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
-      <translation type="unfinished">Bezier curve</translation>
+      <translation>Bezierova krivulja</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -2262,7 +2263,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
-      <translation type="unfinished">Bezier tools</translation>
+      <translation>Bezier alati</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -2305,7 +2306,7 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_lineops.py" line="124"/>
       <source>Close Line</source>
-      <translation type="unfinished">Close Line</translation>
+      <translation>Zatvori liniju</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="125"/>
@@ -2335,7 +2336,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="89"/>
       <source>Remove point</source>
-      <translation type="unfinished">Remove point</translation>
+      <translation>Ukloni točku</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="92"/>
@@ -2383,7 +2384,7 @@ to turn it into a 'Draft Dimension' object.</translation>
     <message>
       <location filename="gui_downgrade.py" line="58"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Vraćanje na niži stupanj</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="61"/>
@@ -2400,7 +2401,7 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Nacrt u Skicu</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="60"/>
@@ -2490,7 +2491,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Preokreni dimenziju</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="66"/>
@@ -2588,9 +2589,6 @@ Objects added to this layer can share the same visual properties such as line co
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
     </message>
-  </context>
-  <context>
-    <name>Draft_Lineremover</name>
   </context>
   <context>
     <name>Draft_LinkArray</name>
@@ -2736,7 +2734,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Matrica točaka</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -5279,22 +5277,22 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="322"/>
+      <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
       <translation>Naredbene trake nacrta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="823"/>
+      <location filename="DraftGui.py" line="832"/>
       <source>Toggle construction mode</source>
       <translation>Uključivanje/isključivanje konstrukcijskog moda</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2057"/>
+      <location filename="DraftGui.py" line="2054"/>
       <source>Autogroup off</source>
       <translation>Auto grupa isključena</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="713"/>
+      <location filename="DraftGui.py" line="722"/>
       <source>active command:</source>
       <translation>aktivna naredba:</translation>
     </message>
@@ -5304,52 +5302,52 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Prazno</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="715"/>
+      <location filename="DraftGui.py" line="724"/>
       <source>Active Draft command</source>
       <translation>Aktivna naredbu nacrta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="716"/>
+      <location filename="DraftGui.py" line="725"/>
       <source>X coordinate of next point</source>
       <translation>X koordinate sljedeće točke</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1047"/>
+      <location filename="DraftGui.py" line="1056"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="718"/>
+      <location filename="DraftGui.py" line="727"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="719"/>
+      <location filename="DraftGui.py" line="728"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="720"/>
+      <location filename="DraftGui.py" line="729"/>
       <source>Y coordinate of next point</source>
       <translation>Y koordinate sljedeće točke</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="721"/>
+      <location filename="DraftGui.py" line="730"/>
       <source>Z coordinate of next point</source>
       <translation>Z koordinate sljedeće točke</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="722"/>
+      <location filename="DraftGui.py" line="731"/>
       <source>Enter point</source>
       <translation>Unesi točku</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="724"/>
+      <location filename="DraftGui.py" line="733"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Unesite novu točku s danim koordinatama</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="725"/>
+      <location filename="DraftGui.py" line="734"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
@@ -5359,42 +5357,42 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Kut</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="727"/>
+      <location filename="DraftGui.py" line="736"/>
       <source>Length of current segment</source>
       <translation>Dužina aktualnog odjeljka</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="728"/>
+      <location filename="DraftGui.py" line="737"/>
       <source>Angle of current segment</source>
       <translation>Kut aktualnog odjeljka</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1096"/>
+      <location filename="DraftGui.py" line="1105"/>
       <source>Radius</source>
       <translation>Radijus</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1097"/>
+      <location filename="DraftGui.py" line="1106"/>
       <source>Radius of Circle</source>
       <translation>Radijus kruga</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="757"/>
+      <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Ako je označeno, naredba neće završiti sve dok se ponovno ne pritisnete gumb naredbe</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="763"/>
+      <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
       <translation>pomak u &amp;OCC-stilu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="783"/>
+      <location filename="DraftGui.py" line="792"/>
       <source>Sides</source>
       <translation>Strane</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="784"/>
+      <location filename="DraftGui.py" line="793"/>
       <source>Number of sides</source>
       <translation>Broj strana</translation>
     </message>
@@ -5404,77 +5402,77 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Pomak</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="650"/>
+      <location filename="DraftGui.py" line="659"/>
       <source>Auto</source>
       <translation>Automatski</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="790"/>
+      <location filename="DraftGui.py" line="799"/>
       <source>Text string to draw</source>
       <translation>Tekst za crtanje</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="791"/>
+      <location filename="DraftGui.py" line="800"/>
       <source>String</source>
       <translation>Tekst (string)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="792"/>
+      <location filename="DraftGui.py" line="801"/>
       <source>Height of text</source>
       <translation>Visina teksta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="793"/>
+      <location filename="DraftGui.py" line="802"/>
       <source>Height</source>
       <translation>Visina</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="794"/>
+      <location filename="DraftGui.py" line="803"/>
       <source>Intercharacter spacing</source>
       <translation>Unutrašnji razmak između znakova</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="795"/>
+      <location filename="DraftGui.py" line="804"/>
       <source>Tracking</source>
       <translation>Praćenje</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="796"/>
+      <location filename="DraftGui.py" line="805"/>
       <source>Full path to font file:</source>
       <translation>Cijeli put do datoteke pisma:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="797"/>
+      <location filename="DraftGui.py" line="806"/>
       <source>Open a FileChooser for font file</source>
       <translation>Otvorite FileChooser za datoteku fonta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="935"/>
+      <location filename="DraftGui.py" line="944"/>
       <source>Line</source>
       <translation>Linija</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="944"/>
+      <location filename="DraftGui.py" line="953"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="962"/>
+      <location filename="DraftGui.py" line="971"/>
       <source>Circle</source>
       <translation>Krug</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="971"/>
+      <location filename="DraftGui.py" line="980"/>
       <source>Arc</source>
       <translation>Luk</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="978"/>
+      <location filename="DraftGui.py" line="987"/>
       <source>Point</source>
       <translation>Točka</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1006"/>
+      <location filename="DraftGui.py" line="1015"/>
       <source>Label</source>
       <translation>Oznaka</translation>
     </message>
@@ -5484,87 +5482,87 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Udaljenost</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1183"/>
+      <location filename="DraftGui.py" line="1192"/>
       <source>Pick Object</source>
       <translation>Odaberite objekt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1189"/>
+      <location filename="DraftGui.py" line="1198"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1252"/>
+      <location filename="DraftGui.py" line="1261"/>
       <source>Global X</source>
       <translation>Globalno X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1253"/>
+      <location filename="DraftGui.py" line="1262"/>
       <source>Global Y</source>
       <translation>Globalno Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1254"/>
+      <location filename="DraftGui.py" line="1263"/>
       <source>Global Z</source>
       <translation>Globalno Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1244"/>
+      <location filename="DraftGui.py" line="1253"/>
       <source>Local X</source>
       <translation>Lokalno X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1245"/>
+      <location filename="DraftGui.py" line="1254"/>
       <source>Local Y</source>
       <translation>Lokalno Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1246"/>
+      <location filename="DraftGui.py" line="1255"/>
       <source>Local Z</source>
       <translation>Lokalno Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1487"/>
+      <location filename="DraftGui.py" line="1496"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Pogrešna veličina vrijednosti. Koristit će se 200.0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1495"/>
+      <location filename="DraftGui.py" line="1504"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Pogrešna veličina vrijednosti. Koristit će se 0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1509"/>
+      <location filename="DraftGui.py" line="1518"/>
       <source>Please enter a text string.</source>
       <translation>Molimo vas, unesite tekst poruke.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1518"/>
+      <location filename="DraftGui.py" line="1527"/>
       <source>Select a Font file</source>
       <translation>Odaberite datoteku pisma</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1551"/>
+      <location filename="DraftGui.py" line="1560"/>
       <source>Please enter a font file.</source>
       <translation>Molim unesite datoteku pisma.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2377"/>
+      <location filename="DraftGui.py" line="2374"/>
       <source>Faces</source>
       <translation>Plohe</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2378"/>
+      <location filename="DraftGui.py" line="2375"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2379"/>
+      <location filename="DraftGui.py" line="2376"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2380"/>
+      <location filename="DraftGui.py" line="2377"/>
       <source>Facebinder elements</source>
       <translation>Povezana-lica elementi</translation>
     </message>
@@ -5593,17 +5591,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="736"/>
+      <location filename="DraftGui.py" line="745"/>
       <source>Relative</source>
       <translation>Relativno</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="759"/>
+      <location filename="DraftGui.py" line="768"/>
       <source>Continue</source>
       <translation>Nastavi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="775"/>
+      <location filename="DraftGui.py" line="784"/>
       <source>Close</source>
       <translation>Zatvori</translation>
     </message>
@@ -5648,7 +5646,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>Ograničeno Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="781"/>
+      <location filename="DraftGui.py" line="790"/>
       <source>Select edge</source>
       <translation>Odaberite rub</translation>
     </message>
@@ -5663,7 +5661,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>Dužina mod</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="777"/>
+      <location filename="DraftGui.py" line="786"/>
       <source>Wipe</source>
       <translation>Obriši</translation>
     </message>
@@ -5678,62 +5676,62 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>Kružni Privuci objekt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="732"/>
+      <location filename="DraftGui.py" line="741"/>
       <source>Check this to lock the current angle</source>
       <translation>Uključi za zaključavanje aktualnog kuta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="746"/>
+      <location filename="DraftGui.py" line="755"/>
       <source>Filled</source>
       <translation>Ispunjeno</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="752"/>
+      <location filename="DraftGui.py" line="761"/>
       <source>Finish</source>
       <translation>Završiti</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="754"/>
+      <location filename="DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Završava aktualni crtež ili uređuje operacije</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="773"/>
+      <location filename="DraftGui.py" line="782"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation>&amp;Poništi (CTRL + Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="774"/>
+      <location filename="DraftGui.py" line="783"/>
       <source>Undo the last segment</source>
       <translation>Poništiti posljednji segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="776"/>
+      <location filename="DraftGui.py" line="785"/>
       <source>Finishes and closes the current line</source>
       <translation>Završi i zatvori aktualnu liniju</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="778"/>
+      <location filename="DraftGui.py" line="787"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Briše postojeće segmente ovog retka i počinje ponovo od zadnje točke</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="779"/>
+      <location filename="DraftGui.py" line="788"/>
       <source>Set WP</source>
       <translation>Postavljanje WP</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="780"/>
+      <location filename="DraftGui.py" line="789"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Preusmjerava radnu ravninu na posljednji segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="782"/>
+      <location filename="DraftGui.py" line="791"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Odabire postojeći rub za mjerenje sa ovom dimenzijom</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="787"/>
+      <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation>Ako je označeno, objekti će se kopirati umjesto premještanja. Postavke-&gt; Nacrt-&gt; Globalno kopiranje mod da bi zadržao ovaj mod u sljedećim naredbama</translation>
     </message>
@@ -5743,32 +5741,32 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>Pod-element mod</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="788"/>
+      <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
       <translation>Izmjene pod-elemenata</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="789"/>
+      <location filename="DraftGui.py" line="798"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Ako je označeno, pod-elementi će se mijenjati umjesto cijelih objekata</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="364"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Gore</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="376"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Ispred</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="388"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Strana</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="531"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Aktualna radna ravnina</translation>
     </message>
@@ -5783,27 +5781,27 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>uključi / isključi privuci u blizini </translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="798"/>
+      <location filename="DraftGui.py" line="807"/>
       <source>Create text</source>
       <translation>Napravi tekst</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="799"/>
+      <location filename="DraftGui.py" line="808"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>Pritisnite ovaj gumb da biste stvorili tekstualni objekt ili dovršite tekst s dva prazna retka</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1031"/>
+      <location filename="DraftGui.py" line="1040"/>
       <source>Offset distance</source>
       <translation>Udaljenost pomaka</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1089"/>
+      <location filename="DraftGui.py" line="1098"/>
       <source>Trim distance</source>
       <translation>Udaljenost skraćivanja</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="822"/>
+      <location filename="DraftGui.py" line="831"/>
       <source>Change default style for new objects</source>
       <translation>Promijenite zadani stil za nove objekte
 
@@ -6563,7 +6561,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
     <message>
       <location filename="gui_downgrade.py" line="85"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Vraćanje na niži stupanj</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="67"/>
@@ -6616,22 +6614,22 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation type="unfinished">Convert to Wire</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="509"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="559"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation type="unfinished">Active object must have more than two points/nodes</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="673"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation type="unfinished">Selection is not a Knot</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="700"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
     </message>
@@ -6733,7 +6731,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
     <message>
       <location filename="gui_pointarray.py" line="122"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Matrica točaka</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="104"/>
@@ -6968,10 +6966,10 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
     <message>
       <location filename="gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Preokreni dimenziju</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="472"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
@@ -7071,12 +7069,12 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation type="unfinished">Select a Draft object to edit</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="561"/>
+      <location filename="gui_edit.py" line="563"/>
       <source>No edit point found for selected object</source>
       <translation type="unfinished">No edit point found for selected object</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="942"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation type="unfinished">: this object is not editable</translation>
     </message>
@@ -7096,7 +7094,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation type="unfinished">Path twisted array</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1085"/>
+      <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
       <translation type="unfinished">Trimex</translation>
     </message>
@@ -7166,22 +7164,22 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>Stvaranje B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="264"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation type="unfinished">Working plane aligned to global placement of</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="513"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation type="unfinished">Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="529"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Prilagođeno</translation>
     </message>
@@ -7428,68 +7426,68 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Pick rotation angle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="741"/>
+      <location filename="DraftGui.py" line="750"/>
       <source>Global</source>
       <translation>Globalna</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="739"/>
+      <location filename="DraftGui.py" line="748"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
 if is the first point to set</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="744"/>
+      <location filename="DraftGui.py" line="753"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation type="unfinished">Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="750"/>
+      <location filename="DraftGui.py" line="759"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="762"/>
+      <location filename="DraftGui.py" line="771"/>
       <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
       <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1240"/>
+      <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
       <translation type="unfinished">Local u0394X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1241"/>
+      <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
       <translation type="unfinished">Local u0394Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1242"/>
+      <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
       <translation type="unfinished">Local u0394Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1248"/>
+      <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
       <translation type="unfinished">Global u0394X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1249"/>
+      <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
       <translation type="unfinished">Global u0394Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1250"/>
+      <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
       <translation type="unfinished">Global u0394Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2050"/>
+      <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
       <translation type="unfinished">Autogroup:</translation>
     </message>
@@ -7514,7 +7512,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="934"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7527,6 +7525,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
       <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>

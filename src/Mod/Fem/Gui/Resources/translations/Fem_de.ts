@@ -75,11 +75,6 @@
       <translation>Geometrie-Referenzauswahl für ein</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometrie-Referenzauswahl für ein </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
@@ -93,6 +88,11 @@
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
       <translation>Klicke auf "Hinzufügen" und wähle die geometrische Elemente, um sie zur Liste hinzuzufügen.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Klicke "Hinzufügen" und wähle geometrische Elemente, um sie zur Liste hinzuzufügen.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
@@ -118,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Vollkörper</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometrie-Referenzauswahl für ein </translation>
     </message>
   </context>
   <context>

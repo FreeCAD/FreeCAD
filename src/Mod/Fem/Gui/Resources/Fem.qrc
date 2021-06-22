@@ -142,6 +142,7 @@
         <file>translations/Fem_zh-TW.qm</file>
 
         <!-- task panels -->
+        <file>ui/ConstraintSectionPrint.ui</file>
         <file>ui/ConstraintTie.ui</file>
         <file>ui/ElectrostaticPotential.ui</file>
         <file>ui/ElementFluid1D.ui</file>

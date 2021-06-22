@@ -194,12 +194,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Muat</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Simpan</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
@@ -376,7 +376,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>Ubah ukuran fitur Mesh...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="258"/>

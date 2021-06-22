@@ -791,7 +791,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy part design features to Bodies</translation>
+      <translation>Migrieren Sie alte Teildesignfunktionen in Körper</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
@@ -1090,8 +1090,8 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>Radius in lokaler Y-Richtung
+Wenn Null, ist er gleich Radius2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1250,7 +1250,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</translation>
+      <translation>Die von Ihnen ausgewählten Geometrien sind nicht Teil des aktiven Körpers. Bitte legen Sie fest, wie diese Auswahlen behandelt werden sollen. Brechen Sie den Befehl ab, wenn Sie diese Referenzen nicht möchten.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -2340,7 +2340,7 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskPadParameters.cpp" line="148"/>
       <location filename="../../TaskPadParameters.cpp" line="548"/>
       <source>To first</source>
-      <translation>Zum nächsten Objekt</translation>
+      <translation>Bis zur dichtesten Objektbegrenzung</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="149"/>
@@ -2643,7 +2643,7 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskPocketParameters.cpp" line="121"/>
       <location filename="../../TaskPocketParameters.cpp" line="441"/>
       <source>To first</source>
-      <translation>Zum nächsten Objekt</translation>
+      <translation>Bis zur dichtesten Objektbegrenzung</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="122"/>
@@ -3282,11 +3282,6 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Dieser Befehl kann nicht verwendet werden, da kein Festkörper vorhanden ist, von dem etwas abgezogen werden kann.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Bitte sicherstellen, dass der Körper ein Objekt enthält, bevor ein subtraktiver Befehl angewendet wird.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Ausgewähltes Objekt kann nicht verwendet werden. Ausgewähltes Objekt muss zum aktiven Körper gehören</translation>
@@ -3344,6 +3339,11 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Auswahl ist nicht im aktiven Körper</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Bitte sicherstellen, dass der Körper ein Objekt enthält, bevor ein subtraktiver Befehl angewendet wird.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3447,7 +3447,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="344"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body. Nothing to migrate.</translation>
+      <translation>Keine PartDesign-Elemente gefunden, die nicht zu einem Körper gehören. Nichts zu migrieren.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="492"/>

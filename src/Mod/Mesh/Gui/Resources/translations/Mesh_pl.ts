@@ -1770,7 +1770,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>

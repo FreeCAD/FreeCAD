@@ -574,51 +574,51 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insérer %n ligne(s) ci-dessous</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
+        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insérer %n lignes non contiguës</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insérer %n lignes non contiguës</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Supprimer le(s) ligne(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Supprimer le(s) ligne(s)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insérer %n colonne(s) à gauche</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insérer %n colonne(s) à gauche</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insérer %n colonne(s) à droite</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insérer %n colonne(s) à droite</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insérer %n colonnes non contiguës</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insérer %n colonnes non contiguës</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Supprimer une/des colonne(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Supprimer une/des colonne</numerusform>
+        <numerusform>Supprimer une/des colonnes</numerusform>
       </translation>
     </message>
   </context>

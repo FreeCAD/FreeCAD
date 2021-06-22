@@ -843,7 +843,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1388"/>
-      <location filename="../../MDIViewPage.cpp" line="873"/>
+      <location filename="../../MDIViewPage.cpp" line="878"/>
       <source>Save page to dxf</source>
       <translation>Spara sida på dxf</translation>
     </message>
@@ -901,7 +901,7 @@
       <translation>Skapa ActiveView</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="331"/>
+      <location filename="../../TaskCenterLine.cpp" line="327"/>
       <source>Create CenterLine</source>
       <translation>Skapa CenterLine</translation>
     </message>
@@ -1732,28 +1732,28 @@
       <translation>Kan inte fastställa korrekt sida.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="636"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
-      <location filename="../../MDIViewPage.cpp" line="832"/>
+      <location filename="../../MDIViewPage.cpp" line="637"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>All Files (*.*)</source>
       <translation>Alla filer (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="637"/>
+      <location filename="../../MDIViewPage.cpp" line="638"/>
       <source>Export Page As PDF</source>
       <translation>Exportera sida som PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="831"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="833"/>
+      <location filename="../../MDIViewPage.cpp" line="838"/>
       <source>Export page as SVG</source>
       <translation>Exportera sida som SVG</translation>
     </message>
@@ -1816,12 +1816,12 @@
       <translation>ActiveView till TD-vy</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="200"/>
+      <location filename="../../TaskCenterLine.cpp" line="196"/>
       <source>Create Center Line</source>
       <translation>Skapa mittlinje</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="230"/>
+      <location filename="../../TaskCenterLine.cpp" line="226"/>
       <source>Edit Center Line</source>
       <translation>Redigera mittlinje</translation>
     </message>
@@ -3399,75 +3399,75 @@ Snabbt, men resultatet är en samling korta raka linjer.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="141"/>
+      <location filename="../../MDIViewPage.cpp" line="142"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportera SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="135"/>
+      <location filename="../../MDIViewPage.cpp" line="136"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Växla automatisk uppdatering</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="138"/>
+      <location filename="../../MDIViewPage.cpp" line="139"/>
       <source>Toggle &amp;Frames</source>
       <translation>Växla ramvisning</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="144"/>
+      <location filename="../../MDIViewPage.cpp" line="145"/>
       <source>Export DXF</source>
       <translation>Exportera DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="147"/>
+      <location filename="../../MDIViewPage.cpp" line="148"/>
       <source>Export PDF</source>
       <translation>Exportera PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="729"/>
+      <location filename="../../MDIViewPage.cpp" line="730"/>
       <source>Different orientation</source>
       <translation>Annan orientering</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="730"/>
+      <location filename="../../MDIViewPage.cpp" line="731"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Skrivaren använder en annan orientering än ritningen.
 Vill du fortsätta?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="737"/>
+      <location filename="../../MDIViewPage.cpp" line="738"/>
       <source>Different paper size</source>
       <translation>Annan pappersstorlek</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="738"/>
+      <location filename="../../MDIViewPage.cpp" line="739"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Skrivaren använder en annan pappersstorlek än ritningen. Vill du fortsätta?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="749"/>
+      <location filename="../../MDIViewPage.cpp" line="750"/>
       <source>Opening file failed</source>
       <translation>Fel vid filöppning</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="750"/>
+      <location filename="../../MDIViewPage.cpp" line="751"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Kan inte öppna fil %1 i skrivläge.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="857"/>
+      <location filename="../../MDIViewPage.cpp" line="862"/>
       <source>Save Dxf File</source>
       <translation type="unfinished">Save Dxf File</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="859"/>
+      <location filename="../../MDIViewPage.cpp" line="864"/>
       <source>Dxf (*.dxf)</source>
       <translation>Dxf (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1344"/>
+      <location filename="../../MDIViewPage.cpp" line="1349"/>
       <source>Selected:</source>
       <translation>Vald:</translation>
     </message>

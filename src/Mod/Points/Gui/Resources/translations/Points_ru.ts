@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="468"/>
       <location filename="../../ViewProvider.cpp" line="627"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Вырезать точки</translation>
     </message>
   </context>
   <context>

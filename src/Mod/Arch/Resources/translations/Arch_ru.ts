@@ -3364,7 +3364,7 @@
       <translation>Найдена фигура, содержащая кривые. Триангуляция</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Успешно импортировано</translation>
     </message>

@@ -75,11 +75,6 @@
       <translation>Izbirnik referenčne geometrije za</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Izbirnik referenčne geometrije za </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Dodaj</translation>
@@ -92,6 +87,11 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation>Kliknite na "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
       <translation>Kliknite na "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.</translation>
     </message>
     <message>
@@ -118,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Telo</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Izbirnik referenčne geometrije za </translation>
     </message>
   </context>
   <context>

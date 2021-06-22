@@ -249,16 +249,6 @@ It will create a &apos;Compound Filter&apos; for each shape.</source>
 <context>
     <name>Part_SplitFeatures</name>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-        <source>Boolean Fragments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-        <source>Split objects where they intersect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
         <source>Boolean fragments</source>
         <translation type="unfinished"></translation>
@@ -345,6 +335,16 @@ A &apos;Compound Filter&apos; can be used to extract the individual slices.</sou
     <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
         <source>Slice apart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+        <source>Boolean Fragments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+        <source>Split objects where they intersect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

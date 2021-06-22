@@ -24,12 +24,14 @@
 # ***************************************************************************
 
 """
-This utility offers several commands to interact with the FreeCAD project on crowdin.
-For it to work, you need a ~/.crowdin-freecad-token file in your user's folder, that contains
-the API access token that gives access to the crowdin FreeCAD project.
-The API token can also be specified in the CROWDIN_TOKEN environment variable.
+This utility offers several commands to interact with the FreeCAD project on 
+crowdin. For it to work, you need a ~/.crowdin-freecad-token file in your 
+user's folder, that contains the API access token that gives access to the 
+crowdin FreeCAD project. The API token can also be specified in the 
+CROWDIN_TOKEN environment variable.
 
-The CROWDIN_PROJECT_ID environment variable can be used to use this script in other projects.
+The CROWDIN_PROJECT_ID environment variable can be used to use this script 
+in other projects.
 
 Usage:
 
@@ -38,11 +40,16 @@ Usage:
 Available commands:
 
     status:              prints a status of the translations
-    update:              updates crowdin the current version of .ts files found in the source code
-    build:               builds a new downloadable package on crowdin with all translated strings
-    build-status:        shows the status of the current builds available on crowdin
-    download [build_id]: downloads build specified by 'build_id' or latest if build_id is left blank
-    apply / install:     applies downloaded translations to source code (runs updatefromcrowdin.py)
+    update:              updates crowdin the current version of .ts files 
+                         found in the source code
+    build:               builds a new downloadable package on crowdin with all 
+                         translated strings
+    build-status:        shows the status of the current builds available on 
+                         crowdin
+    download [build_id]: downloads build specified by 'build_id' or latest if 
+                         build_id is left blank
+    apply / install:     applies downloaded translations to source code 
+                         (runs updatefromcrowdin.py)
 
 Example:
 

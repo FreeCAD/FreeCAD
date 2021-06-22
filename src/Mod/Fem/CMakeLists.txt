@@ -42,9 +42,13 @@ SET(FemCommands_SRCS
 
 SET(FemExamples_SRCS
     femexamples/__init__.py
+    femexamples/boxanalysis_base.py
     femexamples/boxanalysis_static.py
     femexamples/boxanalysis_frequency.py
+    femexamples/buckling_platebuckling.py
+    femexamples/buckling_lateraltorsionalbuckling.py
     femexamples/ccx_buckling_flexuralbuckling.py
+    femexamples/ccx_cantilever_base.py
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_hexa20faceload.py
@@ -78,6 +82,8 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_beamsimple_tetra10.py
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
+    femexamples/meshes/mesh_buckling_ibeam_tria6.py
+    femexamples/meshes/mesh_buckling_plate_tria6.py
     femexamples/meshes/mesh_canticcx_hexa20.py
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_capacitance_two_balls_tetra10.py

@@ -139,7 +139,7 @@ def createStructuralMember(ifcfile, ifcbin, obj):
 
     """Creates a structural member if possible. Returns the member"""
 
-    global structural_nodes
+    global structural_nodes, structural_curves
     structuralMember = None
     import Draft
     import Part
@@ -258,38 +258,48 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         structuralMember = ifcfile.createIfcStructuralSurfaceMember(
             uid(), ownerHistory, obj.Label, None, None, localPlacement, prodDefShape, "SHELL", thickness)
 
-        # check for existing connection nodes
-        for vert in verts:
-            vertCoord = tuple(vert)
-            if vertCoord in structural_nodes:
-                if structural_nodes[vertCoord]:
-                    # there is already another member using this point
-                    structPntConn = structural_nodes[vertCoord]
-                else:
-                    # there is another member with same point, create a new node connection
-                    structPntConn = createStructuralNode(ifcfile, ifcbin, vert)
-                    structural_nodes[vertCoord] = structPntConn
-                ifcfile.createIfcRelConnectsStructuralMember(
-                    uid(), ownerHistory, None, None, structuralMember, structPntConn, None, None, None, None)
+    # check for existing connection nodes
+    for vert in verts:
+        vertCoord = tuple(vert)
+        if vertCoord in structural_nodes:
+            if structural_nodes[vertCoord]:
+                # there is already another member using this point
+                structPntConn = structural_nodes[vertCoord]
             else:
-                # just add the point, no other member using it yet
-                structural_nodes[vertCoord] = None
+                # there is another member with same point, create a new node connection
+                structPntConn = createStructuralNode(ifcfile, ifcbin, vert)
+                structural_nodes[vertCoord] = structPntConn
+            ifcfile.createIfcRelConnectsStructuralMember(
+                uid(), ownerHistory, None, None, structuralMember, structPntConn, None, None, None, None)
+        else:
+            # just add the point, no other member using it yet
+            structural_nodes[vertCoord] = None
                 
-        # check for existing connection curves
-        for edge in edges:
-            if edge in structural_curves:
-                if structural_curves[edge]:
-                    # there is already another member using this curve
-                    strucCrvConn = structural_curves[edge]
-                else:
-                    # there is another member with same edge, create a new curve connection
-                    strucCrvConn = createStructuralCurve(ifcfile, ifcbin, edge)
-                    structural_curves[edge] = strucCrvConn
-                ifcfile.createIfcRelConnectsStructuralMember(
-                    uid(), None, None, None, structuralMember, strucCrvConn, None, None, None, None)
+    # check for existing connection curves
+    for edge in edges:
+        verts12 = tuple([edge.Vertexes[ 0].Point.x, edge.Vertexes[ 0].Point.y, edge.Vertexes[ 0].Point.z,
+                         edge.Vertexes[-1].Point.x, edge.Vertexes[-1].Point.y, edge.Vertexes[-1].Point.z])
+        verts21 = tuple([edge.Vertexes[-1].Point.x, edge.Vertexes[-1].Point.y, edge.Vertexes[-1].Point.z,
+                         edge.Vertexes[ 0].Point.x, edge.Vertexes[ 0].Point.y, edge.Vertexes[ 0].Point.z])                
+        verts12_in_curves = verts12 in structural_curves
+        verts21_in_curves = verts21 in structural_curves
+        if verts21_in_curves:
+            verts = verts21
+        else:
+            verts = verts12
+        if (verts12_in_curves or verts21_in_curves):
+            if structural_curves[verts]:
+                # there is already another member using this curve
+                strucCrvConn = structural_curves[verts]
             else:
-                # just add the curve, no other member using it yet
-                structural_curves[edge] = None
+                # there is another member with same edge, create a new curve connection
+                strucCrvConn = createStructuralCurve(ifcfile, ifcbin, edge)
+                structural_curves[verts] = strucCrvConn
+            ifcfile.createIfcRelConnectsStructuralMember(
+                uid(), None, None, None, structuralMember, strucCrvConn, None, None, None, None)
+        else:
+            # just add the curve, no other member using it yet
+            structural_curves[verts] = None
     return structuralMember
 
 

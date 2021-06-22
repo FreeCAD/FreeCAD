@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1928"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Utwórz zaokrąglenia na krawędzi, powierzchni lub bryle</translation>
+      <translation>Utwórz zaokrąglenie na krawędzi, powierzchni lub zawartości</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="2252"/>
       <source>Create a linear pattern feature</source>
-      <translation>Utwórz szyk liniowy</translation>
+      <translation>Utwórz cechę przez szyk liniowy</translation>
     </message>
   </context>
   <context>
@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="2430"/>
       <source>Create a multitransform feature</source>
-      <translation>Utwórz funkcje wielokrotnej transformacji</translation>
+      <translation>Utwórz cechę wielokrotnej transformacji</translation>
     </message>
   </context>
   <context>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../Command.cpp" line="2316"/>
       <source>Create a polar pattern feature</source>
-      <translation>Utwórz szyk kołowy</translation>
+      <translation>Utwórz cechę przez szyk kołowy</translation>
     </message>
   </context>
   <context>
@@ -538,7 +538,7 @@
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Create a new shape binder</source>
-      <translation>Utwórz nowy łącznik kształtu kształtu</translation>
+      <translation>Utwórz nowy łącznik kształtu</translation>
     </message>
   </context>
   <context>
@@ -882,12 +882,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sketch tools</source>
-      <translation>Narzędzia szkicowania</translation>
+      <translation>Przybory do szkicowania</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Create Geometry</source>
-      <translation>Tworzenie geometrii</translation>
+      <translation>Utwórz Geometrię</translation>
     </message>
   </context>
   <context>
@@ -1263,7 +1263,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="52"/>
       <source>Make dependent copy</source>
-      <translation>Stwórz zależną kopię</translation>
+      <translation>Utwórz zależną kopię</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="59"/>
@@ -1495,7 +1495,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Nie istnieje tryb tryb załącznika który pasuje do obecnej konfiguracji referencji. Jeśli uznasz, żeby kontynuować, funkcja pozostanie tam gdzie jest teraz i i nie zmieni się jako zmiana referencji. Kontynuować?</translation>
+      <translation>Nie ma trybu dołączania, który pasowałby do obecnego zestawu odniesień. Jeśli zdecydujesz się kontynuować, właściwość pozostanie tam, gdzie jest teraz i nie zostanie przeniesiona, gdy referencje się zmienią. Kontynuować?</translation>
     </message>
   </context>
   <context>
@@ -1555,7 +1555,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="98"/>
       <source>Neutral plane</source>
-      <translation>Płaszczyzna neutralna</translation>
+      <translation>Płaszczyzna zerowa</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="115"/>
@@ -1610,7 +1610,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
-      <translation>Pozwól używać funkcji</translation>
+      <translation>Zezwalaj na używane cechy</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="30"/>
@@ -1625,7 +1625,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
       <source>From different parts or free features</source>
-      <translation>Z różnych części lub swobodnych obiektów</translation>
+      <translation>Z różnych części lub swobodnych cech</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="66"/>
@@ -1635,7 +1635,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="79"/>
       <source>Make dependent copy</source>
-      <translation>Stwórz zależną kopię</translation>
+      <translation>Utwórz zależną kopię</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="89"/>
@@ -1685,7 +1685,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Feature is located after the tip feature</source>
-      <translation>Funkcja jest umieszczona po wierzchołku funkcji</translation>
+      <translation>Cecha jest umieszczona za czubkiem</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="86"/>
@@ -1814,7 +1814,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="96"/>
       <source>Pitch-Height-Angle</source>
-      <translation>Skok-wysokość- kąt</translation>
+      <translation>Skok - wysokość - kąt</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="101"/>
@@ -1902,7 +1902,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="53"/>
       <source>Countersink</source>
-      <translation>Nawiercenie</translation>
+      <translation>Pogłębienie walcowe</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
@@ -1932,17 +1932,17 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS coarse profile</source>
-      <translation>UTS grubej profilu</translation>
+      <translation>Zgrubny profil UTS</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS fine profile</source>
-      <translation>UTS grubej profilu</translation>
+      <translation>Dokładny profil UTS</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS extra fine profile</source>
-      <translation>UTS grubej profilu</translation>
+      <translation>Precyzyjny profil UTS</translation>
     </message>
   </context>
   <context>
@@ -2164,7 +2164,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="100"/>
       <source>Add mirrored transformation</source>
-      <translation>Dodaj skopiowaną lustrzanie transformację</translation>
+      <translation>Dodaj transformację w odbiciu lustrzanym</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
@@ -2179,7 +2179,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
       <source>Add scaled transformation</source>
-      <translation>Dodaj transformację skalowaną</translation>
+      <translation>Dodaj transformację w zmienionej skali</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="116"/>
@@ -2194,7 +2194,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="147"/>
       <source>Right-click to add</source>
-      <translation>Kliknij prawym przyciskiem myszy, aby dodać</translation>
+      <translation>Kliknij prawym przyciskiem myszki, aby dodać</translation>
     </message>
   </context>
   <context>
@@ -2368,7 +2368,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
-      <translation>Rodzaj orientacji</translation>
+      <translation>Tryb orientacji</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
@@ -2443,7 +2443,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="558"/>
       <source>Section orientation</source>
-      <translation>Wybierz położenie</translation>
+      <translation>Kierunek sekcji profilu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="588"/>
@@ -2546,7 +2546,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Wielosekcja</translation>
+      <translation>Sekcja wielokrotna</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
@@ -2561,7 +2561,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="885"/>
       <source>Section transformation</source>
-      <translation>Sekcja przekształceń</translation>
+      <translation>Przekształcenia sekcji</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="903"/>
@@ -2729,7 +2729,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="900"/>
       <source>Attachment</source>
-      <translation>Załącznik</translation>
+      <translation>Dołączenie</translation>
     </message>
   </context>
   <context>
@@ -3194,7 +3194,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../Command.cpp" line="142"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Nie istnieją tryby załączników, które miałyby pasować do wybranych obiektów. Wybierz coś innego.</translation>
+      <translation>Nie ma trybów dołączania, które pasują do wybranych obiektów. Wybierz coś innego.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
@@ -3285,11 +3285,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <translation>Nie można użyć tego polecenia, ponieważ nie ma bryły do odjęcia.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Upewnij się, że zawartość posiada cechę, zanim spróbujesz wykonać polecenie odejmowania.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Nie można użyć wybranego obiektu. Wybrany obiekt musi należeć do aktywnej zawartości</translation>
@@ -3347,6 +3342,11 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Wybór nie znajduje się w aktywnej zawartości</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Upewnij się, że zawartość posiada cechę, zanim spróbujesz wykonać polecenie odejmowania.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3649,7 +3649,7 @@ Jeśli masz starszy dokument z obiektami Projektu części bez obiektu Zawartoś
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="138"/>
       <source>Coordinate System</source>
-      <translation>Układ Współrzędnych</translation>
+      <translation>Układ współrzędnych</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="237"/>
@@ -3799,7 +3799,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="40"/>
       <source>Sprocket Reference</source>
-      <translation>Odniesienie do koła łańcuchowego</translation>
+      <translation>Typ koła łańcuchowego</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
@@ -4025,7 +4025,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
       <source>Countersink</source>
-      <translation>Nawiercenie</translation>
+      <translation>Pogłębienie walcowe</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
@@ -4281,7 +4281,7 @@ dla głębokości otworów nieprzelotowych</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="754"/>
       <source>Tapered</source>
-      <translation>Smukły</translation>
+      <translation>Stożkowy</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="171"/>
@@ -4296,17 +4296,17 @@ dla głębokości otworów nieprzelotowych</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="698"/>
       <source>Angled</source>
-      <translation>Pochylony</translation>
+      <translation>Kątowy</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="190"/>
       <source>Right hand</source>
-      <translation>Prawa ręka</translation>
+      <translation>Prawy</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="206"/>
       <source>Left hand</source>
-      <translation>Lewa ręka</translation>
+      <translation>Lewy</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="71"/>
@@ -4342,7 +4342,7 @@ dla głębokości otworów nieprzelotowych</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="650"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Punkt wiercenia&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Czubek wiertła&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="741"/>

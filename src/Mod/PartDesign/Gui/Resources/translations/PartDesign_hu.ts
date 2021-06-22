@@ -565,7 +565,7 @@
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Subtractive helix</source>
-      <translation>Szubtraktív csavarvonal</translation>
+      <translation>Kivonandó csavarvonal</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1764"/>
@@ -811,7 +811,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="887"/>
       <source>Move an object inside tree</source>
-      <translation>Egy objektum mozgatása fába</translation>
+      <translation>Egy tárgy mozgatása fába</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="296"/>
@@ -1906,12 +1906,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Countersink socket screw (deprecated)</source>
-      <translation>Kúpos sűllyesztés (elavult)</translation>
+      <translation>Kúpos süllyesztés (elavult)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
-      <translation>Hatlapfejű csavar</translation>
+      <translation>Hatlapfejű csavar (elavult)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
@@ -3276,11 +3276,6 @@ click again to end selection</source>
       <translation>Ez a parancs nem használható, mert nincs olyan tömör test, amiből ki lehet vonni.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Szubtraktív parancs kiadása előtt a testnek kell, hogy legyen jellemzője.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>A kiválasztott objektum nem használható, mert az aktív testhez kell tartoznia</translation>
@@ -3338,6 +3333,11 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Kijelölés nem szerepel az aktív testben</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Kivonási parancs kiadása előtt a testnek kell, hogy legyen jellemzője.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3716,7 +3716,7 @@ Ez a funkció sérült, és nem szerkeszthető.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
       <source>Select bound object</source>
-      <translation>Jelölje ki a kötött objektumot</translation>
+      <translation>Jelölje ki a kötött tárgyat</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="173"/>
@@ -3943,7 +3943,7 @@ Viszont később is bármikor migrálhat a "Alkatrész Tervezés -&gt; Migrálá
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
       <source>Chain Pitch:</source>
-      <translation>Láncszem hossz:</translation>
+      <translation>Lánc szegmens hossz:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>

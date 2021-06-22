@@ -1056,7 +1056,7 @@
     <message>
       <location filename="ArchWindow.py" line="1387"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
-      <translation>Numer przewodu definiującego otwór. Wartość 0 oznacza automatyczną</translation>
+      <translation>Liczba odcinków polilinii, która definiuje otwór. Wartość 0 oznacza wartość automatyczną</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="210"/>
@@ -1116,7 +1116,7 @@
     <message>
       <location filename="ArchPanel.py" line="1247"/>
       <source>A list of possible rotations for the nester</source>
-      <translation>Lista możliwych rotacji dla nestera</translation>
+      <translation>Lista możliwych rotacji dla zagnieżdżenia</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1396"/>
@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Jeśli wartość nie jest równa zero, osie nie są przedstawiane jako jedna pełna linia, lecz jako dwie linie o podanej długości</translation>
     </message>
   </context>
   <context>
@@ -2119,7 +2119,7 @@
     <message>
       <location filename="ArchCommands.py" line="1394"/>
       <source>Ungrouping</source>
-      <translation>Rozgrupowanie</translation>
+      <translation>Rozgrupuj</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1425"/>
@@ -2159,7 +2159,7 @@
     <message>
       <location filename="ArchRoof.py" line="232"/>
       <source>Create Roof</source>
-      <translation>Tworzenie dachu</translation>
+      <translation>Utwórz dach</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="824"/>
@@ -2209,7 +2209,7 @@
     <message>
       <location filename="ArchStructure.py" line="705"/>
       <source>This mesh is an invalid solid</source>
-      <translation>Ta siatka nie jest poprawną bryłą</translation>
+      <translation>Ta siatka jest niepoprawną bryłą</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="251"/>
@@ -2224,7 +2224,7 @@
     <message>
       <location filename="ArchWindow.py" line="1642"/>
       <source>Create/update component</source>
-      <translation>Utwórz/uaktualnij komponent</translation>
+      <translation>Utwórz / uaktualnij komponent</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1643"/>
@@ -2259,7 +2259,7 @@
     <message>
       <location filename="importDAE.py" line="126"/>
       <source>Error: Couldn't determine character encoding</source>
-      <translation>Błąd: Nie można określić kodowania znaków</translation>
+      <translation>Błąd: Nie można określić standardu kodowania znaków</translation>
     </message>
     <message>
       <location filename="importDAE.py" line="328"/>
@@ -2529,7 +2529,7 @@
     <message>
       <location filename="ArchCommands.py" line="1672"/>
       <source>Create IFC properties spreadsheet</source>
-      <translation>Stwórz arkusz właściwości IFC</translation>
+      <translation>Utwórz arkusz kalkulacyjny właściwości IFC</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="253"/>
@@ -2584,7 +2584,7 @@
     <message>
       <location filename="ArchPrecast.py" line="987"/>
       <source>Precast elements</source>
-      <translation>Prefabrykowane elementy</translation>
+      <translation>Elementy prefabrykowane</translation>
     </message>
     <message>
       <location filename="ArchPrecast.py" line="988"/>
@@ -3161,7 +3161,7 @@
     <message>
       <location filename="ArchPipe.py" line="308"/>
       <source>The profile is not a 2D Part</source>
-      <translation>Profil nie jest częścią 2D</translation>
+      <translation>Profil nie jest elementem składowym części 2D</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="311"/>
@@ -3196,7 +3196,7 @@
     <message>
       <location filename="ArchRebar.py" line="151"/>
       <source>Please select a base face on a structural object</source>
-      <translation>Wybierz powierzchnię bazową na obiekcie strukturalnym</translation>
+      <translation>Proszę wybrać powierzchnię bazową na obiekcie konstrukcyjnym</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="689"/>
@@ -3246,7 +3246,7 @@
     <message>
       <location filename="ArchStructure.py" line="1141"/>
       <source>Choose another Structure object:</source>
-      <translation>Wybierz inny obiekt Konstrukcji:</translation>
+      <translation>Wybierz inny obiekt konstrukcji:</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1146"/>
@@ -3364,7 +3364,7 @@
       <translation>Znaleziono kształt zawierający krzywe, następuje triangulacja</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Pomyślnie importowano</translation>
     </message>
@@ -3376,7 +3376,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1506"/>
       <source>Add selected</source>
-      <translation>Dodaj wybrane</translation>
+      <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1507"/>
@@ -3496,7 +3496,7 @@
     <message>
       <location filename="ArchWall.py" line="525"/>
       <source>Use sketches</source>
-      <translation>Użyj rysunki</translation>
+      <translation>Użyj szkiców</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="77"/>
@@ -3571,7 +3571,7 @@
     <message>
       <location filename="InitGui.py" line="143"/>
       <source>Arch</source>
-      <translation>Arch</translation>
+      <translation>Architektura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="94"/>
@@ -3769,7 +3769,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation>Materiał Architektury</translation>
+      <translation>Materiał architektury</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="30"/>
@@ -3809,7 +3809,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchMaterial.ui" line="44"/>
       <source>Copy values from an existing material in the document</source>
-      <translation>Skopiuj wartości z istniejącego materiału w dokumencie</translation>
+      <translation>Skopiuj wartości z materiału istniejącego w dokumencie</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="65"/>
@@ -3877,12 +3877,12 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchEquipment.py" line="224"/>
       <source>3 views from mesh</source>
-      <translation>3 widoki z siatki</translation>
+      <translation>Utwórz 3 widoki z siatki</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="227"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation>Tworzy 3 widoki (górny, przedni i boczny) obiektu z siatki</translation>
+      <translation>Tworzy 3 widoki (od góry, od przodu i z boku) na podstawie obiektu typu siatka</translation>
     </message>
   </context>
   <context>
@@ -3926,7 +3926,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchAxis.py" line="141"/>
       <source>Axis System</source>
-      <translation>Układ Osi</translation>
+      <translation>System osi</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="145"/>
@@ -3952,7 +3952,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchBuilding.py" line="219"/>
       <source>Creates a building object including selected objects.</source>
-      <translation>Tworzy obiekt Budynek wraz z wybranymi obiektami</translation>
+      <translation>Tworzy obiekt budynku wraz z wybranymi obiektami.</translation>
     </message>
   </context>
   <context>
@@ -4038,7 +4038,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchCutPlane.py" line="100"/>
       <source>Cut with plane</source>
-      <translation>Cięcie  płaszczyzna</translation>
+      <translation>Przytnij płaszczyzną</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="103"/>
@@ -4048,12 +4048,12 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
       <source>Cut with a line</source>
-      <translation>Przetnij według linii</translation>
+      <translation>Przycięcie linią</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="82"/>
       <source>Cut an object with a line with normal workplane</source>
-      <translation>Wytnij obiekt linią z normalnej płaszczyzny roboczej</translation>
+      <translation>Przetnij obiekt linią wzdłuż osi normalnej płaszczyzny roboczej</translation>
     </message>
   </context>
   <context>
@@ -4176,7 +4176,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchCommands.py" line="1663"/>
       <source>Create IFC spreadsheet...</source>
-      <translation>Stwórz arkusz IFC...</translation>
+      <translation>Utwórz arkusz kalkulacyjny IFC ...</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1667"/>
@@ -4236,12 +4236,12 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchMaterial.py" line="149"/>
       <source>Multi-Material</source>
-      <translation>Multi-Materiał</translation>
+      <translation>Materiał złożony</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="153"/>
       <source>Creates or edits multi-materials</source>
-      <translation>Tworzy lub edytuje wiele materiałów</translation>
+      <translation>Tworzy lub edytuje materiał złożony</translation>
     </message>
   </context>
   <context>
@@ -4249,12 +4249,12 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchPanel.py" line="1518"/>
       <source>Nest</source>
-      <translation>Zagnieżdżać</translation>
+      <translation>Zagnieżdżanie</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1522"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation>Gniazduje serię wybranych kształtów w pojemniku</translation>
+      <translation>Zagnieżdża serię wybranych kształtów w pojemniku</translation>
     </message>
   </context>
   <context>
@@ -4267,7 +4267,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchPanel.py" line="152"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Tworzy obiekt panelu od podstaw lub z wybranego obiektu (szkicu, szkieletu, wieloboku lub bryły)</translation>
+      <translation>Tworzy obiekt panelu od podstaw lub z wybranego obiektu (szkicu, polilinii, ściany lub bryły)</translation>
     </message>
   </context>
   <context>
@@ -4283,7 +4283,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchPanel.py" line="335"/>
       <source>Panel Cut</source>
-      <translation>Panel Cut</translation>
+      <translation>Cięcie panelu</translation>
     </message>
   </context>
   <context>
@@ -4319,7 +4319,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation>Tworzy złącze między 2 lub 3 wybranymi rurami</translation>
+      <translation>Tworzy złącze pomiędzy dwiema lub trzema wybranymi rurami</translation>
     </message>
   </context>
   <context>
@@ -4374,7 +4374,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchRebar.py" line="104"/>
       <source>Custom Rebar</source>
-      <translation>Custom Rebar</translation>
+      <translation>Zbrojenie nietypowe</translation>
     </message>
   </context>
   <context>
@@ -4400,7 +4400,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchCommands.py" line="1384"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
-      <translation>Usuń wybrane składniki z rodzimego elementu lub utwórz otwór w składniku</translation>
+      <translation>Usuwa znaczone komponenty z elementów nadrzędnych lub utwórz otwór w komponencie</translation>
     </message>
   </context>
   <context>
@@ -4939,7 +4939,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="InitGui.py" line="149"/>
       <source>Draft</source>
-      <translation>Szkic</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="187"/>
@@ -5002,12 +5002,12 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="GitTaskPanel.ui" line="183"/>
       <source>Pull</source>
-      <translation>Pociągnij</translation>
+      <translation>Ciągnij</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="190"/>
       <source>Push</source>
-      <translation>Popchnij</translation>
+      <translation>Pchnij</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="14"/>
@@ -5032,7 +5032,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="ArchMultiMaterial.ui" line="49"/>
       <source>Composition:</source>
-      <translation>Kompozycja:</translation>
+      <translation>Skład:</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="68"/>
@@ -5077,7 +5077,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation>Dodaj wybrane</translation>
+      <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="64"/>
@@ -5107,7 +5107,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="ArchNest.ui" line="103"/>
       <source>Closer than this, two points are considered equal</source>
-      <translation>Bliżej niż to dwa punkty są traktowane jako równe</translation>
+      <translation>Bliżej tego punktu, dwa punkty uważa się za identyczne</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="116"/>
@@ -5180,7 +5180,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="preferences-arch.ui" line="412"/>
       <source>2D rendering</source>
-      <translation>renderowanie 2D</translation>
+      <translation>Renderowanie 2D</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="420"/>
@@ -5280,7 +5280,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="preferences-arch.ui" line="308"/>
       <source>Mesh to Shape Conversion</source>
-      <translation>Konwersja Siatki do Kształtu</translation>
+      <translation>Konwersja siatki do kształtu</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="316"/>
@@ -5300,17 +5300,17 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="preferences-arch.ui" line="368"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation>Jeśli to zaznaczone, płaskie grupy płaszczyzn będą siłą spłaszczone, skutkując możliwymi szczelinami i obiektami nie bryłowymi</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, płaskie grupy ścian będą spłaszczane na siłę, co może powodować powstawanie szczelin i obiektów nie bryłowych</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="371"/>
       <source>Force flat faces</source>
-      <translation>Wymuś płaskie powierzchnie</translation>
+      <translation>Wymuś płaskie ściany</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="388"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation>Jeśli to zaznaczone, otwory w płaszczyznach będą wykonane przez odejmowanie niż przez orientację drutów</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, otwory w ścianach będą wykonywane przez odejmowanie, a nie przy użyciu opcji orientacji polilinii</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="391"/>
@@ -5455,12 +5455,12 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
-      <translation>Parametryczny obiekt Architektury</translation>
+      <translation>Parametryczny obiekt architektury</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="231"/>
       <source>Non-parametric Arch objects</source>
-      <translation>Nieparametryczny obiekt Architektury</translation>
+      <translation>Nieparametryczne obiekty architektury</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="236"/>
@@ -5611,7 +5611,7 @@ Utwórz jeszcze jeden obiekt (brak zaznaczenia), lub usuń geometrię zewnętrzn
     <message>
       <location filename="preferences-arch.ui" line="80"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation>Jeśli jest to zaznaczone, gdy obiekt stanie się Odjęciem lub Dodaniem obiektu Arch, otrzyma kolor Rysunkowy.</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, to gdy obiekt zostanie wynikiem odejmowania lub dodawania obiektu Architektury, otrzyma on kolor Konstrukcji projektu.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="83"/>
@@ -5686,7 +5686,7 @@ Utwórz jeszcze jeden obiekt (brak zaznaczenia), lub usuń geometrię zewnętrzn
     <message>
       <location filename="preferences-arch.ui" line="345"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation>Wartość tolerancji do użycia podczas sprawdzania czy 2 przyległe płaszczyzny są płaskie</translation>
+      <translation>Wartość tolerancji do zastosowania podczas sprawdzania, czy dwie przyległe powierzchnie są płaskie</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="433"/>
@@ -5731,7 +5731,7 @@ Utwórz jeszcze jeden obiekt (brak zaznaczenia), lub usuń geometrię zewnętrzn
     <message>
       <location filename="preferences-archdefaults.ui" line="103"/>
       <source>Use sketches</source>
-      <translation>Użyj rysunki</translation>
+      <translation>Użyj szkiców</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="1025"/>
@@ -5741,7 +5741,7 @@ Utwórz jeszcze jeden obiekt (brak zaznaczenia), lub usuń geometrię zewnętrzn
     <message>
       <location filename="preferences-ifc.ui" line="401"/>
       <source>Exclude list:</source>
-      <translation>Pomiń listę:</translation>
+      <translation>Lista wykluczeń:</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="242"/>
@@ -5826,7 +5826,7 @@ Utwórz jeszcze jeden obiekt (brak zaznaczenia), lub usuń geometrię zewnętrzn
     <message>
       <location filename="preferences-arch.ui" line="223"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation>Jeśli opcja jest zaznaczona, wtedy gdy obiekt Arch ma przypisany materiał, obiekt przyjmie kolor tego materiału. Opcja ta może być nadpisana dla każdego obiektu.</translation>
+      <translation>Jeśli opcja jest zaznaczona, gdy obiekt Architektury posiada zdefiniowany materiał, obiekt przyjmie kolor tego materiału. Opcja ta może być nadpisana dla każdego obiektu.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="226"/>
@@ -5857,8 +5857,8 @@ który posiada tryb wyświetlania "odcisków stopy"</translation>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation>Jeśli zostanie wybrana ta opcja, "Otwórz BimServer w przeglądarce".
-spowoduje otwarcie interfejsu Bim Server w zewnętrznej przeglądarce
+      <translation>Jeśli opcja ta zostanie wybrana, przycisk "Otwórz BimServer w przeglądarce"
+otworzy interfejs serwera Bim w zewnętrznej przeglądarce,
 zamiast w środowisku pracy Web programu FreeCAD</translation>
     </message>
     <message>

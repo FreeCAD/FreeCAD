@@ -355,10 +355,10 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
         col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
 
         # Get the construction group or create it if it doesn't exist
-        gname = utils.get_param("constructiongroupname", "Construction")
-        grp = self.doc.getObject(gname)
+        grp = self.doc.getObject("Draft_Construction")
         if not grp:
-            grp = self.doc.addObject("App::DocumentObjectGroup", gname)
+            grp = self.doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
+            grp.Label = utils.get_param("constructiongroupname", "Construction")
 
         for obj in Gui.Selection.getSelection():
             grp.addObject(obj)

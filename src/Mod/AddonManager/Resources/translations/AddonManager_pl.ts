@@ -283,7 +283,7 @@
       <location filename="AddonManager.ui" line="37"/>
       <source>Workbenches</source>
       <translation>Środowiska
-      pracy</translation>
+    pracy</translation>
     </message>
     <message>
       <location filename="AddonManager.ui" line="47"/>
@@ -353,7 +353,7 @@
     <message>
       <location filename="AddonManager.ui" line="140"/>
       <source>Install/update selected</source>
-      <translation>Zainstaluj/zaktualizuj wybrane</translation>
+      <translation>Zainstaluj / zaktualizuj wybrane</translation>
     </message>
     <message>
       <location filename="AddonManager.ui" line="160"/>

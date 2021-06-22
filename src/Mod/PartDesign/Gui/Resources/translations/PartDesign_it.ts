@@ -3285,11 +3285,6 @@ fare nuovamente clic per terminare la selezione</translation>
       <translation>Impossibile usare questo comando perché non c'è un solido da cui sottrarre.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation>Assicurati che il corpo contenga una forma prima di tentare un comando sottrattivo.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Impossibile usare l'oggetto selezionato. L'oggetto selezionato deve appartenere al corpo attivo</translation>
@@ -3347,6 +3342,11 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>La selezione non è nel Corpo attivo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>

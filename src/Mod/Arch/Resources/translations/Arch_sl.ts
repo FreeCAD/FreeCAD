@@ -2036,7 +2036,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Če ni ničla, osi ne bodo prikazane s polno črto temveč kot dve črti z določeno dolžino</translation>
     </message>
   </context>
   <context>
@@ -3364,7 +3364,7 @@
       <translation>Najdena oblika, ki vsebuje krivulje. Trikotenje ...</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="351"/>
+      <location filename="importOBJ.py" line="366"/>
       <source>Successfully imported</source>
       <translation>Uspešno uvožen</translation>
     </message>
@@ -5883,7 +5883,7 @@ If using Netgen, make sure that it is available.</source>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation>Vrednost stopnje, uporabljenje pri ploskovjevanju z Netgen-om.
+      <translation>Vrednost stopnje, uporabljenje pri ploskovjenju z Netgen-om.
 Ta vrednost določa, kako hitro se velikost ploskovja zmanjšuje.
 Stopnja velikosti krajevnega ploskovja h(x) je vezana na |Δh(x)| ≤ 1/vrednost.</translation>
     </message>
