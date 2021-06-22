@@ -77,27 +77,16 @@ Py::Object PythonStdout::repr()
 
 Py::Object PythonStdout::write(const Py::Tuple& args)
 {
-    try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
-            if (unicode) {
-                const char* string = PyBytes_AsString(unicode);
-                int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
-                pyConsole->insertPythonOutput(QString::fromUtf8(string, maxlen));
-                Py_DECREF(unicode);
-            }
-        }
-        else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
-            int maxlen = string.size() > 10000 ? 10000 : -1;
-            pyConsole->insertPythonOutput(QString::fromUtf8(string.c_str(), maxlen));
-        }
-    }
-    catch (Py::Exception& e) {
-        // Do not provoke error messages
-        e.clear();
+    PyObject* output;
+    if (!PyArg_ParseTuple(args.ptr(), "O!",&PyUnicode_Type, &output))
+        throw Py::TypeError("PythonStdout.write() takes exactly one argument of type str");
+
+    PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
+    if (unicode) {
+        const char* string = PyBytes_AsString(unicode);
+        int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
+        pyConsole->insertPythonOutput(QString::fromUtf8(string, maxlen));
+        Py_DECREF(unicode);
     }
 
     return Py::None();
@@ -154,27 +143,16 @@ Py::Object PythonStderr::repr()
 
 Py::Object PythonStderr::write(const Py::Tuple& args)
 {
-    try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
-            if (unicode) {
-                const char* string = PyBytes_AsString(unicode);
-                int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
-                pyConsole->insertPythonError(QString::fromUtf8(string, maxlen));
-                Py_DECREF(unicode);
-            }
-        }
-        else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
-            int maxlen = string.size() > 10000 ? 10000 : -1;
-            pyConsole->insertPythonError(QString::fromUtf8(string.c_str(), maxlen));
-        }
-    }
-    catch (Py::Exception& e) {
-        // Do not provoke error messages
-        e.clear();
+    PyObject* output;
+    if (!PyArg_ParseTuple(args.ptr(), "O!",&PyUnicode_Type, &output))
+        throw Py::TypeError("PythonStderr.write() takes exactly one argument of type str");
+
+    PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
+    if (unicode) {
+        const char* string = PyBytes_AsString(unicode);
+        int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
+        pyConsole->insertPythonError(QString::fromUtf8(string, maxlen));
+        Py_DECREF(unicode);
     }
 
     return Py::None();
@@ -230,25 +208,15 @@ Py::Object OutputStdout::repr()
 
 Py::Object OutputStdout::write(const Py::Tuple& args)
 {
-    try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
-            if (unicode) {
-                const char* string = PyBytes_AsString(unicode);
-                Base::Console().Message("%s",string);
-                Py_DECREF(unicode);
-            }
-        }
-        else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
-            Base::Console().Message("%s",string.c_str());
-        }
-    }
-    catch (Py::Exception& e) {
-        // Do not provoke error messages
-        e.clear();
+    PyObject* output;
+    if (!PyArg_ParseTuple(args.ptr(), "O!",&PyUnicode_Type, &output))
+        throw Py::TypeError("OutputStdout.write() takes exactly one argument of type str");
+
+    PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
+    if (unicode) {
+        const char* string = PyBytes_AsString(unicode);
+        Base::Console().Message("%s",string);
+        Py_DECREF(unicode);
     }
 
     return Py::None();
@@ -305,25 +273,15 @@ Py::Object OutputStderr::repr()
 
 Py::Object OutputStderr::write(const Py::Tuple& args)
 {
-    try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
-            if (unicode) {
-                const char* string = PyBytes_AsString(unicode);
-                Base::Console().Error("%s",string);
-                Py_DECREF(unicode);
-            }
-        }
-        else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
-            Base::Console().Error("%s",string.c_str());
-        }
-    }
-    catch (Py::Exception& e) {
-        // Do not provoke error messages
-        e.clear();
+    PyObject* output;
+    if (!PyArg_ParseTuple(args.ptr(), "O!",&PyUnicode_Type, &output))
+        throw Py::TypeError("OutputStderr.write() takes exactly one argument of type str");
+
+    PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
+    if (unicode) {
+        const char* string = PyBytes_AsString(unicode);
+        Base::Console().Error("%s",string);
+        Py_DECREF(unicode);
     }
 
     return Py::None();
