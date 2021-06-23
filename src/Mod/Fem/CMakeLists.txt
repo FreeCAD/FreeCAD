@@ -139,6 +139,7 @@ SET(FemObjects_SRCS
     femobjects/base_fempythonobject.py
     femobjects/constant_vacuumpermittivity.py
     femobjects/constraint_bodyheatsource.py
+    femobjects/constraint_centrif.py
     femobjects/constraint_electrostaticpotential.py
     femobjects/constraint_flowvelocity.py
     femobjects/constraint_initialflowvelocity.py
@@ -493,6 +494,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_base_femobject.py
     femviewprovider/view_constant_vacuumpermittivity.py
     femviewprovider/view_constraint_bodyheatsource.py
+    femviewprovider/view_constraint_centrif.py
     femviewprovider/view_constraint_electrostaticpotential.py
     femviewprovider/view_constraint_flowvelocity.py
     femviewprovider/view_constraint_initialflowvelocity.py

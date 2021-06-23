@@ -60,6 +60,7 @@ class FemInputWriter():
         self.fluidsection_objects = member.geos_fluidsection
         self.shellthickness_objects = member.geos_shellthickness
         # constraints
+        self.centrif_objects = member.cons_centrif
         self.contact_objects = member.cons_contact
         self.displacement_objects = member.cons_displacement
         self.fixed_objects = member.cons_fixed
@@ -456,9 +457,20 @@ class FemInputWriter():
                         face_table = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
                         femobj["HeatFluxFaceTable"].append((elem_info, face_table))
 
+
     # ********************************************************************************************
     # ********************************************************************************************
-    # element sets
+    # element sets constraints
+    def get_constraints_centrif_elements(self):
+        # get element ids and write them into the femobj
+        if len(self.centrif_objects) == 1 and not self.centrif_objects[0]["Object"].References:
+            self.centrif_objects[0]["FEMElements"] = self.ccx_evolumes
+        else:
+            self.get_solid_element_sets(self.centrif_objects)
+
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # element sets material and element geometry
     def get_solid_element_sets(self, femobjs):
         # get element ids and write them into the femobj
         all_found = False

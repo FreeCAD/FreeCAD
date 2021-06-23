@@ -31,6 +31,7 @@ __url__ = "https://www.freecadweb.org"
 
 # import io
 import codecs
+import math
 import os
 import six
 import sys
@@ -150,6 +151,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             # some fluidsection objs need special treatment, ccx_elsets are needed for this
             inpfile_main = self.handle_fluidsection_liquid_inlet_outlet(inpfile_main)
 
+        # element sets constraints
+        self.write_element_sets_constraints_centrif(inpfile_main)
+
         # node sets and surface sets
         self.write_node_sets_constraints_fixed(inpfile_main)
         self.write_node_sets_constraints_displacement(inpfile_main)
@@ -180,6 +184,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_displacement(inpfile_main)
         self.write_constraints_sectionprint(inpfile_main)
         self.write_constraints_selfweight(inpfile_main)
+        self.write_constraints_centrif(inpfile_main)
         self.write_constraints_force(inpfile_main)
         self.write_constraints_pressure(inpfile_main)
         self.write_constraints_temperature(inpfile_main)
@@ -792,6 +797,77 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # are written in the material element sets already
 
     # ********************************************************************************************
+    # constraints centrif
+    def write_element_sets_constraints_centrif(self, f):
+        self.write_constraints_sets(
+            f,
+            femobjs=self.centrif_objects,
+            analysis_types=["buckling", "static", "thermomech"],
+            sets_getter_method=self.get_constraints_centrif_elements,
+            write_name="constraints_centrif_element_sets",
+            sets_writer_method=self.write_element_sets_elements_constraints_centrif,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
+    def write_constraints_centrif(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.centrif_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="Centrif Constraints",
+            constraint_writer_method=self.constraint_centrif_writer,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
+    def write_element_sets_elements_constraints_centrif(self, f, femobj, centrif_obj):
+        f.write("*ELSET,ELSET={}\n".format(centrif_obj.Name))
+        # use six to be sure to be Python 2.7 and 3.x compatible
+        if isinstance(femobj["FEMElements"], six.string_types):
+            f.write("{}\n".format(femobj["FEMElements"]))
+        else:
+            for e in femobj["FEMElements"]:
+                f.write("{},\n".format(e))
+
+    def constraint_centrif_writer(self, f, femobj, centrif_obj):
+
+        # get some data from the centrif_obj
+        refobj = centrif_obj.RotationAxis[0][0]
+        subobj = centrif_obj.RotationAxis[0][1][0]
+        axis = refobj.Shape.getElement(subobj)
+
+        if axis.Curve.TypeId == "Part::GeomLine":
+            axiscopy = axis.copy()  # apply global placement to copy
+            axiscopy.Placement = refobj.getGlobalPlacement()
+            direction = axiscopy.Curve.Direction
+            location = axiscopy.Curve.Location
+        else:  # no line found, set default
+            # TODO: No test at all in the writer
+            # they should all be before in prechecks
+            location = FreeCAD.Vector(0., 0., 0.)
+            direction = FreeCAD.Vector(0., 0., 1.)
+
+        # write to file
+        f.write("*DLOAD\n")
+        # Why {:.13G} ...
+        # ccx uses F20.0 FORTRAN input fields, see in dload.f in ccx's source
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=22759&#p176578
+        # example "{:.13G}".format(math.sqrt(2.)*-1e100) and count chars
+        f.write(
+            "{},CENTRIF,{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n"
+            .format(
+                centrif_obj.Name,
+                (2. * math.pi * float(centrif_obj.RotationFrequency.getValueAs("1/s"))) ** 2,
+                location.x,
+                location.y,
+                location.z,
+                direction.x,
+                direction.y,
+                direction.z
+            )
+        )
+        f.write("\n")
+
+    # ********************************************************************************************
     # constraints force
     def write_constraints_force(self, f):
         self.write_constraints_sets(
@@ -1303,6 +1379,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.analysis_type == "frequency":
             return True
         if self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState:
+            return True
+        if self.centrif_objects:
             return True
         if self.selfweight_objects:
             return True

@@ -234,6 +234,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintSelfWeight(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintCentrif",
+            type_of_obj(ObjectsFem.makeConstraintCentrif(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintTemperature",
             type_of_obj(ObjectsFem.makeConstraintTemperature(doc))
         )
@@ -441,6 +445,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintSelfWeight(doc),
             "Fem::ConstraintSelfWeight"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintCentrif(doc),
+            "Fem::ConstraintCentrif"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintTemperature(doc),
@@ -869,6 +877,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_self_weight,
             "Fem::ConstraintSelfWeight"
+        ))
+
+        # ConstraintCentrif
+        constraint_centrif = ObjectsFem.makeConstraintCentrif(doc)
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "Fem::ConstraintCentrif"
         ))
 
         # ConstraintTemperature
@@ -1416,6 +1439,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintCentrif(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintTemperature(
                 doc
             ).isDerivedFrom("Fem::ConstraintTemperature")
@@ -1595,6 +1623,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
     analysis.addObject(ObjectsFem.makeConstraintSectionPrint(doc))
     analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
+    analysis.addObject(ObjectsFem.makeConstraintCentrif(doc))
     analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
     analysis.addObject(ObjectsFem.makeConstraintTie(doc))
     analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
