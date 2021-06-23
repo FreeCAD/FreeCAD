@@ -53,6 +53,7 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_hexa20faceload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
     femexamples/constraint_section_print.py
@@ -88,6 +89,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_canticcx_hexa20.py
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_capacitance_two_balls_tetra10.py
+    femexamples/meshes/mesh_constraint_centrif_tetra10.py
     femexamples/meshes/mesh_constraint_tie_tetra10.py
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
