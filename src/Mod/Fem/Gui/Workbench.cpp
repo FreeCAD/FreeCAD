@@ -142,6 +142,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
     Gui::ToolBarItem* thermal = new Gui::ToolBarItem(root);
@@ -268,6 +269,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
     Gui::MenuItem* thermal = new Gui::MenuItem;
