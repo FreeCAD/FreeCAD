@@ -588,14 +588,13 @@ class Edit(gui_base_original.Modifier):
         pointswithmarkers = [(obj.Shape.Edges[0].Curve.
                 getPole(1),knotmarkers[firstknotcont])]
         for edgeindex, edge in enumerate(obj.Shape.Edges):
-            poles = edge.Curve.getPoles()
+            poles = edge.Curve.getPoles() # note: already in the global coordinate system
             pointswithmarkers.extend([(point,polemarker) for point in poles[1:-1]])
             if not obj.Closed or len(obj.Shape.Edges) > edgeindex +1:
                 knotmarkeri = cont[edgeindex] if len(cont) > edgeindex else 0
                 pointswithmarkers.append((poles[-1],knotmarkers[knotmarkeri]))
         for index, pwm in enumerate(pointswithmarkers):
             p, marker = pwm
-            p = obj.getGlobalPlacement().multVec(p)
             self.trackers[obj.Name].append(trackers.editTracker(p, obj.Name,
                 index, obj.ViewObject.LineColor, marker=marker))
 
