@@ -2773,16 +2773,23 @@ void Application::ExtractUserPath()
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
     // Default paths for the user specific stuff
     struct passwd *pwd = getpwuid(getuid());
-    if (pwd == NULL)
-        throw Base::RuntimeError("Getting HOME path from system failed!");
-    mConfig["UserHomePath"] = pwd->pw_dir;
+
     if (!userHome.isEmpty()) {
         mConfig["UserHomePath"] = userHome.toUtf8().data();
+    } else if (pwd) {
+        mConfig["UserHomePath"] = pwd->pw_dir;
+    } else {
+        throw Base::RuntimeError("Getting HOME path from system failed!");
     }
 
-    boost::filesystem::path appData(pwd->pw_dir);
-    if (!userData.isEmpty())
+    boost::filesystem::path appData;
+    if (!userData.isEmpty()) {
         appData = userData.toUtf8().data();
+    } else if (pwd) {
+        appData = pwd->pw_dir;
+    } else {
+        throw Base::RuntimeError("Getting HOME path from system failed!");
+    }
 
     if (!boost::filesystem::exists(appData)) {
         // This should never ever happen
@@ -2815,16 +2822,23 @@ void Application::ExtractUserPath()
 #elif defined(FC_OS_MACOSX)
     // Default paths for the user specific stuff on the platform
     struct passwd *pwd = getpwuid(getuid());
-    if (pwd == NULL)
-        throw Base::RuntimeError("Getting HOME path from system failed!");
-    mConfig["UserHomePath"] = pwd->pw_dir;
+
     if (!userHome.isEmpty()) {
         mConfig["UserHomePath"] = userHome.toUtf8().data();
+    } else if (pwd) {
+        mConfig["UserHomePath"] = pwd->pw_dir;
+    } else {
+        throw Base::RuntimeError("Getting HOME path from system failed!");
     }
 
-    boost::filesystem::path appData(pwd->pw_dir);
-    if (!userData.isEmpty())
+    boost::filesystem::path appData;
+    if (!userData.isEmpty()) {
         appData = userData.toUtf8().data();
+    } else if (pwd) {
+        appData = pwd->pw_dir;
+    } else {
+        throw Base::RuntimeError("Getting HOME path from system failed!");
+    }
 
     appData = appData / "Library" / "Preferences";
 
