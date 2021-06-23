@@ -22,9 +22,6 @@
 # ***************************************************************************
 """Provides support functions to edit Draft objects.
 
-All functions in this module work with Object coordinate space.
-No conversion to global coordinate system is needed.
-
 To support an new Object, Draft_Edit needs at least two functions:
 getObjectPts(obj): returns a list of points on which Draft_Edit will display
     edit trackers
