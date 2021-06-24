@@ -37,6 +37,14 @@ class ViewProviderDraftLink(ViewProviderDraft):
     def __init__(self,vobj):
         super(ViewProviderDraftLink, self).__init__(vobj)
 
+    def setEdit(self, _vobj, _mode=0):
+        # skip ViewPRoviderDraft.setEdit and let ViewProviderLink handle it
+        raise NotImplementedError
+
+    def unsetEdit(self, _vobj, _mode=0):
+        # skip ViewPRoviderDraft.unsetEdit and let ViewProviderLink handle it
+        raise NotImplementedError
+
     def getIcon(self):
         tp = self.Object.Proxy.Type
         if tp == 'Array':
