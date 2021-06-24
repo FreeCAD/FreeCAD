@@ -106,24 +106,6 @@ QVariant SceneModel::data(const QModelIndex & index, int role) const
     QString name;
     QTextStream stream(&name);
     stream << item.node.get() << ", ";
-    if(node->isOfType(SoSwitch::getClassTypeId())) {
-        auto pcSwitch = static_cast<SoSwitch*>(node);
-        stream << pcSwitch->whichChild.getValue() << ", ";
-        if(node->isOfType(SoFCSwitch::getClassTypeId())) {
-            auto pathNode = static_cast<SoFCSwitch*>(node);
-            stream << pathNode->defaultChild.getValue() << ", "
-                   << pathNode->overrideSwitch.getValue() << ", "
-                   << pathNode->headChild.getValue() << ", "
-                   << pathNode->tailChild.getValue() << ", ";
-        }
-    } else if (node->isOfType(SoSeparator::getClassTypeId())) {
-        auto pcSeparator = static_cast<SoSeparator*>(node);
-        stream << pcSeparator->renderCaching.getValue() << ", "
-            << pcSeparator->boundingBoxCaching.getValue() << ", ";
-    } else if (node->isOfType(SoIndexedShape::getClassTypeId())) {
-        auto shape = static_cast<SoIndexedShape*>(node);
-        stream << shape->coordIndex.getNum() << ", ";
-    }
 
     auto obj = ViewProviderLink::linkedObjectByNode(node);
     if (obj) {
@@ -141,6 +123,27 @@ QVariant SceneModel::data(const QModelIndex & index, int role) const
         stream << itName.value();
     else
         stream << node->getName();
+
+    stream << ", ";
+    if(node->isOfType(SoSwitch::getClassTypeId())) {
+        auto pcSwitch = static_cast<SoSwitch*>(node);
+        stream << "which:" << pcSwitch->whichChild.getValue() << ", ";
+        if(node->isOfType(SoFCSwitch::getClassTypeId())) {
+            auto pathNode = static_cast<SoFCSwitch*>(node);
+            stream << "def:" << pathNode->defaultChild.getValue() << ", "
+                   << "ovr:" << pathNode->overrideSwitch.getValue() << ", "
+                   << "head:" << pathNode->headChild.getValue() << ", "
+                   << "tail:" << pathNode->tailChild.getValue() << ", "
+                   << "notify:" << pathNode->childNotify.getValue() << ", ";
+        }
+    } else if (node->isOfType(SoSeparator::getClassTypeId())) {
+        auto pcSeparator = static_cast<SoSeparator*>(node);
+        stream << "cache:" << pcSeparator->renderCaching.getValue() << ", "
+            << "bboxcache:" << pcSeparator->boundingBoxCaching.getValue() << ", ";
+    } else if (node->isOfType(SoIndexedShape::getClassTypeId())) {
+        auto shape = static_cast<SoIndexedShape*>(node);
+        stream << "num:" << shape->coordIndex.getNum() << ", ";
+    }
     return name;
 }
 
