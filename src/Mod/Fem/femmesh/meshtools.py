@@ -30,7 +30,7 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD
 
 from femtools import geomtools
-
+import numpy as np
 
 # ************************************************************************************************
 def get_femnodes_by_femobj_with_references(
@@ -485,7 +485,7 @@ def get_femelement_sets(
     # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
-    referenced_femelements = []
+    referenced_femelements = np.zeros((max(femelement_table.keys())+1,),dtype=np.int)
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object["Object"]
@@ -503,17 +503,19 @@ def get_femelement_sets(
                 obj.References,
                 femnodes_ele_table
             )
-            referenced_femelements += ref_shape_femelements
+            ref_shape_femelements_array = np.zeros_like(referenced_femelements)
+            ref_shape_femelements_array[ref_shape_femelements] = 1
+            referenced_femelements += ref_shape_femelements_array
             count_femelements += len(ref_shape_femelements)
             fem_object["FEMElements"] = ref_shape_femelements
         else:
             has_remaining_femelements = obj.Name
     # get remaining femelements for the fem_objects
     if has_remaining_femelements:
-        remaining_femelements = []
-        for elemid in femelement_table:
-            if elemid not in referenced_femelements:
-                remaining_femelements.append(elemid)
+        femelement_table_array = np.zeros_like(referenced_femelements)
+        femelement_table_array[list(femelement_table.keys())] = 1
+        remaining_femelements_array = femelement_table_array > referenced_femelements
+        remaining_femelements = [ i.item() for i in np.nditer(remaining_femelements_array.nonzero()) ]
         count_femelements += len(remaining_femelements)
         for fem_object in fem_objects:
             obj = fem_object["Object"]
