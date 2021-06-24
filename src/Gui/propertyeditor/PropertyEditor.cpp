@@ -644,7 +644,7 @@ enum MenuAction {
     MA_MaterialEdit,
 };
 
-void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
+void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
     QMenu menu;
     QAction *autoExpand = menu.addAction(tr("Auto expand"));
     autoExpand->setCheckable(true);
@@ -658,10 +658,17 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
 
     menu.addAction(tr("Print to console"))->setData(QVariant(MA_Print));
 
-    auto contextIndex = currentIndex();
+    auto sels = selectedIndexes();
+    auto contextIndex = indexAt(ev->pos());
+    if (contextIndex.isValid() && !selectionModel()->isSelected(contextIndex)) {
+        selectionModel()->clearSelection();
+        sels.clear();
+        sels.append(contextIndex);
+        selectionModel()->setCurrentIndex(contextIndex, QItemSelectionModel::NoUpdate);
+    }
 
     std::unordered_set<App::Property*> props;
-    for(auto index : selectedIndexes()) {
+    for(auto index : sels) {
         auto item = static_cast<PropertyItem*>(index.internalPointer());
         if(item->isSeparator())
             continue;
@@ -762,7 +769,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     switch(action->data().toInt()) {
     case MA_Print: {
         std::set<App::Property*> propSet;
-        for(auto index : selectedIndexes()) {
+        for(auto index : sels) {
             auto item = static_cast<PropertyItem*>(index.internalPointer());
             if(item->isSeparator())
                 continue;
