@@ -875,17 +875,17 @@
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Face tools</source>
       <translation>Flächenwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Sketch tools</source>
       <translation>Skizzenwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Create Geometry</source>
       <translation>Geometrie erstellen</translation>
     </message>
@@ -3765,9 +3765,9 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>Hinweis: Wenn Du Dich für die Migration entscheidest, kannst Du die Datei nicht mehr mit einer älteren FreeCAD-Version bearbeiten.
+Wenn Du die Migration ablehnst, kannst Du keine neuen PartDesign-Funktionen wie Bodies und Parts verwenden. Die Teile können dann auch nicht in der Assembly-Workbench verwendet werden.
+Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migrieren.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
@@ -4381,39 +4381,69 @@ account for the depth of blind holes</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
       <translation>&amp;Teile-Konstruktion</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation>&amp;Skizze</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Create a datum</source>
       <translation>Bezugselement erstellen</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
       <translation>Erzeugen eines additives Merkmals</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
       <translation>Erzeuge ein subtraktives Merkmal</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a pattern</source>
       <translation>Muster anwenden</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
       <translation>Wende modifizierendes Merkmal an</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="60"/>
+      <source>Sprocket...</source>
+      <translation type="unfinished">Sprocket...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Involute gear...</source>
+      <translation type="unfinished">Involute gear...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Shaft design wizard</source>
+      <translation type="unfinished">Shaft design wizard</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="67"/>
+      <source>Measure</source>
+      <translation>Messen</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="68"/>
+      <source>Part Design Helper</source>
+      <translation type="unfinished">Part Design Helper</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="69"/>
+      <source>Part Design Modeling</source>
+      <translation type="unfinished">Part Design Modeling</translation>
     </message>
   </context>
 </TS>

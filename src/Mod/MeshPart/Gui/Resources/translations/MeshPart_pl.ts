@@ -54,7 +54,7 @@ To polecenie działa tylko z obiektem typu 'mesh'.</translation>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation>Tesselacja obwiedni</translation>
+      <translation>Rozdrobnienie kształtu</translation>
     </message>
   </context>
   <context>
@@ -275,7 +275,7 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Tesselacja</translation>
+      <translation>Rozdrobnienie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -413,7 +413,7 @@ Najmniejszą wartością jest 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
       <source>Very fine</source>
-      <translation>Bardzo dokładna</translation>
+      <translation>Bardzo dokładnie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="259"/>
@@ -483,7 +483,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation>Pozostaw otwarty panel</translation>
+      <translation>Pozostaw panel otwarty</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>

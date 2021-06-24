@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Svisle na střed buněk</translation>
     </message>
     <message>
       <source>Set bold text</source>
@@ -305,7 +305,7 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Vymazat buňku(y)</translation>
     </message>
     <message>
       <source>Set foreground color</source>
@@ -454,8 +454,8 @@ Prosím vyberte pouze jednu buňku.</translation>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Odkaz na buňku aliasem, například
+Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -550,8 +550,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Odkaz na buňku aliasem, například
+Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -570,7 +570,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Vložit %n řádek(ů) nad</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
@@ -579,7 +579,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Vložit %n řádků pod</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
@@ -588,7 +588,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Vložit %n nesouvislých řádků</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
@@ -597,7 +597,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Remove row(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Odstranit řádek(y)</numerusform>
         <numerusform>Remove row(s)</numerusform>
         <numerusform>Remove row(s)</numerusform>
         <numerusform>Remove row(s)</numerusform>
@@ -606,7 +606,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Vložit %n sloupec(ů) vlevo</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
@@ -615,7 +615,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Vložit %n sloupec(ů) vpravo</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
@@ -624,7 +624,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Vložit %n nesouvislých sloupců</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
@@ -633,7 +633,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Odstranit sloupec(ů)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>

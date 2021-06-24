@@ -346,6 +346,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Teilen zu einem Verbund</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolesche Fragmente</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -358,16 +368,6 @@ Ein 'Verbundobjekt-Filter' kann verwendet werden, um die einzelnen Scheiben zu e
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
       <translation>Auseinanderschneiden</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolesche Fragmente</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>

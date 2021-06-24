@@ -1528,7 +1528,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="task_scale.py" line="140"/>
       <source>Modify subelements</source>
-      <translation>Modyfikuj podelementy</translation>
+      <translation>Modyfikuj elementy podrzędne</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="141"/>
@@ -5317,7 +5317,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
     <message>
       <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
-      <translation>&amp;Odsunięcie stylu OpenCascade</translation>
+      <translation>&amp;Odsunięcie w stylu OpenCascade</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="792"/>
@@ -5675,7 +5675,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
-      <translation>Modyfikuj podelementy</translation>
+      <translation>Modyfikuj elementy podrzędne</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="798"/>

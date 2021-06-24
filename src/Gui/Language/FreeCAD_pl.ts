@@ -4023,7 +4023,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     </message>
     <message>
       <source>Start Recovery</source>
-      <translation>Uruchomienie odzyskiwania</translation>
+      <translation>Rozpoczęcie odzyskiwania</translation>
     </message>
     <message>
       <source>Not yet recovered</source>
@@ -4083,7 +4083,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Naciśnij przycisk "Rozpoczęcie odzyskiwania", aby rozpocząć proces przywracania dokumentu wymienionego poniżej. 
 
-Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
+Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
@@ -8156,7 +8156,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Random color</source>
-      <translation>Kolor losowy</translation>
+      <translation>Nadaj kolor losowo</translation>
     </message>
   </context>
   <context>
@@ -8583,7 +8583,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Przełącz wyświetlanie</translation>
+      <translation>Przełącz widoczność</translation>
     </message>
     <message>
       <source>Toggles visibility</source>

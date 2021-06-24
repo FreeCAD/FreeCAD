@@ -332,7 +332,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="386"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Tworzenie obiektu ulepszenia, który zastępuje pewne cechy trasy pracy</translation>
+      <translation>Utwórz obiekt ulepszenia, który zastępuje pewne cechy toru pracy</translation>
     </message>
   </context>
   <context>

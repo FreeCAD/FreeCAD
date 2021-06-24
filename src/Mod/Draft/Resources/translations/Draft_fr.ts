@@ -1723,7 +1723,7 @@ Une répétition de lien est plus efficace lors de la création de plusieurs cop
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="161"/>
       <source>Link array</source>
-      <translation>Lier un tableau</translation>
+      <translation>Réseau de liens</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="186"/>
@@ -1780,7 +1780,7 @@ Doit être au moins de 2.</translation>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation>Matrice orthogonale</translation>
+      <translation>Réseau orthogonale</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="44"/>
@@ -1843,7 +1843,7 @@ Une répétition de lien est plus efficace lors de la création de plusieurs cop
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="152"/>
       <source>Link array</source>
-      <translation>Lier un tableau</translation>
+      <translation>Réseau de liens</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="177"/>
@@ -1967,7 +1967,7 @@ Une répétition de lien est plus efficace lors de la création de plusieurs cop
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="161"/>
       <source>Link array</source>
-      <translation>Lier un tableau</translation>
+      <translation>Réseau de liens</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="187"/>
@@ -2862,7 +2862,7 @@ Vous pouvez ensuite l'utiliser pour enregistrer une position différente de la c
     <message>
       <location filename="gui_shape2dview.py" line="59"/>
       <source>Shape 2D view</source>
-      <translation>Vue 2D de la Forme</translation>
+      <translation>Vue 2D de la forme</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="62"/>
@@ -3311,7 +3311,7 @@ convertir les bords fermés en faces remplies et en polygones paramétriques, et
     <message>
       <location filename="gui_lines.py" line="310"/>
       <source>Polyline</source>
-      <translation>Ligne brisée</translation>
+      <translation>Polyligne</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="313"/>
@@ -3324,7 +3324,7 @@ convertir les bords fermés en faces remplies et en polygones paramétriques, et
     <message>
       <location filename="gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation>Filaire vers B-Spline</translation>
+      <translation>Polyligne vers B-spline</translation>
     </message>
     <message>
       <location filename="gui_wire2spline.py" line="67"/>
@@ -6160,7 +6160,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
       <source>Orthogonal array</source>
-      <translation>Matrice orthogonale</translation>
+      <translation>Réseau orthogonale</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="350"/>
