@@ -65,6 +65,8 @@ void DlgSettingsSelection::saveSettings()
     ViewParams::setPreselectionToolTipOffsetX(ui->spinBoxToolTipOffsetX->value());
     ViewParams::setPreselectionToolTipOffsetY(ui->spinBoxToolTipOffsetY->value());
     ViewParams::setPreselectionToolTipFontSize(ui->spinBoxToolTipFontSize->value());
+    
+    ViewParams::setSelectionColorDifference(ui->spinBoxColorDiff->value());
 }
 
 void DlgSettingsSelection::loadSettings()
@@ -84,6 +86,8 @@ void DlgSettingsSelection::loadSettings()
     ui->spinBoxToolTipOffsetX->setValue(ViewParams::getPreselectionToolTipOffsetX());
     ui->spinBoxToolTipOffsetY->setValue(ViewParams::getPreselectionToolTipOffsetY());
     ui->spinBoxToolTipFontSize->setValue(ViewParams::getPreselectionToolTipFontSize());
+
+    ui->spinBoxColorDiff->setValue(ViewParams::getSelectionColorDifference());
 }
 
 void DlgSettingsSelection::changeEvent(QEvent *e)

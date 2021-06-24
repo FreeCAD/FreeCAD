@@ -66,6 +66,8 @@
 
 #include <Gui/ViewProviderLink.h>
 
+#include "ColorDiff/ColorUtils.cpp"
+
 using namespace Gui;
 
 typedef CoinPtr<SoFCVertexCache> VertexCachePtr;
@@ -1325,16 +1327,19 @@ SoFCRenderCache::getVertexCaches(int depth)
 }
 
 bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor &other) {
+    double delta = ColorUtils::getColorDeltaE(
+          ColorUtils::rgbColor(color[0], color[1], color[2]),
+          ColorUtils::rgbColor(other[0], other[1], other[2]));
+    if (delta > ViewParams::SelectionColorDifference())
+      return false;
+
     float h,s,v;
     color.getHSVValue(h,s,v);
-    float h2,s2,v2;
-    other.getHSVValue(h2,s2,v2);
-
-    if(fabs(h-h2) + fabs(s-s2) > 0.2f)
-        return false;
     h += 0.3f;
     if(h>1.0f)
         h = 1.0f-h;
+    if(s<0.2f)
+        s = 1.0f-s;
     res.setHSVValue(h,s,1.0f);
     return true;
 }

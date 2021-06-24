@@ -332,6 +332,9 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Section filling texture image path."))\
     FC_VIEW_PARAM(SectionHatchTextureEnable, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Enable section fill texture."))\
+    FC_VIEW_PARAM(SelectionColorDifference, double, Float, 25.0, \
+        QT_TRANSLATE_NOOP("ViewParams","Color difference threshold for auto making distinct\n"\
+                                       "selection highlight color")) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
