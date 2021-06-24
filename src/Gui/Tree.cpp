@@ -267,6 +267,7 @@ public:
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
+    int _getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
 
     void setHighlight(bool set, HighlightMode mode = HighlightMode::UserDefined);
 
@@ -6933,6 +6934,26 @@ const char *DocumentObjectItem::getName() const {
 }
 
 int DocumentObjectItem::getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const
+{
+    int res = _getSubName(str, topParent);
+    if (topParent)
+        return res;
+    auto group = App::GeoFeatureGroupExtension::getGroupOfObject(object()->getObject());
+    if (!group)
+        return res;
+    auto it = myOwner->ObjectMap.find(group);
+    if (it == myOwner->ObjectMap.end() || it->second->items.empty())
+        return res;
+    auto item = *it->second->items.begin();
+    res = item->getSubName(str, topParent);
+    if (!topParent)
+        topParent = group;
+    else
+        str << group->getNameInDocument() << ".";
+    return res;
+}
+
+int DocumentObjectItem::_getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const
 {
     auto parent = getParentItem();
     if(!parent)
