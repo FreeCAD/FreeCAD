@@ -42,7 +42,8 @@
 #include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/sensors/SoDataSensor.h>
-#include <Inventor/sensors/SoPathSensor.h>
+#include <Inventor/sensors/SoIdleSensor.h>
+#include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -116,29 +117,57 @@ struct ElementEntry {
   VertexCacheMap vcachemap;
 };
 
-class SelectionSensor : public SoPathSensor {
+class SelectionSensor : public SoNodeSensor {
 public:
   SelectionSensor()
     :tmpPath(10)
   {
-    setTriggerFilter(SoPathSensor::NODES);
-    ontop = false;
     tmpPath.ref();
   }
 
   ~SelectionSensor() {
+    attachPath(nullptr);
     tmpPath.unrefNoDelete();
   }
 
   void attachPath(SoPath *path)
   {
-    tmpPath.truncate(0);
-    tmpPath.append(path);
-    this->attach(path);
+    int adjustment;
+    if (path) {
+      attachPath(nullptr);
+      adjustment = 1;
+    } else 
+      adjustment = -1;
+
+    if (path) {
+      tmpPath.append(path);
+      int idx = 0;
+      if (path->getLength() > 1
+          && path->getHead()->isOfType(SoFCUnifiedSelection::getClassTypeId()))
+          ++idx;
+      attach(path->getNode(idx));
+    } else
+      detach();
+
+    attachedPath = path;
+    for (int i=0, c=tmpPath.getLength(); i<c; ++i) {
+      auto node = tmpPath.getNode(i);
+      if (node->isOfType(SoFCSwitch::getClassTypeId())) {
+        auto pcSwitch = static_cast<SoFCSwitch*>(node);
+        int v = pcSwitch->childNotify.getValue() + adjustment;
+        if (v < 0)
+          v = 0;
+        pcSwitch->childNotify = v;
+      }
+    }
+    if (!path)
+      tmpPath.truncate(0);
   }
 
   void refresh(SoFCRenderer * renderer) {
-    SoPath *path = this->getAttachedPath();
+    if (!attachedPath)
+      return;
+    SoPath *path = attachedPath;
     // rebuild path in case of any transient changes like reordered children
     if (path->getLength() && path->getLength() < tmpPath.getLength()) {
       auto node = tmpPath.getNode(path->getLength()-1);
@@ -171,9 +200,10 @@ public:
   }
 
   SoTempPath tmpPath;
+  CoinPtr<SoPath> attachedPath;
   std::unordered_map<std::string, ElementEntry> elements;
   RenderCachePtr cache;
-  bool ontop;
+  bool ontop = false;
 };
 
 typedef std::unordered_map<PathPtr, SelectionSensor, PathHasher, PathHasher> SelectionPathMap;
@@ -480,8 +510,9 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
 {
   SoFCRenderCacheManagerP * self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
   SelectionSensor * sensor = static_cast<SelectionSensor*>(_sensor);
-
-  SoPath * path = sensor->getAttachedPath();
+  SoPath *path = sensor->attachedPath;
+  if (!path)
+    return;
   sensor->refresh(self->renderer);
   if (!path->getLength())
     return;
