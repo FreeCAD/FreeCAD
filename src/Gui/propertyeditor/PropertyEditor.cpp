@@ -587,7 +587,13 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDoc
     if (autoexpand)
         expandAll();
 
-    this->header()->setVisible(!propList.empty());
+    this->header()->setVisible(!_hideHeader && !propList.empty());
+}
+
+void PropertyEditor::hideHeader(bool hide)
+{
+    _hideHeader = hide;
+    this->header()->setVisible(!_hideHeader && !propList.empty());
 }
 
 void PropertyEditor::updateProperty(const App::Property& prop)
@@ -629,6 +635,7 @@ enum MenuAction {
     MA_Print,
     MA_AutoExpand,
     MA_ShowAll,
+    MA_ToggleHeader,
     MA_Expression,
     MA_RemoveProp,
     MA_AddProp,
@@ -655,6 +662,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
     showAll->setCheckable(true);
     showAll->setChecked(PropertyView::showAll());
     showAll->setData(QVariant(MA_ShowAll));
+
+    QAction *toggleHeader = menu.addAction(
+            this->header()->isVisible() ? tr("Hide header") : tr("Show header"));
+    toggleHeader->setData(QVariant(MA_ToggleHeader));
 
     menu.addAction(tr("Print to console"))->setData(QVariant(MA_Print));
 
@@ -786,6 +797,9 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
         autoexpand = autoExpand->isChecked();
         if (autoexpand)
             expandAll();
+        return;
+    case MA_ToggleHeader:
+        PropertyView::toggleHeader(header()->isVisible());
         return;
     case MA_ShowAll:
         PropertyView::setShowAll(action->isChecked());

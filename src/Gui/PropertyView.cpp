@@ -113,6 +113,11 @@ PropertyView::PropertyView(QWidget *parent)
             this, SLOT(sectionResized(int,int,int)));
     tabs->addTab(propertyEditorData, tr("Data"));
 
+    if (_GetParam()->GetBool("HideHeader", false)) {
+        propertyEditorView->hideHeader(true);
+        propertyEditorData->hideHeader(true);
+    }
+
     int preferredTab = _GetParam()->GetInt("LastTabIndex", 1);
 
     if ( preferredTab > 0 && preferredTab < tabs->count() )
@@ -196,6 +201,14 @@ void PropertyView::setShowAll(bool enable) {
                 view->onTimer();
             }
         }
+    }
+}
+
+void PropertyView::toggleHeader(bool visible) {
+    _GetParam()->SetBool("HideHeader",visible);
+    for(auto view : getMainWindow()->findChildren<PropertyView*>()) {
+        view->propertyEditorData->hideHeader(visible);
+        view->propertyEditorView->hideHeader(visible);
     }
 }
 

@@ -95,6 +95,8 @@ public:
     void openEditor(const QModelIndex &index);
     void closeEditor();
 
+    void hideHeader(bool);
+
 protected Q_SLOTS:
     void onItemActivated(const QModelIndex &index);
     void onItemExpanded(const QModelIndex &index);
@@ -143,6 +145,7 @@ private:
     QPersistentModelIndex editingIndex;
     int editingDecimals;
     int removingRows = 0;
+    bool _hideHeader = false;
 
     friend class Gui::PropertyView;
     friend class PropertyItemDelegate;

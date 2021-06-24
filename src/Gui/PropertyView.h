@@ -68,6 +68,7 @@ public:
     static bool showAll();
     static void setShowAll(bool);
     static bool isPropertyHidden(const App::Property *);
+    static void toggleHeader(bool);
 
 public Q_SLOTS:
     /// Stores a preference for the last tab selected
