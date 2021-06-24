@@ -576,7 +576,10 @@ App::SubObjectT Document::getInEditT(int *mode) const
 {
     ViewProviderDocumentObject *parentVp = nullptr;
     std::string subname;
-    if (!getInEdit(&parentVp, &subname, mode))
+    auto vp = getInEdit(&parentVp, &subname, mode);
+    if (!parentVp)
+        parentVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(vp);
+    if (parentVp)
         return App::SubObjectT(parentVp->getObject(), subname.c_str());
     return App::SubObjectT();
 }
