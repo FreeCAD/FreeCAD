@@ -45,12 +45,14 @@ namespace Gui
     private Q_SLOTS:
       void onTIncrementSlot(double freshValue);
       void onRIncrementSlot(double freshValue);
+      void onToggleShowOnTop(bool);
     private:
       void setupGui();
       App::DocumentObjectT vpObject;
       SoFCCSysDragger *dragger;
       QuantitySpinBox *tSpinBox;
       QuantitySpinBox *rSpinBox;
+      App::SubObjectT editObj;
   };
 }
 
