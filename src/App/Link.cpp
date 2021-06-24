@@ -567,7 +567,7 @@ bool LinkBaseExtension::extensionHasChildElement() const {
 }
 
 int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visible) {
-    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    int index = getElementIndex(element);
     if(index>=0) {
         if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
             const auto &elements = _getElementListValue();
@@ -603,7 +603,7 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
 }
 
 int LinkBaseExtension::extensionIsElementVisible(const char *element) const {
-    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    int index = getElementIndex(element);
     if(index>=0) {
         if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
             const auto &elements = _getElementListValue();
@@ -630,13 +630,10 @@ int LinkBaseExtension::extensionIsElementVisible(const char *element) const {
 
 int LinkBaseExtension::extensionIsElementVisibleEx(const char *subname, int reason) const {
     auto element = Data::ComplexGeoData::findElementName(subname);
-    if(subname != element) {
-        if(reason!=DocumentObject::GS_SELECT || !isSubnameHidden(getContainer(),subname))
-            return -1;
+    if(subname != element && isSubnameHidden(getContainer(),subname))
         return 0;
-    }
 
-    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    int index = getElementIndex(subname);
     if(index>=0) {
         if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
             const auto &elements = _getElementListValue();
@@ -657,7 +654,7 @@ int LinkBaseExtension::extensionIsElementVisibleEx(const char *subname, int reas
     }
     DocumentObject *linked = getTrueLinkedObject(false);
     if(linked)
-        return linked->isElementVisibleEx(element,reason);
+        return linked->isElementVisibleEx(subname,reason);
     return -1;
 }
 
