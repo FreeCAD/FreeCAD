@@ -57,6 +57,17 @@ PyObject* ViewProviderDocumentObjectPy::update(PyObject *args)
     } PY_CATCH;
 }
 
+PyObject* ViewProviderDocumentObjectPy::isShowable(PyObject *args)
+{
+    PyObject *refresh = Py_False;
+    if (!PyArg_ParseTuple(args, "|O", &refresh))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(
+                    getViewProviderDocumentObjectPtr()->isShowable(PyObject_IsTrue(refresh))));
+    } PY_CATCH;
+}
+
 Py::Object ViewProviderDocumentObjectPy::getObject(void) const
 {
     App::DocumentObject* obj = getViewProviderDocumentObjectPtr()->getObject();

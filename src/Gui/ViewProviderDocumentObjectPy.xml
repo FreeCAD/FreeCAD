@@ -18,6 +18,11 @@
 				<UserDocu>Update the view representation of the object</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="isShowable">
+			<Documentation>
+				<UserDocu>isShowable(refresh=False) -- Check if the view object is showable</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Object">
 			<Documentation>
                 <UserDocu>Set/Get the associated data object</UserDocu>
