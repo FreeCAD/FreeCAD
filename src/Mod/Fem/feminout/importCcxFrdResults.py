@@ -108,7 +108,7 @@ def importFrd(
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = (
-                        "{}Mode{}_Results"
+                        "{}EigenMode_{}_Results"
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
@@ -116,13 +116,13 @@ def importFrd(
                     if result_analysis_type == "buckling":
 
                         results_name = (
-                            "{}BucklingFactor{}_Results"
+                            "{}BucklingFactor_{}_Results"
                             .format(result_name_prefix, step_time)
                         )
                     else:
                         results_name = (
-                            "{}Time{}_Results"
-                                .format(result_name_prefix, step_time)
+                            "{}Time_{}_Results"
+                            .format(result_name_prefix, step_time)
                         )
 
                 else:
