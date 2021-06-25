@@ -1,0 +1,15 @@
+FROM opensuse/leap:15.2
+
+ENV TZ=Etc/UTC
+ENV UTC=true
+ENV ARC=false
+
+COPY openSUSE.sh /tmp
+
+RUN zypper update && \
+    sh /tmp/openSUSE.sh && \
+    mkdir /builds
+
+WORKDIR /builds
+
+VOLUME [ "/builds" ]
