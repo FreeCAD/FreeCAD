@@ -1219,18 +1219,27 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             getElementListProperty()->setValues(std::vector<App::DocumentObject*>());
 
             if(getPlacementListProperty()) {
-                getPlacementListProperty()->setStatus(Property::User3,
-                        getScaleListProperty()!=nullptr || matrixList);
+                getPlacementListProperty()->setStatus(Property::User3,true);
                 getPlacementListProperty()->setValue(placements);
                 getPlacementListProperty()->setStatus(Property::User3,false);
             }
             if(getScaleListProperty()) {
-                getScaleListProperty()->setStatus(Property::User3, matrixList!=nullptr);
+                getScaleListProperty()->setStatus(Property::User3,true);
                 getScaleListProperty()->setValue(scales);
                 getScaleListProperty()->setStatus(Property::User3,false);
             }
-            if (matrixList)
+            if (matrixList) {
+                matrixList->setStatus(Property::User3,true);
                 matrixList->setValue(matrices);
+                matrixList->setStatus(Property::User3,false);
+            }
+
+            if (getScaleListProperty())
+                getScaleListProperty()->touch();
+            else if (getPlacementListProperty())
+                getPlacementListProperty()->touch();
+            else if (matrixList)
+                matrixList->touch();
 
             for(auto obj : objs) {
                 if(obj && obj->getNameInDocument())
