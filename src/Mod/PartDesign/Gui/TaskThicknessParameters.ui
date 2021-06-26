@@ -24,21 +24,12 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="buttonRefAdd">
+      <widget class="QCheckBox" name="buttonRefAdd">
        <property name="toolTip">
-        <string>Click the button to enter toggle mode. Click
-again to return to normal mode.
-
-In toggle mode, you can select geometry either
-in the list below, or in the 3D view to toggle
-its state.
-
-In normal mode, you can only add new geometry
-by selection. Existing geometry references can
-be removed using the Delete key.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In toggle mode, you can select geometry either&lt;/p&gt;&lt;p&gt;in the list below, or in the 3D view to toggle&lt;/p&gt;&lt;p&gt;its state.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;In normal mode, you can only add new geometry&lt;/p&gt;&lt;p&gt;by selection. Existing geometry references can&lt;/p&gt;&lt;p&gt;be removed using the Delete key.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Toggle</string>
+        <string>Toggle mode</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -48,8 +39,7 @@ be removed using the Delete key.</string>
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetReferences">
-    </widget>
+    <widget class="QListWidget" name="listWidgetReferences"/>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -61,23 +51,23 @@ be removed using the Delete key.</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="Value">
-       <property name="keyboardTracking">
+      <widget class="Gui::QuantitySpinBox" name="Value" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>999999999.000000000000000</double>
        </property>
-       <property name="singleStep">
+       <property name="singleStep" stdset="0">
         <double>0.100000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>1.000000000000000</double>
        </property>
       </widget>

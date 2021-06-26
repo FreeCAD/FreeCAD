@@ -57,7 +57,7 @@ public:
 
     void setupTransaction();
 
-    void setup(QLabel *msg, QListWidget *widget, QPushButton *btnAdd, bool touched=false);
+    void setup(QLabel *msg, QListWidget *widget, QCheckBox *btnAdd, bool touched=false);
 
     /// Apply the changes made to the object to it
     virtual void apply() {}
@@ -108,7 +108,7 @@ protected:
 
     QAction* deleteAction = nullptr;
     QListWidget *listWidget = nullptr;
-    QPushButton *btnAdd = nullptr;
+    QCheckBox *btnAdd = nullptr;
     QLabel *messageLabel = nullptr;
 
     bool onTopEnabled;
