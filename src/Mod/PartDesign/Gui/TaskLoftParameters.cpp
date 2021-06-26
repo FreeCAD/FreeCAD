@@ -540,10 +540,10 @@ bool TaskDlgLoftParameters::accept()
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getLoftView()->getObject());
     try {
         parameter->setupTransaction();
+        Gui::cmdGuiDocument(pcLoft, "resetEdit()");
         Gui::cmdAppDocument(pcLoft, "recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());
-        Gui::cmdGuiDocument(pcLoft, "resetEdit()");
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {

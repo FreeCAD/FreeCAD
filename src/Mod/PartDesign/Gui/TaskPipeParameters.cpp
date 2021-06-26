@@ -1273,10 +1273,10 @@ bool TaskDlgPipeParameters::accept()
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getPipeView()->getObject());
     try {
         parameter->setupTransaction();
+        Gui::cmdGuiDocument(pcPipe, "resetEdit()");
         Gui::cmdAppDocument(pcPipe, "recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());
-        Gui::cmdGuiDocument(pcPipe, "resetEdit()");
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {

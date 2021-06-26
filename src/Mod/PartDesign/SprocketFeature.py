@@ -235,8 +235,8 @@ class SprocketTaskPanel:
                 
     def accept(self):
         self.transferTo()
-        FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
         
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()

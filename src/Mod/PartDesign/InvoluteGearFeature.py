@@ -242,8 +242,8 @@ class _InvoluteGearTaskPanel:
     def accept(self):
         #print 'accept(self)'
         self.transferTo()
-        FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
         
                     
     def reject(self):

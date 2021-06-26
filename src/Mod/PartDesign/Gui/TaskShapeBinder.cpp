@@ -321,10 +321,10 @@ bool TaskDlgShapeBinder::accept()
     std::string name = vp->getObject()->getNameInDocument();
 
     try {
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
@@ -340,7 +340,6 @@ bool TaskDlgShapeBinder::reject()
   // roll back the done things
   Gui::Command::abortCommand();
   Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-  Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
   return true;
 }
 
