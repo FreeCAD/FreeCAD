@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>559</width>
+    <width>610</width>
     <height>396</height>
    </rect>
   </property>
@@ -14,7 +14,16 @@
    <string>Mesh view</string>
   </property>
   <layout class="QGridLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <property name="spacing">
@@ -26,7 +35,16 @@
       <string>Default appearance for new meshes</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -34,7 +52,16 @@
       </property>
       <item row="0" column="0">
        <layout class="QGridLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
@@ -51,92 +78,6 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>41</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="labelLineColor">
-          <property name="text">
-           <string>Default line color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLabel" name="labelMeshTransparency">
-          <property name="text">
-           <string>Mesh transparency</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="buttonMeshColor">
-          <property name="toolTip">
-           <string>Default color for new meshes</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>204</red>
-            <green>204</green>
-            <blue>204</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>MeshColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Mesh</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="Gui::PrefSpinBox" name="spinLineTransparency">
-          <property name="suffix">
-           <string>%</string>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>LineTransparency</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Mesh</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="labelFaceColor">
-          <property name="text">
-           <string>Default mesh color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="Gui::PrefSpinBox" name="spinMeshTransparency">
-          <property name="suffix">
-           <string>%</string>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>MeshTransparency</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Mesh</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2" colspan="3">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>191</width>
             <height>20</height>
            </size>
           </property>
@@ -161,32 +102,12 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefColorButton" name="buttonBackfaceColor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="color">
-           <color>
-            <red>204</red>
-            <green>204</green>
-            <blue>204</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BackfaceColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Mesh</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="buttonLineColor">
           <property name="toolTip">
            <string>Default line color for new meshes</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -223,13 +144,6 @@ will be used or black.</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="3">
-         <widget class="QLabel" name="labelLineTransparency">
-          <property name="text">
-           <string>Line transparency</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelBackfaceColor">
           <property name="text">
@@ -252,6 +166,152 @@ will be used or black.</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefColorButton" name="buttonBackfaceColor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>204</red>
+            <green>204</green>
+            <blue>204</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BackfaceColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Mesh</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelLineColor">
+          <property name="text">
+           <string>Default line color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="Gui::PrefSpinBox" name="spinLineTransparency">
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LineTransparency</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Mesh</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="buttonMeshColor">
+          <property name="toolTip">
+           <string>Default color for new meshes</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>204</red>
+            <green>204</green>
+            <blue>204</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MeshColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Mesh</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="labelMeshTransparency">
+          <property name="text">
+           <string>Mesh transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLabel" name="labelLineTransparency">
+          <property name="text">
+           <string>Line transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="Gui::PrefSpinBox" name="spinMeshTransparency">
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MeshTransparency</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Mesh</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelFaceColor">
+          <property name="text">
+           <string>Default mesh color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLabel" name="labelLineTransparency_2">
+          <property name="text">
+           <string>Shape type hint</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <spacer name="spacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>41</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="4">
+         <widget class="Gui::PrefComboBox" name="comboBoxShapeType">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the default shape type hint of a newly created mesh object.&lt;/p&gt;&lt;p&gt;You can later on change the view object proeprty of any mesh object.&lt;/p&gt;&lt;p&gt;Note that the section filling function when using clip plane only works&lt;/p&gt;&lt;p&gt;for 'Solid' shape type.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>Mod/Mesh</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>DefaultShapeType</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Unknown</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Solid</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
       </item>
@@ -280,7 +340,16 @@ will be used or black.</string>
       <string>Smoothing</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -406,6 +475,11 @@ to a smoother appearance.
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

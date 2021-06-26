@@ -231,6 +231,7 @@ App::PropertyFloatConstraint::Constraints ViewProviderMesh::floatRange = {1.0f,6
 App::PropertyFloatConstraint::Constraints ViewProviderMesh::angleRange = {0.0f,180.0f,1.0f};
 App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0,100,1};
 const char* ViewProviderMesh::LightingEnums[]= {"One side","Two side",NULL};
+const char* ViewProviderMesh::ShapeTypeEnums[]= {"Unknown","Solid",NULL};
 
 PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
 
@@ -251,6 +252,8 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     ADD_PROPERTY_TYPE(Lighting,(1), osgroup, App::Prop_None, "Set if the illumination comes from two sides\n or one side in the 3D view.");
     Lighting.setEnums(LightingEnums);
     ADD_PROPERTY_TYPE(LineColor,(0,0,0), osgroup, App::Prop_None, "Set line color.");
+    ADD_PROPERTY_TYPE(ShapeTypeHint,((long)0), osgroup, App::Prop_None, "Shape type of this mesh");
+    ShapeTypeHint.setEnums(ShapeTypeEnums);
 
     // Create the selection node
     pcHighlight = Gui::ViewProviderBuilder::createSelection();
@@ -290,6 +293,9 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 
     // read the correct shape color from the preferences
     Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
+    ShapeTypeHint.setValue(hGrp->GetInt("DefaultShapeType", 0));
+    if (ShapeTypeHint.getValue() == 1)
+        pShapeHints->shapeType = SoShapeHintsElement::SOLID;
 
     // Mesh color
     App::Color color = ShapeColor.getValue();
@@ -350,7 +356,11 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     if (prop == &ShapeColor || prop == &ShapeMaterial) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
     }
-    if (prop == &LineTransparency) {
+    else if (prop == &ShapeTypeHint) {
+        pShapeHints->shapeType = ShapeTypeHint.getValue() == 1
+            ? SoShapeHintsElement::SOLID : SoShapeHintsElement::UNKNOWN_SHAPE_TYPE;
+    }
+    else if (prop == &LineTransparency) {
         float trans = LineTransparency.getValue()/100.0f;
         pLineColor->transparency = trans;
     }

@@ -123,6 +123,7 @@ public:
     App::PropertyBool Coloring;
     App::PropertyEnumeration Lighting;
     App::PropertyColor LineColor;
+    App::PropertyEnumeration ShapeTypeHint;
 
     virtual void attach(App::DocumentObject *);
     virtual void updateData(const App::Property*);
@@ -232,6 +233,7 @@ private:
     static App::PropertyFloatConstraint::Constraints angleRange;
     static App::PropertyIntegerConstraint::Constraints intPercent;
     static const char* LightingEnums[];
+    static const char* ShapeTypeEnums[];
 };
 
 /**

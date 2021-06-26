@@ -61,6 +61,7 @@ void DlgSettingsMeshView::saveSettings()
     ui->spinLineTransparency->onSave();
     ui->checkboxNormal->onSave();
     ui->spinboxAngle->onSave();
+    ui->comboBoxShapeType->onSave();
 }
 
 void DlgSettingsMeshView::loadSettings()
@@ -79,6 +80,7 @@ void DlgSettingsMeshView::loadSettings()
     ui->spinLineTransparency->onRestore();
     ui->checkboxNormal->onRestore();
     ui->spinboxAngle->onRestore();
+    ui->comboBoxShapeType->onRestore();
 }
 
 /**
