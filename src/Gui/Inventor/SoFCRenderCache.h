@@ -240,6 +240,7 @@ public:
     int8_t depthfunc;
     int8_t partialhighlight;
     int8_t selectstyle;
+    int8_t shapetype;
     bool depthtest;
     bool depthwrite;
     bool depthclamp;
@@ -288,6 +289,8 @@ public:
       if (selectstyle < other.selectstyle) return true;
       if (selectstyle > other.selectstyle) return false;
       if (this->type == Triangle) {
+        if (shapetype < other.shapetype) return true;
+        if (shapetype > other.shapetype) return false;
         if (lights < other.lights) return true;
         if (lights > other.lights) return false;
         if (textures < other.textures) return true;

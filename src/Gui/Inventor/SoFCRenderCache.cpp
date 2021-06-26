@@ -275,6 +275,7 @@ SoFCRenderCache::Material::init(SoState * state)
   this->partialhighlight = 0;
   this->selectstyle = Material::Full;
   this->outline = false;
+  this->shapetype = SoShapeHintsElement::UNKNOWN_SHAPE_TYPE;
 
   if (!state)
     return;
@@ -300,6 +301,7 @@ SoFCRenderCache::Material::init(SoState * state)
   SoShapeHintsElement::ShapeType shapetype;
   SoShapeHintsElement::FaceType facetype;
   SoShapeHintsElement::get(state, ordering, shapetype, facetype);
+  this->shapetype = shapetype;
   this->vertexordering = ordering == SoShapeHintsElement::CLOCKWISE ?
                                           SoLazyElement::CW : SoLazyElement::CCW;
   // this->twoside = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
@@ -405,6 +407,7 @@ SoFCRenderCacheP::captureMaterial(SoState * state)
     SoShapeHintsElement::ShapeType shapetype;
     SoShapeHintsElement::FaceType facetype;
     SoShapeHintsElement::get(state, ordering, shapetype, facetype);
+    m.shapetype = shapetype;
     m.vertexordering = ordering == SoShapeHintsElement::CLOCKWISE ?
                                             SoLazyElement::CW : SoLazyElement::CCW;
     m.twoside = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
@@ -646,6 +649,7 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
     res.culling = parent.culling;
     res.vertexordering = parent.vertexordering;
     res.twoside = parent.twoside;
+    res.shapetype = parent.shapetype;
     res.maskflags.set(Material::FLAG_SHAPE_HINTS);
     res.maskflags.set(Material::FLAG_CULLING);
     res.maskflags.set(Material::FLAG_VERTEXORDERING);

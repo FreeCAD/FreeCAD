@@ -236,7 +236,7 @@ private:
     static const char* LightingEnums[];
     static const char* DrawStyleEnums[];
 
-    TopoDS_Shape cachedShape;
+    Part::TopoShape cachedShape;
 };
 
 }

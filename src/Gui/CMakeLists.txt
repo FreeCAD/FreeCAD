@@ -1116,6 +1116,7 @@ SET(Inventor_CPP_SRCS
     Inventor/SoFCSwitch.cpp
     Inventor/SoFCDisplayModeElement.cpp
     Inventor/SoFCDisplayMode.cpp
+    Inventor/SoFCShapeInfo.cpp
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
@@ -1158,6 +1159,7 @@ SET(Inventor_SRCS
     Inventor/SoFCSwitch.h
     Inventor/SoFCDisplayModeElement.h
     Inventor/SoFCDisplayMode.h
+    Inventor/SoFCShapeInfo.h
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h

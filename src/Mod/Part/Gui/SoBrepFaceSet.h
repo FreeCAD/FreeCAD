@@ -25,7 +25,7 @@
 
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/fields/SoMFNode.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -91,6 +91,7 @@ public:
     SoMFInt32 highlightIndices;
     SoSFColor highlightColor;
     SoSFBool  elementSelectable;
+    SoMFNode  shapeInfo;
 
     static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor &other);
     static bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other);

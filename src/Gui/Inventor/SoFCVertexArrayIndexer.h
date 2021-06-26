@@ -41,6 +41,7 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 #include "SoFCVertexAttribute.h"
+#include "COWData.h"
 
 class SoState;
 class SbBox3f;
@@ -127,12 +128,12 @@ private:
   SbFCUniqueId dataid;
   GLenum target;
 
-  std::vector<int> partarray;
+  COWVector<std::vector<int> > partarray;
+  COWVector<std::vector<intptr_t> > linestripoffsets;
+  COWVector<std::vector<int32_t> > linestripcounts;
   std::vector<int> partialindices;
   std::vector<intptr_t> partialoffsets;
   std::vector<int32_t> partialcounts;
-  std::vector<intptr_t> linestripoffsets;
-  std::vector<int32_t> linestripcounts;
 
   Gui::CoinPtr<IndexArray> indexarray;
   Gui::CoinPtr<IndexArray> previndexarray;

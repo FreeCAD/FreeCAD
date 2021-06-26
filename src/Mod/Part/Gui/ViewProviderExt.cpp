@@ -123,6 +123,8 @@
 #include <Gui/ViewProviderLink.h>
 #include <Gui/TaskElementColors.h>
 #include <Gui/ViewParams.h>
+#include <Gui/Inventor/SoFCShapeInfo.h>
+#include <Gui/InventorBase.h>
 #include "PartParams.h"
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
@@ -1631,7 +1633,7 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
             || strstr(propName,"Touched")!=0)
     {
         TopoDS_Shape cShape = getShape().getShape();
-        if(cachedShape.IsPartner(cShape)) {
+        if(cachedShape.getShape().IsPartner(cShape)) {
             updateColors();
             Gui::ViewProviderGeometryObject::updateData(prop);
             return;
@@ -1707,6 +1709,37 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
     }
 }
 
+namespace {
+struct ShapeInfo {
+    Gui::CoinPtr<SoFCShapeInfo> node;
+    int refcount = 0;
+};
+
+static std::unordered_map<void*, ShapeInfo> _ShapeTable;
+
+static void registerShape(Part::TopoShape &shape, const Part::TopoShape &newshape)
+{
+    for (auto &s : newshape.getSubTopoShapes(TopAbs_SOLID)) {
+        int count = s.countSubShapes(TopAbs_FACE);
+        if (!count)
+            continue;
+        auto &info = _ShapeTable[s.getShape().TShape().get()];
+        ++info.refcount;
+        if (!info.node) {
+            info.node = new SoFCShapeInfo;
+            info.node->partCount = count;
+            info.node->shapeType.setValue(SoFCShapeInfo::SOLID);
+        }
+    }
+    for (auto &s : shape.getSubShapes(TopAbs_SOLID)) {
+        auto it = _ShapeTable.find(s.TShape().get());
+        if (it != _ShapeTable.end() && --it->second.refcount <= 0)
+            _ShapeTable.erase(it);
+    }
+    shape = newshape;
+}
+}
+
 void ViewProviderPartExt::updateVisual()
 {
     if (!getObject()
@@ -1732,21 +1765,53 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->lineset);
     haction.apply(this->nodeset);
 
-    const Part::TopoShape & toposhape = getShape();
-    TopoDS_Shape cShape = toposhape.getShape();
-    cachedShape = cShape;
+    Part::TopoShape toposhape = getShape();
+    // We must reset the location here because the transformation data
+    // are set in the placement property
+    TopLoc_Location aLoc;
+    toposhape.setShape(toposhape.getShape().Located(aLoc), false);
     lineset ->seamIndices.setNum(0);
-    if (cShape.IsNull()) {
+    registerShape(cachedShape, toposhape);
+    if (cachedShape.isNull()) {
         coords  ->point      .setNum(0);
         pcoords ->point      .setNum(0);
         norm    ->vector     .setNum(0);
         faceset ->coordIndex .setNum(0);
         faceset ->partIndex  .setNum(0);
+        faceset ->shapeInfo  .setNum(0);
         lineset ->coordIndex .setNum(0);
         nodeset ->startIndex .setValue(0);
         VisualTouched = false;
         return;
     }
+
+    faceset->shapeInfo.enableNotify(FALSE);
+    faceset->shapeInfo.setNum(cachedShape.countSubShapes(TopAbs_SOLID));
+    int i = -1;
+    for (auto &s : cachedShape.getSubTopoShapes(TopAbs_SOLID)) {
+        int count = s.countSubShapes(TopAbs_FACE);
+        if (!count)
+            continue;
+        ++i;
+        auto node = faceset->shapeInfo.getNode(i);
+        SoFCShapeInstance *instance = nullptr;
+        if (node && node->isOfType(SoFCShapeInstance::getClassTypeId()))
+            instance = static_cast<SoFCShapeInstance*>(node);
+        else
+            instance = new SoFCShapeInstance;
+        int idx = cachedShape.findShape(s.getSubShape(TopAbs_FACE, 1));
+        assert(idx > 0);
+        instance->partIndex = idx;
+        instance->transform = convert(s.getTransform());
+        auto &info = _ShapeTable[s.getShape().TShape().get()];
+        assert(info.node);
+        instance->shapeInfo = info.node;
+        if (instance != node)
+            faceset->shapeInfo.replaceNode(i, instance);
+    }
+    faceset->shapeInfo.enableNotify(TRUE);
+
+    TopoDS_Shape cShape = cachedShape.getShape();
 
     // copy edge sub shape to work around OCC trangulation bug (in
     // case the edge is part of a face of some other shape in a
@@ -1783,10 +1848,6 @@ void ViewProviderPartExt::updateVisual()
 #else
         BRepMesh_IncrementalMesh(cShape,deflection);
 #endif
-        // We must reset the location here because the transformation data
-        // are set in the placement property
-        TopLoc_Location aLoc;
-        cShape.Location(aLoc);
 
         // count triangles and nodes in the mesh
         TopTools_IndexedMapOfShape faceMap;

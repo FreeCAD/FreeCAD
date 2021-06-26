@@ -256,15 +256,15 @@ public:
   {
   public:
     NodeSensor()
-      : node(NULL), master(NULL)
+      : node(NULL)
     {}
 
     ~NodeSensor() { detach(); }
 
     void attach(SoFCRenderCacheManagerP * master, const SoNode *node) {
+      (void)master;
       if (this->node == node) return;
       assert(!this->node);
-      this->master = master;
       this->node = const_cast<SoNode *>(node);
       this->node->addAuditor(this, SoNotRec::SENSOR);
     }
@@ -276,7 +276,6 @@ public:
     }
 
     SoNode * node;
-    SoFCRenderCacheManagerP * master;
   };
 
   class CacheSensor : public NodeSensor
@@ -287,7 +286,7 @@ public:
       this->detach();
       for (auto &cache : caches)
         cache->resetNode();
-      master->cachetable.erase(node);
+      SoFCRenderCacheManagerP::cachetable.erase(node);
     }
 
     std::vector<RenderCachePtr> caches;
@@ -301,14 +300,14 @@ public:
       this->detach();
       for (auto &vcache : caches)
         vcache->resetNode();
-      master->vcachetable.erase(node);
+      SoFCRenderCacheManagerP::vcachetable.erase(node);
     }
 
     std::vector<VertexCachePtr> caches;
   };
 
-  FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, CacheSensor> cachetable;
-  FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, VCacheSensor> vcachetable;
+  static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, CacheSensor> cachetable;
+  static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, VCacheSensor> vcachetable;
 
   SoCallbackAction *action;
   int shapetypeid;
@@ -329,6 +328,12 @@ public:
   SoFCRenderer *renderer;
   int annotation;
 };
+
+std::unordered_map<const SoNode *,
+                   SoFCRenderCacheManagerP::CacheSensor> SoFCRenderCacheManagerP::cachetable;
+
+std::unordered_map<const SoNode *,
+                   SoFCRenderCacheManagerP::VCacheSensor> SoFCRenderCacheManagerP::vcachetable;
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
@@ -437,8 +442,8 @@ SoFCRenderCacheManager::clear()
 {
   PRIVATE(this)->stack.clear();
   PRIVATE(this)->nodeset.clear();
-  PRIVATE(this)->cachetable.clear();
-  PRIVATE(this)->vcachetable.clear();
+  // PRIVATE(this)->cachetable.clear();
+  // PRIVATE(this)->vcachetable.clear();
   PRIVATE(this)->selcaches.clear();
   PRIVATE(this)->selpaths.clear();
   PRIVATE(this)->renderer->clear();
@@ -894,7 +899,8 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
   SoFCRenderCache *currentcache = self->stack.empty() ? nullptr : self->stack.back();
 
   CacheSensor * sensor = nullptr;
-  if (action->getCurPathCode() == SoAction::BELOW_PATH) {
+  if (action->getCurPathCode() == SoAction::BELOW_PATH
+      || action->getCurPathCode() == SoAction::NO_PATH) {
     sensor = &self->cachetable[node];
     sensor->attach(self, node);
     for (auto it=sensor->caches.begin(); it!=sensor->caches.end();) {

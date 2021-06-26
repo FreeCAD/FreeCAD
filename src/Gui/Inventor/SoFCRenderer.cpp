@@ -1269,6 +1269,8 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   if (this->depthwriteonly
       || curpass >= numclip
       || draw_entry.ventry->partidx >= 0
+      || (draw_entry.material->shapetype != SoShapeHintsElement::SOLID
+            && !draw_entry.ventry->cache->hasSolid())
       || (!ViewParams::getSectionFill() && !concave))
     return curpass == 0;
 
@@ -1327,9 +1329,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   glDisable(GL_LIGHTING);
   glStencilOp (GL_KEEP, GL_KEEP, GL_INVERT);
   FC_GLERROR_CHECK;
-  draw_entry.ventry->cache->renderTriangles(action->getState(),
-                                            SoFCVertexCache::NON_SORTED_ARRAY,
-                                            draw_entry.ventry->partidx);
+  draw_entry.ventry->cache->renderSolids(action->getState());
 
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
   FC_GLERROR_CHECK;

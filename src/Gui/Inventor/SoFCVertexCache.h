@@ -73,6 +73,8 @@ public:
   void renderLines(SoState * state, const int arrays = ALL, int part = -1, bool noseam = false);
   void renderPoints(SoState * state, const int array = ALL, int part = -1);
 
+  void renderSolids(SoState * state);
+
   void addTriangles(const std::map<int, int> & faces);
   void addTriangles(const std::set<int> & faces);
   void addTriangles(const std::vector<int> & faces = {});
@@ -109,6 +111,7 @@ public:
   SbBool colorPerVertex(void) const;
   SbBool hasTransparency(void) const;
   SbBool hasOpaqueParts(void) const;
+  SbBool hasSolid(void) const;
 
   uint32_t getFaceColor(int part) const;
   uint32_t getLineColor(int part) const;

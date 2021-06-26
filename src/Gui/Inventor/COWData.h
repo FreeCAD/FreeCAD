@@ -34,6 +34,14 @@ public:
     return this->data ? static_cast<int>(this->data->size()) : 0;
   }
 
+  int size() const {
+      return getNum();
+  }
+
+  bool empty() const {
+      return getNum() == 0;
+  }
+
   void clear() {
     if (!this->data) return;
     if (this->data.use_count() == 1) this->data->clear();
@@ -78,9 +86,21 @@ public:
     return !operator==(other);
   }
 
-  COWData<DataT,ValueT> & operator=(const COWData<DataT,ValueT> & other) {
-    this->data = other.data;
-    return *this;
+  void copy(const DataT & other) {
+    if (this->data.get() != &other) {
+      if (!this->data || this->data.use_count() > 1)
+        this->data = std::make_shared<DataT>(other);
+      else
+        *this->data = other;
+    }
+  }
+
+  void move(DataT && other) {
+    if (this->data.get() != &other) {
+      if (!this->data || this->data.use_count() > 1)
+        this->data = std::make_shared<DataT>();
+      *this->data = std::move(other);
+    }
   }
 
   const DataT & getData() const {
@@ -184,21 +204,56 @@ class COWVector: public COWData<VectorT, typename VectorT::value_type> {
 public:
   typedef typename VectorT::value_type ValueT;
 
+  const VectorT &getData() const {
+    static VectorT dummy;
+    return this->data ? *this->data : dummy;
+  }
+
+  typename VectorT::const_iterator begin() const {
+    return this->getData().begin();
+  }
+
+  typename VectorT::const_iterator end() const {
+    return this->getData().begin();
+  }
+
   const ValueT & get(int idx) const {
-    assert(this->data);
+    assert(idx >= 0 && idx < this->size());
     return (*this->data)[idx];
   }
 
+  ValueT * at(int idx) {
+    assert(idx >= 0 && idx < this->size());
+    if (this->data.use_count() > 1)
+      this->data = std::make_shared<VectorT>(*this->data);
+    return &this->data->at(idx);
+  }
+
+  const ValueT & operator[](int idx) const {
+    return this->get(idx);
+  }
+
   void set(int idx, const ValueT &v) {
-    assert(this->data);
     if (this->data.use_count() > 1)
       this->data = std::make_shared<VectorT>(*this->data);
     (*this->data)[idx] = v;
   }
 
-  void erase(int idx) const {
-    if (!this->data) return;
-    if (idx < 0 || idx >= this->getNum()) return;
+  bool compareAndSet(int idx, const ValueT &v) {
+    if (idx == this->size()) {
+      append(v);
+      return true;
+    }
+    assert(idx >= 0 && idx < this->size());
+    if (get(idx) != v) {
+      set(idx, v);
+      return true;
+    }
+    return false;
+  }
+
+  void erase(int idx) {
+    assert(idx >= 0 && idx < this->size());
     if (this->data.use_count() > 1)
       this->data = std::make_shared<VectorT>(*this->data);
     this->data->erase(this->data->begin() + idx);
@@ -210,6 +265,45 @@ public:
     else if (this->data.use_count() > 1)
       this->data = std::make_shared<VectorT>(*this->data);
     this->data->push_back(value);
+  }
+
+  void push_back(const ValueT &value) {
+    append(value);
+  }
+
+  const ValueT back() const {
+    assert(!this->empty());
+    return this->data->back();
+  }
+
+  const ValueT front() const {
+    assert(!this->empty());
+    return this->data->front();
+  }
+
+  void reserve(int size) {
+    if (size <= 0)
+      return;
+    if (!this->data)
+      this->data = std::make_shared<VectorT>();
+    else if (size <= (int)this->data->capacity())
+      return;
+    else if (this->data.use_count() > 1)
+      this->data = std::make_shared<VectorT>(*this->data);
+    this->data->reserve(size);
+  }
+
+  void resize(int size) {
+    if (size < 0)
+      return;
+    if (!this->data) {
+      if (!size) return;
+      this->data = std::make_shared<VectorT>();
+    } else if (size == (int)this->data->size())
+      return;
+    else if (this->data.use_count() > 1)
+      this->data = std::make_shared<VectorT>(*this->data);
+    this->data->resize(size);
   }
 
   void append(const COWVector<VectorT> &other) {
@@ -225,3 +319,4 @@ public:
 };
 
 #endif // FC_COWDATA_H
+// vim: noai:ts=2:sw=2

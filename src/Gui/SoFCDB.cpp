@@ -70,6 +70,7 @@
 #include "Inventor/SoFCVertexCache.h"
 #include "Inventor/SoFCRenderCache.h"
 #include "Inventor/SoFCDisplayMode.h"
+#include "Inventor/SoFCShapeInfo.h"
 #include "SoFCCSysDragger.h"
 #include "SoFCDirectionalLight.h"
 #include "SoFCSpotLight.h"
@@ -154,6 +155,8 @@ void Gui::SoFCDB::init()
     SoFCDirectionalLight            ::initClass();
     SoFCSpotLight                   ::initClass();
     SoMouseWheelEvent               ::initClass();
+    SoFCShapeInfo                   ::initClass();
+    SoFCShapeInstance               ::initClass();
     SoFCRenderCache                 ::initClass();
     SoFCVertexCache                 ::initClass();
 

@@ -84,8 +84,8 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
     this->indexarraylength = other.indexarraylength;
     maxindex = static_cast<int>(this->partarray.size());
     if (exclude) {
-      if (partindices.size() < this->partarray.size())
-        this->partialindices.reserve(this->partarray.size() - partindices.size());
+      if (this->partarray.size() > (int)partindices.size())
+        this->partialindices.reserve(this->partarray.size() - (int)partindices.size());
       auto it = partindices.begin();
       auto &filter = other.partialindices;
       for (int i=0; i<maxindex; ++i) {
@@ -271,7 +271,7 @@ void
 SoFCVertexArrayIndexer::close(std::vector<int> && parts)
 {
   if (!this->indexarray) return;
-  this->partarray = std::move(parts);
+  this->partarray.move(std::move(parts));
 }
 
 void
