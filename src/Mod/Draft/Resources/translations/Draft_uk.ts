@@ -1376,17 +1376,17 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="init_tools.py" line="145"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>Інструменти створення ескізу</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="148"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>Інструменти анотації креслення</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="151"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Інструменти редагування ескізу</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>

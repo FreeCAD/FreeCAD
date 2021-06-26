@@ -350,6 +350,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation>Delning till komposition</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleska fragment</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Dela objekt där de skär varandra</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -362,16 +372,6 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
       <translation>Dela isär</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleska fragment</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Dela objekt där de skär varandra</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>

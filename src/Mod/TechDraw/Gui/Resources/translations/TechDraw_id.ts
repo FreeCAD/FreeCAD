@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Simpan Berkas Dxf</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -918,7 +918,7 @@
     <message>
       <location filename="../../TaskDetail.cpp" line="509"/>
       <source>Update Detail</source>
-      <translation type="unfinished">Update Detail</translation>
+      <translation>Perbarui perincian</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="400"/>
@@ -986,12 +986,12 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="96"/>
       <source>Undo (CTRL+Z)</source>
-      <translation type="unfinished">Undo (CTRL+Z)</translation>
+      <translation>Urung (CTRL+Z)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="99"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>Urung</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="122"/>
@@ -1193,12 +1193,12 @@
     <message>
       <location filename="../../mrichtextedit.cpp" line="675"/>
       <source>Select an image</source>
-      <translation type="unfinished">Select an image</translation>
+      <translation>Pilih gambar</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="677"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
-      <translation type="unfinished">JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</translation>
+      <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Semua (*)</translation>
     </message>
   </context>
   <context>
@@ -1312,7 +1312,7 @@
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>Can not export selection</source>
-      <translation type="unfinished">Can not export selection</translation>
+      <translation>Tidak bisa mengekspor pilihan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1366"/>
@@ -1648,7 +1648,7 @@
       <location filename="../../CommandAnnotate.cpp" line="1155"/>
       <location filename="../../CommandAnnotate.cpp" line="1368"/>
       <source>Nothing selected</source>
-      <translation type="unfinished">Nothing selected</translation>
+      <translation>Tak ada yang dipilih</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1169"/>
@@ -1750,7 +1750,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>SVG (*.svg)</source>
-      <translation type="unfinished">SVG (*.svg)</translation>
+      <translation>SVG (*.svg)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="838"/>
@@ -1762,7 +1762,7 @@
       <location filename="../../ViewProviderProjGroup.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="204"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Apakah yakin ingin melanjutkan?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="249"/>
@@ -2025,7 +2025,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="171"/>
       <source>Line Width</source>
-      <translation type="unfinished">Line Width</translation>
+      <translation>Tebal Garis</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="184"/>
@@ -2554,12 +2554,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
       <source>ANSI</source>
-      <translation type="unfinished">ANSI</translation>
+      <translation>ANSI</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="474"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="507"/>
@@ -2889,7 +2889,7 @@ Multiplier of &apos;Font Size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="218"/>
       <source>Show Units</source>
-      <translation type="unfinished">Show Units</translation>
+      <translation>Tampilkan Satuan</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="377"/>
@@ -2924,7 +2924,7 @@ Multiplier of &apos;Font Size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="187"/>
       <source>⌀</source>
-      <translation type="unfinished">⌀</translation>
+      <translation>⌀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="102"/>
@@ -3095,7 +3095,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="495"/>
       <source>Files</source>
-      <translation type="unfinished">Files</translation>
+      <translation>Berkas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="509"/>
@@ -3303,7 +3303,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
       <source>Page Scale</source>
-      <translation type="unfinished">Page Scale</translation>
+      <translation>Skala Halaman</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
@@ -3458,7 +3458,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="862"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Simpan Berkas Dxf</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="864"/>
@@ -3504,7 +3504,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="22"/>
       <source>Text:</source>
-      <translation type="unfinished">Text:</translation>
+      <translation>Teks:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="29"/>
@@ -3514,7 +3514,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>Warna Teks:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
@@ -4113,7 +4113,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="192"/>
       <source>Display Style</source>
-      <translation type="unfinished">Display Style</translation>
+      <translation>Gaya Tampilan</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="203"/>

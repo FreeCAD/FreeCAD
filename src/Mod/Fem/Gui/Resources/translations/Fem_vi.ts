@@ -75,6 +75,11 @@
       <translation type="unfinished">Geometry reference selector for a</translation>
     </message>
     <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Công cụ chọn tham chiếu hình học cho một </translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Thêm mới</translation>
@@ -118,11 +123,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Chất rắn</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Công cụ chọn tham chiếu hình học cho một </translation>
     </message>
   </context>
   <context>

@@ -91,34 +91,34 @@ Osa prochází tímto bodem.</translation>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation type="unfinished">The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
+      <translation>Objekt osy, který přepíše hodnotu 'Osa' a 'Střed', například pomocná čára (vztažná).
+Umístění, poloha a rotace bude použita při vytváření polárních a kruhových polí.
+Ponechte tuto vlastnost prázdnou pro ruční nastavení 'Osa' a 'Střed'.</translation>
     </message>
     <message>
       <location filename="array.py" line="228"/>
       <source>Number of copies in the polar direction</source>
-      <translation type="unfinished">Number of copies in the polar direction</translation>
+      <translation>Počet kopií v polárním směru</translation>
     </message>
     <message>
       <location filename="array.py" line="238"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
+      <translation>Délka a orientace intervalů ve směru osy 'Axis'</translation>
     </message>
     <message>
       <location filename="array.py" line="247"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>Úhel pokrytý kopiemi</translation>
     </message>
     <message>
       <location filename="array.py" line="260"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>Vzdálenost mezi kruhovými vrstvami</translation>
     </message>
     <message>
       <location filename="array.py" line="270"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation type="unfinished">Distance between copies in the same circular layer</translation>
+      <translation>Vzdálenost mezi kopiemi ve stejné kruhové vrstvě</translation>
     </message>
     <message>
       <location filename="array.py" line="280"/>
@@ -170,7 +170,7 @@ Tato vlastnost je pouze pro čtení, protože počet prvků závisí na parametr
     <message>
       <location filename="wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Velikost zkosení pro rohy</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="58"/>
@@ -180,7 +180,7 @@ Tato vlastnost je pouze pro čtení, protože počet prvků závisí na parametr
     <message>
       <location filename="rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>Horizontální dělení tohoto obdélníku</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="64"/>
@@ -230,14 +230,11 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>Bod, kterým prochází kótovací čára nebo její extrapolace.
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- Pro lineární kóty tato vlastnost určuje, odstup kótovací čáry od měřenému objektu.
+- V případě radiálních kót určuje směr kótovací čáry, která zobrazuje měřený poloměr nebo průměr.
+- U úhlových kót řídí poloměr oblouku kóty, který zobrazuje měřený úhel.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="233"/>
@@ -245,10 +242,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Počáteční bod kótovací čáry
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Pokud se jedná o kótu poloměru, bude to střed oblouku.
+Pokud se jedná o kótu průměru, bude to bod, který leží na oblouku.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -256,17 +253,16 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>Koncový bod kótovací čáry
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+Pokud se jedná o kótu poloměru nebo průměru, bude to bod, který leží na oblouku.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>Směr kótovací čáry.
+Pokud zůstane '(0,0,0)', směr se vypočítá automaticky.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -330,14 +326,14 @@ vlastností "První úhel" a "Poslední úhel".</translation>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>Umístění referenčního bodu první čáry</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>Text zobrazený tímto objektem.
+Je to seznam řetězců; každý prvek v seznamu bude zobrazen na vlastním řádku.</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
@@ -348,8 +344,7 @@ It is a list of strings; each element in the list will be displayed in its own l
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Koncový úhel oblouku (pro celou kružnici použijte stejnou hodnotu jako První úhel)</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
@@ -369,7 +364,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Jak má být mnohoúhelník vykreslen z řídící kružnice</translation>
     </message>
     <message>
       <location filename="point.py" line="45"/>
@@ -389,14 +384,14 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>Objekty, které jsou součástí této vrstvy</translation>
     </message>
     <message>
       <location filename="label.py" line="65"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>Poloha vrcholu vodící čáry.
+Tento bod může být ozdoben šipkou nebo jiným symbolem.</translation>
     </message>
     <message>
       <location filename="label.py" line="79"/>
@@ -404,10 +399,10 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
+      <translation>Objekt a volitelně i dílčí prvek, jehož vlastnosti budou zobrazeny
+jako "Text" v závislosti na "Typu popisku".
 
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+'Cíl' nebude použit, pokud je 'Typ popisku' nastaven na 'Vlastní'.</translation>
     </message>
     <message>
       <location filename="label.py" line="109"/>
@@ -420,15 +415,15 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>Seznam bodů definujících vodící čáru; obvykle seznam tří bodů.
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+Prvním bodem by měla být poloha textu, tedy 'Umístění ',
+a posledním bodem by měl být špička čáry, tedy 'cílový bod'.
+Střední bod se počítá automaticky v závislosti na zvoleném
+'Přímém směru ' a hodnotě, a znaménku 'přímé vzdálenosti'.
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+Pokud je 'přímý směr' nastaven na 'Vlastní', vlastnost 'Body'
+může být nastavena jako seznam libovolných bodů.</translation>
     </message>
     <message>
       <location filename="label.py" line="124"/>
@@ -436,10 +431,10 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>Směr přímého segmentu vodící čáry.
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+Je-li vybrán 'Vlastní', body vodící mohou být zadány
+přiřazením vlastního seznamu k atributu 'Body'.</translation>
     </message>
     <message>
       <location filename="label.py" line="142"/>
@@ -448,11 +443,10 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>Délka přímého segmentu vodící čáry.
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+Toto je orientovaná vzdálenost; pokud je záporná, bude čára vykreslena
+vlevo nebo pod 'Text', jinak vpravo nebo nad něj, v závislosti na hodnotě 'přímý směr'.</translation>
     </message>
     <message>
       <location filename="label.py" line="156"/>
@@ -811,7 +805,7 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="55"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>To určuje, zda je tvar sešitý</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="58"/>
@@ -2989,7 +2983,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="300"/>
       <source>Endpoint</source>
-      <translation type="unfinished">Endpoint</translation>
+      <translation>Koncový bod</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="303"/>
@@ -3106,7 +3100,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="180"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Kolmý</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="183"/>

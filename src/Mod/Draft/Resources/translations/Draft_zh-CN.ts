@@ -7457,7 +7457,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
+      <translation>所选图形必须定义平面
 </translation>
     </message>
   </context>

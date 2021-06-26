@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="849"/>
       <location filename="../../Command.cpp" line="851"/>
       <source>Add triangle manually to a mesh</source>
-      <translation>Dodaj trójkąt do siatki</translation>
+      <translation>Dodaje trójkąt do siatki manualnie</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="1606"/>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Builds a regular solid</source>
-      <translation>Zbuduje bryłę podstawową</translation>
+      <translation>Zbuduj bryłę podstawową</translation>
     </message>
   </context>
   <context>
@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation>Decydująca...</translation>
+      <translation>Decymacja ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
@@ -196,7 +196,7 @@
       <location filename="../../Command.cpp" line="493"/>
       <location filename="../../Command.cpp" line="495"/>
       <source>Exports a mesh to file</source>
-      <translation>Eksport siatki do pliku</translation>
+      <translation>Eksportuj siatkę do pliku</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
       <location filename="../../Command.cpp" line="1675"/>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Close holes interactively</source>
-      <translation>Zamknij otwory interaktywnie</translation>
+      <translation>Zamyka otwory interaktywnie</translation>
     </message>
   </context>
   <context>
@@ -234,7 +234,7 @@
       <location filename="../../Command.cpp" line="1637"/>
       <location filename="../../Command.cpp" line="1639"/>
       <source>Fill holes of the mesh</source>
-      <translation>Zamknij otwory w siatce</translation>
+      <translation>Wypełnia otwory siatki</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
       <location filename="../../Command.cpp" line="1530"/>
       <location filename="../../Command.cpp" line="1532"/>
       <source>Flips the normals of the mesh</source>
-      <translation>Odwróć wektory normalne siatki</translation>
+      <translation>Odwraca wektory normalne siatki</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Tessellate shape</source>
-      <translation>Tesselacja obwiedni</translation>
+      <translation>Rozdrobnij kształt</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../Command.cpp" line="1789"/>
       <source>Merges selected meshes into one</source>
-      <translation>Połącz wybrane siatki</translation>
+      <translation>Łączy wybrane siatki</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@
       <location filename="../../Command.cpp" line="1287"/>
       <location filename="../../Command.cpp" line="1288"/>
       <source>Refine existing mesh</source>
-      <translation>Ulepsz istniejącą siatkę</translation>
+      <translation>Ulepsza istniejącą siatkę</translation>
     </message>
   </context>
   <context>
@@ -511,7 +511,7 @@
       <location filename="../../Command.cpp" line="1242"/>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Usuń topologię niezależną od siatki</translation>
+      <translation>Usuwa topologiczne, niezależne elementy z siatki</translation>
     </message>
   </context>
   <context>
@@ -524,12 +524,12 @@
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
-      <translation>Skaluj...</translation>
+      <translation>Skaluj ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
-      <translation>Skaluj zaznaczone siatki</translation>
+      <translation>Skaluje zaznaczone siatki</translation>
     </message>
   </context>
   <context>
@@ -567,7 +567,7 @@
       <location filename="../../Command.cpp" line="1717"/>
       <location filename="../../Command.cpp" line="1719"/>
       <source>Create mesh segments</source>
-      <translation>Utwórz segmenty siatki</translation>
+      <translation>Tworzy segmenty siatki</translation>
     </message>
   </context>
   <context>
@@ -586,7 +586,7 @@
       <location filename="../../Command.cpp" line="1753"/>
       <location filename="../../Command.cpp" line="1755"/>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Utwórz segmenty siatki z najlepiej dopasowanych powierzchni</translation>
+      <translation>Tworzy segmenty siatki z najlepiej dopasowanych powierzchni</translation>
     </message>
   </context>
   <context>
@@ -599,13 +599,13 @@
     <message>
       <location filename="../../Command.cpp" line="1401"/>
       <source>Smooth...</source>
-      <translation>Wygładź...</translation>
+      <translation>Wygładź ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
-      <translation>Wygładź zaznaczone siatki</translation>
+      <translation>Wygładza zaznaczone siatki</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation>Rozdziela wybrane siatki na niezależne składniki</translation>
+      <translation>Rozdziela wybrane siatki na niezależne komponenty</translation>
     </message>
   </context>
   <context>
@@ -786,7 +786,7 @@
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation>Odwróć wektory normalne siatki</translation>
+      <translation>Odwraca wektory normalne siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
@@ -811,7 +811,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
       <source>Mesh Decimating</source>
-      <translation>Decymacja siatki</translation>
+      <translation>Dziesiątkowanie siatki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Decymacja</translation>
+      <translation>Dziesiątkowanie</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>

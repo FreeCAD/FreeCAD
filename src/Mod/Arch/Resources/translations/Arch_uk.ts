@@ -3376,7 +3376,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1506"/>
       <source>Add selected</source>
-      <translation type="unfinished">Add selected</translation>
+      <translation>Додати вибрані</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1507"/>
@@ -4878,7 +4878,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="ArchSchedule.ui" line="183"/>
       <source>Add selection</source>
-      <translation type="unfinished">Add selection</translation>
+      <translation>Додати виділення</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="71"/>
@@ -4886,10 +4886,9 @@ Floor creation aborted.</source>
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
 a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</translation>
+      <translation>Властивість отримана з кожного об’єкта.
+Може "Підрахувати" для підрахунку об’єктів або назв властивостей
+як "Довжина" або "Форма. Об'єм" для отримання певної властивості.</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="90"/>
@@ -4897,10 +4896,10 @@ a certain property.</translation>
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</translation>
+      <translation>Необов’язковий розділений крапкою з комою (;) список назв об’єктів
+(внутрішні імена, а не мітки), які слід враховувати під час цієї операції.
+Якщо список містить групи, діти будуть додані.
+Залиште порожнім, щоб використовувати всі об'єкти з документа</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="101"/>
@@ -4910,7 +4909,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Розклад без назви</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="205"/>
@@ -4928,17 +4927,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="InitGui.py" line="113"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>Інструменти створення ескізу</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>Інструменти анотації креслення</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="115"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Інструменти редагування ескізу</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="149"/>
@@ -4976,12 +4975,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="GitTaskPanel.ui" line="64"/>
       <source>List of files to be committed:</source>
-      <translation type="unfinished">List of files to be committed:</translation>
+      <translation>Список файлів, які потрібно зафіксувати:</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="93"/>
       <source>Diff</source>
-      <translation type="unfinished">Diff</translation>
+      <translation>Відмінність</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="100"/>
@@ -4991,32 +4990,32 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="GitTaskPanel.ui" line="147"/>
       <source>Commit</source>
-      <translation type="unfinished">Commit</translation>
+      <translation>Зафіксувати зміни</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="120"/>
       <source>Commit message</source>
-      <translation type="unfinished">Commit message</translation>
+      <translation>Фіксувати повідомлення</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="159"/>
       <source>Remote repositories</source>
-      <translation type="unfinished">Remote repositories</translation>
+      <translation>Віддалені сховища</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="183"/>
       <source>Pull</source>
-      <translation type="unfinished">Pull</translation>
+      <translation>Тягнути</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="190"/>
       <source>Push</source>
-      <translation type="unfinished">Push</translation>
+      <translation>Штовхати</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="14"/>
       <source>Multimaterial definition</source>
-      <translation type="unfinished">Multimaterial definition</translation>
+      <translation>Багатоматеріальне визначення</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="21"/>
@@ -5026,7 +5025,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchMultiMaterial.ui" line="29"/>
       <source>Edit definition</source>
-      <translation type="unfinished">Edit definition</translation>
+      <translation>Редагувати визначення</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="37"/>
@@ -5036,7 +5035,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchMultiMaterial.ui" line="49"/>
       <source>Composition:</source>
-      <translation type="unfinished">Composition:</translation>
+      <translation>Композиція:</translation>
     </message>
     <message>
       <location filename="ArchMultiMaterial.ui" line="68"/>
@@ -5061,12 +5060,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchNest.ui" line="14"/>
       <source>Nesting</source>
-      <translation type="unfinished">Nesting</translation>
+      <translation>Укладання</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="20"/>
       <source>Container</source>
-      <translation type="unfinished">Container</translation>
+      <translation>Контейнер</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="36"/>
@@ -5081,7 +5080,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation type="unfinished">Add selected</translation>
+      <translation>Додати вибрані</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="64"/>
@@ -5091,12 +5090,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchNest.ui" line="76"/>
       <source>Nesting parameters</source>
-      <translation type="unfinished">Nesting parameters</translation>
+      <translation>Параметри владання</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="82"/>
       <source>Rotations</source>
-      <translation type="unfinished">Rotations</translation>
+      <translation>Обертання</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="89"/>
@@ -5106,22 +5105,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchNest.ui" line="96"/>
       <source>Arcs subdivisions</source>
-      <translation type="unfinished">Arcs subdivisions</translation>
+      <translation>Поділ арок</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="103"/>
       <source>Closer than this, two points are considered equal</source>
-      <translation type="unfinished">Closer than this, two points are considered equal</translation>
+      <translation>Ближче ніж це, два точки вважаються рівними</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="116"/>
       <source>The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</source>
-      <translation type="unfinished">The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</translation>
+      <translation>Кількість відрізків, на які потрібно поділити нелінійні ребра для розрахунків. Якщо криві фігури перекриваються, спробуйте підвищити це значення</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="132"/>
       <source>A comma-separated list of angles to try and rotate the shapes</source>
-      <translation type="unfinished">A comma-separated list of angles to try and rotate the shapes</translation>
+      <translation>Список кутів, розділених комами, для спроби обертання фігур</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="135"/>
@@ -5131,12 +5130,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
-      <translation type="unfinished">Nesting operation</translation>
+      <translation>Операція вкладання</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="154"/>
       <source>pass %p</source>
-      <translation type="unfinished">pass %p</translation>
+      <translation>пропуск %p</translation>
     </message>
     <message>
       <location filename="ArchNest.ui" line="163"/>
@@ -5189,22 +5188,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-arch.ui" line="420"/>
       <source>Show debug information during 2D rendering</source>
-      <translation type="unfinished">Show debug information during 2D rendering</translation>
+      <translation>Показувати інформацію для налагодження під час візуалізації 2D</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="423"/>
       <source>Show renderer debug messages</source>
-      <translation type="unfinished">Show renderer debug messages</translation>
+      <translation>Показати  повідомлення про налагодження рендерингу</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="456"/>
       <source>Cut areas line thickness ratio</source>
-      <translation type="unfinished">Cut areas line thickness ratio</translation>
+      <translation>Співвідношення товщини лінії зрізу</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="476"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
-      <translation type="unfinished">Specifies how many times the viewed line thickness must be applied to cut lines</translation>
+      <translation>Визначає, скільки разів товщина заданої лінії повинна застосовуватися для розрізання ліній</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="859"/>
@@ -5244,7 +5243,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-archdefaults.ui" line="501"/>
       <source>The default height for new windows</source>
-      <translation type="unfinished">The default height for new windows</translation>
+      <translation>Висота нових вікон за замовчуванням</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="536"/>
@@ -5254,37 +5253,37 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-archdefaults.ui" line="543"/>
       <source>The default thickness for new windows</source>
-      <translation type="unfinished">The default thickness for new windows</translation>
+      <translation>Товщина нових вікон за замовчуванням</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="602"/>
       <source>Frame color:</source>
-      <translation type="unfinished">Frame color:</translation>
+      <translation>Колір рамки</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="626"/>
       <source>Glass color:</source>
-      <translation type="unfinished">Glass color:</translation>
+      <translation>Колір скла:</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="32"/>
       <source>Auto-join walls</source>
-      <translation type="unfinished">Auto-join walls</translation>
+      <translation>Авто-з'єднання стін</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="48"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation type="unfinished">If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</translation>
+      <translation>Якщо позначено цей пункт, коли 2 подібні стіни будуть підключені, їхні основні ескізи будуть об'єднані в одну, а обидві стіни стануть одним</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="51"/>
       <source>Join walls base sketches when possible</source>
-      <translation type="unfinished">Join walls base sketches when possible</translation>
+      <translation>По можливості з'єднайте основи ескізів стін</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="308"/>
       <source>Mesh to Shape Conversion</source>
-      <translation type="unfinished">Mesh to Shape Conversion</translation>
+      <translation>Перетворення Сітки в Форму</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="316"/>
@@ -5294,7 +5293,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-arch.ui" line="319"/>
       <source>Fast conversion</source>
-      <translation type="unfinished">Fast conversion</translation>
+      <translation>Швидке перетворення</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="335"/>
@@ -5304,22 +5303,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-arch.ui" line="368"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation type="unfinished">If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</translation>
+      <translation>Якщо позначено цей пункт, рівними групами облич будуть згладжені силою, що призведе до можливих прогалин та несуцільних результатів</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="371"/>
       <source>Force flat faces</source>
-      <translation type="unfinished">Force flat faces</translation>
+      <translation>Примусове пласкі поверхонь</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="388"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation type="unfinished">If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</translation>
+      <translation>Якщо це позначено, отвори на гранях виконуватимуться шляхом віднімання, а не з використанням орієнтації каркасів</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="391"/>
       <source>Cut method</source>
-      <translation type="unfinished">Cut method</translation>
+      <translation>Метод вирізу</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="58"/>
@@ -5329,7 +5328,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-ifc.ui" line="288"/>
       <source>Separate openings</source>
-      <translation type="unfinished">Separate openings</translation>
+      <translation>Окремі відкривання</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="337"/>
@@ -5414,7 +5413,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-arch.ui" line="673"/>
       <source>Bim server</source>
-      <translation type="unfinished">Bim server</translation>
+      <translation>Bim сервер</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="681"/>
@@ -5449,7 +5448,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="preferences-ifc.ui" line="165"/>
       <source>Import arch IFC objects as</source>
-      <translation type="unfinished">Import arch IFC objects as</translation>
+      <translation>Імпортувати об'єкти arch IFC як</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="221"/>
@@ -6144,28 +6143,28 @@ This will slow down the import, but one can watch the import.</translation>
       <location filename="preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
-      <translation type="unfinished">Creates a full parametric model on import using stored
-FreeCAD object properties</translation>
+      <translation>Створює повну параметричну модель при імпорті з використанням збережених
+властивостей об'єкта FreeCAD</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>Тип експорту</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Стандартна модель</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>Структурний аналіз</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Стандартний + структурний</translation>
     </message>
     <message>
       <location filename="preferences-ifc-export.ui" line="144"/>

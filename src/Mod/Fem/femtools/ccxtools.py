@@ -784,7 +784,12 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         import feminout.importCcxFrdResults as importCcxFrdResults
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + ".frd"
         if os.path.isfile(frd_result_file):
-            importCcxFrdResults.importFrd(frd_result_file, self.analysis, "CCX_")
+            importCcxFrdResults.importFrd(
+                frd_result_file,
+                self.analysis,
+                "CCX_",
+                self.solver.AnalysisType
+            )
             for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True

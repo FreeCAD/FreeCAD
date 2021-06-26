@@ -75,6 +75,11 @@
       <translation>Sélecteur de référence de géométrie pour une</translation>
     </message>
     <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Sélecteur de référence de géométrie pour une </translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Ajouter</translation>
@@ -118,11 +123,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Solide</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Sélecteur de référence de géométrie pour une </translation>
     </message>
   </context>
   <context>
