@@ -941,7 +941,13 @@ PyObject* FemMeshPy::getGroupName(PyObject *args)
     int id;
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
-    return PyUnicode_FromString(getFemMeshPtr()->getSMesh()->GetGroup(id)->GetName());
+
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+    return PyUnicode_FromString(group->GetName());
 }
 
 PyObject* FemMeshPy::getGroupElementType(PyObject *args)

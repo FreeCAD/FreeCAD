@@ -1087,7 +1087,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
       <source>Decrease indentation (CTRL+,)</source>
-      <translation>Zwiększ wcięcie (CTRL+,)</translation>
+      <translation>Zmniejsz wcięcie (CTRL+,)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="417"/>
@@ -1107,7 +1107,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
       <source>Text foreground color</source>
-      <translation>Kolor tekstu na pierwszym planie</translation>
+      <translation>Kolor tekstu</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="496"/>
@@ -1297,7 +1297,7 @@
     <message>
       <location filename="../../Command.cpp" line="1158"/>
       <source>There were no DraftWB objects in the selection.</source>
-      <translation>Nie było obiektów DraftWB w wyborze.</translation>
+      <translation>Zaznaczenie nie zawiera obiektów środowiska Rysunek Roboczy.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1207"/>
@@ -1312,7 +1312,7 @@
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>Can not export selection</source>
-      <translation>Nie można wykonać eksportu z zaznaczenia</translation>
+      <translation>Nie można wykonać eksportu zaznaczonych obiektów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1366"/>
@@ -1755,7 +1755,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="838"/>
       <source>Export page as SVG</source>
-      <translation>Wyeksportuj stronę do SVG</translation>
+      <translation>Eksportuj stronę do formatu SVG</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="229"/>
@@ -1772,7 +1772,7 @@
     <message>
       <location filename="../../ViewProviderPage.cpp" line="251"/>
       <source>Toggle KeepUpdated</source>
-      <translation>Włącz/Wyłącz automatyczną aktualizacje</translation>
+      <translation>Włącz / wyłącz automatyczną aktualizacje</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="46"/>
@@ -2674,7 +2674,7 @@ Szerokość każdej jednostki wynosi ok. 0,1 mm</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="67"/>
       <source>Normal line color</source>
-      <translation>Kolor elementów normalnych</translation>
+      <translation>Kolor linii normalnych</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
@@ -3402,27 +3402,27 @@ Szybkie, ale wynikiem jest kolekcja krótkich linii prostych.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="142"/>
       <source>&amp;Export SVG</source>
-      <translation>&amp;Eksport SVG</translation>
+      <translation>&amp;Eksportuj do formatu SVG</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="136"/>
       <source>Toggle &amp;Keep Updated</source>
-      <translation>Włącz/Wyłącz &amp;automatyczną aktualizację</translation>
+      <translation>Włącz / wyłącz &amp;automatyczną aktualizację</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="139"/>
       <source>Toggle &amp;Frames</source>
-      <translation>Włącz/Wyłącz &amp;Ramki</translation>
+      <translation>Włącz / wyłącz &amp;ramki</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="145"/>
       <source>Export DXF</source>
-      <translation>Eksportuj do DXF</translation>
+      <translation>Eksportuj do formatu DXF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="148"/>
       <source>Export PDF</source>
-      <translation>Eksportuj do PDF</translation>
+      <translation>Eksportuj do formatu PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="730"/>
@@ -3914,7 +3914,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="95"/>
       <source>Drag Highlight</source>
-      <translation>Przeciągnij podświetlenie</translation>
+      <translation>Podświetlenie szczegółu</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="168"/>
@@ -4013,7 +4013,7 @@ Niestandardowa: stosuje się współczynnik skalowania podany przez użytkownika
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>If theoretical exact (basic) dimension</source>
-      <translation>Jeśli wymiar jest teoretycznie dokładny (podstawowy)</translation>
+      <translation>Zaznacz to pole jeśli wymiar jest teoretycznie dokładny (podstawowy)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="31"/>
@@ -4042,7 +4042,7 @@ Niestandardowa: stosuje się współczynnik skalowania podany przez użytkownika
 If &apos;Equal Tolerance&apos; is checked this is also
 the negated value for &apos;Under Tolerance&apos;.</source>
       <translation>Wartość odchyłki tolerancji
-Jeżeli opcja "odchyłki symetrycznej"jest zaznaczona, zostanie ona zastąpiona
+Jeżeli opcja "odchyłki symetrycznej" jest zaznaczona, zostanie ona zastąpiona
 przez zanegowaną wartość "dolnej tolerancji".</translation>
     </message>
     <message>
@@ -4079,8 +4079,8 @@ przez ujemną wartość "górnej tolerancji".</translation>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
 be used instead if the dimension value</source>
-      <translation>Jeśli opcja jest zaznaczona, zawartość &apos;Specyfikacji formatu&apos; 
-zostanie użyta, jeśli wartość wymiaru</translation>
+      <translation>Jeżeli opcja jest zaznaczona, to zostanie użyta
+wartość pola "Określenie formatu", zamiast wartości wymiaru</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="141"/>
@@ -4090,22 +4090,22 @@ zostanie użyta, jeśli wartość wymiaru</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="148"/>
       <source>OverTolerance Format Specifier:</source>
-      <translation>Wyznacznik formatu górnej granicy tolerancji:</translation>
+      <translation>Określenie formatu górnej granicy tolerancji:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="155"/>
       <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
-      <translation>Określa format tolerancji 'powyżej' w stylu printf(), lub dowolny tekst</translation>
+      <translation>Określa format tolerancji "powyżej" w stylu printf(), lub dowolny tekst</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="162"/>
       <source>UnderTolerance Format Specifier:</source>
-      <translation>Wyznacznik formatu dolnej granicy tolerancji:</translation>
+      <translation>Określenie formatu dolnej granicy tolerancji:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="169"/>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
-      <translation>Określa format tolerancji 'poniżej' w stylu printf(), lub dowolny tekst</translation>
+      <translation>Określa format tolerancji "poniżej" w stylu printf(), lub dowolny tekst</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="180"/>
@@ -4719,7 +4719,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="657"/>
       <source>Auto Distribute</source>
-      <translation>Dystrybucja automatyczna</translation>
+      <translation>Rozmieszczenie automatyczne</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="691"/>

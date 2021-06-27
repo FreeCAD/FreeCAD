@@ -3551,7 +3551,7 @@
     <message>
       <location filename="ArchProject.py" line="125"/>
       <source>Create Project</source>
-      <translation type="unfinished">Create Project</translation>
+      <translation>Vytvořit projekt</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="562"/>

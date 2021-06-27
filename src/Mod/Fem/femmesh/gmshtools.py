@@ -424,9 +424,10 @@ class GmshTools():
             Console.PrintError("Gmsh: StdErr:\n" + gmsh_stderr + "\n")
 
         from re import search
-        # TODO fix pep8
+        # use raw string mode to get pep8 quiet
         # https://stackoverflow.com/q/61497292
-        match = search("^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
+        # https://github.com/MathSci/fecon236/issues/6
+        match = search(r"^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
         # return (major, minor, patch), fullmessage
         if match:
             mess = found_message + "\n\n" + gmsh_stdout

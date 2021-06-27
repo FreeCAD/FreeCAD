@@ -140,11 +140,11 @@
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Buat grup tautan</translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Buat tautan</translation>
     </message>
     <message>
       <source>Make sub-link</source>
@@ -152,19 +152,19 @@
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Impor tautan</translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Impor semua tautan</translation>
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Sisipkan pengukuran</translation>
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Sisipkan teks dokumen</translation>
     </message>
     <message>
       <source>Add a part</source>
@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Masukkan ekspresi...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Ekspresi: </translation>
     </message>
   </context>
   <context>
@@ -485,7 +485,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Pustaka</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
@@ -516,7 +516,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organisasi</translation>
     </message>
   </context>
   <context>
@@ -531,18 +531,18 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
       <source>Camera settings</source>
-      <translation type="unfinished">Camera settings</translation>
+      <translation>Setelan kamera</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -1654,7 +1654,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Bilah alat</translation>
     </message>
   </context>
   <context>
@@ -1739,7 +1739,7 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Jangan tunjukkan lagi</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
@@ -1933,7 +1933,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Temukan...</translation>
     </message>
     <message>
       <source>Sorted</source>
@@ -1988,7 +1988,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Not found</source>
-      <translation type="unfinished">Not found</translation>
+      <translation>Tidak ditemukan</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
@@ -2128,7 +2128,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Versi program:</translation>
     </message>
   </context>
   <context>
@@ -2949,12 +2949,11 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>Atur ukuran keluku yang ada pada dokumen. Ukuran yang lazim ialah 128, 256, dan 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>Logo program akan ditambahkan ke keluku</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
@@ -2972,7 +2971,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Format tanggal</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -3055,7 +3054,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Format</translation>
     </message>
   </context>
   <context>
@@ -3279,7 +3278,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Muat yang dipilih</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3338,7 +3337,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
-      <translation type="unfinished">Record GUI commands</translation>
+      <translation>Rekam perintah GUI</translation>
     </message>
     <message>
       <source>Variables defined by macros are created as local variables</source>
@@ -3374,7 +3373,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Hitungan pintasan</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
@@ -3397,7 +3396,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Kubus navigasi</translation>
     </message>
     <message>
       <source>Steps by turn</source>
@@ -3471,7 +3470,7 @@ Turntable: the part will be rotated around the z-axis.</translation>
     </message>
     <message>
       <source>New document scale</source>
-      <translation type="unfinished">New document scale</translation>
+      <translation>Skala dokumen baru</translation>
     </message>
     <message>
       <source>Sets camera zoom for new documents.
@@ -3589,7 +3588,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>Pusat objek</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
@@ -3601,11 +3600,11 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Ukuran kubus</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Ukuran kubus navigasi</translation>
     </message>
     <message>
       <source>How much will be zoomed.
@@ -3721,7 +3720,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Sistem satuan:</translation>
     </message>
     <message>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
@@ -3878,7 +3877,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Hasil</translation>
     </message>
     <message>
       <source>List of last used calculations 
@@ -3888,11 +3887,11 @@ To add a calculation press Return in the value input field</translation>
     </message>
     <message>
       <source>Quantity</source>
-      <translation type="unfinished">Quantity</translation>
+      <translation>Kuantitas</translation>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Sistem satuan:</translation>
     </message>
     <message>
       <source>Unit system to be used for the Quantity
@@ -4509,15 +4508,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>VS Code</source>
-      <translation type="unfinished">VS Code</translation>
+      <translation>VS Code</translation>
     </message>
     <message>
       <source>Address:</source>
-      <translation type="unfinished">Address:</translation>
+      <translation>Alamat:</translation>
     </message>
     <message>
       <source>Port:</source>
-      <translation type="unfinished">Port:</translation>
+      <translation>Porta:</translation>
     </message>
     <message>
       <source>Redirect output</source>
@@ -4728,11 +4727,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Peringatan</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Galat</translation>
     </message>
     <message>
       <source>Show report view on</source>
@@ -4902,14 +4901,14 @@ Do you want to save your changes?</source>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Sama persis</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Sama persis</translation>
     </message>
   </context>
   <context>
@@ -5290,7 +5289,7 @@ How do you want to proceed?</source>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
-      <translation type="unfinished">Download started...</translation>
+      <translation>Pengunduhan dimulai...</translation>
     </message>
   </context>
   <context>
@@ -5387,7 +5386,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Show all</source>
-      <translation type="unfinished">Show all</translation>
+      <translation>Tunjukkan semua</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -5399,7 +5398,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Expression...</source>
-      <translation type="unfinished">Expression...</translation>
+      <translation>Ekspresi...</translation>
     </message>
     <message>
       <source>Auto expand</source>
@@ -5513,7 +5512,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Simpan riwayat</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
@@ -6095,15 +6094,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>Tutup dokumen</translation>
     </message>
     <message>
       <source>Close the document</source>
-      <translation type="unfinished">Close the document</translation>
+      <translation>Tutup dokumen ini</translation>
     </message>
     <message>
       <source>Reload document</source>
-      <translation type="unfinished">Reload document</translation>
+      <translation>Muat ulang dokumen</translation>
     </message>
     <message>
       <source>Reload a partially loaded document</source>
@@ -6134,11 +6133,11 @@ Do you want to specify another directory?</source>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vektor</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Tabel</translation>
     </message>
     <message>
       <source>...</source>
@@ -6732,7 +6731,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Gagal menghapus</translation>
     </message>
     <message>
       <source>Dependency error</source>
@@ -6744,11 +6743,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Salin dokumen aktif</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Salin semua dokumen</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6756,7 +6755,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Galat ekspresi</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
@@ -6798,15 +6797,15 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Replace link failed</source>
-      <translation type="unfinished">Replace link failed</translation>
+      <translation>Gagal mengganti tautan</translation>
     </message>
     <message>
       <source>Failed to import links</source>
-      <translation type="unfinished">Failed to import links</translation>
+      <translation>Gagal mengimpor tautan</translation>
     </message>
     <message>
       <source>Failed to import all links</source>
-      <translation type="unfinished">Failed to import all links</translation>
+      <translation>Gagal mengimpor semua tautan</translation>
     </message>
     <message>
       <source>Invalid name</source>
@@ -6840,7 +6839,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Gagal menyimpan dokumen</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
@@ -6848,7 +6847,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>Urung</translation>
     </message>
     <message>
       <source>Redo</source>
@@ -6892,7 +6891,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Apakah yakin ingin melanjutkan?</translation>
     </message>
     <message>
       <source>
@@ -6905,8 +6904,8 @@ Please check report view for more...</translation>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>
+Dokumen: </translation>
     </message>
     <message>
       <source>
@@ -7619,7 +7618,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Impor tautan</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7634,7 +7633,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Impor semua tautan</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
@@ -7649,7 +7648,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Buat tautan</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
@@ -7664,7 +7663,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Buat grup tautan</translation>
     </message>
     <message>
       <source>Create a group of links</source>
@@ -7769,7 +7768,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Awataut</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -8872,7 +8871,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>Beranda</translation>
     </message>
     <message>
       <source>Set to default home view</source>
@@ -9239,11 +9238,11 @@ Physical path: </translation>
     <name>StdTreeCollapseDocument</name>
     <message>
       <source>Collapse/Expand</source>
-      <translation type="unfinished">Collapse/Expand</translation>
+      <translation>Ciutkan/Perluas</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation type="unfinished">Expand active document and collapse all others</translation>
+      <translation>Perluas dokumen aktif dan ciutkan yang lainnya</translation>
     </message>
     <message>
       <source>TreeView</source>
@@ -9337,7 +9336,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Dokumen tunggal</translation>
     </message>
   </context>
   <context>
@@ -9348,7 +9347,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>Selaraskan penempatan</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
@@ -9643,7 +9642,7 @@ Do you still want to proceed?</translation>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation type="unfinished">Orthographic</translation>
+      <translation>Ortografis</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
@@ -9654,7 +9653,7 @@ Do you still want to proceed?</translation>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation type="unfinished">Perspective</translation>
+      <translation>Perspektif</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>

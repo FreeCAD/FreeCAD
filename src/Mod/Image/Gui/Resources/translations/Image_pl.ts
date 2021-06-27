@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
-      <translation>Skaluj...</translation>
+      <translation>Skaluj ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>

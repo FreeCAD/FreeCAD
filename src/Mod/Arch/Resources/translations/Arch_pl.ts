@@ -4509,7 +4509,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchCommands.py" line="1419"/>
       <source>Splits selected meshes into independent components</source>
-      <translation>Rozdziela wybrane siatki na niezależne składniki</translation>
+      <translation>Rozdziela wybrane siatki na niezależne komponenty</translation>
     </message>
   </context>
   <context>

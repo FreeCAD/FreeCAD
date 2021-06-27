@@ -280,7 +280,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Setelan</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
@@ -561,7 +561,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Sembunyikan segmen</translation>
     </message>
   </context>
   <context>

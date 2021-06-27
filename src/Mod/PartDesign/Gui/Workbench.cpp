@@ -49,16 +49,24 @@ using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "&Part Design");
     qApp->translate("Workbench", "&Sketch");
+    //
+    qApp->translate("Workbench", "&Part Design");
     qApp->translate("Workbench", "Create a datum");
     qApp->translate("Workbench", "Create an additive feature");
     qApp->translate("Workbench", "Create a subtractive feature");
     qApp->translate("Workbench", "Apply a pattern");
     qApp->translate("Workbench", "Apply a dress-up feature");
+    qApp->translate("Workbench", "Sprocket...");
+    qApp->translate("Workbench", "Involute gear...");
+    qApp->translate("Workbench", "Shaft design wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
+    //
+    qApp->translate("Workbench", "Measure");
+    qApp->translate("Workbench", "Part Design Helper");
+    qApp->translate("Workbench", "Part Design Modeling");
 #endif
 
 /// @namespace PartDesignGui @class Workbench

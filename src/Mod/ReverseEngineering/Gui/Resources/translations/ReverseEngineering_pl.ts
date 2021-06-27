@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="381"/>
       <source>Create mesh segments</source>
-      <translation>Utwórz segmenty siatki</translation>
+      <translation>Tworzy segmenty siatki</translation>
     </message>
   </context>
   <context>

@@ -837,7 +837,7 @@ class Plane:
             import FreeCADGui
             if FreeCADGui.ActiveDocument:
                 view = FreeCADGui.ActiveDocument.ActiveView
-                if view:
+                if view and hasattr(view,"getActiveOject"):
                     a = view.getActiveObject("Arch")
                     if a:
                         p = a.Placement.inverse().multiply(p)
