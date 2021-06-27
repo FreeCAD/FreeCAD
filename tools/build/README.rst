@@ -8,6 +8,17 @@ pre-installed that are needed to build FreeCAD from source.
 Containers
 ==========
 
+Arch Linux
+-----------
+
+The following commands are used to create and run a Arch Linux build environment.
+
+.. code-block:: console
+
+    docker build --file tools/build/Dockerfile.Arch --tag freecad-arch
+    docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-arch
+
+
 Debian
 ------
 
@@ -39,6 +50,17 @@ The following commands are used to create and run a openSUSE build environment.
 
     docker build --file tools/build/Dockerfile.openSUSE --tag freecad-opensuse
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-opensuse
+
+
+Manjaro
+-------
+
+The following commands are used to create and run a Manjaro build environment.
+
+.. code-block:: console
+
+    docker build --file tools/build/Dockerfile.Manjaro --tag freecad-manjaro
+    docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-manjaro
 
 
 Ubuntu

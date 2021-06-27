@@ -1,0 +1,11 @@
+FROM archlinux:base
+
+COPY arch.sh /tmp
+
+RUN pacman -Sy && \
+    sh /tmp/arch.sh && \
+    mkdir /builds
+
+WORKDIR /builds
+
+VOLUME [ "/builds" ]
