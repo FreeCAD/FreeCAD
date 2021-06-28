@@ -324,7 +324,10 @@ short DrawViewPart::mustExecute() const
                     SeamHidden.isTouched() ||
                     IsoHidden.isTouched() ||
                     IsoCount.isTouched() ||
-                    CoarseView.isTouched());
+                    CoarseView.isTouched() ||
+                    CosmeticVertexes.isTouched() ||
+                    CosmeticEdges.isTouched() ||
+                    CenterLines.isTouched());
     }
 
     if (result) {
