@@ -203,6 +203,8 @@ void TaskCosmeticLine::setUiEdit()
 //******************************************************************************
 void TaskCosmeticLine::createCosmeticLine(void)
 {
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
+
     double x = ui->qsbx1->value().getValue();
     double y = ui->qsby1->value().getValue();
     double z = ui->qsbz1->value().getValue();
@@ -227,6 +229,8 @@ void TaskCosmeticLine::createCosmeticLine(void)
 
     m_tag = m_partFeat->addCosmeticEdge(p0, p1);
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
+
+    Gui::Command::commitCommand();
 }
 
 void TaskCosmeticLine::updateCosmeticLine(void)

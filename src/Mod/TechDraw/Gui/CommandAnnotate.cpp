@@ -348,6 +348,8 @@ void execMidpoints(Gui::Command* cmd)
         return;
     }
 
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpont Vertices"));
+
     const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
     double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
@@ -357,6 +359,9 @@ void execMidpoints(Gui::Command* cmd)
         mid = DrawUtil::invertY(mid);
         dvp->addCosmeticVertex(mid / scale);
     }
+
+    Gui::Command::commitCommand();
+
     dvp->recomputeFeature();
 }
 
@@ -371,6 +376,8 @@ void execQuadrants(Gui::Command* cmd)
         return;
     }
 
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
+
     const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
     double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
@@ -382,6 +389,9 @@ void execQuadrants(Gui::Command* cmd)
                 dvp->addCosmeticVertex(iq / scale);
             }
     }
+
+    Gui::Command::commitCommand();
+
     dvp->recomputeFeature();
 }
 
