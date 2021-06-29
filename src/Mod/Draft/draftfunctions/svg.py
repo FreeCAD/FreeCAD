@@ -615,7 +615,7 @@ def get_svg(obj,
             svg_path += 'fill="none" '
             svg_path += 'stroke="{}" '.format(stroke)
             svg_path += 'stroke-width="{}" '.format(linewidth)
-            svg_path += 'stroke-linecap:square;'
+            svg_path += 'stroke-linecap="square" '
             svg_path += 'd="{}"'.format(path_dir_str)
             svg_path += '/>'
             svg += svg_path
