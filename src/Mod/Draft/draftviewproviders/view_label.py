@@ -394,7 +394,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             if s:
                 self.arrowpos.scaleFactor.setValue((s, s, s))
 
-        elif prop in "Justification" and "Justification" in properties:
+        elif prop == "Justification" and "Justification" in properties:
             if vobj.Justification == "Left":
                 self.text2d.justification = coin.SoText2.LEFT
                 self.text3d.justification = coin.SoAsciiText.LEFT
