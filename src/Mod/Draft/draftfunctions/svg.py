@@ -641,7 +641,7 @@ def get_svg(obj,
             fontname = obj.ViewObject.TextFont
             position = get_proj(obj.Placement.Base, plane)
             rotation = obj.Placement.Rotation
-            justification = obj.ViewObject.TextAlignment
+            justification = obj.ViewObject.Justification
             text = obj.Text
             svg += svgtext.get_text(plane, techdraw,
                                     stroke, fontsize, fontname,
