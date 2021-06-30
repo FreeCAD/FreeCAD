@@ -30,11 +30,6 @@ install(
 )
 
 install(
-    FILES org.freecadweb.FreeCAD.svg
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps
-)
-
-install(
     FILES org.freecadweb.FreeCAD.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
 )
