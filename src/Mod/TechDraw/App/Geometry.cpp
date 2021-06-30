@@ -326,16 +326,28 @@ Base::Vector3d BaseGeom::getEndPoint()
 
 Base::Vector3d BaseGeom::getMidPoint()
 {
-    Base::Vector3d result;
-    BRepAdaptor_Curve adapt(occEdge);
-    double u = adapt.FirstParameter();
-    double v = adapt.LastParameter();
-    double range = v - u;
-    double midParm = u + (range / 2.0);
-    BRepLProp_CLProps prop(adapt,midParm,0,Precision::Confusion());
-    const gp_Pnt& pt = prop.Value();
-    result = Base::Vector3d(pt.X(),pt.Y(), pt.Z());
-    return result;
+    // Midpoint calculation - additional details here: https://forum.freecadweb.org/viewtopic.php?f=35&t=59582
+
+    BRepAdaptor_Curve curve(occEdge);
+
+    // As default, set the midpoint curve parameter value by simply averaging start point and end point values
+    double midParam = (curve.FirstParameter() + curve.LastParameter())/2.0;
+
+    // GCPnts_AbscissaPoint allows us to compute the parameter value depending on the distance along a curve.
+    // In this case we want the curve parameter value for the half of the whole curve length,
+    // thus GCPnts_AbscissaPoint::Length(curve)/2 is the distance to go from the start point.
+    GCPnts_AbscissaPoint abscissa(Precision::Confusion(), curve, GCPnts_AbscissaPoint::Length(curve)/2.0,
+                                  curve.FirstParameter());
+    if (abscissa.IsDone()) {
+        // The computation was successful - otherwise keep the average, it is better than nothing
+        midParam = abscissa.Parameter();
+    }
+
+    // Now compute coordinates of the point on curve for curve parameter value equal to midParam
+    BRepLProp_CLProps props(curve, midParam, 0, Precision::Confusion());
+    const gp_Pnt &point = props.Value();
+
+    return Base::Vector3d(point.X(), point.Y(), point.Z());
 }
 
 std::vector<Base::Vector3d> BaseGeom::getQuads()
