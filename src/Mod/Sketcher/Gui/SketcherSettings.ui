@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>602</width>
-    <height>614</height>
+    <width>500</width>
+    <height>536</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -193,6 +193,10 @@ Requires to re-enter edit mode to take effect.</string>
  </customwidgets>
  <tabstops>
   <tabstop>checkBoxAdvancedSolverTaskBox</tabstop>
+  <tabstop>checkBoxRecalculateInitialSolutionWhileDragging</tabstop>
+  <tabstop>checkBoxAutoRemoveRedundants</tabstop>
+  <tabstop>checkBoxEnableEscape</tabstop>
+  <tabstop>checkBoxNotifyConstraintSubstitutions</tabstop>
  </tabstops>
  <resources/>
  <connections/>
