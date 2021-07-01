@@ -65,7 +65,7 @@ class ObjectArray:
 
         obj.Type = ['Linear1D', 'Linear2D', 'Polar']
 
-        self.setEditorProperties(obj)
+        self.setEditorModes(obj)
         obj.Proxy = self
 
     def __getstate__(self):
@@ -74,7 +74,7 @@ class ObjectArray:
     def __setstate__(self, state):
         return None
 
-    def setEditorProperties(self, obj):
+    def setEditorModes(self, obj):
         if obj.Type == 'Linear1D':
             angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
             copiesMode = offsetMode = 0
@@ -98,11 +98,11 @@ class ObjectArray:
 
     def onChanged(self, obj, prop):
         if prop == "Type":
-            self.setEditorProperties(obj)
+            self.setEditorModes(obj)
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
-        self.setEditorProperties(obj)
+        self.setEditorModes(obj)
 
     def rotatePath(self, path, angle, centre):
         '''
