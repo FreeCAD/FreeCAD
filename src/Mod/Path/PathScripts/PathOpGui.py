@@ -1323,6 +1323,34 @@ class CommandPathOp:
     def Activated(self):
         return Create(self.res)
 
+    def CreateOp(self, parentJob=None, avoidGui=False):
+        '''CreateOp(parentJob=None, avoidGui=False) ...
+        This method is an extension of the `Activated()` method.  This method allows for customizations
+        to the operation-creation process.
+        Arguments:
+            - parentJob: Accepts a string name identifier for the parent Job object, or a direct reference to the Job object.
+            - avoidGui: Set True if you do not wish to initialize the new operation using the GUI interface.
+        '''
+
+        if parentJob:
+            msg = translate('PathOpGui', 'Invalid job.')
+            if isinstance(parentJob, str):
+                job = FreeCAD.ActiveDocument.getObject(parentJob)
+                if not job:
+                    PathLog.error(msg)
+                    return None
+            else:
+                job = parentJob
+            if not isinstance(job.Proxy, PathJob.ObjectJob):
+                PathLog.error(msg)
+                return None
+            self.res.parentJob = job
+        if avoidGui:
+            self.res.editMode = 5
+        op = self.Activated()
+        FreeCAD.ActiveDocument.recompute()
+        return op
+
 
 class CommandResources:
     '''POD class to hold command specific resources.'''
