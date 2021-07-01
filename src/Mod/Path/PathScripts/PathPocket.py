@@ -106,20 +106,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     (fzmin, fzmax) = self.getMinMaxOfFaces(Faces)
                     if obj.FinalDepth.Value < fzmin:
                         PathLog.warning(translate('PathPocket', 'Final depth set below ZMin of face(s) selected.'))
-                    '''
-                    if obj.OpFinalDepth == obj.FinalDepth:
-                        obj.FinalDepth.Value = fzmin
-                        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                        self.depthparams = PathUtils.depth_params(
-                            clearance_height=obj.ClearanceHeight.Value,
-                            safe_height=obj.SafeHeight.Value,
-                            start_depth=obj.StartDepth.Value,
-                            step_down=obj.StepDown.Value,
-                            z_finish_step=finish_step,
-                            final_depth=fzmin,
-                            user_depths=None)
-                        PathLog.info("Updated obj.FinalDepth.Value and self.depthparams to zmin: {}".format(fzmin))
-                    '''
 
                     if obj.AdaptivePocketStart is True or obj.AdaptivePocketFinish is True:
                         pocketTup = self.calculateAdaptivePocket(obj, base, subObjTups)
@@ -148,47 +134,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
             for base in self.model:
-                '''
-                if obj.OpFinalDepth == obj.FinalDepth:
-                    if base.Shape.BoundBox.ZMin < obj.FinalDepth.Value:
-                        obj.FinalDepth.Value = base.Shape.BoundBox.ZMin
-                        finDep = base.Shape.BoundBox.ZMin
-                        recomputeDepthparams = True
-                        PathLog.info("Updated obj.FinalDepth.Value to {}".format(finDep))
-                if obj.OpStartDepth == obj.StartDepth:
-                    if base.Shape.BoundBox.ZMax > obj.StartDepth.Value:
-                        obj.StartDepth.Value = base.Shape.BoundBox.ZMax
-                        finDep = base.Shape.BoundBox.ZMax
-                        recomputeDepthparams = True
-                        PathLog.info("Updated obj.StartDepth.Value to {}".format(strDep))
-                if recomputeDepthparams is True:
-                    finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                    self.depthparams = PathUtils.depth_params(
-                        clearance_height=obj.ClearanceHeight.Value,
-                        safe_height=obj.SafeHeight.Value,
-                        start_depth=obj.StartDepth.Value,
-                        step_down=obj.StepDown.Value,
-                        z_finish_step=finish_step,
-                        final_depth=obj.FinalDepth.Value,
-                        user_depths=None)
-                    recomputeDepthparams = False
-                '''
-
                 if obj.ProcessStockArea is True:
                     job = PathUtils.findParentJob(obj)
 
-                    '''
-                    finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                    depthparams = PathUtils.depth_params(
-                        clearance_height=obj.ClearanceHeight.Value,
-                        safe_height=obj.SafeHeight.Value,
-                        start_depth=obj.StartDepth.Value,
-                        step_down=obj.StepDown.Value,
-                        z_finish_step=finish_step,
-                        final_depth=base.Shape.BoundBox.ZMin,
-                        user_depths=None)
-                    stockEnvShape = PathUtils.getEnvelope(job.Stock.Shape, subshape=None, depthparams=depthparams)
-                    '''
                     stockEnvShape = PathUtils.getEnvelope(job.Stock.Shape, subshape=None, depthparams=self.depthparams)
 
                     obj.removalshape = stockEnvShape.cut(base.Shape)
