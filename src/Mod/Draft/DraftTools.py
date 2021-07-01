@@ -105,7 +105,7 @@ FreeCADGui.updateLocale()
 # sets the default working plane
 plane = WorkingPlane.plane()
 FreeCAD.DraftWorkingPlane = plane
-defaultWP = Draft.getParam("defaultWP",1)
+defaultWP = Draft.getParam("defaultWP",0)
 if defaultWP == 1: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,0,1), 0)
 elif defaultWP == 2: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,1,0), 0)
 elif defaultWP == 3: plane.alignToPointAndAxis(Vector(0,0,0), Vector(1,0,0), 0)
