@@ -52,6 +52,8 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Gui/Widgets.h>
+
 
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include "Rez.h"
@@ -189,4 +191,54 @@ void QGIViewAnnotation::rotateView(void)
     m_textItem->setRotation(-rot);
 }
 
+void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    Q_UNUSED(event);
 
+    TechDraw::DrawViewAnnotation *annotation = dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject());
+    if (annotation == nullptr) {
+        return;
+    }
+
+    const std::vector<std::string> &values = annotation->Text.getValues();
+    QString text;
+    if (values.size() > 0) {
+        text = QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(values[0]).c_str());
+
+        for (unsigned int i = 1; i < values.size(); ++i) {
+            text += QChar::fromLatin1('\n');
+            text += QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(values[i]).c_str());
+        }
+    }
+
+    QDialog dialog(0);
+    dialog.setWindowTitle(tr("Text"));
+
+    Gui::PropertyListEditor editor(&dialog);
+    editor.setPlainText(text);
+
+    QDialogButtonBox buttonBox(&dialog);
+    buttonBox.setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+    QVBoxLayout boxLayout(&dialog);
+    boxLayout.addWidget(&editor);
+    boxLayout.addWidget(&buttonBox);
+
+    connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+    if (dialog.exec() == QDialog::Accepted) {
+        QString newText = editor.toPlainText();
+        if (newText != text) {
+            QStringList list = newText.split(QChar::fromLatin1('\n'));
+            std::vector<std::string> newValues;
+
+            for (int i = 0; i < list.size(); ++i) {
+                newValues.push_back(Base::Tools::escapedUnicodeFromUtf8(list[i].toStdString().c_str()));
+            }
+
+            App::GetApplication().setActiveTransaction("Set Annotation Text");
+            annotation->Text.setValues(newValues);
+            App::GetApplication().closeActiveTransaction();
+        }
+    }
+}
