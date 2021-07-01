@@ -76,22 +76,22 @@ class ObjectArray:
 
     def setEditorProperties(self, obj):
         if obj.Type == 'Linear1D':
-            Angle = Centre = CopiesX = CopiesY = SwapDirection = 2
-            Copies = Offset = 0
+            angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
+            copiesMode = offsetMode = 0
         elif obj.Type == 'Linear2D':
-            Angle = Copies = Centre = 2
-            CopiesX = CopiesY = Offset = SwapDirection = 0
+            angleMode = copiesMode = centreMode = 2
+            copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 0
         elif obj.Type == 'Polar':
-            Angle = Copies = Centre = 0
-            CopiesX = CopiesY = Offset = SwapDirection = 2
+            angleMode = copiesMode = centreMode = 0
+            copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
 
-        obj.setEditorMode('Angle', Angle)
-        obj.setEditorMode('Copies', Copies)
-        obj.setEditorMode('Centre', Centre)
-        obj.setEditorMode('CopiesX', CopiesX)
-        obj.setEditorMode('CopiesY', CopiesY)
-        obj.setEditorMode('Offset', Offset)
-        obj.setEditorMode('SwapDirection', SwapDirection)
+        obj.setEditorMode('Angle', angleMode)
+        obj.setEditorMode('Copies', copiesMode)
+        obj.setEditorMode('Centre', centreMode)
+        obj.setEditorMode('CopiesX', copiesXMode)
+        obj.setEditorMode('CopiesY', copiesYMode)
+        obj.setEditorMode('Offset', offsetMode)
+        obj.setEditorMode('SwapDirection', swapDirectionMode)
         obj.setEditorMode('JitterPercent', 0)
         obj.setEditorMode('JitterMagnitude', 0)
         obj.setEditorMode('ToolController', 2)
