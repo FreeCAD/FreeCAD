@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Εισάγετε μια έκφραση...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Έκφραση: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>Το FreeCAD δεν θα ήταν δυνατό χωρίς τις συνεισφορές του</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Ατομικά</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Οργανισμός</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Οι γραμμές κώδικα θα αριθμηθούν</translation>
     </message>
   </context>
   <context>
@@ -1744,29 +1744,29 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Καθοδήγηση - Περιήγηση</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+      <translation>Αυτό θα σας καθοδηγήσει στη ρύθμιση αυτής της μακροεντολής σε μια προσαρμοσμένη καθολική γραμμή εργαλείων. Οι οδηγίες θα είναι με κόκκινο κείμενο μέσα στο διάλογο.
 
-Note: your changes will be applied when you next switch workbenches
+Σημείωση: οι αλλαγές σας θα εφαρμοστούν όταν αλλάξετε τους επόμενους πάγκους εργασίας
 </translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>Περιγράφει, διαλόγου 1 από 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>Οδηγίες περιγραφή: Συμπληρώστε τα πεδία που λείπουν (προαιρετικά) και μετά κάντε κλικ στην επιλογή Προσθήκη, έπειτα Κλείσιμο</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>Περιήγηση, διαλόγου 1 από 1</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
@@ -3051,7 +3051,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
       <source>The format of the date to use.</source>
-      <translation type="unfinished">The format of the date to use.</translation>
+      <translation>Μορφή ημερομηνίας προς χρήση</translation>
     </message>
     <message>
       <source>Default</source>
@@ -3350,47 +3350,47 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation type="unfinished">Commands executed by macro scripts are shown in Python console</translation>
+      <translation>Οι εντολές που εκτελούνται από μακροεντολές εμφανίζονται στην κονσόλα Python</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands</source>
-      <translation type="unfinished">Recorded macros will also contain user interface commands</translation>
+      <translation>Οι εγγραφόμενες μακροεντολές θα περιέχουν επίσης εντολές διεπαφής χρήστη</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation type="unfinished">Recorded macros will also contain user interface commands as comments</translation>
+      <translation>Οι εγγραφόμενες μακροεντολές θα περιέχουν επίσης εντολές διεπαφής χρήστη ως σχόλια</translation>
     </message>
     <message>
       <source>The directory in which the application will search for macros</source>
-      <translation type="unfinished">The directory in which the application will search for macros</translation>
+      <translation>Ο κατάλογος στον οποίο η εφαρμογή θα αναζητήσει μακροεντολές</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Μενού πρόσφατων μακροεφαρμογών</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Μέγεθος πρόσφατης λίστας μακροεντολών</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Πόσες μακροεντολές θα πρέπει να εμφανίζονται στη λίστα πρόσφατων μακροεντολών</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Πλήθος συντομεύσεων</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Πόσες πρόσφατες μακροεντολές θα πρέπει να έχουν συντομεύσεις</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Τροποποιητές Πληκτρολογίου</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Τροποποιήσεις πληκτρολογίου, προεπιλογή = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3401,15 +3401,15 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Τύπος Πλοήγησης</translation>
     </message>
     <message>
       <source>Steps by turn</source>
-      <translation type="unfinished">Steps by turn</translation>
+      <translation>Βήματα κατά την περιστροφή</translation>
     </message>
     <message>
       <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
+      <translation>Αριθμός βημάτων με στροφή κατά τη χρήση βελών (προεπιλογή = 8 : γωνία βημάτων = 360/8 = 45 deg)</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -3417,7 +3417,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <translation>Γωνία όπου εμφανίζεται ο κύβος πλοήγησης</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -3442,8 +3442,8 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
+      <translation>Εμφάνιση των ρυθμίσεων του ποντικιού για κάθε επιλεγμένη ρύθμιση πλοήγησης.
+Επιλέξτε ένα σετ και στη συνέχεια πατήστε το κουμπί για να δείτε αυτές τις ρυθμίσεις.</translation>
     </message>
     <message>
       <source>Mouse...</source>
@@ -3451,7 +3451,7 @@ Select a set and then press the button to view said configurations.</translation
     </message>
     <message>
       <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
+      <translation>Οι ρυθμίσεις πλοήγησης ορίστηκαν</translation>
     </message>
     <message>
       <source>Orbit style</source>
@@ -3601,21 +3601,21 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Περιστροφή στο πλησιέστερο</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Μέγεθος κύβου</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Μέγεθος του κύβου πλοήγησης</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Πόσο θα μεγεθύνεται.
+Το βήμα ζουμ του '1' σημαίνει ένα συντελεστή 7,5 για κάθε βήμα ζουμ.</translation>
     </message>
   </context>
   <context>
@@ -3642,7 +3642,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
+      <translation>Προσθήκη πλαισίων επιλογής στο δέντρο εγγράφων</translation>
     </message>
   </context>
   <context>
@@ -3933,7 +3933,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>άγνωστη μονάδα:</translation>
     </message>
   </context>
   <context>
@@ -4638,7 +4638,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Hierarchy</source>
-      <translation type="unfinished">Hierarchy</translation>
+      <translation>Ιεραρχία</translation>
     </message>
     <message>
       <source>Selected</source>
@@ -4646,7 +4646,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Partial</source>
-      <translation type="unfinished">Partial</translation>
+      <translation>Μερικός</translation>
     </message>
   </context>
   <context>
@@ -4722,11 +4722,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Εμφάνιση μηνύματος</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Κανονικά μηνύματα</translation>
     </message>
     <message>
       <source>Log messages</source>

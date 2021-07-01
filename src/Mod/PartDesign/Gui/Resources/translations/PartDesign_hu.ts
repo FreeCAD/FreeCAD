@@ -4412,7 +4412,7 @@ a vak lyukak mélységéhez</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>Lánckerék...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>

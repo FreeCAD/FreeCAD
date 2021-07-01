@@ -4420,12 +4420,12 @@ bo upoštevana velikost vrtalne konice</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>Verižnik ...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Evolventni zobnik ...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -4440,12 +4440,12 @@ bo upoštevana velikost vrtalne konice</translation>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>Part Design Helper</source>
-      <translation type="unfinished">Part Design Helper</translation>
+      <translation>Pomočnik za oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Part Design Modeling</source>
-      <translation type="unfinished">Part Design Modeling</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
   </context>
 </TS>

@@ -65,7 +65,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="321"/>
       <source>Edge to Trajectory...</source>
-      <translation>Krawędź na tor ruchu...</translation>
+      <translation>Wstaw krawędź w tor ruchu ...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="96"/>
       <source>Insert in trajectory</source>
-      <translation>Wstaw w tor ruchu</translation>
+      <translation>Wstaw narzędzie w tor ruchu</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="97"/>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="153"/>
       <source>Insert in trajectory</source>
-      <translation>Wstaw w tor ruchu</translation>
+      <translation>Wstaw narzędzie w tor ruchu</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="154"/>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation>Wstawić pozycję wyboru wstępnego do toru ruchu (W)</translation>
+      <translation>Wstaw pozycję wyboru wstępnego do toru ruchu</translation>
     </message>
   </context>
   <context>
@@ -228,7 +228,7 @@
       <location filename="../../Command.cpp" line="105"/>
       <location filename="../../Command.cpp" line="106"/>
       <source>Move to home</source>
-      <translation>Przenieś do pozycji startowej</translation>
+      <translation>Przejdź do pozycji startowej</translation>
     </message>
   </context>
   <context>

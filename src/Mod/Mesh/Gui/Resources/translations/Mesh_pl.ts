@@ -1303,7 +1303,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="97"/>
       <source>Cube</source>
-      <translation>Kostka</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="106"/>

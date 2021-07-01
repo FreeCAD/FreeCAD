@@ -1257,7 +1257,7 @@
     <message>
       <location filename="../../Command.cpp" line="933"/>
       <source>Select exactly one Clip group.</source>
-      <translation>Wybierz dokładnie jedną grupę klipu(grupa widokowa).</translation>
+      <translation>Wybierz dokładnie jedną grupę wycinków.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
@@ -1302,12 +1302,12 @@
     <message>
       <location filename="../../Command.cpp" line="1207"/>
       <source>Please select only 1 Arch Section.</source>
-      <translation>Proszę wybrać tylko 1 przekrój/sekcję Arch (z BIM modułu)</translation>
+      <translation>Proszę wybrać tylko 1 przekrój środowiska Architektura.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1213"/>
       <source>No Arch Sections in selection.</source>
-      <translation>Brak przekrojów BIM (z Arch Workbench) wybranych.</translation>
+      <translation>Brak przekrojów środowiska Architektura w zaznaczeniu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1365"/>
@@ -1414,12 +1414,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1336"/>
       <source>Select 2 point objects and 1 View. (1)</source>
-      <translation>Wybierz 2 punkty obiektów i 1 widok. (1)</translation>
+      <translation>Wybierz 2 obiekty punktów i 1 widok. (1)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1344"/>
       <source>Select 2 point objects and 1 View. (2)</source>
-      <translation>Wybierz 2 punkty obiektów i 1 widok. (2)</translation>
+      <translation>Wybierz 2 obiekty punktów i 1 widok. (2)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="771"/>
@@ -4886,17 +4886,17 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="187"/>
       <source>Looking down</source>
-      <translation>Widok w dół</translation>
+      <translation>Patrząc w dół</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="247"/>
       <source>Looking right</source>
-      <translation>Widok w prawo</translation>
+      <translation>Patrząc w prawo</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="217"/>
       <source>Looking left</source>
-      <translation>Widok w lewo</translation>
+      <translation>Patrząc w lewo</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="20"/>

@@ -515,7 +515,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organisationer</translation>
     </message>
   </context>
   <context>
@@ -3931,7 +3931,7 @@ Inställningssystemet är det som anges i de allmänna inställningarna.</transl
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>okänd enhet:</translation>
     </message>
   </context>
   <context>
