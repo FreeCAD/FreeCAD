@@ -93,6 +93,7 @@ def checkWorkingDir():
             if os.path.isfile(full_file_name):
                 shutil.copy(full_file_name, workingdir)
 
+    # Determine which subdirectories are missing
     subdirlist = ['Bit', 'Library', 'Shape']
     mode = 0o777
     for dir in subdirlist.copy():
@@ -100,6 +101,7 @@ def checkWorkingDir():
         if os.path.exists(subdir):
             subdirlist.remove(dir)
 
+    # Query user for creation permission of any missing subdirectories
     if len(subdirlist) >= 1:
         needed = ', '.join([str(d) for d in subdirlist])
         qm = PySide.QtGui.QMessageBox
@@ -108,9 +110,11 @@ def checkWorkingDir():
         if ret == qm.No:
             return False
         else:
+            # Create missing subdirectories if user agrees to creation
             for dir in subdirlist:
                 subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
                 os.mkdir(subdir, mode)
+                # Query user to copy example files into subdirectories created
                 if dir != 'Shape':
                     qm = PySide.QtGui.QMessageBox
                     ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
