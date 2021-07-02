@@ -29,7 +29,10 @@
 # include <QTextStream>
 #endif
 
+#include <boost/algorithm/string.hpp>
+
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/fields/SoFields.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
 #include "SceneInspector.h"
@@ -41,6 +44,8 @@
 #include "Document.h"
 #include "Application.h"
 #include "ViewProviderLink.h"
+
+Q_DECLARE_METATYPE(Gui::CoinPtr<SoNode>)
 
 using namespace Gui::Dialog;
 
@@ -116,34 +121,11 @@ QVariant SceneModel::data(const QModelIndex & index, int role) const
             stream << QString::fromLatin1(obj->getNameInDocument());
         if (obj->Label.getStrValue() != obj->getNameInDocument())
             stream << QString::fromLatin1(" (%1)").arg(QString::fromUtf8(obj->Label.getValue()));
-        stream << QLatin1String(", ");
     }
-
-    if (itName != nodeNames.end())
+    else if (itName != nodeNames.end())
         stream << itName.value();
-    else
+    else if (!node->getName().empty())
         stream << node->getName();
-
-    stream << ", ";
-    if(node->isOfType(SoSwitch::getClassTypeId())) {
-        auto pcSwitch = static_cast<SoSwitch*>(node);
-        stream << "which:" << pcSwitch->whichChild.getValue() << ", ";
-        if(node->isOfType(SoFCSwitch::getClassTypeId())) {
-            auto pathNode = static_cast<SoFCSwitch*>(node);
-            stream << "def:" << pathNode->defaultChild.getValue() << ", "
-                   << "ovr:" << pathNode->overrideSwitch.getValue() << ", "
-                   << "head:" << pathNode->headChild.getValue() << ", "
-                   << "tail:" << pathNode->tailChild.getValue() << ", "
-                   << "notify:" << pathNode->childNotify.getValue() << ", ";
-        }
-    } else if (node->isOfType(SoSeparator::getClassTypeId())) {
-        auto pcSeparator = static_cast<SoSeparator*>(node);
-        stream << "cache:" << pcSeparator->renderCaching.getValue() << ", "
-            << "bboxcache:" << pcSeparator->boundingBoxCaching.getValue() << ", ";
-    } else if (node->isOfType(SoIndexedShape::getClassTypeId())) {
-        auto shape = static_cast<SoIndexedShape*>(node);
-        stream << "num:" << shape->coordIndex.getNum() << ", ";
-    }
     return name;
 }
 
@@ -167,7 +149,10 @@ QModelIndex SceneModel::index(int row, int column, const QModelIndex &parent) co
         item = &rootItem;
 
     SoNode *node = item->node;
-    if (autoExpanding && !item->expand)
+    if (!item->expand
+            || (autoExpanding
+                && node != rootItem.node
+                && !node->isOfType(SoFCUnifiedSelection::getClassTypeId())))
         return QModelIndex();
 
     QModelIndex index = createIndex(row, column, (void*)item);
@@ -237,7 +222,12 @@ DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_SceneInspector())
 {
     ui->setupUi(this);
-    setWindowTitle(tr("Scene Inspector"));
+    ui->fieldView->header()->setStretchLastSection(false);
+    ui->fieldView->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->fieldView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    ui->fieldView->setAlternatingRowColors(true);
+    ui->fieldView->setRootIsDecorated(true);
+    ui->fieldView->setExpandsOnDoubleClick(true);
 
     SceneModel* model = new SceneModel(this);
     ui->treeView->setModel(model);
@@ -263,7 +253,7 @@ void DlgInspector::setDocument(Gui::Document* doc)
         setNode(viewer->getSoRenderManager()->getSceneGraph());
         SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
         Base::StateLocker lock(model->autoExpanding);
-        ui->treeView->expandToDepth(4);
+        ui->treeView->expandToDepth(1);
     }
 }
 
@@ -321,6 +311,7 @@ void DlgInspector::changeEvent(QEvent *e)
 
 void DlgInspector::on_refreshButton_clicked()
 {
+    ui->fieldView->clear();
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {
         setNodeNames(doc);
@@ -329,8 +320,219 @@ void DlgInspector::on_refreshButton_clicked()
         if (view) {
             View3DInventorViewer* viewer = view->getViewer();
             setNode(viewer->getSoRenderManager()->getSceneGraph());
-            ui->treeView->expandToDepth(4);
+            SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
+            Base::StateLocker lock(model->autoExpanding);
+            ui->treeView->expandToDepth(1);
         }
+    }
+}
+
+void DlgInspector::populateFieldView(QTreeWidgetItem *parent, SoNode *n)
+{
+    if (!n)
+        return;
+    CoinPtr<SoNode> node(n);
+    SoFieldList fields;
+    int count = node->getFields(fields);
+    SbString val;
+    std::string sval;
+    for (int i=0; i<count; ++i) {
+        auto item = parent ? new QTreeWidgetItem(parent) : new QTreeWidgetItem(ui->fieldView);
+        auto field = fields[i];
+        SbName name;
+        node->getFieldName(field, name);
+        QString sname = QString::fromLatin1(name);
+        if (field->isIgnored())
+            sname += QLatin1String("*");
+        item->setText(0, sname);
+        item->setToolTip(0, QString::fromLatin1(field->getTypeId().getName()));
+        item->setData(0, Qt::UserRole, QVariant::fromValue(node));
+        item->setData(1, Qt::UserRole, i);
+
+        if (field->isOfType(SoSFNode::getClassTypeId())) {
+            auto nfield = static_cast<SoSFNode*>(field);
+            if (!nfield->getValue())
+                item->setText(1, QString::fromLatin1("NULL"));
+            else {
+                QString txt;
+                QTextStream stream(&txt);
+                stream << nfield->getValue()->getTypeId().getName() << " " <<nfield->getValue();
+                item->setText(1, txt);
+                item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+            }
+        }
+        else if (field->isOfType(SoMFNode::getClassTypeId())) {
+            auto mfield = static_cast<SoMField*>(field);
+            item->setText(1, QString::fromLatin1("count: %1").arg(mfield->getNum()));
+            item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+        }
+        else if (field->isOfType(SoMField::getClassTypeId())) {
+            auto mfield = static_cast<SoMField*>(field);
+            item->setToolTip(1, QString::fromLatin1("count: %1").arg(mfield->getNum()));
+            QString txt;
+            QTextStream stream(&txt);
+            int i=0;
+            bool first = true;
+            for (int c=std::min(5, mfield->getNum()); i<c; ++i) {
+                mfield->get1(i, val);
+                if (first)
+                    first = false;
+                else
+                    stream << " | ";
+                sval = val.getString();
+                val.makeEmpty(false);
+                boost::replace_all(sval, "\n", "; ");
+                stream << sval.c_str();
+                if (txt.size() > 256)
+                    break;
+            }
+            if (i < mfield->getNum())
+                stream << "...";
+            item->setText(1, txt);
+            if (i < mfield->getNum() || mfield->getNum() > 1)
+                item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+        } else {
+            field->get(val);
+            sval = val.getString();
+            val.makeEmpty(false);
+            boost::replace_all(sval, "\n", "; ");
+            item->setText(1, QString::fromLatin1(sval.c_str()));
+        }
+    }
+
+    if (parent && node && node->getChildren() && node->getChildren()->getLength()) {
+        auto children = node->getChildren();
+        auto item = new QTreeWidgetItem(parent);
+        item->setText(0, QString::fromLatin1("Children Nodes"));
+        item->setText(1, QString::fromLatin1("count: %1").arg(children->getLength()));
+        for (int i=0, c=children->getLength(); i<c; ++i) {
+            auto child = new QTreeWidgetItem(item);
+            child->setText(0, QString::fromLatin1("%1").arg(i+1));
+            CoinPtr<SoNode> childNode((*children)[i]);
+            QString txt;
+            QTextStream stream(&txt);
+            stream << childNode.get() << " " << childNode->getTypeId().getName();
+            child->setText(1, txt);
+            child->setData(0, Qt::UserRole, QVariant::fromValue(childNode));
+            child->setData(1, Qt::UserRole, -1);
+            child->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+        }
+    }
+}
+
+void DlgInspector::on_treeView_clicked(const QModelIndex &index)
+{
+    ui->fieldView->clear();
+    auto model = static_cast<SceneModel*>(ui->treeView->model());
+    auto it = model->items.find(index);
+    if (it == model->items.end())
+        return;
+
+    populateFieldView(nullptr, it.value().node);
+}
+
+void DlgInspector::on_fieldView_itemExpanded(QTreeWidgetItem *item)
+{
+    expandItem(item, false);
+}
+
+void DlgInspector::expandItem(QTreeWidgetItem *item, bool force)
+{
+    if (item->childCount() && !force)
+        return;
+
+    auto node = qvariant_cast<CoinPtr<SoNode> >(item->data(0, Qt::UserRole));
+    int col = item->data(1, Qt::UserRole).toInt();
+    if (col < 0) {
+        if (col == -1)
+            populateFieldView(item, node);
+        else if (col == -2)
+            expandItem(item->parent(), true);
+        return;
+    }
+    SoFieldList fields;
+    if (col >= node->getFields(fields))
+        return;
+    auto field = fields[col];
+    if (field->isOfType(SoSFNode::getClassTypeId())) {
+        auto &sfield = *static_cast<SoSFNode*>(field);
+        populateFieldView(item, sfield.getValue());
+        return;
+    }
+    if (field->isOfType(SoMFNode::getClassTypeId())) {
+        auto &mfield = *static_cast<SoMFNode*>(field);
+        for (int i=0, c=mfield.getNum(); i<c; ++i) {
+            auto child = new QTreeWidgetItem(item);
+            child->setText(0, QString::fromLatin1("%1").arg(i+1));
+            if (!mfield[i])
+                child->setText(1, QString::fromLatin1("NULL"));
+            else {
+                CoinPtr<SoNode> childNode(mfield[i]);
+                QString txt;
+                QTextStream stream(&txt);
+                stream << mfield[i] << " " << mfield[i]->getTypeId().getName();
+                child->setText(1, txt);
+                child->setData(0, Qt::UserRole, QVariant::fromValue(childNode));
+                child->setData(1, Qt::UserRole, -1);
+                child->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+            }
+        }
+    }
+
+    if (!field->isOfType(SoMField::getClassTypeId()))
+        return;
+
+    auto mfield = static_cast<SoMField*>(field);
+    QString txt;
+    QTextStream stream(&txt);
+    int i = item->childCount();
+    if (i > 0) {
+        auto lastChild = item->child(i-1);
+        if (lastChild->text(0) == QLatin1String("...")) {
+            delete lastChild;
+            --i;
+        }
+    }
+    if (i >= mfield->getNum())
+        return;
+
+    SbString val;
+    std::string sval;
+    int total = 0;
+    int prevcount = 0;
+    auto addChild = [&]() {
+        boost::replace_all(sval, "\n", "; ");
+        auto child = new QTreeWidgetItem(item);
+        if (prevcount)
+            child->setText(0, QString::fromLatin1("%1 ~ %2").arg(i-prevcount-1).arg(i-1));
+        else
+            child->setText(0, QString::fromLatin1("%1").arg(i-1));
+        child->setText(1, QString::fromLatin1(sval.c_str()));
+    };
+
+    mfield->get1(i++, val);
+    sval = val.getString();
+    for (int c=mfield->getNum(); i<c; ++i) {
+        val.makeEmpty(false);
+        mfield->get1(i, val);
+        if (sval == val.getString()) {
+            ++prevcount;
+            continue;
+        }
+        addChild();
+        sval = val.getString();
+        prevcount = 0;
+        if (++total > 100) {
+            ++i;
+            break;
+        }
+    }
+    addChild();
+    if (i < mfield->getNum()) {
+        auto child = new QTreeWidgetItem(item);
+        child->setText(0, QString::fromLatin1("..."));
+        child->setData(1, Qt::UserRole, -2);
+        child->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
     }
 }
 

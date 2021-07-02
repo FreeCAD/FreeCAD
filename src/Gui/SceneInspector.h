@@ -26,6 +26,7 @@
 #include <QStandardItemModel>
 #include <QDialog>
 #include <QHash>
+#include <QTreeWidget>
 #include "InventorBase.h"
 
 class SoNode;
@@ -93,11 +94,15 @@ public:
 
 private Q_SLOTS:
     void on_refreshButton_clicked();
+    void on_treeView_clicked(const QModelIndex &);
+    void on_fieldView_itemExpanded(QTreeWidgetItem *item);
 
 protected:
     void changeEvent(QEvent *e);
     void setNode(SoNode* node);
     void setNodeNames(Gui::Document*);
+    void populateFieldView(QTreeWidgetItem *parent, SoNode *n);
+    void expandItem(QTreeWidgetItem *item, bool force = false);
 
 private:
     Ui_SceneInspector* ui;
