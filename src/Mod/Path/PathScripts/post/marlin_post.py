@@ -52,6 +52,7 @@ parser.add_argument('--precision', default='4', help='number of digits of precis
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\n; M2"')
 parser.add_argument('--tool-change', help='0 ... suppress all tool change commands\n1 ... insert M6 for all tool changes\n2 ... insert M6 for all tool changes except the initial tool')
+parser.add_argument('--centeroriginal', action='store_true', help='only Z is adjusted.')
 parser.add_argument('--centerorigin', action='store_true', help='center all xy coords around mid point, default is bottom left')
 parser.add_argument('--centeroriginx', action='store_true', help='center all x coords around mid point')
 parser.add_argument('--centeroriginy', action='store_true', help='center all y coords around mid point')
@@ -83,8 +84,8 @@ PRECISION = 4
 RAPID_MOVES = ['G0', 'G00']
 
 G0XY_FEEDRATE = 2000
-G0Z_UP_FEEDRATE = 300
-G0Z_DOWN_FEEDRATE = 250
+G0Z_UP_FEEDRATE = 200
+G0Z_DOWN_FEEDRATE = 150
 
 #Preamble text will appear at the Beginning of the GCODE output file.
 PREAMBLE = '''G90
@@ -120,6 +121,8 @@ ASSUME_FIRST_TOOL = True
 
 CENTER_ORIGIN_X = False
 CENTER_ORIGIN_Y = False
+CENTER_OFF = False
+
 SWAP_XY = False
 INVERT_X = False
 INVERT_Y = False
@@ -143,6 +146,7 @@ def processArguments(argstring):
     global PREAMBLE
     global POSTAMBLE
     global SUPPRESS_TOOL_CHANGE
+    global CENTER_OFF
     global CENTER_ORIGIN_X
     global CENTER_ORIGIN_Y
     global SWAP_XY
@@ -195,10 +199,14 @@ def processArguments(argstring):
             CENTER_ORIGIN_X = True
             CENTER_ORIGIN_Y = True
         else:
-            if args.centeroriginx:
-               CENTER_ORIGIN_X = not SWAP_XY  
-            if args.centeroriginy:
-               CENTER_ORIGIN_Y = not SWAP_XY
+            if args.centeroriginal:
+                CENTER_OFF = True
+                print("Center OFf")
+            else:
+                if args.centeroriginx:
+                    CENTER_ORIGIN_X = not SWAP_XY
+                if args.centeroriginy:
+                    CENTER_ORIGIN_Y = not SWAP_XY
         if args.spindlecontrol:
             SPINDLE_CONTROL = True
             
@@ -254,10 +262,10 @@ def export(objectslist,filename,argstring):
         gcode += linenumber() + line
     gcode += linenumber() + UNITS + "\n;End preamble\n\n"
     
-    data_stats = {"Xmin":10000, "Xmax":0, 
-                  "Ymin":10000, "Ymax":0, 
-                  "Zmin":10000, "Zmax":0, 
-                  "Xmin'":10000, "Xmax'":0, 
+    data_stats = {"Xmin":10000, "Xmax":0,
+                  "Ymin":10000, "Ymax":0,
+                  "Zmin":10000, "Zmax":0,
+                  "Xmin'":10000, "Xmax'":0,
                   "Ymin'":10000, "Ymax'":0,
                   "Zmin'":10000, "Zmax'":0}
     
@@ -284,12 +292,12 @@ def export(objectslist,filename,argstring):
     precision_string = '.' + str(PRECISION) +'f'
      
     if OUTPUT_COMMENTS:
-        wassup = 'Origin: ' + ('Bottom Left' if not (CENTER_ORIGIN_X or CENTER_ORIGIN_Y) else 'Centered') + (' (Swap X and Y)' if SWAP_XY else '') + ('\n;' + ('x offset: ' + format(OFFSET_X, '0.2f')) if OFFSET_X > 0 else '') + ('\n;' + ('y offset: ' + format(OFFSET_Y, '0.2f')) if OFFSET_Y > 0 else '')
+        wassup = 'Origin: ' + ('Original' if CENTER_OFF else 'Bottom Left' if not (CENTER_ORIGIN_X or CENTER_ORIGIN_Y) else 'Centered') + (' (Swap X and Y)' if SWAP_XY else '') + ('\n;' + ('x offset: ' + format(OFFSET_X, '0.2f')) if OFFSET_X > 0 else '') + ('\n;' + ('y offset: ' + format(OFFSET_Y, '0.2f')) if OFFSET_Y > 0 else '')
         print(wassup);
         
         gcode += ';' + wassup + '\n'
         
-        for key in data_stats: 
+        for key in data_stats:
             if len(key) == 4:
                 tkey = key
                 if SWAP_XY:
@@ -303,10 +311,10 @@ def export(objectslist,filename,argstring):
                
     if OUTPUT_COMMENTS: gcode += '\n;GCode Commands detected:\n\n'
     
-    if OUTPUT_COMMENTS: 
+    if OUTPUT_COMMENTS:
         for key in data_stats:
             if len(key) < 4:
-                nottoolate = key + ' detected, count is ' +  str(data_stats[key]) 
+                nottoolate = key + ' detected, count is ' +  str(data_stats[key])
                 print(nottoolate)
                 gcode += ";" + nottoolate + "\n"
     
@@ -361,24 +369,25 @@ def boxlimits(data_stats, cmd, param, value, checkbounds):
         
     if checkbounds:
         if data_stats[param + "min"] > value:
-            data_stats[param + "min"] = value 
+            data_stats[param + "min"] = value
         if data_stats[param + "max"] < value:
-            data_stats[param + "max"] = value 
+            data_stats[param + "max"] = value
     else:
             
         if param == 'Z':
            value -= (data_stats[param + "max"] - 5)
         else:
-            if (CENTER_ORIGIN_X and param =='X') or (CENTER_ORIGIN_Y and param =='Y'):
-                value -=  ((data_stats[param + "max"] + data_stats[param + "min"]) / 2.0)
-            else:
-                value -= data_stats[param + "min"]
+            if not CENTER_OFF:
+               if (CENTER_ORIGIN_X and param =='X') or (CENTER_ORIGIN_Y and param =='Y'):
+                   value -=  ((data_stats[param + "max"] + data_stats[param + "min"]) / 2.0)
+               else:
+                   value -= data_stats[param + "min"]
         
         if param == 'X': value += OFFSET_X
         if param == 'Y': value += OFFSET_Y
         
         if data_stats[param + "min'"] > value:
-            data_stats[param + "min'"] = value 
+            data_stats[param + "min'"] = value
         if data_stats[param + "max'"] < value:
             data_stats[param + "max'"] = value
                    
@@ -387,10 +396,10 @@ def boxlimits(data_stats, cmd, param, value, checkbounds):
 def emuldrill(c, state): #G81
     
     cmdlist =  [["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5, 'F' : G0Z_DOWN_FEEDRATE / 60.0}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0, 'F' : G0Z_UP_FEEDRATE / 60.0}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z'], 'F' : G0Z_DOWN_FEEDRATE / 60.0}],
-                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5,  'F' : G0Z_UP_FEEDRATE / 60.0}]
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5, 'F' : G0Z_DOWN_FEEDRATE / 60}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0, 'F' : G0Z_UP_FEEDRATE / 60}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z'], 'F' : G0Z_DOWN_FEEDRATE / 60}],
+                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5,  'F' : G0Z_UP_FEEDRATE /60}]
     ]
     
     return iter(cmdlist)
@@ -400,7 +409,7 @@ def emultoolchange(c, state): #M6 T?
     if ASSUME_FIRST_TOOL and state['notoolyet'] and state['output']:
         state['notoolyet'] = False
         cmdlist =  [
-                    [";assumed starting tool", {'T' : c.Parameters['T']}] 
+                    [";assumed starting tool", {'T' : c.Parameters['T']}]
         ]
     else:
         cmdlist =  [["G0", {'z' : 20, 'F': G0Z_UP_FEEDRATE / 60.0}],
@@ -458,11 +467,11 @@ class Commands:
                         params['F'] = G0XY_FEEDRATE / 60.0
                         #print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
     
-                if 'X' in params: Commands.state['lastx'] = params['X'] 
-                if 'Y' in params: Commands.state['lasty'] = params['Y'] 
-                if 'Z' in params: Commands.state['lastz'] = params['Z'] 
-                if 'F' in params: Commands.state['lastf'] = params['F'] 
-                if 'S' in params: Commands.state['lasts'] = params['S'] 
+                if 'X' in params: Commands.state['lastx'] = params['X']
+                if 'Y' in params: Commands.state['lasty'] = params['Y']
+                if 'Z' in params: Commands.state['lastz'] = params['Z']
+                if 'F' in params: Commands.state['lastf'] = params['F']
+                if 'S' in params: Commands.state['lasts'] = params['S']
                 
             res = [command, params]
             
@@ -492,7 +501,7 @@ def parse(pathobj, data_stats, checkbounds):
         for command, Parameters in Commands(pathobj, not checkbounds):
             outstring = []
             
-            if not checkbounds: 
+            if not checkbounds:
                 tallycmds(data_stats, command)
                            
             outstring.append(command)
@@ -557,4 +566,3 @@ def parse(pathobj, data_stats, checkbounds):
 
 
 print(__name__ + " gcode postprocessor loaded.")
-
