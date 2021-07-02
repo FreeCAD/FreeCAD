@@ -85,6 +85,14 @@ def checkWorkingDir():
     PathPreferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
     PathLog.debug('setting workingdir to: {}'.format(workingdir))
 
+    # Copy only files of default Path\Tools folder to working directory (targeting the README.md help file)
+    src_toolfiles = os.listdir(defaultdir)
+    for file_name in src_toolfiles:
+        if file_name in ["README.md"]:
+            full_file_name = os.path.join(defaultdir, file_name)
+            if os.path.isfile(full_file_name):
+                shutil.copy(full_file_name, workingdir)
+
     subdirlist = ['Bit', 'Library', 'Shape']
     mode = 0o777
     for dir in subdirlist.copy():
