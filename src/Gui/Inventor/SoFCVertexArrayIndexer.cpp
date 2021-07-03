@@ -296,8 +296,9 @@ SoFCVertexArrayIndexer::render(SoState * state,
 
   GLenum drawtarget = this->target;
 
-  // if (!drawcount && !this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE)) {
-  if (!drawcount && !this->linestripoffsets.empty()) {
+  if (!drawcount && !this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE))
+  // if (!drawcount && !this->linestripoffsets.empty())
+  {
     drawtarget = GL_LINE_STRIP;
     if (this->partialindices.empty()) {
       drawcount = static_cast<int>(this->linestripoffsets.size());
@@ -323,8 +324,9 @@ SoFCVertexArrayIndexer::render(SoState * state,
     if (this->partialoffsets.empty()) {
       this->partialoffsets.reserve(this->partialindices.size());
       this->partialcounts.reserve(this->partialindices.size());
-      // if (!this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE))
-      if (!this->linestripoffsets.empty()) {
+      if (!this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE))
+      // if (!this->linestripoffsets.empty())
+      {
         drawtarget = GL_LINE_STRIP;
         if (renderasvbo) {
           for (int i : this->partialindices) {
