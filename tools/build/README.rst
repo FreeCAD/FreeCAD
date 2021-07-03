@@ -1,12 +1,70 @@
-======================
-Build Container Images
-======================
+==========================
+FreeCAD build dependencies
+==========================
+
+Distributions
+=============
+
+The following commands are used to install the packages needed to build FreeCAD from source on the following distributions.
+
+
+Arch Linux
+----------
+
+The following command is used to install the required packages used to compile FreeCAD on Arch Linux.
+
+.. code-block:: console
+
+    sudo sh tools/build/arch.sh
+
+
+Debian
+------
+
+The following command is used to install the required packages used to compile FreeCAD on Debian.
+
+.. code-block:: console
+
+    sudo sh tools/build/debian.sh
+
+
+Fedora
+------
+
+The following command is used to install the required packages used to compile FreeCAD on Fedora.
+
+.. code-block:: console
+
+    sudo sh tools/build/fedora.sh
+
+
+Manjaro
+-------
+
+The following command is used to install the required packages used to compile FreeCAD on Manjaro Linux.
+
+.. code-block:: console
+
+    sudo sh tools/build/manjaro.sh
+
+
+Ubuntu
+------
+
+
+The following command is used to install the required packages used to compile FreeCAD on Ubuntu Linux.
+
+.. code-block:: console
+
+    sudo sh tools/build/ubuntu.sh
+
+
+Containers
+==========
 
 The following will create containers that have all the required dependencies
 pre-installed that are needed to build FreeCAD from source.
 
-Containers
-==========
 
 Arch Linux
 -----------
@@ -39,17 +97,6 @@ The following commands are used to create and run a Fedora build environment.
 
     docker build --file tools/build/Dockerfile.Fedora --tag freecad-fedora
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-fedora
-
-
-openSUSE
---------
-
-The following commands are used to create and run a openSUSE build environment.
-
-.. code-block:: console
-
-    docker build --file tools/build/Dockerfile.openSUSE --tag freecad-opensuse
-    docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-opensuse
 
 
 Manjaro
