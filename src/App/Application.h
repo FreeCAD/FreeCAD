@@ -24,7 +24,7 @@
 #ifndef APP_APPLICATION_H
 #define APP_APPLICATION_H
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <vector>
 #include <deque>
@@ -457,6 +457,8 @@ private:
     Application(std::map<std::string,std::string> &mConfig);
     /// Destructor
     virtual ~Application();
+
+    static void cleanupUnits();
 
     /** @name member for parameter */
     //@{

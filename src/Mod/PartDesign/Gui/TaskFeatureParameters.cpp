@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #endif
 
+#include <App/DocumentObserver.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
@@ -143,6 +144,8 @@ bool TaskDlgFeatureParameters::accept() {
 bool TaskDlgFeatureParameters::reject()
 {
     PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(vp->getObject());
+    App::DocumentObjectWeakPtrT weakptr(feature);
+    App::Document* document = feature->getDocument();
 
     PartDesign::Body* body = PartDesign::Body::findBodyOf(feature);
 
@@ -159,23 +162,26 @@ bool TaskDlgFeatureParameters::reject()
             param->detachSelection();
     }
 
-    // roll back the done things
+    // roll back the done things which may delete the feature
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
     // if abort command deleted the object make the previous feature visible again
-    if (!Gui::Application::Instance->getViewProvider(feature)) {
+    if (weakptr.expired()) {
         // Make the tip or the previous feature visible again with preference to the previous one
         // TODO: ViewProvider::onDelete has the same code. May be this one is excess?
         if (previous && Gui::Application::Instance->getViewProvider(previous)) {
             Gui::Application::Instance->getViewProvider(previous)->show();
-        } else if (body != NULL) {
+        }
+        else if (body) {
             App::DocumentObject* tip = body->Tip.getValue();
             if (tip && Gui::Application::Instance->getViewProvider(tip)) {
                 Gui::Application::Instance->getViewProvider(tip)->show();
             }
         }
     }
+
+    Gui::cmdAppDocument(document, "recompute()");
+    Gui::cmdGuiDocument(document, "resetEdit()");
 
     return true;
 }

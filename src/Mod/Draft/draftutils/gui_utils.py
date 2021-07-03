@@ -38,7 +38,6 @@ of the objects or the 3D view.
 # @{
 import math
 import os
-import six
 
 import FreeCAD as App
 import draftutils.utils as utils
@@ -129,13 +128,20 @@ def autogroup(obj):
 
         if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
-            Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
+            active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+            if obj in active_arch_obj.InListRecursive:
+                # do not autogroup if obj points to active_arch_obj to prevent cyclic references
+                return
+            active_arch_obj.addObject(obj)
 
         elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
             # add object to active part and change it's placement accordingly
             # so object does not jump to different position, works with App::Link
             # if not scaled. Modified accordingly to realthunder suggestions
-            p, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            if obj in active_part.InListRecursive:
+                # do not autogroup if obj points to active_part to prevent cyclic references
+                return
             matrix = parent.getSubObject(sub, retType=4)
             if matrix.hasScale() == 1:
                 err = translate("Draft",
@@ -162,7 +168,8 @@ def autogroup(obj):
             elif hasattr(obj,"Placement"):
                 # every object that have a placement is processed here
                 obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
-            p.addObject(obj)
+
+            active_part.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
@@ -382,7 +389,12 @@ def format_object(target, origin=None):
             if "PointColor" in obrep.PropertiesList:
                 obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = lcol
+                if hasattr(obrep,"FontName") and (not hasattr(obrep,"TextColor")):
+                    # dimensions and other objects with text but no specific
+                    # TextColor property. TODO: Add TextColor property to dimensions
+                    obrep.LineColor = tcol
+                else:
+                    obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:
@@ -599,63 +611,35 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             buffersize = p.byteCount()
             width = size[0]
             height = size[1]
-            numcomponents = int(float(buffersize) / (width * height))
+            numcomponents = int(buffersize / (width * height))
 
             img = coin.SoSFImage()
-            byteList = []
-            # isPy2 = sys.version_info.major < 3
-            isPy2 = six.PY2
+            byteList = bytearray()
 
             # The SoSFImage needs to be filled with bytes.
             # The pixel information is converted into a Qt color, gray,
             # red, green, blue, or transparency (alpha),
             # depending on the input image.
-            #
-            # If Python 2 is used, the color is turned into a character,
-            # which is of type 'byte', and added to the byte list.
-            # If Python 3 is used, characters are unicode strings,
-            # so they need to be encoded into 'latin-1'
-            # to produce the correct bytes for the list.
             for y in range(height):
                 # line = width*numcomponents*(height-(y));
                 for x in range(width):
-                    rgb = p.pixel(x, y)
-                    if numcomponents == 1 or numcomponents == 2:
-                        gray = chr(QtGui.qGray(rgb))
-                        if isPy2:
-                            byteList.append(gray)
-                        else:
-                            byteList.append(gray.encode('latin-1'))
+                    rgba = p.pixel(x, y)
+                    if numcomponents <= 2:
+                        byteList.append(QtGui.qGray(rgba))
 
                         if numcomponents == 2:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
-                    elif numcomponents == 3 or numcomponents == 4:
-                        red = chr(QtGui.qRed(rgb))
-                        green = chr(QtGui.qGreen(rgb))
-                        blue = chr(QtGui.qBlue(rgb))
+                            byteList.append(QtGui.qAlpha(rgba))
 
-                        if isPy2:
-                            byteList.append(red)
-                            byteList.append(green)
-                            byteList.append(blue)
-                        else:
-                            byteList.append(red.encode('latin-1'))
-                            byteList.append(green.encode('latin-1'))
-                            byteList.append(blue.encode('latin-1'))
+                    elif numcomponents <= 4:
+                        byteList.append(QtGui.qRed(rgba))
+                        byteList.append(QtGui.qGreen(rgba))
+                        byteList.append(QtGui.qBlue(rgba))
 
                         if numcomponents == 4:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
+                            byteList.append(QtGui.qAlpha(rgba))
                     # line += numcomponents
 
-            _bytes = b"".join(byteList)
+            _bytes = bytes(byteList)
             img.setValue(size, numcomponents, _bytes)
         except FileNotFoundError as exc:
             _wrn("load_texture: {0}, {1}".format(exc.strerror,

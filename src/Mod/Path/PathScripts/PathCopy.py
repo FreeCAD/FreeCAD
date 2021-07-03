@@ -63,7 +63,7 @@ class ViewProviderPathCopy:
         return
 
     def getIcon(self):
-        return ":/icons/Path-Copy.svg"
+        return ":/icons/Path_Copy.svg"
 
     def __getstate__(self):
         return None
@@ -75,7 +75,7 @@ class ViewProviderPathCopy:
 class CommandPathCopy:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Copy',
+        return {'Pixmap': 'Path_Copy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Copy"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Creates a linked copy of another path")}
 

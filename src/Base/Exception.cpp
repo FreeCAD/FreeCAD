@@ -10,12 +10,12 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        * 
+ *   License along with FreeCAD; if not, write to the Free Software        *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
@@ -111,11 +111,7 @@ PyObject * Exception::getPyObject(void)
     edict.setItem("sclassname", Py::String(typeid(*this).name()));
     edict.setItem("sErrMsg", Py::String(this->getMessage()));
     edict.setItem("sfile", Py::String(this->getFile()));
-#if PY_MAJOR_VERSION >= 3
     edict.setItem("iline", Py::Long(this->getLine()));
-#else
-    edict.setItem("iline", Py::Int(this->getLine()));
-#endif
     edict.setItem("sfunction", Py::String(this->getFunction()));
     edict.setItem("swhat", Py::String(this->what()));
     edict.setItem("btranslatable", Py::Boolean(this->getTranslatable()));
@@ -138,11 +134,7 @@ void Exception::setPyObject( PyObject * pydict)
                 _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
 
             if (edict.hasKey("iline"))
-#if PY_MAJOR_VERSION >= 3
                 _line = static_cast<long>(Py::Long(edict.getItem("iline")));
-#else
-                _line = static_cast<int>(Py::Int(edict.getItem("iline")));
-#endif
             if (edict.hasKey("btranslatable"))
                 _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
             if (edict.hasKey("breported"))

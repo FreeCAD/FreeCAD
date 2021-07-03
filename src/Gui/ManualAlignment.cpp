@@ -509,7 +509,7 @@ public:
     SbRotation rot_cam1, rot_cam2;
     SbVec3f pos_cam1, pos_cam2;
 
-    Private() 
+    Private()
       : sensorCam1(0), sensorCam2(0)
     {
         // left view
@@ -551,7 +551,7 @@ public:
                             SoCamera* cam2, SbRotation& rot_cam2, SbVec3f& pos_cam2)
     {
         Q_UNUSED(pos_cam2);
- 
+
         // recompute the diff we have applied to the camera's orientation
         SbRotation rot = cam1->orientation.getValue();
         SbRotation dif = rot * rot_cam1.inverse();
@@ -713,7 +713,7 @@ void ManualAlignment::destruct()
 }
 
 /**
- * Checks whether the one instance exists. 
+ * Checks whether the one instance exists.
  */
 bool ManualAlignment::hasInstance()
 {
@@ -851,10 +851,10 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     }
 
     myViewer->getViewer(0)->setEditing(true);
-    myViewer->getViewer(0)->addEventCallback(SoMouseButtonEvent::getClassTypeId(), 
+    myViewer->getViewer(0)->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
         ManualAlignment::probePickedCallback);
     myViewer->getViewer(1)->setEditing(true);
-    myViewer->getViewer(1)->addEventCallback(SoMouseButtonEvent::getClassTypeId(), 
+    myViewer->getViewer(1)->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
         ManualAlignment::probePickedCallback);
     // apply the mouse model
     myViewer->getViewer(0)->setNavigationType(mousemodel);
@@ -966,19 +966,19 @@ void ManualAlignment::cancel()
 
 void ManualAlignment::align()
 {
-    // Now we can start the actual alignment 
+    // Now we can start the actual alignment
     if (myAlignModel.activeGroup().countPoints() < myPickPoints) {
-        QMessageBox::warning(myViewer, tr("Manual alignment"), 
+        QMessageBox::warning(myViewer, tr("Manual alignment"),
                 tr("Too few points picked in the left view."
                    " At least %1 points are needed.").arg(myPickPoints));
     }
     else if (myFixedGroup.countPoints() < myPickPoints) {
-        QMessageBox::warning(myViewer, tr("Manual alignment"), 
+        QMessageBox::warning(myViewer, tr("Manual alignment"),
                 tr("Too few points picked in the right view."
                   " At least %1 points are needed.").arg(myPickPoints));
     }
     else if (myAlignModel.activeGroup().countPoints() != myFixedGroup.countPoints()) {
-        QMessageBox::warning(myViewer, tr("Manual alignment"), 
+        QMessageBox::warning(myViewer, tr("Manual alignment"),
                 tr("Different number of points picked in left and right view.\n"
                    "On the left view %1 points are picked,\n"
                    "on the right view %2 points are picked.")
@@ -996,7 +996,7 @@ void ManualAlignment::align()
         bool ok = computeAlignment(myAlignModel.activeGroup().getPoints(), myFixedGroup.getPoints());
         if (ok && myDocument) {
             // Align views
-            myDocument->openCommand("Align");
+            myDocument->openCommand(QT_TRANSLATE_NOOP("Command", "Align"));
             for (std::vector<App::DocumentObject*>::iterator it = pViews.begin(); it != pViews.end(); ++it)
                 alignObject(*it);
             myDocument->commitCommand();
@@ -1010,7 +1010,7 @@ void ManualAlignment::align()
         }
         else {
             // Inform user that alignment failed
-            int ret = QMessageBox::critical(myViewer, tr("Manual alignment"), 
+            int ret = QMessageBox::critical(myViewer, tr("Manual alignment"),
                 tr("The alignment failed.\nHow do you want to proceed?"),
                 tr("Retry"), tr("Ignore"), tr("Abort"));
             if ( ret == 1 ) {
@@ -1028,7 +1028,7 @@ void ManualAlignment::align()
 
 void ManualAlignment::showInstructions()
 {
-    // Now we can start the actual alignment 
+    // Now we can start the actual alignment
     if (myAlignModel.activeGroup().countPoints() < myPickPoints) {
         Gui::getMainWindow()->showMessage(
             tr("Too few points picked in the left view."
@@ -1224,7 +1224,7 @@ void ManualAlignment::onCancel()
 
 void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
 {
-    Q_UNUSED(ud); 
+    Q_UNUSED(ud);
 
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
     const SoEvent* ev = n->getEvent();
@@ -1237,7 +1237,7 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             // if we are in 'align' mode then handle the click event
             ManualAlignment* self = ManualAlignment::instance();
-            // Get the closest point to the camera of the whole scene. 
+            // Get the closest point to the camera of the whole scene.
             // This point doesn't need to be part of this view provider.
             Gui::WaitCursor wc;
             const SoPickedPoint * point = view->getPickedPoint(n);

@@ -137,7 +137,6 @@ class DraftTool:
         self.ui = Gui.draftToolBar
         self.featureName = name
         self.ui.sourceCmd = self
-        self.ui.setTitle(name)
         self.ui.show()
         if not noplanesetup:
             App.DraftWorkingPlane.setup()
@@ -146,14 +145,12 @@ class DraftTool:
         self.constrain = None
         self.obj = None
         self.extendedCopy = False
-        self.ui.setTitle(name)
         self.planetrack = None
         if utils.get_param("showPlaneTracker", False):
             self.planetrack = trackers.PlaneTracker()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.setTrackers()
 
-        _log("GuiCommand: {}".format(self.featureName))
         _msg("{}".format(16*"-"))
         _msg("GuiCommand: {}".format(self.featureName))
 
@@ -183,7 +180,6 @@ class DraftTool:
             self.ui.sourceCmd = None
         if self.planetrack:
             self.planetrack.finalize()
-        App.DraftWorkingPlane.restore()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.off()
         if self.call:

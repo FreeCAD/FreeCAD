@@ -314,7 +314,7 @@ class EditorPanel():
                 listWidgetItem = QtGui.QListWidgetItem()
                 listItem = ToolTableListWidgetItem(self.TLM)
                 listItem.setTableName(table.Name)
-                listItem.setIcon(QtGui.QPixmap(':/icons/Path-ToolTable.svg'))
+                listItem.setIcon(QtGui.QPixmap(':/icons/Path_ToolTable.svg'))
                 listItem.toolMoved.connect(self.reloadReset)
                 listWidgetItem.setSizeHint(QtCore.QSize(0,40))
                 self.form.TableList.addItem(listWidgetItem)
@@ -439,7 +439,7 @@ class CommandToolLibraryEdit():
         pass
 
     def edit(self, job=None, cb=None):
-        if PathPreferences.toolsReallyUseLegacyTools():
+        if PathPreferences.toolsUseLegacyTools():
             editor = EditorPanel(job, cb)
             editor.setupUi()
             editor.form.exec_()
@@ -449,7 +449,7 @@ class CommandToolLibraryEdit():
                     cb()
 
     def GetResources(self):
-        return {'Pixmap'  : 'Path-ToolTable',
+        return {'Pixmap'  : 'Path_ToolTable',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolTable","Tool Manager"),
                 'Accel': "P, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolTable","Tool Manager")}

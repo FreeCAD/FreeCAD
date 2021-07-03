@@ -55,6 +55,9 @@ class ShapeString(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
         obj.addProperty("App::PropertyLength", "Tracking", "Draft", _tip)
 
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
+
     def execute(self, obj):
         import Part
         # import OpenSCAD2Dgeom
@@ -91,8 +94,12 @@ class ShapeString(DraftObject):
             else:
                 sticky = True
 
+            fill = True
+            if hasattr(obj, "MakeFace"):
+                fill = obj.MakeFace
+
             for char in CharList:
-                if sticky:
+                if sticky or (not fill):
                     for CWire in char:
                         SSChars.append(CWire)
                 else:
@@ -150,7 +157,7 @@ class ShapeString(DraftObject):
                 # some fonts fail here
                 if face.Surface.Axis.z < 0.0:
                     face.reverse()
-            except:
+            except Exception:
                 pass
             compFaces.append(face)
         ret = Part.Compound(compFaces)

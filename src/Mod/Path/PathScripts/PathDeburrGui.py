@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
@@ -135,7 +136,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Deburr',
         PathDeburr.Create,
         TaskPanelOpPage,
-        'Path-Deburr',
+        'Path_Deburr',
         QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Deburr"),
         QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Creates a Deburr Path along Edges or around Faces"),
         PathDeburr.SetupProperties)

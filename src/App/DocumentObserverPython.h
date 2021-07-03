@@ -26,7 +26,7 @@
 
 #include <CXX/Objects.hxx>
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 #include <string>
 
@@ -117,7 +117,7 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef struct {
+    typedef struct PythonObject {
        boost::signals2::scoped_connection slot;
        Py::Object py;
        PyObject* ptr() {

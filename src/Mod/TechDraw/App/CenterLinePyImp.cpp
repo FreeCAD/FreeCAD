@@ -300,13 +300,13 @@ Py::Object CenterLinePy::getEdges(void) const
     std::vector<std::string> edges = cl->m_edges;
     int size = edges.size();
 
-    PyObject* result = PyList_New(size);
+    Py::List result(size);
 
     for (auto& e: edges) {
-        PyList_Append(result, PyUnicode_FromString(e.c_str()));
+        result.append(Py::asObject(PyUnicode_FromString(e.c_str())));
     }
 
-    return Py::asObject(result);
+    return result;
 }
 
 void CenterLinePy::setEdges(Py::Object arg)
@@ -321,17 +321,10 @@ void CenterLinePy::setEdges(Py::Object arg)
         int i = 0;
         for ( ; i < tSize; i++) {
             PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item)) {
                 std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
                 temp.push_back(s);
             }
-#else
-            if (PyString_Check(item)) {
-                std::string s = PyString_AsString(item);         //py2 only!!!
-                temp.push_back(s);
-            }
-#endif
         }
         cl->m_edges = temp;
     } else {
@@ -346,13 +339,13 @@ Py::Object CenterLinePy::getFaces(void) const
     std::vector<std::string> faces = cl->m_faces;
     int size = faces.size();
 
-    PyObject* result = PyList_New(size);
+    Py::List result(size);
 
     for (auto& f: faces) {
-        PyList_Append(result, PyUnicode_FromString(f.c_str()));
+        result.append(Py::asObject(PyUnicode_FromString(f.c_str())));
     }
 
-    return Py::asObject(result);
+    return result;
 }
 
 void CenterLinePy::setFaces(Py::Object arg)
@@ -367,17 +360,10 @@ void CenterLinePy::setFaces(Py::Object arg)
         int i = 0;
         for ( ; i < tSize; i++) {
             PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item)) {
                 std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
                 temp.push_back(s);
             }
-#else
-            if (PyString_Check(item)) {
-                std::string s = PyString_AsString(item);         //py2 only!!!
-                temp.push_back(s);
-            }
-#endif
         }
         cl->m_faces = temp;
     } else {
@@ -393,13 +379,13 @@ Py::Object CenterLinePy::getPoints(void) const
     std::vector<std::string> points = cl->m_verts;
     int size = points.size();
 
-    PyObject* result = PyList_New(size);
+    Py::List result(size);
 
     for (auto& p: points) {
-        PyList_Append(result, PyUnicode_FromString(p.c_str()));
+        result.append(Py::asObject(PyUnicode_FromString(p.c_str())));
     }
 
-    return Py::asObject(result);
+    return result;
 }
 
 void CenterLinePy::setPoints(Py::Object arg)
@@ -414,17 +400,10 @@ void CenterLinePy::setPoints(Py::Object arg)
         int i = 0;
         for ( ; i < tSize; i++) {
              PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item)) {
                 std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
                 temp.push_back(s);
             }
-#else
-            if (PyString_Check(item)) {
-                std::string s = PyString_AsString(item);         //py2 only!!!
-                temp.push_back(s);
-            }
-#endif
         }
         cl->m_verts = temp;
     } else {

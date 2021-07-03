@@ -22,7 +22,7 @@
 
 __title__ = "Tools for the work with finite element meshes"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -1621,6 +1621,9 @@ def get_pressure_obj_faces(
                     # 0 if femmeshface normal == reference face normal direction
                     # -1 if femmeshface normal opposite reference face normal direction
                     # easy on plane faces, but on a half sphere ... ?!?
+                    # might be useful to add ...
+                    # How to find the orientation of a FEM mesh face?
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=51898
         else:
             FreeCAD.Console.PrintError(
                 "Pressure on shell mesh at the moment only "

@@ -48,6 +48,7 @@
 #include <assert.h>
 #include <string>
 #include <map>
+#include <memory>
 #include <vector>
 #include <set>
 #include <bitset>
@@ -60,7 +61,6 @@
 
 // Boost
 #include <boost/bind/bind.hpp>
-#include <boost/shared_ptr.hpp>
 
 // Opencascade
 #include <Mod/Part/App/OpenCascadeAll.h>

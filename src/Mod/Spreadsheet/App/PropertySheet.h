@@ -130,9 +130,13 @@ public:
 
     void insertRows(int row, int count);
 
+    std::vector<App::CellAddress> getRows(int row, int count) const;
+
     void removeRows(int row, int count);
 
     void insertColumns(int col, int count);
+
+    std::vector<App::CellAddress> getColumns(int column, int count) const;
 
     void removeColumns(int col, int count);
 

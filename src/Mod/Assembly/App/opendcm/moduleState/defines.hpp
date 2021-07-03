@@ -63,7 +63,7 @@ BOOST_FUSION_ADAPT_TPL_STRUCT(
     (dcm::System)(Kernel)(M1)(M2)(M3),
     (typename t1<Kernel>::template t2<M1>::template t3<M2>::template t4<M3>::type::OptionOwner::Properties, m_options->m_properties)
     (typename Kernel::Properties, m_kernel.m_properties)
-    (boost::shared_ptr<typename t1<Kernel>::template t2<M1>::template t3<M2>::template t4<M3>::type::Cluster>, m_cluster)
+    (std::shared_ptr<typename t1<Kernel>::template t2<M1>::template t3<M2>::template t4<M3>::type::Cluster>, m_cluster)
 )
 
 #endif

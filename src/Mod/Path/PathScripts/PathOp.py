@@ -27,6 +27,7 @@ from PySide import QtCore
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 from PathScripts.PathUtils import waiting_effects
@@ -299,6 +300,13 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
+
+        # there's a bit of cycle going on here, if sanitizeBase causes the transaction to
+        # be cancelled we end right here again with the unsainitized Base - if that is the
+        # case, stop the cycle and return immediately
+        if prop == 'Base' and self.sanitizeBase(obj):
+            return
+
         if 'Restore' not in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
@@ -324,7 +332,7 @@ class ObjectOp(object):
             if 1 < len(job.Operations.Group):
                 obj.ToolController = PathUtil.toolControllerForOp(job.Operations.Group[-2])
             else:
-                obj.ToolController = PathUtils.findToolController(obj)
+                obj.ToolController = PathUtils.findToolController(obj, self)
             if not obj.ToolController:
                 return None
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
@@ -421,7 +429,10 @@ class ObjectOp(object):
                 zmax = max(zmax, bb.ZMax)
                 for sub in sublist:
                     try:
-                        fbb = base.Shape.getElement(sub).BoundBox
+                        if sub:
+                            fbb = base.Shape.getElement(sub).BoundBox
+                        else:
+                            fbb = base.Shape.BoundBox
                         zmin = max(zmin, faceZmin(bb, fbb))
                         zmax = max(zmax, fbb.ZMax)
                     except Part.OCCError as e:
@@ -459,6 +470,19 @@ class ObjectOp(object):
 
         self.opUpdateDepths(obj)
 
+    def sanitizeBase(self, obj):
+        '''sanitizeBase(obj) ... check if Base is valid and clear on errors.'''
+        if hasattr(obj, 'Base'):
+            try:
+                for (o, sublist) in obj.Base:
+                    for sub in sublist:
+                        e = o.Shape.getElement(sub)
+            except Part.OCCError as e:
+                PathLog.error("{} - stale base geometry detected - clearing.".format(obj.Label))
+                obj.Base = []
+                return True
+        return False
+
     @waiting_effects
     def execute(self, obj):
         '''execute(obj) ... base implementation - do not overwrite!
@@ -489,6 +513,9 @@ class ObjectOp(object):
 
         if not self._setBaseAndStock(obj):
             return
+
+        # make sure Base is still valid or clear it
+        self.sanitizeBase(obj)
 
         if FeatureCoolant & self.opFeatures(obj):
             if not hasattr(obj, 'CoolantMode'):
@@ -524,6 +551,10 @@ class ObjectOp(object):
 
         result = self.opExecute(obj)  # pylint: disable=assignment-from-no-return
 
+        if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
+            # Let's finish by rapid to clearance...just for safety
+            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+
         path = Path.Path(self.commandlist)
         obj.Path = path
         obj.CycleTime = self.getCycleTimeEstimate(obj)
@@ -543,11 +574,11 @@ class ObjectOp(object):
         hRapidrate = tc.HorizRapid.Value
         vRapidrate = tc.VertRapid.Value
 
-        if hFeedrate == 0 or vFeedrate == 0:
+        if (hFeedrate == 0 or vFeedrate == 0) and not PathPreferences.suppressAllSpeedsWarning():
             PathLog.warning(translate("Path", "Tool Controller feedrates required to calculate the cycle time."))
             return translate('Path', 'Feedrate Error')
 
-        if hRapidrate == 0 or vRapidrate == 0:
+        if (hRapidrate == 0 or vRapidrate == 0) and not PathPreferences.suppressRapidSpeedsWarning():
             PathLog.warning(translate("Path", "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times."))
 
         # Get the cycle time in seconds
@@ -585,3 +616,11 @@ class ObjectOp(object):
                 obj.Base = baselist
             else:
                 PathLog.notice((translate("Path", "Base object %s.%s rejected by operation") + "\n") % (base.Label, sub))
+
+    def isToolSupported(self, obj, tool):
+        '''toolSupported(obj, tool) ... Returns true if the op supports the given tool.
+        This function can safely be overwritten by subclasses.'''
+
+        return True
+
+

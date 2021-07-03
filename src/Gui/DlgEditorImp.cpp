@@ -69,63 +69,63 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
 
     d = new DlgSettingsEditorP();
     QColor col;
-    col = Qt::black; 
+    col = Qt::black;
     unsigned int lText = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Text")), lText));
-    col = Qt::cyan; 
+    col = Qt::cyan;
     unsigned int lBookmarks = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Bookmark")), lBookmarks));
-    col = Qt::red; 
+    col = Qt::red;
     unsigned int lBreakpnts = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Breakpoint")), lBreakpnts));
-    col = Qt::blue; 
+    col = Qt::blue;
     unsigned int lKeywords = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Keyword")), lKeywords));
-    col.setRgb(0, 170, 0); 
+    col.setRgb(0, 170, 0);
     unsigned int lComments = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Comment")), lComments));
-    col.setRgb(160, 160, 164); 
+    col.setRgb(160, 160, 164);
     unsigned int lBlockCom = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Block comment")), lBlockCom));
-    col = Qt::blue; 
+    col = Qt::blue;
     unsigned int lNumbers = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Number")), lNumbers));
-    col = Qt::red; 
+    col = Qt::red;
     unsigned int lStrings = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("String")), lStrings));
-    col = Qt::red; 
+    col = Qt::red;
     unsigned int lCharacter = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Character")), lCharacter));
-    col.setRgb(255, 170, 0); 
+    col.setRgb(255, 170, 0);
     unsigned int lClass = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Class name")), lClass));
-    col.setRgb(255, 170, 0); 
+    col.setRgb(255, 170, 0);
     unsigned int lDefine = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Define name")), lDefine));
-    col.setRgb(160, 160, 164); 
+    col.setRgb(160, 160, 164);
     unsigned int lOperat = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Operator")), lOperat));
-    col.setRgb(170, 170, 127); 
+    col.setRgb(170, 170, 127);
     unsigned int lPyOutput = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Python output")), lPyOutput));
-    col = Qt::red; 
+    col = Qt::red;
     unsigned int lPyError = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Python error")), lPyError));
-    col.setRgb(224, 224, 224); 
+    col.setRgb(224, 224, 224);
     unsigned int lCLine = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Current line highlight")), lCLine));

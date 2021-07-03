@@ -23,12 +23,6 @@ else()
     )
 endif()
 
-set(Web_MOC_HDRS
-    Server.h
-)
-fc_wrap_cpp(Web_MOC_SRCS ${Web_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${Web_MOC_SRCS})
-
 SET(Web_SRCS
     AppWeb.cpp
     PreCompiled.cpp

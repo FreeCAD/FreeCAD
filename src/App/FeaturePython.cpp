@@ -45,6 +45,11 @@ FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
 
 FeaturePythonImp::~FeaturePythonImp()
 {
+    Base::PyGILStateLocker lock;
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
+
+    FC_PY_FEATURE_PYTHON
 }
 
 void FeaturePythonImp::init(PyObject *pyobj) {
@@ -296,7 +301,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
         if(!res.isSequence())
             throw Py::TypeError("getSubObjects expects return type of tuple");
         Py::Sequence seq(res);
-        for(size_t i=0;i<seq.length();++i) {
+        for(Py_ssize_t i=0;i<seq.length();++i) {
             Py::Object name(seq[i].ptr());
             if(!name.isString())
                 throw Py::TypeError("getSubObjects expects string in returned sequence");

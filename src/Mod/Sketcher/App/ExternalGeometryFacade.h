@@ -41,6 +41,10 @@ class ExternalGeometryFacadePy;
 //
 // Exactly the same considerations as for GeometryFacade apply (see documentation of GeometryFacade).
 //
+// It was not made publicly deriving from GeometryFacade because it is not possible to differentiate functions by return type, which is the
+// case of getFacade() returning a unique_ptr to GeometryFacade in GeometryFacade, and one to ExternalGeometryFacade. I have not managed to
+// find a good solution to this problem, thus the code duplication.
+//
 // Summary Remarks:
 // It is intended to have a separate type (not being a Geometry type).
 // it is intended to have the relevant interface in full for the sketcher extension only
@@ -80,6 +84,19 @@ public:
     inline virtual long getId() const override {return getGeoExt()->getId();}
     virtual void setId(long id) override {getGeoExt()->setId(id);}
 
+    virtual InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
+    virtual void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
+
+    virtual bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
+    virtual void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
+
+    // Convenience accessor
+    bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
+    void setBlocked(bool status = true) {this->setGeometryMode(GeometryMode::Blocked, status);}
+
+    inline bool getConstruction(void) const {return this->testGeometryMode(GeometryMode::Construction);};
+    inline void setConstruction(bool construction) {this->setGeometryMode(GeometryMode::Construction, construction);};
+
     // Geometry Extension Information
     inline const std::string &getSketchExtensionName () const {return SketchGeoExtension->getName();}
     inline const std::string &getExternalExtensionName () const {return ExternalGeoExtension->getName();}
@@ -107,8 +124,6 @@ public:
     const Handle(Geom_Geometry)& handle() const {return getGeo()->handle();};
     Part::Geometry *copy(void) const {return getGeo()->copy();};
     Part::Geometry *clone(void) const {return getGeo()->clone();};
-    inline bool getConstruction(void) const {return getGeo()->getConstruction();};
-    inline void setConstruction(bool construction) {getGeo()->setConstruction(construction);};
     boost::uuids::uuid getTag() const {return getGeo()->getTag();};
 
     std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();};

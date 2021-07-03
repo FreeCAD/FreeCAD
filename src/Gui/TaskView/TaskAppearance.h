@@ -26,10 +26,8 @@
 
 #include "TaskView.h"
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
-
-class Ui_TaskAppearance;
 
 namespace App {
 class Property;
@@ -37,8 +35,11 @@ class Property;
 
 namespace Gui {
 class ViewProvider;
+
 namespace TaskView {
+
 typedef boost::signals2::connection TaskAppearance_Connection;
+class Ui_TaskAppearance;
 
 class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverType
 {

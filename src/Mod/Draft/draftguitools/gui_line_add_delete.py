@@ -52,12 +52,10 @@ class AddPoint(DraftTools.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Add point"
-        _tip = "Adds a point to an existing Wire or B-spline."
 
         return {'Pixmap': 'Draft_AddPoint',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_AddPoint", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_AddPoint", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AddPoint", "Add point"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing Wire or B-spline.")}
 
     def IsActive(self):
         """Return True when there is selection and the command is active."""
@@ -86,12 +84,10 @@ class DelPoint(DraftTools.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Remove point"
-        _tip = "Removes a point from an existing Wire or B-spline."
 
         return {'Pixmap': 'Draft_DelPoint',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_DelPoint", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_DelPoint", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_DelPoint", "Remove point"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing Wire or B-spline.")}
 
     def IsActive(self):
         """Return True when there is selection and the command is active."""

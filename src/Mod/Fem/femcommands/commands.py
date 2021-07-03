@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM command definitions"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package commands
 #  \ingroup FEM
@@ -83,13 +83,17 @@ class _ClippingPlaneAdd(CommandManager):
         from femtools.femutils import getBoundBoxOfAllDocumentShapes
         from femtools.femutils import getSelectedFace
 
-        overalboundbox = getBoundBoxOfAllDocumentShapes(FreeCAD.ActiveDocument)
-        # print(overalboundbox)
-        min_bb_length = (min(set([
-            overalboundbox.XLength,
-            overalboundbox.YLength,
-            overalboundbox.ZLength
-        ])))
+        overallboundbox = getBoundBoxOfAllDocumentShapes(FreeCAD.ActiveDocument)
+        # print(overallboundbox)
+        if overallboundbox:
+            min_bb_length = (min(set([
+                overallboundbox.XLength,
+                overallboundbox.YLength,
+                overallboundbox.ZLength
+            ])))
+        else:
+            min_bb_length = 10.        # default
+
         dbox = min_bb_length * 0.2
 
         aFace = getSelectedFace(FreeCADGui.Selection.getSelectionEx())
@@ -339,7 +343,7 @@ class _Examples(CommandManager):
 
     def __init__(self):
         super(_Examples, self).__init__()
-        self.pixmap = "preferences-fem"
+        self.pixmap = "FemWorkbench"
         self.menuetext = "Open FEM examples"
         self.tooltip = "Open FEM examples"
         self.is_active = "always"

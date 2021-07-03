@@ -36,7 +36,7 @@
 
 #include <unordered_map>
 #include <bitset>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace App
 {
@@ -65,6 +65,7 @@ enum ObjectStatus {
     Expand = 16, // indicate the object's tree item expansion status
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
+    RecomputeExtension = 19, // mark the object to recompute its extensions
 };
 
 /** Return object for feature execution
@@ -407,7 +408,7 @@ public:
      *
      * @param newLabel: input as the new label, which can be modified by object itself
      *
-     * This function is is called before onBeforeChange()
+     * This function is called before onBeforeChange()
      */
     virtual void onBeforeChangeLabel(std::string &newLabel) {(void)newLabel;}
 
@@ -421,7 +422,7 @@ public:
 
     /* Expression support */
 
-    virtual void setExpression(const ObjectIdentifier & path, boost::shared_ptr<App::Expression> expr);
+    virtual void setExpression(const ObjectIdentifier & path, std::shared_ptr<App::Expression> expr);
 
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 

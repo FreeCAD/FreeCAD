@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>Per a afegir referències: seleccioneu-les en la visualització 3D i premeu «Afig».</translation>
+      <translation>Per a afegir referències: seleccioneu-les en la visualització 3D i premeu «Afegeix».</translation>
     </message>
   </context>
   <context>
@@ -70,19 +70,44 @@
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Selector de referència de geometria per a </translation>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation type="unfinished">Geometry reference selector for a</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
-      <translation>Afig</translation>
+      <translation>Afegeix</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
       <translation>Clica damunt "Afegir" i seleccionar elements geomètrics per afegir-los a la llista. Si no s'afegeix cap geometria a la llista, tots els restants s'utilitzaran. Es poden seleccionar els següents elements geomètrics: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation>Clica a "Afegir" i selecciona els elements geomètrics per afegir-los a la llista.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -93,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Sòlid</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Selector de referència de geometria per a </translation>
     </message>
   </context>
   <context>
@@ -110,7 +140,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Selecciona una peça dels elements del sòlid que s'afegirà a la llista. Per afegir el sòlid premeu «Afig».</translation>
+      <translation>Selecciona una peça dels elements del sòlid que s'afegirà a la llista. Per afegir el sòlid premeu «Afegeix».</translation>
     </message>
   </context>
   <context>
@@ -118,7 +148,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
-      <translation>Afig</translation>
+      <translation>Afegeix</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
@@ -1079,7 +1109,7 @@
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="167"/>
       <source>Add a part to the Analysis</source>
-      <translation>Afig una peça a l'anàlisi</translation>
+      <translation>Afegeix una peça a l'anàlisi</translation>
     </message>
   </context>
   <context>
@@ -1257,7 +1287,7 @@
       <location filename="../../Command.cpp" line="229"/>
       <location filename="../../Command.cpp" line="230"/>
       <source>Add a solver to the Analysis</source>
-      <translation>Afig un solucionador a l'anàlisi</translation>
+      <translation>Afegeix un solucionador a l'anàlisi</translation>
     </message>
   </context>
   <context>
@@ -1799,7 +1829,7 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="72"/>
       <source>Add reference</source>
-      <translation>Afig una referència</translation>
+      <translation>Afegeix una referència</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="26"/>
@@ -1902,7 +1932,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
       <source>Add reference</source>
-      <translation>Afig una referència</translation>
+      <translation>Afegeix una referència</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
@@ -2172,7 +2202,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="87"/>
       <source>Add</source>
-      <translation>Afig</translation>
+      <translation>Afegeix</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
@@ -2208,7 +2238,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add reference</source>
-      <translation>Afig una referència</translation>
+      <translation>Afegeix una referència</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
@@ -2261,7 +2291,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add reference</source>
-      <translation>Afig una referència</translation>
+      <translation>Afegeix una referència</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
@@ -2334,12 +2364,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Seleccioneu una o múltiples cares, feu clic a Afig o Suprimeix</translation>
+      <translation>Seleccioneu una o múltiples cares, feu clic a Afegeix o Suprimeix</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
       <source>Add</source>
-      <translation>Afig</translation>
+      <translation>Afegeix</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="66"/>
@@ -2412,7 +2442,7 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Add reference</source>
-      <translation>Afig una referència</translation>
+      <translation>Afegeix una referència</translation>
     </message>
   </context>
   <context>
@@ -2425,7 +2455,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="20"/>
       <source>Add reference</source>
-      <translation>Afig una referència</translation>
+      <translation>Afegeix una referència</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
@@ -2453,7 +2483,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Add reference</source>
-      <translation>Afig una referència</translation>
+      <translation>Afegeix una referència</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>

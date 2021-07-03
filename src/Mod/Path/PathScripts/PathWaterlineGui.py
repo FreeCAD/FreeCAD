@@ -24,6 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathWaterline as PathWaterline
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
@@ -145,9 +146,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Waterline',
         PathWaterline.Create,
         TaskPanelOpPage,
-        'Path-Waterline',
-        QtCore.QT_TRANSLATE_NOOP("Waterline", "Waterline"),
-        QtCore.QT_TRANSLATE_NOOP("Waterline", "Create a Waterline Operation from a model"),
+        'Path_Waterline',
+        QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Create a Waterline Operation from a model"),
         PathWaterline.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathWaterlineGui... done\n")

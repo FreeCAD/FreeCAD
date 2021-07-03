@@ -32,7 +32,7 @@
 #include <map>
 
 #ifdef KDL_USE_NEW_TREE_INTERFACE
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #endif //#ifdef KDL_USE_NEW_TREE_INTERFACE
 
 namespace KDL
@@ -42,8 +42,8 @@ namespace KDL
 #ifdef KDL_USE_NEW_TREE_INTERFACE
     //We use smart pointers for managing tree nodes for now because
     //c++11 and unique_ptr support is not ubiquitous
-    typedef boost::shared_ptr<TreeElement> TreeElementPtr;
-    typedef boost::shared_ptr<const TreeElement> TreeElementConstPtr;
+    typedef std::shared_ptr<TreeElement> TreeElementPtr;
+    typedef std::shared_ptr<const TreeElement> TreeElementConstPtr;
     typedef std::map<std::string, TreeElementPtr> SegmentMap;
     typedef TreeElementPtr TreeElementType;
 

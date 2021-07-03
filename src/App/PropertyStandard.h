@@ -281,6 +281,10 @@ public:
     const Constraints*  getConstraints(void) const;
     //@}
 
+    long getMinimum() const;
+    long getMaximum() const;
+    long getStepSize() const;
+
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyIntegerConstraintItem"; }
     virtual void setPyObject(PyObject *);
 
@@ -560,6 +564,10 @@ public:
     /// get the constraint struct
     const Constraints*  getConstraints(void) const;
     //@}
+
+    double getMinimum() const;
+    double getMaximum() const;
+    double getStepSize() const;
 
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyFloatConstraintItem"; }

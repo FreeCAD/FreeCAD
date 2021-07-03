@@ -23,7 +23,7 @@
 
 __title__ = "Solver calculix FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import unittest
 from os.path import join
@@ -92,6 +92,14 @@ class TestSolverCalculix(unittest.TestCase):
     ):
         fcc_print("")
         from femexamples.boxanalysis_static import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_buckling_flexuralbuckling(
+            self
+    ):
+        from femexamples.ccx_buckling_flexuralbuckling import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
@@ -167,6 +175,14 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.constraint_tie import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_frequency_beamsimple(
+        self
+    ):
+        from femexamples.frequency_beamsimple import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 

@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -539,7 +540,7 @@ class PathSimulation:
 class CommandPathSimulate:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Simulator',
+        return {'Pixmap': 'Path_Simulator',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
                 'Accel': "P, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "Simulate Path G-Code on stock")}

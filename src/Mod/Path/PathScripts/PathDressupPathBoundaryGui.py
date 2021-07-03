@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDressupPathBoundary as PathDressupPathBoundary
 import PathScripts.PathLog as PathLog
 
@@ -238,7 +239,7 @@ class CommandPathDressupPathBoundary:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('Path_DressupPathBoundary', 'Boundary Dress-up'),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP('Path_DressupPathBoundary', 'Creates a Path Boundary Dress-up object from a selected path')}
 

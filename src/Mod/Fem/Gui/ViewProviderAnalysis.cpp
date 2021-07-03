@@ -44,6 +44,7 @@
 #include <Mod/Fem/App/FemSetObject.h>
 #include <Mod/Fem/App/FemConstraint.h>
 #include <App/MaterialObject.h>
+#include <App/TextDocument.h>
 
 #include "TaskDlgAnalysis.h"
 
@@ -204,6 +205,8 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
     else if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FeaturePython")))
         return true;
     else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(App::TextDocument::getClassTypeId()))
         return true;
 #ifdef FC_USE_VTK
     else if (obj->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId()))

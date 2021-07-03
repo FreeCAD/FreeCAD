@@ -70,7 +70,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 
 #include <boost/algorithm/string.hpp>
 
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/strong_components.hpp>
@@ -2745,6 +2745,7 @@ void Document::restore (const char *filename,
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        setStatus(Document::RestoreError, true);
     }
 
     d->partialLoadObjects.clear();
@@ -3483,7 +3484,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
             if(canAbort)
                 seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
             FC_LOG("Recompute pass " << passes);
-            for (;idx<topoSortedObjects.size();(seq?seq->next(true):true),++idx) {
+            for (; idx < topoSortedObjects.size(); ++idx) {
                 auto obj = topoSortedObjects[idx];
                 if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
                     continue;
@@ -3514,6 +3515,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                     for (auto inObjIt : obj->getInList())
                         inObjIt->enforceRecompute();
                 }
+                if (seq)
+                    seq->next(true);
             }
             // check if all objects are recomputed but still thouched
             for (size_t i=0;i<topoSortedObjects.size();++i) {
@@ -4154,6 +4157,11 @@ void Document::removeObject(const char* sName)
         TipName.setValue("");
     }
 
+    // remove the ID before possibly deleting the object
+    d->objectIdMap.erase(pos->second->_Id);
+    // Unset the bit to be on the safe side
+    pos->second->setStatus(ObjectStatus::Remove, false);
+
     // do no transactions if we do a rollback!
     std::unique_ptr<DocumentObject> tobedestroyed;
     if (!d->rollback) {
@@ -4177,8 +4185,6 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
-    d->objectIdMap.erase(pos->second->_Id);
     d->objectMap.erase(pos);
 }
 

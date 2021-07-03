@@ -58,6 +58,7 @@
 
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/OriginFeature.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
@@ -431,6 +432,28 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
 const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direction)
 {
     App::DocumentObject* obj = direction.getValue();
+    if (!obj) {
+        return Base::Vector3d(0,0,0);
+    }
+
+    if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+        Base::Vector3d vec(1.0, 0.0, 0.0);
+        static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
+        return vec;
+    }
+
+    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        Base::Vector3d vec(0.0, 0.0, 1.0);
+        static_cast<App::Plane*>(obj)->Placement.getValue().multVec(vec, vec);
+        return vec;
+    }
+
+    if (!obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        std::stringstream str;
+        str << "Type is not a line, plane or Part object";
+        throw Base::TypeError(str.str());
+    }
+
     std::vector<std::string> names = direction.getSubValues();
     if (names.size() == 0)
         return Base::Vector3d(0,0,0);

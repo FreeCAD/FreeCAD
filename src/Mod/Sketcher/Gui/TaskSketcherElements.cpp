@@ -40,6 +40,7 @@
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -163,6 +164,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Constraint_Length","Length Constraint","Sketcher_ConstrainDistance",doLengthConstraint,true)
     CONTEXT_ITEM("Constraint_Radius","Radius Constraint","Sketcher_ConstrainRadius",doRadiusConstraint,true)
     CONTEXT_ITEM("Constraint_Diameter","Diameter Constraint","Sketcher_ConstrainDiameter",doDiameterConstraint,true)
+    CONTEXT_ITEM("Constraint_Radiam","Radiam Constraint","Sketcher_ConstrainRadiam",doRadiamConstraint,true)
     CONTEXT_ITEM("Constraint_InternalAngle","Angle Constraint","Sketcher_ConstrainAngle",doAngleConstraint,true)
 
     menu.addSeparator();
@@ -206,6 +208,7 @@ CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY",doVerticalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistance",doLengthConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadius",doRadiusConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDiameter",doDiameterConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadiam",doRadiamConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle",doAngleConstraint)
 
 CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)
@@ -341,7 +344,6 @@ TaskSketcherElements::~TaskSketcherElements()
     }
 
     connectionElementsChanged.disconnect();
-    delete ui;
 }
 
 void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -712,7 +714,7 @@ void TaskSketcherElements::slotElementsChanged(void)
     int i=1;
     for(std::vector< Part::Geometry * >::const_iterator it= vals.begin();it!=vals.end();++it,++i){
       Base::Type type = (*it)->getTypeId();
-      bool construction = (*it)->getConstruction();
+      bool construction = Sketcher::GeometryFacade::getConstruction(*it);
 
       ui->listWidgetElements->addItem(new ElementItem(
         (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, false) :

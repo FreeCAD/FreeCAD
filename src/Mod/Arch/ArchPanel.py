@@ -19,7 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part, ArchNesting
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -29,7 +29,7 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt,utf8_decode=False):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -534,7 +534,7 @@ class _Panel(ArchComponent.Component):
                             try:
                                 baseprofile = Part.makeFace(base.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
                                 fm = True
-                            except:
+                            except Exception:
                                 FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
                                 return
                     if not fm:
@@ -951,7 +951,7 @@ class PanelCut(Draft._DraftObject):
             obj.addProperty("App::PropertyAngle","TagRotation","PanelCut",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
         if not "FontFile" in pl:
             obj.addProperty("App::PropertyFile","FontFile","PanelCut",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
-            obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile",QT_TRANSLATE_NOOP("App::Property","The font file"))
+            obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
         if not "MakeFace" in pl:
             obj.addProperty("App::PropertyBool","MakeFace","PanelCut",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
         if not "AllowedAngles" in pl:

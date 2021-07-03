@@ -67,8 +67,7 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Draft, PartDesign::DressUp)
 
-
-App::PropertyAngle::Constraints Draft::floatAngle = {0.0,89.99,0.1};
+App::PropertyAngle::Constraints Draft::floatAngle = { 0.0, 90.0 - Base::toDegrees<double>(Precision::Angular()), 0.1 };
 
 Draft::Draft()
 {

@@ -389,8 +389,9 @@ private:
             throw Py::Exception();
 
         std::list<TopoDS_Shape> shapes;
-        if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type)))
+        if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type))) {
             shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
+        }
         else if (PyObject_TypeCheck(pShapes, &(PyList_Type)) ||
                 PyObject_TypeCheck(pShapes, &(PyTuple_Type))) {
             Py::Sequence shapeSeq(pShapes);
@@ -414,21 +415,18 @@ private:
             bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
             std::list<TopoDS_Shape> wires = Area::sortWires(shapes,start!=0,&pstart,
                     &pend, 0, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
-            PyObject *list = PyList_New(0);
-            for(auto &wire : wires)
-                PyList_Append(list,Py::new_reference_to(
-                            Part::shape2pyshape(TopoDS::Wire(wire))));
-            PyObject *ret = PyTuple_New(need_arc_plane?3:2);
-            PyTuple_SetItem(ret,0,list);
-            PyTuple_SetItem(ret,1,new Base::VectorPy(
-                        Base::Vector3d(pend.X(),pend.Y(),pend.Z())));
-            if(need_arc_plane)
-#if PY_MAJOR_VERSION < 3
-                PyTuple_SetItem(ret,2,PyInt_FromLong(arc_plane));
-#else
-                PyTuple_SetItem(ret,2,PyLong_FromLong(arc_plane));
-#endif
-            return Py::asObject(ret);
+            Py::List list;
+            for(auto &wire : wires) {
+                list.append(Part::shape2pyshape(TopoDS::Wire(wire)));
+            }
+
+            Py::Tuple ret(need_arc_plane ? 3 : 2);
+            ret.setItem(0, list);
+            ret.setItem(1, Py::asObject(new Base::VectorPy(Base::Vector3d(pend.X(),pend.Y(),pend.Z()))));
+            if (need_arc_plane)
+                ret.setItem(2, Py::Long(arc_plane));
+
+            return ret;
         } PATH_CATCH
     }
 };

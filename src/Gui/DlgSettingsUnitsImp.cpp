@@ -57,8 +57,8 @@ using namespace Base;
 #endif
 
 /**
- *  Constructs a DlgSettingsUnitsImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsUnitsImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
     : PreferencePage( parent ), ui(new Ui_DlgSettingsUnits)
@@ -86,7 +86,7 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
     }
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsUnitsImp::~DlgSettingsUnitsImp()
@@ -125,7 +125,7 @@ void DlgSettingsUnitsImp::saveSettings()
 
     // Set actual value
     Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());
-    
+
     // Convert the combobox index to the its integer denominator. Currently
     // with 1/2, 1/4, through 1/128, this little equation directly computes the
     // denominator given the combobox integer.

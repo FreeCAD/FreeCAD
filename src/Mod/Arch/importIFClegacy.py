@@ -489,7 +489,7 @@ def makeWall(entity,shape=None,name="Wall"):
             return wall
         if DEBUG: print("    error: skipping wall",entity.id)
         return None
-    except:
+    except Exception:
         if DEBUG: print("    error: skipping wall",entity)
         return None
 
@@ -524,7 +524,7 @@ def makeWindow(entity,shape=None,name="Window"):
             return window
         if DEBUG: print("    error: skipping window",entity.id)
         return None
-    except:
+    except Exception:
         if DEBUG: print("    error: skipping window",entity)
         return None
 
@@ -571,7 +571,7 @@ def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
             return structure
         if DEBUG: print("    error: skipping structure",entity.id)
         return None
-    except:
+    except Exception:
         if DEBUG: print("    error: skipping structure",entity)
         return None
 
@@ -594,7 +594,7 @@ def makeSite(entity,shape=None,name="Site"):
             site.Terrain = body
         if DEBUG: print("    made site object  ",entity,":",site)
         return site
-    except:
+    except Exception:
         return None
         
 def makeSpace(entity,shape=None,name="Space"):
@@ -611,7 +611,7 @@ def makeSpace(entity,shape=None,name="Space"):
                 body.ViewObject.hide()
                 if DEBUG: print("    made space object  ",entity,":",space)
                 return space
-    except:
+    except Exception:
         return None
 
 
@@ -626,7 +626,7 @@ def makeRoof(entity,shape=None,name="Roof"):
                 roof.Shape = shape
                 if DEBUG: print("    made roof object  ",entity,":",roof)
                 return roof
-    except:
+    except Exception:
         return None
 
 # geometry helpers ###################################################################
@@ -681,7 +681,7 @@ def getShape(obj,objid):
                     brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OBJECT_PLACEMENT | ss)
                 else:
                     brep_data = IfcImport.create_shape(obj, ss)
-        except:
+        except Exception:
             print("Unable to retrieve shape data")
     else:
         brep_data = obj.mesh.brep_data
@@ -698,7 +698,7 @@ def getShape(obj,objid):
                 os.remove(tf)
             else:
                 sh.importBrepFromString(brep_data)
-        except:
+        except Exception:
             print("    error: malformed shape")
             return None
         else:
@@ -716,7 +716,7 @@ def getShape(obj,objid):
                     solid = Part.makeSolid(shell)
                     if solid:
                         sh = solid
-            except:
+            except Exception:
                 if DEBUG: print("    failed to retrieve solid from object ",objid)
         else:
             if DEBUG: print("    object ", objid, " doesn't contain any geometry")
@@ -908,7 +908,7 @@ def group(entity,ifc,mode=None):
             cell = Arch.makeBuilding(comps,name=name)
         if label and cell:
             cell.Label = label
-    except:
+    except Exception:
         if DEBUG: print("error: skipping group ",entity.id)
         
 def getWire(entity,placement=None):
@@ -1208,7 +1208,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
                 if DraftVecUtils.angle(v2,v1,normal) >= 0:
                     # inverting verts order if the direction is couterclockwise
                     verts.reverse()
-            except:
+            except Exception:
                 pass
             for v in verts:
                 pt = v.Point
@@ -1739,7 +1739,7 @@ class IfcDocument:
                         val =  self.getEnt(int(val))
                         if not val:
                             val = value
-        except:
+        except Exception:
             if DEBUG: print("error parsing attribute",value)
             val = value
         return val
@@ -2041,7 +2041,7 @@ class IfcWriter(object):
                 if APPLYFIX:
                     print("IfcWriter: Applying fix...")
                     self._fix(path)
-            except:
+            except Exception:
                 print("IfcWriter: Error writing to "+path)
             else:
                 print("IfcWriter: Successfully written to "+path)
@@ -2175,7 +2175,7 @@ class IfcWriter(object):
         prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,representations])
         try:
             elt = create(self._fileobject,elttype,[uid(),self._owner,name,description,None,placement,prd,None]+extra)
-        except:
+        except Exception:
             print("unable to create an ",elttype, " with attributes: ",[uid(),self._owner,str(name),description,None,placement,prd,None]+extra)
             try:
                 if hasattr(ifcw,"Entity"):
@@ -2184,7 +2184,7 @@ class IfcWriter(object):
                     o = ifcw.entity_instance(elttype)
                 print("supported attributes are: ")
                 print(getPropertyNames(o))
-            except:
+            except Exception:
                 print("unable to create an element of type '"+elttype+"'")
             print("WARNING: skipping object '"+name+"' of type "+elttype)
             return None

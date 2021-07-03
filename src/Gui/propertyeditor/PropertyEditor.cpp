@@ -38,6 +38,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/AutoTransaction.h>
+#include "ViewProviderDocumentObject.h"
 #include "MainWindow.h"
 #include "DlgAddProperty.h"
 #include "PropertyEditor.h"
@@ -50,7 +51,12 @@ FC_LOG_LEVEL_INIT("PropertyView",true,true)
 using namespace Gui::PropertyEditor;
 
 PropertyEditor::PropertyEditor(QWidget *parent)
-    : QTreeView(parent), autoupdate(false), committing(false), delaybuild(false), binding(false)
+    : QTreeView(parent)
+    , autoexpand(false)
+    , autoupdate(false)
+    , committing(false)
+    , delaybuild(false)
+    , binding(false)
 {
     propertyModel = new PropertyModel(this);
     setModel(propertyModel);
@@ -77,6 +83,19 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
 PropertyEditor::~PropertyEditor()
 {
+    QItemEditorFactory* f = delegate->itemEditorFactory();
+    delegate->setItemEditorFactory(nullptr);
+    delete f;
+}
+
+void PropertyEditor::setAutomaticExpand(bool v)
+{
+    autoexpand = v;
+}
+
+bool PropertyEditor::isAutomaticExpand(bool) const
+{
+    return autoexpand;
 }
 
 void PropertyEditor::setAutomaticDocumentUpdate(bool v)
@@ -202,6 +221,11 @@ void PropertyEditor::setupTransaction(const QModelIndex &index) {
     auto prop = items[0];
     auto parent = prop->getContainer();
     auto obj  = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
+    if (!obj) {
+        auto view  = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(parent);
+        if (view)
+            obj = view->getObject();
+    }
     if(!obj || !obj->getDocument()) {
         FC_LOG("invalid object");
         return;
@@ -237,20 +261,38 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
     setupTransaction(index);
 }
 
+void PropertyEditor::recomputeDocument(App::Document* doc)
+{
+    try {
+        if (doc) {
+            if (!doc->isTransactionEmpty()) {
+                // Between opening and committing a transaction a recompute
+                // could already have been done
+                if (doc->isTouched())
+                    doc->recompute();
+            }
+        }
+    }
+    // do not re-throw
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
+                              "The error message is: %s\n", e.what());
+    }
+    catch (...) {
+        Base::Console().Error("Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n");
+    }
+}
+
 void PropertyEditor::closeTransaction()
 {
     int tid = 0;
-    if(App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+    if (App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
         if (autoupdate) {
             App::Document* doc = App::GetApplication().getActiveDocument();
-            if (doc) {
-                if (!doc->isTransactionEmpty()) {
-                    // Between opening and committing a transaction a recompute
-                    // could already have been done
-                    if (doc->isTouched())
-                        doc->recompute();
-                }
-            }
+            recomputeDocument(doc);
         }
         App::GetApplication().closeActiveTransaction();
     }
@@ -353,6 +395,9 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool checkDocu
             propOwners.insert(container);
         }
     }
+
+    if (autoexpand)
+        expandAll();
 }
 
 void PropertyEditor::updateProperty(const App::Property& prop)
@@ -443,6 +488,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
 }
 
 enum MenuAction {
+    MA_AutoExpand,
     MA_ShowAll,
     MA_Expression,
     MA_RemoveProp,
@@ -458,6 +504,11 @@ enum MenuAction {
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     QMenu menu;
+    QAction *autoExpand = menu.addAction(tr("Auto expand"));
+    autoExpand->setCheckable(true);
+    autoExpand->setChecked(autoexpand);
+    autoExpand->setData(QVariant(MA_AutoExpand));
+
     QAction *showAll = menu.addAction(tr("Show all"));
     showAll->setCheckable(true);
     showAll->setChecked(PropertyView::showAll());
@@ -550,6 +601,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         return;
 
     switch(action->data().toInt()) {
+    case MA_AutoExpand:
+        autoexpand = autoExpand->isChecked();
+        if (autoexpand)
+            expandAll();
+        return;
     case MA_ShowAll:
         PropertyView::setShowAll(action->isChecked());
         return;

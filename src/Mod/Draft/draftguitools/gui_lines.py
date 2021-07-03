@@ -58,14 +58,13 @@ class Line(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a 2-point line. CTRL to snap, SHIFT to constrain."
 
         return {'Pixmap': 'Draft_Line',
                 'Accel': "L,I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Line", "Line"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain.")}
 
-    def Activated(self, name=translate("draft", "Line")):
+    def Activated(self, name="Line", icon="Draft_Line"):
         """Execute when the command is called."""
         super(Line, self).Activated(name)
 
@@ -74,11 +73,9 @@ class Line(gui_base_original.Creator):
         self.obj = None  # stores the temp shape
         self.oldWP = None  # stores the WP if we modify it
         if self.isWire:
-            self.ui.wireUi(name)
+            self.ui.wireUi(title=translate("draft", self.featureName), icon=icon)
         else:
-            self.ui.lineUi(name)
-        self.ui.setTitle(translate("draft", "Line"))
-
+            self.ui.lineUi(title=translate("draft", self.featureName), icon=icon)
         if sys.version_info.major < 3:
             if isinstance(self.featureName, unicode):
                 self.featureName = self.featureName.encode("utf8")
@@ -122,9 +119,13 @@ class Line(gui_base_original.Creator):
                 if not self.isWire and len(self.node) == 2:
                     self.finish(False, cont=True)
                 if len(self.node) > 2:
+                    # The wire is closed
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
-                        self.finish(True, cont=True)
+                        if len(self.node) > 2:
+                            self.finish(True, cont=True)
+                        else:
+                            self.finish(False, cont=True)
 
     def finish(self, closed=False, cont=False):
         """Terminate the operation and close the polyline if asked.
@@ -303,13 +304,11 @@ class Wire(Line):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a multiple-points line (polyline). "
-                "CTRL to snap, SHIFT to constrain.")
 
         return {'Pixmap': 'Draft_Wire',
                 'Accel': "P, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -360,7 +359,8 @@ class Wire(Line):
         # If there was no selection or the selection was just one object
         # then we proceed with the normal line creation functions,
         # only this time we will be able to input more than two points
-        super(Wire, self).Activated(name=translate("draft", "Polyline"))
+        super(Wire, self).Activated(name="Polyline",
+                                    icon="Draft_Wire")
 
 
 Gui.addCommand('Draft_Wire', Wire())

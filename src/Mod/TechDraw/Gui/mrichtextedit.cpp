@@ -102,7 +102,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
                         << tr("Heading 3")
                         << tr("Heading 4")
                         << tr("Monospace")
-                        << tr(" ");
+                        << QString::fromUtf8(" ");
     f_paragraph->addItems(m_paragraphItems);
 
     connect(f_paragraph, SIGNAL(activated(int)),
@@ -355,7 +355,8 @@ void MRichTextEdit::textLink(bool checked) {
         QString newUrl = QInputDialog::getText(this, tr("Create a link"),
                                         tr("Link URL:"), QLineEdit::Normal,
                                         url,
-                                        &ok);
+                                        &ok,
+                                        Qt::MSWindowsFixedSizeDialogHint);
         if (ok) {
             fmt.setAnchor(true);
             fmt.setAnchorHref(newUrl);

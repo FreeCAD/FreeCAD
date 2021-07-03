@@ -111,7 +111,7 @@ private:
 /**
  * @author Werner Mayer
  */
-class GuiExport PythonDebugStdout : public Py::PythonExtension<PythonDebugStdout> 
+class GuiExport PythonDebugStdout : public Py::PythonExtension<PythonDebugStdout>
 {
 public:
     static void init_type(void);    // announce properties and methods
@@ -127,7 +127,7 @@ public:
 /**
  * @author Werner Mayer
  */
-class GuiExport PythonDebugStderr : public Py::PythonExtension<PythonDebugStderr> 
+class GuiExport PythonDebugStderr : public Py::PythonExtension<PythonDebugStderr>
 {
 public:
     static void init_type(void);    // announce properties and methods
@@ -142,7 +142,7 @@ public:
 /**
  * @author Werner Mayer
  */
-class GuiExport PythonDebugExcept : public Py::PythonExtension<PythonDebugExcept> 
+class GuiExport PythonDebugExcept : public Py::PythonExtension<PythonDebugExcept>
 {
 public:
     static void init_type(void);    // announce properties and methods

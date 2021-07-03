@@ -1,12 +1,5 @@
-# Spreadsheet gui init module
-# (c) 2003 Juergen Riegel
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
-
 #***************************************************************************
-#*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
+#*   Copyright (c) 2002,2003 Juergen Riegel <juergen.riegel@web.de>        *
 #*   Copyright (c) 2013 Eivind Kvedalen <eivind@kvedalen.name>             *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
@@ -26,8 +19,13 @@
 #*   License along with FreeCAD; if not, write to the Free Software        *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
-#*                                                                         *
 #***************************************************************************/
+
+# Spreadsheet gui init module
+#
+# Gathering all the information to start FreeCAD
+# This is the second one of three init scripts, the third one
+# runs when the gui is up
 
 
 class SpreadsheetWorkbench ( Workbench ):

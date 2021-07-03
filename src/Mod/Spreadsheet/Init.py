@@ -1,8 +1,5 @@
-# FreeCAD init script of the Spreadsheet module
-# (c) 2001 Juergen Riegel
-
 #***************************************************************************
-#*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
+#*   Copyright (c) 2001,2002 Juergen Riegel <juergen.riegel@web.de>        *
 #*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*   Copyright (c) 2013 Eivind Kvedalen <eivind@kvedalen.name>             *
 #*                                                                         *
@@ -26,6 +23,7 @@
 #*                                                                         *
 #***************************************************************************/
 
+# FreeCAD init script of the Spreadsheet module
 
 
 # Get the Parameter Group of this module
@@ -37,7 +35,7 @@ ParGrp.SetString("WorkBenchName",    "Spreadsheet")
 ParGrp.SetString("WorkBenchModule",  "SpreadsheetWorkbench.py")
 
 # add Import/Export types
-App.addImportType("Excel spreadsheet (*.xlsx)","importXLSX") 
+App.addImportType("Excel spreadsheet (*.xlsx)","importXLSX")
 
 App.__unit_test__ += [ "TestSpreadsheet" ]
 

@@ -507,11 +507,7 @@ PyObject *PropertyFilletEdges::getPyObject(void)
     int index = 0;
     for (it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         Py::Tuple ent(3);
-#if PY_MAJOR_VERSION >= 3
         ent.setItem(0, Py::Long(it->edgeid));
-#else
-        ent.setItem(0, Py::Int(it->edgeid));
-#endif
         ent.setItem(1, Py::Float(it->radius1));
         ent.setItem(2, Py::Float(it->radius2));
         list[index++] = ent;
@@ -528,11 +524,7 @@ void PropertyFilletEdges::setPyObject(PyObject *value)
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         FilletElement fe;
         Py::Tuple ent(*it);
-#if PY_MAJOR_VERSION >= 3
         fe.edgeid = (int)Py::Long(ent.getItem(0));
-#else
-        fe.edgeid = (int)Py::Int(ent.getItem(0));
-#endif
         fe.radius1 = (double)Py::Float(ent.getItem(1));
         fe.radius2 = (double)Py::Float(ent.getItem(2));
         values.push_back(fe);

@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,45 +22,55 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.material_multiple_bendingbeam_fiveboxes import setup
-setup()
-"""
-
 import FreeCAD
+
+import BOPTools.SplitFeatures
 
 import Fem
 import ObjectsFem
-import BOPTools.SplitFeatures
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Multimaterial bending beam 5 boxes",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Multimaterial bending beam 5 boxes",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix"],
+        "material": "multimaterial",
+        "equation": "mechanical"
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.material_multiple_bendingbeam_fiveboxes import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric objects
     # name is important because the other method in this module use obj name
     box_obj1 = doc.addObject('Part::Box', 'Box1')
     box_obj1.Height = 10
@@ -112,81 +123,73 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
     # material
-    # material1
-    material_object1 = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial1'))[0]
-    material_object1.References = [(doc.Box3, "Solid1")]
-    mat = material_object1.Material
+    material_obj1 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial1')
+    material_obj1.References = [(doc.Box3, "Solid1")]
+    mat = material_obj1.Material
     mat['Name'] = "Concrete-Generic"
     mat['YoungsModulus'] = "32000 MPa"
     mat['PoissonRatio'] = "0.17"
     mat['Density'] = "0 kg/m^3"
-    material_object1.Material = mat
+    material_obj1.Material = mat
+    analysis.addObject(material_obj1)
 
-    # material2
-    material_object2 = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial2'))[0]
-    material_object2.References = [(doc.Box2, "Solid1"), (doc.Box4, "Solid1")]
-    mat = material_object2.Material
+    material_obj2 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial2')
+    material_obj2.References = [(doc.Box2, "Solid1"), (doc.Box4, "Solid1")]
+    mat = material_obj2.Material
     mat['Name'] = "PLA"
     mat['YoungsModulus'] = "3640 MPa"
     mat['PoissonRatio'] = "0.36"
     mat['Density'] = "0 kg/m^3"
-    material_object2.Material = mat
+    material_obj2.Material = mat
+    analysis.addObject(material_obj2)
 
-    # material3
-    material_object3 = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial3'))[0]
-    material_object3.References = []
-    mat = material_object3.Material
+    material_obj3 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial3')
+    material_obj3.References = []
+    mat = material_obj3.Material
     mat['Name'] = "Steel-Generic"
     mat['YoungsModulus'] = "200000 MPa"
     mat['PoissonRatio'] = "0.30"
     mat['Density'] = "7900 kg/m^3"
-    material_object3.Material = mat
+    material_obj3.Material = mat
+    analysis.addObject(material_obj3)
 
     # constraint fixed
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(doc.Box1, "Face1"), (doc.Box5, "Face2")]
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [(doc.Box1, "Face1"), (doc.Box5, "Face2")]
+    analysis.addObject(con_fixed)
 
-    # force_constraint
-    force_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    force_constraint.References = [
+    # constraint force
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force.References = [
         (doc.Box1, "Face6"),
         (doc.Box2, "Face6"),
         (doc.Box3, "Face6"),
         (doc.Box4, "Face6"),
         (doc.Box5, "Face6")
     ]
-    force_constraint.Force = 10000.00
-    force_constraint.Direction = (doc.Box1, ["Edge1"])
-    force_constraint.Reversed = True
+    con_force.Force = 10000.00
+    con_force.Direction = (doc.Box1, ["Edge1"])
+    con_force.Reversed = True
+    analysis.addObject(con_force)
 
     # mesh
     from .meshes.mesh_multibodybeam_tetra10 import create_nodes, create_elements
@@ -197,9 +200,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

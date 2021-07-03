@@ -3546,7 +3546,7 @@ void PropertyXLink::setPyObject(PyObject *value) {
         } else if (pySub.isSequence()) {
             Py::Sequence seq(pySub);
             subs.reserve(seq.size());
-            for(size_t i=0;i<seq.size();++i) {
+            for(Py_ssize_t i=0;i<seq.size();++i) {
                 Py::Object sub(seq[i]);
                 if(!sub.isString())
                     throw Base::TypeError("Expect only string inside second argument");
@@ -3951,7 +3951,7 @@ void PropertyXLinkSubList::setPyObject(PyObject *value)
     Py::Sequence seq(value);
     std::map<DocumentObject*, std::vector<std::string> > values;
     try {
-        for(size_t i=0;i<seq.size();++i) {
+        for(Py_ssize_t i=0;i<seq.size();++i) {
             PropertyLinkSub link;
             link.setAllowExternal(true);
             link.setPyObject(seq[i].ptr());
@@ -4618,10 +4618,14 @@ void PropertyXLinkContainer::clearDeps() {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument())
         return;
-    for(auto obj : _Deps) {
-        if(obj && obj->getNameInDocument() && obj->getDocument()==owner->getDocument())
-            obj->_removeBackLink(owner);
+#ifndef USE_OLD_DAG
+    if (!owner->testStatus(ObjectStatus::Destroy)) {
+        for(auto obj : _Deps) {
+            if(obj && obj->getNameInDocument() && obj->getDocument()==owner->getDocument())
+                obj->_removeBackLink(owner);
+        }
     }
+#endif
     _Deps.clear();
     _XLinks.clear();
     _LinkRestored = false;

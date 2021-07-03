@@ -29,8 +29,9 @@
 import lazy_loader.lazy_loader as lz
 
 import DraftVecUtils
-
+from FreeCAD import Base
 from draftgeoutils.general import precision
+from draftgeoutils.geometry import are_coplanar
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -41,17 +42,19 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 def concatenate(shape):
     """Turn several faces into one."""
-    edges = getBoundary(shape)
-    edges = Part.__sortEdges__(edges)
+    boundary_edges = getBoundary(shape)
+    sorted_edges = Part.sortEdges(boundary_edges)
+
     try:
-        wire = Part.Wire(edges)
-        face = Part.Face(wire)
-    except Part.OCCError:
-        print("DraftGeomUtils: Couldn't join faces into one")
+        wires = [Part.Wire(edges) for edges in sorted_edges]
+        face = Part.makeFace(wires, "Part::FaceMakerBullseye")
+    except Base.FreeCADError:
+        print("DraftGeomUtils: Fails to join faces into one. "
+              + "The precision of the faces would be insufficient")
         return shape
     else:
-        if not wire.isClosed():
-            return wire
+        if not wires[0].isClosed():
+            return wires[0]
         else:
             return face
 
@@ -80,23 +83,31 @@ def getBoundary(shape):
     return bound
 
 
-def isCoplanar(faces, tolerance=0):
+def is_coplanar(faces, tol=-1):
     """Return True if all faces in the given list are coplanar.
 
-    Tolerance is the maximum deviation to be considered coplanar.
+    Parameters
+    ----------
+    faces: list
+        List of faces to check coplanarity.
+    tol: float, optional
+        It defaults to `-1`, the tolerance of confusion, equal to 1e-7.
+        Is the maximum deviation to be considered coplanar.
+
+    Returns
+    -------
+    out: bool
+        True if all face are coplanar. False in other case.
     """
-    if len(faces) < 2:
-        return True
 
-    base = faces[0].normalAt(0, 0)
+    first_face = faces[0]
+    for face in faces:
+        if not are_coplanar(first_face, face, tol):
+            return False
 
-    for i in range(1, len(faces)):
-        for v in faces[i].Vertexes:
-            chord = v.Point.sub(faces[0].Vertexes[0].Point)
-            dist = DraftVecUtils.project(chord, base)
-            if round(dist.Length, precision()) > tolerance:
-                return False
     return True
+
+isCoplanar = is_coplanar
 
 
 def bind(w1, w2):

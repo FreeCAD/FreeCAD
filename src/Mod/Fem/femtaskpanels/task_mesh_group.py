@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM mesh group task panel for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_mesh_group
 #  \ingroup FEM
@@ -66,7 +66,9 @@ class _TaskPanel:
         # start with Solid in list!
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
-            ["Solid", "Face", "Edge", "Vertex"]
+            ["Solid", "Face", "Edge", "Vertex"],
+            True,
+            False
         )
 
         # form made from param and selection widget

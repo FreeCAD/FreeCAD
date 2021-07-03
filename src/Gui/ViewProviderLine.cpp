@@ -43,7 +43,7 @@ PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderOriginFeature)
 
 
 ViewProviderLine::ViewProviderLine()
-{ 
+{
     sPixmap = "Std_Axis";
 }
 
@@ -68,13 +68,11 @@ void ViewProviderLine::attach ( App::DocumentObject *obj ) {
     sep->addChild ( pCoords );
 
     SoIndexedLineSet *pLines  = new SoIndexedLineSet ();
-    pLines->ref();
     pLines->coordIndex.setNum(3);
     pLines->coordIndex.setValues(0, 3, lines);
     sep->addChild ( pLines );
 
     SoTranslation *textTranslation = new SoTranslation ();
-    textTranslation->ref ();
     textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size / 30., 0 ) );
     sep->addChild ( textTranslation );
 

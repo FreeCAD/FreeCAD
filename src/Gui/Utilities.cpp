@@ -95,8 +95,8 @@ Base::Matrix4D ViewVolumeProjection::getProjectionMatrix () const
 
 void Tessellator::tessCB(void * v0, void * v1, void * v2, void * cbdata)
 {
-    int * vtx0 = (int *)v0; 
-    int * vtx1 = (int *)v1; 
+    int * vtx0 = (int *)v0;
+    int * vtx1 = (int *)v1;
     int * vtx2 = (int *)v2;
 
     std::vector<int>* array = (std::vector<int> *)cbdata;

@@ -77,32 +77,32 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 {
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
-    PyObject* pEdgeList = PyList_New(0);
+    Py::List pEdgeList;
     std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
-            PyList_Append(pEdgeList, pEdge);
+            pEdgeList.append(Py::asObject(pEdge));
         }
     }
 
-    return pEdgeList;
+    return Py::new_reference_to(pEdgeList);
 }
 
 PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 {
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
-    PyObject* pEdgeList = PyList_New(0);
+    Py::List pEdgeList;
     std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (!g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
-            PyList_Append(pEdgeList, pEdge);
+            pEdgeList.append(Py::asObject(pEdge));
         }
     }
 
-    return pEdgeList;
+    return Py::new_reference_to(pEdgeList);
 }
 
 PyObject* DrawViewPartPy::requestPaint(PyObject *args)
@@ -553,17 +553,10 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
         int i = 0;
         for ( ; i < size; i++) {
             PyObject* po = PyList_GetItem(pSubs, i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(po)) {
                 std::string s = PyUnicode_AsUTF8(po);       //py3 only!!!
                 subs.push_back(s);
             }
-#else
-            if (PyString_Check(po)) {
-                std::string s = PyString_AsString(po);         //py2 only!!!
-                subs.push_back(s);
-            }
-#endif
         }
     }
     CenterLine* cl = nullptr;

@@ -99,7 +99,7 @@ void TransformStrategy::commitTransform(const Base::Matrix4D& mat)
     std::set<App::DocumentObject*> objects = transformObjects();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        doc->openCommand("Transform");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
         for (std::set<App::DocumentObject*>::iterator it=objects.begin();it!=objects.end();++it) {
             acceptDataTransform(mat, *it);
         }

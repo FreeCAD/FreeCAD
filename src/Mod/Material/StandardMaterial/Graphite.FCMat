@@ -1,0 +1,32 @@
+; Graphite
+; Uwe Stöhr, LGPL
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material 
+; file created by FreeCAD 0.20.24516 (Git)
+
+[General]
+Name = Graphite
+Description = Typical material properties for pure graphite
+Father = Carbon
+KindOfMaterial = Solid
+ReferenceSource = Properties and characteristics of graphite
+SourceURL = https://www.entegris.com/content/dam/web/resources/manuals-and-guides/manual-properties-and-characteristics-of-graphite-109441.pdf
+
+[Mechanical]
+CompressiveStrength = 120,000 MPa
+Density = 1750,000 kg/m^3
+PoissonRatio = 0.20
+UltimateTensileStrength = 34 MPa
+YoungsModulus = 11,7 MPa
+
+[Thermal]
+SpecificHeat = 0,72 kJ/kg/K
+ThermalConductivity = 96,000 W/m/K
+ThermalExpansionCoefficient = 8e-6 1/K
+
+[Electrical]
+RelativePermittivity = 0.7
+ElectricalConductivity = 2e4 S/m
+
+[UserDefined]
+MolarMass = 12

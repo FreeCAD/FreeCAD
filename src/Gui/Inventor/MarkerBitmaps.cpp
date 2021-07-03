@@ -345,12 +345,12 @@ const char circleLine11_marker[CIRCLE_LINE11_WIDTH * CIRCLE_LINE11_HEIGHT + 1] =
 "           "
 "   xxxxxx  "
 "  xxxxxxxx "
-"  xx    xx "
+" xxx    xxx"
 " xx      xx"
 " xx      xx"
 " xx      xx"
 " xx      xx"
-"  xx    xx "
+" xxx    xxx"
 "  xxxxxxxx "
 "   xxxxxx  "};
 
@@ -381,8 +381,8 @@ const char circleLine15_marker[CIRCLE_LINE15_WIDTH * CIRCLE_LINE15_HEIGHT + 1] =
 "               "
 "     xxxxxx    "
 "   xxxxxxxxxx  "
+"  xxx      xxx "
 "  xx        xx "
-"  xx        xx "
 " xx          xx"
 " xx          xx"
 " xx          xx"
@@ -390,7 +390,7 @@ const char circleLine15_marker[CIRCLE_LINE15_WIDTH * CIRCLE_LINE15_HEIGHT + 1] =
 " xx          xx"
 " xx          xx"
 "  xx        xx "
-"   xx      xxxx"
+"  xxx      xxx "
 "   xxxxxxxxxx  "
 "     xxxxxx    "};
 
@@ -401,12 +401,12 @@ const char circleFilled11_marker[CIRCLE_FILLED11_WIDTH * CIRCLE_FILLED11_HEIGHT 
 "           "
 "   xxxxxx  "
 "  xxxxxxxx "
-"  xxxxxxxx "
 " xxxxxxxxxx"
 " xxxxxxxxxx"
 " xxxxxxxxxx"
 " xxxxxxxxxx"
-"  xxxxxxxx "
+" xxxxxxxxxx"
+" xxxxxxxxxx"
 "  xxxxxxxx "
 "   xxxxxx  "};
 
@@ -446,7 +446,7 @@ const char circleFilled15_marker[CIRCLE_FILLED15_WIDTH * CIRCLE_FILLED15_HEIGHT 
 " xxxxxxxxxxxxxx"
 " xxxxxxxxxxxxxx"
 "  xxxxxxxxxxxx "
-"   xxxxxxxxxxxx"
+"  xxxxxxxxxxxx "
 "   xxxxxxxxxx  "
 "     xxxxxx    "};
 

@@ -58,6 +58,11 @@
 #include <crtdbg.h>
 #endif
 
+#if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
+#endif
 
 // Streams
 #include <iostream>
@@ -70,7 +75,6 @@
 #include <vector>
 #include <set>
 #include <stack>
-#include <sstream>
 #include <queue>
 #include <bitset>
 #include <exception>
@@ -78,15 +82,16 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <iterator>
+#include <functional>
+#include <tuple>
 
 // Boost
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/regex.hpp>
 
-#include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 
 #include <boost/program_options.hpp>
 //namespace po = boost::program_options;

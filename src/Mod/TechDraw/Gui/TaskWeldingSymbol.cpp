@@ -184,7 +184,6 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
 TaskWeldingSymbol::~TaskWeldingSymbol()
 {
-    delete ui;
 }
 
 void TaskWeldingSymbol::updateTask()
@@ -650,7 +649,7 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().Message("TWS::accept()\n");
     if (m_createMode) {
-        Gui::Command::openCommand("Create WeldSymbol");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create WeldSymbol"));
         m_weldFeat = createWeldingSymbol();
         updateTiles();
         Gui::Command::updateActive();
@@ -658,7 +657,7 @@ bool TaskWeldingSymbol::accept()
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
-        Gui::Command::openCommand("Edit WeldSymbol");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit WeldSymbol"));
         try {
             updateWeldingSymbol();
             updateTiles();
@@ -692,7 +691,7 @@ TaskDlgWeldingSymbol::TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader)
     : TaskDialog()
 {
     widget  = new TaskWeldingSymbol(leader);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-weldsymbol"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_WeldSymbol"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -702,7 +701,7 @@ TaskDlgWeldingSymbol::TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld)
     : TaskDialog()
 {
     widget  = new TaskWeldingSymbol(weld);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-weldsymbol"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_WeldSymbol"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

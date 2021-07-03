@@ -127,9 +127,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 baseFeature = nullptr;
             }
             else if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
-                // Prevent creating bodies based on bodies
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on another body."));
+                // Prevent creating bodies based on bodies (but don't pop-up a dialog)
                 baseFeature = nullptr;
             }
             else {
@@ -192,7 +190,7 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
 
-    openCommand("Add a Body");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
 
     std::string bodyName = getUniqueObjectName("Body");
 
@@ -286,7 +284,7 @@ void CmdPartDesignBody::activated(int iMsg)
                     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
                     if (!dlg) {
                         Gui::Selection().clearSelection();
-                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
+                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
                     }
                 }
             }
@@ -316,6 +314,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sToolTipText  = QT_TR_NOOP("Migrate document to the modern PartDesign workflow");
     sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Migrate";
 }
 
 void CmdPartDesignMigrate::activated(int iMsg)
@@ -428,7 +427,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand("Migrate legacy part design features to Bodies");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy part design features to Bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -573,7 +572,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     }
 
-    openCommand("Move tip to selected feature");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
 
     if (selFeature == body) {
         FCMD_OBJ_CMD(body,"Tip = None");
@@ -618,7 +617,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    openCommand("Duplicate a PartDesign object");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Duplicate a PartDesign object"));
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     if (pcActiveBody) {
@@ -665,7 +664,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
     sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
     sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeature";
 }
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
@@ -729,14 +728,14 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeature", "Select body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     if (index < 0) return;
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
-    openCommand("Move an object");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object"));
 
     std::stringstream stream;
     stream << "features_ = [" << getObjectCmd(features.back());
@@ -827,7 +826,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
     sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
     sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeatureInTree";
 }
 
 void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
@@ -879,13 +878,13 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;
 
-    openCommand("Move an object inside tree");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object inside tree"));
 
     App::DocumentObject* lastObject = nullptr;
     for ( auto feat: features ) {

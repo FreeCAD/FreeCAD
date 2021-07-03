@@ -126,7 +126,6 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
 TaskCosmeticLine::~TaskCosmeticLine()
 {
-    delete ui;
     if (m_saveCE != nullptr) {
         delete m_saveCE;
     }
@@ -269,7 +268,7 @@ bool TaskCosmeticLine::accept()
         m_partFeat->requestPaint();
     } else {
         //update mode
-        Gui::Command::openCommand("Update CosmeticLine");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update CosmeticLine"));
         updateCosmeticLine();
         m_partFeat->refreshCEGeoms();
         m_partFeat->requestPaint();

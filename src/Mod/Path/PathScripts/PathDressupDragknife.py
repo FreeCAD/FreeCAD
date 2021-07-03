@@ -537,7 +537,7 @@ class CommandDressupDragknife:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupDragKnife", "DragKnife Dress-up"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupDragKnife", "Modifies a path to add dragknife corner actions")}
 

@@ -117,7 +117,7 @@ void Gui::GUIApplicationNativeEventAware::postMotionEvent(std::vector<int> motio
 
 	Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
     motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
-    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);  
+    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
     this->postEvent(currentWidget, motionEvent);
 }
 
@@ -305,12 +305,5 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
         }
     }
 }
-
-#if defined(SPNAV_FOUND) && defined(SPNAV_USE_X11) && QT_VERSION < 0x050000
-bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
-{
-  return nativeEvent->x11EventFilter(event);
-}
-#endif
 
 #include "moc_GuiApplicationNativeEventAware.cpp"

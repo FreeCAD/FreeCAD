@@ -152,7 +152,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
 
 TaskSectionView::~TaskSectionView()
 {
-    delete ui;
 }
 
 void TaskSectionView::setUiPrimary()
@@ -352,7 +351,7 @@ bool TaskSectionView::apply(void)
 void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
-    Gui::Command::openCommand("Apply Quick");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Quick"));
     m_dirName = dir;
     if (m_section == nullptr) {
         createSectionView();
@@ -378,7 +377,7 @@ void TaskSectionView::applyQuick(std::string dir)
 void TaskSectionView::applyAligned(void) 
 {
     Base::Console().Message("TSV::applyAligned() - not implemented yet\n");
-    Gui::Command::openCommand("Apply Aligned");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Aligned"));
     m_dirName = "Aligned";
     //fiddle with directions here
 
@@ -401,7 +400,7 @@ void TaskSectionView::createSectionView(void)
     std::string baseName = m_base->getNameInDocument();
     double baseScale = m_base->getScale();
 
-    Gui::Command::openCommand("Create SectionView");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
     if (m_section == nullptr) {
         m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
@@ -573,7 +572,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewPart* base) :
     TaskDialog()
 {
     widget  = new TaskSectionView(base);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SectionView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -583,7 +582,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) :
     TaskDialog()
 {
     widget  = new TaskSectionView(section);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SectionView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

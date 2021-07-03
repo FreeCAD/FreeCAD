@@ -76,7 +76,7 @@ private:
     void autoSolid();
 
 private:
-    Ui_DlgRevolution* ui;
+    std::unique_ptr<Ui_DlgRevolution> ui;
     class EdgeSelection;
     EdgeSelection* filter;
 };

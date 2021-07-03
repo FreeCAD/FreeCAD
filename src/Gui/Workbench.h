@@ -42,10 +42,10 @@ class DockWindowItems;
 class WorkbenchManager;
 
 /**
- * This is the base class for the workbench facility. Each FreeCAD module can provide its own 
- * workbench implementation. The workbench defines which GUI elements (such as toolbars, menus, 
- * dockable windows, ...) are added to the mainwindow and which gets removed or hidden. 
- * When a workbench object gets activated the first time the module - it stands for - gets 
+ * This is the base class for the workbench facility. Each FreeCAD module can provide its own
+ * workbench implementation. The workbench defines which GUI elements (such as toolbars, menus,
+ * dockable windows, ...) are added to the mainwindow and which gets removed or hidden.
+ * When a workbench object gets activated the first time the module - it stands for - gets
  * loaded into RAM.
  * @author Werner Mayer
  */
@@ -69,15 +69,15 @@ public:
      * The default implementation returns an instance of @ref WorkbenchPy.
      */
     PyObject* getPyObject();
-    /** Sets up the contextmenu for this workbench. 
+    /** Sets up the contextmenu for this workbench.
      * The default implementation does nothing.
      */
     virtual void setupContextMenu(const char* recipient,MenuItem*) const;
-    /** Sets up the contextmenu for the main window for this workbench. 
+    /** Sets up the contextmenu for the main window for this workbench.
      * The default implementation does nothing.
      */
     virtual void createMainWindowPopupMenu(MenuItem*) const;
-    /** 
+    /**
      * Activates the workbench and adds/removes GUI elements.
      */
     bool activate();
@@ -130,7 +130,7 @@ private:
 };
 
 /**
- * The StdWorkbench class defines the standard menus, toolbars, commandbars etc. 
+ * The StdWorkbench class defines the standard menus, toolbars, commandbars etc.
  * To define own workbenches you should inherit from StdWorkbench instead of Workbench
  * to have defined the standard GUI elements.
  * @author Werner Mayer
@@ -162,7 +162,7 @@ protected:
 };
 
 /**
- * The BlankWorkbench class defines a complete empty workbench. 
+ * The BlankWorkbench class defines a complete empty workbench.
  * @author Werner Mayer
  */
 class GuiExport BlankWorkbench : public Workbench
@@ -192,7 +192,7 @@ protected:
 };
 
 /**
- * The NoneWorkbench class defines a slim workbench. 
+ * The NoneWorkbench class defines a slim workbench.
  * @author Werner Mayer
  */
 class GuiExport NoneWorkbench : public StdWorkbench
@@ -323,4 +323,4 @@ protected:
 } // namespace Gui
 
 
-#endif // GUI_WORKBENCH_H 
+#endif // GUI_WORKBENCH_H

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 wandererfan <wandererfan (at) gmail.com>           *
+ *   Copyright (c) 2013 WandererFan <wandererfan (at) gmail.com>           *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -105,30 +105,31 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
                 const size_t length,
                 const char *FontSpec,
                 const double stringheight,                 // fc coords
-                const double tracking) {                     // fc coords
-   FT_Library  FTLib;
-   FT_Face     FTFont;
-   FT_Error    error;
-   FT_Long     FaceIndex = 0;                   // some fonts have multiple faces
-   FT_Vector   kern;
-   FT_UInt     FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
+                const double tracking)                     // fc coords
+{
+    FT_Library  FTLib;
+    FT_Face     FTFont;
+    FT_Error    error;
+    FT_Long     FaceIndex = 0;                   // some fonts have multiple faces
+    FT_Vector   kern;
+    FT_UInt     FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
 
-   std::stringstream ErrorMsg;
-   double PenPos = 0, scalefactor;
-   UNICHAR prevchar = 0, currchar = 0;
-   int  cadv;
-   size_t i;
-   PyObject *WireList, *CharList;
+    std::stringstream ErrorMsg;
+    double PenPos = 0, scalefactor;
+    UNICHAR prevchar = 0, currchar = 0;
+    int  cadv;
+    size_t i;
+    Py::List CharList;
 
-   error = FT_Init_FreeType(&FTLib);
-   if(error) {
-      ErrorMsg << "FT_Init_FreeType failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
+    error = FT_Init_FreeType(&FTLib);
+    if (error) {
+        ErrorMsg << "FT_Init_FreeType failed: " << error;
+        throw std::runtime_error(ErrorMsg.str());
+    }
 
 #ifdef FC_OS_WIN32
     Base::FileInfo fi(FontSpec);
-	if (!fi.isReadable()) {
+    if (!fi.isReadable()) {
         ErrorMsg << "Font file not found (Win): " << FontSpec;
         throw std::runtime_error(ErrorMsg.str());
     }
@@ -143,58 +144,61 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
 #endif
 
 
-   error = FT_New_Face(FTLib,FontSpec,FaceIndex, &FTFont);
-   if(error) {
-      ErrorMsg << "FT_New_Face failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
+    error = FT_New_Face(FTLib,FontSpec,FaceIndex, &FTFont);
+    if (error) {
+        ErrorMsg << "FT_New_Face failed: " << error;
+        throw std::runtime_error(ErrorMsg.str());
+    }
 
 //TODO: check that FTFont is scalable?  only relevant for hinting etc?
 
 //  FT2 blows up if char size is not set to some non-zero value.
 //  This sets size to 48 point. Magic.
-   error = FT_Set_Char_Size(FTFont,
-                            0,             /* char_width in 1/64th of points */
-                            48*64,         /* char_height in 1/64th of points */
-                            0,             /* horizontal device resolution */
-                            0 );           /* vertical device resolution */
-   if(error) {
-      ErrorMsg << "FT_Set_Char_Size failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
+    error = FT_Set_Char_Size(FTFont,
+                             0,             /* char_width in 1/64th of points */
+                             48*64,         /* char_height in 1/64th of points */
+                             0,             /* horizontal device resolution */
+                             0 );           /* vertical device resolution */
+    if (error) {
+        ErrorMsg << "FT_Set_Char_Size failed: " << error;
+        throw std::runtime_error(ErrorMsg.str());
+    }
 
-   CharList = PyList_New(0);
-   scalefactor = stringheight/float(FTFont->height);
-   for (i=0; i<length; i++) {
-       currchar = PyUString[i];
-       error = FT_Load_Char(FTFont,
-                            currchar,
-                            FTLoadFlags);
-       if(error) {
-           ErrorMsg << "FT_Load_Char failed: " << error;
-           throw std::runtime_error(ErrorMsg.str());
-       }
+    scalefactor = stringheight/float(FTFont->height);
+    for (i=0; i<length; i++) {
+        currchar = PyUString[i];
+        error = FT_Load_Char(FTFont,
+                             currchar,
+                             FTLoadFlags);
+        if (error) {
+            ErrorMsg << "FT_Load_Char failed: " << error;
+            throw std::runtime_error(ErrorMsg.str());
+        }
 
-       cadv = FTFont->glyph->advance.x;
-       kern = getKerning(FTFont,prevchar,currchar);
-       PenPos += kern.x;
-       WireList = getGlyphContours(FTFont,currchar,PenPos, scalefactor,i,tracking);
-       if (!PyList_Size(WireList))                                  // empty ==> whitespace
-           Base::Console().Log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
-       else
-           PyList_Append(CharList, WireList);
-       PenPos += cadv;
-       prevchar = currchar;
-   }
+        cadv = FTFont->glyph->advance.x;
+        kern = getKerning(FTFont,prevchar,currchar);
+        PenPos += kern.x;
+        try {
+            Py::List WireList(getGlyphContours(FTFont, currchar, PenPos, scalefactor, i, tracking), true);
+            CharList.append(WireList);
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+            Base::Console().Log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
+        }
 
-   error = FT_Done_FreeType(FTLib);
-   if(error) {
-      ErrorMsg << "FT_Done_FreeType failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
+        PenPos += cadv;
+        prevchar = currchar;
+    }
 
-   return(CharList);
-   }
+    error = FT_Done_FreeType(FTLib);
+    if (error) {
+        ErrorMsg << "FT_Done_FreeType failed: " << error;
+        throw std::runtime_error(ErrorMsg.str());
+    }
+
+    return Py::new_reference_to(CharList);
+}
 
 //********** FT Decompose callbacks and data defns
 // FT Decomp Context for 1 char
@@ -333,7 +337,7 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    }
 
 //a ttf outer contour is clockwise with material on the right.
-//an occ outer contour has material on the left, so it must be reversed? 
+//an occ outer contour has material on the left, so it must be reversed?
 
 
    FT_Orientation ftOrient = FT_Outline_Get_Orientation(&FTFont->glyph->outline);
@@ -341,8 +345,8 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    if (ftOrient == FT_ORIENTATION_TRUETYPE) {
         isTTF = true;
    }
-   
-   PyObject* ret = PyList_New(0);
+
+   Py::List list;
 
    gp_Vec pointer = gp_Vec(PenPos * Scale + charNum*tracking,0.0,0.0);
    gp_Trsf xForm;
@@ -352,9 +356,9 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    bool bCopy = true;                                                           // no effect?
 
 
-   int wCount = 0; 
+   int wCount = 0;
    for(std::vector<TopoDS_Wire>::iterator iWire=ctx.Wires.begin();iWire != ctx.Wires.end(); ++iWire, wCount++) {
-       if ((ctx.wDir[wCount] == CLOCKWISE) && isTTF) {         //ttf outer wire. fill inside / right 
+       if ((ctx.wDir[wCount] == CLOCKWISE) && isTTF) {         //ttf outer wire. fill inside / right
            (*iWire).Orientation(TopAbs_REVERSED);
        } else if ((ctx.wDir[wCount] == CLOCKWISE) && !isTTF) { //ps inner wire. fill outside / right
            (*iWire).Orientation(TopAbs_REVERSED);
@@ -372,9 +376,11 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
           ErrorMsg << "FT2FC OCC BRepScale failed \n";
           throw std::runtime_error(ErrorMsg.str());
        }
-       PyList_Append(ret,new TopoShapeWirePy(new TopoShape(TopoDS::Wire(BRepScale.Shape()))));
+
+       PyObject* wire = new TopoShapeWirePy(new TopoShape(TopoDS::Wire(BRepScale.Shape())));
+       list.append(Py::asObject(wire));
    }
-   return(ret);
+   return Py::new_reference_to(list);
 }
 
 // get kerning values for this char pair

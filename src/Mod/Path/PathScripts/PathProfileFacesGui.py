@@ -44,9 +44,9 @@ class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Profile',
         PathProfile.Create,
         TaskPanelOpPage,
-        'Path-Contour',
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile"),
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile entire model, selected face(s) or selected edge(s)"),
+        'Path_Contour',
+        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
         PathProfile.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")

@@ -128,6 +128,7 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcutContext(Qt::WidgetShortcut);
     ui->listUnbound->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onDeleteUnboundEdge()));
     ui->listUnbound->setContextMenuPolicy(Qt::ActionsContextMenu);

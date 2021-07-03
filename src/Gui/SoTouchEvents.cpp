@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com)>      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,7 +41,7 @@ SO_EVENT_SOURCE(SoGesturePanEvent);
 
 SoGesturePanEvent::SoGesturePanEvent(QPanGesture* qpan, QWidget *widget)
 {
-    Q_UNUSED(widget); 
+    Q_UNUSED(widget);
     totalOffset = SbVec2f(qpan->offset().x(), -qpan->offset().y());
     deltaOffset = SbVec2f(qpan->delta().x(), -qpan->delta().y());
     state = SbGestureState(qpan->state());
@@ -120,7 +119,7 @@ SO_EVENT_SOURCE(SoGestureSwipeEvent);
 
 SoGestureSwipeEvent::SoGestureSwipeEvent(QSwipeGesture *qwsipe, QWidget *widget)
 {
-    Q_UNUSED(widget); 
+    Q_UNUSED(widget);
     angle = qwsipe->swipeAngle();
     switch (qwsipe->verticalDirection()){
     case QSwipeGesture::Up :

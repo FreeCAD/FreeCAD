@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathDrilling as PathDrilling
 import PathScripts.PathGui as PathGui
@@ -97,8 +98,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentText()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentText())
-        if obj.EnableRotation != str(self.form.enableRotation.currentText()):
-            obj.EnableRotation = str(self.form.enableRotation.currentText())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -122,7 +121,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
-        self.selectInComboBox(obj.EnableRotation, self.form.enableRotation)
 
 
     def getSignalsForUpdate(self, obj):
@@ -137,7 +135,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
-        signals.append(self.form.enableRotation.currentIndexChanged)
 
         return signals
 
@@ -148,9 +145,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Drilling',
         PathDrilling.Create,
         TaskPanelOpPage,
-        'Path-Drilling',
-        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Drilling"),
-        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Creates a Path Drilling object from a features of a base object"),
+        'Path_Drilling',
+        QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Drilling"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Creates a Path Drilling object from a features of a base object"),
         PathDrilling.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathDrillingGui... done\n")

@@ -2,11 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sr" sourcelanguage="en">
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <source>Scale image plane</source>
+      <translation>Промени величину равни слике</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Промените величину равни слике дефинишући растојање између две тачке</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>Скалирај раван слике</translation>
+      <translation>Промени величину равни слике</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
@@ -31,25 +44,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation>Изабери другу тачку</translation>
+      <translation>Изаберите другу тачку</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation>Изабери раван слике и унеси растојање</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation>Скалирај раван слике</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Скалира раван слике дефинишући растојање између две тачке</translation>
+      <translation>Изаберите раван слике и унесите растојање</translation>
     </message>
   </context>
   <context>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Направи раван од слике у 3Д простору</translation>
+      <translation>Направите раванску слике у 3Д простору</translation>
     </message>
   </context>
   <context>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>Скалирање слике</translation>
+      <translation>Сразмеравање слике</translation>
     </message>
   </context>
   <context>
@@ -174,12 +174,12 @@
     <message>
       <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
-      <translation>&amp;1:1 размера</translation>
+      <translation>Размера &amp;1:1</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="119"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Приказ слике у размери 1:1</translation>
+      <translation>Прикажите слику у размери 1:1</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="128"/>

@@ -54,7 +54,8 @@
 
 namespace Py
 {
-    typedef size_t sequence_index_type;    // type of an index into a sequence
+    typedef Py_ssize_t sequence_index_type;    // type of an index into a sequence
+    Py_ssize_t numeric_limits_max();
 
     // Forward declarations
     class Object;
@@ -1095,7 +1096,7 @@ namespace Py
     {
     protected:
         SeqBase<T> &s; // the sequence
-        size_t offset; // item number
+        sequence_index_type offset; // item number
         T the_item; // lvalue
 
     public:
@@ -1289,7 +1290,7 @@ namespace Py
     {
     public:
         // STL definitions
-        typedef size_t size_type;
+        typedef Py_ssize_t size_type;
         typedef seqref<T> reference;
         typedef T const_reference;
         typedef seqref<T> *pointer;
@@ -1298,7 +1299,16 @@ namespace Py
 
         virtual size_type max_size() const
         {
-            return std::string::npos; // ?
+            // Hint: Upstream version returns std::string::npos that is the maximum
+            // value of a size_t. But when assigned to a ssize_t it will become -1.
+            // Now Python provides 'sys.maxsize' that is the maximum value of a ssize_t
+            // and thus this method should return the same value.
+            // This can be done with 'std::numeric_limits<size_type>::max()' but due
+            // to a name collision with a macro on Windows we cannot directly call it
+            // here.
+            // So, a workaround is to implement the helper function 'numeric_limits_max'.
+            //return std::string::npos; // ?
+            return numeric_limits_max();
         }
 
         virtual size_type capacity() const
@@ -1822,7 +1832,7 @@ namespace Py
         // Assignment from C string
         Byte &operator=( const std::string &v )
         {
-            set( PyBytes_FromStringAndSize( const_cast<char*>( v.c_str() ),1 ), true );
+            set( PyBytes_FromStringAndSize( const_cast<char*>( v.c_str() ), 1 ), true );
             return *this;
         }
 
@@ -1869,13 +1879,13 @@ namespace Py
         }
 
         Bytes( const std::string &v )
-        : SeqBase<Byte>( PyBytes_FromStringAndSize( const_cast<char*>( v.data() ), static_cast<int>( v.length() ) ), true )
+        : SeqBase<Byte>( PyBytes_FromStringAndSize( const_cast<char*>( v.data() ), v.length() ), true )
         {
             validate();
         }
 
         Bytes( const std::string &v, Py_ssize_t vsize )
-        : SeqBase<Byte>( PyBytes_FromStringAndSize( const_cast<char*>( v.data() ), static_cast<int>( vsize ) ), true )
+        : SeqBase<Byte>( PyBytes_FromStringAndSize( const_cast<char*>( v.data() ), vsize ), true )
         {
             validate();
         }
@@ -1908,7 +1918,7 @@ namespace Py
         // Assignment from C string
         Bytes &operator=( const std::string &v )
         {
-            set( PyBytes_FromStringAndSize( const_cast<char*>( v.data() ), static_cast<int>( v.length() ) ), true );
+            set( PyBytes_FromStringAndSize( const_cast<char*>( v.data() ), v.length() ), true );
             return *this;
         }
 
@@ -1917,7 +1927,7 @@ namespace Py
         // Queries
         virtual size_type size() const
         {
-            return static_cast<size_type>( PyBytes_Size( ptr() ) );
+            return PyBytes_Size( ptr() );
         }
 
         operator std::string() const
@@ -1927,7 +1937,7 @@ namespace Py
 
         std::string as_std_string() const
         {
-            return std::string( PyBytes_AsString( ptr() ), static_cast<size_type>( PyBytes_Size( ptr() ) ) );
+            return std::string( PyBytes_AsString( ptr() ), static_cast<size_t>( PyBytes_Size( ptr() ) ) );
         }
     };
 
@@ -1965,7 +1975,7 @@ namespace Py
         }
 
         Char( const unicodestring &v )
-        : Object( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ),1 ), true )
+        : Object( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ),1 ), true )
         {
             validate();
         }
@@ -1985,20 +1995,20 @@ namespace Py
 
         Char &operator=( const unicodestring &v )
         {
-            set( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
             return *this;
         }
 
         Char &operator=( int v_ )
         {
             Py_UNICODE v( v_ );
-            set( PyUnicode_FromUnicode( &v, 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, &v, 1 ), true );
             return *this;
         }
 
         Char &operator=( Py_UNICODE v )
         {
-            set( PyUnicode_FromUnicode( &v, 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, &v, 1 ), true );
             return *this;
         }
 
@@ -2092,7 +2102,7 @@ namespace Py
         }
 
         String( const Py_UNICODE *s, int length )
-        : SeqBase<Char>( PyUnicode_FromUnicode( s, length ), true )
+        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, s, length ), true )
         {
             validate();
         }
@@ -2112,7 +2122,7 @@ namespace Py
 
         String &operator=( const unicodestring &v )
         {
-            set( PyUnicode_FromUnicode( const_cast<Py_UNICODE *>( v.data() ), static_cast<int>( v.length() ) ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE *>( v.data() ), v.length() ), true );
             return *this;
         }
 
@@ -2125,13 +2135,20 @@ namespace Py
         // Queries
         virtual size_type size() const
         {
-            return static_cast<size_type>( PyUnicode_GET_SIZE( ptr() ) );
+            return PyUnicode_GetLength( ptr() );
+        }
+
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
+        const Py_UNICODE *unicode_data() const
+        {
+            return PyUnicode_AS_UNICODE( ptr() );
         }
 
         unicodestring as_unicodestring() const
         {
-            return unicodestring( PyUnicode_AS_UNICODE( ptr() ), static_cast<size_type>( PyUnicode_GET_SIZE( ptr() ) ) );
+            return unicodestring( unicode_data(), PyUnicode_GetLength( ptr() ) );
         }
+#endif
 
         operator std::string() const
         {
@@ -2143,11 +2160,6 @@ namespace Py
         {
             Bytes b( encode( encoding, error ) );
             return b.as_std_string();
-        }
-
-        const Py_UNICODE *unicode_data() const
-        {
-            return PyUnicode_AS_UNICODE( ptr() );
         }
     };
 
@@ -2179,7 +2191,7 @@ namespace Py
         }
 
         // New tuple of a given size
-        explicit Tuple( sequence_index_type size = 0 )
+        explicit Tuple( size_type size=0 )
         {
             set( PyTuple_New( size ), true );
             validate();
@@ -2198,7 +2210,7 @@ namespace Py
 
             set( PyTuple_New( limit ), true );
             validate();
-            
+
             for( sequence_index_type i=0; i < limit; i++ )
             {
                 if( PyTuple_SetItem( ptr(), i, new_reference_to( s[i] ) ) == -1 )
@@ -2237,7 +2249,7 @@ namespace Py
     {
     public:
         TupleN()
-        : Tuple( (sequence_index_type)0 )
+        : Tuple( (size_type)0 )
         {
         }
 
@@ -2362,7 +2374,7 @@ namespace Py
             validate();
         }
         // Creation at a fixed size
-        List( sequence_index_type size = 0 )
+        List( size_type size = 0 )
         {
             set( PyList_New( size ), true );
             validate();
@@ -2379,7 +2391,7 @@ namespace Py
         List( const Sequence &s )
         : Sequence()
         {
-            sequence_index_type n =( int )s.length();
+            size_type n = s.length();
             set( PyList_New( n ), true );
             validate();
             for( sequence_index_type i=0; i < n; i++ )
@@ -2659,7 +2671,7 @@ namespace Py
         // If you assume that Python mapping is a hash_map...
         // hash_map::value_type is not assignable, but
         //( *it ).second = data must be a valid expression
-        typedef size_t size_type;
+        typedef Py_ssize_t size_type;
         typedef Object key_type;
         typedef mapref<T> data_type;
         typedef std::pair< const T, T > value_type;

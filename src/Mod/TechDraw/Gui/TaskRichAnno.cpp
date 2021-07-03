@@ -76,6 +76,7 @@ using namespace TechDrawGui;
 TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     ui(new Ui_TaskRichAnno),
     blockUpdate(false),
+    m_mdi(nullptr),
     m_view(nullptr),
     m_annoVP(annoVP),
     m_baseFeat(nullptr),
@@ -202,7 +203,6 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
 TaskRichAnno::~TaskRichAnno()
 {
-    delete ui;
 }
 
 void TaskRichAnno::updateTask()
@@ -239,9 +239,7 @@ void TaskRichAnno::setUiPrimary()
     ui->teAnnoText->setFontPointSize(mre.getDefFontSizeNum());
     // set a placeholder text to inform the user
     // (QTextEdit has no placeholderText property in Qt4)
-#if QT_VERSION >= 0x050200
     ui->teAnnoText->setPlaceholderText(tr("Input the annotation text directly or start the rich text editor"));
-#endif
 }
 
 void TaskRichAnno::enableTextUi(bool b)
@@ -333,8 +331,8 @@ void TaskRichAnno::onEditorExit(void)
 
 double TaskRichAnno::prefWeight() const
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Graphic");
     delete lg;                                   //Coverity CID 174670
     return weight;
@@ -355,7 +353,7 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand("Create Anno");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
     Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                        annoType.c_str(),annoName.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -414,7 +412,7 @@ void TaskRichAnno::createAnnoFeature()
 void TaskRichAnno::updateAnnoFeature()
 {
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand("Edit Anno");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
     commonFeatureUpdate();
     App::Color ac;
     ac.setValue<QColor>(ui->cpFrameColor->color());
@@ -590,7 +588,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskRichAnno(baseFeat,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
                                               widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -600,7 +598,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP)
     : TaskDialog()
 {
     widget  = new TaskRichAnno(leadVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

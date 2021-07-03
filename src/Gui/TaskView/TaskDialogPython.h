@@ -50,6 +50,7 @@ public:
     Py::Object isAllowedAlterView(const Py::Tuple&);
     Py::Object isAllowedAlterSelection(const Py::Tuple&);
     Py::Object showTaskView(const Py::Tuple&);
+    Py::Object showModelView(const Py::Tuple&);
 
 private:
     static ControlPy* instance;

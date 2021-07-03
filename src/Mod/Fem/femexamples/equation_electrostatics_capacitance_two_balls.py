@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,14 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.equation_electrostatics_capacitance_two_balls import setup
-setup()
-"""
-# Electrostatics equation in FreeCAD FEM-Elmer
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
-
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
@@ -37,48 +29,63 @@ from FreeCAD import Vector
 import Fem
 import ObjectsFem
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Electrostatics Capacitance Two Balls",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["electrostatic potential"],
-            "solvers": ["elmer"],
-            "material": "fluid",
-            "equation": "electrostatic"
-            }
-    return info
+    return {
+        "name": "Electrostatics Capacitance Two Balls",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["electrostatic potential"],
+        "solvers": ["elmer"],
+        "material": "fluid",
+        "equation": "electrostatic"
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.equation_electrostatics_capacitance_two_balls import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
+
+Electrostatics equation in FreeCAD FEM-Elmer
+
+"""
 
 
 def setup(doc=None, solvertype="elmer"):
-    # setup base model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
-    # name is important because the other method in this module use obj name
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric objects
     small_sphere1 = doc.addObject("Part::Sphere", "Small_Sphere1")
     small_sphere1.Placement = FreeCAD.Placement(Vector(-1000, 0, 0), Rotation(Vector(0, 0, 1), 0))
-    small_sphere1.Radius = '500 mm'
+    small_sphere1.Radius = "500 mm"
 
     small_sphere2 = doc.addObject("Part::Sphere", "Small_Sphere2")
     small_sphere2.Placement = FreeCAD.Placement(Vector(1000, 0, 0), Rotation(Vector(0, 0, 1), 0))
-    small_sphere2.Radius = '500 mm'
+    small_sphere2.Radius = "500 mm"
 
     fusion = doc.addObject("Part::MultiFuse", "Fusion")
     fusion.Shapes = [small_sphere1, small_sphere2]
 
     large_sphere = doc.addObject("Part::Sphere", "Large_Sphere")
-    large_sphere.Radius = '5000 mm'
+    large_sphere.Radius = "5000 mm"
 
     geom_obj = doc.addObject("Part::Cut", "Cut")
     geom_obj.Base = large_sphere
@@ -95,8 +102,8 @@ def setup(doc=None, solvertype="elmer"):
 
     # solver
     if solvertype == "elmer":
-        solver_object = analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))[0]
-        eq_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_object)
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        eq_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_obj)
         eq_electrostatic.CalculateCapacitanceMatrix = True
         eq_electrostatic.CalculateElectricEnergy = True
         eq_electrostatic.CalculateElectricField = True
@@ -105,12 +112,11 @@ def setup(doc=None, solvertype="elmer"):
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialFluid(doc, "FemMaterial")
-    )[0]
-    mat = material_object.Material
+    material_obj = ObjectsFem.makeMaterialFluid(doc, "FemMaterial")
+    mat = material_obj.Material
     mat["Name"] = "Air-Generic"
     mat["Density"] = "1.20 kg/m^3"
     mat["KinematicViscosity"] = "15.11 mm^2/s"
@@ -119,32 +125,38 @@ def setup(doc=None, solvertype="elmer"):
     mat["ThermalExpansionCoefficient"] = "0.0034/K"
     mat["SpecificHeat"] = "1.00 J/kg/K"
     mat["RelativePermittivity"] = "1.00"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
-    # 1st potential_constraint
-    constraint_elect_pot0 = analysis.addObject(
-        ObjectsFem.makeConstraintElectrostaticPotential(doc))[0]
-    constraint_elect_pot0.References = [(geom_obj, "Face1")]
-    constraint_elect_pot0.ElectricInfinity = True
+    # constraint potential 1st
+    name_pot1 = "ConstraintElectrostaticPotential001"
+    con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
+    con_elect_pot1.References = [(geom_obj, "Face1")]
+    con_elect_pot1.ElectricInfinity = True
+    analysis.addObject(con_elect_pot1)
 
-    # 2nd potential_constraint
-    constraint_elect_pot1 = analysis.addObject(
-        ObjectsFem.makeConstraintElectrostaticPotential(doc))[0]
-    constraint_elect_pot1.References = [(geom_obj, "Face2")]
-    constraint_elect_pot1.CapacitanceBody = 1
-    constraint_elect_pot1.CapacitanceBodyEnabled = True
+    # constraint potential 2nd
+    # TODO: use a better name for the constraint, but unit test needs to be changed
+    name_pot2 = "ConstraintElectrostaticPotential001"
+    con_elect_pot2 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot2)
+    con_elect_pot2.References = [(geom_obj, "Face2")]
+    con_elect_pot2.CapacitanceBody = 1
+    con_elect_pot2.CapacitanceBodyEnabled = True
+    analysis.addObject(con_elect_pot2)
 
-    # 3rd potential_constraint
-    constraint_elect_pot2 = analysis.addObject(
-        ObjectsFem.makeConstraintElectrostaticPotential(doc))[0]
-    constraint_elect_pot2.References = [(geom_obj, "Face3")]
-    constraint_elect_pot2.CapacitanceBody = 2
-    constraint_elect_pot2.CapacitanceBodyEnabled = True
+    # constraint potential 3rd
+    # TODO: use a better name for the constraint, but unit test needs to be changed
+    name_pot3 = "ConstraintElectrostaticPotential002"
+    con_elect_pot3 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot3)
+    con_elect_pot3.References = [(geom_obj, "Face3")]
+    con_elect_pot3.CapacitanceBody = 2
+    con_elect_pot3.CapacitanceBodyEnabled = True
+    analysis.addObject(con_elect_pot3)
 
     # constant vacuum permittivity
-    const_vaccum_permittivity = analysis.addObject(
-        ObjectsFem.makeConstantVacuumPermittivity(doc))[0]
-    const_vaccum_permittivity.VacuumPermittivity = '1 F/m'
+    const_vacperm = ObjectsFem.makeConstantVacuumPermittivity(doc, "ConstantVacuumPermittivity")
+    const_vacperm.VacuumPermittivity = "1 F/m"
+    analysis.addObject(const_vacperm)
 
     # mesh
     from .meshes.mesh_capacitance_two_balls_tetra10 import create_nodes, create_elements
@@ -155,16 +167,14 @@ def setup(doc=None, solvertype="elmer"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     # mesh_region
-    mesh_region = ObjectsFem.makeMeshRegion(doc, femmesh_obj)
-    mesh_region.CharacteristicLength = '300 mm'
+    mesh_region = ObjectsFem.makeMeshRegion(doc, femmesh_obj, name="MeshRegion")
+    mesh_region.CharacteristicLength = "300 mm"
     mesh_region.References = [(geom_obj, "Face2"), (geom_obj, "Face3")]
 
     doc.recompute()

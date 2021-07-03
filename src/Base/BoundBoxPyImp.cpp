@@ -52,7 +52,7 @@ std::string BoundBoxPy::representation(void) const
 
 PyObject *BoundBoxPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of BoundBoxPy and the Twin object 
+    // create a new instance of BoundBoxPy and the Twin object
     return new BoundBoxPy(new BoundBox3d);
 }
 
@@ -585,7 +585,7 @@ PyObject *BoundBoxPy::getCustomAttributes(const char* /*attr*/) const
 
 int BoundBoxPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

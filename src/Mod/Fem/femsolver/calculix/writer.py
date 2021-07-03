@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver CalculiX writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -56,7 +56,7 @@ units_information = """*********************************************************
 **  Golden rule: The user must make sure that the numbers he provides have consistent units.
 **  The user is the FreeCAD calculix writer module ;-)
 **
-**  The unit system which is used at Guido Dhodts company: mm, N, s, K
+**  The unit system which is used at Guido Dhondt's company: mm, N, s, K
 **  Since Length and Mass are connected by Force, if Length is mm the Mass is in t to get N
 **  The following units are used to write to inp file:
 **
@@ -68,10 +68,10 @@ units_information = """*********************************************************
 **  This leads to:
 **  Force: N
 **  Pressure: N/mm^2
-**  Density: t/mm^2
+**  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K*s^3
-**  Specific Heat: kJ/t/K = mm^2/s^2/K
+**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
+**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
 """
 
 
@@ -880,7 +880,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_selfweight(self, f):
         if not self.selfweight_objects:
             return
-        if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
+        if not (
+            self.analysis_type == "static"
+            or self.analysis_type == "thermomech"
+            or self.analysis_type == "buckling"
+        ):
             return
 
         # write constraint to file
@@ -914,7 +918,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_force(self, f, inpfile_split=None):
         if not self.force_objects:
             return
-        if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
+        if not (
+            self.analysis_type == "static"
+            or self.analysis_type == "thermomech"
+            or self.analysis_type == "buckling"
+        ):
             return
 
         # check shape type of reference shape and get node loads
@@ -963,7 +971,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_pressure(self, f, inpfile_split=None):
         if not self.pressure_objects:
             return
-        if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
+        if not (
+            self.analysis_type == "static"
+            or self.analysis_type == "thermomech"
+            or self.analysis_type == "buckling"
+        ):
             return
 
         # get the faces and face numbers
@@ -1176,7 +1188,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.solver_obj.IterationsThermoMechMaximum:
             if self.analysis_type == "thermomech":
                 step += ", INC=" + str(self.solver_obj.IterationsThermoMechMaximum)
-            elif self.analysis_type == "static" or self.analysis_type == "frequency":
+            elif (
+                self.analysis_type == "static"
+                or self.analysis_type == "frequency"
+                or self.analysis_type == "buckling"
+            ):
                 # parameter is for thermomechanical analysis only, see ccx manual *STEP
                 pass
         # write step line
@@ -1197,6 +1213,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             analysis_type = "*COUPLED TEMPERATURE-DISPLACEMENT"
         elif self.analysis_type == "check":
             analysis_type = "*NO ANALYSIS"
+        elif self.analysis_type == "buckling":
+            analysis_type = "*BUCKLE"
         # analysis line --> solver type
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=43178
         if self.solver_obj.MatrixSolverType == "default":
@@ -1228,7 +1246,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 # Set time to 1 and ignore user inputs for steady state
                 self.solver_obj.TimeInitialStep = 1.0
                 self.solver_obj.TimeEnd = 1.0
-            elif self.analysis_type == "static" or self.analysis_type == "frequency":
+            elif (
+                self.analysis_type == "static"
+                or self.analysis_type == "frequency"
+                or self.analysis_type == "buckling"
+            ):
                 pass  # not supported for static and frequency!
         # ANALYSIS parameter line
         analysis_parameter = ""
@@ -1255,6 +1277,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 self.solver_obj.TimeInitialStep,
                 self.solver_obj.TimeEnd
             )
+        elif self.analysis_type == "buckling":
+            analysis_parameter = "{}\n".format(self.solver_obj.BucklingFactors)
+
         # write analysis type line, analysis parameter line
         f.write(analysis_type + "\n")
         f.write(analysis_parameter + "\n")
@@ -1818,6 +1843,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
             # nonlinear material properties
             if self.solver_obj.MaterialNonlinearity == "nonlinear":
+
                 for nlfemobj in self.material_nonlinear_objects:
                     # femobj --> dict, FreeCAD document object is nlfemobj["Object"]
                     nl_mat_obj = nlfemobj["Object"]
@@ -1927,7 +1953,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 # M .. Material
 # B .. Beam
 # R .. BeamRotation
-# D ..Direction
+# D .. Direction
 # F .. Fluid
 # S .. Shell,
 # TODO write comment into input file to elset ids and elset attributes

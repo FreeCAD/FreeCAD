@@ -45,17 +45,10 @@ class Draft_WorkingPlaneProxy:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Create working plane proxy"
-        _tip = ("Creates a proxy object from the current working plane.\n"
-                "Once the object is created double click it in the tree view "
-                "to restore the camera position and objects' visibilities.\n"
-                "Then you can use it to save a different camera position "
-                "and objects' states any time you need.")
+
         d = {'Pixmap': 'Draft_PlaneProxy',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy",
-                                           _menu),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy",
-                                          _tip)}
+             'MenuText': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy","Create working plane proxy"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy","Creates a proxy object from the current working plane.\nOnce the object is created double click it in the tree view to restore the camera position and objects' visibilities.\nThen you can use it to save a different camera position and objects' states any time you need.")}
         return d
 
     def IsActive(self):

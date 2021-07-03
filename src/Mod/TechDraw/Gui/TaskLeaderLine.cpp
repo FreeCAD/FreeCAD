@@ -233,7 +233,6 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
 
 TaskLeaderLine::~TaskLeaderLine()
 {
-    delete ui;
 }
 
 void TaskLeaderLine::saveState()
@@ -398,13 +397,15 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand("Create Leader");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
     Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                        m_leaderType.c_str(),m_leaderName.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
                        PageName.c_str(),m_leaderName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.LeaderParent = App.activeDocument().%s",
-                           m_leaderName.c_str(),m_baseFeat->getNameInDocument());
+    if (m_baseFeat != nullptr) {
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.LeaderParent = App.activeDocument().%s",
+                               m_leaderName.c_str(),m_baseFeat->getNameInDocument());
+    }
 
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(m_leaderName.c_str());
     if (obj == nullptr) {
@@ -452,7 +453,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 void TaskLeaderLine::updateLeaderFeature(void)
 {
 //    Base::Console().Message("TTL::updateLeaderFeature()\n");
-    Gui::Command::openCommand("Edit Leader");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x,y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     App::Color ac;
@@ -789,8 +790,8 @@ int TaskLeaderLine::getPrefArrowStyle()
 
 double TaskLeaderLine::prefWeight() const
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     return weight;

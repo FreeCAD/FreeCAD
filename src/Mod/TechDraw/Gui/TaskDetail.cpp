@@ -238,7 +238,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 TaskDetail::~TaskDetail()
 {
     m_ghost->deleteLater();  //this might not exist if scene is destroyed before TaskDetail is deleted?
-    delete ui;
 }
 
 void TaskDetail::updateTask()
@@ -470,7 +469,7 @@ void TaskDetail::enableTaskButtons(bool b)
 void TaskDetail::createDetail()
 {
 //    Base::Console().Message("TD::createDetail()\n");
-    Gui::Command::openCommand("Create Detail View");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
 
     m_detailName = m_doc->getUniqueObjectName("Detail");
 
@@ -507,7 +506,7 @@ void TaskDetail::updateDetail()
 {
 //    Base::Console().Message("TD::updateDetail()\n");
     try {
-        Gui::Command::openCommand("Update Detail");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
         double x = ui->qsbX->rawValue();
         double y = ui->qsbY->rawValue();
         Base::Vector3d temp(x, y, 0.0);
@@ -662,7 +661,7 @@ TaskDlgDetail::TaskDlgDetail(TechDraw::DrawViewPart* baseFeat)
     : TaskDialog()
 {
     widget  = new TaskDetail(baseFeat);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DetailView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_DetailView"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -672,7 +671,7 @@ TaskDlgDetail::TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat)
     : TaskDialog()
 {
     widget  = new TaskDetail(detailFeat);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DetailView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_DetailView"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

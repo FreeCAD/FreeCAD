@@ -42,8 +42,13 @@ SET(FemCommands_SRCS
 
 SET(FemExamples_SRCS
     femexamples/__init__.py
+    femexamples/boxanalysis_base.py
     femexamples/boxanalysis_static.py
     femexamples/boxanalysis_frequency.py
+    femexamples/buckling_platebuckling.py
+    femexamples/buckling_lateraltorsionalbuckling.py
+    femexamples/ccx_buckling_flexuralbuckling.py
+    femexamples/ccx_cantilever_base.py
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_hexa20faceload.py
@@ -55,8 +60,10 @@ SET(FemExamples_SRCS
     femexamples/constraint_tie.py
     femexamples/constraint_transform_beam_hinged.py
     femexamples/examplesgui.py
+    femexamples/elmer_nonguitutorial01_eigenvalue_of_elastic_beam.py
     femexamples/equation_electrostatics_capacitance_two_balls.py
     femexamples/equation_electrostatics_electricforce_elmer_nongui6.py
+    femexamples/frequency_beamsimple.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
     femexamples/material_multiple_bendingbeam_fivefaces.py
@@ -72,15 +79,20 @@ SET(FemExamples_SRCS
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
+    femexamples/meshes/mesh_beamsimple_tetra10.py
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
+    femexamples/meshes/mesh_buckling_ibeam_tria6.py
+    femexamples/meshes/mesh_buckling_plate_tria6.py
     femexamples/meshes/mesh_canticcx_hexa20.py
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_capacitance_two_balls_tetra10.py
     femexamples/meshes/mesh_constraint_tie_tetra10.py
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
+    femexamples/meshes/mesh_eigenvalue_of_elastic_beam_tetra10.py
     femexamples/meshes/mesh_electricforce_elmer_nongui6_tetra10.py
+    femexamples/meshes/mesh_flexural_buckling.py
     femexamples/meshes/mesh_multibodybeam_tetra10.py
     femexamples/meshes/mesh_multibodybeam_tria6.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
@@ -245,6 +257,8 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/box_static_expected_values
     femtest/data/calculix/box_static.FCStd
     femtest/data/calculix/box.FCStd
+    femtest/data/calculix/ccx_buckling_flexuralbuckling.dat
+    femtest/data/calculix/ccx_buckling_flexuralbuckling.inp
     femtest/data/calculix/ccxcantilever_faceload.inp
     femtest/data/calculix/ccxcantilever_hexa20.inp
     femtest/data/calculix/ccxcantilever_nodeload.inp
@@ -256,6 +270,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/constraint_sectionprint.inp
     femtest/data/calculix/constraint_selfweight_cantilever.inp
     femtest/data/calculix/constraint_tie.inp
+    femtest/data/calculix/frequency_beamsimple.inp
     femtest/data/calculix/material_multiple_bendingbeam_fiveboxes.inp
     femtest/data/calculix/material_multiple_bendingbeam_fivefaces.inp
     femtest/data/calculix/material_multiple_tensionrod_twoboxes.inp

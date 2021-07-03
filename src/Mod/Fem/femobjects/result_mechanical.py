@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM result mechanical document object"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package result_mechanical
 #  \ingroup FEM

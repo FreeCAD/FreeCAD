@@ -491,7 +491,7 @@ class _CommandWindow:
                     if path.lower().endswith(".fcstd"):
                         try:
                             import zipfile,tempfile
-                        except:
+                        except Exception:
                             pass
                         else:
                             zfile=zipfile.ZipFile(path)
@@ -632,7 +632,10 @@ class _Window(ArchComponent.Component):
                 elif "Edge" in s:
                     hinge = int(s[4:])-1
                 elif "Mode" in s:
-                    omode = int(s[-1])
+                    omode = int(s[4:])
+                    if omode >= len(WindowOpeningModes):
+                        # Ignore modes not listed in WindowOpeningModes
+                        omode = None
             if wires:
                 max_length = 0
                 for w in wires:
@@ -1442,6 +1445,8 @@ class _ArchWindowTaskPanel:
         self.field3.setText('')
         self.field4.setText('')
         self.field5.setText('')
+        self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+        self.field7.setCurrentIndex(0)
         self.addp4.setChecked(False)
         self.addp5.setChecked(False)
         self.newtitle.setVisible(True)
@@ -1489,6 +1494,8 @@ class _ArchWindowTaskPanel:
             if self.obj:
                 if comp in self.obj.WindowParts:
                     ind = self.obj.WindowParts.index(comp)
+                    self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+                    self.field7.setCurrentIndex(0)
                     for i in range(5):
                         f = getattr(self,"field"+str(i+1))
                         t = self.obj.WindowParts[ind+i]
@@ -1506,7 +1513,11 @@ class _ArchWindowTaskPanel:
                                 elif "Edge" in l:
                                     self.field6.setText(l)
                                 elif "Mode" in l:
-                                    self.field7.setCurrentIndex(int(l[-1]))
+                                    if int(l[4:]) < len(WindowOpeningModes):
+                                        self.field7.setCurrentIndex(int(l[4:]))
+                                    else:
+                                        # Ignore modes not listed in WindowOpeningModes
+                                        self.field7.setCurrentIndex(0)
                             if wires:
                                 f.setText(",".join(wires))
 

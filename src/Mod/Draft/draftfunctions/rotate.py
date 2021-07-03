@@ -42,11 +42,11 @@ import draftmake.make_copy as make_copy
 def rotate(objectslist, angle, center=App.Vector(0,0,0),
            axis=App.Vector(0,0,1), copy=False):
     """rotate(objects,angle,[center,axis,copy])
-    
+
     Rotates the objects contained in objects (that can be a list of objects
-    or an object) of the given angle (in degrees) around the center, using 
-    axis as a rotation axis. 
-    
+    or an object) of the given angle (in degrees) around the center, using
+    axis as a rotation axis.
+
     Parameters
     ----------
     objectlist : list
@@ -57,10 +57,10 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
 
     axis : Base.Vector
         If axis is omitted, the rotation will be around the vertical Z axis.
-    
+
     copy : bool
         If copy is True, the actual objects are not moved, but copies
-        are created instead. 
+        are created instead.
 
     Return
     ----------
@@ -114,7 +114,7 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
         elif utils.get_type(obj) == "Point":
             v = App.Vector(obj.X,obj.Y,obj.Z)
             rv = v.sub(real_center)
-            rv = DraftVecUtils.rotate(rv, math.radians(angle),real_axis)
+            rv = DraftVecUtils.rotate(rv, math.radians(angle), real_axis)
             v = real_center.add(rv)
             newobj.X = v.x
             newobj.Y = v.y

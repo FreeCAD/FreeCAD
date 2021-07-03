@@ -349,7 +349,7 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
         factor = 28316846.592;
     }
     else if (unit == Unit::Mass) {
-        unitString = QString::fromLatin1("lb");     //always lbs. 
+        unitString = QString::fromLatin1("lb");     //always lbs.
         factor = 0.45359237;
     }
     else if (unit == Unit::Pressure) {

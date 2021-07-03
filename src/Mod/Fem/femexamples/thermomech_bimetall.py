@@ -28,48 +28,64 @@ setup()
 
 """
 
-# thermomechanical bimetall
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=43040&start=10#p366664
-# analytical solution 7.05 mm deflection in the invar material direction
-# see post in the forum link
-# this file has 7.15 mm max deflection
 
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
-import Fem
-import ObjectsFem
 from BOPTools import SplitFeatures
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+import Fem
+import ObjectsFem
 
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Thermomech Bimetall",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "initial temperature", "temperature"],
-            "solvers": ["calculix", "elmer"],
-            "material": "multimaterial",
-            "equation": "thermomechanical"
-            }
-    return info
+    return {
+        "name": "Thermomech Bimetall",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "initial temperature", "temperature"],
+        "solvers": ["calculix", "elmer"],
+        "material": "multimaterial",
+        "equation": "thermomechanical"
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.thermomech_bimetall import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=43040&start=10#p366664
+
+thermomechanical bimetall
+analytical solution 7.05 mm deflection in the invar material direction
+see post in the forum link
+this file has 7.15 mm max deflection
+
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geom objects
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric objects
     # bottom box
     bottom_box_obj = doc.addObject("Part::Box", "BottomBox")
     bottom_box_obj.Length = 100
@@ -105,22 +121,18 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     elif solvertype == "elmer":
-        solver_object = analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))[0]
-        solver_object.SteadyStateMinIterations = 1
-        solver_object.SteadyStateMaxIterations = 10
-        eq_heat = ObjectsFem.makeEquationHeat(doc, solver_object)
+        solver_obj = analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))[0]
+        solver_obj.SteadyStateMinIterations = 1
+        solver_obj.SteadyStateMaxIterations = 10
+        eq_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
         eq_heat.Bubbles = True
         eq_heat.Priority = 2
-        eq_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_obj)
         eq_elasticity.Bubbles = True
         eq_elasticity.Priority = 1
         eq_elasticity.LinearSolverType = "Direct"
@@ -130,19 +142,18 @@ def setup(doc=None, solvertype="ccxtools"):
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "thermomech"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = True
-        # solver_object.MatrixSolverType = "default"
-        solver_object.MatrixSolverType = "spooles"  # thomas
-        solver_object.SplitInputWriter = False
-        solver_object.IterationsThermoMechMaximum = 2000
-        # solver_object.IterationsControlParameterTimeUse = True  # thermomech spine
+        solver_obj.AnalysisType = "thermomech"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = True
+        # solver_obj.MatrixSolverType = "default"
+        solver_obj.MatrixSolverType = "spooles"  # thomas
+        solver_obj.SplitInputWriter = False
+        solver_obj.IterationsThermoMechMaximum = 2000
+        # solver_obj.IterationsControlParameterTimeUse = True  # thermomech spine
+    analysis.addObject(solver_obj)
 
     # material
-    material_obj_bottom = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MaterialCopper")
-    )[0]
+    material_obj_bottom = ObjectsFem.makeMaterialSolid(doc, "MaterialCopper")
     mat = material_obj_bottom.Material
     mat["Name"] = "Copper"
     mat["YoungsModulus"] = "130000 MPa"
@@ -155,9 +166,7 @@ def setup(doc=None, solvertype="ccxtools"):
     material_obj_bottom.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj_bottom)
 
-    material_obj_top = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MaterialInvar")
-    )[0]
+    material_obj_top = ObjectsFem.makeMaterialSolid(doc, "MaterialInvar")
     mat = material_obj_top.Material
     mat["Name"] = "Invar"
     mat["YoungsModulus"] = "137000 MPa"
@@ -171,25 +180,21 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj_top)
 
     # constraint fixed
-    con_fixed = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    )[0]
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     con_fixed.References = [
         (geom_obj, "Face1"),
         (geom_obj, "Face7"),
     ]
+    analysis.addObject(con_fixed)
 
     # constraint initial temperature
-    constraint_initialtemp = analysis.addObject(
-        ObjectsFem.makeConstraintInitialTemperature(doc, "ConstraintInitialTemperature")
-    )[0]
-    constraint_initialtemp.initialTemperature = 273.0
+    con_inittemp = ObjectsFem.makeConstraintInitialTemperature(doc, "ConstraintInitialTemperature")
+    con_inittemp.initialTemperature = 273.0
+    analysis.addObject(con_inittemp)
 
     # constraint temperature
-    constraint_temperature = analysis.addObject(
-        ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperature")
-    )[0]
-    constraint_temperature.References = [
+    con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperature")
+    con_temp.References = [
         (geom_obj, "Face1"),
         (geom_obj, "Face2"),
         (geom_obj, "Face3"),
@@ -201,8 +206,9 @@ def setup(doc=None, solvertype="ccxtools"):
         (geom_obj, "Face10"),
         (geom_obj, "Face11"),
     ]
-    constraint_temperature.Temperature = 373.0
-    constraint_temperature.CFlux = 0.0
+    con_temp.Temperature = 373.0
+    con_temp.CFlux = 0.0
+    analysis.addObject(con_temp)
 
     # mesh
     from .meshes.mesh_thermomech_bimetall_tetra10 import create_nodes, create_elements
@@ -213,9 +219,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

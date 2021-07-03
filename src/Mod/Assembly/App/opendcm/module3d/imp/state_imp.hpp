@@ -83,7 +83,7 @@ struct geom_visitor : public boost::static_visitor<std::string> {
 };
 
 template<typename T>
-std::string getWeight(boost::shared_ptr<T> ptr) {
+std::string getWeight(std::shared_ptr<T> ptr) {
     geom_visitor v;
     return ptr->apply(v);
 };
@@ -104,7 +104,7 @@ typedef std::vector< fusion::vector2<std::string, std::vector<double> > > string
 typedef std::vector< fusion::vector2<std::vector<char>, std::vector<double> > > char_vec;
 
 template<typename C>
-string_vec getConstraints(boost::shared_ptr<C> con) {
+string_vec getConstraints(std::shared_ptr<C> con) {
 
     string_vec vec;
     std::vector<boost::any> cvec = con->getGenericConstraints();
@@ -174,7 +174,7 @@ string_vec getConstraints(boost::shared_ptr<C> con) {
 template<typename C>
 void constraintCreation(typename char_vec::iterator it,
                         typename char_vec::iterator end,
-                        boost::shared_ptr<C> con) {
+                        std::shared_ptr<C> con) {
 
     std::string first(fusion::at_c<0>(*it).begin(), fusion::at_c<0>(*it).end());
     std::vector<double> second = fusion::at_c<1>(*it);
@@ -212,7 +212,7 @@ void constraintCreation(typename char_vec::iterator it,
 };
 
 template<typename C>
-void setConstraints(char_vec& vec, boost::shared_ptr<C> con) {
+void setConstraints(char_vec& vec, std::shared_ptr<C> con) {
     constraintCreation<C>(vec.begin(), vec.end(), con);
 };
 
@@ -301,7 +301,7 @@ struct inject_set<mpl::void_> {
 
 template<typename System>
 bool Create(System* sys, std::string& type,
-            boost::shared_ptr<typename details::getModule3D<System>::type::Geometry3D> geom,
+            std::shared_ptr<typename details::getModule3D<System>::type::Geometry3D> geom,
             typename System::Kernel::Vector& v) {
 
     typedef typename details::getModule3D<System>::type::geometry_types Typelist;
@@ -416,7 +416,7 @@ void parser_generator<typename details::getModule3D<System>::type::fix_prop, Sys
 template<typename System, typename iterator>
 void parser_parser< typename details::getModule3D<System>::type::Geometry3D, System, iterator >::init(parser& r) {
 
-    r = qi::lit("<type>Geometry3D</type>")[ qi::_val =  phx::construct<boost::shared_ptr<object_type> >(phx::new_<object_type>(*qi::_r1))]
+    r = qi::lit("<type>Geometry3D</type>")[ qi::_val =  phx::construct<std::shared_ptr<object_type> >(phx::new_<object_type>(*qi::_r1))]
         >> "<class>" >> (+qi::char_("a-zA-Z"))[qi::_a = phx::construct<std::string>(phx::begin(qi::_1), phx::end(qi::_1))] >> "</class>"
         >> "<value>" >> *qi::double_[ vector_in(qi::_b, qi::_c, qi::_1) ] >> "</value>"
         >> qi::eps[ create(qi::_r1, qi::_a, qi::_val, qi::_b) ];
@@ -440,7 +440,7 @@ void parser_parser< typename details::getModule3D<System>::type::Constraint3D, S
 
     r = qi::lit("<type>Constraint3D</type>")
         >> ("<connect first=" >> qi::int_ >> "second=" >> qi::int_ >> "></connect>")[
-            qi::_val =  phx::construct<boost::shared_ptr<Constraint3D> >(
+            qi::_val =  phx::construct<std::shared_ptr<Constraint3D> >(
                             phx::new_<Constraint3D>(*qi::_r1,
                                     phx::bind(&System::Cluster::template getObject<Geometry3D, GlobalVertex>, phx::bind(&System::m_cluster, qi::_r1), qi::_1),
                                     phx::bind(&System::Cluster::template getObject<Geometry3D, GlobalVertex>, phx::bind(&System::m_cluster, qi::_r1), qi::_2)))

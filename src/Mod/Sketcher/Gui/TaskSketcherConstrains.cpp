@@ -138,6 +138,7 @@ public:
             case Sketcher::DistanceX:
             case Sketcher::DistanceY:
             case Sketcher::Radius:
+            case Sketcher::Weight:
             case Sketcher::Diameter:
             case Sketcher::Angle:
                 name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
@@ -257,6 +258,7 @@ public:
             case Sketcher::DistanceY:
                 return selicon(constraint,vdist,vdist_driven);
             case Sketcher::Radius:
+            case Sketcher::Weight:
                 return selicon(constraint,radi,radi_driven);
             case Sketcher::Diameter:
                 return selicon(constraint,dia,dia_driven);
@@ -326,6 +328,7 @@ public:
         case Sketcher::DistanceY:
         case Sketcher::Radius:
         case Sketcher::Diameter:
+        case Sketcher::Weight:
         case Sketcher::Angle:
         case Sketcher::SnellsLaw:
             return ( constraint->First >= 0 || constraint->Second >= 0 || constraint->Third >= 0 );
@@ -391,11 +394,7 @@ protected:
     }
 
     void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const {
-#if QT_VERSION >= 0x050000
         QStyleOptionViewItem options = option;
-#else
-        QStyleOptionViewItemV4 options = option;
-#endif
         initStyleOption(&options, index);
 
         options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
@@ -619,7 +618,7 @@ void ConstraintView::swapNamedOfSelectedItems()
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
-    Gui::Command::openCommand("Swap constraint names");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
     Gui::cmdAppObjectArgs(item1->sketch, "renameConstraint(%d, u'%s')",
                           item1->ConstraintNbr, tmpname.c_str());
     Gui::cmdAppObjectArgs(item2->sketch, "renameConstraint(%d, u'%s')",
@@ -631,13 +630,13 @@ void ConstraintView::swapNamedOfSelectedItems()
 
 // ----------------------------------------------------------------------------
 
-TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Constraints"),true, 0)
-    , sketchView(sketchView), inEditMode(false)
+TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
+    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, 0),
+    sketchView(sketchView), inEditMode(false),
+    ui(new Ui_TaskSketcherConstrains)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskSketcherConstrains();
     ui->setupUi(proxy);
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
@@ -697,7 +696,6 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     this->ui->filterInternalAlignment->onSave();
     this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
-    delete ui;
 }
 
 void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -842,7 +840,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     if (newName != currConstraintName && !basename.empty()) {
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
 
-        Gui::Command::openCommand("Rename sketch constraint");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(sketch ,"renameConstraint(%d, u'%s')",
                                   it->ConstraintNbr, escapedstr.c_str());
@@ -857,7 +855,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     }
 
     // update constraint virtual space status
-    Gui::Command::openCommand("Update constraint's virtual space");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
     try {
         Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
                               it->ConstraintNbr,
@@ -945,6 +943,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         case Sketcher::DistanceX:
         case Sketcher::DistanceY:
         case Sketcher::Radius:
+        case Sketcher::Weight:
         case Sketcher::Diameter:
         case Sketcher::Angle:
         case Sketcher::SnellsLaw:

@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>새 빈 Trajectory </translation>
+      <source>Create a new empty trajectory</source>
+      <translation type="unfinished">Create a new empty trajectory</translation>
     </message>
   </context>
   <context>
@@ -514,17 +514,17 @@
     <message>
       <location filename="../../TrajectorySimulate.ui" line="151"/>
       <source>|&gt;</source>
-      <translation type="unfinished">|&gt;</translation>
+      <translation>|&gt;</translation>
     </message>
     <message>
       <location filename="../../TrajectorySimulate.ui" line="182"/>
       <source>&gt;</source>
-      <translation type="unfinished">&gt;</translation>
+      <translation>&gt;</translation>
     </message>
     <message>
       <location filename="../../TrajectorySimulate.ui" line="213"/>
       <source>&gt;|</source>
-      <translation type="unfinished">&gt;|</translation>
+      <translation>&gt;|</translation>
     </message>
     <message>
       <location filename="../../TrajectorySimulate.ui" line="237"/>
@@ -544,7 +544,7 @@
     <message>
       <location filename="../../TrajectorySimulate.ui" line="282"/>
       <source>C</source>
-      <translation type="unfinished">C</translation>
+      <translation>C</translation>
     </message>
     <message>
       <location filename="../../TrajectorySimulate.ui" line="287"/>
@@ -664,17 +664,17 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="151"/>
       <source>|&gt;</source>
-      <translation type="unfinished">|&gt;</translation>
+      <translation>|&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="182"/>
       <source>&gt;</source>
-      <translation type="unfinished">&gt;</translation>
+      <translation>&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="213"/>
       <source>&gt;|</source>
-      <translation type="unfinished">&gt;|</translation>
+      <translation>&gt;|</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="237"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="327"/>
       <source>C</source>
-      <translation type="unfinished">C</translation>
+      <translation>C</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="332"/>
@@ -935,7 +935,7 @@
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="92"/>
       <source>Use</source>
-      <translation type="unfinished">Use</translation>
+      <translation>사용</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>

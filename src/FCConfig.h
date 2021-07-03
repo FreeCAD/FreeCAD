@@ -170,6 +170,17 @@ typedef __int64             int64_t;
 typedef unsigned __int64    uint64_t;
 #endif
 
+/* avoid to redefine the HAVE_* in Coin's inttypes.h file */
+#define COIN_CONFIGURE_BUILD
+/* The <inttypes.h> header file. */
+#define HAVE_INTTYPES_H 1
+/* The <stdint.h> header file. */
+#define HAVE_STDINT_H 1
+/* The <sys/types.h> header file. */
+#define HAVE_SYS_TYPES_H 1
+/* The <stddef.h> header file. */
+#define HAVE_STDDEF_H 1
+
 #endif
 
 

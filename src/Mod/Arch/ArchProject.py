@@ -25,10 +25,9 @@ objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
 """
 
-import FreeCAD,Draft,ArchComponent,ArchCommands,math,re,datetime,ArchIFC,ArchIFCView
+import FreeCAD,ArchIFC,ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -158,7 +157,7 @@ class _Project(ArchIFC.IfcContext):
         ArchIFC.IfcContext.setProperties(self, obj)
         pl = obj.PropertiesList
         if not hasattr(obj,"Group"):
-            obj.addExtension("App::GroupExtensionPython", self)
+            obj.addExtension("App::GroupExtensionPython")
         self.Type = "Project"
 
     def onDocumentRestored(self, obj):
@@ -185,7 +184,7 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
 
     def __init__(self,vobj):
         vobj.Proxy = self
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
 
     def getIcon(self):
         """Return the path to the appropriate icon.

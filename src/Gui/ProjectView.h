@@ -50,7 +50,7 @@ public:
 
 private:
     QFileSystemModel *fileModel;
- 
+
 };
 
 

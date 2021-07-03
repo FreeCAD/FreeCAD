@@ -94,4 +94,4 @@ def parse(pathobj):
             out += str(c) + "\n"
         return out
 
-print(__name__ + " gcode postprocessor loaded.")
+# print(__name__ + " gcode postprocessor loaded.")

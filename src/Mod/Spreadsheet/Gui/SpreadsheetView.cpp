@@ -52,6 +52,7 @@
 #include "qtcolorpicker.h"
 
 #include "SpreadsheetView.h"
+#include "SpreadsheetViewPy.h"
 #include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
 
@@ -157,7 +158,7 @@ bool SheetView::onMsg(const char *pMsg, const char **)
     else if(strcmp("Std_Delete",pMsg) == 0) {
         std::vector<Range> ranges = selectedRanges();
         if (sheet->hasCell(ranges)) {
-            Gui::Command::openCommand("Clear cell(s)");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
             std::vector<Range>::const_iterator i = ranges.begin();
             for (; i != ranges.end(); ++i) {
                 FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
@@ -234,10 +235,8 @@ void SheetView::updateContentLine()
 
     if (i.isValid()) {
         std::string str;
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-
-        if (cell)
-            cell->getStringContent(str);
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
+            (void)cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
         ui->cellContent->setIndex(i);
         ui->cellContent->setEnabled(true);
@@ -253,10 +252,8 @@ void SheetView::updateAliasLine()
 
     if (i.isValid()) {
         std::string str;
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-
-        if (cell)
-            cell->getAlias(str);
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
+            (void)cell->getAlias(str);
         ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
         ui->cellAlias->setIndex(i);
         ui->cellAlias->setEnabled(true);
@@ -350,12 +347,11 @@ void SheetView::editingFinished()
         ui->cellAlias->setDocumentObject(sheet);
         ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
 
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-        if (cell){
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column()))){
             if (!aliasOkay){
                 //do not show error message if failure to set new alias is because it is already the same string
                 std::string current_alias;
-                cell->getAlias(current_alias);
+                (void)cell->getAlias(current_alias);
                 if (str != QString::fromUtf8(current_alias.c_str())){
                     Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
                 }
@@ -449,7 +445,11 @@ QModelIndex SheetView::currentIndex() const
 
 PyObject *SheetView::getPyObject()
 {
-    return Gui::MDIView::getPyObject();
+    if (!pythonObject)
+        pythonObject = new SpreadsheetViewPy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 void SheetView::deleteSelf()

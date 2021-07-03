@@ -61,15 +61,38 @@ void ControlPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    add_varargs_method("showDialog",&ControlPy::showDialog,"showDialog()");
-    add_varargs_method("activeDialog",&ControlPy::activeDialog,"activeDialog()");
-    add_varargs_method("closeDialog",&ControlPy::closeDialog,"closeDialog()");
-    add_varargs_method("addTaskWatcher",&ControlPy::addTaskWatcher,"addTaskWatcher()");
-    add_varargs_method("clearTaskWatcher",&ControlPy::clearTaskWatcher,"clearTaskWatcher()");
-    add_varargs_method("isAllowedAlterDocument",&ControlPy::isAllowedAlterDocument,"isAllowedAlterDocument()");
-    add_varargs_method("isAllowedAlterView",&ControlPy::isAllowedAlterView,"isAllowedAlterView()");
-    add_varargs_method("isAllowedAlterSelection",&ControlPy::isAllowedAlterSelection,"isAllowedAlterSelection()");
-    add_varargs_method("showTaskView",&ControlPy::showTaskView,"showTaskView()");
+    add_varargs_method("showDialog",&ControlPy::showDialog,
+                        "show the given dialog in the task panel\n"
+                        "showDialog(dialog)\n"
+                        "--\n"
+                        "if a task is already active a RuntimeError is raised");
+    add_varargs_method("activeDialog",&ControlPy::activeDialog,
+                        "check if a dialog is active in the task panel\n"
+                        "activeDialog() --> bool");
+    add_varargs_method("closeDialog",&ControlPy::closeDialog,
+                        "close the active dialog\n"
+                        "closeDialog()");
+    add_varargs_method("addTaskWatcher",&ControlPy::addTaskWatcher,
+                        "install a (list of) TaskWatcher\n"
+                        "addTaskWatcher(TaskWatcher | list)");
+    add_varargs_method("clearTaskWatcher",&ControlPy::clearTaskWatcher,
+                        "remove all TaskWatchers\n"
+                        "clearTaskWatcher()");
+    add_varargs_method("isAllowedAlterDocument",&ControlPy::isAllowedAlterDocument,
+                        "return the permission to alter the current Document\n"
+                        "isAllowedAlterDocument() --> bool");
+    add_varargs_method("isAllowedAlterView",&ControlPy::isAllowedAlterView,
+                        "return the permission to alter the current View\n"
+                        "isAllowedAlterView() --> bool");
+    add_varargs_method("isAllowedAlterSelection",&ControlPy::isAllowedAlterSelection,
+                        "return the permission to alter the current Selection\n"
+                        "isAllowedAlterSelection() --> bool");
+    add_varargs_method("showTaskView",&ControlPy::showTaskView,
+                        "show the Task panel\n"
+                        "showTaskView()");
+    add_varargs_method("showModelView",&ControlPy::showModelView,
+                        "show the Model panel\n"
+                        "showModelView()");
 }
 
 ControlPy::ControlPy()
@@ -178,6 +201,14 @@ Py::Object ControlPy::showTaskView(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object ControlPy::showModelView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    Gui::Control().showModelView();
+    return Py::None();
+}
+
 // ------------------------------------------------------------------
 
 TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
@@ -280,9 +311,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
 {
     if (dlg.hasAttr(std::string("ui"))) {
         UiLoader loader;
-#if QT_VERSION >= 0x040500
         loader.setLanguageChangeEnabled(true);
-#endif
         QString fn, icon;
         Py::String ui(dlg.getAttr(std::string("ui")));
         std::string path = (std::string)ui;
@@ -305,7 +334,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
         }
     }
     else if (dlg.hasAttr(std::string("form"))) {
-        Py::Object f(dlg.getAttr(std::string("form"))); 
+        Py::Object f(dlg.getAttr(std::string("form")));
         Py::List widgets;
         if (f.isList()) {
             widgets = f;
@@ -337,8 +366,20 @@ TaskDialogPython::~TaskDialogPython()
     std::vector< QPointer<QWidget> > guarded;
     guarded.insert(guarded.begin(), Content.begin(), Content.end());
     Content.clear();
+
     Base::PyGILStateLocker lock;
+
+    // The widgets stored in the 'form' attribute will be deleted.
+    // Thus, set this attribute to None to make sure that when using
+    // the same dialog instance for a task panel won't segfault.
+    if (this->dlg.hasAttr(std::string("form"))) {
+        this->dlg.setAttr(std::string("form"), Py::None());
+    }
     this->dlg = Py::None();
+
+    // Assigning None to 'dlg' may destroy some of the stored widgets.
+    // By guarding them with QPointer their pointers will be set to null
+    // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
 }
 

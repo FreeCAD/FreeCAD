@@ -91,6 +91,8 @@ public:
     void onUpdate(void);
     /// call update to all views of the active document
     void updateActive(void);
+    /// call update to all command actions
+    void updateActions(bool delay = false);
     //@}
 
     /** @name Signals of the Application */

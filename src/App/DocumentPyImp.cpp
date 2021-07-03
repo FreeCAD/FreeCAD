@@ -179,11 +179,7 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
     else {
         std::stringstream str;
         getDocumentPtr()->exportGraphviz(str);
-#if PY_MAJOR_VERSION >= 3
         return PyUnicode_FromString(str.str().c_str());
-#else
-        return PyString_FromString(str.str().c_str());
-#endif
     }
 }
 
@@ -300,7 +296,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     bool single = false;
     if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for (size_t i=0;i<seq.size();++i) {
+        for (Py_ssize_t i=0;i<seq.size();++i) {
             if (!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;
@@ -339,7 +335,7 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for (size_t i=0;i<seq.size();++i) {
+        for (Py_ssize_t i=0;i<seq.size();++i) {
             if (!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;
@@ -400,20 +396,9 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
     if (!value) {
         cmd = "<empty>";
     }
-#if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(value)) {
         cmd = PyUnicode_AsUTF8(value);
     }
-#else
-    else if (PyUnicode_Check(value)) {
-        PyObject* unicode = PyUnicode_AsUTF8String(value);
-        cmd = PyString_AsString(unicode);
-        Py_DECREF(unicode);
-    }
-    else if (PyString_Check(value)) {
-        cmd = PyString_AsString(value);
-    }
-#endif
     else {
         PyErr_SetString(PyExc_TypeError, "string or unicode expected");
         return NULL;
@@ -487,7 +472,7 @@ PyObject*  DocumentPy::recompute(PyObject * args)
             }
 
             Py::Sequence seq(pyobjs);
-            for (size_t i=0;i<seq.size();++i) {
+            for (Py_ssize_t i=0;i<seq.size();++i) {
                 if (!PyObject_TypeCheck(seq[i].ptr(), &DocumentObjectPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                     return nullptr;
@@ -716,16 +701,7 @@ PyObject* DocumentPy::getTempFileName(PyObject *args)
 
     std::string string;
     if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
         string = PyUnicode_AsUTF8(value);
-#else
-        PyObject* unicode = PyUnicode_AsUTF8String(value);
-        string = PyString_AsString(unicode);
-        Py_DECREF(unicode);
-    }
-    else if (PyString_Check(value)) {
-        string = PyString_AsString(value);
-#endif
     }
     else {
         std::string error = std::string("type must be a string!");

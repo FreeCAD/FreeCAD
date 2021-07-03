@@ -79,7 +79,7 @@ class Clone(DraftObject):
             try:
                 sh = shapes[0].multiFuse(shapes[1:])
                 sh = sh.removeSplitter()
-            except:
+            except Exception:
                 pass
             else:
                 return sh

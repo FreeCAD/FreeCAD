@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="ExtensionPy" 
+    Name="ViewProviderExtensionPy" 
+    TwinPointer="ViewProviderExtension" 
+    Twin="ViewProviderExtension" 
+    Include="Gui/ViewProviderExtension.h" 
+    Namespace="Gui" 
+    FatherInclude="App/ExtensionPy.h" 
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+      <UserDocu>Base class for all view provider extensions</UserDocu>
+    </Documentation>
+    <Methode Name="setIgnoreOverlayIcon">
+      <Documentation>
+        <UserDocu>Ignore the overlay icon of an extension</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="ignoreOverlayIcon" Const="true">
+      <Documentation>
+        <UserDocu>Ignore the overlay icon of an extension</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

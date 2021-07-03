@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathEngrave as PathEngrave
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
@@ -144,7 +145,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Engrave',
         PathEngrave.Create,
         TaskPanelOpPage,
-        'Path-Engrave',
+        'Path_Engrave',
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Engrave"),
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"),
         PathEngrave.SetupProperties)

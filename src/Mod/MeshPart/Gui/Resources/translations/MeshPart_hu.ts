@@ -44,7 +44,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -62,7 +62,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -92,6 +92,19 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Egy síkkal metsz egy hálótestet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation>Síkkal metsz</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Síkkal szakaszt</translation>
     </message>
   </context>
   <context>
@@ -478,13 +491,13 @@ A value in the range of 0.2-10.</source>
       <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Válassza ki a formát kapcsolás előtt.</translation>
     </message>

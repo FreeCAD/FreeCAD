@@ -29,7 +29,7 @@
 #define TECHDRAW_EDGEWALKER_H
 
 #include <vector>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/property_map/property_map.hpp>

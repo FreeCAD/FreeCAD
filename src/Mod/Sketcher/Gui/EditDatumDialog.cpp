@@ -38,6 +38,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
@@ -81,13 +82,14 @@ void EditDatumDialog::exec(bool atCursor)
             return;
         }
 
+        Base::Quantity init_val;
+
         QDialog dlg(Gui::getMainWindow());
         if (ui_ins_datum == nullptr) {
             ui_ins_datum.reset(new Ui_InsertDatum);
             ui_ins_datum->setupUi(&dlg);
         }
         double datum = Constr->getValue();
-        Base::Quantity init_val;
 
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
@@ -108,10 +110,16 @@ void EditDatumDialog::exec(bool atCursor)
             ui_ins_datum->label->setText(tr("Diameter:"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
+        else if (Constr->Type == Sketcher::Weight) {
+            dlg.setWindowTitle(tr("Insert weight"));
+            ui_ins_datum->label->setText(tr("Weight:"));
+            ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherWeight"));
+        }
         else if (Constr->Type == Sketcher::SnellsLaw) {
             dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
             ui_ins_datum->label->setText(tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+            ui_ins_datum->labelEdit->setSingleStep(0.05);
         }
         else {
             dlg.setWindowTitle(tr("Insert length"));
@@ -155,7 +163,10 @@ void EditDatumDialog::exec(bool atCursor)
 void EditDatumDialog::accepted()
 {
     Base::Quantity newQuant = ui_ins_datum->labelEdit->value();
-    if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
+    if( newQuant.isQuantity() ||
+        (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless()) ||
+        (Constr->Type == Sketcher::Weight && newQuant.isDimensionless())) {
+
         // save the value for the history
         ui_ins_datum->labelEdit->pushToHistory();
 
@@ -184,10 +195,22 @@ void EditDatumDialog::accepted()
 
             Gui::Command::commitCommand();
 
-            if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
+            // THIS IS A WORK-AROUND NOT TO DELAY 0.19 RELEASE
+            //
+            // depsAreTouched is not returning true in this case:
+            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061#p478477
+            //
+            // It appears related to a drastic change in how dependencies are calculated, see:
+            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061#p481061
+            //
+            // This is NOT the solution, as there is no point in systematically executing the ExpressionEngine
+            // on every dimensional constraint change. Just a quick fix to avoid clearly unwanted behaviour in
+            // absence of time to actually fix the root cause.
+
+            //if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
                 sketch->ExpressionEngine.execute();
                 sketch->solve();
-            }
+            //}
 
             tryAutoRecompute(sketch);
         }
