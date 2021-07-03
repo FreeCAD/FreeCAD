@@ -214,7 +214,7 @@ public:
   }
 
   typename VectorT::const_iterator end() const {
-    return this->getData().begin();
+    return this->getData().end();
   }
 
   const ValueT & get(int idx) const {
