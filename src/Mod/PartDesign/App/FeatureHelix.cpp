@@ -92,7 +92,7 @@ Helix::Helix()
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Helix", App::Prop_None, "Reference axis of revolution");
     ADD_PROPERTY_TYPE(Mode, (long(0)), "Helix", App::Prop_None, "Helix input mode");
-    ADD_PROPERTY_TYPE(Outside, (long(0)), "Helix", App::Prop_None, "Outside");
+    ADD_PROPERTY_TYPE(Outside, (long(0)), "Helix", App::Prop_None, "Remove outside of profile");
     ADD_PROPERTY_TYPE(HasBeenEdited, (long(0)), "Helix", App::Prop_None, "HasBeenEdited");
     Mode.setEnums(ModeEnums);
 }

@@ -69,7 +69,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(Length2,(100.0),"Pocket",App::Prop_None,"P");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
-    ADD_PROPERTY_TYPE(Inverse,(false),"Pocket",App::Prop_None,"Invert the pocket-operation");
+    ADD_PROPERTY_TYPE(Outside,(false),"Pocket",App::Prop_None,"Remove outside of profile");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
     Offset.setConstraints ( &signedLengthConstraint );
 
@@ -221,7 +221,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             this->AddSubShape.setValue(prism);
 
             TopoDS_Shape result;
-            if (!Inverse.getValue()) {
+            if (!Outside.getValue()) {
                 // Cut the SubShape out of the base feature
                 BRepAlgoAPI_Cut mkCut(base, prism);
                 if (!mkCut.IsDone())
