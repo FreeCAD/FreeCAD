@@ -380,7 +380,10 @@ class ToolBit(object):
         if PathPreferences.toolsStoreAbsolutePaths():
             attrs['shape'] = obj.BitShape
         else:
-            attrs['shape'] = findRelativePathShape(obj.BitShape)
+            # attrs['shape'] = findRelativePathShape(obj.BitShape)
+            # Extract the name of the shape file
+            __, filShp = os.path.split(obj.BitShape)  #  __ is an ignored placeholder acknowledged by LGTM
+            attrs['shape'] = str(filShp)
         params = {}
         for name in obj.BitPropertyNames:
             params[name] = PathUtil.getPropertyValueString(obj, name)
