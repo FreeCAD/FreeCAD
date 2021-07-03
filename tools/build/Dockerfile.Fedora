@@ -1,9 +1,5 @@
 FROM fedora:latest
 
-ENV TZ=Etc/UTC
-ENV UTC=true
-ENV ARC=false
-
 COPY fedora.sh /tmp
 
 RUN dnf update --assumeyes && \

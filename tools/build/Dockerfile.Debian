@@ -8,6 +8,7 @@ ENV ARC=false
 COPY debian.sh /tmp
 
 RUN apt-get update && \
+    apt-get upgrade --yes && \
     sh /tmp/debian.sh && \
     mkdir /builds
 
