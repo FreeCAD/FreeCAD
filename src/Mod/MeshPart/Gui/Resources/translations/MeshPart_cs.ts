@@ -285,7 +285,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Standardní</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>

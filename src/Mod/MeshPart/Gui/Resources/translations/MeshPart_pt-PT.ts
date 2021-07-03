@@ -378,7 +378,7 @@ O menor valor é 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Estimativa</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>

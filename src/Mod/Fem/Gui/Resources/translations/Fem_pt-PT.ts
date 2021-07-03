@@ -75,11 +75,6 @@
       <translation>Seletor de referência de geometria para um</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Seletor de geometria de referência para um </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Adicionar</translation>
@@ -107,7 +102,7 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+      <translation>Os seguintes elementos de geometria podem ser selecionados: </translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
@@ -123,6 +118,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Sólido</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Seletor de geometria de referência para um </translation>
     </message>
   </context>
   <context>

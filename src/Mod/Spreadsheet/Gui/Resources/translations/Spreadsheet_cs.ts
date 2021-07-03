@@ -570,7 +570,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Vložit %n řádek(ů) nad</numerusform>
+        <numerusform>Vložit %n řádek(ků) nad</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
@@ -579,7 +579,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Vložit %n řádků pod</numerusform>
+        <numerusform>Vložit %n řádek(ků) pod</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>

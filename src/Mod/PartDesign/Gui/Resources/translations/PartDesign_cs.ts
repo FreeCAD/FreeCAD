@@ -2373,7 +2373,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Standardní</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
@@ -4167,7 +4167,7 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="275"/>
       <location filename="../../TaskHoleParameters.cpp" line="580"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Standardní</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="280"/>

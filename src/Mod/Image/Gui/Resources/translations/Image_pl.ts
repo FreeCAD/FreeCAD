@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Utwórz płaski obraz w przestrzeni 3D</translation>
+      <translation>Tworzy płaski obraz w przestrzeni 3D</translation>
     </message>
   </context>
   <context>
@@ -112,13 +112,13 @@
       <location filename="../../GLImageBox.cpp" line="332"/>
       <location filename="../../OpenGLImageBox.cpp" line="384"/>
       <source>Image pixel format</source>
-      <translation>Format piksela obrazu</translation>
+      <translation>Format pikseli w obrazie</translation>
     </message>
     <message>
       <location filename="../../GLImageBox.cpp" line="333"/>
       <location filename="../../OpenGLImageBox.cpp" line="385"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Nieokreślony typ przestrzeni kolorów przy podglądzie obrazu</translation>
+      <translation>Nieokreślony typ przestrzeni kolorów dla wyświetlenia obrazu</translation>
     </message>
   </context>
   <context>

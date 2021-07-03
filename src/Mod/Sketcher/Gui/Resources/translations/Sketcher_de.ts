@@ -371,7 +371,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5997"/>
       <source>Sketch fillet</source>
-      <translation>Skizzenverrundung</translation>
+      <translation>Verrundung</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6001"/>
@@ -389,12 +389,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>Rechtecke erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>Rechteck in der Skizze erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1180"/>
@@ -404,12 +404,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1184"/>
       <source>Centered rectangle</source>
-      <translation type="unfinished">Centered rectangle</translation>
+      <translation>Zentriertes Rechteck</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1188"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>Abgerundetes Rechteck</translation>
     </message>
   </context>
   <context>
@@ -422,7 +422,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7587"/>
       <source>Create regular polygon</source>
-      <translation>Regelmäßiges Polygon erstellen</translation>
+      <translation>Regelmäßiges Vieleck erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7588"/>
@@ -1100,12 +1100,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3419"/>
       <source>Create ellipse by center</source>
-      <translation>Erstellen einer Ellipse durch Angabe des Zentrums</translation>
+      <translation>Ellipse um Mittelpunkt erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3420"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>Erstellen einer Ellipse durch Angabe des Zentrums in der Skizze</translation>
+      <translation>Ellipse um Mittelpunkt in der Skizze erzeugen</translation>
     </message>
   </context>
   <context>
@@ -1190,12 +1190,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>Abgerundetes Rechteck erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>Ein abgerundetes Rechteck in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
@@ -1244,12 +1244,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4995"/>
       <source>Create periodic B-spline</source>
-      <translation>Erstellen von periodischer B-Spline</translation>
+      <translation>Geschlossenen B-Spline erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4996"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation>Erstellen periodischer B-Splines über Kontrollpunkte in der Skizze.</translation>
+      <translation>Erstellen eines geschlossenen B-Splines über Kontrollpunkte in der Skizze.</translation>
     </message>
   </context>
   <context>
@@ -1334,12 +1334,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="729"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>Zentriertes Rechteck erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="730"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+      <translation>Ein zentriertes Rechteck in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
@@ -1352,7 +1352,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7556"/>
       <source>Create regular polygon</source>
-      <translation>Regelmäßiges Polygon erstellen</translation>
+      <translation>Regelmäßiges Vieleck erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7557"/>
@@ -1762,12 +1762,12 @@ als Spiegelreferenz verwendet werden.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2192"/>
       <source>Remove axes alignment</source>
-      <translation type="unfinished">Remove axes alignment</translation>
+      <translation>Achsenausrichtung entfernen</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2193"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>Ändert Einschränkungen, um Achsenausrichtungen zu entfernen und versucht gleichzeitig, die Beziehungen zwischen den Einschränkungen der Auswahl zu erhalten</translation>
     </message>
   </context>
   <context>
@@ -2491,12 +2491,12 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="575"/>
       <source>Add centered sketch box</source>
-      <translation type="unfinished">Add centered sketch box</translation>
+      <translation>Zentrierten Skizzenrahmen hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Add rounded rectangle</source>
-      <translation type="unfinished">Add rounded rectangle</translation>
+      <translation>Abgerundetes Rechteck hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1561"/>
@@ -2649,7 +2649,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2278"/>
       <source>Remove Axes Alignment</source>
-      <translation type="unfinished">Remove Axes Alignment</translation>
+      <translation>Achsenausrichtung entfernen</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
@@ -3697,7 +3697,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
       <location filename="../../CommandSketcherBSpline.cpp" line="704"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="844"/>
       <source>None of the selected elements is a knot of a B-spline</source>
-      <translation>Keines der ausgewählten Elemente ist ein Knoten einer B-Spline</translation>
+      <translation>Keines der ausgewählten Elemente ist ein Knoten eines B-Splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="128"/>
@@ -3781,7 +3781,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2266"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
-      <translation type="unfinished">Removal of axes alignment requires at least one selected non-external geometric element</translation>
+      <translation>Das Entfernen der Achsenausrichtung erfordert mindestens ein ausgewähltes nicht-externes geometrisches Element</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="80"/>
@@ -5595,7 +5595,7 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
       <location filename="../../CommandCreateGeo.cpp" line="5112"/>
       <location filename="../../CommandCreateGeo.cpp" line="5113"/>
       <source>Create a B-spline by control points</source>
-      <translation>B-Spline erzeugen - offene Form</translation>
+      <translation>Erzeugt einen B-Spline durch Kontrollpunkte</translation>
     </message>
   </context>
   <context>
@@ -5657,7 +5657,7 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1189"/>
       <source>Create a rounded rectangle</source>
-      <translation type="unfinished">Create a rounded rectangle</translation>
+      <translation>Ein abgerundetes Rechteck erstellen</translation>
     </message>
   </context>
   <context>
@@ -5698,7 +5698,7 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1181"/>
       <source>Create a rectangle</source>
-      <translation type="unfinished">Create a rectangle</translation>
+      <translation>Ein Rechteck erstellen</translation>
     </message>
   </context>
   <context>
@@ -5706,7 +5706,7 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1185"/>
       <source>Create a centered rectangle</source>
-      <translation type="unfinished">Create a centered rectangle</translation>
+      <translation>Ein zentriertes Rechteck erstellen</translation>
     </message>
   </context>
   <context>
@@ -5732,13 +5732,13 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5115"/>
       <source>Periodic B-spline by control points</source>
-      <translation>B-Spline erzeugen - geschlossenen Form</translation>
+      <translation>Geschlossener B-Spline durch Kontrollpunkte</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5116"/>
       <location filename="../../CommandCreateGeo.cpp" line="5117"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation>B-Spline erzeugen - geschlossene Form</translation>
+      <translation>Erzeugt einen geschlossenen B-Spline durch Kontrollpunkte</translation>
     </message>
   </context>
   <context>

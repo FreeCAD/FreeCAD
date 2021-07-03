@@ -260,6 +260,16 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Logikai töredékek</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Logikai töredékek</translation>
@@ -346,16 +356,6 @@ Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakí
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Szeletelje összetevőkre</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Logikai töredékek</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>

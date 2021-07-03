@@ -88,6 +88,8 @@ class Draft_SetStyle_TaskPanel:
         self.form.ShowUnit.setChecked(FreeCAD.ParamGet(self.p+"Mod/Draft").GetBool("showUnit",True))
         self.form.UnitOverride.setText(FreeCAD.ParamGet(self.p+"Mod/Draft").GetString("overrideUnit",""))
         self.form.saveButton.setIcon(QtGui.QIcon.fromTheme("gtk-save", QtGui.QIcon(":/icons/document-save.svg")))
+        self.form.TextSpacing.setText(FreeCAD.Units.Quantity(FreeCAD.ParamGet(self.p+"Mod/Draft").GetFloat("dimspacing",1),FreeCAD.Units.Length).UserString)
+        self.form.LineSpacing.setValue(FreeCAD.ParamGet(self.p+"Mod/Draft").GetInt("LineSpacing",1))
         self.form.saveButton.clicked.connect(self.onSaveStyle)
         self.form.applyButton.clicked.connect(self.onApplyStyle)
         self.form.dimButton.clicked.connect(self.onApplyDim)
@@ -103,7 +105,7 @@ class Draft_SetStyle_TaskPanel:
         self.form.comboPresets.addItems(presets)
         current = self.getValues()
         for name,preset in pdict.items():
-            if preset == current:
+            if all(item in current.items() for item in preset.items()): #if preset == current:
                 self.form.comboPresets.setCurrentIndex(1+(list(pdict.keys()).index(name)))
                 break
 
@@ -136,24 +138,28 @@ class Draft_SetStyle_TaskPanel:
         preset["ArrowSize"] = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
         preset["ShowUnit"] = self.form.ShowUnit.isChecked()
         preset["UnitOverride"] = self.form.UnitOverride.text()
+        preset["TextSpacing"] = FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value
+        preset["LineSpacing"] = self.form.LineSpacing.value()
         return preset
 
     def setValues(self,preset):
         
         from PySide import QtCore,QtGui
-        self.form.LineColor.setProperty("color",self.getColor(preset["LineColor"]))
-        self.form.LineWidth.setValue(preset["LineWidth"])
-        self.form.DrawStyle.setCurrentIndex(preset["DrawStyle"])
-        self.form.DisplayMode.setCurrentIndex(preset["DisplayMode"])
-        self.form.ShapeColor.setProperty("color",self.getColor(preset["ShapeColor"]))
-        self.form.Transparency.setValue(preset["Transparency"])
-        self.form.TextFont.setCurrentFont(QtGui.QFont(preset["TextFont"]))
-        self.form.TextColor.setProperty("color",self.getColor(preset["TextColor"]))
-        self.form.ArrowStyle.setCurrentIndex(preset["ArrowStyle"])
-        self.form.ShowUnit.setChecked(preset["ShowUnit"])
-        self.form.UnitOverride.setText(preset["UnitOverride"])
-        self.form.TextSize.setText(FreeCAD.Units.Quantity(preset["TextSize"],FreeCAD.Units.Length).UserString)
-        self.form.ArrowSize.setText(FreeCAD.Units.Quantity(preset["ArrowSize"],FreeCAD.Units.Length).UserString)
+        self.form.LineColor.setProperty("color",self.getColor(preset.get("LineColor",255)))
+        self.form.LineWidth.setValue(preset.get("LineWidth",1))
+        self.form.DrawStyle.setCurrentIndex(preset.get("DrawStyle",0))
+        self.form.DisplayMode.setCurrentIndex(preset.get("DisplayMode",0))
+        self.form.ShapeColor.setProperty("color",self.getColor(preset.get("ShapeColor",1098063919616)))
+        self.form.Transparency.setValue(preset.get("Transparency",0))
+        self.form.TextFont.setCurrentFont(QtGui.QFont(preset.get("TextFont","sans")))
+        self.form.TextColor.setProperty("color",self.getColor(preset.get("TextColor",255)))
+        self.form.ArrowStyle.setCurrentIndex(preset.get("ArrowStyle",0))
+        self.form.ShowUnit.setChecked(preset.get("ShowUnit",False))
+        self.form.UnitOverride.setText(preset.get("UnitOverride",""))
+        self.form.TextSize.setText(FreeCAD.Units.Quantity(preset.get("TextSize",25),FreeCAD.Units.Length).UserString)
+        self.form.ArrowSize.setText(FreeCAD.Units.Quantity(preset.get("ArrowSize",5),FreeCAD.Units.Length).UserString)
+        self.form.TextSpacing.setText(FreeCAD.Units.Quantity(preset.get("TextSpacing",25),FreeCAD.Units.Length).UserString)
+        self.form.LineSpacing.setValue(preset.get("LineSpacing",3))
 
     def reject(self):
 
@@ -174,6 +180,8 @@ class Draft_SetStyle_TaskPanel:
         FreeCAD.ParamGet(self.p+"/Mod/Draft").SetFloat("arrowsize",FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value)
         FreeCAD.ParamGet(self.p+"Mod/Draft").SetBool("showUnit",self.form.ShowUnit.isChecked())
         FreeCAD.ParamGet(self.p+"Mod/Draft").SetString("overrideUnit",self.form.UnitOverride.text())
+        FreeCAD.ParamGet(self.p+"Mod/Draft").SetFloat("dimspacing",FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value)
+        FreeCAD.ParamGet(self.p+"Mod/Draft").SetInt("LineSpacing",self.form.LineSpacing.value())
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.setStyleButton()
         self.reject()
@@ -219,6 +227,10 @@ class Draft_SetStyle_TaskPanel:
                     vobj.ShowUnit = self.form.ShowUnit.isChecked()
                 if "UnitOverride" in vobj.PropertiesList:
                     vobj.UnitOverride = self.form.UnitOverride.text()
+                if "TextSpacing" in vobj.PropertiesList:
+                    vobj.TextSpacing = FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value
+                if "LineSpacing" in vobj.PropertiesList:
+                    vobj.LineSpacing = self.form.LineSpacing.value()
 
     def onApplyDim(self,index):
         
@@ -236,6 +248,7 @@ class Draft_SetStyle_TaskPanel:
             vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
             vobj.ShowUnit = self.form.ShowUnit.isChecked()
             vobj.UnitOverride = self.form.UnitOverride.text()
+            vobj.TextSpacing = FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value
         texts = Draft.getObjectsOfType(objs,"Text")
         texts += Draft.getObjectsOfType(objs,"DraftText")
         for obj in texts:
@@ -243,6 +256,7 @@ class Draft_SetStyle_TaskPanel:
             vobj.FontName = self.form.TextFont.currentFont().family()
             vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
             vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
+            vobj.LineSpacing = self.form.LineSpacing.value()
 
     def onLoadStyle(self,index):
 

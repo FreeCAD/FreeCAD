@@ -168,11 +168,11 @@
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>添加零件</translation>
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>添加组</translation>
     </message>
     <message>
       <source>Align</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>链接变换</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -1422,7 +1422,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>代码行将被编号</translation>
     </message>
   </context>
   <context>
@@ -2901,7 +2901,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Compression level for FCStd files</source>
-      <translation type="unfinished">Compression level for FCStd files</translation>
+      <translation>FCStd 文件的压缩级别</translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
@@ -3001,7 +3001,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation type="unfinished">Default company name to use for new files</translation>
+      <translation>用于新文件的默认公司名称</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
@@ -3272,7 +3272,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>加载所选</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3367,7 +3367,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>快捷方式计数</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
@@ -3738,7 +3738,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -3793,15 +3793,15 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>模型视图的背景颜色</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>背景将使用所选颜色</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>颜色渐变将使用所选颜色作为中间颜色</translation>
     </message>
     <message>
       <source>Bottom color</source>
@@ -3922,7 +3922,7 @@ The preference system is the one set in the general preferences.</source>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>未知单位：</translation>
     </message>
   </context>
   <context>
@@ -4507,11 +4507,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Address:</source>
-      <translation type="unfinished">Address:</translation>
+      <translation>地址：</translation>
     </message>
     <message>
       <source>Port:</source>
-      <translation type="unfinished">Port:</translation>
+      <translation>端口：</translation>
     </message>
     <message>
       <source>Redirect output</source>
@@ -6758,7 +6758,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>表达式错误</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
@@ -6846,7 +6846,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>文档包含循环依赖。您仍然想要保存它们吗？</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6878,11 +6878,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>拖放失败</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>覆盖颜色...</translation>
     </message>
     <message>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
@@ -6913,12 +6913,12 @@ Document: </translation>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+  路径： </translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>相同的物理路径</translation>
     </message>
     <message>
       <source>Error</source>
@@ -6940,9 +6940,9 @@ Document: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+物理路径： </translation>
     </message>
   </context>
   <context>
@@ -6964,7 +6964,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Box element selection</source>
-      <translation type="unfinished">Box element selection</translation>
+      <translation>方框元素选择</translation>
     </message>
   </context>
   <context>
@@ -7331,7 +7331,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>更改对象的绘制样式</translation>
     </message>
   </context>
   <context>
@@ -7399,7 +7399,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>表达式动作</translation>
     </message>
   </context>
   <context>

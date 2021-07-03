@@ -1633,7 +1633,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation>Speicher-Ort der Benutzer-Makros:</translation>
+      <translation>Speicherort der Benutzermakros:</translation>
     </message>
     <message>
       <source>Rename</source>
@@ -7501,7 +7501,7 @@ Physischer Pfad: </translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation>Benutzer Dokumentation auf der FreeCAD Website</translation>
+      <translation>Benutzerdokumentation auf der FreeCAD-Website</translation>
     </message>
   </context>
   <context>
