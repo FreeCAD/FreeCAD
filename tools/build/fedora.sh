@@ -1,9 +1,9 @@
-#!/bin/sh
-dnf install --assumeyes gcc git cmake doxygen swig gettext \
-    desktop-file-utils libXmu-devel freeimage-devel mesa-libGLU-devel \
-    python3 python3-devel python3-pyside2-devel pyside2-tools \
-    boost-devel tbb-devel eigen3-devel qt-devel qt-webkit-devel \
-    qt5-qtxmlpatterns qt5-qttools-static qt5-qtxmlpatterns-devel \
-    qt5-qtsvg-devel ode-devel xerces-c xerces-c-devel opencv-devel smesh-devel \
-    Coin3 Coin3-devel SoQt-devel freetype freetype-devel vtk med med-devel \
-    libspnav-devel python3-pivy opencascade-devel pcl-devel openmpi-devel
+#!/bin/sh 
+dnf --assumeyes install boost-devel cmake Coin3 Coin3-devel desktop-file-utils doxygen \
+    eigen3-devel freeimage-devel freetype freetype-devel gcc gettext git libspnav-devel \
+    libXmu-devel med med-devel mesa-libGLU-devel ode-devel opencascade-devel \
+    opencv-devel openmpi-devel pcl-devel pyside2-tools python3 python3-devel \
+    python3-matplotlib python3-pivy python3-pyside2-devel qt5-qtsvg-devel \
+    qt5-qttools-static qt5-qtxmlpatterns qt5-qtxmlpatterns-devel qt-devel \
+    qt-webkit-devel smesh-devel SoQt-devel swig tbb-devel vtk xerces-c xerces-c-devel
+

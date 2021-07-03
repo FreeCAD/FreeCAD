@@ -1,5 +1,7 @@
 #!/bin/sh
-pacman --sync --noconfirm boost curl desktop-file-utils glew hicolor-icon-theme jsoncpp \
-        libspnav opencascade shiboken2 xerces-c pyside2 python-matplotlib python-netcdf4 \
-        qt5-svg  qt5-webkit qt5-webengine qt5-tools cmake eigen git gcc-fortran swig \
-        shared-mime-info coin pyside2-tools python-pivy med gnu-free-fonts
+pacman --noconfirm --sync boost boost-libs cmake coin curl desktop-file-utils doxygen \
+    eigen gc gcc-fortran git glew gnu-free-fonts guile hicolor-icon-theme jsoncpp \
+    libspnav libtool make med opencascade pyside2 pyside2-tools python-matplotlib \
+    python-netcdf4 python-pivy qt5-svg qt5-tools qt5-webengine qt5-webkit \
+    shared-mime-info shiboken2 swig texinfo xerces-c 
+
