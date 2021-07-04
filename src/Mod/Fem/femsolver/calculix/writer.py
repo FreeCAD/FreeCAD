@@ -226,8 +226,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         group_param = False  # do not write mesh group data
         if inpfile_split is True:
             write_name = "femesh"
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            split_mesh_file_path = join(self.dir_name, file_name_splitt)
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
+            split_mesh_file_path = join(self.dir_name, file_name_split)
 
             self.femmesh.writeABAQUS(
                 split_mesh_file_path,
@@ -243,7 +243,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             inpfile = codecs.open(self.file_name, "w", encoding="utf-8")
             inpfile.write("***********************************************************\n")
             inpfile.write("** {}\n".format(write_name))
-            inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_split))
 
         else:
             self.femmesh.writeABAQUS(
@@ -280,12 +280,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_node_sets_nodes_constraints_fixed(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_node_sets_nodes_constraints_fixed(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_node_sets_nodes_constraints_fixed(f)
 
@@ -367,12 +367,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_node_sets_nodes_constraints_displacement(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_node_sets_nodes_constraints_displacement(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_node_sets_nodes_constraints_displacement(f)
 
@@ -445,12 +445,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_node_sets_nodes_constraints_planerotation(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_node_sets_nodes_constraints_planerotation(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_node_sets_nodes_constraints_planerotation(f)
 
@@ -528,12 +528,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_surfacefaces_constraints_contact(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_surfacefaces_constraints_contact(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_surfacefaces_constraints_contact(f)
 
@@ -598,12 +598,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_surfacefaces_constraints_tie(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_surfacefaces_constraints_tie(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_surfacefaces_constraints_tie(f)
 
@@ -657,12 +657,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_surfacefaces_constraints_sectionprint(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_surfacefaces_constraints_sectionprint(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_surfacefaces_constraints_sectionprint(f)
 
@@ -737,12 +737,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_node_sets_nodes_constraints_transform(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_node_sets_nodes_constraints_transform(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_node_sets_nodes_constraints_transform(f)
 
@@ -812,12 +812,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_node_sets_nodes_constraints_temperature(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_node_sets_nodes_constraints_temperature(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_node_sets_nodes_constraints_temperature(f)
 
@@ -934,12 +934,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_nodeloads_constraints_force(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_nodeloads_constraints_force(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_nodeloads_constraints_force(f)
 
@@ -987,12 +987,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_faceloads_constraints_pressure(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_faceloads_constraints_pressure(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_faceloads_constraints_pressure(f)
 
@@ -1035,12 +1035,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
-            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = self.mesh_name + "_" + write_name + ".inp"
             f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
-            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
-            self.write_faceheatflux_constraints_heatflux(inpfile_splitt)
-            inpfile_splitt.close()
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            self.write_faceheatflux_constraints_heatflux(inpfile_split)
+            inpfile_split.close()
         else:
             self.write_faceheatflux_constraints_heatflux(f)
 
