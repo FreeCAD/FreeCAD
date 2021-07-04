@@ -386,6 +386,38 @@ class FemInputWriter():
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
+    def get_solid_element_sets(self, femobjs):
+        # get element ids and write them into the femobj
+        all_found = False
+        if self.femmesh.GroupCount:
+            all_found = meshtools.get_femelement_sets_from_group_data(
+                self.femmesh,
+                femobjs
+            )
+            FreeCAD.Console.PrintMessage(all_found)
+            FreeCAD.Console.PrintMessage("\n")
+        if all_found is False:
+            if not self.femelement_table:
+                self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+            # we're going to use the binary search for get_femelements_by_femnodes()
+            # thus we need the parameter values self.femnodes_ele_table
+            if not self.femnodes_mesh:
+                self.femnodes_mesh = self.femmesh.Nodes
+            if not self.femnodes_ele_table:
+                self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                    self.femnodes_mesh,
+                    self.femelement_table
+                )
+            control = meshtools.get_femelement_sets(
+                self.femmesh,
+                self.femelement_table,
+                femobjs,
+                self.femnodes_ele_table
+            )
+            # we only need to set it, if it is still True
+            if (self.femelement_count_test is True) and (control is False):
+                self.femelement_count_test = False
+
     def get_element_geometry2D_elements(self):
         # get element ids and write them into the objects
         FreeCAD.Console.PrintMessage("Shell thicknesses\n")
@@ -452,35 +484,8 @@ class FemInputWriter():
             # but a mesh could contain the element faces of the volumes as faces
             # and the edges of the faces as edges
             # there we have to check of some geometric objects
-            all_found = False
-            if self.femmesh.GroupCount:
-                all_found = meshtools.get_femelement_sets_from_group_data(
-                    self.femmesh,
-                    self.material_objects
-                )
-                FreeCAD.Console.PrintMessage(all_found)
-                FreeCAD.Console.PrintMessage("\n")
-            if all_found is False:
-                if not self.femelement_table:
-                    self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-                # we're going to use the binary search for get_femelements_by_femnodes()
-                # thus we need the parameter values self.femnodes_ele_table
-                if not self.femnodes_mesh:
-                    self.femnodes_mesh = self.femmesh.Nodes
-                if not self.femnodes_ele_table:
-                    self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                        self.femnodes_mesh,
-                        self.femelement_table
-                    )
-                control = meshtools.get_femelement_sets(
-                    self.femmesh,
-                    self.femelement_table,
-                    self.material_objects,
-                    self.femnodes_ele_table
-                )
-                # we only need to set it, if it is still True
-                if (self.femelement_count_test is True) and (control is False):
-                    self.femelement_count_test = False
+            # get element ids and write them into the femobj
+            self.get_solid_element_sets(self.material_objects)
         if self.shellthickness_objects:
             if not self.femelement_faces_table:
                 self.femelement_faces_table = meshtools.get_femelement_faces_table(
