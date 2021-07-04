@@ -61,6 +61,7 @@ private Q_SLOTS:
     void onRuled(bool);
     void onDeleteSection();
     void indexesMoved();
+    void onOutsideChanged(bool);
 
 protected:
     void changeEvent(QEvent *e);

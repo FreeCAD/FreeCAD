@@ -42,7 +42,8 @@ public:
 
     App::PropertyLinkList Sections;
     App::PropertyBool     Ruled;
-    App::PropertyBool     Closed;    
+    App::PropertyBool     Closed;
+    App::PropertyBool     Outside;
 
     /** @name methods override feature */
     //@{

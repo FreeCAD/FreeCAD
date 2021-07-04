@@ -100,6 +100,7 @@ public Q_SLOTS:
     void onWedgeX2minChanged(double);
     void onWedgeZ2maxChanged(double);
     void onWedgeZ2minChanged(double);
+    void onOutsideChanged(bool); 
 
 private:
     /** Notifies when the object is about to be removed. */

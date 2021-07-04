@@ -32,6 +32,7 @@
 # include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Common.hxx>
 # include <Precision.hxx>
 # include <gp_Lin.hxx>
 #endif
@@ -66,6 +67,7 @@ Groove::Groove()
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
+    ADD_PROPERTY_TYPE(Outside,(false),"Groove",App::Prop_None,"Remove outside of profile");
 }
 
 short Groove::mustExecute() const
@@ -158,14 +160,23 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             result = refineShapeIfActive(result);
             this->AddSubShape.setValue(result);
 
-            // cut out groove to get one result object
-            BRepAlgoAPI_Cut mkCut(base, result);
-            // Let's check if the fusion has been successful
-            if (!mkCut.IsDone())
-                throw Base::CADKernelError("Cut out of base feature failed");
+            TopoDS_Shape solRes;
+            if (!Outside.getValue()) {
+                // cut out groove to get one result object
+                BRepAlgoAPI_Cut mkCut(base, result);
+                // Let's check if the cut has been successful
+                if (!mkCut.IsDone())
+                    throw Base::CADKernelError("Cut out of base feature failed");
 
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
+                // we have to get the solids (fuse sometimes creates compounds)
+                solRes = this->getSolid(mkCut.Shape());
+            } else {
+                BRepAlgoAPI_Common mkCommon(base, result);
+                if (!mkCommon.IsDone())
+                    throw Base::CADKernelError("Groove outside of profile failed");
+                solRes = this->getSolid(mkCommon.Shape());
+            }
+
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 

@@ -92,6 +92,7 @@ Pipe::Pipe()
     ADD_PROPERTY_TYPE(Binormal,(Base::Vector3d()),"Sweep",App::Prop_None,"Binormal vector for corresponding orientation mode");
     ADD_PROPERTY_TYPE(Transition,(long(0)),"Sweep",App::Prop_None,"Transition mode");
     ADD_PROPERTY_TYPE(Transformation,(long(0)),"Sweep",App::Prop_None,"Section transformation mode");
+    ADD_PROPERTY_TYPE(Outside,(false),"Sweep",App::Prop_None,"Remove outside of sweep");
     Mode.setEnums(ModeEnums);
     Transition.setEnums(TransitionEnums);
     Transformation.setEnums(TransformEnums);
@@ -332,11 +333,19 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
 
-            BRepAlgoAPI_Cut mkCut(base, result);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Subtracting the pipe failed");
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
+            TopoDS_Shape boolOp;
+            if (!Outside.getValue()) {
+                BRepAlgoAPI_Cut mkCut(base, result);
+                if (!mkCut.IsDone())
+                    return new App::DocumentObjectExecReturn("Subtracting the pipe failed");
+                // we have to get the solids (fuse sometimes creates compounds)
+                boolOp = this->getSolid(mkCut.Shape());
+            } else {
+                BRepAlgoAPI_Common mkCommon(base, result);
+                if (!mkCommon.IsDone())
+                    return new App::DocumentObjectExecReturn("Subtracting outside the pipe failed");
+                boolOp = this->getSolid(mkCommon.Shape());
+            }
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");

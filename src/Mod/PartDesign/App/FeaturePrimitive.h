@@ -52,6 +52,7 @@ public:
     
     FeaturePrimitive();
     
+    App::PropertyBool   Outside;
     virtual const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderPrimitive";
     }

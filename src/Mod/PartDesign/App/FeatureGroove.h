@@ -40,6 +40,7 @@ public:
     App::PropertyVector Base;
     App::PropertyVector Axis;
     App::PropertyAngle  Angle;
+    App::PropertyBool   Outside;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line

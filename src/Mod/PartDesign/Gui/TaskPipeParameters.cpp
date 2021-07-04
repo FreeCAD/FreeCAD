@@ -90,6 +90,8 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
             this, SLOT(onButtonRefRemove(bool)));
     connect(ui->buttonSpineBase, SIGNAL(toggled(bool)),
             this, SLOT(onBaseButton(bool)));
+    connect(ui->checkBoxOutside, SIGNAL(toggled(bool)),
+            this, SLOT(onOutsideChanged(bool)));
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -135,6 +137,9 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     }
 
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
+
+    ui->checkBoxOutside->setVisible(pipe->getAddSubType() == PartDesign::FeatureAddSub::Subtractive);
+    ui->checkBoxOutside->setChecked(pipe->Outside.getValue());
 
     updateUI();
 }
@@ -232,6 +237,12 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         clearButtons();
         exitSelectionMode();
     }
+}
+
+void TaskPipeParameters::onOutsideChanged(bool on)
+{
+    static_cast<PartDesign::Pipe*>(vp->getObject())->Outside.setValue(on);
+    recomputeFeature();
 }
 
 void TaskPipeParameters::onTransitionChanged(int idx) {

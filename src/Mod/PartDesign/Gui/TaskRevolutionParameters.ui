@@ -110,6 +110,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxOutside">
+     <property name="text">
+      <string>Remove outside profile</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

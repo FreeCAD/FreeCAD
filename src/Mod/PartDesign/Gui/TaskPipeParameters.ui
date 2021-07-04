@@ -15,6 +15,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
+    <widget class="QCheckBox" name="checkBoxOutside">
+     <property name="text">
+      <string>Remove outside of sweep</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupprofile">
      <property name="title">
       <string>Profile</string>

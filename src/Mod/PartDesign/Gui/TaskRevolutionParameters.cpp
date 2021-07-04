@@ -84,7 +84,10 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         this->propReferenceAxis = &(rev->ReferenceAxis);
         this->propReversed = &(rev->Reversed);
         ui->revolveAngle->bind(rev->Angle);
+        ui->checkBoxOutside->setChecked(rev->Outside.getValue());
     }
+
+    ui->checkBoxOutside->setVisible(pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId()));
 
     ui->checkBoxMidplane->setChecked(propMidPlane->getValue());
     ui->checkBoxReversed->setChecked(propReversed->getValue());
@@ -207,6 +210,8 @@ void TaskRevolutionParameters::connectSignals()
             this, SLOT(onReversed(bool)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+    connect(ui->checkBoxOutside, SIGNAL(toggled(bool)),
+            this, SLOT(onOutsideChanged(bool)));
 }
 
 void TaskRevolutionParameters::updateUI()
@@ -312,6 +317,13 @@ void TaskRevolutionParameters::onMidplane(bool on)
 void TaskRevolutionParameters::onReversed(bool on)
 {
     propReversed->setValue(on);
+    recomputeFeature();
+}
+
+void TaskRevolutionParameters::onOutsideChanged(bool on)
+{
+    PartDesign::Groove* rev = static_cast<PartDesign::Groove*>(vp->getObject());
+    rev->Outside.setValue(on);
     recomputeFeature();
 }
 

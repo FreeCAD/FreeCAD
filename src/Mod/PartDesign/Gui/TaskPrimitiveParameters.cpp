@@ -275,6 +275,12 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
         }
     }
 
+    PartDesign::FeaturePrimitive* prim = static_cast<PartDesign::FeaturePrimitive*>(vp->getObject());
+    ui->checkBoxOutside->setVisible(prim->getAddSubType() == PartDesign::FeatureAddSub::Subtractive);
+    ui->checkBoxOutside->setChecked(prim->Outside.getValue());
+
+    connect(ui->checkBoxOutside, SIGNAL(toggled(bool)), this, SLOT(onOutsideChanged(bool)));
+
     // box
     connect(ui->boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
     connect(ui->boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
@@ -357,6 +363,13 @@ void TaskBoxPrimitives::slotDeletedObject(const Gui::ViewProviderDocumentObject&
 {
     if (this->vp == &Obj)
         this->vp = nullptr;
+}
+
+void TaskBoxPrimitives::onOutsideChanged(bool on)
+{
+    PartDesign::FeaturePrimitive* prim = static_cast<PartDesign::FeaturePrimitive*>(vp->getObject());
+    prim->Outside.setValue(on);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onBoxHeightChanged(double v) {

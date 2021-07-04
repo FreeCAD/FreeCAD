@@ -66,6 +66,7 @@ private Q_SLOTS:
     void onBaseButton(bool checked);
     void onProfileButton(bool checked);
     void onDeleteEdge();
+    void onOutsideChanged(bool);
   
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd, refProfile };

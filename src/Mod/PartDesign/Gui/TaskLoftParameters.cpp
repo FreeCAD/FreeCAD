@@ -76,6 +76,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
             this, SLOT(onClosed(bool)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+    connect(ui->checkBoxOutside, SIGNAL(toggled(bool)),
+            this, SLOT(onOutsideChanged(bool)));
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -117,9 +119,12 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
         ui->listWidgetReferences->addItem(item);
     }
 
+    ui->checkBoxOutside->setVisible(loft->getAddSubType() == PartDesign::FeatureAddSub::Subtractive);
+
     // get options
     ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
+    ui->checkBoxOutside->setChecked(loft->Outside.getValue());
 
     if (!loft->Sections.getValues().empty()) {
         LoftView->makeTemporaryVisible(true);
@@ -295,6 +300,12 @@ void TaskLoftParameters::exitSelectionMode() {
 
 void TaskLoftParameters::changeEvent(QEvent * /*e*/)
 {
+}
+
+void TaskLoftParameters::onOutsideChanged(bool val)
+{
+    static_cast<PartDesign::Loft*>(vp->getObject())->Outside.setValue(val);
+    recomputeFeature();
 }
 
 void TaskLoftParameters::onClosed(bool val) {

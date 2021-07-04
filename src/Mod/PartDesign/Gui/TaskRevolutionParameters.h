@@ -70,6 +70,7 @@ private Q_SLOTS:
     void onAxisChanged(int);
     void onMidplane(bool);
     void onReversed(bool);
+    void onOutsideChanged(bool); 
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;

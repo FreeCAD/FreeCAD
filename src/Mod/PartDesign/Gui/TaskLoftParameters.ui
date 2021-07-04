@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>270</height>
+    <height>337</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,13 @@
     <widget class="QCheckBox" name="checkBoxClosed">
      <property name="text">
       <string>Closed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxOutside">
+     <property name="text">
+      <string>Remove outside of loft</string>
      </property>
     </widget>
    </item>

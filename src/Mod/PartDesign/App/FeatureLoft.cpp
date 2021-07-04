@@ -58,6 +58,7 @@ Loft::Loft()
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Create ruled surface");
     ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
+    ADD_PROPERTY_TYPE(Outside,(false),"Loft",App::Prop_None,"Remove outside of Loft");
 }
 
 short Loft::mustExecute() const
@@ -206,11 +207,19 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
 
-            BRepAlgoAPI_Cut mkCut(base, result);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Loft: Subtracting the loft failed");
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
+            TopoDS_Shape boolOp;
+            if (!Outside.getValue()) {
+                BRepAlgoAPI_Cut mkCut(base, result);
+                if (!mkCut.IsDone())
+                    return new App::DocumentObjectExecReturn("Loft: Subtracting the loft failed");
+                // we have to get the solids (fuse sometimes creates compounds)
+                boolOp = this->getSolid(mkCut.Shape());
+            } else {
+                BRepAlgoAPI_Common mkCommon(base, result);
+                if (!mkCommon.IsDone())
+                    return new App::DocumentObjectExecReturn("Loft: Subtracting outside the loft failed");
+                boolOp = this->getSolid(mkCommon.Shape());
+            }
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");

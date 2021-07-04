@@ -27,6 +27,7 @@
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Common.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
 # include <BRepPrimAPI_MakeCylinder.hxx>
 # include <BRepPrimAPI_MakeSphere.hxx>
@@ -119,12 +120,19 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             AddSubShape.setValue(primitiveShape);
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            BRepAlgoAPI_Cut mkCut(base, primitiveShape);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Subtracting the primitive failed");
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
+            TopoDS_Shape boolOp;
+            if (!Outside.getValue()) {
+                BRepAlgoAPI_Cut mkCut(base, primitiveShape);
+                if (!mkCut.IsDone())
+                    return new App::DocumentObjectExecReturn("Subtracting the primitive failed");
+                // we have to get the solids (fuse sometimes creates compounds)
+                boolOp = this->getSolid(mkCut.Shape());
+            } else {
+                BRepAlgoAPI_Common mkCommon(base, primitiveShape);
+                if (!mkCommon.IsDone())
+                    return new App::DocumentObjectExecReturn("Subtracting outside the primitive failed");
+                boolOp = this->getSolid(mkCommon.Shape());
+            }
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
@@ -188,6 +196,7 @@ Box::Box()
     ADD_PROPERTY_TYPE(Length,(10.0f),"Box",App::Prop_None,"The length of the box");
     ADD_PROPERTY_TYPE(Width ,(10.0f),"Box",App::Prop_None,"The width of the box");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Box",App::Prop_None,"The height of the box");
+    ADD_PROPERTY_TYPE(Outside,(false),"Box",App::Prop_None,"Remove outside of primitive");
     Length.setConstraints(&quantityRange);
     Width.setConstraints(&quantityRange);
     Height.setConstraints(&quantityRange);
@@ -239,6 +248,7 @@ Cylinder::Cylinder()
     ADD_PROPERTY_TYPE(Radius,(10.0f),"Cylinder",App::Prop_None,"The radius of the cylinder");
     ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The closing angle of the cylinder ");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
+    ADD_PROPERTY_TYPE(Outside,(false),"Cylinder",App::Prop_None,"Remove outside of primitive");
     Angle.setConstraints(&angleRangeU);
     Radius.setConstraints(&quantityRange);
     Height.setConstraints(&quantityRange);
@@ -301,6 +311,7 @@ Sphere::Sphere()
     Angle2.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle3,(360.0f),"Sphere",App::Prop_None,"The angle of the sphere");
     Angle3.setConstraints(&angleRangeU);
+    ADD_PROPERTY_TYPE(Outside,(false),"Sphere",App::Prop_None,"Remove outside of primitive");
 
     primitiveType = FeaturePrimitive::Sphere;
 }
@@ -347,6 +358,7 @@ Cone::Cone()
     ADD_PROPERTY_TYPE(Radius2,(4.0),"Cone",App::Prop_None,"The radius of the cone");
     ADD_PROPERTY_TYPE(Height,(10.0),"Cone",App::Prop_None,"The height of the cone");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Cone",App::Prop_None,"The angle of the cone");
+    ADD_PROPERTY_TYPE(Outside,(false),"Cone",App::Prop_None,"Remove outside of primitive");
     Angle.setConstraints(&angleRangeU);
     Radius1.setConstraints(&quantityRangeZero);
     Radius2.setConstraints(&quantityRangeZero);
@@ -413,6 +425,7 @@ Ellipsoid::Ellipsoid()
     Angle2.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle3,(360.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle3.setConstraints(&angleRangeU);
+    ADD_PROPERTY_TYPE(Outside,(false),"Ellipsoid",App::Prop_None,"Remove outside of primitive");
 
     primitiveType = FeaturePrimitive::Ellipsoid;
 }
@@ -498,6 +511,7 @@ Torus::Torus()
     Angle2.setConstraints(&torusRangeV);
     ADD_PROPERTY_TYPE(Angle3,(360.0),"Torus",App::Prop_None,"The angle of the torus");
     Angle3.setConstraints(&angleRangeU);
+    ADD_PROPERTY_TYPE(Outside,(false),"Torus",App::Prop_None,"Remove outside of primitive");
 
     primitiveType = FeaturePrimitive::Torus;
 }
@@ -560,6 +574,7 @@ Prism::Prism()
     ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
     ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
     ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
+    ADD_PROPERTY_TYPE(Outside,(false),"Prism",App::Prop_None,"Remove outside of primitive");
 
     Part::PrismExtension::initExtension(this);
 
@@ -631,6 +646,7 @@ Wedge::Wedge()
     ADD_PROPERTY_TYPE(Zmax,(10.0f),"Wedge",App::Prop_None,"Zmax of the wedge");
     ADD_PROPERTY_TYPE(X2max,(8.0f),"Wedge",App::Prop_None,"X2max of the wedge");
     ADD_PROPERTY_TYPE(Z2max,(8.0f),"Wedge",App::Prop_None,"Z2max of the wedge");
+    ADD_PROPERTY_TYPE(Outside,(false),"Wedge",App::Prop_None,"Remove outside of primitive");
 
     primitiveType = FeaturePrimitive::Wedge;
 }
