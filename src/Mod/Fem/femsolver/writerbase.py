@@ -126,12 +126,17 @@ class FemInputWriter():
         self.femelement_edges_table = {}
         self.femelement_count_test = True
 
+    # ********************************************************************************************
+    # ********************************************************************************************
     # use set for node sets to be sure all nodes are unique
     # use sorted to be sure the order is the same on different runs
     # be aware a sorted set returns a list, because set are not sorted by default
     #     - done in return value of meshtools.get_femnodes_by_femobj_with_references
-    # might be appropriate for element sets too
+    # TODO FIXME might be appropriate for element sets too
 
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # node sets
     def get_constraints_fixed_nodes(self):
         # get nodes
         for femobj in self.fixed_objects:
@@ -285,6 +290,9 @@ class FemInputWriter():
                     self.femnodes_mesh, frc_obj
                 )
 
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # faces sets
     def get_constraints_pressure_faces(self):
         # TODO see comments in get_constraints_force_nodeloads()
         # it applies here too. Mhh it applies to all constraints ...
@@ -386,6 +394,9 @@ class FemInputWriter():
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # element sets
     def get_solid_element_sets(self, femobjs):
         # get element ids and write them into the femobj
         all_found = False
@@ -479,9 +490,10 @@ class FemInputWriter():
         # the highest dimension in get_femelement_table
         FreeCAD.Console.PrintMessage("Materials\n")
         if self.femmesh.Volumes:
-            # we only could do this for volumes, if a mesh contains volumes
-            # we're going to use them in the analysis
-            # but a mesh could contain the element faces of the volumes as faces
+            # we only could do this for volumes
+            # if a mesh contains volumes we're going to use them in the analysis
+            # but a mesh could contain
+            # the element faces of the volumes as faces
             # and the edges of the faces as edges
             # there we have to check of some geometric objects
             # get element ids and write them into the femobj
