@@ -136,6 +136,14 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_constraint_centrif(
+        self
+    ):
+        from femexamples.constraint_centrif import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def test_constraint_contact_shell_shell(
         self
     ):
