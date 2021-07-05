@@ -126,12 +126,17 @@ class FemInputWriter():
         self.femelement_edges_table = {}
         self.femelement_count_test = True
 
+    # ********************************************************************************************
+    # ********************************************************************************************
     # use set for node sets to be sure all nodes are unique
     # use sorted to be sure the order is the same on different runs
     # be aware a sorted set returns a list, because set are not sorted by default
     #     - done in return value of meshtools.get_femnodes_by_femobj_with_references
-    # might be appropriate for element sets too
+    # TODO FIXME might be appropriate for element sets too
 
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # node sets
     def get_constraints_fixed_nodes(self):
         # get nodes
         for femobj in self.fixed_objects:
@@ -285,6 +290,9 @@ class FemInputWriter():
                     self.femnodes_mesh, frc_obj
                 )
 
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # faces sets
     def get_constraints_pressure_faces(self):
         # TODO see comments in get_constraints_force_nodeloads()
         # it applies here too. Mhh it applies to all constraints ...
@@ -386,6 +394,41 @@ class FemInputWriter():
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # element sets
+    def get_solid_element_sets(self, femobjs):
+        # get element ids and write them into the femobj
+        all_found = False
+        if self.femmesh.GroupCount:
+            all_found = meshtools.get_femelement_sets_from_group_data(
+                self.femmesh,
+                femobjs
+            )
+            FreeCAD.Console.PrintMessage(all_found)
+            FreeCAD.Console.PrintMessage("\n")
+        if all_found is False:
+            if not self.femelement_table:
+                self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+            # we're going to use the binary search for get_femelements_by_femnodes()
+            # thus we need the parameter values self.femnodes_ele_table
+            if not self.femnodes_mesh:
+                self.femnodes_mesh = self.femmesh.Nodes
+            if not self.femnodes_ele_table:
+                self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                    self.femnodes_mesh,
+                    self.femelement_table
+                )
+            control = meshtools.get_femelement_sets(
+                self.femmesh,
+                self.femelement_table,
+                femobjs,
+                self.femnodes_ele_table
+            )
+            # we only need to set it, if it is still True
+            if (self.femelement_count_test is True) and (control is False):
+                self.femelement_count_test = False
+
     def get_element_geometry2D_elements(self):
         # get element ids and write them into the objects
         FreeCAD.Console.PrintMessage("Shell thicknesses\n")
@@ -447,40 +490,14 @@ class FemInputWriter():
         # the highest dimension in get_femelement_table
         FreeCAD.Console.PrintMessage("Materials\n")
         if self.femmesh.Volumes:
-            # we only could do this for volumes, if a mesh contains volumes
-            # we're going to use them in the analysis
-            # but a mesh could contain the element faces of the volumes as faces
+            # we only could do this for volumes
+            # if a mesh contains volumes we're going to use them in the analysis
+            # but a mesh could contain
+            # the element faces of the volumes as faces
             # and the edges of the faces as edges
             # there we have to check of some geometric objects
-            all_found = False
-            if self.femmesh.GroupCount:
-                all_found = meshtools.get_femelement_sets_from_group_data(
-                    self.femmesh,
-                    self.material_objects
-                )
-                FreeCAD.Console.PrintMessage(all_found)
-                FreeCAD.Console.PrintMessage("\n")
-            if all_found is False:
-                if not self.femelement_table:
-                    self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-                # we're going to use the binary search for get_femelements_by_femnodes()
-                # thus we need the parameter values self.femnodes_ele_table
-                if not self.femnodes_mesh:
-                    self.femnodes_mesh = self.femmesh.Nodes
-                if not self.femnodes_ele_table:
-                    self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                        self.femnodes_mesh,
-                        self.femelement_table
-                    )
-                control = meshtools.get_femelement_sets(
-                    self.femmesh,
-                    self.femelement_table,
-                    self.material_objects,
-                    self.femnodes_ele_table
-                )
-                # we only need to set it, if it is still True
-                if (self.femelement_count_test is True) and (control is False):
-                    self.femelement_count_test = False
+            # get element ids and write them into the femobj
+            self.get_solid_element_sets(self.material_objects)
         if self.shellthickness_objects:
             if not self.femelement_faces_table:
                 self.femelement_faces_table = meshtools.get_femelement_faces_table(
