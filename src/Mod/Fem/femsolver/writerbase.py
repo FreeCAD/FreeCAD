@@ -394,6 +394,14 @@ class FemInputWriter():
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
+    def get_constraints_sectionprint_faces(self):
+        pass
+        # TODO implement
+
+    def get_constraints_heatflux_faces(self):
+        pass
+        # TODO implement
+
     # ********************************************************************************************
     # ********************************************************************************************
     # element sets

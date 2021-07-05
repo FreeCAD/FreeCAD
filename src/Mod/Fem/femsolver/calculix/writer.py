@@ -265,29 +265,52 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         return inpfile
 
     # ********************************************************************************************
-    # constraints fixed
-    def write_node_sets_constraints_fixed(self, f):
-        if not self.fixed_objects:
+    # write constraint node sets, constraint face sets, constraint element sets
+    def write_constraints_sets(
+        self,
+        f,
+        femobjs,
+        analysis_types,
+        sets_getter_method,
+        write_name,
+        sets_writer_method,
+        caller_method_name="",
+    ):
+        if not femobjs:
             return
-        # write for all analysis types
 
-        # get nodes
-        self.get_constraints_fixed_nodes()
+        if analysis_types != "all" and self.analysis_type not in analysis_types:
+            return
 
-        write_name = "constraints_fixed_node_sets"
-        f.write("\n***********************************************************\n")
+        # get the sets
+        sets_getter_method()
+
+        f.write("\n{}\n".format(59 * "*"))
         f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        f.write("** written by {} function\n".format(caller_method_name))
 
         if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
+            file_name_split = "{}_{}.inp".format(self.mesh_name, write_name)
             f.write("** {}\n".format(write_name.replace("_", " ")))
             f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
             inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_node_sets_nodes_constraints_fixed(inpfile_split)
+            sets_writer_method(inpfile_split)
             inpfile_split.close()
         else:
-            self.write_node_sets_nodes_constraints_fixed(f)
+            sets_writer_method(f)
+
+    # ********************************************************************************************
+    # constraints fixed
+    def write_node_sets_constraints_fixed(self, f):
+        self.write_constraints_sets(
+            f,
+            femobjs=self.fixed_objects,
+            analysis_types="all",  # write for all analysis types
+            sets_getter_method=self.get_constraints_fixed_nodes,
+            write_name="constraints_fixed_node_sets",
+            sets_writer_method=self.write_node_sets_nodes_constraints_fixed,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_node_sets_nodes_constraints_fixed(self, f):
         # write nodes to file
@@ -354,27 +377,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints displacement
     def write_node_sets_constraints_displacement(self, f):
-        if not self.displacement_objects:
-            return
-        # write for all analysis types
-
-        # get nodes
-        self.get_constraints_displacement_nodes()
-
-        write_name = "constraints_displacement_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_node_sets_nodes_constraints_displacement(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_node_sets_nodes_constraints_displacement(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.displacement_objects,
+            analysis_types="all",  # write for all analysis types
+            sets_getter_method=self.get_constraints_displacement_nodes,
+            write_name="constraints_displacement_node_sets",
+            sets_writer_method=self.write_node_sets_nodes_constraints_displacement,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_node_sets_nodes_constraints_displacement(self, f):
         # write nodes to file
@@ -432,27 +443,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints planerotation
     def write_node_sets_constraints_planerotation(self, f):
-        if not self.planerotation_objects:
-            return
-        # write for all analysis types
-
-        # get nodes
-        self.get_constraints_planerotation_nodes()
-
-        write_name = "constraints_planerotation_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_node_sets_nodes_constraints_planerotation(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_node_sets_nodes_constraints_planerotation(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.planerotation_objects,
+            analysis_types="all",  # write for all analysis types
+            sets_getter_method=self.get_constraints_planerotation_nodes,
+            write_name="constraints_planerotation_node_sets",
+            sets_writer_method=self.write_node_sets_nodes_constraints_planerotation,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_node_sets_nodes_constraints_planerotation(self, f):
         # write nodes to file
@@ -515,27 +514,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints contact
     def write_surfaces_constraints_contact(self, f):
-        if not self.contact_objects:
-            return
-        # write for all analysis types
-
-        # get faces
-        self.get_constraints_contact_faces()
-
-        write_name = "constraints_contact_surface_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_surfacefaces_constraints_contact(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_surfacefaces_constraints_contact(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.contact_objects,
+            analysis_types="all",  # write for all analysis types
+            sets_getter_method=self.get_constraints_contact_faces,
+            write_name="constraints_contact_surface_sets",
+            sets_writer_method=self.write_surfacefaces_constraints_contact,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_surfacefaces_constraints_contact(self, f):
         # write faces to file
@@ -585,27 +572,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints tie
     def write_surfaces_constraints_tie(self, f):
-        if not self.tie_objects:
-            return
-        # write for all analysis types
-
-        # get faces
-        self.get_constraints_tie_faces()
-
-        write_name = "constraints_tie_surface_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_surfacefaces_constraints_tie(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_surfacefaces_constraints_tie(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.tie_objects,
+            analysis_types="all",  # write for all analysis types
+            sets_getter_method=self.get_constraints_tie_faces,
+            write_name="constraints_tie_surface_sets",
+            sets_writer_method=self.write_surfacefaces_constraints_tie,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_surfacefaces_constraints_tie(self, f):
         # write faces to file
@@ -647,26 +622,18 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints sectionprint
     def write_surfaces_constraints_sectionprint(self, f):
-        if not self.sectionprint_objects:
-            return
-        # write for all analysis types
-
-        write_name = "constraints_sectionprint_surface_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_surfacefaces_constraints_sectionprint(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_surfacefaces_constraints_sectionprint(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.sectionprint_objects,
+            analysis_types="all",  # write for all analysis types
+            sets_getter_method=self.get_constraints_sectionprint_faces,
+            write_name="constraints_sectionprint_surface_sets",
+            sets_writer_method=self.write_surfacefaces_constraints_sectionprint,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     # TODO move code parts from this method to base writer module
+    # into get_constraints_sectionprint_faces method
     def write_surfacefaces_constraints_sectionprint(self, f):
         # get surface nodes and write them to file
         obj = 0
@@ -724,27 +691,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints transform
     def write_node_sets_constraints_transform(self, f):
-        if not self.transform_objects:
-            return
-        # write for all analysis types
-
-        # get nodes
-        self.get_constraints_transform_nodes()
-
-        write_name = "constraints_transform_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_node_sets_nodes_constraints_transform(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_node_sets_nodes_constraints_transform(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.transform_objects,
+            analysis_types="all",  # write for all analysis types
+            sets_getter_method=self.get_constraints_transform_nodes,
+            write_name="constraints_transform_node_sets",
+            sets_writer_method=self.write_node_sets_nodes_constraints_transform,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_node_sets_nodes_constraints_transform(self, f):
         # write nodes to file
@@ -798,28 +753,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints temperature
     def write_node_sets_constraints_temperature(self, f):
-        if not self.temperature_objects:
-            return
-        if not self.analysis_type == "thermomech":
-            return
-
-        # get nodes
-        self.get_constraints_temperature_nodes()
-
-        write_name = "constraints_temperature_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_node_sets_nodes_constraints_temperature(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_node_sets_nodes_constraints_temperature(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.temperature_objects,
+            analysis_types=["thermomech"],
+            sets_getter_method=self.get_constraints_temperature_nodes,
+            write_name="constraints_temperature_node_sets",
+            sets_writer_method=self.write_node_sets_nodes_constraints_temperature,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_node_sets_nodes_constraints_temperature(self, f):
         # write nodes to file
@@ -862,7 +804,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_initialtemperature(self, f):
         if not self.initialtemperature_objects:
             return
-        if not self.analysis_type == "thermomech":
+        if self.analysis_type not in ["thermomech"]:
             return
 
         # write constraint to file
@@ -880,11 +822,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_selfweight(self, f):
         if not self.selfweight_objects:
             return
-        if not (
-            self.analysis_type == "static"
-            or self.analysis_type == "thermomech"
-            or self.analysis_type == "buckling"
-        ):
+        if self.analysis_type not in ["buckling", "static", "thermomech"]:
             return
 
         # write constraint to file
@@ -916,32 +854,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints force
     def write_constraints_force(self, f):
-        if not self.force_objects:
-            return
-        if not (
-            self.analysis_type == "static"
-            or self.analysis_type == "thermomech"
-            or self.analysis_type == "buckling"
-        ):
-            return
-
-        # check shape type of reference shape and get node loads
-        self.get_constraints_force_nodeloads()
-
-        write_name = "constraints_force_node_loads"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_nodeloads_constraints_force(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_nodeloads_constraints_force(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.force_objects,
+            analysis_types=["buckling", "static", "thermomech"],
+            sets_getter_method=self.get_constraints_force_nodeloads,
+            write_name="constraints_force_node_loads",
+            sets_writer_method=self.write_nodeloads_constraints_force,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_nodeloads_constraints_force(self, f):
         # write node loads to file
@@ -969,32 +890,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints pressure
     def write_constraints_pressure(self, f):
-        if not self.pressure_objects:
-            return
-        if not (
-            self.analysis_type == "static"
-            or self.analysis_type == "thermomech"
-            or self.analysis_type == "buckling"
-        ):
-            return
-
-        # get the faces and face numbers
-        self.get_constraints_pressure_faces()
-
-        write_name = "constraints_pressure_element_face_loads"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_faceloads_constraints_pressure(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_faceloads_constraints_pressure(f)
+        self.write_constraints_sets(
+            f,
+            femobjs=self.pressure_objects,
+            analysis_types=["buckling", "static", "thermomech"],
+            sets_getter_method=self.get_constraints_pressure_faces,
+            write_name="constraints_pressure_element_face_loads",
+            sets_writer_method=self.write_faceloads_constraints_pressure,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
     def write_faceloads_constraints_pressure(self, f):
         # write face loads to file
@@ -1024,26 +928,18 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints heatflux
     def write_constraints_heatflux(self, f):
-        if not self.heatflux_objects:
-            return
-        if not self.analysis_type == "thermomech":
-            return
+        self.write_constraints_sets(
+            f,
+            femobjs=self.heatflux_objects,
+            analysis_types=["thermomech"],
+            sets_getter_method=self.get_constraints_heatflux_faces,
+            write_name="constraints_heatflux_element_face_heatflux",
+            sets_writer_method=self.write_faceheatflux_constraints_heatflux,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
 
-        write_name = "constraints_heatflux_element_face_heatflux"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        if self.split_inpfile is True:
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-            inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            self.write_faceheatflux_constraints_heatflux(inpfile_split)
-            inpfile_split.close()
-        else:
-            self.write_faceheatflux_constraints_heatflux(f)
-
+    # TODO move code parts from this method to base writer module
+    # into get_constraints_heatflux_faces method
     def write_faceheatflux_constraints_heatflux(self, f):
         # write heat flux faces to file
         for hfobj in self.heatflux_objects:
@@ -1083,10 +979,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     # constraints fluidsection
+    # TODO: split method into separate methods and move some part into base writer
     def write_constraints_fluidsection(self, f):
         if not self.fluidsection_objects:
             return
-        if not self.analysis_type == "thermomech":
+        if self.analysis_type not in ["thermomech"]:
             return
 
         # write constraint to file
