@@ -1113,7 +1113,7 @@ class TaskPanel(object):
     def accept(self, resetEdit=True):
         '''accept() ... callback invoked when user presses the task panel OK button.'''
         self.preCleanup()
-        if self.isDirty:
+        if self.isDirty():
             self.panelGetFields()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
