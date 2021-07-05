@@ -202,7 +202,7 @@ public:
     }
 
     bool doAction(SoAction *);
-    void handleEvent(SoHandleEventAction * action);
+    bool handleEvent(SoHandleEventAction * action);
     void applyOverrideMode(SoState * state) const;
 
     uint32_t getSelectionColor() const {
@@ -1383,15 +1383,16 @@ SoFCUnifiedSelection::Private::setSelection(const std::vector<PickedInfo> &infos
 void
 SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
 {
-    if (selectionRole.getValue())
-        pimpl->handleEvent(action);
+    if (selectionRole.getValue() && pimpl->handleEvent(action))
+        return;
 
     inherited::handleEvent(action);
 }
 
-void
+bool
 SoFCUnifiedSelection::Private::handleEvent(SoHandleEventAction * action)
 {
+    bool res = false;
     HighlightModes mymode = (HighlightModes) master->highlightMode.getValue();
     const SoEvent * event = action->getEvent();
 
@@ -1424,7 +1425,9 @@ SoFCUnifiedSelection::Private::handleEvent(SoHandleEventAction * action)
                 if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown(),event->wasAltDown()))
                     action->setHandled();
             } // mouse release
+            res = true;
         } else if (event->isOfType(SoMouseWheelEvent::getClassTypeId())) {
+            res = true;
             if (shiftDown && event->wasCtrlDown()) {
                 auto wev = static_cast<const SoMouseWheelEvent*>(event);
                 if (wev->getDelta() > 0) {
@@ -1466,6 +1469,7 @@ SoFCUnifiedSelection::Private::handleEvent(SoHandleEventAction * action)
         // down extremely the system on really big data sets. In this case we just check for a picked point if the data
         // set has been selected.
         if (mymode == AUTO || mymode == ON) {
+            res = true;
             double delay = ViewParams::instance()->getPreSelectionDelay();
 
             preselPos = action->getEvent()->getPosition();
@@ -1482,6 +1486,7 @@ SoFCUnifiedSelection::Private::handleEvent(SoHandleEventAction * action)
             }
         }
     }
+    return res;
 }
 
 static FC_COIN_THREAD_LOCAL bool _ShowBoundBox;
