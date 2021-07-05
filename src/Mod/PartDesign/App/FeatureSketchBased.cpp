@@ -1224,7 +1224,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         return SketchVector;
     }
 
-    // For newer verson, do not do fitting, as it may flip the face normal for
+    // For newer version, do not do fitting, as it may flip the face normal for
     // some reason.
     TopoShape shape = getVerifiedFace(true, _ProfileBasedVersion.getValue() <= 0);
 

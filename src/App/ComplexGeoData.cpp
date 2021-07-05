@@ -589,7 +589,7 @@ public:
                     child.sids.reserve(tokens.size()-1);
                     for (unsigned k=1; k<tokens.size(); ++k) {
                         // The element child string ID is saved as decimal
-                        // instead of hex by accident. To simplify maintainance
+                        // instead of hex by accident. To simplify maintenance
                         // of backward compatibility, it is not corrected, and
                         // just restored as decimal here.
                         //
@@ -974,7 +974,7 @@ public:
         std::ostringstream ss;
         ss << std::hex;
 
-        // To avoid possibly very long recusive child map lookup, resulting very
+        // To avoid possibly very long recursive child map lookup, resulting very
         // long mapped names, we try to resolve the grand child map now.
         std::vector<MappedChildElements> expansion;
         for (auto it=children.begin(); it!=children.end(); ++it) {
@@ -1107,7 +1107,7 @@ public:
 
             if (entry->index != 1) {
                 // There is some ambiguity in child mapping. We need some
-                // additional postfix for disambiguiation. NOTE: We are not
+                // additional postfix for disambiguation. NOTE: We are not
                 // using ComplexGeoData::indexPostfix() so as to not confuse
                 // other code that actually uses this postfix for indexing
                 // purposes. Here, we just need some postfix for
@@ -1802,7 +1802,7 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
         if (pos-_len < 0)
            return -1; 
         if (_len && recursive && (tag || len)) {
-            // in case of recursive tag postfix (used by hierarhcy element map)
+            // in case of recursive tag postfix (used by hierarchy element map)
             if (MappedName::fromRawData(name, pos-_len, _len).rfind(tagPostfix()) >= 0)
                 _len = 0;
         }
@@ -1858,7 +1858,7 @@ void ComplexGeoData::encodeElementName(char element_type,
             // waste of memory, because the intermediate shapes has no
             // corresponding objects, so no real value for history tracing.
             //
-            // On the other hand, we still need to distingush the original name
+            // On the other hand, we still need to distinguish the original name
             // from the input object from the element name of the intermediate
             // shapes. So we limit ourselves to encode only one extra level
             // using the same tag. In order to do that, we need to dehash the

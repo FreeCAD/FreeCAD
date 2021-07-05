@@ -282,7 +282,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         if (_Version.getValue() > 0) {
             if (!res.getShape().Location().IsIdentity()) {
                 // wrap the result into a compound to preserve its placement, and
-                // not distrub the object's user defined placement
+                // not disturb the object's user defined placement
                 res.makECompound({res});
             }
         } else 

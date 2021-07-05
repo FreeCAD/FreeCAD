@@ -844,8 +844,8 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
   if (flags.test(Material::FLAG_LIGHT_MODEL))
     SoOverrideElement::setLightModelOverride(state, NULL, FALSE);
 
-  // Capture current relavant elements to detect change happen inside the
-  // currnet caching group node. When capturing materials, we only capture
+  // Capture current relevant elements to detect change happen inside the
+  // current caching group node. When capturing materials, we only capture
   // elements set within the current node.
   PRIVATE(this)->linepatternelement = constElement<SoLinePatternElement>(state);
   PRIVATE(this)->linewidthelement = constElement<SoLineWidthElement>(state);
@@ -1174,7 +1174,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
                          VertexCachePtr &vcache)
   {
     // Check for secondary selection context for color override and partial rendering
-    // return 0 if should skip this entry, 1 if procceed with same material, -1
+    // return 0 if should skip this entry, 1 if proceed with same material, -1
     // if material is changed.
     if (!ctx)
       return 1;

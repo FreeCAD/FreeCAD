@@ -1,4 +1,4 @@
-# WARNING!!! DO NOT include cqgi.py, as it allows running arbitary python code!
+# WARNING!!! DO NOT include cqgi.py, as it allows running arbitrary python code!
 SET(FC_CADQUERY_SRCS
     __init__.py
     cq.py

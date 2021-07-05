@@ -37,7 +37,7 @@ class Selector(object):
         """
             Filter the provided list
             :param objectList: list to filter
-            :type objectList: list of FreeCAD primatives
+            :type objectList: list of FreeCAD primitives
             :return: filtered list
 
             The default implementation returns the original list unfiltered

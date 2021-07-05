@@ -180,7 +180,7 @@ public:
             "will inherit this edit mode.") \
     \
     SHEET_CELL_MODE(AutoAliasV, tr("Auto alias vertical"), \
-            "Similar to 'Auto alias' edit mode but works in vertial, i.e. assign alias to\n"\
+            "Similar to 'Auto alias' edit mode but works in vertical, i.e. assign alias to\n"\
             "the bottom sibling cell.")\
     \
 
