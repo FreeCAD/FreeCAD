@@ -620,9 +620,13 @@ class ToolBitLibrary(object):
             toolNr = self.toolModel.data(self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole)
             toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
             if PathPreferences.toolsStoreAbsolutePaths():
-                tools.append({'nr': toolNr, 'path': toolPath})
+                bitPath = toolPath
             else:
-                tools.append({'nr': toolNr, 'path': PathToolBit.findRelativePathTool(toolPath)})
+                # bitPath = PathToolBit.findRelativePathTool(toolPath)
+                # Extract the name of the shape file
+                __, filShp = os.path.split(toolPath)  #  __ is an ignored placeholder acknowledged by LGTM
+                bitPath = str(filShp)
+            tools.append({'nr': toolNr, 'path': bitPath})
 
         if self.path is not None:
             with open(self.path, 'w') as fp:
