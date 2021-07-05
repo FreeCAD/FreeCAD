@@ -277,19 +277,21 @@ class GeometryElementsSelection(QtGui.QWidget):
         # label
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
-        helpTextPart1 = self.tr('Click on "Add" and select geometric elements to add them to the list.')
-        helpTextPart2 = self.tr("The following geometry elements are allowed to select: ") + "<b>" + self.sel_elem_text + "</b>"
-        helpTextPart3 = self.tr("If no geometry is added to the list, all remaining ones are used.")
+        helpTextPart1 = self.tr(
+            'Click on "Add" and select geometric elements to add them to the list.{}'
+            "The following geometry elements are allowed to select: {}{}{}"
+            .format("<br>", "<b>", self.sel_elem_text, "</b>")
+        )
+        helpTextEmpty = self.tr(
+            "{}If no geometry is added to the list, all remaining ones are used.".format("<br>")
+        )
         if self.showHintEmptyList is True:
             self._helpTextLbl.setText(
-                helpTextPart1 + "<br>" +
-                helpTextPart2 + "<br>" +
-                helpTextPart3
+                helpTextPart1 + helpTextEmpty
             )
         else:
             self._helpTextLbl.setText(
-                helpTextPart1 + "<br>" +
-                helpTextPart2
+                helpTextPart1
             )
         # list
         self.list_References = QtGui.QListWidget()
@@ -310,13 +312,13 @@ class GeometryElementsSelection(QtGui.QWidget):
         mainLayout.addWidget(self.list_References)
 
         # if only "Solid" is avail, std-sel-mode is obsolete
-        if "Solid" in self.sel_elem_types and len (self.sel_elem_types) == 1:
+        if "Solid" in self.sel_elem_types and len(self.sel_elem_types) == 1:
             self.selection_mode_solid = True
         else:
             self.selection_mode_solid = False
 
         # show radio buttons, if a solid and at least one nonsolid is allowed
-        if "Solid" in self.sel_elem_types and len (self.sel_elem_types) > 1:
+        if "Solid" in self.sel_elem_types and len(self.sel_elem_types) > 1:
             self.rb_standard.setChecked(True)
             self.rb_solid.setChecked(False)
             mainLayout.addLayout(rbtnLayout)
