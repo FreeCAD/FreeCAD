@@ -110,7 +110,10 @@ class Offset(gui_base_original.Modifier):
                 self.mode = "Circle"
                 self.center = self.shape.Edges[0].Curve.Center
                 self.ghost.setCenter(self.center)
-                self.ghost.setStartAngle(math.radians(self.sel.FirstAngle))
+                if self.sel.FirstAngle <= self.sel.LastAngle:
+                    self.ghost.setStartAngle(math.radians(self.sel.FirstAngle))
+                else:
+                    self.ghost.setStartAngle(math.radians(self.sel.FirstAngle) - 2 * math.pi)
                 self.ghost.setEndAngle(math.radians(self.sel.LastAngle))
             elif utils.getType(self.sel) == "BSpline":
                 self.ghost = trackers.bsplineTracker(points=self.sel.Points)
