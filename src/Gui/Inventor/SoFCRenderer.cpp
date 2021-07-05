@@ -118,18 +118,8 @@ _check_glerror(int line) {
   }
 }
 
-struct CacheKeyCompare {
-  bool operator()(const CacheKeyPtr &a, const CacheKeyPtr &b) const {
-    if (a == b) return false;
-    if (!a) return true;
-    if (!b) return false;
-    if (a->size() < b->size()) return true;
-    if (a->size() > b->size()) return false;
-    return (*a) < (*b);
-  }
-};
-
-typedef std::set<CacheKeyPtr, CacheKeyCompare> CacheKeySet;
+typedef SoFCRenderCache::CacheKeySet CacheKeySet;
+typedef SoFCRenderCache::CacheKeyCompare CacheKeyCompare;
 
 struct DrawEntry {
   const Material * material;
@@ -221,6 +211,7 @@ public:
 
   void applyKeys(const CacheKeySet & keys, int skip=1);
   void applyKey(const CacheKeyPtr & key, int skip=1);
+  void changeKey(int idx, int skip);
 
   std::vector<DrawEntry> drawentries;
   std::vector<DrawEntry> slentries;
@@ -761,13 +752,37 @@ SoFCRenderer::clear()
   PRIVATE(this)->cachetable.clear();
 }
 
+void
+SoFCRendererP::changeKey(int idx, int skip)
+{
+  auto & draw_entry = this->drawentries[idx];
+  int prev = draw_entry.skip;
+  draw_entry.skip += skip;
+  if (draw_entry.skip < 0 && FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    FC_WARN("invalid draw key");
+  if (!draw_entry.ventry->mergecount)
+    return;
+  if (!prev && draw_entry.skip) {
+    for (int i=1; i<=draw_entry.ventry->mergecount; ++i) {
+      changeKey(idx+i,-1);
+      i += this->drawentries[idx+i].ventry->mergecount;
+    }
+  }
+  else if (prev && !draw_entry.skip) {
+    for (int i=1; i<=draw_entry.ventry->mergecount; ++i) {
+      changeKey(idx+i,1);
+      i += this->drawentries[idx+i].ventry->mergecount;
+    }
+  }
+}
+
 inline void
 SoFCRendererP::applyKey(const CacheKeyPtr & key, int skip)
 {
   auto it = this->cachetable.find(key);
   if (it != this->cachetable.end()) {
     for (std::size_t idx : it->second)
-      this->drawentries[idx].skip += skip;
+      changeKey(idx, skip);
   }
 }
 
@@ -798,10 +813,10 @@ SoFCRendererP::pushDrawEntry(std::vector<DrawEntry> & draw_entries,
                              const VertexCacheEntry & ventry)
 {
   draw_entries.emplace_back(&material, &ventry);
-  if (draw_entries.back().bbox.isEmpty()) {
-    draw_entries.pop_back();
-    return 0;
-  }
+  // if (draw_entries.back().bbox.isEmpty()) {
+  //   draw_entries.pop_back();
+  //   return 0;
+  // }
   return draw_entries.size();
 }
 
@@ -827,7 +842,9 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
   PRIVATE(this)->scene = cache;
   PRIVATE(this)->scenebbox = SbBox3f();
 
-  for (const auto & v : cache->getVertexCaches()) {
+  int mergecount = 0;
+  const auto & caches = cache->getVertexCaches(true);
+  for (const auto & v : caches) {
     auto & material = v.first;
     auto & ventries = v.second;
     if (ventries.empty()) continue;
@@ -837,13 +854,33 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
     if (!fulltransp && !material.pervertexcolor)
       fulltransp = (material.diffuse & 0xff) == 0xff ? false : true;
 
+    int vidx = -1;
     for (auto & ventry : ventries) {
+      ++vidx;
       std::size_t idx = SoFCRendererP::pushDrawEntry(PRIVATE(this)->drawentries, material, ventry);
       if (!idx)
         continue;
       --idx;
       PRIVATE(this)->scenebbox.extendBy(PRIVATE(this)->drawentries.back().bbox);
-      PRIVATE(this)->cachetable[ventry.key].push_back(idx);
+      if (!ventry.skipcount)
+        ++mergecount;
+      else
+        PRIVATE(this)->drawentries.back().skip = ventry.skipcount;
+      if (ventry.key)
+        PRIVATE(this)->cachetable[ventry.key].push_back(idx);
+      else {
+        for (int i=0; i<ventry.mergecount; ++i) {
+          int j = i+vidx+1;
+          if (j >= (int)ventries.size())
+            break;
+          if (ventries[j].key) {
+            auto &indices = PRIVATE(this)->cachetable[ventries[j].key];
+            if (indices.empty() || indices.back() != idx)
+              indices.push_back(idx);
+          }
+          i += ventries[j].mergecount;
+        }
+      }
 
       if (material.isOnTop() && material.type == Material::Triangle)
         PRIVATE(this)->trianglesontop.emplace_back(idx);
@@ -867,6 +904,12 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
           PRIVATE(this)->transpvcache.emplace_back(idx);
       }
     }
+  }
+
+  if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+    FC_MSG("update scene " << caches.size() << " materials, "
+          << PRIVATE(this)->drawentries.size() << " entries, "
+          << mergecount << " after merge");
   }
   PRIVATE(this)->applyKeys(PRIVATE(this)->highlightkeys);
   PRIVATE(this)->selectionkeys.clear();

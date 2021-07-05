@@ -47,12 +47,14 @@ class SoState;
 class SbBox3f;
 class SbVec3f;
 class SbMatrix;
+class SoFCVertexCache;
 
 class SoFCVertexArrayIndexer {
 public:
-  typedef SoFCVertexAttribute<GLint> IndexArray;
+  typedef SoFCVertexAttribute<GLint, GLushort> IndexArray;
 
-  SoFCVertexArrayIndexer(SbFCUniqueId dataid, IndexArray * array = nullptr);
+  SoFCVertexArrayIndexer();
+  SoFCVertexArrayIndexer(const IndexArray &initarray);
 
   SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
                          const std::map<int, int> & partindices,
@@ -95,7 +97,7 @@ public:
               const int32_t * counts = NULL,
               int32_t draw_count = 0);
 
-  IndexArray * getIndexArray() const { return indexarray; }
+  const IndexArray & getIndexArray() const { return indexarray; }
 
   const std::vector<int> & getPartialIndices() const { return partialindices; }
 
@@ -112,6 +114,8 @@ public:
 
   void getBoundingBox(const SbMatrix * matrix, SbBox3f &bbox, const SbVec3f * vertices) const;
 
+  void append(SoFCVertexArrayIndexer *other, int offset);
+
 private:
   template<class IndicesT, class GetT>
   void init(const SoFCVertexArrayIndexer & other,
@@ -125,7 +129,8 @@ private:
   void sort_triangles(void);
   void sort_lines(void);
 
-  SbFCUniqueId dataid;
+  friend class SoFCVertexCache;
+
   GLenum target;
 
   COWVector<std::vector<int> > partarray;
@@ -135,8 +140,7 @@ private:
   std::vector<intptr_t> partialoffsets;
   std::vector<int32_t> partialcounts;
 
-  Gui::CoinPtr<IndexArray> indexarray;
-  Gui::CoinPtr<IndexArray> previndexarray;
+  IndexArray indexarray;
   int indexarraylength;
   int lastlineindex;
   SbBool use_shorts;

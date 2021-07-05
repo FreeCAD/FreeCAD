@@ -55,6 +55,7 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/SbBox3f.h>
 
+#include <Base/Console.h>
 #include "../InventorBase.h"
 #include "../ViewParams.h"
 #include "../SoFCUnifiedSelection.h"
@@ -132,6 +133,8 @@ public:
   SbFCUniqueId nodeid;
   SoFCSelectionRoot *selnode = nullptr;
 
+  std::shared_ptr<SoFCVertexCache::MergeMap> mergemap;
+
 #ifdef FCCOIN_TRACE_CACHE_NAME
   SbName nodename;
 #endif
@@ -154,9 +157,12 @@ static inline const T * constElement(SoState * state)
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
-SoFCRenderCache::SoFCRenderCache(SoState *state, SoNode *node)
+SoFCRenderCache::SoFCRenderCache(SoState *state, SoNode *node, SoFCRenderCache *prev)
   : SoCache(state), pimpl(new SoFCRenderCacheP)
 {
+  if (prev)
+    PRIVATE(this)->mergemap = PRIVATE(prev)->mergemap;
+
   PRIVATE(this)->nodeid = node->getNodeId();
   if (node && node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
     // DO NOT add reference. The cache will be monitored by a node sensor
@@ -1084,7 +1090,7 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
 }
 
 const SoFCRenderCache::VertexCacheMap &
-SoFCRenderCache::getVertexCaches(int depth)
+SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
 {
   auto & vcachemap = PRIVATE(this)->vcachemap;
   if (!vcachemap.empty())
@@ -1124,7 +1130,7 @@ SoFCRenderCache::getVertexCaches(int depth)
         if (ctx->colors.empty())
           return 1;
         if (ctx->colors.begin()->first < 0 && ctx->colors.size() == 1) {
-          vcache->setFaceColors({}, 0);
+          vcache->setFaceColors();
           auto color = ctx->colors.begin()->second;
           color.a = 1.0 - color.a;
           uint32_t diffuse = color.getPackedValue();
@@ -1144,7 +1150,7 @@ SoFCRenderCache::getVertexCaches(int depth)
           color.a = 1.0 - color.a;
           selcolors.emplace_back(v.first, color.getPackedValue());
         }
-        vcache->setFaceColors(selcolors, reinterpret_cast<intptr_t>(ctx.get()));
+        vcache->setFaceColors(selcolors);
         if ((material.pervertexcolor && !vcache->colorPerVertex())
             || (!material.pervertexcolor && vcache->colorPerVertex()))
         {
@@ -1205,6 +1211,10 @@ SoFCRenderCache::getVertexCaches(int depth)
           if (!entry.vcache->getNormalArray())
             material.lightmodel = SoLazyElement::BASE_COLOR;
         }
+        if (vcache->hasSolid() > 1) {
+          material.shapetype = SoShapeHintsElement::SOLID;
+          material.culling = 1;
+        }
         vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
                                          entry.identity,
@@ -1246,7 +1256,7 @@ SoFCRenderCache::getVertexCaches(int depth)
       continue;
     }
     auto it = vcachemap.end();
-    const auto & childvcaches = entry.cache->getVertexCaches(depth+1); 
+    const auto & childvcaches = entry.cache->getVertexCaches(canmerge, depth+1); 
     for (const auto & child : childvcaches) {
       Material material = PRIVATE(this)->mergeMaterial(
             entry.matrix, entry.identity, entry.material, child.first);
@@ -1255,67 +1265,119 @@ SoFCRenderCache::getVertexCaches(int depth)
         PRIVATE(this)->finalizeMaterial(material);
 
       VertexCacheMap::value_type value(material, {});
-      bool entrypushed = false;
-      for (const VertexCacheEntry & childentry : child.second) {
-        std::vector<VertexCacheEntry> *ventries = nullptr;
-        if (it != vcachemap.end() && entrypushed)
-          ventries = &it->second;
-        CacheKeyPtr & key = keymap[childentry.key.get()];
-        if (!key) {
-          key.reset(new CacheKey);
-          if (PRIVATE(this)->selnode) {
-            key->reserve(childentry.key->size()+1);
-            key->push_back(PRIVATE(this)->selnode);
-          }
-          key->insert(key->end(), childentry.key->begin(), childentry.key->end());
-        }
 
+      std::vector<VertexCacheEntry> *pushed_entries = nullptr;
+      int mutated = 0;
+      for (auto & childentry : child.second) {
+        std::vector<VertexCacheEntry> *ventries = pushed_entries;
+        int res = 1;
         auto vcache = childentry.cache;
-        SoFCSelectionContextExPtr ctx;
-        if (PRIVATE(this)->selnode && vcache->getNode()) {
-          SoFCSelectionRoot::setActionStack(&selaction, key.get());
-          selaction.setRetrivedContext();
-          selaction.apply(vcache->getNode());
-          ctx = selaction.getRetrievedContext();
-        }
+        CacheKeyPtr key;
+        if (childentry.key) {
+          CacheKeyPtr & pkey = keymap[childentry.key.get()];
+          if (!pkey) {
+            pkey.reset(new CacheKey);
+            if (PRIVATE(this)->selnode) {
+              pkey->reserve(childentry.key->size()+1);
+              pkey->push_back(PRIVATE(this)->selnode);
+            }
+            pkey->insert(pkey->end(), childentry.key->begin(), childentry.key->end());
+          }
+          key = pkey;
 
-        int res = checkContext(material, ctx, vcache);
-        if (!res)
-          continue;
+          SoFCSelectionContextExPtr ctx;
+          if (PRIVATE(this)->selnode && vcache->getNode()) {
+            SoFCSelectionRoot::setActionStack(&selaction, key.get());
+            selaction.setRetrivedContext();
+            selaction.apply(vcache->getNode());
+            ctx = selaction.getRetrievedContext();
+          }
+
+          res = checkContext(material, ctx, vcache);
+          if (!res)
+            continue;
+        }
 
         if (res < 0) {
+          if (childentry.skipcount && !mutated) {
+            if (!pushed_entries) {
+              auto iter = vcachemap.find(value.first);
+              if (iter != vcachemap.end()) {
+                pushed_entries = &iter->second;
+                mutated = (int)pushed_entries->size();
+              }
+            }
+          }
           ventries = &vcachemap[material];
           material = value.first; // revert back to original material
         } else if (!ventries) {
           it = vcachemap.insert(it, value);
-          entrypushed = true;
-          ventries = &it->second;
+          pushed_entries = ventries = &it->second;
         }
 
-        if (entry.identity || childentry.resetmatrix)
-          ventries->emplace_back(vcache,
-                                  childentry.matrix,
-                                  childentry.identity,
-                                  childentry.resetmatrix,
-                                  key);
-        else if (childentry.identity)
-          ventries->emplace_back(vcache,
-                                  entry.matrix,
-                                  entry.identity,
-                                  false,
-                                  key);
-        else {
-          ventries->emplace_back(vcache,
-                                  entry.matrix,
-                                  false,
-                                  false,
-                                  key);
-          ventries->back().matrix.multLeft(childentry.matrix);
+        ventries->emplace_back(vcache, childentry, key);
+        if (!entry.identity && !childentry.resetmatrix) {
+          if (!childentry.identity)
+            ventries->back().matrix.multRight(entry.matrix);
+          else {
+            ventries->back().matrix = entry.matrix;
+            ventries->back().identity = false;
+          }
+        }
+      }
+
+      if (mutated) {
+        // Discard any affected merged caches due to mutation. TODO: there
+        // could be more optimal way to selectively discard merges, but need
+        // much more complex logic to make it correct, because there could be
+        // multiple mutations.
+        for (int i=0; i<mutated; ++i) {
+          auto & entry = (*pushed_entries)[i];
+          if (entry.mergecount < mutated - i)
+            continue;
+          for (auto it=pushed_entries->begin()+i; it!=pushed_entries->end();) {
+            if (it->mergecount)
+              it = pushed_entries->erase(it);
+            else {
+              it->skipcount = 0;
+              ++i;
+            }
+          }
         }
       }
       if (it != vcachemap.end())
         ++it;
     }
+  }
+
+  if (canmerge && ViewParams::RenderCacheMergeCount() && depth > 0) {
+    for (auto & v : vcachemap) {
+      int count = 0;
+      for (int i=0; i<(int)v.second.size(); ++i) {
+        ++count;
+        i += v.second[i].mergecount;
+      }
+      if (count < std::max(ViewParams::RenderCacheMergeCountMin(),
+                           ViewParams::RenderCacheMergeCount()))
+        continue;
+
+      VertexCacheEntry newentry;
+      for (int i=0; i<(int)v.second.size(); ++i) {
+        int idx = i;
+        auto &entry = v.second[i];
+        newentry.cache = entry.cache->merge(
+            PRIVATE(this)->mergemap, v.second, idx, newentry.mergecount);
+        if (!newentry.cache)
+          i += entry.mergecount;
+        else {
+          v.second.insert(v.second.begin()+idx, newentry);
+          i = idx + newentry.mergecount;
+        }
+      }
+    }
+
+    if (PRIVATE(this)->mergemap)
+      PRIVATE(this)->mergemap->cleanup();
   }
 
 #ifdef FCCOIN_TRACE_ACHE_NAME
@@ -1400,7 +1462,7 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
   Material bboxmaterial;
   SbBox3f bbox;
   const VertexCacheEntry *detailentry = nullptr;
-  for (auto & child : getVertexCaches()) {
+  for (auto & child : getVertexCaches(false)) {
     if (!wholeontop && detail) {
       // We are doing partial highlight, 'wholeontop' indicates that we shall
       // bring the whole object to top with the original color. So if not
@@ -1489,7 +1551,7 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
         continue;
       }
 
-      VertexCacheEntry newentry = ventry;
+      VertexCacheEntry newentry(ventry);
 
       switch(material.type) {
       case Material::Point:

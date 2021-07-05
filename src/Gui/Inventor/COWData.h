@@ -48,6 +48,10 @@ public:
     else this->data.reset();
   }
 
+  void reset() {
+    this->data.reset();
+  }
+
   void detach() {
     if (!this->data) return;
     if (this->data.use_count() > 1)
@@ -55,6 +59,10 @@ public:
   }
 
   bool operator<(const COWData<DataT,ValueT> & other) const {
+    if (size() < other.size())
+      return true;
+    if (size() > other.size())
+      return false;
     if (this->data == other.data)
       return false;
     if (!this->data)
@@ -65,6 +73,10 @@ public:
   }
 
   bool operator>(const COWData<DataT,ValueT> & other) const {
+    if (size() < other.size())
+      return false;
+    if (size() > other.size())
+      return true;
     if (this->data == other.data)
       return false;
     if (!this->data)
@@ -281,16 +293,17 @@ public:
     return this->data->front();
   }
 
-  void reserve(int size) {
+  bool reserve(int size) {
     if (size <= 0)
-      return;
+      return false;
     if (!this->data)
       this->data = std::make_shared<VectorT>();
     else if (size <= (int)this->data->capacity())
-      return;
+      return false;
     else if (this->data.use_count() > 1)
       this->data = std::make_shared<VectorT>(*this->data);
     this->data->reserve(size);
+    return true;
   }
 
   void resize(int size) {
@@ -307,7 +320,7 @@ public:
   }
 
   void append(const COWVector<VectorT> &other) {
-    if (!other.data || this->data == other.data) return;
+    if (!other.data) return;
     if (!this->data) {
       this->data = other.data;
       return;

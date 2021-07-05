@@ -47,16 +47,26 @@
 #include "SoFCVBO.h"
 #include "SoFCVertexArrayIndexer.h"
 
-SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(SbFCUniqueId _dataid,
-                                               IndexArray *prev)
-  : dataid(_dataid)
-  , target(0)
+SoFCVertexArrayIndexer::SoFCVertexArrayIndexer()
+  : target(0)
+  , indexarray(GL_ELEMENT_ARRAY_BUFFER, GL_STREAM_DRAW)
   , indexarraylength(0)
   , lastlineindex(0)
   , use_shorts(TRUE)
 {
-  if (prev && prev->isAttached())
-    this->previndexarray = prev;
+}
+
+SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const IndexArray &initarray)
+  : target(0)
+  , indexarray(GL_ELEMENT_ARRAY_BUFFER, GL_STREAM_DRAW)
+  , indexarraylength(0)
+  , lastlineindex(0)
+  , use_shorts(TRUE)
+{
+  if (initarray) {
+    assert(initarray.getTarget() == indexarray.getTarget());
+    this->indexarray.init(initarray);
+  }
 }
 
 template<class IndicesT, class GetT> inline void
@@ -67,7 +77,7 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
                              bool exclude)
 {
   assert(other.indexarray);
-  this->dataid = other.dataid;
+  this->lastlineindex = 0;
   this->target = other.target;
   this->partarray = other.partarray;
   this->linestripoffsets = other.linestripoffsets;
@@ -121,6 +131,7 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & ot
                                                const std::map<int, int> & partindices,
                                                int maxindex,
                                                bool exclude)
+  :indexarray(GL_ELEMENT_ARRAY_BUFFER, GL_STREAM_DRAW)
 {
   init(other,
        partindices,
@@ -133,6 +144,7 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & ot
                                                const std::set<int> & partindices,
                                                int maxindex,
                                                bool exclude)
+  :indexarray(GL_ELEMENT_ARRAY_BUFFER, GL_STREAM_DRAW)
 {
   init(other,
        partindices,
@@ -145,6 +157,7 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & ot
                                                const std::vector<int> & partindices,
                                                int maxindex,
                                                bool exclude)
+  :indexarray(GL_ELEMENT_ARRAY_BUFFER, GL_STREAM_DRAW)
 {
   init(other,
        partindices,
@@ -173,15 +186,9 @@ inline void
 SoFCVertexArrayIndexer::addIndex(int32_t i) 
 {
   if (i >= 65536) this->use_shorts = FALSE;
-  if (!this->indexarray) {
-    this->indexarray =
-      new IndexArray(dataid + 0x9a8d5763, this->previndexarray, GL_ELEMENT_ARRAY_BUFFER);
-    this->previndexarray.reset();
-  }
-  this->indexarray->append(static_cast<GLint> (i));
   // We might append more indices for GL_LINE_STRIP (see sort_lines()).
   // 'indexarraylength' here is used to remember the index count for GL_LINES.
-  ++this->indexarraylength;
+  this->indexarray.set(this->indexarraylength++, static_cast<GLint> (i));
 }
 
 void
@@ -245,6 +252,7 @@ SoFCVertexArrayIndexer::close(const int *parts, int count)
     default:
       step = 1;
     }
+    this->partarray.clear();
     this->partarray.reserve(count);
     int partindex = 0;
     for (int i=0; i<count; ++i) {
@@ -285,13 +293,10 @@ SoFCVertexArrayIndexer::render(SoState * state,
 {
   if (!this->indexarray) return;
   if (renderasvbo) {
-    if (!this->indexarray->isAttached()) {
-      if (this->use_shorts)
-        this->indexarray = this->indexarray->attachAndConvert<uint16_t>();
-      else
-        this->indexarray = this->indexarray->attach();
-    }
-    this->indexarray->bindBuffer(state, contextid);
+    if (!this->indexarray.isAttached())
+      this->use_shorts = this->indexarray.attach(this->use_shorts);
+    assert(this->indexarray.getTarget() == GL_ELEMENT_ARRAY_BUFFER);
+    this->indexarray.bindBuffer(state, contextid);
   }
 
   GLenum drawtarget = this->target;
@@ -339,7 +344,7 @@ SoFCVertexArrayIndexer::render(SoState * state,
           for (int i : this->partialindices) {
             this->partialcounts.push_back(this->linestripcounts[i]);
             this->partialoffsets.push_back(
-                (intptr_t)(this->indexarray->getArrayPtr()
+                (intptr_t)(this->indexarray.getArrayPtr()
                   + (this->linestripoffsets[i] >> typeshift)));
           }
         }
@@ -355,7 +360,7 @@ SoFCVertexArrayIndexer::render(SoState * state,
       else {
         for (int i : this->partialindices) {
           int prev = i ? this->partarray[i-1] : 0;
-          this->partialoffsets.push_back((intptr_t)(this->indexarray->getArrayPtr() + prev));
+          this->partialoffsets.push_back((intptr_t)(this->indexarray.getArrayPtr() + prev));
           this->partialcounts.push_back(this->partarray[i] - prev);
         }
       }
@@ -374,7 +379,7 @@ SoFCVertexArrayIndexer::render(SoState * state,
                               this->use_shorts ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT,
                               NULL);
     else {
-      const GLint * idxptr = this->indexarray->getArrayPtr();
+      const GLint * idxptr = this->indexarray.getArrayPtr();
       cc_glglue_glDrawElements(glue,
                                drawtarget,
                                this->indexarraylength,
@@ -501,13 +506,13 @@ SoFCVertexArrayIndexer::sort_triangles(void)
   // fps with no sorting to 380 fps with sorting.
   if (this->partarray.size() <= 1) {
     if (this->indexarraylength > 10 * 3)
-      qsort((void*) this->indexarray->getArrayPtr(),
+      qsort((void*) this->indexarray.getWritableArrayPtr(),
             this->indexarraylength / 3,
             sizeof(int32_t) * 3,
             compare_triangle);
   }
   else {
-    GLint *indices = (GLint*) this->indexarray->getArrayPtr();
+    GLint *indices = this->indexarray.getWritableArrayPtr();
     int prev = 0;
     for (GLint idx : this->partarray) {
       if (idx - prev > 10*3)
@@ -527,11 +532,12 @@ void
 SoFCVertexArrayIndexer::sort_lines(void)
 {
   if (!this->indexarray) return;
+
   // sort lines based on vertex indices to get more hits in the
   // GPU vertex cache.
   if (this->partarray.size() <= 1) {
     if (this->indexarraylength > 10 * 2)
-      qsort((void*) this->indexarray->getArrayPtr(),
+      qsort((void*) this->indexarray.getWritableArrayPtr(),
             this->indexarraylength / 2,
             sizeof(int32_t) * 2,
             compare_line);
@@ -553,22 +559,25 @@ SoFCVertexArrayIndexer::sort_lines(void)
     }
     prev = idx;
   }
+  this->linestripoffsets.clear();
+  this->linestripcounts.clear();
   if (!haslinestrip)
     return;
   this->linestripoffsets.reserve(this->partarray.size());
   this->linestripcounts.reserve(this->partarray.size());
+  this->use_shorts = false;
   prev = 0;
-  int typesize = this->use_shorts ? 2 : 4;
+  int typesize = 4;
   for (int idx : this->partarray) {
     if (idx - prev <= 2) {
       this->linestripoffsets.push_back(prev * typesize);
       this->linestripcounts.push_back(idx-prev);
     } else {
-      this->linestripoffsets.push_back(this->indexarray->getLength() * typesize);
-      this->indexarray->append((*this->indexarray)[prev]);
+      this->linestripoffsets.push_back(this->indexarray.getLength() * typesize);
+      this->indexarray.append(this->indexarray[prev]);
       int count = 1;
       for (int i=prev+1; i<idx; i+=2) {
-        this->indexarray->append((*this->indexarray)[i]);
+        this->indexarray.append(this->indexarray[i]);
         ++count;
       }
       this->linestripcounts.push_back(count);
@@ -590,7 +599,7 @@ SoFCVertexArrayIndexer::getNumIndices(void) const
 const GLint *
 SoFCVertexArrayIndexer::getIndices(void) const
 {
-  return this->indexarray ? this->indexarray->getArrayPtr() : NULL;
+  return this->indexarray ? this->indexarray.getArrayPtr() : NULL;
 }
 
 /*!
@@ -602,11 +611,7 @@ GLint *
 SoFCVertexArrayIndexer::getWriteableIndices(void)
 {
   if (!this->indexarray) return NULL;
-  if (this->indexarray->isAttached()) {
-    this->indexarray = new IndexArray(
-        dataid, this->indexarray, GL_ELEMENT_ARRAY_BUFFER, GL_STREAM_DRAW);
-  }
-  return this->indexarray->getWritableArrayPtr();
+  return this->indexarray.getWritableArrayPtr();
 }
 
 void
@@ -617,7 +622,7 @@ SoFCVertexArrayIndexer::getBoundingBox(const SbMatrix * matrix,
   if (!this->indexarray)
     return;
 
-  const GLint * indices = this->indexarray->getArrayPtr();
+  const GLint * indices = this->indexarray.getArrayPtr();
   if (this->partialindices.empty()) {
     if (matrix) {
       for (int i=0, n=this->indexarraylength; i<n; ++i) {
@@ -650,6 +655,18 @@ SoFCVertexArrayIndexer::getBoundingBox(const SbMatrix * matrix,
         bbox.extendBy(vertices[indices[j]]);
     }
   }
+}
+
+void
+SoFCVertexArrayIndexer::append(SoFCVertexArrayIndexer *other, int offset)
+{
+  if (!other->indexarray)
+    return;
+  int idxoffset = this->indexarraylength;
+  for (int i=0, c=other->indexarraylength; i<c; ++i)
+    addIndex(other->indexarray[i] + offset);
+  for (int i : other->partarray)
+    this->partarray.append(i + idxoffset);
 }
 
 // vim: noai:ts=2:sw=2

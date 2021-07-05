@@ -23,249 +23,256 @@
 #ifndef FC_VERTEX_ATTRIBUTE_H
 #define FC_VERTEX_ATTRIBUTE_H
 
+#include <cstring>
 #include <algorithm>
+#include "COWData.h"
 #include "SoFCVBO.h"
 
-template<class T>
-class SoFCVertexAttribute : protected SoFCVBO 
+template<class T, class L=T>
+class SoFCVertexAttribute 
 {
-  typedef Gui::CoinPtr<SoFCVertexAttribute<T> > Pointer;
-  typedef std::unordered_map<SbFCUniqueId, std::vector<SoFCVertexAttribute*> > Table;
+  struct VBOKey {
+    GLenum target;
+    GLenum usage;
+    const void *data;
+    intptr_t size;
+
+    VBOKey(GLenum t, GLenum u, const void *d, intptr_t s)
+      :target(t), usage(u), data(d), size(s)
+    {}
+
+    bool operator<(const VBOKey &other) const {
+      if (target < other.target)
+        return true;
+      if (target > other.target)
+        return false;
+      if (usage < other.usage)
+        return true;
+      if (usage > other.usage)
+        return false;
+      if (size < other.size)
+        return true;
+      if (size > other.size)
+        return false;
+      if (data == other.data)
+        return false;
+      return std::memcmp(data, other.data, size) < 0;
+    }
+  };
+
+  struct VBOEntry {
+    SoFCVBOData<T, L> *vbo;
+    int refcount;
+    VBOEntry()
+      :vbo(nullptr)
+      ,refcount(0)
+    {}
+  };
+  typedef std::map<VBOKey, VBOEntry> Table;
 
 public:
-  SoFCVertexAttribute(SbFCUniqueId dataid,
-                      SoFCVertexAttribute<T> *proxy,
-                      const GLenum target = GL_ARRAY_BUFFER,
+  SoFCVertexAttribute(const GLenum target = GL_ARRAY_BUFFER,
                       const GLenum usage = GL_STATIC_DRAW)
-      :SoFCVBO(target, usage),
-       refcount(0),
-       len(0),
-       attachtypesize(0)
+      :len(0),
+       key(target, usage, nullptr, 0),
+       entry(nullptr)
   {
-    this->dataid = dataid;
-    if (proxy) {
-      while (proxy->proxy)
-        proxy = proxy->proxy;
-      if (proxy->isAttached())
-        this->proxy = proxy;
-    }
   }
 
-  SoFCVertexAttribute(const SoFCVertexAttribute & rhs) = delete;
-  SoFCVertexAttribute & operator = (const SoFCVertexAttribute & rhs) = delete;
+  SoFCVertexAttribute(const SoFCVertexAttribute & other)
+    :array(other.array)
+    ,len(other.len)
+    ,key(other.key)
+    ,entry(other.entry)
+  {
+    if (this->entry)
+      ++this->entry->refcount;
+  }
 
-  SbFCUniqueId getBufferDataId(void) const { return this->dataid; }
+  SoFCVertexAttribute & operator=(const SoFCVertexAttribute & other) {
+    if (this == &other)
+      return *this;
+    detach();
+    this->array = other.array;
+    this->len = other.len;
+    this->key = other.key;
+    this->entry = other.entry;
+    if (this->entry)
+      ++this->entry->refcount;
+    return *this;
+  }
 
-  SbBool isAttached() const { return this->data != nullptr; }
+  virtual ~SoFCVertexAttribute() {
+    detach();
+  }
 
-  void ref(void) { ++refcount; }
+  GLenum getTarget() const {
+    return this->key.target;
+  }
 
-  void unref(void) {
-    assert(refcount);
-    if (--refcount == 0)
-      delete this;
+  GLenum getUsage() const {
+    return this->key.usage;
+  }
+
+  void init(const SoFCVertexAttribute & other) {
+    *this = other;
+    this->len = 0;
+  }
+
+  SbBool isAttached() const {
+    return this->len && this->entry;
+  }
+
+  void detach() {
+    if (!this->entry) return;
+    if (--this->entry->refcount == 0) {
+      auto vbo = this->entry->vbo;
+      table.erase(this->key);
+      // make sure to delete vbo after erase, because key.data may actually be
+      // stored in the vbo.
+      delete vbo;
+    }
+    this->entry = nullptr;
   }
 
   void bindBuffer(SoState *state, uint32_t contextid) {
-    assert(isAttached());
-    if (this->proxy)
-      this->proxy->bindBuffer(state, contextid);
-    else
-      this->SoFCVBO::bindBuffer(state, contextid);
+    attach();
+    if (this->entry) {
+      this->entry->vbo->bindBuffer(state, contextid);
+    }
   }
 
-  int getLength() const { return len; }
+  int getLength() const {
+    return this->len;
+  }
+
+  explicit operator bool() const {
+    return this->len>0;
+  }
+
+  void truncate(int len = 0) {
+    if (len == this->len)
+      return;
+    detach();
+    if (len < 0)
+      len = 0;
+    if (len <= this->array.size())
+      this->len = len;
+    else
+      this->len = this->array.size();
+  }
+
+  typename std::vector<T>::const_iterator begin() const {
+    return this->array.getData().begin();
+  }
+
+  typename std::vector<T>::const_iterator end() const {
+    assert(this->len <= this->array.size());
+    return this->array.getData().begin() + this->len;
+  }
 
   const T * getArrayPtr(const int start = 0) const {
-    if (this->proxy)
-      return this->proxy->getArrayPtr(start);
     return &this->array[start];
   }
 
   T * getWritableArrayPtr(int start = 0) {
-    assert (!isAttached());
-    if (this->proxy) {
-      this->len = this->proxy->getLength();
-      this->array = this->proxy->array;
-      this->proxy.reset();
+    detach();
+    if (!this->len)
+      this->len = this->array.size();
+    else {
+      assert(this->len > 0 && this->len <= this->array.size());
+      this->array.resize(this->len);
     }
-    return &this->array[start];
+    return this->array.at(start);
   }
 
   const T & operator[](const int index) const {
-    if (this->proxy)
-      return (*this->proxy)[index];
     return this->array[index];
   }
 
-  T & operator[](const int index) {
-    if (this->proxy)
-      return (*this->proxy)[index];
-    return this->array[index];
-  }
-
-  bool operator==(const SoFCVertexAttribute<T> & l) const {
-    if (this == &l)
-      return true;
-    if (this->len != l.len
-        || this->target != l.target
-        || this->usage != l.usage
-        || this->attachtypesize != l.attachtypesize)
-      return false;
-    if (this->proxy) {
-      if (l.proxy)
-        return this->proxy->array == l.proxy->array;
-      return this->proxy->array == l.array;
-    }
-    else if (l.proxy)
-      return this->array == l.proxy->array;
-    return this->array == l.array;
-  }
-
-  int operator!=(const SoFCVertexAttribute<T> & l) const {
-    return !(*this == l);
-  }
-
-  void copyFromProxy()
-  {
-    assert(!isAttached());
-    if (!this->proxy)
+  void set(int index, const T & item) {
+    if (index == this->array.size()) {
+      append(item);
       return;
-    assert(this->array.empty());
-    auto it = this->proxy->array.begin();
-    this->array.clear();
-    this->len = this->proxy->getLength();
-    this->array.insert(this->array.end(), it, it + this->len);
-    this->proxy.reset();
+    }
+    assert(index >= 0 && index < this->array.size());
+    if (this->array[index] != item) {
+      detach();
+      this->array.set(index, item);
+    }
+    if (this->len <= index)
+      this->len = index + 1;
   }
 
   void append(const T & item)
   {
-    if (this->proxy) {
-      if (this->proxy->len > this->len
-          && (*this->proxy)[this->len] == item)
-      {
-        ++this->len;
-        return;
-      }
-      copyCurrent();
+    assert(this->len <= this->array.size());
+    if (this->len == this->array.size()) {
+      detach();
+      this->array.append(item);
+    } else if (this->array[this->len] != item) {
+      detach();
+      this->array.set(this->len, item);
     }
     ++this->len;
-    this->array.push_back(item);
   }
 
-  SoFCVertexAttribute<T> * attach()
-  {
-    assert(!isAttached());
-    if (this->proxy) {
-      assert(this->proxy->isAttached());
-      if (this->proxy->attachtypesize != sizeof(T)) {
-        copyCurrent();
-        return attach();
-      }
-      this->attachtypesize = sizeof(T);
-    }
-    else {
-      this->attachtypesize = sizeof(T);
-      SoFCVertexAttribute<T> * res = find();
-      if (res)
-        return res;
-    }
-    registerAndAttach();
-    return this;
-  }
-
-  template<class L>
-  SoFCVertexAttribute<T> * attachAndConvert()
-  {
-    assert(!isAttached());
-    if (this->proxy) {
-      assert(this->proxy->isAttached());
-      if (this->proxy->attachtypesize == sizeof(L)) {
-        this->attachtypesize = sizeof(L);
-        registerAndAttach();
-        return this;
-      }
-      copyCurrent();
-    }
-    this->attachtypesize = sizeof(L);
-    SoFCVertexAttribute<T> * res = find();
-    if (res)
-      return res;
-    L * dst = (L *)this->allocBufferData(this->getLength() * sizeof(L), this->dataid);
-    const T * src = this->getArrayPtr();
-    for (int i=0; i<this->getLength(); ++i)
-      dst[i] = static_cast<L>(src[i]);
-    this->table[this->dataid].emplace_back(this);
-    return this;
-  }
-
-private:
-  void copyCurrent()
-  {
-    // Copy exiting entry from the proxy before mutating
-    assert(!isAttached());
-    if (!this->proxy)
+  void append(const SoFCVertexAttribute<T, L> &other) {
+    if (!other)
       return;
-    assert(this->array.empty());
-    auto it = this->proxy->array.begin();
-    this->array.insert(this->array.end(), it, it + this->len);
-    this->proxy.reset();
+    assert(this != &other);
+    if (this->len == this->array.size()
+        && other.len == other.array.size())
+    {
+      detach();
+      this->array.append(other.array);
+      this->len += other.array.size();
+      return;
+    }
+    this->array.reserve(this->len + other.len);
+    for (auto &v : other)
+      append(v);
   }
 
-  void registerAndAttach() {
+  void reserve(int len) {
+    if (this->array.reserve(len))
+      detach();
+  }
+
+  bool attach(bool convert = false)
+  {
+    if (this->entry)
+      return this->entry->vbo->isConverted();
+     
     if (!this->len)
-      return;
-    this->setBufferData(this->getArrayPtr(), this->len * this->attachtypesize, this->dataid);
-    this->table[this->dataid].emplace_back(this);
-  }
+      return false;
 
-  SoFCVertexAttribute<T> * find() {
-    for (auto & p : this->table[this->dataid]) {
-      if (*p == *this)
-        return p;
-    }
-    return nullptr;
-  }
-
-  const GLvoid *getBufferData() const {
-    if (this->proxy)
-      return this->proxy->getBufferData();
-    return this->data;
-  }
-
-  // support for CoinPtr
-  friend inline void intrusive_ptr_add_ref(SoFCVertexAttribute<T> * obj) { obj->ref(); }
-  friend inline void intrusive_ptr_release(SoFCVertexAttribute<T> * obj) { obj->unref(); }
-
-  virtual ~SoFCVertexAttribute() {
-    assert(refcount == 0);
-    if (!this->data)
-      return;
-    auto it = this->table.find(this->dataid);
-    if (it == this->table.end())
-      return;
-    for (auto iter=it->second.begin(); iter!=it->second.end(); ++iter) {
-      if (*iter == this) {
-        it->second.erase(iter);
-        if (it->second.empty())
-          this->table.erase(it);
-        break;
-      }
-    }
+    this->array.resize(this->len);
+    this->key.data = &this->array[0];
+    this->key.size = this->len * sizeof(T);
+    auto it = table.insert(std::make_pair(this->key, VBOEntry())).first;
+    this->key = it->first;
+    auto &entry = it->second;
+    ++entry.refcount;
+    if (!entry.vbo) {
+      entry.vbo = new SoFCVBOData<T, L>(this->key.target, this->key.usage);
+      entry.vbo->setBufferData(this->array, convert);
+    } else
+      this->array = entry.vbo->getBufferData();
+    this->entry = &entry;
+    return entry.vbo->isConverted();
   }
 
 private:
-  int refcount;
-  Pointer proxy;
-  std::vector<T> array;
+  COWVector<std::vector<T> > array;
   int len;
-  int attachtypesize;
+  VBOKey key;
+  VBOEntry *entry;
   static FC_COIN_THREAD_LOCAL Table table;
 };
 
-template<class T>
-typename SoFCVertexAttribute<T>::Table SoFCVertexAttribute<T>::table;
+template<class T, class L>
+typename SoFCVertexAttribute<T, L>::Table SoFCVertexAttribute<T, L>::table;
 
 #endif //FC_VERTEX_ATTRIBUTE_H
 // vim: noai:ts=2:sw=2

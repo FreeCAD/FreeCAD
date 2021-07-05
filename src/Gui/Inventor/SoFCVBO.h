@@ -40,14 +40,10 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 
+#include "COWData.h"
 #include "../InventorBase.h"
 
 class SoState;
-
-#ifndef FC_COIN_UNIQUE_ID_DEFINED
-#define FC_COIN_UNIQUE_ID_DEFINED
-typedef uint64_t SbFCUniqueId;
-#endif
 
 class SoFCVBO {
 public:
@@ -57,10 +53,8 @@ public:
 
   static void init(void);
 
-  void setBufferData(const GLvoid * data, intptr_t size, SbFCUniqueId dataid = 0);
-  void * allocBufferData(intptr_t size, SbFCUniqueId dataid = 0);
-  SbFCUniqueId getBufferDataId(void) const;
-  void getBufferData(const GLvoid *& data, intptr_t & size);
+  void discard();
+
   void bindBuffer(SoState *state, uint32_t contextid);
 
   static void setVertexCountLimits(const int minlimit, const int maxlimit);
@@ -81,14 +75,84 @@ protected:
   GLenum usage;
   const GLvoid * data;
   intptr_t datasize;
-  SbFCUniqueId dataid;
-  SbBool didalloc;
+  SbFCUniqueId id;
 
-  std::unordered_map<uint32_t, GLuint> vbohash;
+  struct VBOContext {
+    uint32_t context;
+    GLuint handle;
+
+    VBOContext (uint32_t c, GLuint h)
+      :context(c), handle(h)
+    {}
+
+    bool operator<(const VBOContext &other) const {
+      return context < other.context;
+    }
+
+    bool operator<(uint32_t other) const {
+      return context < other;
+    }
+  };
+  std::vector<VBOContext> vbohash;
 
 private:
   SoFCVBO(const SoFCVBO & rhs); // N/A
   SoFCVBO & operator = (const SoFCVBO & rhs); // N/A
+};
+
+template<class T, class L>
+class SoFCVBOData : public SoFCVBO {
+public:
+  SoFCVBOData(const GLenum target = GL_ARRAY_BUFFER,
+              const GLenum usage = GL_STATIC_DRAW)
+    :SoFCVBO(target, usage)
+  {}
+
+  void setBufferData(const COWVector<std::vector<T> > &data, bool convert = false) {
+    this->discard();
+    this->array = data;
+    if (data.empty())
+      return;
+    if (!convert) {
+      this->array2.reset();
+      this->data = &this->array[0];
+      this->datasize = this->array.size() * sizeof(T);
+    }
+    else {
+      this->array2.clear();
+      for (auto & v : data)
+        this->array2.append(v);
+      this->data = &this->array2[0];
+      this->datasize = this->array2.size() * sizeof(L);
+    }
+  }
+
+  const COWVector<std::vector<T> > & getBufferData() const {
+    return this->array;
+  }
+
+  bool isConverted() const {
+    return !this->array2.empty();
+  }
+
+  void bindBuffer(SoState *state, uint32_t contextid) {
+    if (isConverted()) {
+      assert(this->data == &this->array2[0]);
+      assert(this->datasize == (intptr_t)(this->array2.size() * sizeof(L)));
+    } else {
+      assert(this->data == &this->array[0]);
+      assert(this->datasize == (intptr_t)(this->array.size() * sizeof(T)));
+    }
+    SoFCVBO::bindBuffer(state, contextid);
+  }
+
+protected:
+  COWVector<std::vector<T> > array;
+  COWVector<std::vector<L> > array2;
+
+private:
+  SoFCVBOData(const SoFCVBOData & rhs); // N/A
+  SoFCVBOData & operator = (const SoFCVBOData & rhs); // N/A
 };
 
 #endif // FC_COIN_VBO_H

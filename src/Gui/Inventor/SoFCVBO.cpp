@@ -70,6 +70,8 @@ static int vbo_context_shared = -1;
 static const int DEFAULT_MAX_LIMIT = 1000000000;
 static const int DEFAULT_MIN_LIMIT = 0;
 
+static SbFCUniqueId _VboId;
+
 /*!
   Constructor
 */
@@ -78,10 +80,8 @@ SoFCVBO::SoFCVBO(const GLenum target, const GLenum usage)
     usage(usage),
     data(NULL),
     datasize(0),
-    dataid(0),
-    didalloc(FALSE)
+    id(++_VboId)
 {
-  init();
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
 
@@ -103,16 +103,7 @@ SoFCVBO::vbo_delete(void * closure, uint32_t contextid)
 SoFCVBO::~SoFCVBO()
 {
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
-  // schedule delete for all allocated GL resources
-  for(auto & v : this->vbohash) {
-    void * ptr = (void*) ((uintptr_t) v.second);
-    SoGLCacheContextElement::scheduleDeleteCallback(v.first, SoFCVBO::vbo_delete, ptr);
-  }
-
-  if (this->didalloc) {
-    char * ptr = (char*) this->data;
-    delete[] ptr;
-  }
+  discard();
 }
 
 void
@@ -169,90 +160,21 @@ SoFCVBO::init(void)
   }
 }
 
-/*!
-  Used to allocate buffer data. The user is responsible for filling in
-  the correct type of data in the buffer before the buffer is used.
-
-  \sa setBufferData()
-*/
-void *
-SoFCVBO::allocBufferData(intptr_t size, SbFCUniqueId dataid)
+void
+SoFCVBO::discard()
 {
+  this->data = nullptr;
+  this->datasize = 0;
+
   // schedule delete for all allocated GL resources
   for (auto & v : this->vbohash) {
-    void * ptr = (void*) ((uintptr_t) v.second);
-    SoGLCacheContextElement::scheduleDeleteCallback(v.first, SoFCVBO::vbo_delete, ptr);
+    void * ptr = (void*) ((uintptr_t) v.handle);
+    SoGLCacheContextElement::scheduleDeleteCallback(v.context, SoFCVBO::vbo_delete, ptr);
   }
 
   // clear hash table
   this->vbohash.clear();
-
-  if (this->didalloc && this->datasize == size) {
-    return (void*)this->data;
-  }
-  if (this->didalloc) {
-    char * ptr = (char*) this->data;
-    delete[] ptr;
-  }
-
-  char * ptr = new char[size];
-  this->didalloc = TRUE;
-  this->data = (const GLvoid*) ptr;
-  this->datasize = size;
-  this->dataid = dataid;
-  return (void*) this->data;
 }
-
-/*!
-  Sets the buffer data. \a dataid is a unique id used to identify
-  the buffer data. In Coin it is possible to use the node id
-  (SoNode::getNodeId()) to test if a buffer is valid for a node.
-*/
-void
-SoFCVBO::setBufferData(const GLvoid * data, intptr_t size, SbFCUniqueId dataid)
-{
-  // schedule delete for all allocated GL resources
-  for (auto & v : this->vbohash) {
-    void * ptr = (void*) ((uintptr_t) v.second);
-    SoGLCacheContextElement::scheduleDeleteCallback(v.first, SoFCVBO::vbo_delete, ptr);
-  }
-
-  // clear hash table
-  this->vbohash.clear();
-
-  // clean up old buffer (if any)
-  if (this->didalloc) {
-    char * ptr = (char*) this->data;
-    delete[] ptr;
-  }
-
-  this->data = data;
-  this->datasize = size;
-  this->dataid = dataid;
-  this->didalloc = FALSE;
-}
-
-/*!
-  Returns the buffer data id.
-
-  \sa setBufferData()
-*/
-SbFCUniqueId
-SoFCVBO::getBufferDataId(void) const
-{
-  return this->dataid;
-}
-
-/*!
-  Returns the data pointer and size.
-*/
-void
-SoFCVBO::getBufferData(const GLvoid *& data, intptr_t & size)
-{
-  data = this->data;
-  size = this->datasize;
-}
-
 
 /*!
   Binds the buffer for the context \a contextid.
@@ -271,13 +193,13 @@ SoFCVBO::bindBuffer(SoState *state, uint32_t contextid)
   if (vbo_context_shared && this->vbohash.size()) {
     // TODO: add explicit context sharing group checking. See qt5 implementation
     // in QOpenGLBuffer::bind()
-    cc_glglue_glBindBuffer(glue, this->target, this->vbohash.begin()->second);
+    cc_glglue_glBindBuffer(glue, this->target, this->vbohash.begin()->handle);
     return;
   }
 
   GLuint buffer;
-  auto it = this->vbohash.find(contextid);
-  if (it == this->vbohash.end()) {
+  auto it = std::lower_bound(this->vbohash.begin(), this->vbohash.end(), contextid);
+  if (it == this->vbohash.end() || it->context != contextid) {
     if (state) {
       SoCacheElement::invalidate(state);
       SoGLCacheContextElement::shouldAutoCache(state,
@@ -290,11 +212,11 @@ SoFCVBO::bindBuffer(SoState *state, uint32_t contextid)
                            this->datasize,
                            this->data,
                            this->usage);
-    this->vbohash[contextid] = buffer;
+    this->vbohash.emplace(it, contextid, buffer);
   }
   else {
     // buffer already exists, bind it
-    cc_glglue_glBindBuffer(glue, this->target, it->second);
+    cc_glglue_glBindBuffer(glue, this->target, it->handle);
   }
 }
 
@@ -306,10 +228,10 @@ SoFCVBO::context_destruction_cb(uint32_t context, void * userdata)
 {
   SoFCVBO * thisp = (SoFCVBO*) userdata;
 
-  auto it = thisp->vbohash.find(context);
-  if (it != thisp->vbohash.end()) {
+  auto it = std::lower_bound(thisp->vbohash.begin(), thisp->vbohash.end(), context);
+  if (it != thisp->vbohash.end() && it->context == context) {
     const cc_glglue * glue = cc_glglue_instance((int) context);
-    cc_glglue_glDeleteBuffers(glue, 1, &it->second);
+    cc_glglue_glDeleteBuffers(glue, 1, &it->handle);
     thisp->vbohash.erase(it);
   }
 }

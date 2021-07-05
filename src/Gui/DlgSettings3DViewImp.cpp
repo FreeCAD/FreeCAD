@@ -61,6 +61,9 @@ DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     , ui(new Ui_DlgSettings3DView)
 {
     ui->setupUi(this);
+    QString tooltip = tr(ViewParams::docRenderCacheMergeCount());
+    ui->renderCacheMergeCount->setToolTip(tooltip);
+    ui->renderCacheMergeCountLabel->setToolTip(tooltip);
 }
 
 /**
@@ -104,6 +107,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->radioOrthographic->onSave();
     ui->spinPreselectionDelay->onSave();
     ViewParams::setAutoSortWBList(ui->CheckBox_SortWbList->isChecked());
+    ViewParams::setRenderCacheMergeCount(ui->renderCacheMergeCount->value());
 }
 
 void DlgSettings3DViewImp::loadSettings()
@@ -123,6 +127,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->radioOrthographic->onRestore();
     ui->spinPreselectionDelay->onRestore();
     ui->CheckBox_SortWbList->setChecked(ViewParams::getAutoSortWBList());
+    ui->renderCacheMergeCount->setValue(ViewParams::getRenderCacheMergeCount());
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");

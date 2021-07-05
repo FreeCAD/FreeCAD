@@ -33,10 +33,10 @@
 
 #include "../SoFCUnifiedSelection.h"
 #include "COWData.h"
-#include "SoFCVertexCache.h"
 #include "SoFCRenderCacheManager.h"
 #include "SoAutoZoomTranslation.h"
 
+class SoFCVertexCache;
 class SoFCRenderCacheP;
 class SoState;
 class SoTexture;
@@ -359,14 +359,36 @@ public:
   typedef Gui::SoFCSelectionRoot::Stack CacheKey;
   typedef std::shared_ptr<CacheKey> CacheKeyPtr;
 
+  struct CacheKeyCompare {
+    bool operator()(const CacheKeyPtr &a, const CacheKeyPtr &b) const {
+      if (a == b) return false;
+      if (!a) return true;
+      if (!b) return false;
+      if (a->size() < b->size()) return true;
+      if (a->size() > b->size()) return false;
+      return (*a) < (*b);
+    }
+  };
+  typedef std::set<CacheKeyPtr, CacheKeyCompare> CacheKeySet;
+
   struct VertexCacheEntry {
+    VertexCacheEntry()
+      : mergecount(0)
+      , skipcount(0)
+      , partidx(-1)
+      , identity(true)
+      , resetmatrix(false)
+    {}
+
     VertexCacheEntry(SoFCVertexCache * c,
-                     const SbMatrix &m,
-                     bool iden,
-                     bool reset,
-                     CacheKeyPtr k)
+                        const SbMatrix &m,
+                        bool iden,
+                        bool reset,
+                        CacheKeyPtr k)
       : key(k)
       , cache(c)
+      , mergecount(0)
+      , skipcount(0)
       , partidx(-1)
       , identity(iden)
       , resetmatrix(reset)
@@ -374,8 +396,25 @@ public:
       if (!iden) matrix = m;
     }
 
+    VertexCacheEntry(SoFCVertexCache * c,
+                     const VertexCacheEntry & other,
+                     CacheKeyPtr k)
+      : key(k)
+      , cache(c)
+      , mergecount(other.mergecount)
+      , skipcount(other.skipcount)
+      , partidx(other.partidx)
+      , identity(other.identity)
+      , resetmatrix(other.resetmatrix)
+    {
+      if (!other.identity)
+        matrix = other.matrix;
+    }
+
     CacheKeyPtr key;
     Gui::CoinPtr<SoFCVertexCache> cache;
+    int mergecount;
+    int skipcount;
     int partidx;
     SbMatrix matrix;
     bool identity;
@@ -384,7 +423,7 @@ public:
 
   typedef std::map<Material, std::vector<VertexCacheEntry> > VertexCacheMap;
 
-  SoFCRenderCache(SoState * state, SoNode *node);
+  SoFCRenderCache(SoState * state, SoNode *node, SoFCRenderCache *prev = nullptr);
   virtual ~SoFCRenderCache();
 
   static void initClass();
@@ -411,7 +450,7 @@ public:
 
   void setDepthBuffer(SoState *state, const SoDepthBuffer *);
 
-  const VertexCacheMap & getVertexCaches(int depth=0);
+  const VertexCacheMap & getVertexCaches(bool canmerge, int depth=0);
 
   enum HighlightFlag {
     PreselectHighlight = 1,

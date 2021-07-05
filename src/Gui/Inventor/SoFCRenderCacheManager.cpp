@@ -898,21 +898,22 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
   SoState * state = action->getState();
   SoFCRenderCache *currentcache = self->stack.empty() ? nullptr : self->stack.back();
 
+  RenderCachePtr prevcache;
   CacheSensor * sensor = nullptr;
   if (action->getCurPathCode() == SoAction::BELOW_PATH
       || action->getCurPathCode() == SoAction::NO_PATH) {
     sensor = &self->cachetable[node];
     sensor->attach(self, node);
     for (auto it=sensor->caches.begin(); it!=sensor->caches.end();) {
-      auto & cache = *it;
-      if (cache->getNodeId() != node->getNodeId()) {
+      prevcache = *it;
+      if (prevcache->getNodeId() != node->getNodeId()) {
         it = sensor->caches.erase(it);
         continue;
       }
-      if (cache->isValid(state)) {
+      if (prevcache->isValid(state)) {
         if (currentcache)
-          currentcache->addChildCache(state, cache);
-        self->stack.push_back(cache);
+          currentcache->addChildCache(state, prevcache);
+        self->stack.push_back(prevcache);
         return SoCallbackAction::PRUNE;
       }
       ++it;
@@ -935,7 +936,7 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
     break;
   }
 
-  RenderCachePtr cache(new SoFCRenderCache(state, const_cast<SoNode*>(node)));
+  RenderCachePtr cache(new SoFCRenderCache(state, const_cast<SoNode*>(node), prevcache));
 
   if (sensor)
     sensor->caches.push_back(cache);

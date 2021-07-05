@@ -75,6 +75,7 @@
 #include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/threads/SbMutex.h>
 
+#include <Base/Console.h>
 #include "SoFCVertexCache.h"
 #include "SoFCDiffuseElement.h"
 #include "SoFCVBO.h"
@@ -82,7 +83,11 @@
 #include "SoFCShapeInfo.h"
 #include "COWData.h"
 
+FC_LOG_LEVEL_INIT("Renderer", true, true)
+
 using namespace Gui;
+
+static SbFCUniqueId VertexCacheId;
 
 // *************************************************************************
 typedef SoFCVertexAttribute<SbVec2f> Vec2Array;
@@ -90,6 +95,7 @@ typedef SoFCVertexAttribute<SbVec3f> Vec3Array;
 typedef SoFCVertexAttribute<SbVec4f> Vec4Array;
 typedef SoFCVertexAttribute<uint8_t> ByteArray;
 typedef CoinPtr<SoFCVertexCache> VertexCachePtr;
+typedef SoFCRenderCache::VertexCacheEntry VertexCacheEntry;
 
 #define PRIVATE(obj) ((obj)->pimpl)
 #define PUBLIC(obj) ((obj)->master)
@@ -207,9 +213,9 @@ public:
     const int32_t *partindices = nullptr;
     int partcount = 0;
 
-    CoinPtr<SoFCVertexArrayIndexer::IndexArray> prevtriangleindices;
-    CoinPtr<SoFCVertexArrayIndexer::IndexArray> prevlineindices;
-    CoinPtr<SoFCVertexArrayIndexer::IndexArray> prevpointindices;
+    SoFCVertexArrayIndexer::IndexArray prevtriangleindices;
+    SoFCVertexArrayIndexer::IndexArray prevlineindices;
+    SoFCVertexArrayIndexer::IndexArray prevpointindices;
   };
 
   SoFCVertexCacheP(SoFCVertexCache * m,
@@ -218,6 +224,8 @@ public:
     : master(m),
       prevcache(prev),
       prevattached(false),
+      mergeid(0),
+      cacheid(++VertexCacheId),
       nodeid(id),
       diffuseid(0),
       transpid(0),
@@ -226,8 +234,8 @@ public:
       noseamindexer(nullptr),
       pointindexer(nullptr)
   {
-    this->tmp = new TempStorage;
     if (prev) {
+      this->tmp = new TempStorage;
       if (PRIVATE(prev)->triangleindexer)
         this->tmp->prevtriangleindices = PRIVATE(prev)->triangleindexer->getIndexArray();
       if (PRIVATE(prev)->lineindexer)
@@ -266,7 +274,6 @@ public:
 
     auto indexer = PRIVATE(prevcache)->triangleindexer;
     this->triangleindexer = new SoFCVertexArrayIndexer(*indexer, faces, master->getNumVertices());
-    this->tmp->prevtriangleindices.reset();
 
     if (!indexer->getNumParts() || this->triangleindexer->getNumParts() == indexer->getNumParts())
       return;
@@ -319,8 +326,7 @@ public:
     assert(PRIVATE(prevcache)->lineindexer);
 
     auto indexer = PRIVATE(prevcache)->lineindexer;
-    this->lineindexer = new SoFCVertexArrayIndexer(* indexer, lineindices, master->getNumVertices());
-    this->tmp->prevlineindices.reset();
+    this->lineindexer = new SoFCVertexArrayIndexer(*indexer, lineindices, master->getNumVertices());
   }
 
   template<class IndicesT> void
@@ -335,7 +341,6 @@ public:
 
     auto indexer = PRIVATE(prevcache)->pointindexer;
     this->pointindexer = new SoFCVertexArrayIndexer(*indexer, pointindices, master->getNumVertices());
-    this->tmp->prevpointindices.reset();
   }
 
   SbBool depthSortTriangles(SoState * state, bool fullsort, const SbPlane *sortplane);
@@ -344,7 +349,15 @@ public:
   void initColor(int n);
 
   void close(SoState *);
+  void finalizeTriangleIndexer();
   void checkTransparency();
+
+  bool canMerge(const VertexCacheEntry & entry);
+  bool canMergeWith(const VertexCacheEntry & other);
+  void mergeTo(bool first,
+               SoFCVertexCache *vcache,
+               const SbMatrix & matrix,
+               bool identity) const;
 
   void render(SoState *state,
               SoFCVertexArrayIndexer *indexer,
@@ -400,25 +413,27 @@ public:
   CoinPtr<SoFCVertexCache> prevcache;
   bool prevattached;
 
+  int mergeid;
+  SbFCUniqueId cacheid;
+
   SoNode *node = nullptr;
   SbFCUniqueId nodeid;
   SbFCUniqueId diffuseid;
   SbFCUniqueId transpid;
 
-  CoinPtr<Vec3Array> vertexarray;
-  CoinPtr<Vec3Array> normalarray;
-  CoinPtr<Vec4Array> texcoord0array;
-  CoinPtr<Vec2Array> bumpcoordarray;
-  CoinPtr<ByteArray> colorarray;
-  CoinPtr<ByteArray> prevcolorarray;
-  std::vector<CoinPtr<Vec4Array> > multitexarray;
+  Vec3Array vertexarray;
+  Vec3Array normalarray;
+  Vec4Array texcoord0array;
+  Vec2Array bumpcoordarray;
+  ByteArray colorarray;
+  std::vector<Vec4Array> multitexarray;
 
-  TempStorage* tmp;
+  TempStorage* tmp = nullptr;
 
   int numtranspparts;
 
   bool hastransp;
-  bool hassolid = false;
+  int hassolid = 0;
   int colorpervertex;
   uint32_t firstcolor;
 
@@ -508,6 +523,8 @@ SoFCVertexCache::SoFCVertexCache(SoState * state, SoNode * node, SoFCVertexCache
     pimpl(new SoFCVertexCacheP(this, prev, node->getNodeId()))
 {
   PRIVATE(this)->node = node;
+  if (!PRIVATE(this)->tmp)
+    PRIVATE(this)->tmp = new SoFCVertexCacheP::TempStorage;
   PRIVATE(this)->tmp->state = state;
   PRIVATE(this)->elementselectable = false;
   PRIVATE(this)->ontoppattern = false;
@@ -563,7 +580,6 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
   PRIVATE(this)->texcoord0array = PRIVATE(pprev)->texcoord0array;
   PRIVATE(this)->bumpcoordarray = PRIVATE(pprev)->bumpcoordarray;
   PRIVATE(this)->colorarray = PRIVATE(pprev)->colorarray;
-  PRIVATE(this)->prevcolorarray.reset();
   PRIVATE(this)->multitexarray = PRIVATE(pprev)->multitexarray;
 
   PRIVATE(this)->numtranspparts = PRIVATE(pprev)->numtranspparts;
@@ -595,17 +611,16 @@ SoFCVertexCache::SoFCVertexCache(const SbBox3f &bbox)
   : SoCache(nullptr),
     pimpl(new SoFCVertexCacheP(this, nullptr, 0xD2A25905))
 {
-  PRIVATE(this)->vertexarray = new Vec3Array(PRIVATE(this)->nodeid, nullptr);
   float minx, miny, minz, maxx, maxy, maxz;
   bbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
   for (int i = 0; i < 8; i++) {
-    PRIVATE(this)->vertexarray->append(
+    PRIVATE(this)->vertexarray.append(
         SbVec3f((i&1) ? minx : maxx,
                 (i&2) ? miny : maxy,
                 (i&4) ? minz : maxz));
 
   }
-  auto verts = PRIVATE(this)->vertexarray->getArrayPtr();
+  auto verts = PRIVATE(this)->vertexarray.getArrayPtr();
   static const int indices[][2] = {
     {0,1},
     {1,3},
@@ -626,14 +641,13 @@ SoFCVertexCache::SoFCVertexCache(const SbBox3f &bbox)
     if ((verts[a]-verts[b]).sqrLength() < 1e-12)
       continue;
     if (!PRIVATE(this)->lineindexer)
-      PRIVATE(this)->lineindexer = new SoFCVertexArrayIndexer(PRIVATE(this)->nodeid, nullptr);
+      PRIVATE(this)->lineindexer = new SoFCVertexArrayIndexer;
     PRIVATE(this)->lineindexer->addLine(a,b,0);
   }
-  PRIVATE(this)->vertexarray = PRIVATE(this)->vertexarray->attach();
   if (PRIVATE(this)->lineindexer) {
     PRIVATE(this)->lineindexer->close();
   } else {
-    PRIVATE(this)->pointindexer = new SoFCVertexArrayIndexer(PRIVATE(this)->nodeid, nullptr);
+    PRIVATE(this)->pointindexer = new SoFCVertexArrayIndexer;
     PRIVATE(this)->pointindexer->addPoint(0);
     PRIVATE(this)->pointindexer->close();
   }
@@ -645,8 +659,7 @@ SoFCVertexCache::~SoFCVertexCache()
 }
 
 void
-SoFCVertexCache::setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors,
-                              SbFCUniqueId id)
+SoFCVertexCache::setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors)
 {
   if (!PRIVATE(this)->triangleindexer)
     return;
@@ -656,20 +669,16 @@ SoFCVertexCache::setFaceColors(const std::vector<std::pair<int, uint32_t> > &col
     return;
 
   if (colors.empty()) {
-    PRIVATE(this)->colorarray.reset();
+    PRIVATE(this)->colorarray.truncate();
     PRIVATE(this)->colorpervertex = 0;
     return;
   }
 
   auto prev = PRIVATE(this)->prevcache.get();
   if (!PRIVATE(this)->colorarray || !prev || !PRIVATE(prev)->colorarray) {
-    PRIVATE(this)->colorarray = new ByteArray(id, nullptr);
-    PRIVATE(this)->prevcolorarray.reset();
-    PRIVATE(this)->initColor(PRIVATE(this)->vertexarray->getLength()*4);
-  } else {
-    PRIVATE(this)->colorarray = new ByteArray(id, PRIVATE(prev)->colorarray);
-    PRIVATE(this)->colorarray->copyFromProxy();
-  }
+    PRIVATE(this)->initColor(PRIVATE(this)->vertexarray.getLength()*4);
+  } else
+    PRIVATE(this)->colorarray = PRIVATE(prev)->colorarray;
 
   PRIVATE(this)->colorpervertex = 1;
   auto indices = PRIVATE(this)->triangleindexer->getIndices();
@@ -679,7 +688,7 @@ SoFCVertexCache::setFaceColors(const std::vector<std::pair<int, uint32_t> > &col
     int start, end;
     if (v.first < 0) {
       start = 0;
-      end = PRIVATE(this)->vertexarray->getLength();
+      end = PRIVATE(this)->vertexarray.getLength();
     } else {
       start = v.first ? offsets[v.first-1] : 0;
       end = offsets[v.first];
@@ -691,16 +700,15 @@ SoFCVertexCache::setFaceColors(const std::vector<std::pair<int, uint32_t> > &col
     a = (v.second) & 0xff;
     if (a != 0xff)
       PRIVATE(this)->hastransp = true;
-    auto &array = *PRIVATE(this)->colorarray;
+    auto &array = PRIVATE(this)->colorarray;
     for (int i=start; i<end; ++i) {
       int idx = indices[i] * 4;
-      array[idx] = r;
-      array[idx+1] = g;
-      array[idx+2] = b;
-      array[idx+3] = a;
+      array.set(idx, r);
+      array.set(idx+1, g);
+      array.set(idx+2, b);
+      array.set(idx+3, a);
     }
   }
-  PRIVATE(this)->colorarray = PRIVATE(this)->colorarray->attach();
   PRIVATE(this)->checkTransparency();
 }
 
@@ -726,6 +734,7 @@ void
 SoFCVertexCache::open(SoState * state)
 {
   assert(!PRIVATE(this)->prevattached);
+  assert(PRIVATE(this)->tmp);
 
   SoCacheElement::set(state, this);
 
@@ -735,7 +744,6 @@ SoFCVertexCache::open(SoState * state)
   // for example, primitive shapes like SoCube. In these cases, the correct
   // way is to key on shape's nodeid.
 
-  SbFCUniqueId id;
   SoFCVertexCache *prev = PRIVATE(this)->prevcache;
 
   auto delem = static_cast<const SoFCDiffuseElement*>(
@@ -745,23 +753,18 @@ SoFCVertexCache::open(SoState * state)
     PRIVATE(this)->diffuseid = SoFCDiffuseElement::get(state, &PRIVATE(this)->transpid);
   }
 
-  const SoCoordinateElement *celem = SoCoordinateElement::getInstance(state);
-  id = celem->getNum() ? celem->getNodeId() : (getNodeId() + 0xc9edfc95);
-  PRIVATE(this)->vertexarray = new Vec3Array(id, prev ? PRIVATE(prev)->vertexarray : NULL);
-
-  const SoNormalElement *nelem = SoNormalElement::getInstance(state);
-  id = nelem->getNum() ? nelem->getNodeId() : (getNodeId() + 0xc3e4eff4d);
-  PRIVATE(this)->normalarray =  new Vec3Array(id, prev ? PRIVATE(prev)->normalarray : NULL);
+  if (prev) {
+    PRIVATE(this)->vertexarray.init(PRIVATE(prev)->vertexarray);
+    PRIVATE(this)->normalarray.init(PRIVATE(prev)->normalarray);
+  }
 
   const SoBumpMapCoordinateElement * belem =
     SoBumpMapCoordinateElement::getInstance(state);
 
   PRIVATE(this)->tmp->numbumpcoords = belem->getNum();
   PRIVATE(this)->tmp->bumpcoords = belem->getArrayPtr();
-  if (PRIVATE(this)->tmp->numbumpcoords) {
-    PRIVATE(this)->bumpcoordarray =
-      new Vec2Array(belem->getNodeId(), prev ? PRIVATE(prev)->bumpcoordarray : NULL);
-  }
+  if (prev && PRIVATE(this)->tmp->numbumpcoords)
+    PRIVATE(this)->bumpcoordarray.init(PRIVATE(prev)->bumpcoordarray);
 
   SoLazyElement * lelem = SoLazyElement::getInstance(state);
 
@@ -785,7 +788,7 @@ SoFCVertexCache::open(SoState * state)
   else {
     PRIVATE(this)->colorpervertex = -1;
     if (prev)
-      PRIVATE(this)->prevcolorarray = PRIVATE(prev)->colorarray;
+      PRIVATE(this)->colorarray.init(PRIVATE(prev)->colorarray);
   }
 
   // just store diffuse color with index 0
@@ -836,26 +839,12 @@ SoFCVertexCache::close(SoState * state)
 void
 SoFCVertexCacheP::close(SoState * state)
 {
-  if (this->vertexarray)
-    this->vertexarray = this->vertexarray->attach();
-  if (this->normalarray) {
+  if (this->normalarray && state) {
     if (!this->triangleindexer) {
       const SoNormalElement *nelem = SoNormalElement::getInstance(state);
       if (nelem->getNum() == 0)
-        this->normalarray.reset();
+        this->normalarray.truncate();
     }
-    if (this->normalarray)
-      this->normalarray = this->normalarray->attach();
-  }
-  if (this->texcoord0array)
-    this->texcoord0array = this->texcoord0array->attach();
-  if (this->bumpcoordarray)
-    this->bumpcoordarray = this->bumpcoordarray->attach();
-  if (this->colorarray)
-    this->colorarray = this->colorarray->attach();
-  for (auto & entry : this->multitexarray) {
-    if (entry)
-      entry = entry->attach();
   }
   if (this->triangleindexer)
     this->triangleindexer->close(this->tmp->partindices, this->tmp->partcount);
@@ -864,82 +853,96 @@ SoFCVertexCacheP::close(SoState * state)
   if (this->pointindexer)
     this->pointindexer->close();
 
-  if (this->triangleindexer && this->triangleindexer->getNumParts()) {
-    const int *parts = this->triangleindexer->getPartOffsets();
-    const GLint *indices = this->triangleindexer->getIndices();
-    const SbVec3f *vertices = this->vertexarray->getArrayPtr();
-    int prev = 0;
-    int numparts = this->triangleindexer->getNumParts();
-    this->partcenters.reserve(numparts);
-    for (int i=0; i<numparts; ++i) {
-      SbBox3f bbox;
-      int n = parts[i]-prev;
-      for (int k=0; k<n; ++k)
-        bbox.extendBy(vertices[indices[k+prev]]);
-      float dx,dy,dz;
-      bbox.getSize(dx, dy, dz);
-      if (dx > 1e-6f && dy > 1e-6f && dz > 1e-6)
-        this->nonflatparts.push_back(i);
-      this->partcenters.push_back(bbox.getCenter());
-      prev = parts[i];
+  finalizeTriangleIndexer();
+
+  delete this->tmp;
+  this->tmp = nullptr;
+}
+
+void
+SoFCVertexCacheP::finalizeTriangleIndexer()
+{
+  if (!this->triangleindexer || !this->triangleindexer->getNumParts())
+    return;
+
+  const int *parts = this->triangleindexer->getPartOffsets();
+  const GLint *indices = this->triangleindexer->getIndices();
+  const SbVec3f *vertices = this->vertexarray.getArrayPtr();
+  int prev = 0;
+  int numparts = this->triangleindexer->getNumParts();
+  this->partcenters.clear();
+  this->nonflatparts.clear();
+  this->partcenters.reserve(numparts);
+  for (int i=0; i<numparts; ++i) {
+    SbBox3f bbox;
+    int n = parts[i]-prev;
+    for (int k=0; k<n; ++k)
+      bbox.extendBy(vertices[indices[k+prev]]);
+    float dx,dy,dz;
+    bbox.getSize(dx, dy, dz);
+    if (dx > 1e-6f && dy > 1e-6f && dz > 1e-6)
+      this->nonflatparts.push_back(i);
+    this->partcenters.push_back(bbox.getCenter());
+    prev = parts[i];
+  }
+
+  auto field = this->node ? this->node->getField(*ShapeInfoField) : nullptr;
+  if (field && field->isOfType(SoMFNode::getClassTypeId())) {
+    this->solidpartindices.clear();
+    auto nodes = static_cast<SoMFNode*>(field);
+    int solidpartcount = 0;
+    for (int i=0, c=nodes->getNum(); i<c; ++i) {
+      if (!nodes->getNode(i)
+          || !nodes->getNode(i)->isOfType(SoFCShapeInstance::getClassTypeId()))
+        continue;
+      auto instance = static_cast<SoFCShapeInstance*>(nodes->getNode(i));
+      if (!instance->shapeInfo.getValue()
+          || !instance->shapeInfo.getValue()->isOfType(SoFCShapeInfo::getClassTypeId()))
+        continue;
+      auto info = static_cast<SoFCShapeInfo*>(instance->shapeInfo.getValue());
+      if (info->shapeType.getValue() == SoFCShapeInfo::SOLID)
+        solidpartcount += info->partCount.getValue();
     }
-
-    auto field = this->node ? this->node->getField(*ShapeInfoField) : nullptr;
-    if (field && field->isOfType(SoMFNode::getClassTypeId())) {
-      auto nodes = static_cast<SoMFNode*>(field);
-
-      int typesize = this->triangleindexer->useShorts() ? 2 : 4;
-      const int * parts = this->triangleindexer->getPartOffsets();
-
-      int solidpartcount = 0;
+    if (solidpartcount >= numparts)
+      this->hassolid = 2;
+    else if (solidpartcount) {
+      this->hassolid = 1;
       for (int i=0, c=nodes->getNum(); i<c; ++i) {
         if (!nodes->getNode(i)
-            || !nodes->getNode(i)->isOfType(SoFCShapeInstance::getClassTypeId()))
+            || nodes->getNode(i)->isOfType(SoFCShapeInstance::getClassTypeId()))
           continue;
         auto instance = static_cast<SoFCShapeInstance*>(nodes->getNode(i));
         if (!instance->shapeInfo.getValue()
             || !instance->shapeInfo.getValue()->isOfType(SoFCShapeInfo::getClassTypeId()))
           continue;
         auto info = static_cast<SoFCShapeInfo*>(instance->shapeInfo.getValue());
-        if (info->shapeType.getValue() == SoFCShapeInfo::SOLID)
-          solidpartcount += info->partCount.getValue();
-      }
-      if (solidpartcount >= numparts)
-        this->hassolid = true;
-      else if (solidpartcount) {
-        this->hassolid = true;
-        for (int i=0, c=nodes->getNum(); i<c; ++i) {
-          if (!nodes->getNode(i)
-              || nodes->getNode(i)->isOfType(SoFCShapeInstance::getClassTypeId()))
-            continue;
-          auto instance = static_cast<SoFCShapeInstance*>(nodes->getNode(i));
-          if (!instance->shapeInfo.getValue()
-              || !instance->shapeInfo.getValue()->isOfType(SoFCShapeInfo::getClassTypeId()))
-            continue;
-          auto info = static_cast<SoFCShapeInfo*>(instance->shapeInfo.getValue());
-          if (info->shapeType.getValue() != SoFCShapeInfo::SOLID)
-            continue;
-          int partidx = instance->partIndex.getValue();
-          int count = info->partCount.getValue();
-          if (count <= 0 || partidx + count > numparts)
-            continue;
-          if (info->shapeType.getValue() == SoFCShapeInfo::SOLID) {
-            for (int j=0; j<count; ++j) {
-              int prev = j+partidx == 0 ? 0 : parts[j+partidx-1];
-              this->solidpartindices.push_back(j+partidx);
-              this->solidpartarray.push_back(prev * typesize);
-              this->solidpartcounts.push_back(parts[j] - prev);
-            }
-          }
-          partidx += count;
+        if (info->shapeType.getValue() != SoFCShapeInfo::SOLID)
+          continue;
+        int partidx = instance->partIndex.getValue();
+        int count = info->partCount.getValue();
+        if (count <= 0 || partidx + count > numparts)
+          continue;
+        if (info->shapeType.getValue() == SoFCShapeInfo::SOLID) {
+          for (int j=0; j<count; ++j)
+            this->solidpartindices.push_back(j+partidx);
         }
+        partidx += count;
       }
     }
   }
 
+  this->solidpartarray.clear();
+  this->solidpartcounts.clear();
+  int typesize = this->triangleindexer->useShorts() ? 2 : 4;
+  if (this->solidpartindices.size()) {
+    for (int j : this->solidpartindices) {
+      int prev = j == 0 ? 0 : parts[j-1];
+      this->solidpartarray.push_back(prev * typesize);
+      this->solidpartcounts.push_back(parts[j] - prev);
+    }
+  }
+
   this->checkTransparency();
-  delete this->tmp;
-  this->tmp = nullptr;
 }
 
 void
@@ -961,7 +964,7 @@ SoFCVertexCacheP::checkTransparency()
       bool transp = false;
       int n = parts[i]-prev;
       for (int k=0; k<n; ++k) {
-        if ((*this->colorarray)[indices[k+prev]*4 + 3] != 0xff) {
+        if (this->colorarray[indices[k+prev]*4 + 3] != 0xff) {
           transp = true;
           break;
         }
@@ -1061,7 +1064,7 @@ SoFCVertexCacheP::render(SoState * state,
                          int32_t drawcount)
 {
   if (!indexer || !indexer->getNumIndices()) return;
-  if (!this->vertexarray || !this->vertexarray->getLength()) return;
+  if (!this->vertexarray || !this->vertexarray.getLength()) return;
   int lastenabled = -1;
 
   const SbBool * enabled = NULL;
@@ -1077,7 +1080,7 @@ SoFCVertexCacheP::render(SoState * state,
   const uint32_t contextid = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(static_cast<int>(contextid));
 
-  int vnum = this->vertexarray->getLength();
+  int vnum = this->vertexarray.getLength();
   if (SoFCVBO::shouldCreateVBO(state, contextid, vnum)) {
     this->enableVBOs(state, glue, contextid, color, normal, texture, enabled, lastenabled);
     indexer->render(state, glue, TRUE, contextid, offsets, counts, drawcount);
@@ -1216,18 +1219,15 @@ SoFCVertexCacheP::prepare()
 
   if (!this->tmp->multielem && this->lastenabled >= 0) {
     this->tmp->multielem = SoMultiTextureCoordinateElement::getInstance(this->tmp->state);
-    SbFCUniqueId id = static_cast<const MyMultiTextureCoordinateElement*>(this->tmp->multielem)->getNodeId(0);
-    this->texcoord0array =
-      new Vec4Array(id, this->prevcache ? PRIVATE(this->prevcache)->texcoord0array : NULL);
+    if (this->prevcache)
+      this->texcoord0array.init(PRIVATE(this->prevcache)->texcoord0array);
 
     if (this->lastenabled > 0) {
+      this->multitexarray.clear();
       this->multitexarray.resize(this->lastenabled+1);
       for (int i = 1; i < this->lastenabled+1; ++i) {
-        id = static_cast<const MyMultiTextureCoordinateElement*>(this->tmp->multielem)->getNodeId(i);
-        Vec4Array *prev = NULL;
         if (this->prevcache && PRIVATE(this->prevcache)->lastenabled >= i)
-          prev = PRIVATE(this->prevcache)->multitexarray[i];
-        this->multitexarray[i] = new Vec4Array(id, prev);
+          this->multitexarray[i].init(PRIVATE(this->prevcache)->multitexarray[i]);
       }
     }
   }
@@ -1318,20 +1318,20 @@ SoFCVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     }
 
     auto res = PRIVATE(this)->tmp->vhash.insert(
-        std::make_pair(v, PRIVATE(this)->vertexarray->getLength()));
+        std::make_pair(v, PRIVATE(this)->vertexarray.getLength()));
     if (res.second) {
       PRIVATE(this)->addVertex(v);
       // update texture coordinates for unit 1-n
       for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
         if (v.texcoordidx >= 0 &&
             (PRIVATE(this)->tmp->multielem->getType(j) == SoMultiTextureCoordinateElement::EXPLICIT)) {
-          PRIVATE(this)->multitexarray[j]->append(PRIVATE(this)->tmp->multielem->get4(j, v.texcoordidx));
+          PRIVATE(this)->multitexarray[j].append(PRIVATE(this)->tmp->multielem->get4(j, v.texcoordidx));
         }
         else if (PRIVATE(this)->tmp->multielem->getType(j) == SoMultiTextureCoordinateElement::FUNCTION) {
-          PRIVATE(this)->multitexarray[j]->append(PRIVATE(this)->tmp->multielem->get(j, v.vertex, v.normal));
+          PRIVATE(this)->multitexarray[j].append(PRIVATE(this)->tmp->multielem->get(j, v.vertex, v.normal));
         }
         else {
-          PRIVATE(this)->multitexarray[j]->append(v.texcoord0);
+          PRIVATE(this)->multitexarray[j].append(v.texcoord0);
         }
       }
     }
@@ -1340,8 +1340,7 @@ SoFCVertexCache::addTriangle(const SoPrimitiveVertex * v0,
 
   if (!PRIVATE(this)->triangleindexer) {
     PRIVATE(this)->triangleindexer =
-      new SoFCVertexArrayIndexer(PRIVATE(this)->nodeid, PRIVATE(this)->tmp->prevtriangleindices);
-    PRIVATE(this)->tmp->prevtriangleindices = NULL;
+      new SoFCVertexArrayIndexer(PRIVATE(this)->tmp->prevtriangleindices);
   }
   PRIVATE(this)->triangleindexer->addTriangle(triangleindices[0],
                                               triangleindices[1],
@@ -1419,20 +1418,20 @@ SoFCVertexCache::addLine(const SoPrimitiveVertex * v0,
     }
 
     auto res = PRIVATE(this)->tmp->vhash.insert(
-        std::make_pair(v, PRIVATE(this)->vertexarray->getLength()));
+        std::make_pair(v, PRIVATE(this)->vertexarray.getLength()));
     if (res.second) {
       PRIVATE(this)->addVertex(v);
       // update texture coordinates for unit 1-n
       for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
         if (v.texcoordidx >= 0 &&
             (PRIVATE(this)->tmp->multielem->getType(j) == SoMultiTextureCoordinateElement::EXPLICIT)) {
-          PRIVATE(this)->multitexarray[j]->append(PRIVATE(this)->tmp->multielem->get4(j, v.texcoordidx));
+          PRIVATE(this)->multitexarray[j].append(PRIVATE(this)->tmp->multielem->get4(j, v.texcoordidx));
         }
         else if (PRIVATE(this)->tmp->multielem->getType(j) == SoMultiTextureCoordinateElement::FUNCTION) {
-          PRIVATE(this)->multitexarray[j]->append(PRIVATE(this)->tmp->multielem->get(j, v.vertex, v.normal));
+          PRIVATE(this)->multitexarray[j].append(PRIVATE(this)->tmp->multielem->get(j, v.vertex, v.normal));
         }
         else {
-          PRIVATE(this)->multitexarray[j]->append(v.texcoord0);
+          PRIVATE(this)->multitexarray[j].append(v.texcoord0);
         }
       }
     }
@@ -1441,8 +1440,7 @@ SoFCVertexCache::addLine(const SoPrimitiveVertex * v0,
 
   if (!PRIVATE(this)->lineindexer) {
     PRIVATE(this)->lineindexer =
-      new SoFCVertexArrayIndexer(PRIVATE(this)->nodeid, PRIVATE(this)->tmp->prevlineindices);
-    PRIVATE(this)->tmp->prevlineindices = NULL;
+      new SoFCVertexArrayIndexer(PRIVATE(this)->tmp->prevlineindices);
   }
   PRIVATE(this)->lineindexer->addLine(lineindices[0], lineindices[1], ld ? ld->getLineIndex() : -1);
 }
@@ -1507,25 +1505,24 @@ SoFCVertexCache::addPoint(const SoPrimitiveVertex * v0)
 
   if (!PRIVATE(this)->pointindexer) {
     PRIVATE(this)->pointindexer =
-      new SoFCVertexArrayIndexer(PRIVATE(this)->nodeid, PRIVATE(this)->tmp->prevpointindices);
-    PRIVATE(this)->tmp->prevpointindices = NULL;
+      new SoFCVertexArrayIndexer(PRIVATE(this)->tmp->prevpointindices);
   }
 
   auto res = PRIVATE(this)->tmp->vhash.insert(
-      std::make_pair(v, PRIVATE(this)->vertexarray->getLength()));
+      std::make_pair(v, PRIVATE(this)->vertexarray.getLength()));
   if (res.second) {
     PRIVATE(this)->addVertex(v);
     // update texture coordinates for unit 1-n
     for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
       if (v.texcoordidx >= 0 &&
           (PRIVATE(this)->tmp->multielem->getType(j) == SoMultiTextureCoordinateElement::EXPLICIT)) {
-        PRIVATE(this)->multitexarray[j]->append(PRIVATE(this)->tmp->multielem->get4(j, v.texcoordidx));
+        PRIVATE(this)->multitexarray[j].append(PRIVATE(this)->tmp->multielem->get4(j, v.texcoordidx));
       }
       else if (PRIVATE(this)->tmp->multielem->getType(j) == SoMultiTextureCoordinateElement::FUNCTION) {
-        PRIVATE(this)->multitexarray[j]->append(PRIVATE(this)->tmp->multielem->get(j, v.vertex, v.normal));
+        PRIVATE(this)->multitexarray[j].append(PRIVATE(this)->tmp->multielem->get(j, v.vertex, v.normal));
       }
       else {
-        PRIVATE(this)->multitexarray[j]->append(v.texcoord0);
+        PRIVATE(this)->multitexarray[j].append(v.texcoord0);
       }
     }
   }
@@ -1557,37 +1554,37 @@ SoFCVertexCache::highlightIndices(int * pindex)
 int
 SoFCVertexCache::getNumVertices(void) const
 {
-  return PRIVATE(this)->vertexarray ? PRIVATE(this)->vertexarray->getLength() : 0;
+  return PRIVATE(this)->vertexarray ? PRIVATE(this)->vertexarray.getLength() : 0;
 }
 
 const SbVec3f *
 SoFCVertexCache::getVertexArray(void) const
 {
-  return PRIVATE(this)->vertexarray ? PRIVATE(this)->vertexarray->getArrayPtr() : NULL;
+  return PRIVATE(this)->vertexarray ? PRIVATE(this)->vertexarray.getArrayPtr() : NULL;
 }
 
 const SbVec3f *
 SoFCVertexCache::getNormalArray(void) const
 {
-  return PRIVATE(this)->normalarray ? PRIVATE(this)->normalarray->getArrayPtr() : NULL;
+  return PRIVATE(this)->normalarray ? PRIVATE(this)->normalarray.getArrayPtr() : NULL;
 }
 
 const SbVec4f *
 SoFCVertexCache::getTexCoordArray(void) const
 {
-  return PRIVATE(this)->texcoord0array ? PRIVATE(this)->texcoord0array->getArrayPtr() : NULL;
+  return PRIVATE(this)->texcoord0array ? PRIVATE(this)->texcoord0array.getArrayPtr() : NULL;
 }
 
 const SbVec2f *
 SoFCVertexCache::getBumpCoordArray(void) const
 {
-  return PRIVATE(this)->bumpcoordarray ? PRIVATE(this)->bumpcoordarray->getArrayPtr() : NULL;
+  return PRIVATE(this)->bumpcoordarray ? PRIVATE(this)->bumpcoordarray.getArrayPtr() : NULL;
 }
 
 const uint8_t *
 SoFCVertexCache::getColorArray(void) const
 {
-  return PRIVATE(this)->colorarray ? PRIVATE(this)->colorarray->getArrayPtr() : NULL;
+  return PRIVATE(this)->colorarray ? PRIVATE(this)->colorarray.getArrayPtr() : NULL;
 }
 
 int
@@ -1616,7 +1613,7 @@ SoFCVertexCache::colorPerVertex(void) const
   return PRIVATE(this)->colorpervertex > 0;
 }
 
-SbBool
+int
 SoFCVertexCache::hasSolid() const
 {
   return PRIVATE(this)->hassolid;
@@ -1627,12 +1624,12 @@ SoFCVertexCache::getMultiTextureCoordinateArray(const int unit) const
 {
   assert(unit <= PRIVATE(this)->lastenabled);
   if (!unit)
-    return PRIVATE(this)->texcoord0array ? PRIVATE(this)->texcoord0array->getArrayPtr() : NULL;
+    return PRIVATE(this)->texcoord0array ? PRIVATE(this)->texcoord0array.getArrayPtr() : NULL;
 
   if (unit < (int)PRIVATE(this)->multitexarray.size()
       && PRIVATE(this)->multitexarray[unit]
-      && PRIVATE(this)->multitexarray[unit]->getArrayPtr())
-    return PRIVATE(this)->multitexarray[unit]->getArrayPtr();
+      && PRIVATE(this)->multitexarray[unit].getArrayPtr())
+    return PRIVATE(this)->multitexarray[unit].getArrayPtr();
 
   return NULL;
 }
@@ -1668,7 +1665,7 @@ SbBool
 SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort, const SbPlane *plane)
 {
   if (!this->vertexarray) return FALSE;
-  int numv = this->vertexarray->getLength();
+  int numv = this->vertexarray.getLength();
   int numtri = PUBLIC(this)->getNumTriangleIndices() / 3;
   if (numv == 0 || numtri == 0) return FALSE;
 
@@ -1693,7 +1690,7 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort, const SbPla
   // move plane into object space
   sortplane.transform(SoModelMatrixElement::get(state).inverse());
 
-  const SbVec3f * vptr = this->vertexarray->getArrayPtr();
+  const SbVec3f * vptr = this->vertexarray.getArrayPtr();
 
   // If having parts, sort the parts (i.e. group of triangles) instead of
   // individual triangles
@@ -1736,7 +1733,7 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort, const SbPla
     const int *parts = this->triangleindexer->getPartOffsets();
 #ifdef FC_RENDER_SORT_NEAREST
     const GLint *indices = this->triangleindexer->getIndices();
-    const SbVec3f *vertices = this->vertexarray->getArrayPtr();
+    const SbVec3f *vertices = this->vertexarray.getArrayPtr();
     for(auto & entry : this->deptharray) {
       int prev = entry.index == 0 ? 0 : parts[entry.index-1];
       int n = parts[entry.index]-prev;
@@ -1812,27 +1809,23 @@ SoFCVertexCacheP::initColor(int n)
   b = (this->firstcolor >> 8) & 0xff;
   a = (this->firstcolor) & 0xff;
   for (int i=0; i<n; i+=4) {
-    this->colorarray->append(r);
-    this->colorarray->append(g);
-    this->colorarray->append(b);
-    this->colorarray->append(a);
+    this->colorarray.append(r);
+    this->colorarray.append(g);
+    this->colorarray.append(b);
+    this->colorarray.append(a);
   }
 }
 
 void
 SoFCVertexCacheP::addVertex(const Vertex & v)
 {
-  this->vertexarray->append(v.vertex);
-  this->normalarray->append(v.normal);
-  if (this->texcoord0array) this->texcoord0array->append(v.texcoord0);
-  if (this->bumpcoordarray) this->bumpcoordarray->append(v.bumpcoord);
+  this->vertexarray.append(v.vertex);
+  this->normalarray.append(v.normal);
+  if (this->texcoord0array) this->texcoord0array.append(v.texcoord0);
+  if (this->bumpcoordarray) this->bumpcoordarray.append(v.bumpcoord);
 
-  if (!this->colorarray && this->colorpervertex > 0) {
-    SbFCUniqueId id = this->diffuseid + this->transpid + 0xb68cfe55;
-    this->colorarray = new ByteArray(id, this->prevcolorarray);
-    this->prevcolorarray.reset();
-    initColor(this->vertexarray->getLength()*4 - 4);
-  }
+  if (!this->colorarray && this->colorpervertex > 0)
+    initColor(this->vertexarray.getLength()*4 - 4);
 
   if (this->colorarray) {
     uint8_t r,g,b,a;
@@ -1840,10 +1833,10 @@ SoFCVertexCacheP::addVertex(const Vertex & v)
     g = (v.color >> 16) & 0xff;
     b = (v.color >> 8) & 0xff;
     a = (v.color) & 0xff;
-    this->colorarray->append(r);
-    this->colorarray->append(g);
-    this->colorarray->append(b);
-    this->colorarray->append(a);
+    this->colorarray.append(r);
+    this->colorarray.append(g);
+    this->colorarray.append(b);
+    this->colorarray.append(a);
   }
 }
 
@@ -1856,32 +1849,32 @@ SoFCVertexCacheP::enableArrays(const cc_glglue * glue,
   int i;
   if (color && this->colorarray) {
     cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0,
-                             this->colorarray->getArrayPtr());
+                             this->colorarray.getArrayPtr());
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
   }
 
   if (texture && this->texcoord0array) {
     cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
-                                this->texcoord0array->getArrayPtr());
+                                this->texcoord0array.getArrayPtr());
     cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
     for (i = 1; i <= lastenabled; i++) {
       if (enabled[i] && this->multitexarray[i]) {
         cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
         cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
-                                    this->multitexarray[i]->getArrayPtr());
+                                    this->multitexarray[i].getArrayPtr());
         cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
       }
     }
   }
   if (normal && this->normalarray) {
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
-                              this->normalarray->getArrayPtr());
+                              this->normalarray.getArrayPtr());
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
-                            this->vertexarray->getArrayPtr());
+                            this->vertexarray.getArrayPtr());
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 }
 
@@ -1936,30 +1929,30 @@ SoFCVertexCacheP::enableVBOs(SoState *state,
 
   int i;
   if (color && this->colorarray) {
-    this->colorarray->bindBuffer(state, contextid);
+    this->colorarray.bindBuffer(state, contextid);
     cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
   }
   if (texture && this->texcoord0array) {
-    this->texcoord0array->bindBuffer(state, contextid);
+    this->texcoord0array.bindBuffer(state, contextid);
     cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
     for (i = 1; i <= lastenabled; i++) {
       if (!enabled[i] || !this->multitexarray[i]) continue;
-      this->multitexarray[i]->bindBuffer(state, contextid);
+      this->multitexarray[i].bindBuffer(state, contextid);
       cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
       cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0, NULL);
       cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
     }
   }
   if (normal && this->normalarray) {
-    this->normalarray->bindBuffer(state, contextid);
+    this->normalarray.bindBuffer(state, contextid);
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
 
-  this->vertexarray->bindBuffer(state, contextid);
+  this->vertexarray.bindBuffer(state, contextid);
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 }
@@ -1990,15 +1983,15 @@ SoFCVertexCacheP::renderImmediate(const cc_glglue * glue,
   const SbVec4f * texcoordptr = NULL;
   
   if (color && this->colorarray) {
-    colorptr = this->colorarray->getArrayPtr();
+    colorptr = this->colorarray.getArrayPtr();
   }
   if (normal && this->normalarray) {
-    normalptr = this->normalarray->getArrayPtr();
+    normalptr = this->normalarray.getArrayPtr();
   }
   if (texture && this->texcoord0array) {
-    texcoordptr = this->texcoord0array->getArrayPtr();
+    texcoordptr = this->texcoord0array.getArrayPtr();
   }
-  vertexptr = this->vertexarray->getArrayPtr();
+  vertexptr = this->vertexarray.getArrayPtr();
 
   for (int i = 0; i < numindices; i++) {
     const int idx = indices[i];
@@ -2013,7 +2006,7 @@ SoFCVertexCacheP::renderImmediate(const cc_glglue * glue,
 
       for (int j = 1; j <= lastenabled; j++) {
         if (!enabled[j] || !this->multitexarray[j]) continue;
-        const SbVec4f * mt = this->multitexarray[j]->getArrayPtr();
+        const SbVec4f * mt = this->multitexarray[j].getArrayPtr();
         cc_glglue_glMultiTexCoord4fv(glue,
                                     GL_TEXTURE0 + j,
                                     reinterpret_cast<const GLfloat *>(&mt[idx]));
@@ -2181,8 +2174,8 @@ SoFCVertexCacheP::getColor(const SoFCVertexArrayIndexer * indexer, int part) con
   if (!indexer || part < 0 || !this->colorpervertex || !this->colorarray)
     return color;
 
-  const uint8_t * colors = this->colorarray->getArrayPtr();
-  int colorlen = this->colorarray->getLength();
+  const uint8_t * colors = this->colorarray.getArrayPtr();
+  int colorlen = this->colorarray.getLength();
   const int * indices = indexer->getIndices();
   int numindices = indexer->getNumIndices();
 
@@ -2234,6 +2227,272 @@ SoFCVertexCache::getWholeCache() const
   if (PRIVATE(this)->prevattached)
     return PRIVATE(this)->prevcache;
   return const_cast<SoFCVertexCache*>(this);
+}
+
+bool
+SoFCVertexCacheP::canMerge(const VertexCacheEntry & entry)
+{
+  if (entry.partidx >= 0 || entry.resetmatrix)
+    return false;
+  auto self = PRIVATE(entry.cache);
+  if (!self->vertexarray)
+    return false;
+  if (!self->triangleindexer
+      && !self->lineindexer
+      && !self->pointindexer)
+    return false;
+  if (self->triangleindexer
+      && self->triangleindexer->getPartialIndices().size())
+      return false;
+  if (self->lineindexer
+      && self->lineindexer->getPartialIndices().size())
+    return false;
+  if (self->pointindexer
+      && self->pointindexer->getPartialIndices().size())
+    return false;
+  return true;
+}
+
+bool
+SoFCVertexCacheP::canMergeWith(const VertexCacheEntry & other_entry)
+{
+  auto other = PRIVATE(other_entry.cache);
+  if (!other->canMerge(other_entry))
+    return false;
+
+  if (this->triangleindexer) {
+    if (!other->triangleindexer
+        || (!!this->triangleindexer->getNumParts() != !!other->triangleindexer->getNumParts()))
+      return false;
+  } else if (other->triangleindexer)
+    return false;
+
+  if (this->lineindexer) {
+     if (!other->lineindexer
+        || (!!this->lineindexer->getNumParts() != !!other->lineindexer->getNumParts()))
+       return false;
+  } else if (other->lineindexer)
+    return false;
+
+  if ((this->pointindexer && !other->pointindexer)
+      || (!this->pointindexer && other->pointindexer))
+    return false;
+
+  if (other->pointindexer && other->pointindexer->getPartialIndices().size())
+    return false;
+
+  if (!this->vertexarray || !other->vertexarray)
+    return false;
+
+  if ((!this->normalarray && other->normalarray)
+      || (this->normalarray && !other->normalarray))
+    return false;
+
+  if ((!this->texcoord0array && other->texcoord0array)
+      || (this->texcoord0array && !other->texcoord0array))
+    return false;
+
+  if ((!this->bumpcoordarray && other->bumpcoordarray)
+      || (this->bumpcoordarray && !other->bumpcoordarray))
+    return false;
+
+  if ((!this->colorarray && other->colorarray)
+      || (this->colorarray && !other->colorarray))
+    return false;
+
+  if (this->multitexarray.size() != other->multitexarray.size())
+    return false;
+
+  int i = -1;
+  for (auto & entry : this->multitexarray) {
+    ++i;
+    if ((entry && !other->multitexarray[i]) || (!entry && other->multitexarray[i]))
+      return false;
+  }
+
+  return true;
+}
+
+int
+SoFCVertexCache::getMergeId() const
+{
+  return PRIVATE(this)->mergeid;
+}
+
+void
+SoFCVertexCache::MergeMap::cleanup()
+{
+  ++this->mergeid;
+  int count = 0;
+  for (auto it=this->map.begin(); it!=this->map.end();) {
+    if (it->second->getMergeId() != this->mergeid) {
+      it = this->map.erase(it);
+      ++count;
+    } else
+      ++it;
+  }
+
+  if (count && FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    FC_MSG("discard " << count << " merged caches");
+}
+
+SoFCVertexCache *
+SoFCVertexCache::merge(std::shared_ptr<MergeMap> & mergemap,
+                       std::vector<VertexCacheEntry> & entries,
+                       int idx,
+                       int & mergecount)
+{
+  assert(this == entries[idx].cache);
+
+  if (!PRIVATE(this)->canMerge(entries[idx]))
+    return nullptr;
+
+  std::vector<SbFCUniqueId> mergeids;
+  mergecount = 0;
+  int i = idx + entries[idx].mergecount + 1;
+  for (int c=(int)entries.size(); i<c; ++i) {
+    if (!PRIVATE(this)->canMergeWith(entries[i])) {
+      if (!mergecount)
+        return nullptr;
+      break;
+    }
+    mergeids.push_back(PRIVATE(entries[i].cache)->cacheid);
+    ++entries[i].skipcount;
+    mergecount += entries[i].mergecount + 1;
+    i += entries[i].mergecount;
+  }
+  mergecount += entries[idx].mergecount + 1;
+  ++entries[idx].skipcount;
+  mergeids.push_back(PRIVATE(this)->cacheid);
+  if (!mergemap)
+    mergemap = std::make_shared<MergeMap>();
+  auto & vcache = mergemap->map[mergeids];
+  if (vcache) {
+    PRIVATE(vcache)->mergeid = mergemap->mergeid + 1;
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+      FC_MSG("reuse merged cache " << mergecount);
+    return vcache;
+  }
+
+  vcache = new SoFCVertexCache(*const_cast<SoFCVertexCache*>(this));
+  PRIVATE(vcache)->mergeid = mergemap->mergeid + 1;
+  bool first = true;
+  for (; idx<i; idx+=entries[idx].mergecount+1) {
+    auto & entry = entries[idx];
+    PRIVATE(entry.cache)->mergeTo(first, vcache, entry.matrix, entry.identity);
+    first = false;
+  }
+
+  PRIVATE(vcache)->finalizeTriangleIndexer();
+  if (PRIVATE(vcache)->lineindexer)
+    PRIVATE(vcache)->lineindexer->sort_lines();
+
+  if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    FC_MSG("new merged cache " << mergecount);
+  return vcache;
+}
+
+void
+SoFCVertexCacheP::mergeTo(bool first,
+                          SoFCVertexCache *vcache,
+                          const SbMatrix & matrix,
+                          bool identity) const
+{
+  auto pvcache = PRIVATE(vcache);
+  if (first) {
+    if (!identity) {
+      auto * vertices = pvcache->vertexarray.getWritableArrayPtr();
+      for (int i=0, c=pvcache->vertexarray.getLength(); i<c; ++i)
+        matrix.multVecMatrix(vertices[i], vertices[i]);
+
+      if (pvcache->normalarray) {
+        auto *normals = pvcache->normalarray.getWritableArrayPtr();
+        SbVec3f origin(0,0,0);
+        matrix.multVecMatrix(origin, origin);
+        for (int i=0, c=pvcache->normalarray.getLength(); i<c; ++i) {
+          matrix.multVecMatrix(normals[i], normals[i]);
+          normals[i] -= origin;
+          normals[i].normalize();
+        }
+      }
+    }
+
+    if (this->triangleindexer)
+      vcache->addTriangles();
+    if (this->lineindexer)
+      vcache->addLines();
+    if (this->pointindexer)
+      vcache->addPoints();
+    return;
+  }
+
+  int offset = pvcache->vertexarray.getLength();
+  if (identity)
+    pvcache->vertexarray.append(this->vertexarray);
+  else {
+    for (int i=0, c=this->vertexarray.getLength(); i<c; ++i) {
+      SbVec3f vec;
+      matrix.multVecMatrix(this->vertexarray[i], vec);
+      pvcache->vertexarray.append(vec);
+    }
+  }
+  if (pvcache->normalarray) {
+    if (identity)
+      pvcache->normalarray.append(this->normalarray);
+    else {
+      SbVec3f origin(0,0,0);
+      matrix.multVecMatrix(origin, origin);
+      for (int i=0, c=this->normalarray.getLength(); i<c; ++i) {
+        SbVec3f vec;
+        matrix.multVecMatrix(this->normalarray[i], vec);
+        vec -= origin;
+        vec.normalize();
+        pvcache->normalarray.append(vec);
+      }
+    }
+  }
+  if (pvcache->texcoord0array)
+    pvcache->texcoord0array.append(this->texcoord0array);
+  if (pvcache->bumpcoordarray)
+    pvcache->bumpcoordarray.append(this->bumpcoordarray);
+  if (pvcache->colorarray)
+    pvcache->colorarray.append(this->colorarray);
+  int i = -1;
+  for (auto & entry : pvcache->multitexarray) {
+    ++i;
+    if (entry)
+      entry.append(this->multitexarray[i]);
+  }
+
+  if (pvcache->triangleindexer) {
+    int numparts = pvcache->triangleindexer->getNumParts();
+    int idxoffset = pvcache->triangleindexer->getNumIndices();
+    pvcache->triangleindexer->append(this->triangleindexer, offset);
+
+    if (this->hastransp)
+      pvcache->hastransp = true;
+
+    if (pvcache->hassolid > 1 && this->hassolid <= 1) {
+      pvcache->hassolid = 1;
+      for (int i=0; i<numparts; ++i)
+        pvcache->solidpartindices.append(i);
+      for (int i : this->solidpartindices)
+        pvcache->solidpartindices.append(i+idxoffset);
+    }
+    else if (pvcache->hassolid == 1 && this->hassolid > 1) {
+      for (int i=0, c=this->triangleindexer->getNumParts(); i<c; ++i)
+        pvcache->solidpartindices.append(i+idxoffset);
+    }
+    else if (this->hassolid == 1) {
+      pvcache->hassolid = 1;
+      for (int i : this->solidpartindices)
+        pvcache->solidpartindices.append(i+idxoffset);
+    }
+  }
+  if (pvcache->lineindexer)
+    pvcache->lineindexer->append(this->lineindexer, offset);
+  if (pvcache->pointindexer)
+    pvcache->pointindexer->append(this->pointindexer, offset);
 }
 
 #undef PRIVATE

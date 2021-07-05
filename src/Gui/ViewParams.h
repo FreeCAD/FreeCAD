@@ -336,6 +336,12 @@ public:
     FC_VIEW_PARAM(SelectionColorDifference, double, Float, 25.0, \
         QT_TRANSLATE_NOOP("ViewParams","Color difference threshold for auto making distinct\n"\
                                        "selection highlight color")) \
+    FC_VIEW_PARAM(RenderCacheMergeCount, int , Int, 0,  \
+        QT_TRANSLATE_NOOP("ViewParams","Merge draw caches of multiple objects to reduce number of draw\n" \
+                                       "calls and improve render performance. Set zero to disable. Only\n" \
+                                       "effective when using experimental render cache.")) \
+    FC_VIEW_PARAM(RenderCacheMergeCountMin, int , Int, 10,  \
+        QT_TRANSLATE_NOOP("ViewParams","Internal use to limit the render cache merge count")) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

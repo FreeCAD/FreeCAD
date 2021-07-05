@@ -32,6 +32,7 @@
 #include <Inventor/SbVec2f.h>
 
 #include "../InventorBase.h"
+#include "SoFCRenderCache.h"
 
 class SoFCVertexCacheP;
 class SoPrimitiveVertex;
@@ -85,6 +86,17 @@ public:
   void addPoints(const std::set<int> & points);
   void addPoints(const std::vector<int> & points = {});
 
+  struct MergeMap {
+    int mergeid = 0;
+    std::map<std::vector<SbFCUniqueId>, Gui::CoinPtr<SoFCVertexCache> > map;
+    void cleanup();
+  };
+  SoFCVertexCache * merge(std::shared_ptr<MergeMap> & mergemap,
+                          std::vector<SoFCRenderCache::VertexCacheEntry> & entires,
+                          int idx, int & mergecount);
+
+  int getMergeId() const;
+
   SoFCVertexCache * highlightIndices(int * indices = nullptr);
 
   void addTriangle(const SoPrimitiveVertex * v0,
@@ -102,7 +114,7 @@ public:
   const SbVec2f * getBumpCoordArray(void) const;
   const uint8_t * getColorArray(void) const;
 
-  void setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors, SbFCUniqueId id);
+  void setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors = {});
 
   int getNumTriangleIndices(void) const;
   const GLint * getTriangleIndices(void) const;
@@ -111,7 +123,7 @@ public:
   SbBool colorPerVertex(void) const;
   SbBool hasTransparency(void) const;
   SbBool hasOpaqueParts(void) const;
-  SbBool hasSolid(void) const;
+  int hasSolid(void) const;
 
   uint32_t getFaceColor(int part) const;
   uint32_t getLineColor(int part) const;

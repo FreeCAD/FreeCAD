@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>563</width>
-    <height>627</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -209,134 +209,20 @@ but slower response to any scene changes.
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="aliasingLAbel">
-          <property name="text">
-           <string>Anti-Aliasing</string>
+        <item row="8" column="2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="Gui::PrefComboBox" name="comboAliasing">
-          <property name="minimumSize">
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>120</width>
-            <height>0</height>
+            <width>40</width>
+            <height>20</height>
            </size>
           </property>
-          <property name="toolTip">
-           <string>What kind of multisample anti-aliasing is used </string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AntiAliasing</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>None</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Line Smoothing</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 2x</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 4x</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 8x</string>
-           </property>
-          </item>
-         </widget>
+         </spacer>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="transparentRenderLabel">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="text">
-           <string>Transparent objects:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="renderCacheLabel">
-          <property name="text">
-           <string>Render cache</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="4">
-         <widget class="Gui::PrefComboBox" name="comboTransparentRender">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Render types of transparent objects</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TransparentObjectRenderType</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>One pass</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backface pass</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="markerSizeLabel">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="text">
-           <string>Marker size:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="4">
-         <widget class="QComboBox" name="boxMarkerSize">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Size of vertices in the Sketcher workbench</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="spinPickRadiusLabel">
-          <property name="text">
-           <string>Pick radius (px):</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="4">
+        <item row="5" column="4">
          <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
           <property name="minimumSize">
            <size>
@@ -372,14 +258,30 @@ Larger value eases to pick things, but can make small features impossible to sel
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="spinPreselectionDelayLabel">
           <property name="text">
            <string>Eye to eye distance for stereo modes</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="4">
+        <item row="8" column="3">
+         <widget class="QLabel" name="backlightLabel">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Intensity</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="4">
          <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_EyeDistance">
           <property name="minimumSize">
            <size>
@@ -415,75 +317,7 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxBacklight">
-          <property name="toolTip">
-           <string>Backlight is enabled with the defined color</string>
-          </property>
-          <property name="text">
-           <string>Backlight color</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>EnableBacklight</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="Gui::PrefColorButton" name="backlightColor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Backlight color</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BacklightColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="7" column="3">
-         <widget class="QLabel" name="backlightLabel">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="text">
-           <string>Intensity</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="4">
+        <item row="8" column="4">
          <widget class="Gui::PrefSlider" name="sliderIntensity">
           <property name="enabled">
            <bool>false</bool>
@@ -529,14 +363,157 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="0" column="0">
+         <widget class="QLabel" name="renderCacheLabel">
+          <property name="text">
+           <string>Render cache</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="4">
+         <widget class="QComboBox" name="boxMarkerSize">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Size of vertices in the Sketcher workbench</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxBacklight">
+          <property name="toolTip">
+           <string>Backlight is enabled with the defined color</string>
+          </property>
+          <property name="text">
+           <string>Backlight color</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>EnableBacklight</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="4">
+         <widget class="Gui::PrefComboBox" name="comboTransparentRender">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Render types of transparent objects</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TransparentObjectRenderType</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>One pass</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Backface pass</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="aliasingLAbel">
+          <property name="text">
+           <string>Anti-Aliasing</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="spinPickRadiusLabel">
+          <property name="text">
+           <string>Pick radius (px):</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Pre-selection delay (second):</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="4">
+        <item row="2" column="4">
+         <widget class="Gui::PrefComboBox" name="comboAliasing">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>What kind of multisample anti-aliasing is used </string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AntiAliasing</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Line Smoothing</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 2x</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 4x</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 8x</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="markerSizeLabel">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Marker size:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="transparentRenderLabel">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Transparent objects:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="4">
          <widget class="Gui::PrefDoubleSpinBox" name="spinPreselectionDelay">
           <property name="decimals">
            <number>3</number>
@@ -555,6 +532,46 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
+        <item row="8" column="1">
+         <widget class="Gui::PrefColorButton" name="backlightColor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Backlight color</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BacklightColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="renderCacheMergeCountLabel">
+          <property name="text">
+           <string>Cache merge threshold</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QSpinBox" name="renderCacheMergeCount">
+          <property name="maximum">
+           <number>100000</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -566,7 +583,16 @@ bounding box size of the 3D object that is currently displayed.</string>
       <string>Camera type</string>
      </property>
      <layout class="QGridLayout" name="gridLayout1">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <property name="spacing">
