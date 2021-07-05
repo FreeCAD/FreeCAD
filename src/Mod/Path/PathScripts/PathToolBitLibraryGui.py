@@ -464,6 +464,7 @@ class ToolBitLibrary(object):
         if shapefile is None:  # user canceled
             return
 
+        # select the bit file location and filename
         filename = PathToolBitGui.GetNewToolFile()
         if filename is None:
             return
@@ -472,7 +473,7 @@ class ToolBitLibrary(object):
         loc, fil = os.path.split(filename)
         fname = os.path.splitext(fil)[0]
         fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
-        PathLog.debug(fullpath)
+        PathLog.debug("fullpath: {}".format(fullpath))
 
         self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
         self.temptool.BitShape = shapefile
@@ -577,6 +578,7 @@ class ToolBitLibrary(object):
         self.form.librarySave.setEnabled(True)
 
     def toolEdit(self, selected):
+        PathLog.track()
         item = self.toolModel.item(selected.row(), 0)
 
         if self.temptool is not None:
