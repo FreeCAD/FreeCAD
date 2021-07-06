@@ -1935,8 +1935,8 @@ def liquid_section_def(obj, section_type):
         section_geo = ""
         for i in range(len(obj.PumpFlowRate)):
             flow_rate = str(obj.PumpFlowRate[i])
-            head = str(obj.PumpHeadLoss[i])
-            section_geo = section_geo + flow_rate + "," + head + ","
+            top = str(obj.PumpHeadLoss[i])
+            section_geo = section_geo + flow_rate + "," + top + ","
         section_geo = section_geo + "\n"
         return section_geo
     else:
