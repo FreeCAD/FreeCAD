@@ -302,7 +302,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for femobj in femobjs:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
                 the_obj = femobj["Object"]
-                f.write("** " + the_obj.Label + "\n")
+                f.write("** {}\n".format(the_obj.Label))
                 sets_writer_method(inpfile_split, femobj, the_obj)
             if write_after != "":
                 f.write(write_after)
@@ -313,7 +313,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for femobj in femobjs:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
                 the_obj = femobj["Object"]
-                f.write("** " + the_obj.Label + "\n")
+                f.write("** {}\n".format(the_obj.Label))
                 sets_writer_method(f, femobj, the_obj)
             if write_after != "":
                 f.write(write_after)
@@ -378,17 +378,17 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.femmesh.Volumes \
                 and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
             if len(femobj["NodesSolid"]) > 0:
-                f.write("*NSET,NSET=" + fix_obj.Name + "Solid\n")
+                f.write("*NSET,NSET={}Solid\n".format(fix_obj.Name))
                 for n in femobj["NodesSolid"]:
-                    f.write(str(n) + ",\n")
+                    f.write("{},\n".format(n))
             if len(femobj["NodesFaceEdge"]) > 0:
-                f.write("*NSET,NSET=" + fix_obj.Name + "FaceEdge\n")
+                f.write("*NSET,NSET={}FaceEdge\n".format(fix_obj.Name))
                 for n in femobj["NodesFaceEdge"]:
-                    f.write(str(n) + ",\n")
+                    f.write("{},\n".format(n))
         else:
             f.write("*NSET,NSET=" + fix_obj.Name + "\n")
             for n in femobj["Nodes"]:
-                f.write(str(n) + ",\n")
+                f.write("{},\n".format(n))
 
     def constraint_fixed_writer(self, f, femobj, fix_obj):
         if self.femmesh.Volumes \
@@ -444,40 +444,38 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         )
 
     def write_node_sets_nodes_constraints_displacement(self, f, femobj, disp_obj):
-        f.write("*NSET,NSET=" + disp_obj.Name + "\n")
+        f.write("*NSET,NSET={}\n".format(disp_obj.Name))
         for n in femobj["Nodes"]:
-            f.write(str(n) + ",\n")
+            f.write("{},\n".format(n))
 
     def constraint_displacement_writer(self, f, femobj, disp_obj):
-        disp_obj_name = disp_obj.Name
         f.write("*BOUNDARY\n")
         if disp_obj.xFix:
-            f.write(disp_obj_name + ",1\n")
+            f.write("{},1\n".format(disp_obj.Name))
         elif not disp_obj.xFree:
-            f.write(disp_obj_name + ",1,1," + str(disp_obj.xDisplacement) + "\n")
+            f.write("{},1,1,{}\n".format(disp_obj.Name, disp_obj.xDisplacement))
         if disp_obj.yFix:
-            f.write(disp_obj_name + ",2\n")
+            f.write("{},2\n".format(disp_obj.Name))
         elif not disp_obj.yFree:
-            f.write(disp_obj_name + ",2,2," + str(disp_obj.yDisplacement) + "\n")
+            f.write("{},2,2,{}\n".format(disp_obj.Name, disp_obj.yDisplacement))
         if disp_obj.zFix:
-            f.write(disp_obj_name + ",3\n")
+            f.write("{},3\n".format(disp_obj.Name))
         elif not disp_obj.zFree:
-            f.write(disp_obj_name + ",3,3," + str(disp_obj.zDisplacement) + "\n")
+            f.write("{},3,3,{}\n".format(disp_obj.Name, disp_obj.zDisplacement))
 
         if self.beamsection_objects or self.shellthickness_objects:
             if disp_obj.rotxFix:
-                f.write(disp_obj_name + ",4\n")
+                f.write("{},4\n".format(disp_obj.Name))
             elif not disp_obj.rotxFree:
-                f.write(disp_obj_name + ",4,4," + str(disp_obj.xRotation) + "\n")
+                f.write("{},4,4,{}\n".format(disp_obj.Name, disp_obj.xRotation))
             if disp_obj.rotyFix:
-                f.write(disp_obj_name + ",5\n")
+                f.write("{},5\n".format(disp_obj.Name))
             elif not disp_obj.rotyFree:
-                f.write(disp_obj_name + ",5,5," + str(disp_obj.yRotation) + "\n")
+                f.write("{},5,5,{}\n".format(disp_obj.Name, disp_obj.yRotation))
             if disp_obj.rotzFix:
-                f.write(disp_obj_name + ",6\n")
+                f.write("{},6\n".format(disp_obj.Name))
             elif not disp_obj.rotzFree:
-                f.write(disp_obj_name + ",6,6," + str(disp_obj.zRotation) + "\n")
-
+                f.write("{},6,6,{}\n".format(disp_obj.Name, disp_obj.zRotation))
 
     # ********************************************************************************************
     # constraints planerotation
@@ -514,7 +512,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # Thus call write_node_sets_constraints_planerotation has to be
         # after constraint fixed and constraint displacement
         l_nodes = femobj["Nodes"]
-        f.write("*NSET,NSET=" + fric_obj.Name + "\n")
+        f.write("*NSET,NSET={}\n".format(fric_obj.Name))
         # Code to extract nodes and coordinates on the PlaneRotation support face
         nodes_coords = []
         for node in l_nodes:
@@ -538,11 +536,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 MPC = node_planerotation[i]
                 MPC_nodes.append(MPC)
         for i in range(len(MPC_nodes)):
-            f.write(str(MPC_nodes[i]) + ",\n")
+            f.write("{},\n".format(MPC_nodes[i]))
 
     def constraint_planerotation_writer(self, f, femobj, fric_obj):
         f.write("*MPC\n")
-        f.write("PLANE," + fric_obj.Name + "\n")
+        f.write("PLANE,{}\n".format(fric_obj.Name))
 
     # ********************************************************************************************
     # constraints contact
@@ -584,16 +582,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         )
         ind_surf = "IND" + contact_obj.Name
         dep_surf = "DEP" + contact_obj.Name
-        f.write(dep_surf + "," + ind_surf + "\n")
+        f.write("{},{}\n".format(dep_surf, ind_surf))
         f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
         f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
         slope = contact_obj.Slope
-        f.write(str(slope) + " \n")
+        f.write("{} \n".format(slope))
         friction = contact_obj.Friction
         if friction > 0:
             f.write("*FRICTION \n")
             stick = (slope / 10.0)
-            f.write(str(friction) + ", " + str(stick) + " \n")
+            f.write("{}, {} \n".format(friction, stick))
 
     # ********************************************************************************************
     # constraints tie
@@ -634,8 +632,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"
             .format(tolerance, tie_obj.Name)
         )
-        ind_surf = "TIE_IND" + tie_obj.Name
-        dep_surf = "TIE_DEP" + tie_obj.Name
+        ind_surf = "TIE_IND{}".format(tie_obj.Name)
+        dep_surf = "TIE_DEP{}".format(tie_obj.Name)
         f.write("{},{}\n".format(dep_surf, ind_surf))
 
     # ********************************************************************************************
@@ -719,11 +717,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_node_sets_nodes_constraints_transform(self, f, femobj, trans_obj):
         if trans_obj.TransformType == "Rectangular":
-            f.write("*NSET,NSET=Rect" + trans_obj.Name + "\n")
+            f.write("*NSET,NSET=Rect{}\n".format(trans_obj.Name))
         elif trans_obj.TransformType == "Cylindrical":
-            f.write("*NSET,NSET=Cylin" + trans_obj.Name + "\n")
+            f.write("*NSET,NSET=Cylin{}\n".format(trans_obj.Name))
         for n in femobj["Nodes"]:
-            f.write(str(n) + ",\n")
+            f.write("{},\n".format(n))
 
     def constraint_transform_writer(self, f, femobj, trans_obj):
         trans_name = ""
@@ -775,21 +773,21 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         )
 
     def write_node_sets_nodes_constraints_temperature(self, f, femobj, temp_obj):
-        f.write("*NSET,NSET=" + temp_obj.Name + "\n")
+        f.write("*NSET,NSET={}\n".format(temp_obj.Name))
         for n in femobj["Nodes"]:
-            f.write(str(n) + ",\n")
+            f.write("{},\n".format(n))
 
-    def constraint_temperature_writer(self, f, femobj, fixedtemp_obj):
+    def constraint_temperature_writer(self, f, femobj, temp_obj):
         NumberOfNodes = len(femobj["Nodes"])
-        if fixedtemp_obj.ConstraintType == "Temperature":
+        if temp_obj.ConstraintType == "Temperature":
             f.write("*BOUNDARY\n")
-            f.write("{},11,11,{}\n".format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
+            f.write("{},11,11,{}\n".format(temp_obj.Name, temp_obj.Temperature))
             f.write("\n")
-        elif fixedtemp_obj.ConstraintType == "CFlux":
+        elif temp_obj.ConstraintType == "CFlux":
             f.write("*CFLUX\n")
             f.write("{},11,{}\n".format(
-                fixedtemp_obj.Name,
-                fixedtemp_obj.CFlux * 0.001 / NumberOfNodes
+                temp_obj.Name,
+                temp_obj.CFlux * 0.001 / NumberOfNodes
             ))
             f.write("\n")
 
@@ -867,13 +865,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 node_load = ref_shape[1][n]
                 if (direction_vec.x != 0.0):
                     v1 = "{:.13E}".format(direction_vec.x * node_load)
-                    f.write(str(n) + ",1," + v1 + "\n")
+                    f.write("{},1,{}\n".format(n, v1))
                 if (direction_vec.y != 0.0):
                     v2 = "{:.13E}".format(direction_vec.y * node_load)
-                    f.write(str(n) + ",2," + v2 + "\n")
+                    f.write("{},2,{}\n".format(n, v2))
                 if (direction_vec.z != 0.0):
                     v3 = "{:.13E}".format(direction_vec.z * node_load)
-                    f.write(str(n) + ",3," + v3 + "\n")
+                    f.write("{},3,{}\n".format(n, v3))
             f.write("\n")
         f.write("\n")
 
@@ -1065,7 +1063,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 )
         if self.solver_obj.IterationsThermoMechMaximum:
             if self.analysis_type == "thermomech":
-                step += ", INC=" + str(self.solver_obj.IterationsThermoMechMaximum)
+                step += ", INC={}".format(self.solver_obj.IterationsThermoMechMaximum)
             elif (
                 self.analysis_type == "static"
                 or self.analysis_type == "frequency"
