@@ -92,6 +92,8 @@ public:
     const char* getFileFormatName(void) const;
     void write(SoWriteAction * action);
 
+    virtual void notify(SoNotList * l);
+
     SoSFColor colorHighlight;
     SoSFColor colorSelection;
     SoSFEnum highlightMode;

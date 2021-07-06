@@ -157,7 +157,9 @@ public:
         int v = pcSwitch->childNotify.getValue() + adjustment;
         if (v < 0)
           v = 0;
+        pcSwitch->childNotify.enableNotify(FALSE);
         pcSwitch->childNotify = v;
+        pcSwitch->childNotify.enableNotify(TRUE);
       }
     }
     if (!path)

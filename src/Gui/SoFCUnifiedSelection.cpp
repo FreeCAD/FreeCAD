@@ -1389,6 +1389,13 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     inherited::handleEvent(action);
 }
 
+void SoFCUnifiedSelection::notify(SoNotList * l)
+{
+    // No special handling here. The function is override for debugging purpose
+    // to catch unnecessary node touches.
+    inherited::notify(l);
+}
+
 bool
 SoFCUnifiedSelection::Private::handleEvent(SoHandleEventAction * action)
 {
