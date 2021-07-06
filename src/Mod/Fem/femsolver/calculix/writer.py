@@ -278,6 +278,17 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         write_before="",
         write_after="",
     ):
+        def constraint_sets_loop_writing(the_file, femobjs, write_before, write_after):
+            if write_before != "":
+                f.write(write_before)
+            for femobj in femobjs:
+                # femobj --> dict, FreeCAD document object is femobj["Object"]
+                the_obj = femobj["Object"]
+                f.write("** {}\n".format(the_obj.Label))
+                sets_writer_method(the_file, femobj, the_obj)
+            if write_after != "":
+                f.write(write_after)
+
         if not femobjs:
             return
 
@@ -297,26 +308,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write("** {}\n".format(write_name.replace("_", " ")))
             f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
             inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            if write_before != "":
-                f.write(write_before)
-            for femobj in femobjs:
-                # femobj --> dict, FreeCAD document object is femobj["Object"]
-                the_obj = femobj["Object"]
-                f.write("** {}\n".format(the_obj.Label))
-                sets_writer_method(inpfile_split, femobj, the_obj)
-            if write_after != "":
-                f.write(write_after)
+            constraint_sets_loop_writing(inpfile_split, femobjs, write_before, write_after)
             inpfile_split.close()
         else:
-            if write_before != "":
-                f.write(write_before)
-            for femobj in femobjs:
-                # femobj --> dict, FreeCAD document object is femobj["Object"]
-                the_obj = femobj["Object"]
-                f.write("** {}\n".format(the_obj.Label))
-                sets_writer_method(f, femobj, the_obj)
-            if write_after != "":
-                f.write(write_after)
+            constraint_sets_loop_writing(f, femobjs, write_before, write_after)
 
     # ********************************************************************************************
     # write constraint data
