@@ -319,6 +319,39 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write(write_after)
 
     # ********************************************************************************************
+    # write constraint data
+    def write_constraints_data(
+        self,
+        f,
+        femobjs,
+        analysis_types,
+        constraint_title_name,
+        constraint_writer_method,
+        caller_method_name="",
+        write_before="",
+        write_after="",
+    ):
+        if not femobjs:
+            return
+
+        if analysis_types != "all" and self.analysis_type not in analysis_types:
+            return
+
+        # write constraint to file
+        f.write("\n{}\n".format(59 * "*"))
+        f.write("** {}\n".format(constraint_title_name))
+        f.write("** written by {} function\n".format(caller_method_name))
+        if write_before != "":
+            f.write(write_before)
+        for femobj in femobjs:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            the_obj = femobj["Object"]
+            f.write("** {}\n".format(the_obj.Label))
+            constraint_writer_method(f, femobj, the_obj)
+        if write_after != "":
+            f.write(write_after)
+
+    # ********************************************************************************************
     # constraints fixed
     def write_node_sets_constraints_fixed(self, f):
         self.write_constraints_sets(
@@ -328,6 +361,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             sets_getter_method=self.get_constraints_fixed_nodes,
             write_name="constraints_fixed_node_sets",
             sets_writer_method=self.write_node_sets_nodes_constraints_fixed,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
+    def write_constraints_fixed(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.fixed_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="Fixed Constraints",
+            constraint_writer_method=self.constraint_fixed_writer,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
@@ -347,46 +390,34 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for n in femobj["Nodes"]:
                 f.write(str(n) + ",\n")
 
-    def write_constraints_fixed(self, f):
-        if not self.fixed_objects:
-            return
-        # write for all analysis types
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Fixed Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for femobj in self.fixed_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
-            fix_obj_name = femobj["Object"].Name
-            if self.femmesh.Volumes \
-                    and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
-                if len(femobj["NodesSolid"]) > 0:
-                    f.write("*BOUNDARY\n")
-                    f.write(fix_obj_name + "Solid" + ",1\n")
-                    f.write(fix_obj_name + "Solid" + ",2\n")
-                    f.write(fix_obj_name + "Solid" + ",3\n")
-                    f.write("\n")
-                if len(femobj["NodesFaceEdge"]) > 0:
-                    f.write("*BOUNDARY\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",1\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",2\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",3\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",4\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",5\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",6\n")
-                    f.write("\n")
-            else:
+    def constraint_fixed_writer(self, f, femobj, fix_obj):
+        if self.femmesh.Volumes \
+                and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
+            if len(femobj["NodesSolid"]) > 0:
                 f.write("*BOUNDARY\n")
-                f.write(fix_obj_name + ",1\n")
-                f.write(fix_obj_name + ",2\n")
-                f.write(fix_obj_name + ",3\n")
-                if self.beamsection_objects or self.shellthickness_objects:
-                    f.write(fix_obj_name + ",4\n")
-                    f.write(fix_obj_name + ",5\n")
-                    f.write(fix_obj_name + ",6\n")
+                f.write(fix_obj.Name + "Solid" + ",1\n")
+                f.write(fix_obj.Name + "Solid" + ",2\n")
+                f.write(fix_obj.Name + "Solid" + ",3\n")
                 f.write("\n")
+            if len(femobj["NodesFaceEdge"]) > 0:
+                f.write("*BOUNDARY\n")
+                f.write(fix_obj.Name + "FaceEdge" + ",1\n")
+                f.write(fix_obj.Name + "FaceEdge" + ",2\n")
+                f.write(fix_obj.Name + "FaceEdge" + ",3\n")
+                f.write(fix_obj.Name + "FaceEdge" + ",4\n")
+                f.write(fix_obj.Name + "FaceEdge" + ",5\n")
+                f.write(fix_obj.Name + "FaceEdge" + ",6\n")
+                f.write("\n")
+        else:
+            f.write("*BOUNDARY\n")
+            f.write(fix_obj.Name + ",1\n")
+            f.write(fix_obj.Name + ",2\n")
+            f.write(fix_obj.Name + ",3\n")
+            if self.beamsection_objects or self.shellthickness_objects:
+                f.write(fix_obj.Name + ",4\n")
+                f.write(fix_obj.Name + ",5\n")
+                f.write(fix_obj.Name + ",6\n")
+            f.write("\n")
 
     # ********************************************************************************************
     # constraints displacement
@@ -401,53 +432,52 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_node_sets_nodes_constraints_displacement(self, f femobj, disp_obj):
+    def write_constraints_displacement(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.displacement_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="Displacement constraint applied",
+            constraint_writer_method=self.constraint_displacement_writer,
+            caller_method_name=sys._getframe().f_code.co_name,
+            write_after="\n",
+        )
+
+    def write_node_sets_nodes_constraints_displacement(self, f, femobj, disp_obj):
         f.write("*NSET,NSET=" + disp_obj.Name + "\n")
         for n in femobj["Nodes"]:
             f.write(str(n) + ",\n")
 
-    def write_constraints_displacement(self, f):
-        if not self.displacement_objects:
-            return
-        # write for all analysis types
+    def constraint_displacement_writer(self, f, femobj, disp_obj):
+        disp_obj_name = disp_obj.Name
+        f.write("*BOUNDARY\n")
+        if disp_obj.xFix:
+            f.write(disp_obj_name + ",1\n")
+        elif not disp_obj.xFree:
+            f.write(disp_obj_name + ",1,1," + str(disp_obj.xDisplacement) + "\n")
+        if disp_obj.yFix:
+            f.write(disp_obj_name + ",2\n")
+        elif not disp_obj.yFree:
+            f.write(disp_obj_name + ",2,2," + str(disp_obj.yDisplacement) + "\n")
+        if disp_obj.zFix:
+            f.write(disp_obj_name + ",3\n")
+        elif not disp_obj.zFree:
+            f.write(disp_obj_name + ",3,3," + str(disp_obj.zDisplacement) + "\n")
 
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Displacement constraint applied\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for femobj in self.displacement_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
-            disp_obj = femobj["Object"]
-            disp_obj_name = disp_obj.Name
-            f.write("*BOUNDARY\n")
-            if disp_obj.xFix:
-                f.write(disp_obj_name + ",1\n")
-            elif not disp_obj.xFree:
-                f.write(disp_obj_name + ",1,1," + str(disp_obj.xDisplacement) + "\n")
-            if disp_obj.yFix:
-                f.write(disp_obj_name + ",2\n")
-            elif not disp_obj.yFree:
-                f.write(disp_obj_name + ",2,2," + str(disp_obj.yDisplacement) + "\n")
-            if disp_obj.zFix:
-                f.write(disp_obj_name + ",3\n")
-            elif not disp_obj.zFree:
-                f.write(disp_obj_name + ",3,3," + str(disp_obj.zDisplacement) + "\n")
+        if self.beamsection_objects or self.shellthickness_objects:
+            if disp_obj.rotxFix:
+                f.write(disp_obj_name + ",4\n")
+            elif not disp_obj.rotxFree:
+                f.write(disp_obj_name + ",4,4," + str(disp_obj.xRotation) + "\n")
+            if disp_obj.rotyFix:
+                f.write(disp_obj_name + ",5\n")
+            elif not disp_obj.rotyFree:
+                f.write(disp_obj_name + ",5,5," + str(disp_obj.yRotation) + "\n")
+            if disp_obj.rotzFix:
+                f.write(disp_obj_name + ",6\n")
+            elif not disp_obj.rotzFree:
+                f.write(disp_obj_name + ",6,6," + str(disp_obj.zRotation) + "\n")
 
-            if self.beamsection_objects or self.shellthickness_objects:
-                if disp_obj.rotxFix:
-                    f.write(disp_obj_name + ",4\n")
-                elif not disp_obj.rotxFree:
-                    f.write(disp_obj_name + ",4,4," + str(disp_obj.xRotation) + "\n")
-                if disp_obj.rotyFix:
-                    f.write(disp_obj_name + ",5\n")
-                elif not disp_obj.rotyFree:
-                    f.write(disp_obj_name + ",5,5," + str(disp_obj.yRotation) + "\n")
-                if disp_obj.rotzFix:
-                    f.write(disp_obj_name + ",6\n")
-                elif not disp_obj.rotzFree:
-                    f.write(disp_obj_name + ",6,6," + str(disp_obj.zRotation) + "\n")
-        f.write("\n")
 
     # ********************************************************************************************
     # constraints planerotation
@@ -459,6 +489,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             sets_getter_method=self.get_constraints_planerotation_nodes,
             write_name="constraints_planerotation_node_sets",
             sets_writer_method=self.write_node_sets_nodes_constraints_planerotation,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
+    def write_constraints_planerotation(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.planerotation_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="PlaneRotation Constraints",
+            constraint_writer_method=self.constraint_planerotation_writer,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
@@ -500,21 +540,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         for i in range(len(MPC_nodes)):
             f.write(str(MPC_nodes[i]) + ",\n")
 
-    def write_constraints_planerotation(self, f):
-        if not self.planerotation_objects:
-            return
-        # write for all analysis types
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** PlaneRotation Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for femobj in self.planerotation_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
-            fric_obj_name = femobj["Object"].Name
-            f.write("*MPC\n")
-            f.write("PLANE," + fric_obj_name + "\n")
+    def constraint_planerotation_writer(self, f, femobj, fric_obj):
+        f.write("*MPC\n")
+        f.write("PLANE," + fric_obj.Name + "\n")
 
     # ********************************************************************************************
     # constraints contact
@@ -529,6 +557,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
+    def write_constraints_contact(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.contact_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="Contact Constraints",
+            constraint_writer_method=self.constraint_contact_writer,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
     def write_surfacefaces_constraints_contact(self, f, femobj, contact_obj):
         # slave DEP
         f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
@@ -539,35 +577,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         for i in femobj["ContactMasterFaces"]:
             f.write("{},S{}\n".format(i[0], i[1]))
 
-    def write_constraints_contact(self, f):
-        if not self.contact_objects:
-            return
-        # write for all analysis types
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Contact Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for femobj in self.contact_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            contact_obj = femobj["Object"]
-            f.write("** " + contact_obj.Label + "\n")
-            f.write(
-                "*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n"
-                .format(contact_obj.Name)
-            )
-            ind_surf = "IND" + contact_obj.Name
-            dep_surf = "DEP" + contact_obj.Name
-            f.write(dep_surf + "," + ind_surf + "\n")
-            f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
-            f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
-            slope = contact_obj.Slope
-            f.write(str(slope) + " \n")
-            friction = contact_obj.Friction
-            if friction > 0:
-                f.write("*FRICTION \n")
-                stick = (slope / 10.0)
-                f.write(str(friction) + ", " + str(stick) + " \n")
+    def constraint_contact_writer(self, f, femobj, contact_obj):
+        f.write(
+            "*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n"
+            .format(contact_obj.Name)
+        )
+        ind_surf = "IND" + contact_obj.Name
+        dep_surf = "DEP" + contact_obj.Name
+        f.write(dep_surf + "," + ind_surf + "\n")
+        f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
+        f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
+        slope = contact_obj.Slope
+        f.write(str(slope) + " \n")
+        friction = contact_obj.Friction
+        if friction > 0:
+            f.write("*FRICTION \n")
+            stick = (slope / 10.0)
+            f.write(str(friction) + ", " + str(stick) + " \n")
 
     # ********************************************************************************************
     # constraints tie
@@ -582,6 +608,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
+    def write_constraints_tie(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.tie_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="Tie Constraints",
+            constraint_writer_method=self.constraint_tie_writer,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
     def write_surfacefaces_constraints_tie(self, f, femobj, tie_obj):
         # slave DEP
         f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
@@ -592,27 +628,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         for i in femobj["TieMasterFaces"]:
             f.write("{},S{}\n".format(i[0], i[1]))
 
-    def write_constraints_tie(self, f):
-        if not self.tie_objects:
-            return
-        # write for all analysis types
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Tie Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for femobj in self.tie_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            tie_obj = femobj["Object"]
-            f.write("** {}\n".format(tie_obj.Label))
-            tolerance = str(tie_obj.Tolerance.getValueAs("mm")).rstrip()
-            f.write(
-                "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"
-                .format(tolerance, tie_obj.Name)
-            )
-            ind_surf = "TIE_IND" + tie_obj.Name
-            dep_surf = "TIE_DEP" + tie_obj.Name
-            f.write("{},{}\n".format(dep_surf, ind_surf))
+    def constraint_tie_writer(self, f, femobj, tie_obj):
+        tolerance = str(tie_obj.Tolerance.getValueAs("mm")).rstrip()
+        f.write(
+            "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"
+            .format(tolerance, tie_obj.Name)
+        )
+        ind_surf = "TIE_IND" + tie_obj.Name
+        dep_surf = "TIE_DEP" + tie_obj.Name
+        f.write("{},{}\n".format(dep_surf, ind_surf))
 
     # ********************************************************************************************
     # constraints sectionprint
@@ -627,55 +651,48 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
+    def write_constraints_sectionprint(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.sectionprint_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="SectionPrint Constraints",
+            constraint_writer_method=self.constraint_sectionprint_writer,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
     # TODO move code parts from this method to base writer module
     # into get_constraints_sectionprint_faces method
     def write_surfacefaces_constraints_sectionprint(self, f, femobj, sectionprint_obj):
-        # get surface nodes and write them to file
-        for femobj in self.sectionprint_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            sectionprint_obj = femobj["Object"]
-            f.write("** " + sectionprint_obj.Label + "\n")
-            for o, elem_tup in sectionprint_obj.References:
-                for elem in elem_tup:
-                    ref_shape = o.Shape.getElement(elem)
-                    if ref_shape.ShapeType == "Face":
-                        f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
-                        if len(v) > 0:
-                            # volume elements found
-                            FreeCAD.Console.PrintLog(
-                                "{}, surface {}, {} touching volume elements found\n"
-                                .format(sectionprint_obj.Label, sectionprint_obj.Name, len(v))
-                            )
-                            for i in v:
-                                f.write("{},S{}\n".format(i[0], i[1]))
-                        else:
-                            # no volume elements found, shell elements not allowed
-                            FreeCAD.Console.PrintError(
-                                "{}, surface {}, Error: "
-                                "No volume elements found!\n"
-                                .format(sectionprint_obj.Label, sectionprint_obj.Name)
-                            )
-                            f.write("** Error: empty list\n")
+        for o, elem_tup in sectionprint_obj.References:
+            for elem in elem_tup:
+                ref_shape = o.Shape.getElement(elem)
+                if ref_shape.ShapeType == "Face":
+                    f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
+                    v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
+                    if len(v) > 0:
+                        # volume elements found
+                        FreeCAD.Console.PrintLog(
+                            "{}, surface {}, {} touching volume elements found\n"
+                            .format(sectionprint_obj.Label, sectionprint_obj.Name, len(v))
+                        )
+                        for i in v:
+                            f.write("{},S{}\n".format(i[0], i[1]))
+                    else:
+                        # no volume elements found, shell elements not allowed
+                        FreeCAD.Console.PrintError(
+                            "{}, surface {}, Error: "
+                            "No volume elements found!\n"
+                            .format(sectionprint_obj.Label, sectionprint_obj.Name)
+                        )
+                        f.write("** Error: empty list\n")
 
-    def write_constraints_sectionprint(self, f):
-        if not self.sectionprint_objects:
-            return
-        # write for all analysis types
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** SectionPrint Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for femobj in self.sectionprint_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            sectionprint_obj = femobj["Object"]
-            f.write("** {}\n".format(sectionprint_obj.Label))
-            f.write(
-                "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
-                .format(sectionprint_obj.Name, sectionprint_obj.Name)
-            )
-            f.write("SOF, SOM, SOAREA\n")
+    def constraint_sectionprint_writer(self, f, femobj, sectionprint_obj):
+        f.write(
+            "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
+            .format(sectionprint_obj.Name, sectionprint_obj.Name)
+        )
+        f.write("SOF, SOM, SOAREA\n")
 
     # ********************************************************************************************
     # constraints transform
@@ -690,6 +707,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
+    def write_constraints_transform(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.transform_objects,
+            analysis_types="all",  # write for all analysis types
+            constraint_title_name="Transform Constraints",
+            constraint_writer_method=self.constraint_transform_writer,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
     def write_node_sets_nodes_constraints_transform(self, f, femobj, trans_obj):
         if trans_obj.TransformType == "Rectangular":
             f.write("*NSET,NSET=Rect" + trans_obj.Name + "\n")
@@ -698,41 +725,31 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         for n in femobj["Nodes"]:
             f.write(str(n) + ",\n")
 
-    def write_constraints_transform(self, f):
-        if not self.transform_objects:
-            return
-        # write for all analysis types
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Transform Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for trans_object in self.transform_objects:
-            trans_obj = trans_object["Object"]
-            trans_name = ""
-            trans_type = ""
-            if trans_obj.TransformType == "Rectangular":
-                trans_name = "Rect"
-                trans_type = "R"
-                coords = geomtools.get_rectangular_coords(trans_obj)
-            elif trans_obj.TransformType == "Cylindrical":
-                trans_name = "Cylin"
-                trans_type = "C"
-                coords = geomtools.get_cylindrical_coords(trans_obj)
-            f.write("** {}\n".format(trans_obj.Label))
-            f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
-                trans_name,
-                trans_obj.Name,
-                trans_type,
-            ))
-            f.write("{:f},{:f},{:f},{:f},{:f},{:f}\n".format(
-                coords[0],
-                coords[1],
-                coords[2],
-                coords[3],
-                coords[4],
-                coords[5],
-            ))
+    def constraint_transform_writer(self, f, femobj, trans_obj):
+        trans_name = ""
+        trans_type = ""
+        if trans_obj.TransformType == "Rectangular":
+            trans_name = "Rect"
+            trans_type = "R"
+            coords = geomtools.get_rectangular_coords(trans_obj)
+        elif trans_obj.TransformType == "Cylindrical":
+            trans_name = "Cylin"
+            trans_type = "C"
+            coords = geomtools.get_cylindrical_coords(trans_obj)
+        f.write("** {}\n".format(trans_obj.Label))
+        f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
+            trans_name,
+            trans_obj.Name,
+            trans_type,
+        ))
+        f.write("{:f},{:f},{:f},{:f},{:f},{:f}\n".format(
+            coords[0],
+            coords[1],
+            coords[2],
+            coords[3],
+            coords[4],
+            coords[5],
+        ))
 
     # ********************************************************************************************
     # constraints temperature
@@ -747,36 +764,34 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
+    def write_constraints_temperature(self, f):
+        self.write_constraints_data(
+            f,
+            femobjs=self.temperature_objects,
+            analysis_types=["thermomech"],
+            constraint_title_name="Fixed temperature constraint applied",
+            constraint_writer_method=self.constraint_temperature_writer,
+            caller_method_name=sys._getframe().f_code.co_name,
+        )
+
     def write_node_sets_nodes_constraints_temperature(self, f, femobj, temp_obj):
         f.write("*NSET,NSET=" + temp_obj.Name + "\n")
         for n in femobj["Nodes"]:
             f.write(str(n) + ",\n")
 
-    def write_constraints_temperature(self, f):
-        if not self.temperature_objects:
-            return
-        if not self.analysis_type == "thermomech":
-            return
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Fixed temperature constraint applied\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        for ftobj in self.temperature_objects:
-            fixedtemp_obj = ftobj["Object"]
-            f.write("** " + fixedtemp_obj.Label + "\n")
-            NumberOfNodes = len(ftobj["Nodes"])
-            if fixedtemp_obj.ConstraintType == "Temperature":
-                f.write("*BOUNDARY\n")
-                f.write("{},11,11,{}\n".format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
-                f.write("\n")
-            elif fixedtemp_obj.ConstraintType == "CFlux":
-                f.write("*CFLUX\n")
-                f.write("{},11,{}\n".format(
-                    fixedtemp_obj.Name,
-                    fixedtemp_obj.CFlux * 0.001 / NumberOfNodes
-                ))
-                f.write("\n")
+    def constraint_temperature_writer(self, f, femobj, fixedtemp_obj):
+        NumberOfNodes = len(femobj["Nodes"])
+        if fixedtemp_obj.ConstraintType == "Temperature":
+            f.write("*BOUNDARY\n")
+            f.write("{},11,11,{}\n".format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
+            f.write("\n")
+        elif fixedtemp_obj.ConstraintType == "CFlux":
+            f.write("*CFLUX\n")
+            f.write("{},11,{}\n".format(
+                fixedtemp_obj.Name,
+                fixedtemp_obj.CFlux * 0.001 / NumberOfNodes
+            ))
+            f.write("\n")
 
     # ********************************************************************************************
     # constraints initialtemperature
@@ -841,6 +856,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             write_name="constraints_force_node_loads",
             sets_writer_method=self.write_nodeloads_constraints_force,
             caller_method_name=sys._getframe().f_code.co_name,
+            write_before="*CLOAD\n"
         )
 
     def write_nodeloads_constraints_force(self, f, femobj, force_obj):
