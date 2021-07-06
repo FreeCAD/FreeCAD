@@ -636,25 +636,21 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # into get_constraints_sectionprint_faces method
     def write_surfacefaces_constraints_sectionprint(self, f):
         # get surface nodes and write them to file
-        obj = 0
         for femobj in self.sectionprint_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             sectionprint_obj = femobj["Object"]
             f.write("** " + sectionprint_obj.Label + "\n")
-            obj = obj + 1
             for o, elem_tup in sectionprint_obj.References:
                 for elem in elem_tup:
                     ref_shape = o.Shape.getElement(elem)
                     if ref_shape.ShapeType == "Face":
-                        name = "SECTIONFACE" + str(obj)
-                        f.write("*SURFACE, NAME=" + name + "\n")
-
+                        f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
                         v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
                         if len(v) > 0:
                             # volume elements found
                             FreeCAD.Console.PrintLog(
                                 "{}, surface {}, {} touching volume elements found\n"
-                                .format(sectionprint_obj.Label, name, len(v))
+                                .format(sectionprint_obj.Label, sectionprint_obj.Name, len(v))
                             )
                             for i in v:
                                 f.write("{},S{}\n".format(i[0], i[1]))
@@ -663,7 +659,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             FreeCAD.Console.PrintError(
                                 "{}, surface {}, Error: "
                                 "No volume elements found!\n"
-                                .format(sectionprint_obj.Label, name)
+                                .format(sectionprint_obj.Label, sectionprint_obj.Name)
                             )
                             f.write("** Error: empty list\n")
 
@@ -676,15 +672,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("\n***********************************************************\n")
         f.write("** SectionPrint Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        obj = 0
         for femobj in self.sectionprint_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            obj = obj + 1
             sectionprint_obj = femobj["Object"]
             f.write("** {}\n".format(sectionprint_obj.Label))
             f.write(
                 "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
-                .format(obj, obj)
+                .format(sectionprint_obj.Name, sectionprint_obj.Name)
             )
             f.write("SOF, SOM, SOAREA\n")
 

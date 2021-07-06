@@ -3359,7 +3359,7 @@ Evolumes
 ** constraints sectionprint surface sets
 ** written by write_surfaces_constraints_sectionprint function
 ** ConstraintSectionPrint
-*SURFACE, NAME=SECTIONFACE1
+*SURFACE, NAME=SECTIONFACEConstraintSectionPrint
 811,S4
 872,S2
 880,S1
@@ -3425,7 +3425,7 @@ ConstraintFixed,3
 ** SectionPrint Constraints
 ** written by write_constraints_sectionprint function
 ** ConstraintSectionPrint
-*SECTION PRINT, SURFACE=SECTIONFACE1, NAME=SECTIONPRINT1
+*SECTION PRINT, SURFACE=SECTIONFACEConstraintSectionPrint, NAME=SECTIONPRINTConstraintSectionPrint
 SOF, SOM, SOAREA
 
 ***********************************************************
