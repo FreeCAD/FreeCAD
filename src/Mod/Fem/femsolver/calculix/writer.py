@@ -275,6 +275,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         write_name,
         sets_writer_method,
         caller_method_name="",
+        write_before="",
+        write_after="",
     ):
         if not femobjs:
             return
@@ -285,6 +287,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get the sets
         sets_getter_method()
 
+        # write sets to file
         f.write("\n{}\n".format(59 * "*"))
         f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(caller_method_name))
@@ -294,10 +297,26 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write("** {}\n".format(write_name.replace("_", " ")))
             f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
             inpfile_split = open(join(self.dir_name, file_name_split), "w")
-            sets_writer_method(inpfile_split)
+            if write_before != "":
+                f.write(write_before)
+            for femobj in femobjs:
+                # femobj --> dict, FreeCAD document object is femobj["Object"]
+                the_obj = femobj["Object"]
+                f.write("** " + the_obj.Label + "\n")
+                sets_writer_method(inpfile_split, femobj, the_obj)
+            if write_after != "":
+                f.write(write_after)
             inpfile_split.close()
         else:
-            sets_writer_method(f)
+            if write_before != "":
+                f.write(write_before)
+            for femobj in femobjs:
+                # femobj --> dict, FreeCAD document object is femobj["Object"]
+                the_obj = femobj["Object"]
+                f.write("** " + the_obj.Label + "\n")
+                sets_writer_method(f, femobj, the_obj)
+            if write_after != "":
+                f.write(write_after)
 
     # ********************************************************************************************
     # constraints fixed
@@ -312,26 +331,21 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_node_sets_nodes_constraints_fixed(self, f):
-        # write nodes to file
-        for femobj in self.fixed_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            fix_obj = femobj["Object"]
-            f.write("** " + fix_obj.Label + "\n")
-            if self.femmesh.Volumes \
-                    and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
-                if len(femobj["NodesSolid"]) > 0:
-                    f.write("*NSET,NSET=" + fix_obj.Name + "Solid\n")
-                    for n in femobj["NodesSolid"]:
-                        f.write(str(n) + ",\n")
-                if len(femobj["NodesFaceEdge"]) > 0:
-                    f.write("*NSET,NSET=" + fix_obj.Name + "FaceEdge\n")
-                    for n in femobj["NodesFaceEdge"]:
-                        f.write(str(n) + ",\n")
-            else:
-                f.write("*NSET,NSET=" + fix_obj.Name + "\n")
-                for n in femobj["Nodes"]:
+    def write_node_sets_nodes_constraints_fixed(self, f, femobj, fix_obj):
+        if self.femmesh.Volumes \
+                and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
+            if len(femobj["NodesSolid"]) > 0:
+                f.write("*NSET,NSET=" + fix_obj.Name + "Solid\n")
+                for n in femobj["NodesSolid"]:
                     f.write(str(n) + ",\n")
+            if len(femobj["NodesFaceEdge"]) > 0:
+                f.write("*NSET,NSET=" + fix_obj.Name + "FaceEdge\n")
+                for n in femobj["NodesFaceEdge"]:
+                    f.write(str(n) + ",\n")
+        else:
+            f.write("*NSET,NSET=" + fix_obj.Name + "\n")
+            for n in femobj["Nodes"]:
+                f.write(str(n) + ",\n")
 
     def write_constraints_fixed(self, f):
         if not self.fixed_objects:
@@ -387,15 +401,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_node_sets_nodes_constraints_displacement(self, f):
-        # write nodes to file
-        for femobj in self.displacement_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            disp_obj = femobj["Object"]
-            f.write("** " + disp_obj.Label + "\n")
-            f.write("*NSET,NSET=" + disp_obj.Name + "\n")
-            for n in femobj["Nodes"]:
-                f.write(str(n) + ",\n")
+    def write_node_sets_nodes_constraints_displacement(self, f femobj, disp_obj):
+        f.write("*NSET,NSET=" + disp_obj.Name + "\n")
+        for n in femobj["Nodes"]:
+            f.write(str(n) + ",\n")
 
     def write_constraints_displacement(self, f):
         if not self.displacement_objects:
@@ -453,7 +462,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_node_sets_nodes_constraints_planerotation(self, f):
+    def write_node_sets_nodes_constraints_planerotation(self, f, femobj, fric_obj):
         # write nodes to file
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
@@ -464,36 +473,32 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # constraints displacement can't share same nodes.
         # Thus call write_node_sets_constraints_planerotation has to be
         # after constraint fixed and constraint displacement
-        for femobj in self.planerotation_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            l_nodes = femobj["Nodes"]
-            fric_obj = femobj["Object"]
-            f.write("** " + fric_obj.Label + "\n")
-            f.write("*NSET,NSET=" + fric_obj.Name + "\n")
-            # Code to extract nodes and coordinates on the PlaneRotation support face
-            nodes_coords = []
-            for node in l_nodes:
-                nodes_coords.append((
-                    node,
-                    self.femnodes_mesh[node].x,
-                    self.femnodes_mesh[node].y,
-                    self.femnodes_mesh[node].z
-                ))
-            node_planerotation = meshtools.get_three_non_colinear_nodes(nodes_coords)
-            for i in range(len(l_nodes)):
-                if l_nodes[i] not in node_planerotation:
-                    node_planerotation.append(l_nodes[i])
-            MPC_nodes = []
-            for i in range(len(node_planerotation)):
-                cnt = 0
-                for j in range(len(self.constraint_conflict_nodes)):
-                    if node_planerotation[i] == self.constraint_conflict_nodes[j]:
-                        cnt = cnt + 1
-                if cnt == 0:
-                    MPC = node_planerotation[i]
-                    MPC_nodes.append(MPC)
-            for i in range(len(MPC_nodes)):
-                f.write(str(MPC_nodes[i]) + ",\n")
+        l_nodes = femobj["Nodes"]
+        f.write("*NSET,NSET=" + fric_obj.Name + "\n")
+        # Code to extract nodes and coordinates on the PlaneRotation support face
+        nodes_coords = []
+        for node in l_nodes:
+            nodes_coords.append((
+                node,
+                self.femnodes_mesh[node].x,
+                self.femnodes_mesh[node].y,
+                self.femnodes_mesh[node].z
+            ))
+        node_planerotation = meshtools.get_three_non_colinear_nodes(nodes_coords)
+        for i in range(len(l_nodes)):
+            if l_nodes[i] not in node_planerotation:
+                node_planerotation.append(l_nodes[i])
+        MPC_nodes = []
+        for i in range(len(node_planerotation)):
+            cnt = 0
+            for j in range(len(self.constraint_conflict_nodes)):
+                if node_planerotation[i] == self.constraint_conflict_nodes[j]:
+                    cnt = cnt + 1
+            if cnt == 0:
+                MPC = node_planerotation[i]
+                MPC_nodes.append(MPC)
+        for i in range(len(MPC_nodes)):
+            f.write(str(MPC_nodes[i]) + ",\n")
 
     def write_constraints_planerotation(self, f):
         if not self.planerotation_objects:
@@ -524,20 +529,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_surfacefaces_constraints_contact(self, f):
-        # write faces to file
-        for femobj in self.contact_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            contact_obj = femobj["Object"]
-            f.write("** " + contact_obj.Label + "\n")
-            # slave DEP
-            f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
-            for i in femobj["ContactSlaveFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
-            # master IND
-            f.write("*SURFACE, NAME=IND{}\n".format(contact_obj.Name))
-            for i in femobj["ContactMasterFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
+    def write_surfacefaces_constraints_contact(self, f, femobj, contact_obj):
+        # slave DEP
+        f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
+        for i in femobj["ContactSlaveFaces"]:
+            f.write("{},S{}\n".format(i[0], i[1]))
+        # master IND
+        f.write("*SURFACE, NAME=IND{}\n".format(contact_obj.Name))
+        for i in femobj["ContactMasterFaces"]:
+            f.write("{},S{}\n".format(i[0], i[1]))
 
     def write_constraints_contact(self, f):
         if not self.contact_objects:
@@ -582,20 +582,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_surfacefaces_constraints_tie(self, f):
-        # write faces to file
-        for femobj in self.tie_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            tie_obj = femobj["Object"]
-            f.write("** " + tie_obj.Label + "\n")
-            # slave DEP
-            f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
-            for i in femobj["TieSlaveFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
-            # master IND
-            f.write("*SURFACE, NAME=TIE_IND{}\n".format(tie_obj.Name))
-            for i in femobj["TieMasterFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
+    def write_surfacefaces_constraints_tie(self, f, femobj, tie_obj):
+        # slave DEP
+        f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
+        for i in femobj["TieSlaveFaces"]:
+            f.write("{},S{}\n".format(i[0], i[1]))
+        # master IND
+        f.write("*SURFACE, NAME=TIE_IND{}\n".format(tie_obj.Name))
+        for i in femobj["TieMasterFaces"]:
+            f.write("{},S{}\n".format(i[0], i[1]))
 
     def write_constraints_tie(self, f):
         if not self.tie_objects:
@@ -634,7 +629,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     # TODO move code parts from this method to base writer module
     # into get_constraints_sectionprint_faces method
-    def write_surfacefaces_constraints_sectionprint(self, f):
+    def write_surfacefaces_constraints_sectionprint(self, f, femobj, sectionprint_obj):
         # get surface nodes and write them to file
         for femobj in self.sectionprint_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -695,18 +690,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_node_sets_nodes_constraints_transform(self, f):
-        # write nodes to file
-        for femobj in self.transform_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            trans_obj = femobj["Object"]
-            f.write("** " + trans_obj.Label + "\n")
-            if trans_obj.TransformType == "Rectangular":
-                f.write("*NSET,NSET=Rect" + trans_obj.Name + "\n")
-            elif trans_obj.TransformType == "Cylindrical":
-                f.write("*NSET,NSET=Cylin" + trans_obj.Name + "\n")
-            for n in femobj["Nodes"]:
-                f.write(str(n) + ",\n")
+    def write_node_sets_nodes_constraints_transform(self, f, femobj, trans_obj):
+        if trans_obj.TransformType == "Rectangular":
+            f.write("*NSET,NSET=Rect" + trans_obj.Name + "\n")
+        elif trans_obj.TransformType == "Cylindrical":
+            f.write("*NSET,NSET=Cylin" + trans_obj.Name + "\n")
+        for n in femobj["Nodes"]:
+            f.write(str(n) + ",\n")
 
     def write_constraints_transform(self, f):
         if not self.transform_objects:
@@ -757,15 +747,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_node_sets_nodes_constraints_temperature(self, f):
-        # write nodes to file
-        for femobj in self.temperature_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            temp_obj = femobj["Object"]
-            f.write("** " + temp_obj.Label + "\n")
-            f.write("*NSET,NSET=" + temp_obj.Name + "\n")
-            for n in femobj["Nodes"]:
-                f.write(str(n) + ",\n")
+    def write_node_sets_nodes_constraints_temperature(self, f, femobj, temp_obj):
+        f.write("*NSET,NSET=" + temp_obj.Name + "\n")
+        for n in femobj["Nodes"]:
+            f.write(str(n) + ",\n")
 
     def write_constraints_temperature(self, f):
         if not self.temperature_objects:
@@ -858,28 +843,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_nodeloads_constraints_force(self, f):
-        # write node loads to file
-        f.write("*CLOAD\n")
-        for femobj in self.force_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
-            direction_vec = femobj["Object"].DirectionVector
-            for ref_shape in femobj["NodeLoadTable"]:
-                f.write("** " + ref_shape[0] + "\n")
-                for n in sorted(ref_shape[1]):
-                    node_load = ref_shape[1][n]
-                    if (direction_vec.x != 0.0):
-                        v1 = "{:.13E}".format(direction_vec.x * node_load)
-                        f.write(str(n) + ",1," + v1 + "\n")
-                    if (direction_vec.y != 0.0):
-                        v2 = "{:.13E}".format(direction_vec.y * node_load)
-                        f.write(str(n) + ",2," + v2 + "\n")
-                    if (direction_vec.z != 0.0):
-                        v3 = "{:.13E}".format(direction_vec.z * node_load)
-                        f.write(str(n) + ",3," + v3 + "\n")
-                f.write("\n")
+    def write_nodeloads_constraints_force(self, f, femobj, force_obj):
+        direction_vec = femobj["Object"].DirectionVector
+        for ref_shape in femobj["NodeLoadTable"]:
+            f.write("** " + ref_shape[0] + "\n")
+            for n in sorted(ref_shape[1]):
+                node_load = ref_shape[1][n]
+                if (direction_vec.x != 0.0):
+                    v1 = "{:.13E}".format(direction_vec.x * node_load)
+                    f.write(str(n) + ",1," + v1 + "\n")
+                if (direction_vec.y != 0.0):
+                    v2 = "{:.13E}".format(direction_vec.y * node_load)
+                    f.write(str(n) + ",2," + v2 + "\n")
+                if (direction_vec.z != 0.0):
+                    v3 = "{:.13E}".format(direction_vec.z * node_load)
+                    f.write(str(n) + ",3," + v3 + "\n")
             f.write("\n")
+        f.write("\n")
 
     # ********************************************************************************************
     # constraints pressure
@@ -894,30 +874,25 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    def write_faceloads_constraints_pressure(self, f):
-        # write face loads to file
-        for femobj in self.pressure_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            prs_obj = femobj["Object"]
-            f.write("** " + prs_obj.Label + "\n")
-            rev = -1 if prs_obj.Reversed else 1
-            f.write("*DLOAD\n")
-            for ref_shape in femobj["PressureFaces"]:
-                # the loop is needed for compatibility reason
-                # in deprecated method get_pressure_obj_faces_depreciated
-                # the face ids where per ref_shape
-                f.write("** " + ref_shape[0] + "\n")
-                for face, fno in ref_shape[1]:
-                    if fno > 0:  # solid mesh face
-                        f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
-                    # on shell mesh face: fno == 0
-                    # normal of element face == face normal
-                    elif fno == 0:
-                        f.write("{},P,{}\n".format(face, rev * prs_obj.Pressure))
-                    # on shell mesh face: fno == -1
-                    # normal of element face opposite direction face normal
-                    elif fno == -1:
-                        f.write("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
+    def write_faceloads_constraints_pressure(self, f, femobj, prs_obj):
+        rev = -1 if prs_obj.Reversed else 1
+        f.write("*DLOAD\n")
+        for ref_shape in femobj["PressureFaces"]:
+            # the loop is needed for compatibility reason
+            # in deprecated method get_pressure_obj_faces_depreciated
+            # the face ids where per ref_shape
+            f.write("** " + ref_shape[0] + "\n")
+            for face, fno in ref_shape[1]:
+                if fno > 0:  # solid mesh face
+                    f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
+                # on shell mesh face: fno == 0
+                # normal of element face == face normal
+                elif fno == 0:
+                    f.write("{},P,{}\n".format(face, rev * prs_obj.Pressure))
+                # on shell mesh face: fno == -1
+                # normal of element face opposite direction face normal
+                elif fno == -1:
+                    f.write("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
 
     # ********************************************************************************************
     # constraints heatflux
@@ -934,42 +909,38 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     # TODO move code parts from this method to base writer module
     # into get_constraints_heatflux_faces method
-    def write_faceheatflux_constraints_heatflux(self, f):
-        # write heat flux faces to file
-        for hfobj in self.heatflux_objects:
-            heatflux_obj = hfobj["Object"]
-            f.write("** " + heatflux_obj.Label + "\n")
-            if heatflux_obj.ConstraintType == "Convection":
-                f.write("*FILM\n")
-                for o, elem_tup in heatflux_obj.References:
-                    for elem in elem_tup:
-                        ho = o.Shape.getElement(elem)
-                        if ho.ShapeType == "Face":
-                            v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                            f.write("** Heat flux on face {}\n".format(elem))
-                            for i in v:
-                                # SvdW: add factor to force heatflux to units system of t/mm/s/K
-                                # OvG: Only write out the VolumeIDs linked to a particular face
-                                f.write("{},F{},{},{}\n".format(
-                                    i[0],
-                                    i[1],
-                                    heatflux_obj.AmbientTemp,
-                                    heatflux_obj.FilmCoef * 0.001
-                                ))
-            elif heatflux_obj.ConstraintType == "DFlux":
-                f.write("*DFLUX\n")
-                for o, elem_tup in heatflux_obj.References:
-                    for elem in elem_tup:
-                        ho = o.Shape.getElement(elem)
-                        if ho.ShapeType == "Face":
-                            v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                            f.write("** Heat flux on face {}\n".format(elem))
-                            for i in v:
-                                f.write("{},S{},{}\n".format(
-                                    i[0],
-                                    i[1],
-                                    heatflux_obj.DFlux * 0.001
-                                ))
+    def write_faceheatflux_constraints_heatflux(self, f, femobj, heatflux_obj):
+        if heatflux_obj.ConstraintType == "Convection":
+            f.write("*FILM\n")
+            for o, elem_tup in heatflux_obj.References:
+                for elem in elem_tup:
+                    ho = o.Shape.getElement(elem)
+                    if ho.ShapeType == "Face":
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                        f.write("** Heat flux on face {}\n".format(elem))
+                        for i in v:
+                            # SvdW: add factor to force heatflux to units system of t/mm/s/K
+                            # OvG: Only write out the VolumeIDs linked to a particular face
+                            f.write("{},F{},{},{}\n".format(
+                                i[0],
+                                i[1],
+                                heatflux_obj.AmbientTemp,
+                                heatflux_obj.FilmCoef * 0.001
+                            ))
+        elif heatflux_obj.ConstraintType == "DFlux":
+            f.write("*DFLUX\n")
+            for o, elem_tup in heatflux_obj.References:
+                for elem in elem_tup:
+                    ho = o.Shape.getElement(elem)
+                    if ho.ShapeType == "Face":
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                        f.write("** Heat flux on face {}\n".format(elem))
+                        for i in v:
+                            f.write("{},S{},{}\n".format(
+                                i[0],
+                                i[1],
+                                heatflux_obj.DFlux * 0.001
+                            ))
 
     # ********************************************************************************************
     # constraints fluidsection
