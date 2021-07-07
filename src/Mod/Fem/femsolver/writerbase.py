@@ -987,6 +987,7 @@ def get_ccx_elset_name_short(names):
         )
         raise Exception(error)
 
+
 def print_obj_info(obj, log=False):
     if log is False:
         FreeCAD.Console.PrintMessage("{}:\n".format(obj.Label))

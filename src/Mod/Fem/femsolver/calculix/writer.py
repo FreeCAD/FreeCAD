@@ -98,11 +98,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.include = join(self.dir_name, self.mesh_name)
         self.file_name = self.include + ".inp"
         self.femmesh_file = ""  # the file the femmesh is in, no matter if one or split input file
-        self.FluidInletoutlet_ele = []
-        self.fluid_inout_nodes_file = join(
-            self.dir_name,
-            "{}_inout_nodes.txt".format(self.mesh_name)
-        )
         self.gravity = int(Units.Quantity(constants.gravity()).getValueAs("mm/s^2"))  # 9820 mm/s2
 
     # ********************************************************************************************
@@ -151,6 +146,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # self.write_element_sets_material_and_femelement_geometry(inpfile_main)
         self.write_element_sets_material_and_femelement_type(inpfile_main)
 
+        if self.fluidsection_objects:
+            # some fluidsection objs need special treatment, ccx_elsets are needed for this
+            inpfile_main = self.handle_fluidsection_liquid_inlet_outlet(inpfile_main)
+
         # node sets and surface sets
         self.write_node_sets_constraints_fixed(inpfile_main)
         self.write_node_sets_constraints_displacement(inpfile_main)
@@ -166,30 +165,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_initialtemperature(inpfile_main)
         # self.write_femelement_geometry(inpfile_main)
         self.write_femelementsets(inpfile_main)
-
-        # Fluid sections:
-        # Inlet and Outlet requires special element definition
-        # some data from the elsets are needed thus this can not be moved
-        # to mesh writing TODO it would be much better if this would be
-        # at mesh writing as the mesh will be changed
-        if self.fluidsection_objects:
-            if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
-                if self.split_inpfile is True:
-                    meshtools.use_correct_fluidinout_ele_def(
-                        self.FluidInletoutlet_ele,
-                        # use mesh file split, see write_mesh method split_mesh_file_path
-                        join(self.dir_name, self.mesh_name + "_femesh.inp"),
-                        self.fluid_inout_nodes_file
-                    )
-                else:
-                    inpfile_main.close()
-                    meshtools.use_correct_fluidinout_ele_def(
-                        self.FluidInletoutlet_ele,
-                        self.file_name,
-                        self.fluid_inout_nodes_file
-                    )
-                    # inpfile_main = io.open(self.file_name, "a", encoding="utf-8")
-                    inpfile_main = codecs.open(self.file_name, "a", encoding="utf-8")
 
         # constraints independent from steps
         self.write_constraints_planerotation(inpfile_main)
@@ -924,8 +899,104 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 ))
 
     # ********************************************************************************************
+    # handle elements for constraints fluidsection with Liquid Inlet or Outlet
+    # belongs to write_constraints_fluidsection, should be next method
+    # leave the constraints fluidsection code as the last constraint method in this module
+    # as it is none standard constraint method compared to all other constraints
+    def handle_fluidsection_liquid_inlet_outlet(self, inpfile_main):
+
+        # Fluid sections:
+        # fluidsection Liquid inlet outlet objs  requires special element definition
+        # to fill self.FluidInletoutlet_ele list the ccx_elset are needed
+        # thus this has to be after the creation of ccx_elsets
+        # different pipe cross sections will generate ccx_elsets
+
+        self.FluidInletoutlet_ele = []
+        self.fluid_inout_nodes_file = join(
+            self.dir_name,
+            "{}_inout_nodes.txt".format(self.mesh_name)
+        )
+
+        def get_fluidsection_inoutlet_obj_if_setdata(ccx_elset):
+            if (
+                ccx_elset["ccx_elset"]
+                # use six to be sure to be Python 2.7 and 3.x compatible
+                and not isinstance(ccx_elset["ccx_elset"], six.string_types)
+                and "fluidsection_obj" in ccx_elset  # fluid mesh
+            ):
+                fluidsec_obj = ccx_elset["fluidsection_obj"]
+                if (
+                    fluidsec_obj.SectionType == "Liquid"
+                    and (
+                        fluidsec_obj.LiquidSectionType == "PIPE INLET"
+                        or fluidsec_obj.LiquidSectionType == "PIPE OUTLET"
+                    )
+                ):
+                    return fluidsec_obj
+            return None
+
+        def is_fluidsection_inoutlet_setnames_possible(ccx_elsets):
+            for ccx_elset in ccx_elsets:
+                if (
+                    ccx_elset["ccx_elset"]
+                    and "fluidsection_obj" in ccx_elset  # fluid mesh
+                ):
+                    fluidsec_obj = ccx_elset["fluidsection_obj"]
+                    if (
+                        fluidsec_obj.SectionType == "Liquid"
+                        and (
+                            fluidsec_obj.LiquidSectionType == "PIPE INLET"
+                            or fluidsec_obj.LiquidSectionType == "PIPE OUTLET"
+                        )
+                    ):
+                        return True
+            return False
+
+        # collect elementIDs for fluidsection Liquid inlet outlet objs
+        # if they have element data (happens if not "eall")
+        for ccx_elset in self.ccx_elsets:
+            fluidsec_obj = get_fluidsection_inoutlet_obj_if_setdata(ccx_elset)
+            if fluidsec_obj is None:
+                continue
+            elsetchanged = False
+            counter = 0
+            for elid in ccx_elset["ccx_elset"]:
+                counter = counter + 1
+                if (elsetchanged is False) \
+                        and (fluidsec_obj.LiquidSectionType == "PIPE INLET"):
+                    # 3rd index is to track which line nr the element is defined
+                    self.FluidInletoutlet_ele.append(
+                        [str(elid), fluidsec_obj.LiquidSectionType, 0]
+                    )
+                    elsetchanged = True
+                elif (fluidsec_obj.LiquidSectionType == "PIPE OUTLET") \
+                        and (counter == len(ccx_elset["ccx_elset"])):
+                    # 3rd index is to track which line nr the element is defined
+                    self.FluidInletoutlet_ele.append(
+                        [str(elid), fluidsec_obj.LiquidSectionType, 0]
+                    )
+
+        # create the correct element definition for fluidsection Liquid inlet outlet objs
+        # at least one "fluidsection_obj" needs to be in ccx_elsets and has the attributes
+        # TODO: what if there are other objs in elsets?
+        if is_fluidsection_inoutlet_setnames_possible(self.ccx_elsets) is not None:
+            # it is not distinguished if split input file
+            # for split input file the main file is just closed and reopend even if not needed 
+            inpfile_main.close()
+            meshtools.use_correct_fluidinout_ele_def(
+                self.FluidInletoutlet_ele,
+                self.femmesh_file,
+                self.fluid_inout_nodes_file
+            )
+            inpfile_main = codecs.open(self.file_name, "a", encoding="utf-8")
+
+        return inpfile_main
+
+    # ********************************************************************************************
     # constraints fluidsection
-    # TODO: split method into separate methods and move some part into base writer
+    # TODO:
+    # split method into separate methods and move some part into base writer
+    # see also method handle_fluidsection_liquid_inlet_outlet
     def write_constraints_fluidsection(self, f):
         if not self.fluidsection_objects:
             return
@@ -1220,36 +1291,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("\n***********************************************************\n")
         f.write("** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-
-        # TODO: some elementIDs are collected for 1D-Flow calculation,
-        # this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
-        for ccx_elset in self.ccx_elsets:
-            # use six to be sure to be Python 2.7 and 3.x compatible
-            if ccx_elset["ccx_elset"] \
-                    and not isinstance(ccx_elset["ccx_elset"], six.string_types):
-                if "fluidsection_obj"in ccx_elset:
-                    fluidsec_obj = ccx_elset["fluidsection_obj"]
-                    if fluidsec_obj.SectionType == "Liquid":
-                        if (fluidsec_obj.LiquidSectionType == "PIPE INLET") \
-                                or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                            elsetchanged = False
-                            counter = 0
-                            for elid in ccx_elset["ccx_elset"]:
-                                counter = counter + 1
-                                if (elsetchanged is False) \
-                                        and (fluidsec_obj.LiquidSectionType == "PIPE INLET"):
-                                    # 3rd index is to track which line nr the element is defined
-                                    self.FluidInletoutlet_ele.append(
-                                        [str(elid), fluidsec_obj.LiquidSectionType, 0]
-                                    )
-                                    elsetchanged = True
-                                elif (fluidsec_obj.LiquidSectionType == "PIPE OUTLET") \
-                                        and (counter == len(ccx_elset["ccx_elset"])):
-                                    # 3rd index is to track which line nr the element is defined
-                                    self.FluidInletoutlet_ele.append(
-                                        [str(elid), fluidsec_obj.LiquidSectionType, 0]
-                                    )
-
         for ccx_elset in self.ccx_elsets:
             f.write("*ELSET,ELSET=" + ccx_elset["ccx_elset_name"] + "\n")
             # use six to be sure to be Python 2.7 and 3.x compatible
@@ -1438,20 +1479,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
 # ************************************************************************************************
 # Helpers
-def is_fluid_section_inlet_outlet(ccx_elsets):
-    """ Fluid section: Inlet and Outlet requires special element definition
-    """
-    for ccx_elset in ccx_elsets:
-        if ccx_elset["ccx_elset"]:
-            if "fluidsection_obj" in ccx_elset:  # fluid mesh
-                fluidsec_obj = ccx_elset["fluidsection_obj"]
-                if fluidsec_obj.SectionType == "Liquid":
-                    if (fluidsec_obj.LiquidSectionType == "PIPE INLET") \
-                            or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                        return True
-    return False
-
-
 def liquid_section_def(obj, section_type):
     if section_type == "PIPE MANNING":
         manning_area = str(obj.ManningArea.getValueAs("mm^2").Value)
