@@ -654,31 +654,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    # TODO move code parts from this method to base writer module
-    # into get_constraints_sectionprint_faces method
     def write_surfacefaces_constraints_sectionprint(self, f, femobj, sectionprint_obj):
-        for o, elem_tup in sectionprint_obj.References:
-            for elem in elem_tup:
-                ref_shape = o.Shape.getElement(elem)
-                if ref_shape.ShapeType == "Face":
-                    f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
-                    v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
-                    if len(v) > 0:
-                        # volume elements found
-                        FreeCAD.Console.PrintLog(
-                            "{}, surface {}, {} touching volume elements found\n"
-                            .format(sectionprint_obj.Label, sectionprint_obj.Name, len(v))
-                        )
-                        for i in v:
-                            f.write("{},S{}\n".format(i[0], i[1]))
-                    else:
-                        # no volume elements found, shell elements not allowed
-                        FreeCAD.Console.PrintError(
-                            "{}, surface {}, Error: "
-                            "No volume elements found!\n"
-                            .format(sectionprint_obj.Label, sectionprint_obj.Name)
-                        )
-                        f.write("** Error: empty list\n")
+        f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
+        for i in femobj["SectionPrintFaces"]:
+            f.write("{},S{}\n".format(i[0], i[1]))
 
     def constraint_sectionprint_writer(self, f, femobj, sectionprint_obj):
         f.write(

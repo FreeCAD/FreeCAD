@@ -395,8 +395,45 @@ class FemInputWriter():
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
     def get_constraints_sectionprint_faces(self):
-        pass
-        # TODO implement
+        # TODO: use meshtools to get the surfaces
+        # see constraint contact or constrint tie
+        for femobj in self.sectionprint_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            sectionprint_obj = femobj["Object"]
+            if len(sectionprint_obj.References) > 1:
+                FreeCAD.Console.PrintError(
+                    "Only one reference shape allowed for a section print "
+                    "but {} found: {}\n"
+                    .format(len(sectionprint_obj.References), sectionprint_obj.References)
+                )
+            for o, elem_tup in sectionprint_obj.References:
+                for elem in elem_tup:
+                    # there should only be one reference for each section print object
+                    # in the gui this is checked
+                    ref_shape = o.Shape.getElement(elem)
+                    if ref_shape.ShapeType == "Face":
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
+                        if len(v) > 0:
+                            femobj["SectionPrintFaces"] = v
+                            # volume elements found
+                            FreeCAD.Console.PrintLog(
+                                "{}, surface {}, {} touching volume elements found\n"
+                                .format(sectionprint_obj.Label, sectionprint_obj.Name, len(v))
+                            )
+                        else:
+                            # no volume elements found, shell elements not allowed
+                            FreeCAD.Console.PrintError(
+                                "{}, surface {}, Error: "
+                                "No volume elements found!\n"
+                                .format(sectionprint_obj.Label, sectionprint_obj.Name)
+                            )
+                    else:
+                        # in Gui only Faces can be added
+                        FreeCAD.Console.PrintError(
+                            "Wrong reference shapt type for {} "
+                            "Only Faces are allowed, but a {} was found.\n"
+                            .format(sectionprint_obj.Name, ref_shape.ShapeType)
+                        )
 
     def get_constraints_heatflux_faces(self):
         pass
