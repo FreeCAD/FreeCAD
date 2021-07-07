@@ -858,7 +858,7 @@ class _Wall(ArchComponent.Component):
                                                 p2 = edge.valueAt(offset).add(p.negative())
                                                 sh = Part.LineSegment(p1,p2).toShape()
                                                 if obj.Joint.Value:
-                                                    sh = sh.extrude(t.multiply(obj.Joint.Value))
+                                                    sh = sh.extrude(-t.multiply(obj.Joint.Value))
                                                 sh = sh.extrude(n)
                                                 if i == 0:
                                                     cuts1.append(sh)
