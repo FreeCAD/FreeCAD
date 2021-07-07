@@ -895,40 +895,33 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
-    # TODO move code parts from this method to base writer module
-    # into get_constraints_heatflux_faces method
     def write_faceheatflux_constraints_heatflux(self, f, femobj, heatflux_obj):
         if heatflux_obj.ConstraintType == "Convection":
-            f.write("*FILM\n")
-            for o, elem_tup in heatflux_obj.References:
-                for elem in elem_tup:
-                    ho = o.Shape.getElement(elem)
-                    if ho.ShapeType == "Face":
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                        f.write("** Heat flux on face {}\n".format(elem))
-                        for i in v:
-                            # SvdW: add factor to force heatflux to units system of t/mm/s/K
-                            # OvG: Only write out the VolumeIDs linked to a particular face
-                            f.write("{},F{},{},{}\n".format(
-                                i[0],
-                                i[1],
-                                heatflux_obj.AmbientTemp,
-                                heatflux_obj.FilmCoef * 0.001
-                            ))
+            heatflux_key_word = "FILM"
+            heatflux_facetype = "F"
+            # SvdW: add factor to force heatflux to units system of t/mm/s/K
+            heatflux_values = "{},{}".format(
+                heatflux_obj.AmbientTemp,
+                heatflux_obj.FilmCoef * 0.001
+            )
         elif heatflux_obj.ConstraintType == "DFlux":
-            f.write("*DFLUX\n")
-            for o, elem_tup in heatflux_obj.References:
-                for elem in elem_tup:
-                    ho = o.Shape.getElement(elem)
-                    if ho.ShapeType == "Face":
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                        f.write("** Heat flux on face {}\n".format(elem))
-                        for i in v:
-                            f.write("{},S{},{}\n".format(
-                                i[0],
-                                i[1],
-                                heatflux_obj.DFlux * 0.001
-                            ))
+            heatflux_key_word = "DFLUX"
+            heatflux_facetype = "S"
+            heatflux_values = "{}".format(heatflux_obj.DFlux * 0.001)
+
+        f.write("*{}\n".format(heatflux_key_word))
+        for ref_shape in femobj["HeatFluxFaceTable"]:
+            elem_string = ref_shape[0]
+            face_table = ref_shape[1]
+            f.write("** Heat flux on face {}\n".format(elem_string))
+            for i in face_table:
+                # OvG: Only write out the VolumeIDs linked to a particular face
+                f.write("{},{}{},{}\n".format(
+                    i[0],
+                    heatflux_facetype,
+                    i[1],
+                    heatflux_values
+                ))
 
     # ********************************************************************************************
     # constraints fluidsection

@@ -436,8 +436,25 @@ class FemInputWriter():
                         )
 
     def get_constraints_heatflux_faces(self):
-        pass
-        # TODO implement
+        # TODO: use meshtools to get the surfaces (or move to mesh tools)
+        # see constraint contact or constrint tie and constraint force
+        # heatflux_obj_face_table: see force_obj_node_load_table
+        #     [
+        #         ("refshape_name:elemname", face_table),
+        #         ...,
+        #         ("refshape_name:elemname", face_table)
+        #     ]
+        for femobj in self.heatflux_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            heatflux_obj = femobj["Object"]
+            femobj["HeatFluxFaceTable"] = []
+            for o, elem_tup in heatflux_obj.References:
+                for elem in elem_tup:
+                    ho = o.Shape.getElement(elem)
+                    if ho.ShapeType == "Face":
+                        elem_info = "{}:{}".format(o.Name, elem)
+                        face_table = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                        femobj["HeatFluxFaceTable"].append((elem_info, face_table))
 
     # ********************************************************************************************
     # ********************************************************************************************

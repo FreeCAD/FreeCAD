@@ -169,22 +169,22 @@ FemConstraintTemperature,11,11,310.93
 ** written by write_constraints_heatflux function
 ** FemConstraintHeatflux
 *FILM
-** Heat flux on face Face3
+** Heat flux on face Box:Face3
 3,F2,255.3722,0.005678
 7,F3,255.3722,0.005678
 11,F2,255.3722,0.005678
 12,F2,255.3722,0.005678
-** Heat flux on face Face4
+** Heat flux on face Box:Face4
 1,F2,255.3722,0.005678
 2,F4,255.3722,0.005678
 4,F4,255.3722,0.005678
 9,F4,255.3722,0.005678
-** Heat flux on face Face5
+** Heat flux on face Box:Face5
 1,F4,255.3722,0.005678
 3,F4,255.3722,0.005678
 4,F3,255.3722,0.005678
 10,F3,255.3722,0.005678
-** Heat flux on face Face6
+** Heat flux on face Box:Face6
 6,F4,255.3722,0.005678
 7,F4,255.3722,0.005678
 8,F4,255.3722,0.005678
