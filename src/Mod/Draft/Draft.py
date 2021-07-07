@@ -146,6 +146,7 @@ from draftfunctions.fuse import fuse
 from draftfunctions.heal import heal
 
 from draftfunctions.move import (move,
+                                 moveSubElements,
                                  move_vertex,
                                  moveVertex,
                                  move_edge,
