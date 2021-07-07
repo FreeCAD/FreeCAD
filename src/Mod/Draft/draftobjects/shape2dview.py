@@ -107,8 +107,7 @@ class Shape2DView(DraftObject):
             obj.SegmentLength = .05
         if not "VisibleOnly" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                    "If this is True, this object will be recomputed only if it is \
-                    visible")
+                    "If this is True, this object will include only visible objects")
             obj.addProperty("App::PropertyBool", "VisibleOnly",
                             "Draft", _tip)
             obj.VisibleOnly = False
@@ -127,6 +126,12 @@ class Shape2DView(DraftObject):
                     "If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property")
             obj.addProperty("App::PropertyBool", "Clip",
                             "Draft", _tip)
+        if not "AutoUpdate" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "This object will be recomputed only if this is True.")
+            obj.addProperty("App::PropertyBool", "AutoUpdate",
+                            "Draft", _tip)
+            obj.AutoUpdate = True
 
     def onDocumentRestored(self, obj):
 
@@ -179,11 +184,9 @@ class Shape2DView(DraftObject):
         return nedges
 
     def execute(self,obj):
-        if hasattr(obj,"VisibleOnly"):
-            if obj.VisibleOnly:
-                if obj.ViewObject:
-                    if obj.ViewObject.Visibility == False:
-                        return False
+        if hasattr(obj,"AutoUpdate"):
+            if not obj.AutoUpdate:
+                return True
         import Part, DraftGeomUtils
         obj.positionBySupport()
         pl = obj.Placement
