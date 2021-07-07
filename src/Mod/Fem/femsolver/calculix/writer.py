@@ -38,9 +38,11 @@ import time
 from os.path import join
 
 import FreeCAD
+from FreeCAD import Units
 
 from .. import writerbase
 from femmesh import meshtools
+from femtools import constants
 from femtools import geomtools
 
 
@@ -95,13 +97,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.mesh_name = self.mesh_object.Name
         self.include = join(self.dir_name, self.mesh_name)
         self.file_name = self.include + ".inp"
+        self.femmesh_file = ""  # the file the femmesh is in, no matter if one or split input file
         self.FluidInletoutlet_ele = []
         self.fluid_inout_nodes_file = join(
             self.dir_name,
             "{}_inout_nodes.txt".format(self.mesh_name)
         )
-        from femtools import constants
-        from FreeCAD import Units
         self.gravity = int(Units.Quantity(constants.gravity()).getValueAs("mm/s^2"))  # 9820 mm/s2
 
     # ********************************************************************************************
@@ -111,60 +112,60 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         FreeCAD.Console.PrintMessage("Start writing CalculiX input file\n")
         FreeCAD.Console.PrintMessage("Write ccx input file to: {}\n".format(self.file_name))
         FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.mesh_name  -->  " + self.mesh_name + "\n"
+            "writerbaseCcx --> self.mesh_name  -->  {}\n".format(self.mesh_name)
         )
         FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.dir_name  -->  " + self.dir_name + "\n"
+            "writerbaseCcx --> self.dir_name  -->  {}\n".format(self.dir_name)
         )
         FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.include  -->  " + self.mesh_name + "\n"
+            "writerbaseCcx --> self.include  -->  {}\n".format(self.mesh_name)
         )
         FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.file_name  -->  " + self.file_name + "\n"
+            "writerbaseCcx --> self.file_name  -->  {}\n".format(self.file_name)
         )
 
-        self.write_calculix_input()
+        self.write_file()
 
-        writing_time_string = (
-            "Writing time CalculiX input file: {} seconds"
+        FreeCAD.Console.PrintMessage(
+            "Writing time CalculiX input file: {} seconds \n\n"
             .format(round((time.process_time() - timestart), 2))
         )
         if self.femelement_count_test is True:
-            FreeCAD.Console.PrintMessage(writing_time_string + " \n\n")
             return self.file_name
         else:
-            FreeCAD.Console.PrintMessage(writing_time_string + " \n")
             FreeCAD.Console.PrintError(
                 "Problems on writing input file, check report prints.\n\n"
             )
             return ""
 
-    def write_calculix_input(self):
+    def write_file(self):
         if self.solver_obj.SplitInputWriter is True:
             self.split_inpfile = True
         else:
             self.split_inpfile = False
 
         # mesh
-        inpfileMain = self.write_mesh()
+        inpfile_main = self.write_mesh()
 
-        # element and material sets
-        self.write_element_sets_material_and_femelement_type(inpfileMain)
+        # element sets for materials and element geometry
+        # self.write_element_sets_material_and_femelement_geometry(inpfile_main)
+        self.write_element_sets_material_and_femelement_type(inpfile_main)
 
         # node sets and surface sets
-        self.write_node_sets_constraints_fixed(inpfileMain)
-        self.write_node_sets_constraints_displacement(inpfileMain)
-        self.write_node_sets_constraints_planerotation(inpfileMain)
-        self.write_surfaces_constraints_contact(inpfileMain)
-        self.write_surfaces_constraints_tie(inpfileMain)
-        self.write_surfaces_constraints_sectionprint(inpfileMain)
-        self.write_node_sets_constraints_transform(inpfileMain)
-        self.write_node_sets_constraints_temperature(inpfileMain)
+        self.write_node_sets_constraints_fixed(inpfile_main)
+        self.write_node_sets_constraints_displacement(inpfile_main)
+        self.write_node_sets_constraints_planerotation(inpfile_main)
+        self.write_surfaces_constraints_contact(inpfile_main)
+        self.write_surfaces_constraints_tie(inpfile_main)
+        self.write_surfaces_constraints_sectionprint(inpfile_main)
+        self.write_node_sets_constraints_transform(inpfile_main)
+        self.write_node_sets_constraints_temperature(inpfile_main)
 
         # materials and fem element types
-        self.write_materials(inpfileMain)
-        self.write_constraints_initialtemperature(inpfileMain)
-        self.write_femelementsets(inpfileMain)
+        self.write_materials(inpfile_main)
+        self.write_constraints_initialtemperature(inpfile_main)
+        # self.write_femelement_geometry(inpfile_main)
+        self.write_femelementsets(inpfile_main)
 
         # Fluid sections:
         # Inlet and Outlet requires special element definition
@@ -181,42 +182,42 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         self.fluid_inout_nodes_file
                     )
                 else:
-                    inpfileMain.close()
+                    inpfile_main.close()
                     meshtools.use_correct_fluidinout_ele_def(
                         self.FluidInletoutlet_ele,
                         self.file_name,
                         self.fluid_inout_nodes_file
                     )
-                    # inpfileMain = io.open(self.file_name, "a", encoding="utf-8")
-                    inpfileMain = codecs.open(self.file_name, "a", encoding="utf-8")
+                    # inpfile_main = io.open(self.file_name, "a", encoding="utf-8")
+                    inpfile_main = codecs.open(self.file_name, "a", encoding="utf-8")
 
         # constraints independent from steps
-        self.write_constraints_planerotation(inpfileMain)
-        self.write_constraints_contact(inpfileMain)
-        self.write_constraints_tie(inpfileMain)
-        self.write_constraints_transform(inpfileMain)
+        self.write_constraints_planerotation(inpfile_main)
+        self.write_constraints_contact(inpfile_main)
+        self.write_constraints_tie(inpfile_main)
+        self.write_constraints_transform(inpfile_main)
 
         # step begin
-        self.write_step_begin(inpfileMain)
+        self.write_step_begin(inpfile_main)
 
         # constraints dependent from steps
-        self.write_constraints_fixed(inpfileMain)
-        self.write_constraints_displacement(inpfileMain)
-        self.write_constraints_sectionprint(inpfileMain)
-        self.write_constraints_selfweight(inpfileMain)
-        self.write_constraints_force(inpfileMain)
-        self.write_constraints_pressure(inpfileMain)
-        self.write_constraints_temperature(inpfileMain)
-        self.write_constraints_heatflux(inpfileMain)
-        self.write_constraints_fluidsection(inpfileMain)
+        self.write_constraints_fixed(inpfile_main)
+        self.write_constraints_displacement(inpfile_main)
+        self.write_constraints_sectionprint(inpfile_main)
+        self.write_constraints_selfweight(inpfile_main)
+        self.write_constraints_force(inpfile_main)
+        self.write_constraints_pressure(inpfile_main)
+        self.write_constraints_temperature(inpfile_main)
+        self.write_constraints_heatflux(inpfile_main)
+        self.write_constraints_fluidsection(inpfile_main)
 
         # output and step end
-        self.write_outputs_types(inpfileMain)
-        self.write_step_end(inpfileMain)
+        self.write_outputs_types(inpfile_main)
+        self.write_step_end(inpfile_main)
 
         # footer
-        self.write_footer(inpfileMain)
-        inpfileMain.close()
+        self.write_footer(inpfile_main)
+        inpfile_main.close()
 
     # ********************************************************************************************
     # mesh
@@ -227,27 +228,27 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.split_inpfile is True:
             write_name = "femesh"
             file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            split_mesh_file_path = join(self.dir_name, file_name_split)
+            self.femmesh_file = join(self.dir_name, file_name_split)
 
             self.femmesh.writeABAQUS(
-                split_mesh_file_path,
+                self.femmesh_file,
                 element_param,
                 group_param
             )
 
             # Check to see if fluid sections are in analysis and use D network element type
             if self.fluidsection_objects:
-                meshtools.write_D_network_element_to_inputfile(split_mesh_file_path)
+                meshtools.write_D_network_element_to_inputfile(self.femmesh_file)
 
-            # inpfile = io.open(self.file_name, "w", encoding="utf-8")
             inpfile = codecs.open(self.file_name, "w", encoding="utf-8")
             inpfile.write("***********************************************************\n")
             inpfile.write("** {}\n".format(write_name))
             inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_split))
 
         else:
+            self.femmesh_file = self.file_name
             self.femmesh.writeABAQUS(
-                self.file_name,
+                self.femmesh_file,
                 element_param,
                 group_param
             )
@@ -255,11 +256,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             # Check to see if fluid sections are in analysis and use D network element type
             if self.fluidsection_objects:
                 # inpfile is closed
-                meshtools.write_D_network_element_to_inputfile(self.file_name)
+                meshtools.write_D_network_element_to_inputfile(self.femmesh_file)
 
             # reopen file with "append" to add all the rest
-            # inpfile = io.open(self.file_name, "a", encoding="utf-8")
-            inpfile = codecs.open(self.file_name, "a", encoding="utf-8")
+            inpfile = codecs.open(self.femmesh_file, "a", encoding="utf-8")
             inpfile.write("\n\n")
 
         return inpfile
@@ -1210,11 +1210,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("**\n")
 
     # ********************************************************************************************
-    # material and fem element type
+    # material and fem element geometry
+    # def write_element_sets_material_and_femelement_geometry(self, f):
     def write_element_sets_material_and_femelement_type(self, f):
 
-        self.get_element_sets_material_and_femelement_type()
+        self.get_element_sets_material_and_femelement_geometry()
 
+        # write ccx_elsets to file
         f.write("\n***********************************************************\n")
         f.write("** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1248,7 +1250,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                                         [str(elid), fluidsec_obj.LiquidSectionType, 0]
                                     )
 
-        # write ccx_elsets to file
         for ccx_elset in self.ccx_elsets:
             f.write("*ELSET,ELSET=" + ccx_elset["ccx_elset_name"] + "\n")
             # use six to be sure to be Python 2.7 and 3.x compatible
@@ -1345,6 +1346,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                                 f.write(nl_mat_obj.YieldPoint3 + "\n")
                     f.write("\n")
 
+    # def write_femelement_geometry(self, f):
     def write_femelementsets(self, f):
         f.write("\n***********************************************************\n")
         f.write("** Sections\n")

@@ -581,7 +581,7 @@ class FemInputWriter():
                 self.material_objects
             )
 
-    def get_element_sets_material_and_femelement_type(self):
+    def get_element_sets_material_and_femelement_geometry(self):
         # in any case if we have beams, we're going to need the element ids for the rotation elsets
         if self.beamsection_objects:
             # we will need to split the beam even for one beamobj
@@ -938,6 +938,8 @@ class FemInputWriter():
 
 # ************************************************************************************************
 # Helpers
+
+
 # ccx elset names:
 # M .. Material
 # B .. Beam
@@ -984,9 +986,6 @@ def get_ccx_elset_name_short(names):
             .format(ccx_elset_name)
         )
         raise Exception(error)
-
-# helper
-
 
 def print_obj_info(obj, log=False):
     if log is False:
