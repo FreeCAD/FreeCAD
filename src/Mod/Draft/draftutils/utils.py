@@ -463,7 +463,7 @@ def get_objects_of_type(objects, typ):
 getObjectsOfType = get_objects_of_type
 
 
-def is_clone(obj, objtype, recursive=False):
+def is_clone(obj, objtype=None, recursive=False):
     """Return True if the given object is a clone of a certain type.
 
     A clone is of type `'Clone'`, and has a reference
@@ -510,16 +510,20 @@ def is_clone(obj, objtype, recursive=False):
     """
     if isinstance(objtype, list):
         return any([isClone(obj, t, recursive) for t in objtype])
-
     if getType(obj) == "Clone":
         if len(obj.Objects) == 1:
-            if getType(obj.Objects[0]) == objtype:
-                return True
+            if objtype:
+                if getType(obj.Objects[0]) == objtype:
+                    return True
             elif recursive and (getType(obj.Objects[0]) == "Clone"):
                 return isClone(obj.Objects[0], objtype, recursive)
     elif hasattr(obj, "CloneOf"):
         if obj.CloneOf:
-            return True
+            if objtype:
+                if getType(obj.CloneOf) == objtype:
+                    return True
+            else:
+                return True
     return False
 
 
