@@ -41,7 +41,7 @@ def get_information():
         "meshelement": "Tet10",
         "constraints": ["fixed", "force"],
         "solvers": ["calculix"],
-        "material": "solid",
+        "material": "multimaterial",
         "equation": "mechanical"
     }
 

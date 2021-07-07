@@ -1659,7 +1659,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
-      <translation type="unfinished">Adaptive</translation>
+      <translation>Adaptivní</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="110"/>

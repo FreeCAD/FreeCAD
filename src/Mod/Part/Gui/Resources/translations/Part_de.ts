@@ -261,6 +261,16 @@ Es wird einen 'Compound-Filter' für jede Form erzeugen.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolesche Fragmente</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Boolesche Fragmente</translation>
@@ -358,16 +368,6 @@ Ein 'Verbundobjekt-Filter' kann verwendet werden, um die einzelnen Scheiben zu e
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
       <translation>Auseinanderschneiden</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolesche Fragmente</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
@@ -1293,7 +1293,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Zweite leitgerade für Ellipse und Hyperbel.</translation>
+      <translation>Zweite Leitgerade für Ellipse und Hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
@@ -4162,7 +4162,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
       <location filename="../../DlgPrimitives.ui" line="1055"/>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
       <source>Polygon:</source>
-      <translation>Polygon:</translation>
+      <translation>Vieleck:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1075"/>

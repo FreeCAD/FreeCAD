@@ -970,7 +970,7 @@ public:
                     firstCurve + 4, firstCurve + 6, // equal  3
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
-                // now add contruction geometry - two points used to take suggested constraints
+                // now add construction geometry - two points used to take suggested constraints
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
@@ -993,13 +993,13 @@ public:
 
                 Gui::Command::commitCommand();
 
-                // add auto constraints at the StartPos auxiliar point
+                // add auto constraints at the StartPos auxiliary point
                 if (sugConstr1.size() > 0) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex() - 1, Sketcher::start);
                     sugConstr1.clear();
                 }
 
-                // add auto constraints at the EndPos auxiliar point
+                // add auto constraints at the EndPos auxiliary point
                 if (sugConstr2.size() > 0) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::start);
                     sugConstr2.clear();

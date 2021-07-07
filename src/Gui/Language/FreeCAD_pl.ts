@@ -824,7 +824,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>Status text:</source>
-      <translation>Tekst stanu:</translation>
+      <translation>Tekst statusu:</translation>
     </message>
     <message>
       <source>Tool tip:</source>
@@ -1967,7 +1967,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source>Look at</source>
-      <translation>Zerknij na</translation>
+      <translation>Weź pod uwagę</translation>
     </message>
     <message>
       <source>Groups</source>
@@ -4023,7 +4023,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     </message>
     <message>
       <source>Start Recovery</source>
-      <translation>Uruchomienie odzyskiwania</translation>
+      <translation>Rozpoczęcie odzyskiwania</translation>
     </message>
     <message>
       <source>Not yet recovered</source>
@@ -4083,7 +4083,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Naciśnij przycisk "Rozpoczęcie odzyskiwania", aby rozpocząć proces przywracania dokumentu wymienionego poniżej. 
 
-Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
+Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
@@ -4177,7 +4177,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>%1 Downloads</source>
-      <translation>%1 Pobrań</translation>
+      <translation>Pobrano %1</translation>
     </message>
   </context>
   <context>
@@ -6910,7 +6910,7 @@ Wybierz 'Przerwij', aby zrezygnować</translation>
 Please check report view for more...</source>
       <translation>
 
-Sprawdź widok raportu, aby uzyskać więcej informacji...</translation>
+Proszę sprawdź widok raportu, aby uzyskać więcej informacji...</translation>
     </message>
     <message>
       <source>
@@ -7765,7 +7765,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation>Przejdź do najgłębszego połączonego obiektu</translation>
+      <translation>Przejdź do najgłębiej połączonego obiektu</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
@@ -7825,7 +7825,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Step into</source>
-      <translation>Krok w przód</translation>
+      <translation>Wejdź do</translation>
     </message>
   </context>
   <context>
@@ -7836,7 +7836,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Step over</source>
-      <translation>Przejdź</translation>
+      <translation>Krok dalej</translation>
     </message>
   </context>
   <context>
@@ -8156,7 +8156,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Random color</source>
-      <translation>Kolor losowy</translation>
+      <translation>Nadaj kolor losowo</translation>
     </message>
   </context>
   <context>
@@ -8527,7 +8527,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Przełącza przycinania płaszczyzny dla aktywnego widoku</translation>
+      <translation>Przełącza płaszczyznę przycinania dla aktywnego widoku</translation>
     </message>
   </context>
   <context>
@@ -8583,7 +8583,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Przełącz wyświetlanie</translation>
+      <translation>Przełącz widoczność</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
@@ -8632,7 +8632,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation>Przekształcenie zaznaczonego obiektu do widoku 3d</translation>
+      <translation>Przekształć wybrany obiekt w widoku 3D</translation>
     </message>
   </context>
   <context>
@@ -8917,7 +8917,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Wysyłanie danych pozycji ujęcia widoku do konsoli i do makra, aby łatwo przywołać tę pozycję</translation>
+      <translation>Wyślij dane pozycji ujęcia widoku do konsoli i do makra, aby łatwo przywołać tę pozycję</translation>
     </message>
   </context>
   <context>
@@ -8947,7 +8947,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Przełączyć wyświetlanie widok z przeplotem wierszy</translation>
+      <translation>Przełącz wyświetlanie na tryb stereo z przeplotem wierszy</translation>
     </message>
   </context>
   <context>
@@ -8992,7 +8992,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation>Przełącz widok stereo na czerwony/cyjan</translation>
+      <translation>Przełącz widok stereo na czerwony / cyjan</translation>
     </message>
   </context>
   <context>

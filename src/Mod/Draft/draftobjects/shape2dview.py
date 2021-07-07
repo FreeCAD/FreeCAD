@@ -44,75 +44,101 @@ class Shape2DView(DraftObject):
 
     def __init__(self,obj):
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The base object this 2D view must represent")
-        obj.addProperty("App::PropertyLink", "Base",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The projection vector of this object")
-        obj.addProperty("App::PropertyVector", "Projection",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The way the viewed object must be projected")
-        obj.addProperty("App::PropertyEnumeration", "ProjectionMode",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The indices of the faces to be projected in Individual Faces mode")
-        obj.addProperty("App::PropertyIntegerList", "FaceNumbers",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Show hidden lines")
-        obj.addProperty("App::PropertyBool", "HiddenLines",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Fuse wall and structure objects of same type and material")
-        obj.addProperty("App::PropertyBool", "FuseArch",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Tessellate Ellipses and B-splines into line segments")
-        obj.addProperty("App::PropertyBool", "Tessellation",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "For Cutlines and Cutfaces modes, \
-                this leaves the faces at the cut location")
-        obj.addProperty("App::PropertyBool", "InPlace",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Length of line segments if tessellating Ellipses or B-splines \
-                into line segments")
-        obj.addProperty("App::PropertyFloat", "SegmentLength",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "If this is True, this object will be recomputed only if it is \
-                visible")
-        obj.addProperty("App::PropertyBool", "VisibleOnly",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "A list of exclusion points. Any edge touching any of those points will not be drawn.")
-        obj.addProperty("App::PropertyVectorList", "ExclusionPoints",
-                        "Draft", _tip)
-
-        obj.Projection = App.Vector(0,0,1)
-        obj.ProjectionMode = ["Solid", "Individual Faces",
-                              "Cutlines", "Cutfaces","Solid faces"]
-        obj.HiddenLines = False
-        obj.Tessellation = False
-        obj.VisibleOnly = False
-        obj.InPlace = True
-        obj.SegmentLength = .05
+        self.setProperties(obj)
         super(Shape2DView, self).__init__(obj, "Shape2DView")
 
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+
+        if not "Base" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "The base object this 2D view must represent")
+            obj.addProperty("App::PropertyLink", "Base",
+                            "Draft", _tip)
+        if not "Projection" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "The projection vector of this object")
+            obj.addProperty("App::PropertyVector", "Projection",
+                            "Draft", _tip)
+            obj.Projection = App.Vector(0,0,1)
+        if not "ProjectionMode" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "The way the viewed object must be projected")
+            obj.addProperty("App::PropertyEnumeration", "ProjectionMode",
+                            "Draft", _tip)
+            obj.ProjectionMode = ["Solid", "Individual Faces",
+                                  "Cutlines", "Cutfaces","Solid faces"]
+        if not "FaceNumbers" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "The indices of the faces to be projected in Individual Faces mode")
+            obj.addProperty("App::PropertyIntegerList", "FaceNumbers",
+                            "Draft", _tip)
+        if not "HiddenLines" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "Show hidden lines")
+            obj.addProperty("App::PropertyBool", "HiddenLines",
+                            "Draft", _tip)
+            obj.HiddenLines = False
+        if not "FuseArch" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "Fuse wall and structure objects of same type and material")
+            obj.addProperty("App::PropertyBool", "FuseArch",
+                            "Draft", _tip)
+        if not "Tessellation" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "Tessellate Ellipses and B-splines into line segments")
+            obj.addProperty("App::PropertyBool", "Tessellation",
+                            "Draft", _tip)
+            obj.Tessellation = False
+        if not "InPlace" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "For Cutlines and Cutfaces modes, \
+                    this leaves the faces at the cut location")
+            obj.addProperty("App::PropertyBool", "InPlace",
+                            "Draft", _tip)
+            obj.InPlace = True
+        if not "SegmentLength" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "Length of line segments if tessellating Ellipses or B-splines \
+                    into line segments")
+            obj.addProperty("App::PropertyFloat", "SegmentLength",
+                            "Draft", _tip)
+            obj.SegmentLength = .05
+        if not "VisibleOnly" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "If this is True, this object will include only visible objects")
+            obj.addProperty("App::PropertyBool", "VisibleOnly",
+                            "Draft", _tip)
+            obj.VisibleOnly = False
+        if not "ExclusionPoints" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "A list of exclusion points. Any edge touching any of those points will not be drawn.")
+            obj.addProperty("App::PropertyVectorList", "ExclusionPoints",
+                            "Draft", _tip)
+        if not "OnlySolids" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "If this is True, only solid geometry is handled. This overrides the base object's Only Solids property")
+            obj.addProperty("App::PropertyBool", "OnlySolids",
+                            "Draft", _tip)
+        if not "Clip" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property")
+            obj.addProperty("App::PropertyBool", "Clip",
+                            "Draft", _tip)
+        if not "AutoUpdate" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "This object will be recomputed only if this is True.")
+            obj.addProperty("App::PropertyBool", "AutoUpdate",
+                            "Draft", _tip)
+            obj.AutoUpdate = True
+
+    def onDocumentRestored(self, obj):
+
+        self.setProperties(obj)
+
     def getProjected(self,obj,shape,direction):
+
         "returns projected edges from a shape and a direction"
         import Part, Drawing, DraftGeomUtils
         edges = []
@@ -135,6 +161,7 @@ class Shape2DView(DraftObject):
             #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def cleanExcluded(self,obj,shapes):
+
         """removes any edge touching exclusion points"""
         import Part
         MAXDIST = 0.0001
@@ -157,11 +184,9 @@ class Shape2DView(DraftObject):
         return nedges
 
     def execute(self,obj):
-        if hasattr(obj,"VisibleOnly"):
-            if obj.VisibleOnly:
-                if obj.ViewObject:
-                    if obj.ViewObject.Visibility == False:
-                        return False
+        if hasattr(obj,"AutoUpdate"):
+            if not obj.AutoUpdate:
+                return True
         import Part, DraftGeomUtils
         obj.positionBySupport()
         pl = obj.Placement
@@ -183,9 +208,12 @@ class Shape2DView(DraftObject):
                     onlysolids = True
                     if hasattr(obj.Base,"OnlySolids"):
                         onlysolids = obj.Base.OnlySolids
+                    if hasattr(obj,"OnlySolids"): # override base object
+                        onlysolids = obj.OnlySolids
                     import Arch, Part, Drawing
                     objs = groups.get_group_contents(objs, walls=True)
-                    objs = gui_utils.remove_hidden(objs)
+                    if getattr(obj,"VisibleOnly",True):
+                        objs = gui_utils.remove_hidden(objs)
                     shapes = []
                     if hasattr(obj,"FuseArch") and obj.FuseArch:
                         shtypes = {}
@@ -224,7 +252,12 @@ class Shape2DView(DraftObject):
                     clip = False
                     if hasattr(obj.Base,"Clip"):
                         clip = obj.Base.Clip
-                    cutp, cutv, iv = Arch.getCutVolume(cutplane, shapes, clip)
+                    if hasattr(obj,"Clip"): #override base object
+                        clip = obj.Clip
+                    depth = None
+                    if hasattr(obj.Base,"Depth"):
+                        depth = obj.Base.Depth.Value
+                    cutp, cutv, iv = Arch.getCutVolume(cutplane, shapes, clip, depth)
                     cuts = []
                     opl = App.Placement(obj.Base.Placement)
                     proj = opl.Rotation.multVec(App.Vector(0, 0, 1))

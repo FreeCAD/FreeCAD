@@ -261,6 +261,16 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Fragmentacja funkcją logiczną</translation>
@@ -362,16 +372,6 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
       <translation>Pokrój</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
@@ -4000,7 +4000,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../DlgPrimitives.ui" line="42"/>
       <location filename="../../DlgPrimitives.cpp" line="401"/>
       <source>Box</source>
-      <translation>Sześcian</translation>
+      <translation>Prostopadłościan</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>

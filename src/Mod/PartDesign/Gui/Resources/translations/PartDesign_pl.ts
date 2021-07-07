@@ -875,17 +875,17 @@
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Face tools</source>
       <translation>Narzędzia ścian</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Sketch tools</source>
       <translation>Przybory do szkicowania</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Create Geometry</source>
       <translation>Utwórz Geometrię</translation>
     </message>
@@ -1299,7 +1299,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation>Suma</translation>
+      <translation>Scalenie</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
@@ -4386,39 +4386,69 @@ dla głębokości otworów nieprzelotowych</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
       <translation>&amp;Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation>&amp;Szkic</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Create a datum</source>
       <translation>Utwórz układ odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
       <translation>Utwórz cechę przez dodanie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
       <translation>Utwórz cechę przez odjecie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a pattern</source>
       <translation>Zastosuj wzór</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
       <translation>Zastosuj funkcję ulepszenia</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="60"/>
+      <source>Sprocket...</source>
+      <translation>Koło łańcuchowe ...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Involute gear...</source>
+      <translation>Przekładnia ewolwentowa ...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Shaft design wizard</source>
+      <translation>Kreator projektowania wału</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="67"/>
+      <source>Measure</source>
+      <translation>Wymiarowanie</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="68"/>
+      <source>Part Design Helper</source>
+      <translation>Projekt Części - pomocnik</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="69"/>
+      <source>Part Design Modeling</source>
+      <translation>Projekt Części - modelowanie</translation>
     </message>
   </context>
 </TS>

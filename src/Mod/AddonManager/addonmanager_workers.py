@@ -25,6 +25,7 @@ import os
 import re
 import shutil
 import sys
+import json
 
 from PySide import QtCore, QtGui
 
@@ -107,21 +108,16 @@ class UpdateWorker(QtCore.QThread):
         u = utils.urlopen("https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json")
         if u:
             p = u.read()
-            if sys.version_info.major >= 3 and isinstance(p, bytes):
-                p = p.decode("utf-8")
             u.close()
-            hit = re.findall(r'"obsolete"[^\{]*?{[^\{]*?"Mod":\[(?P<obsolete>[^\[\]]+?)\]}',
-                             p.replace("\n", "").replace(" ", ""))
-            if hit:
-                obsolete = hit[0].replace('"', "").split(",")
-            hit = re.findall(r'"blacklisted"[^\{]*?{[^\{]*?"Macro":\[(?P<blacklisted>[^\[\]]+?)\]}',
-                             p.replace("\n", "").replace(" ", ""))
-            if hit:
-                macros_blacklist = hit[0].replace('"', "").split(",")
-            hit = re.findall(r'"py2only"[^\{]*?{[^\{]*?"Mod":\[(?P<py2only>[^\[\]]+?)\]}',
-                             p.replace("\n", "").replace(" ", ""))
-            if hit:
-                py2only = hit[0].replace('"', "").split(",")
+            j = json.loads(p)
+            if "obsolete" in j and "Mod" in j["obsolete"]:
+                obsolete = j["obsolete"]["Mod"]
+
+            if "blacklisted" in j and "Macro" in j["blacklisted"]:
+                macros_blacklist = j["blacklisted"]["Macro"]
+
+            if "py2only" in j and "Mod" in j["py2only"]:
+                py2only = j["py2only"]["Mod"]
         else:
             print("Debug: addon_flags.json not found")
 

@@ -145,6 +145,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         self.onChanged(vobj, "Justification")
         self.onChanged(vobj, "LineSpacing")
         self.onChanged(vobj, "ScaleMultiplier")
+        self.Object = vobj.Object
 
     def getDisplayModes(self, vobj):
         """Return the display modes that this viewprovider supports."""
@@ -221,6 +222,47 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         elif prop == "LineSpacing" and "LineSpacing" in properties:
             self.text2d.spacing = vobj.LineSpacing
             self.text3d.spacing = vobj.LineSpacing
+
+    def setEdit(self,vobj,mode):
+
+        import FreeCADGui
+        self.text = ''
+        FreeCADGui.draftToolBar.sourceCmd = self
+        FreeCADGui.draftToolBar.taskUi()
+        FreeCADGui.draftToolBar.textUi()
+        FreeCADGui.draftToolBar.textValue.setPlainText("\n".join(vobj.Object.Text))
+        FreeCADGui.draftToolBar.textValue.setFocus()
+
+    def unsetEdit(self,vobj=None,mode=0):
+
+        import FreeCADGui
+        FreeCADGui.Control.closeDialog()
+        return True
+
+    def doubleClicked(self,vobj):
+
+        self.setEdit(vobj,None)
+
+    def createObject(self):
+
+        import FreeCADGui
+        if hasattr(self,"Object"):
+            txt = [t.replace("\"","\\\"") for t in self.text]
+            # If the last element is an empty string "" we remove it
+            if not txt[-1]:
+                txt.pop()
+            t_list = ['"' + l + '"' for l in txt]
+            list_as_text = ", ".join(t_list)
+            string = '[' + list_as_text + ']'
+            FreeCADGui.doCommand("FreeCAD.ActiveDocument."+self.Object.Name+".Text = "+string)
+            FreeCAD.ActiveDocument.recompute()
+            self.finish()
+
+    def finish(self,args=None):
+
+        import FreeCADGui
+        FreeCADGui.draftToolBar.sourceCmd = None
+        FreeCADGui.draftToolBar.offUi()
 
 
 # Alias for compatibility with v0.18 and earlier

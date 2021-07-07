@@ -102,7 +102,7 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+      <translation>Os seguintes elementos de geometria podem ser selecionados: </translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>

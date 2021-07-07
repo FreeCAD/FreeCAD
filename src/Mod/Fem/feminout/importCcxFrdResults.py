@@ -69,7 +69,8 @@ def insert(
 def importFrd(
     filename,
     analysis=None,
-    result_name_prefix=""
+    result_name_prefix="",
+    result_analysis_type=""
 ):
     import ObjectsFem
     from . import importToolsFem
@@ -107,14 +108,23 @@ def importFrd(
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = (
-                        "{}Mode{}_Results"
+                        "{}EigenMode_{}_Results"
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
-                    results_name = (
-                        "{}Time{}_Results"
-                        .format(result_name_prefix, step_time)
-                    )
+
+                    if result_analysis_type == "buckling":
+
+                        results_name = (
+                            "{}BucklingFactor_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
+                    else:
+                        results_name = (
+                            "{}Time_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
+
                 else:
                     results_name = (
                         "{}Results"
