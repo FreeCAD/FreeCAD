@@ -335,12 +335,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="825"/>
       <source>Move object after other object</source>
-      <translation>Przesuń obiekt po innym obiekcie</translation>
+      <translation>Przesuń obiekt za inny obiekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="826"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Przenosi wybrany obiekt i umieszcza go za innym elementem</translation>
+      <translation>Przenosi wybrany obiekt i umieszcza go za innym obiektem</translation>
     </message>
   </context>
   <context>
@@ -520,7 +520,7 @@
     <message>
       <location filename="../../Command.cpp" line="2381"/>
       <source>Create a scaled feature</source>
-      <translation>Utwórz funkcję skalowaną</translation>
+      <translation>Utwórz cechę skalowaną</translation>
     </message>
   </context>
   <context>
@@ -570,7 +570,7 @@
     <message>
       <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>Rozciągnij wybrany szkic wzdłuż ścieżki lub do innych profili i usuń z zawartości</translation>
+      <translation>Rozciągnij wybrany szkic wzdłuż krętej ścieżki lub do innych profili i usuń z zawartości</translation>
     </message>
   </context>
   <context>
@@ -854,12 +854,12 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
       <source>Sketch already used by other feature</source>
-      <translation>Szkicuj już używane przez inną funkcję</translation>
+      <translation>Szkic jest już używany przez inną cechę</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Szkic należy do innej funkcji zawartości</translation>
+      <translation>Szkic należy do innej cechy zawartości</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
@@ -869,7 +869,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>Funkcja jest umieszczona po wierzchołku funkcji</translation>
+      <translation>Cecha znajduje się za cechą czubka</translation>
     </message>
   </context>
   <context>
@@ -1482,7 +1482,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="368"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Wartość logiczna: Akceptuj: Błąd wprowadzania</translation>
+      <translation>Funkcja logiczna: Akceptuj: Błąd danych wejściowych</translation>
     </message>
   </context>
   <context>
@@ -1550,12 +1550,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
       <source>Draft angle</source>
-      <translation>Szkicuj kąt</translation>
+      <translation>Kąt początkowy</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="98"/>
       <source>Neutral plane</source>
-      <translation>Płaszczyzna zerowa</translation>
+      <translation>Płaszczyzna neutralna</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="115"/>
@@ -1660,7 +1660,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
       <source>Sketch already used by other feature</source>
-      <translation>Szkicuj już używane przez inną funkcję</translation>
+      <translation>Szkic jest już używany przez inną cechę</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="71"/>
@@ -1897,12 +1897,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="52"/>
       <source>Counterbore</source>
-      <translation>Pogłębiacz walcowy</translation>
+      <translation>Pogłębienie walcowe</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="53"/>
       <source>Countersink</source>
-      <translation>Pogłębienie walcowe</translation>
+      <translation>Pogłębienie stożkowe</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
@@ -3366,7 +3366,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../Command.cpp" line="1872"/>
       <source> not possible on selected faces/edges.</source>
-      <translation> nie jest możliwe na wybranych ścianach/krawędziach.</translation>
+      <translation> nie jest możliwe na wybranych ścianach / krawędziach.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2157"/>
@@ -3476,7 +3476,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Zaznacz dokładnie jedną cechę lub zawartość Projektu części.</translation>
+      <translation>Zaznacz dokładnie jedną cechę lub zawartość Projektu Części.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="560"/>
@@ -4025,12 +4025,12 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
       <source>Countersink</source>
-      <translation>Pogłębienie walcowe</translation>
+      <translation>Pogłębienie stożkowe</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
       <source>Counterbore</source>
-      <translation>Pogłębiacz walcowy</translation>
+      <translation>Pogłębienie walcowe</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="196"/>
@@ -4040,7 +4040,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
       <source>Custom dimensions</source>
-      <translation>Spersonalizowane wymiary</translation>
+      <translation>Wymiary niestandardowe</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
@@ -4093,7 +4093,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
       <source>Countersink angle</source>
-      <translation>Kąt nawiercenia</translation>
+      <translation>Kąt pogłębienia stożkowego</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
@@ -4106,7 +4106,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="20"/>
       <source>Task Hole Parameters</source>
-      <translation>Parametry otworu roboczego</translation>
+      <translation>Parametry otworu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="68"/>
@@ -4321,7 +4321,7 @@ dla głębokości otworów nieprzelotowych</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="615"/>
       <source>Countersink angle</source>
-      <translation>Kąt nawiercenia</translation>
+      <translation>Kąt pogłębienia stożkowego</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="389"/>

@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Transformace odkazu</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -2552,7 +2552,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>Distribuován</translation>
     </message>
     <message>
       <source>Centralized</source>

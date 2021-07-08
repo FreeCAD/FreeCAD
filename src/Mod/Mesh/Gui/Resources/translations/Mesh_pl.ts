@@ -642,7 +642,7 @@
       <location filename="../../Command.cpp" line="174"/>
       <location filename="../../Command.cpp" line="176"/>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Tworzy segment z siatki danego narzędzia</translation>
+      <translation>Tworzy segment z danej siatki narzędzia</translation>
     </message>
   </context>
   <context>
@@ -1221,7 +1221,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1019"/>
       <source>No folds on surface</source>
-      <translation>Brak zagięć na płaszczyźnie</translation>
+      <translation>Brak zagięć na powierzchni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1035"/>
@@ -1409,7 +1409,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="14"/>
       <source>Mesh Formats</source>
-      <translation>Formaty siatek</translation>
+      <translation>Formaty siatki</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
@@ -1862,7 +1862,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="49"/>
       <source>&lt; faces than</source>
-      <translation>&lt;powierzchnie niż</translation>
+      <translation>&lt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="56"/>
@@ -1895,7 +1895,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="135"/>
       <source>&gt; faces than</source>
-      <translation>&gt; powierzchnie niż</translation>
+      <translation>&gt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
@@ -1980,12 +1980,12 @@ do gładszego wyglądu.
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation>Max. krzywizny</translation>
+      <translation>Maksymalna krzywizna</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation>Min. krzywizny</translation>
+      <translation>Minimalna krzywizna</translation>
     </message>
   </context>
   <context>

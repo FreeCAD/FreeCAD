@@ -485,7 +485,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="82"/>
       <source>&lt; faces than</source>
-      <translation>&lt;powierzchnie niż</translation>
+      <translation>&lt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="89"/>

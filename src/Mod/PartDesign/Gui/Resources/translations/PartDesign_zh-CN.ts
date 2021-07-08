@@ -624,7 +624,7 @@
     <message>
       <location filename="../../Command.cpp" line="2042"/>
       <source>Make a thick solid</source>
-      <translation>做一个厚的实体</translation>
+      <translation>抽壳</translation>
     </message>
   </context>
   <context>
@@ -1157,7 +1157,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch:</source>
-      <translation>间距:</translation>
+      <translation>节距：</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
@@ -1814,12 +1814,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="96"/>
       <source>Pitch-Height-Angle</source>
-      <translation type="unfinished">Pitch-Height-Angle</translation>
+      <translation>节距-高度-角度</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="101"/>
       <source>Pitch-Turns-Angle</source>
-      <translation type="unfinished">Pitch-Turns-Angle</translation>
+      <translation>节距-圈数-角度</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="106"/>
@@ -1834,7 +1834,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="124"/>
       <source>Pitch:</source>
-      <translation>间距:</translation>
+      <translation>节距：</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="155"/>
@@ -4219,10 +4219,10 @@ Only available for holes without thread</translation>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation type="unfinished">Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</translation>
+      <translation>孔的锥度：
+90度：直孔
+小于90：底部的较小孔半径
+大于90：底部的较大孔半径</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="789"/>

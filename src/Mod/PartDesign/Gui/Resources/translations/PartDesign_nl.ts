@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Additatieve helix</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Veeg de geselecteerde schets langs een pad of naar andere profielen</translation>
+      <translation>Trek de geselecteerde schets langs een pad of naar andere profielen</translation>
     </message>
   </context>
   <context>
@@ -565,7 +565,7 @@
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Subtractive helix</source>
-      <translation type="unfinished">Subtractive helix</translation>
+      <translation>Subtractieve helix</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1764"/>
