@@ -2032,6 +2032,8 @@ App::LinkBaseExtension *ViewProviderLink::getLinkExtension() {
             [this, ext](App::DocumentObject &parent,
                         int i, int end, std::vector<App::DocumentObject*> *elements)
             {
+                if (!ext->getAutoPlacementValue())
+                    return;
                 auto placementProp = ext->getPlacementListProperty();
                 if(placementProp && placementProp->getSize() > i && elements) {
                     for (; i < end; ++i) {

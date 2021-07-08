@@ -2008,6 +2008,7 @@ LinkExtension::LinkExtension(void)
     initExtensionType(LinkExtension::getExtensionClassTypeId());
 
     LINK_PROPS_ADD_EXTENSION(LINK_PARAMS_EXT);
+    AutoPlacement.setValue(true);
 }
 
 LinkExtension::~LinkExtension()
