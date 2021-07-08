@@ -3480,10 +3480,20 @@ void View3DInventorViewer::renderScene(void)
 
     //fps rendering
     if (fpsEnabled) {
-        std::stringstream stream;
+        static FC_COIN_THREAD_LOCAL std::ostringstream stream;
+        stream.str("");
         stream.precision(1);
         stream.setf(std::ios::fixed | std::ios::showpoint);
         stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
+
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            if (auto manager = selectionRoot->getRenderManager()) {
+                auto stats = manager->getRenderStatistics();
+                if (stats)
+                    stream << ". " << stats;
+            }
+        }
+
         draw2DString(stream.str().c_str(), SbVec2s(10,10), SbVec2f(0.1f,0.1f));
     }
 

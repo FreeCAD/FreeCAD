@@ -91,11 +91,13 @@ public:
     std::map<std::vector<SbFCUniqueId>, Gui::CoinPtr<SoFCVertexCache> > map;
     void cleanup();
   };
-  SoFCVertexCache * merge(std::shared_ptr<MergeMap> & mergemap,
+  SoFCVertexCache * merge(bool allownewmerge,
+                          std::shared_ptr<MergeMap> & mergemap,
                           std::vector<SoFCRenderCache::VertexCacheEntry> & entires,
                           int idx, int & mergecount);
 
   int getMergeId() const;
+  SbFCUniqueId getCacheId() const;
 
   SoFCVertexCache * highlightIndices(int * indices = nullptr);
 

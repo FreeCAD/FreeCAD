@@ -44,6 +44,7 @@
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/sensors/SoIdleSensor.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/sensors/SoPathSensor.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -308,8 +309,28 @@ public:
     std::vector<VertexCachePtr> caches;
   };
 
+  class PathCacheSensor : public SoPathSensor
+  {
+  public:
+    virtual void notify(SoNotList * l) {
+      SoBase * firstbase = l->getLastRec()->getBase();
+      SoBase * lastbase = l->getFirstRec()->getBase();
+      if ((lastbase != firstbase) && (lastbase == (SoBase*) getAttachedPath())) {
+        this->detach();
+        master->pathcachetable.erase(this->path);
+        return;
+      }
+      SoPathSensor::notify(l);
+    }
+
+    RenderCachePtr cache;
+    SoFCRenderCacheManagerP *master = nullptr;
+    PathPtr path;
+  };
+
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, CacheSensor> cachetable;
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, VCacheSensor> vcachetable;
+  std::unordered_map<PathPtr, PathCacheSensor, PathHasher, PathHasher> pathcachetable;
 
   SoCallbackAction *action;
   int shapetypeid;
@@ -480,30 +501,47 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
   if (!path || path->getLength() == 0)
     return;
   SoState * state = PRIVATE(this)->action->getState();
-  RenderCachePtr cache = new SoFCRenderCache(state, path->getHead());
-  cache->open(state);
-  PRIVATE(this)->stack.resize(1, cache);
-  if (ontop) {
-    SoFCSwitch::setOverrideSwitch(state, true);
-    SoFCSwitch::pushSwitchPath(path);
+
+  RenderCachePtr cache;
+  auto it = PRIVATE(this)->pathcachetable.find(path);
+  if (it != PRIVATE(this)->pathcachetable.end())
+    cache = it->second.cache;
+  else {
+    cache = new SoFCRenderCache(state, path->getHead());
+    cache->open(state);
+    PRIVATE(this)->stack.resize(1, cache);
+    if (ontop) {
+      SoFCSwitch::setOverrideSwitch(state, true);
+      SoFCSwitch::pushSwitchPath(path);
+    }
+    PRIVATE(this)->action->apply(path);
+    if (ontop) {
+      SoFCSwitch::popSwitchPath();
+      SoFCSwitch::setOverrideSwitch(state, false);
+    }
+    cache->close(state);
+    PRIVATE(this)->stack.clear();
+    if (!cache->isEmpty()) {
+      // Must use SoTempPath as key to avoid path changes, because we are using
+      // the path as key which is supposed to be immutable.
+      PathPtr tmppath = new SoTempPath(path->getLength());
+      tmppath->append(path);
+      auto &sensor = PRIVATE(this)->pathcachetable[tmppath];
+      sensor.path = tmppath;
+      sensor.master = PRIVATE(this);
+      sensor.attach(path->copy());
+      sensor.cache = cache;
+    }
   }
-  PRIVATE(this)->action->apply(path);
-  if (ontop) {
-    SoFCSwitch::popSwitchPath();
-    SoFCSwitch::setOverrideSwitch(state, false);
-  }
-  cache->close(state);
-  PRIVATE(this)->stack.clear();
-  if (!cache->isEmpty()) {
-    int order = ontop ? 1 : 0;
-    PRIVATE(this)->renderer->setHighlight(
-          cache->buildHighlightCache(
-            PRIVATE(this)->sharedcache, order, detail, color,
-            SoFCRenderCache::PreselectHighlight
-            | SoFCRenderCache::CheckIndices
-            | (wholeontop ? SoFCRenderCache::WholeOnTop : 0)),
-          wholeontop);
-  }
+
+  int order = ontop ? 1 : 0;
+  PRIVATE(this)->renderer->setHighlight(
+        cache->buildHighlightCache(
+          PRIVATE(this)->sharedcache, order, detail, color,
+          SoFCRenderCache::PreselectHighlight
+          | SoFCRenderCache::CheckIndices
+          | (wholeontop ? SoFCRenderCache::WholeOnTop : 0)),
+        wholeontop);
 }
 
 void
@@ -553,7 +591,16 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
       flags |= SoFCRenderCache::WholeOnTop;
     elentry.vcachemap = sensor->cache->buildHighlightCache(
         self->sharedcache, elentry.id, elentry.detail.get(), elentry.color, flags);
+
     self->renderer->addSelection(elentry.id, elentry.vcachemap);
+    if (elentry.vcachemap.size() == 1
+        && elentry.vcachemap.begin()->second.size() == 1
+        && elentry.vcachemap.begin()->second[0].key == nullptr)
+    {
+      // here means the selection shows a bounding box, so don't put it on
+      // selpaths for pick list
+      self->selpaths.erase(elentry.id);
+    }
   }
 }
 
@@ -899,17 +946,17 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
 
   SoState * state = action->getState();
   SoFCRenderCache *currentcache = self->stack.empty() ? nullptr : self->stack.back();
-
   RenderCachePtr prevcache;
-  CacheSensor * sensor = nullptr;
+  std::vector<RenderCachePtr> *sensorcaches = nullptr;
   if (action->getCurPathCode() == SoAction::BELOW_PATH
       || action->getCurPathCode() == SoAction::NO_PATH) {
-    sensor = &self->cachetable[node];
-    sensor->attach(self, node);
-    for (auto it=sensor->caches.begin(); it!=sensor->caches.end();) {
+    CacheSensor &sensor = self->cachetable[node];
+    sensor.attach(self, node);
+    sensorcaches = &sensor.caches;
+    for (auto it=sensorcaches->begin(); it!=sensorcaches->end();) {
       prevcache = *it;
       if (prevcache->getNodeId() != node->getNodeId()) {
-        it = sensor->caches.erase(it);
+        it = sensorcaches->erase(it);
         continue;
       }
       if (prevcache->isValid(state)) {
@@ -926,6 +973,7 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
 
   int selectstyle = Material::Full;
   auto selroot = static_cast<const SoFCSelectionRoot*>(node);
+
   switch(selroot->selectionStyle.getValue()) {
   case SoFCSelectionRoot::Box:
     selectstyle = Material::Box;
@@ -940,8 +988,8 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
 
   RenderCachePtr cache(new SoFCRenderCache(state, const_cast<SoNode*>(node), prevcache));
 
-  if (sensor)
-    sensor->caches.push_back(cache);
+  if (sensorcaches)
+    sensorcaches->push_back(cache);
   if (currentcache)
     currentcache->beginChildCaching(state, cache);
   self->stack.push_back(cache);
@@ -954,8 +1002,8 @@ SoFCRenderCacheManagerP::postSeparator(void *userdata,
                                        SoCallbackAction *action,
                                        const SoNode * node)
 {
-  (void)node;
   SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+
   if (self->stack.empty())
       return SoCallbackAction::CONTINUE;
 
@@ -1313,6 +1361,12 @@ void
 SoFCRenderCacheManager::setHatchImage(const void *dataptr, int nc, int width, int height)
 {
   PRIVATE(this)->renderer->setHatchImage(dataptr, nc, width, height);
+}
+
+const char *
+SoFCRenderCacheManager::getRenderStatistics() const
+{
+  return PRIVATE(this)->renderer->getStatistics();
 }
 
 // vim: noai:ts=2:sw=2

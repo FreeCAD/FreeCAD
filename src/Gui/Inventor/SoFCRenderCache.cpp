@@ -69,6 +69,8 @@
 
 #include "ColorDiff/ColorUtils.cpp"
 
+FC_LOG_LEVEL_INIT("Renderer", true, true)
+
 using namespace Gui;
 
 typedef CoinPtr<SoFCVertexCache> VertexCachePtr;
@@ -134,6 +136,7 @@ public:
   SoFCSelectionRoot *selnode = nullptr;
 
   std::shared_ptr<SoFCVertexCache::MergeMap> mergemap;
+  int facecount = 0;
 
 #ifdef FCCOIN_TRACE_CACHE_NAME
   SbName nodename;
@@ -1220,6 +1223,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
                                          entry.identity,
                                          entry.resetmatrix,
                                          selfkey);
+        PRIVATE(this)->facecount += vcache->getNumFaceParts();
       }
       if (entry.vcache->getNumLineIndices()) {
         Material material = entry.material;
@@ -1272,31 +1276,27 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         std::vector<VertexCacheEntry> *ventries = pushed_entries;
         int res = 1;
         auto vcache = childentry.cache;
-        CacheKeyPtr key;
-        if (childentry.key) {
-          CacheKeyPtr & pkey = keymap[childentry.key.get()];
-          if (!pkey) {
-            pkey.reset(new CacheKey);
-            if (PRIVATE(this)->selnode) {
-              pkey->reserve(childentry.key->size()+1);
-              pkey->push_back(PRIVATE(this)->selnode);
-            }
-            pkey->insert(pkey->end(), childentry.key->begin(), childentry.key->end());
+        CacheKeyPtr & key = keymap[childentry.key.get()];
+        if (!key) {
+          key.reset(new CacheKey);
+          if (PRIVATE(this)->selnode) {
+            key->reserve(childentry.key->size()+1);
+            key->push_back(PRIVATE(this)->selnode);
           }
-          key = pkey;
-
-          SoFCSelectionContextExPtr ctx;
-          if (PRIVATE(this)->selnode && vcache->getNode()) {
-            SoFCSelectionRoot::setActionStack(&selaction, key.get());
-            selaction.setRetrivedContext();
-            selaction.apply(vcache->getNode());
-            ctx = selaction.getRetrievedContext();
-          }
-
-          res = checkContext(material, ctx, vcache);
-          if (!res)
-            continue;
+          key->insert(key->end(), childentry.key->begin(), childentry.key->end());
         }
+
+        SoFCSelectionContextExPtr ctx;
+        if (!childentry.mergecount && PRIVATE(this)->selnode && vcache->getNode()) {
+          SoFCSelectionRoot::setActionStack(&selaction, key.get());
+          selaction.setRetrivedContext();
+          selaction.apply(vcache->getNode());
+          ctx = selaction.getRetrievedContext();
+        }
+
+        res = checkContext(material, ctx, vcache);
+        if (!res)
+          continue;
 
         if (res < 0) {
           if (childentry.skipcount && !mutated) {
@@ -1348,9 +1348,11 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
       if (it != vcachemap.end())
         ++it;
     }
+    PRIVATE(this)->facecount += PRIVATE(entry.cache)->facecount;
   }
 
-  if (canmerge && ViewParams::RenderCacheMergeCount() && depth > 0) {
+  if ((canmerge || PRIVATE(this)->mergemap)
+      && ViewParams::RenderCacheMergeCount() && depth > 0) {
     for (auto & v : vcachemap) {
       int count = 0;
       for (int i=0; i<(int)v.second.size(); ++i) {
@@ -1365,18 +1367,24 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
       for (int i=0; i<(int)v.second.size(); ++i) {
         int idx = i;
         auto &entry = v.second[i];
-        newentry.cache = entry.cache->merge(
+        newentry.mergecount = 0;
+        newentry.cache = entry.cache->merge(canmerge,
             PRIVATE(this)->mergemap, v.second, idx, newentry.mergecount);
-        if (!newentry.cache)
-          i += entry.mergecount;
-        else {
+        if (!newentry.cache) {
+          if (newentry.mergecount)
+            i = idx + newentry.mergecount;
+          else
+            i += entry.mergecount;
+        } else {
+          newentry.key = std::make_shared<CacheKey>();
+          newentry.key->forcePush(newentry.cache->getCacheId());
           v.second.insert(v.second.begin()+idx, newentry);
           i = idx + newentry.mergecount;
         }
       }
     }
 
-    if (PRIVATE(this)->mergemap)
+    if (canmerge && PRIVATE(this)->mergemap)
       PRIVATE(this)->mergemap->cleanup();
   }
 
@@ -1462,12 +1470,15 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
   Material bboxmaterial;
   SbBox3f bbox;
   const VertexCacheEntry *detailentry = nullptr;
-  for (auto & child : getVertexCaches(false)) {
+  int mergecount = 0;
+  int entrycount = 0;
+  getVertexCaches(false);
+  for (auto & child : PRIVATE(this)->vcachemap) {
     if (!wholeontop && detail) {
       // We are doing partial highlight, 'wholeontop' indicates that we shall
       // bring the whole object to top with the original color. So if not
       // 'wholeontop' and there is some highlight detail, it means we are
-      // highlight some sub-element of a shape node.
+      // highlighting some sub-element of a shape node.
 
       if (child.first.selectstyle == Material::Unpickable) {
         // Either the parent is not selectable, or the shape is not
@@ -1494,6 +1505,12 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
       bool elementselectable = ventry.cache->isElementSelectable()
         && child.first.selectstyle != Material::Unpickable;
 
+      if (detail) {
+        if (ventry.mergecount)
+          continue;
+      } else if (ventry.skipcount)
+        continue;
+
       if (!wholeontop && detail && !elementselectable)
           continue;
 
@@ -1518,7 +1535,10 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
 
       if (color && (material.selectstyle == Material::Box
                     || (ViewParams::getShowSelectionBoundingBox()
-                        && (!detail || !preselect))))
+                        && (!detail || !preselect))
+                    || (ViewParams::getShowSelectionBoundingBoxThreshold()
+                        && ViewParams::getShowSelectionOnTop()
+                        && PRIVATE(this)->facecount > ViewParams::getShowSelectionBoundingBoxThreshold())))
       {
         if (!bboxinited) {
           bboxinited = true;
@@ -1567,10 +1587,16 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
             m.partialhighlight = 1;
             res[m].push_back(ventry);
           }
+          ++entrycount;
+          if (ventry.mergecount)
+            ++mergecount;
+          continue;
         }
         else if (pd) {
           if (pd->getCoordinateIndex() >= 0)
             newentry.partidx = pd->getCoordinateIndex();
+          else
+            continue;
         }
         else if (d) {
           const auto & indices = d->getIndices(SoFCDetail::Vertex);
@@ -1593,9 +1619,13 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
               material.partialhighlight = -1;
               ++material.order;
               res[m].push_back(ventry);
+              ++entrycount;
+              if (ventry.mergecount)
+                ++mergecount;
             }
           }
-        }
+        } else if (detail)
+          continue;
         break;
 
       case Material::Line:
@@ -1609,6 +1639,10 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
             m.partialhighlight = 1;
             res[m].push_back(ventry);
           }
+          ++entrycount;
+          if (ventry.mergecount)
+            ++mergecount;
+          continue;
         }
         else if (ld) {
           if (ld->getLineIndex() >= 0) {
@@ -1618,7 +1652,8 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
             // newentry.partidx = ld->getLineIndex();
             newentry.cache = new SoFCVertexCache(*newentry.cache);
             newentry.cache->addLines(std::vector<int>(1, ld->getLineIndex()));
-          }
+          } else
+            continue;
         }
         else if (d) {
           const auto & indices = d->getIndices(SoFCDetail::Edge);
@@ -1639,9 +1674,13 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
               material.partialhighlight = -1;
               ++material.order;
               res[m].push_back(ventry);
+              ++entrycount;
+              if (ventry.mergecount)
+                ++mergecount;
             }
           }
-        }
+        } else if (detail)
+          continue;
         break;
 
       case Material::Triangle:
@@ -1666,10 +1705,16 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
             m.partialhighlight = 1;
             res[m].push_back(ventry);
           }
+          ++entrycount;
+          if (ventry.mergecount)
+            ++mergecount;
+          continue;
         }
         else if (fd) {
           if (fd->getPartIndex() >= 0)
             newentry.partidx = fd->getPartIndex();
+          else
+            continue;
         }
         else if (d) {
           const auto & indices = d->getIndices(SoFCDetail::Face);
@@ -1696,9 +1741,13 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
                 m.diffuse = (m.diffuse & 0xffffff00) | (material.diffuse & 0xff);
               }
               res[m].push_back(ventry);
+              ++entrycount;
+              if (ventry.mergecount)
+                ++mergecount;
             }
           }
-        }
+        } else if (detail)
+          continue;
         if (color && newentry.partidx >= 0) {
           uint32_t col = newentry.cache->getFaceColor(newentry.partidx);
           if ((col & 0xff) != 0xff && alpha == 0xff) {
@@ -1712,10 +1761,18 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
         break;
       }
       res[material].push_back(newentry);
+      ++entrycount;
+      if (newentry.mergecount)
+        ++mergecount;
     }
   }
 
-  if (!bbox.isEmpty()) {
+  FC_LOG("highlight cache " << res.size() << " materials, "
+        << entrycount << " entries, "
+        << mergecount << " merged caches, "
+        << PRIVATE(this)->facecount << " faces");
+
+  if (!bbox.isEmpty() && res.empty()) {
     SbVec3f unitsize(1.f, 1.f, 1.f);
     auto size = bbox.getSize();
     int cacheid = 0;

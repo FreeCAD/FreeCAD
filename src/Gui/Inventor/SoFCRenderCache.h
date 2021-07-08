@@ -356,20 +356,49 @@ public:
     }
   };
 
-  typedef Gui::SoFCSelectionRoot::Stack CacheKey;
+
+  class CacheKey : public Gui::SoFCSelectionRoot::Stack {
+  public:
+    inline void hash_combine(std::size_t &seed, void *v) const
+    {
+      std::hash<void *> hasher;
+      seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+    }
+
+    std::size_t hash() const {
+      if (_hashed_size == this->size())
+        return this->_hash;
+      _hashed_size = this->size();
+      this->_hash = 0;
+      for (std::size_t i=0; i<_hashed_size; ++i)
+        hash_combine(this->_hash, this->operator[](i));
+      return this->_hash;
+    }
+
+    bool operator==(const CacheKey &other) const {
+      if (this->size() != other.size())
+        return false;
+      if (other.empty())
+        return true;
+      return memcmp(&(*this)[0], &other[0], other.size() * sizeof(other[0]))==0;
+    }
+
+  private:
+    mutable std::size_t _hash = 0;
+    mutable std::size_t _hashed_size = 0;
+  };
+
   typedef std::shared_ptr<CacheKey> CacheKeyPtr;
 
-  struct CacheKeyCompare {
+  struct CacheKeyHasher {
+    std::size_t operator()(const CacheKeyPtr &key) const {
+      return key ? key->hash() : 0;
+    }
     bool operator()(const CacheKeyPtr &a, const CacheKeyPtr &b) const {
-      if (a == b) return false;
-      if (!a) return true;
-      if (!b) return false;
-      if (a->size() < b->size()) return true;
-      if (a->size() > b->size()) return false;
-      return (*a) < (*b);
+      return a == b || *a == *b;
     }
   };
-  typedef std::set<CacheKeyPtr, CacheKeyCompare> CacheKeySet;
+  typedef std::unordered_set<CacheKeyPtr, CacheKeyHasher, CacheKeyHasher> CacheKeySet;
 
   struct VertexCacheEntry {
     VertexCacheEntry()
@@ -381,10 +410,10 @@ public:
     {}
 
     VertexCacheEntry(SoFCVertexCache * c,
-                        const SbMatrix &m,
-                        bool iden,
-                        bool reset,
-                        CacheKeyPtr k)
+                     const SbMatrix &m,
+                     bool iden,
+                     bool reset,
+                     CacheKeyPtr k)
       : key(k)
       , cache(c)
       , mergecount(0)
@@ -481,6 +510,8 @@ public:
 
   void increaseRenderingOrder(int priority=0);
   void decreaseRenderingOrder(int priority=0);
+
+  const char * getRenderStatistics() const;
 
   void resetMatrix();
 

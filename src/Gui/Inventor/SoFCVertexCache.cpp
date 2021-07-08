@@ -2319,6 +2319,12 @@ SoFCVertexCache::getMergeId() const
   return PRIVATE(this)->mergeid;
 }
 
+SbFCUniqueId
+SoFCVertexCache::getCacheId() const
+{
+  return PRIVATE(this)->cacheid;
+}
+
 void
 SoFCVertexCache::MergeMap::cleanup()
 {
@@ -2332,17 +2338,20 @@ SoFCVertexCache::MergeMap::cleanup()
       ++it;
   }
 
-  if (count && FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-    FC_MSG("discard " << count << " merged caches");
+  FC_LOG("discard " << count << " merged caches");
 }
 
 SoFCVertexCache *
-SoFCVertexCache::merge(std::shared_ptr<MergeMap> & mergemap,
+SoFCVertexCache::merge(bool allownewmerge,
+                       std::shared_ptr<MergeMap> & mergemap,
                        std::vector<VertexCacheEntry> & entries,
                        int idx,
                        int & mergecount)
 {
   assert(this == entries[idx].cache);
+
+  if (!allownewmerge && !mergemap)
+    return nullptr;
 
   if (!PRIVATE(this)->canMerge(entries[idx]))
     return nullptr;
@@ -2366,11 +2375,19 @@ SoFCVertexCache::merge(std::shared_ptr<MergeMap> & mergemap,
   mergeids.push_back(PRIVATE(this)->cacheid);
   if (!mergemap)
     mergemap = std::make_shared<MergeMap>();
+
+  if (!allownewmerge) {
+    auto it = mergemap->map.find(mergeids);
+    if (it == mergemap->map.end())
+      return nullptr;
+    FC_LOG("found merged cache " << mergecount);
+    return it->second;
+  }
+
   auto & vcache = mergemap->map[mergeids];
   if (vcache) {
     PRIVATE(vcache)->mergeid = mergemap->mergeid + 1;
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-      FC_MSG("reuse merged cache " << mergecount);
+    FC_LOG("reuse merged cache " << mergecount);
     return vcache;
   }
 
@@ -2387,8 +2404,7 @@ SoFCVertexCache::merge(std::shared_ptr<MergeMap> & mergemap,
   if (PRIVATE(vcache)->lineindexer)
     PRIVATE(vcache)->lineindexer->sort_lines();
 
-  if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-    FC_MSG("new merged cache " << mergecount);
+  FC_LOG("new merged cache " << mergecount);
   return vcache;
 }
 

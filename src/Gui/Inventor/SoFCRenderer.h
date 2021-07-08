@@ -63,6 +63,8 @@ public:
 
   void setHatchImage(const void *dataptr, int nc, int width, int height);
 
+  const char * getStatistics() const;
+
 private:
   friend class SoFCRenderCacheP;
   SoFCRendererP * pimpl;

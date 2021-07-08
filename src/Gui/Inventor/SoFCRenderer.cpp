@@ -119,7 +119,7 @@ _check_glerror(int line) {
 }
 
 typedef SoFCRenderCache::CacheKeySet CacheKeySet;
-typedef SoFCRenderCache::CacheKeyCompare CacheKeyCompare;
+typedef SoFCRenderCache::CacheKeyHasher CacheKeyHasher;
 
 struct DrawEntry {
   const Material * material;
@@ -170,6 +170,7 @@ public:
   SoFCRendererP()
   {
     this->updateselection = false;
+    memset(this->stats, 0, sizeof(this->stats));
   }
 
   ~SoFCRendererP()
@@ -209,9 +210,8 @@ public:
                           std::vector<DrawEntryIndex> & indices,
                           bool sort=true);
 
-  void applyKeys(const CacheKeySet & keys, int skip=1);
-  void applyKey(const CacheKeyPtr & key, int skip=1);
-  void changeKey(int idx, int skip);
+  void applyKeys(const CacheKeySet &keys, int skip=1);
+  void changeKey(const CacheKeySet &keys, int idx, int skip);
 
   std::vector<DrawEntry> drawentries;
   std::vector<DrawEntry> slentries;
@@ -240,12 +240,16 @@ public:
   std::vector<std::size_t> selspointontop; // include only explictly selected points
   bool updateselection;
 
-  std::map<CacheKeyPtr, std::vector<std::size_t>, CacheKeyCompare> cachetable;
+  std::unordered_map<CacheKeyPtr,
+                     std::vector<std::size_t>,
+                     CacheKeyHasher,
+                     CacheKeyHasher> cachetable;
 
   VertexCacheMap highlightcaches;
   CacheKeySet highlightkeys;
   CacheKeySet selectionkeys;
   CacheKeyPtr selkey;
+  std::vector<CacheKey*> tmpkeys;
 
   RenderCachePtr scene;
   RenderCachePtr highlight;
@@ -273,6 +277,9 @@ public:
   bool transpshadowmapping = false;
 
   HatchTexture *hatchtexture = nullptr;
+
+  char stats[512];
+  int drawcallcount;
 };
 
 static std::map<const void *, HatchTexture> _HatchTextures;
@@ -753,44 +760,37 @@ SoFCRenderer::clear()
 }
 
 void
-SoFCRendererP::changeKey(int idx, int skip)
+SoFCRendererP::changeKey(const CacheKeySet & keys, int idx, int skip)
 {
   auto & draw_entry = this->drawentries[idx];
   int prev = draw_entry.skip;
   draw_entry.skip += skip;
-  if (draw_entry.skip < 0 && FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-    FC_WARN("invalid draw key");
   if (!draw_entry.ventry->mergecount)
     return;
   if (!prev && draw_entry.skip) {
     for (int i=1; i<=draw_entry.ventry->mergecount; ++i) {
-      changeKey(idx+i,-1);
+      changeKey(keys, idx+i,-1);
       i += this->drawentries[idx+i].ventry->mergecount;
     }
   }
   else if (prev && !draw_entry.skip) {
     for (int i=1; i<=draw_entry.ventry->mergecount; ++i) {
-      changeKey(idx+i,1);
+      changeKey(keys, idx+i,1);
       i += this->drawentries[idx+i].ventry->mergecount;
     }
   }
 }
 
-inline void
-SoFCRendererP::applyKey(const CacheKeyPtr & key, int skip)
-{
-  auto it = this->cachetable.find(key);
-  if (it != this->cachetable.end()) {
-    for (std::size_t idx : it->second)
-      changeKey(idx, skip);
-  }
-}
-
-inline void
+void
 SoFCRendererP::applyKeys(const CacheKeySet & keys, int skip)
 {
-  for (auto & key : keys)
-    applyKey(key, skip);
+  for (auto & key : keys) {
+    auto it = this->cachetable.find(key);
+    if (it != this->cachetable.end()) {
+      for (std::size_t idx : it->second)
+        changeKey(keys, idx, skip);
+    }
+  }
 }
 
 void
@@ -866,20 +866,15 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
         ++mergecount;
       else
         PRIVATE(this)->drawentries.back().skip = ventry.skipcount;
-      if (ventry.key)
-        PRIVATE(this)->cachetable[ventry.key].push_back(idx);
-      else {
-        for (int i=0; i<ventry.mergecount; ++i) {
-          int j = i+vidx+1;
-          if (j >= (int)ventries.size())
-            break;
-          if (ventries[j].key) {
-            auto &indices = PRIVATE(this)->cachetable[ventries[j].key];
-            if (indices.empty() || indices.back() != idx)
-              indices.push_back(idx);
-          }
-          i += ventries[j].mergecount;
-        }
+      PRIVATE(this)->cachetable[ventry.key].push_back(idx);
+      for (int i=0; i<ventry.mergecount; ++i) {
+        int j = i+vidx+1;
+        if (j >= (int)ventries.size())
+          break;
+        auto &indices = PRIVATE(this)->cachetable[ventries[j].key];
+        if (indices.empty() || indices.back() != idx)
+          indices.push_back(idx);
+        i += ventries[j].mergecount;
       }
 
       if (material.isOnTop() && material.type == Material::Triangle)
@@ -906,11 +901,10 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
     }
   }
 
-  if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-    FC_MSG("update scene " << caches.size() << " materials, "
-          << PRIVATE(this)->drawentries.size() << " entries, "
-          << mergecount << " after merge");
-  }
+  FC_LOG("update scene " << caches.size() << " materials, "
+        << PRIVATE(this)->drawentries.size() << " entries, "
+        << mergecount << " after merge");
+
   PRIVATE(this)->applyKeys(PRIVATE(this)->highlightkeys);
   PRIVATE(this)->selectionkeys.clear();
   PRIVATE(this)->updateselection = true;
@@ -1038,7 +1032,6 @@ SoFCRendererP::updateSelection()
     this->selkey->forcePush(ventry.cache->getNodeId());
     this->selkey->forcePush(material.type);
     if (this->selectionkeys.insert(ventry.key).second) {
-      applyKey(ventry.key);
       renderkeys.insert(this->selkey);
       this->selkey.reset();
       lastkey.reset();
@@ -1122,6 +1115,8 @@ SoFCRendererP::updateSelection()
       }
     }
   }
+
+  applyKeys(this->selectionkeys);
 }
 
 void
@@ -1182,6 +1177,7 @@ SoFCRendererP::renderLines(SoState *state, int array, DrawEntry &draw_entry)
     && draw_entry.material->outline;
   pauseShadowRender(state, true);
   draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx, noseam);
+  ++this->drawcallcount;
 }
 
 void
@@ -1194,6 +1190,7 @@ SoFCRendererP::renderPoints(SoState *state, int array, DrawEntry &draw_entry)
       || !draw_entry.material->outline) {
     pauseShadowRender(state, true);
     draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
+    ++this->drawcallcount;
   }
 }
 
@@ -1277,12 +1274,14 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
     draw_entry.ventry->cache->renderTriangles(state,
                                               SoFCVertexCache::NON_SORTED_ARRAY,
                                               partidx);
+    ++this->drawcallcount;
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glStencilFunc(GL_NOTEQUAL, 1, -1);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     draw_entry.ventry->cache->renderTriangles(state,
                                               SoFCVertexCache::NON_SORTED_ARRAY,
                                               partidx);
+    ++this->drawcallcount;
   }
   if (pushed) {
     glPopAttrib();
@@ -1373,6 +1372,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   glStencilOp (GL_KEEP, GL_KEEP, GL_INVERT);
   FC_GLERROR_CHECK;
   draw_entry.ventry->cache->renderSolids(action->getState());
+  ++this->drawcallcount;
 
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
   FC_GLERROR_CHECK;
@@ -1552,7 +1552,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
   SoState * state = action->getState();
   for (std::size_t idx : indices) {
     auto & draw_entry = draw_entries[idx];
-    if (draw_entry.skip
+    if (draw_entry.skip > 0
         && !this->shadowmapping
         && ((!ViewParams::getSectionConcave() && !ViewParams::getNoSectionOnTop())
             || !draw_entry.material->clippers.getNum()))
@@ -1603,16 +1603,20 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
         pauseShadowRender(state, pauseshadow
             || !(draw_entry.material->shadowstyle & SoShadowStyleElement::SHADOWED));
 
-        if (!draw_entry.ventry->cache->hasTransparency())
+        if (!draw_entry.ventry->cache->hasTransparency()) {
           draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+          ++this->drawcallcount;
+        }
         else if (!this->material.pervertexcolor) {
           // this means override transparency (i.e. force opaque)
           draw_entry.ventry->cache->renderTriangles(state, SoFCVertexCache::NON_SORTED, draw_entry.ventry->partidx);
+          ++this->drawcallcount;
         }
         else {
           if (!this->material.twoside)
             glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
           draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+          ++this->drawcallcount;
           if (!this->material.twoside)
             glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
           FC_GLERROR_CHECK;
@@ -1681,7 +1685,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
 
   for (auto & v : indices) {
     auto & draw_entry = draw_entries[v.idx];
-    if (draw_entry.skip && !this->shadowmapping)
+    if (draw_entry.skip > 0 && !this->shadowmapping)
       continue;
     if (this->recheckmaterial || this->prevmaterial != draw_entry.material) {
       if (!applyMaterial(action, *draw_entry.material, true))
@@ -1738,6 +1742,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
                                                       array,
                                                       draw_entry.ventry->partidx,
                                                       sort ? &this->prevplane : nullptr);
+            ++this->drawcallcount;
           }
           renderOutline(action, draw_entry, highlight);
         }
@@ -1787,6 +1792,8 @@ SoFCRenderer::render(SoGLRenderAction * action)
 
   PRIVATE(this)->matrix = SoModelMatrixElement::get(state);
   PRIVATE(this)->identity = (PRIVATE(this)->matrix == SbMatrix::identity());
+
+  PRIVATE(this)->drawcallcount = 0;
 
   if (!action->isRenderingDelayedPaths()) {
     PRIVATE(this)->renderOpaque(action,
@@ -1988,6 +1995,14 @@ SoFCRenderer::render(SoGLRenderAction * action)
   state->pop();
   glPopAttrib();
   FC_GLERROR_CHECK;
+}
+
+const char *
+SoFCRenderer::getStatistics() const
+{
+  snprintf(PRIVATE(this)->stats, sizeof(PRIVATE(this)->stats)-1,
+      "draw calls: %d", PRIVATE(this)->drawcallcount);
+  return PRIVATE(this)->stats;
 }
 
 // vim: noai:ts=2:sw=2
