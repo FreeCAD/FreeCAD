@@ -60,7 +60,7 @@ def translate(context, text, disambig=None):
 
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def _OpenCloseResourceEditor(obj, vobj, edit):

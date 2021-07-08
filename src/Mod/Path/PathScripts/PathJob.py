@@ -39,6 +39,7 @@ Draft = LazyLoader('Draft', globals(), 'Draft')
 
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
@@ -417,6 +418,7 @@ class ObjectJob:
         return None
 
     def execute(self, obj):
+        obj.Group = obj.ViewObject.claimChildren()
         if getattr(obj, 'Operations', None):
             # obj.Path = obj.Operations.Path
             self.getCycleTime()
