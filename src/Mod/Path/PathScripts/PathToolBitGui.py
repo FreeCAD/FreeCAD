@@ -194,7 +194,7 @@ def GetNewToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
 
-    foo = QtGui.QFileDialog.getSaveFileName(parent, 'Tool',
+    foo = QtGui.QFileDialog.getSaveFileName(parent, 'Save New Tool As ...' ,
                                             PathPreferences.lastPathToolBit(),
                                             '*.fctb')
     if foo and foo[0]:

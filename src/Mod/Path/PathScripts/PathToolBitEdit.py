@@ -132,10 +132,16 @@ class ToolBitEditor(object):
                 PathLog.debug("create row: {} [{}]  {}".format(nr, name, type(qsb)))
                 if hasattr(qsb, 'editingFinished'):
                     qsb.editingFinished.connect(self.updateTool)
+            
+            if tool.ShapeName in ['chamfer','v_bit']:
+                if  (name == "CuttingEdgeHeight") :
+                    label.hide()
+                    qsb.hide()
+            
 
             if nr >= layout.rowCount():
                 layout.addRow(label, qsb)
-            usedRows = usedRows + 1
+            usedRows += 1
 
         # hide all rows which aren't being used
         PathLog.track(usedRows, len(self.widgets))
@@ -181,7 +187,6 @@ class ToolBitEditor(object):
 
                 group.appendRow([label, value])
             self.model.appendRow(group)
-
 
         if setup:
             self.form.attrTree.setModel(self.model)
