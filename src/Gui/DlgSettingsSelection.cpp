@@ -67,6 +67,7 @@ void DlgSettingsSelection::saveSettings()
     ViewParams::setPreselectionToolTipFontSize(ui->spinBoxToolTipFontSize->value());
     
     ViewParams::setSelectionColorDifference(ui->spinBoxColorDiff->value());
+    ViewParams::setShowSelectionBoundingBoxThreshold(ui->spinBoxSelectionBBoxThreshold->value());
 }
 
 void DlgSettingsSelection::loadSettings()
@@ -88,6 +89,7 @@ void DlgSettingsSelection::loadSettings()
     ui->spinBoxToolTipFontSize->setValue(ViewParams::getPreselectionToolTipFontSize());
 
     ui->spinBoxColorDiff->setValue(ViewParams::getSelectionColorDifference());
+    ui->spinBoxSelectionBBoxThreshold->setValue(ViewParams::getShowSelectionBoundingBoxThreshold());
 }
 
 void DlgSettingsSelection::changeEvent(QEvent *e)

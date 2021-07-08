@@ -78,7 +78,7 @@ public:
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true, "") \
     FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false, \
        QT_TRANSLATE_NOOP("ViewParams","Show selection bounding box")) \
-    FC_VIEW_PARAM(ShowSelectionBoundingBoxThreshold,int,Int,50000, \
+    FC_VIEW_PARAM(ShowSelectionBoundingBoxThreshold,int,Int,0, \
        QT_TRANSLATE_NOOP("ViewParams","Threshold for showing bounding box instead of selection highlight")) \
     FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true, "") \
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true, "") \
