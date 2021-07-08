@@ -431,7 +431,7 @@ public:
                 pcSnapshot = new SoFCSelectionRoot(true);
             else {
                 pcSnapshot = new SoSeparator;
-                pcSnapshot->boundingBoxCaching = SoSeparator::OFF;
+                // pcSnapshot->boundingBoxCaching = SoSeparator::OFF;
                 pcSnapshot->renderCaching = SoSeparator::OFF;
             }
             _registerLinkNode(pcSnapshot, pcLinked);

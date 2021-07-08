@@ -1795,7 +1795,7 @@ SoFCSeparator::SoFCSeparator(bool trackCacheMode)
     SO_NODE_CONSTRUCTOR(SoFCSeparator);
     if(!trackCacheMode) {
         renderCaching = SoSeparator::OFF;
-        boundingBoxCaching = SoSeparator::OFF;
+        // boundingBoxCaching = SoSeparator::OFF;
     } else
         boundingBoxCaching = SoSeparator::ON;
 }
