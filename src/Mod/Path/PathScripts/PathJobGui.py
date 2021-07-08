@@ -1388,6 +1388,7 @@ def Create(base, template=None):
     try:
         obj = PathJob.Create('Job', base, template)
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
+        obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
         FreeCAD.ActiveDocument.commitTransaction()
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
