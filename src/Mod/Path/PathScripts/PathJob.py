@@ -109,6 +109,7 @@ class ObjectJob:
 
     def __init__(self, obj, models, templateFile=None):
         self.obj = obj
+
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "The NC output file for this project"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Post Processor"))
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Arguments for the Post Processor (specific to the script)"))
@@ -142,10 +143,11 @@ class ObjectJob:
         obj.PostProcessorArgs = PathPreferences.defaultPostProcessorArgs()
         obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
 
-        ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
+        #ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
+        ops = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Operations")
         if ops.ViewObject:
-            ops.ViewObject.Proxy = 0
-            ops.ViewObject.Visibility = False
+        #     ops.ViewObject.Proxy = 0
+            ops.ViewObject.Visibility = True
 
         obj.Operations = ops
         obj.setEditorMode('Operations', 2)  # hide
@@ -274,6 +276,7 @@ class ObjectJob:
         return True
 
     def fixupOperations(self, obj):
+        PathLog.track()
         if getattr(obj.Operations, 'ViewObject', None):
             try:
                 obj.Operations.ViewObject.DisplayMode
@@ -415,7 +418,7 @@ class ObjectJob:
 
     def execute(self, obj):
         if getattr(obj, 'Operations', None):
-            obj.Path = obj.Operations.Path
+            # obj.Path = obj.Operations.Path
             self.getCycleTime()
 
     def getCycleTime(self):
@@ -460,7 +463,7 @@ class ObjectJob:
             else:
                 group.append(op)
             self.obj.Operations.Group = group
-            op.Path.Center = self.obj.Operations.Path.Center
+            # op.Path.Center = self.obj.Operations.Path.Center
 
     def nextToolNumber(self):
         # returns the next available toolnumber in the job
