@@ -144,6 +144,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Density"] = "7900 kg/m^3"
     mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_obj.Material = mat
+    analysis.addObject(material_obj)
 
     # constraint pressure
     con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
