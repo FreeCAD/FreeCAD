@@ -66,8 +66,7 @@ def get_draft_small_commands():
             "Draft_ToggleDisplayMode",
             "Draft_AddToGroup",
             "Draft_SelectGroup",
-            "Draft_AddConstruction",
-            "Draft_Heal"]
+            "Draft_AddConstruction"]
 
 
 def get_draft_modification_commands():
@@ -97,8 +96,7 @@ def get_draft_context_commands():
     return ["Draft_ApplyStyle", "Draft_ToggleDisplayMode",
             "Draft_AddToGroup", "Draft_SelectGroup",
             "Draft_SelectPlane", "Draft_ShowSnapBar",
-            "Draft_ToggleGrid", "Draft_AutoGroup",
-            "Draft_SetStyle"]
+            "Draft_ToggleGrid", "Draft_SetStyle"]
 
 
 def get_draft_line_commands():
@@ -109,10 +107,11 @@ def get_draft_line_commands():
 
 def get_draft_utility_commands():
     """Return the utility commands list."""
-    return ["Draft_Layer", "Draft_Heal", "Draft_FlipDimension",
+    return ["Draft_Layer",
+            "Draft_Heal",
             "Draft_ToggleConstructionMode",
-            "Draft_ToggleContinueMode", "Draft_Edit",
-            "Draft_Slope", "Draft_WorkingPlaneProxy",
+            "Draft_ToggleContinueMode",
+            "Draft_WorkingPlaneProxy",
             "Draft_AddConstruction"]
 
 
