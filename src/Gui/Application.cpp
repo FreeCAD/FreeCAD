@@ -713,19 +713,48 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                 // Open transaction when importing a file
                 Gui::Document* doc = DocName ? getDocument(DocName) : activeDocument();
                 bool pendingCommand = false;
-                if (doc) {
+                App::Document *appDoc;
+                if (!doc) {
+                    appDoc = App::GetApplication().newDocument();
+                } else {
+                    appDoc = doc->getDocument();
                     pendingCommand = doc->hasPendingCommand();
                     if (!pendingCommand)
                         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Import"));
                 }
 
-                if (DocName) {
-                    Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
-                                                   , Module, unicodepath.c_str(), DocName);
+                std::string dname = appDoc->getName();
+                std::set<long> ids;
+                for (auto obj : appDoc->getObjects())
+                    ids.insert(obj->getID());
+                {
+                    Base::ObjectStatusLocker<App::Document::Status, App::Document>
+                        guard(App::Document::Restoring, appDoc);
+                    if (DocName) {
+                        Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
+                                                    , Module, unicodepath.c_str(), DocName);
+                    }
+                    else {
+                        Command::doCommand(Command::App, "%s.insert(u\"%s\")"
+                                                    , Module, unicodepath.c_str());
+                    }
                 }
-                else {
-                    Command::doCommand(Command::App, "%s.insert(u\"%s\")"
-                                                   , Module, unicodepath.c_str());
+
+                appDoc = App::GetApplication().getDocument(dname.c_str());
+                if (appDoc) {
+                    if (!doc && appDoc->getObjects().empty())
+                        App::GetApplication().closeDocument(dname.c_str());
+                    else {
+                        auto gdoc = getDocument(appDoc);
+                        for (auto obj : appDoc->getObjects()) {
+                            if (!ids.count(obj->getID())) {
+                                appDoc->afterImport(obj);
+                                auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
+                                if (vp)
+                                    vp->finishRestoring();
+                            }
+                        }
+                    }
                 }
 
                 // Commit the transaction

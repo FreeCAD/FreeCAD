@@ -564,6 +564,11 @@ public:
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
 
+    long getLastObjectId() const;
+    void setLastObjectId(long id); 
+
+    void afterImport(App::DocumentObject *obj);
+
     friend class Application;
     /// because of transaction handling
     friend class TransactionalObject;
