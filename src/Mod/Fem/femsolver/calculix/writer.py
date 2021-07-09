@@ -683,7 +683,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             trans_name = "Cylin"
             trans_type = "C"
             coords = geomtools.get_cylindrical_coords(trans_obj)
-        f.write("** {}\n".format(trans_obj.Label))
         f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
             trans_name,
             trans_obj.Name,
@@ -981,7 +980,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # TODO: what if there are other objs in elsets?
         if is_fluidsection_inoutlet_setnames_possible(self.ccx_elsets) is not None:
             # it is not distinguished if split input file
-            # for split input file the main file is just closed and reopend even if not needed 
+            # for split input file the main file is just closed and reopend even if not needed
             inpfile_main.close()
             meshtools.use_correct_fluidinout_ele_def(
                 self.FluidInletoutlet_ele,
