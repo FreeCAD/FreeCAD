@@ -96,6 +96,8 @@ struct CacheEntry {
   }
 };
 
+static FC_COIN_THREAD_LOCAL std::vector<std::unique_ptr<SoFCRenderCache::VertexCacheMap> > VertexCacheMaps;
+
 class SoFCRenderCacheP {
 public:
   SoFCRenderCacheP()
@@ -104,6 +106,18 @@ public:
 
   ~SoFCRenderCacheP()
   {
+    freeCacheMap();
+  }
+
+  void freeCacheMap() {
+    if (!this->vcachemap)
+      return;
+    SoFCRenderCache::CacheEntryCount -= this->cachecount;
+    if(this->vcachemap && VertexCacheMaps.size() < 20) {
+      this->vcachemap->clear();
+      VertexCacheMaps.push_back(std::move(this->vcachemap));
+    }
+    this->vcachemap.reset();
   }
 
   void captureMaterial(SoState * state);
@@ -129,14 +143,16 @@ public:
   const SoDrawStyleElement * drawstyleelement;
   const SoMaterialBindingElement * materialbindingelement;
 
-  SoFCRenderCache::VertexCacheMap vcachemap;
+  std::unique_ptr<SoFCRenderCache::VertexCacheMap> vcachemap;
 
   std::vector<CacheEntry> caches;
   SbFCUniqueId nodeid;
   SoFCSelectionRoot *selnode = nullptr;
+  int cachehint = 0;
 
   std::shared_ptr<SoFCVertexCache::MergeMap> mergemap;
   int facecount = 0;
+  int cachecount = 0;
 
 #ifdef FCCOIN_TRACE_CACHE_NAME
   SbName nodename;
@@ -149,6 +165,8 @@ public:
   bool resetmatrix;
   bool resetclip = false;
 };
+
+long SoFCRenderCache::CacheEntryCount;
 
 template<class T>
 static inline const T * constElement(SoState * state)
@@ -172,6 +190,7 @@ SoFCRenderCache::SoFCRenderCache(SoState *state, SoNode *node, SoFCRenderCache *
     // inside SoFCRenderCacheManager, which is supposed to release the cache if
     // the node is destroyed. So must not add reference here.
     PRIVATE(this)->selnode = static_cast<SoFCSelectionRoot*>(node);
+    PRIVATE(this)->cachehint = PRIVATE(this)->selnode->cacheHint.getValue();
   }
 
 #ifdef FCCOIN_TRACE_CACHE_NAME
@@ -1095,11 +1114,21 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
 const SoFCRenderCache::VertexCacheMap &
 SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
 {
-  auto & vcachemap = PRIVATE(this)->vcachemap;
-  if (!vcachemap.empty())
-    return vcachemap;
+  if (PRIVATE(this)->vcachemap) {
+    if (PRIVATE(this)->vcachemap->size())
+      return *PRIVATE(this)->vcachemap;
+  }
+  else if (VertexCacheMaps.size()) {
+    PRIVATE(this)->vcachemap = std::move(VertexCacheMaps.back());
+    VertexCacheMaps.pop_back();
+  } else
+    PRIVATE(this)->vcachemap.reset(new VertexCacheMap);
 
-  std::unordered_map<void *, CacheKeyPtr> keymap;
+  auto & vcachemap = *PRIVATE(this)->vcachemap;
+  PRIVATE(this)->facecount = 0;
+  PRIVATE(this)->cachecount = 0;
+
+  std::unordered_map<CacheKeyPtr, CacheKeyPtr, CacheKeyHasher, CacheKeyHasher> keymap;
   CacheKeyPtr selfkey;
 
   static FC_COIN_THREAD_LOCAL SoSelectionElementAction selaction(
@@ -1276,7 +1305,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         std::vector<VertexCacheEntry> *ventries = pushed_entries;
         int res = 1;
         auto vcache = childentry.cache;
-        CacheKeyPtr & key = keymap[childentry.key.get()];
+        CacheKeyPtr & key = keymap[childentry.key];
         if (!key) {
           key.reset(new CacheKey);
           if (PRIVATE(this)->selnode) {
@@ -1349,6 +1378,8 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         ++it;
     }
     PRIVATE(this)->facecount += PRIVATE(entry.cache)->facecount;
+    if (PRIVATE(entry.cache)->cachehint < 2)
+      PRIVATE(entry.cache)->freeCacheMap();
   }
 
   if ((canmerge || PRIVATE(this)->mergemap)
@@ -1376,6 +1407,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
           else
             i += entry.mergecount;
         } else {
+          assert(newentry.mergecount>0);
           newentry.key = std::make_shared<CacheKey>();
           newentry.key->forcePush(newentry.cache->getCacheId());
           v.second.insert(v.second.begin()+idx, newentry);
@@ -1396,6 +1428,10 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
     std::cerr << ' ';
   std::cerr << count << ": " << PRIVATE(this)->nodename.getString() << "\n";
 #endif
+
+  for (auto &v : vcachemap)
+    PRIVATE(this)->cachecount += (int)v.second.size();
+  CacheEntryCount += PRIVATE(this)->cachecount;
 
   return vcachemap;
 }
@@ -1472,8 +1508,7 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
   const VertexCacheEntry *detailentry = nullptr;
   int mergecount = 0;
   int entrycount = 0;
-  getVertexCaches(false);
-  for (auto & child : PRIVATE(this)->vcachemap) {
+  for (auto & child : getVertexCaches(false)) {
     if (!wholeontop && detail) {
       // We are doing partial highlight, 'wholeontop' indicates that we shall
       // bring the whole object to top with the original color. So if not
@@ -1827,6 +1862,12 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
   }
 
   return res;
+}
+
+long
+SoFCRenderCache::getCacheEntryCount()
+{
+  return CacheEntryCount;
 }
 
 // vim: noai:ts=2:sw=2

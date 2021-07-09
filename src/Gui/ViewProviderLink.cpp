@@ -90,8 +90,11 @@ static inline void _registerLinkNode(SoNode *node, const App::DocumentObject *ob
 {
     if (!obj)
         _LinkNodeMap.erase(node);
-    else
+    else {
+        if (node->isOfType(SoFCSelectionRoot::getClassTypeId()))
+            static_cast<SoFCSelectionRoot*>(node)->cacheHint.setValue(2);
         _LinkNodeMap[node] = std::make_pair(obj->getDocument(), const_cast<App::DocumentObject*>(obj));
+    }
 }
 
 static inline void _registerLinkNode(SoNode *node, const ViewProviderDocumentObject *vp)
@@ -1848,8 +1851,14 @@ ViewProviderLink::~ViewProviderLink()
 App::DocumentObject *ViewProviderLink::linkedObjectByNode(SoNode *node)
 {
     auto it = _LinkNodeMap.find(node);
-    if (it == _LinkNodeMap.end())
+    if (it == _LinkNodeMap.end()) {
+        if (auto doc = Application::Instance->activeDocument()) {
+            auto vp = doc->getViewProvider(node);
+            if (vp)
+                return vp->getObject();
+        }
         return nullptr;
+    }
     Document *gdoc = Application::Instance->getDocument(it->second.first);
     // make sure the object still exists
     if (gdoc && gdoc->getViewProvider(it->second.second))

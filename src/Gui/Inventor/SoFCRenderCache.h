@@ -28,6 +28,8 @@
 #include <memory>
 #include <bitset>
 
+#include <boost/container/flat_map.hpp>
+
 #include <Inventor/SbMatrix.h>
 #include <Inventor/caches/SoCache.h>
 
@@ -440,6 +442,19 @@ public:
         matrix = other.matrix;
     }
 
+    VertexCacheEntry(const VertexCacheEntry &other)
+      : key(other.key)
+      , cache(other.cache)
+      , mergecount(other.mergecount)
+      , skipcount(other.skipcount)
+      , partidx(other.partidx)
+      , identity(other.identity)
+      , resetmatrix(other.resetmatrix)
+    {
+      if (!identity)
+        this->matrix = other.matrix;
+    }
+
     CacheKeyPtr key;
     Gui::CoinPtr<SoFCVertexCache> cache;
     int mergecount;
@@ -450,13 +465,15 @@ public:
     bool resetmatrix;
   };
 
-  typedef std::map<Material, std::vector<VertexCacheEntry> > VertexCacheMap;
+  typedef boost::container::flat_map<Material, std::vector<VertexCacheEntry> > VertexCacheMap;
 
   SoFCRenderCache(SoState * state, SoNode *node, SoFCRenderCache *prev = nullptr);
   virtual ~SoFCRenderCache();
 
   static void initClass();
   static void cleanup();
+
+  static long getCacheEntryCount();
 
   SbFCUniqueId getNodeId() const;
 
@@ -523,6 +540,8 @@ private:
 
   SoFCRenderCache(const SoFCRenderCache & rhs); // N/A
   SoFCRenderCache & operator = (const SoFCRenderCache & rhs); // N/A
+
+  static long CacheEntryCount;
 };
 
 // support for CoinPtr<SoFCRenderCache>

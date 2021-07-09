@@ -50,6 +50,7 @@
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <App/PropertyGeo.h>
+#include <App/Document.h>
 
 #include "ViewProvider.h"
 #include "Application.h"
@@ -116,6 +117,7 @@ ViewProvider::ViewProvider()
     //
     // pcRoot = new SoFCSeparator(true);
     pcRoot = new SoFCSelectionRoot(true,this);
+    static_cast<SoFCSelectionRoot*>(pcRoot)->cacheHint.setValue(2);
     pcRoot->ref();
     pcModeSwitch = new SoFCSwitch();
     pcModeSwitch->ref();
@@ -1031,6 +1033,17 @@ Base::BoundBox3d ViewProvider::getBoundingBox(
         const char *subname, const Base::Matrix4D *mat,
         bool transform, const View3DInventorViewer *viewer, int depth) const
 {
+    if (auto doc = getOwnerDocument()) {
+        if (doc->testStatus(App::Document::Restoring)) {
+            if (bboxCache) {
+                auto it = bboxCache->cache.find(BBoxKey(subname,mat,transform));
+                if (it != bboxCache->cache.end())
+                    return it->second;
+            }
+            return Base::BoundBox3d();
+        }
+    }
+
     if(!bboxCache)
         bboxCache.reset(new BoundingBoxCache);
 

@@ -1874,6 +1874,7 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider *vp)
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
     SO_NODE_ADD_FIELD(overrideColor,(SbColor(0,0,0)));
     SO_NODE_ADD_FIELD(overrideTransparency,(0.0f));
+    SO_NODE_ADD_FIELD(cacheHint,(0));
     overrideColor.setIgnored(TRUE);
 }
 

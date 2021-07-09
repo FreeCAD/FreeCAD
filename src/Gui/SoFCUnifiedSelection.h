@@ -269,6 +269,7 @@ public:
     SoSFBool resetClipPlane;
     SoSFColor overrideColor;
     SoSFFloat overrideTransparency;
+    SoSFInt32 cacheHint;
 
     static void initClass(void);
     static void finish(void);
