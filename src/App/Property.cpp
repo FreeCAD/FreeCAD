@@ -42,6 +42,7 @@
 #include "Application.h"
 #include "DocumentParams.h"
 #include "DocumentObject.h"
+#include "Document.h"
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
@@ -275,8 +276,13 @@ void Property::aboutToSetValue(void)
 {
     PropertyCleaner guard(this);
     if (father) {
-        if(!_old && DocumentParams::OptimizeRecompute())
-            _old.reset(copyBeforeChange());
+        if (auto doc = father->getOwnerDocument()) {
+            if(!_old && DocumentParams::OptimizeRecompute()
+                     && !doc->testStatus(Document::Restoring))
+            {
+                _old.reset(copyBeforeChange());
+            }
+        }
         father->onBeforeChange(this);
     }
 }
