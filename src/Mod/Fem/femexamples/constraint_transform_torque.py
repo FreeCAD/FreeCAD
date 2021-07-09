@@ -39,31 +39,49 @@ import Fem
 import ObjectsFem
 from Part import makeLine
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Constraint Transform Torque",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "force", "transform"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Constraint Transform Torque",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "force", "transform"],
+        "solvers": ["calculix"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.constraint_transform_torque import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=19037&start=10#p515447
+https://forum.freecadweb.org/viewtopic.php?t=19037
+https://forum.freecadweb.org/viewtopic.php?t=18970
+
+constraint transform with a constraint force
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
 
     if doc is None:
         doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # line for load direction
     sh_load_line = makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 10, 0))
@@ -96,61 +114,54 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
-    )[0]
-    mat = material_object.Material
-    mat["Name"] = "CalculiX-Steel"
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
+    mat = material_obj.Material
+    mat["Name"] = "Calculix-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
     # constraint fixed
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Face3")]
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [(geom_obj, "Face3")]
+    analysis.addObject(con_fixed)
 
     # constraint force
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    force_constraint.References = [(geom_obj, "Face1")]
-    force_constraint.Force = 100000.0
-    force_constraint.Direction = (load_line, ["Edge1"])
-    force_constraint.Reversed = True
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force.References = [(geom_obj, "Face1")]
+    con_force.Force = 2500.0  # 2500 N = 2.5 kN
+    con_force.Direction = (load_line, ["Edge1"])
+    con_force.Reversed = True
+    analysis.addObject(con_force)
 
     # constraint transform
-    transform_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintTransform(doc, name="ConstraintTransform")
-    )[0]
-    transform_constraint.References = [(geom_obj, "Face1")]
-    transform_constraint.TransformType = "Cylindrical"
-    transform_constraint.X_rot = 0.0
-    transform_constraint.Y_rot = 0.0
-    transform_constraint.Z_rot = 0.0
+    con_transform = ObjectsFem.makeConstraintTransform(doc, name="ConstraintTransform")
+    con_transform.References = [(geom_obj, "Face1")]
+    con_transform.TransformType = "Cylindrical"
+    con_transform.X_rot = 0.0
+    con_transform.Y_rot = 0.0
+    con_transform.Z_rot = 0.0
+    analysis.addObject(con_transform)
 
     # mesh
     from .meshes.mesh_transform_torque_tetra10 import create_nodes, create_elements
@@ -161,9 +172,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
