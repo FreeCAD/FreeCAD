@@ -53,7 +53,7 @@ public:
     /// unique identifier of the Item
     App::PropertyUUID    Uid;
     /// material descriptions
-    App::PropertyMap     Material;
+    App::PropertyLink    Material;
     /// Meta descriptions
     App::PropertyMap     Meta;
 
