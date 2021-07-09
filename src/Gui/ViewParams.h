@@ -344,6 +344,8 @@ public:
                                        "effective when using experimental render cache.")) \
     FC_VIEW_PARAM(RenderCacheMergeCountMin, int , Int, 10,  \
         QT_TRANSLATE_NOOP("ViewParams","Internal use to limit the render cache merge count")) \
+    FC_VIEW_PARAM(RenderCacheMergeCountMax, int , Int, 0,  \
+        QT_TRANSLATE_NOOP("ViewParams","Maximum draw crash merges on any hierarchy. Zero means no limit.")) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

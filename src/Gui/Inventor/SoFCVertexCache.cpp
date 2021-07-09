@@ -82,6 +82,7 @@
 #include "SoFCVertexArrayIndexer.h"
 #include "SoFCShapeInfo.h"
 #include "COWData.h"
+#include "../ViewParams.h"
 
 FC_LOG_LEVEL_INIT("Renderer", true, true)
 
@@ -2359,6 +2360,11 @@ SoFCVertexCache::merge(bool allownewmerge,
   std::vector<SbFCUniqueId> mergeids;
   mergecount = 0;
   int i = idx + entries[idx].mergecount + 1;
+  int maxcount = ViewParams::getRenderCacheMergeCountMax();
+  if (maxcount && maxcount < ViewParams::getRenderCacheMergeCount())
+    maxcount = ViewParams::getRenderCacheMergeCount();
+
+  int mcount = 0;
   for (int c=(int)entries.size(); i<c; ++i) {
     if (!PRIVATE(this)->canMergeWith(entries[i])) {
       if (!mergecount)
@@ -2369,6 +2375,9 @@ SoFCVertexCache::merge(bool allownewmerge,
     ++entries[i].skipcount;
     mergecount += entries[i].mergecount + 1;
     i += entries[i].mergecount;
+
+    if (maxcount && ++mcount >= maxcount)
+      break;
   }
   mergecount += entries[idx].mergecount + 1;
   ++entries[idx].skipcount;
