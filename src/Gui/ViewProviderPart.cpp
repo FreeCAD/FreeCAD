@@ -192,7 +192,7 @@ void ViewProviderPart::setElementColors(const std::map<std::string, App::Color> 
 }
 
 void ViewProviderPart::applyColors() {
-    ViewProviderLink::applyColorsTo(*this);
+    prevColorOverride = ViewProviderLink::applyColorsTo(*this, prevColorOverride);
 }
 
 void ViewProviderPart::buildChildren3D() {

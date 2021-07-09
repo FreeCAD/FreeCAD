@@ -67,6 +67,9 @@ protected:
 
     virtual bool setEdit(int ModNum) override;
     virtual void setEditViewer(View3DInventorViewer*, int ModNum) override;
+
+private:
+    bool prevColorOverride = false;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
