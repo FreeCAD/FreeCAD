@@ -328,7 +328,7 @@ class PathArray(DraftLink):
             for n in edgeNames:
                 e = sub[0].Shape.getElement(n)
                 sl.append(e)
-        return Part.Wire(sl)
+        return Part.Wire(Part.__sortEdges__(sl))
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""
