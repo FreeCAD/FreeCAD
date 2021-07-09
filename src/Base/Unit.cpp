@@ -454,6 +454,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::Force                       )       return QString::fromLatin1("Force");
     if(*this == Unit::Work                        )       return QString::fromLatin1("Work");
     if(*this == Unit::Power                       )       return QString::fromLatin1("Power");
+    if(*this == Unit::Stiffness                   )       return QString::fromLatin1("Power");
     if(*this == Unit::SpecificEnergy              )       return QString::fromLatin1("SpecificEnergy");
     if(*this == Unit::ThermalConductivity         )       return QString::fromLatin1("ThermalConductivity");
     if(*this == Unit::ThermalExpansionCoefficient )       return QString::fromLatin1("ThermalExpansionCoefficient");
@@ -508,6 +509,9 @@ Unit Unit::Stress                  (-1,1,-2);
 Unit Unit::UltimateTensileStrength (-1,1,-2);
 Unit Unit::YieldStrength           (-1,1,-2);
 Unit Unit::YoungsModulus           (-1,1,-2);
+
+// Stiffness [kg/s^-2]
+Unit Unit::Stiffness               (0,1,-2);
 
 Unit Unit::Force   (1,1,-2);
 Unit Unit::Work    (2,1,-2);

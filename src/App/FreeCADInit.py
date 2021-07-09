@@ -707,6 +707,11 @@ App.Units.MilliNewton   = App.Units.Quantity('mN')
 App.Units.KiloNewton    = App.Units.Quantity('kN')
 App.Units.MegaNewton    = App.Units.Quantity('MN')
 
+App.Units.NewtonPerMeter   = App.Units.Quantity('N/m')
+App.Units.MilliNewtonPerMeter   = App.Units.Quantity('mN/m')
+App.Units.KiloNewtonPerMeter   = App.Units.Quantity('kN/m')
+App.Units.MegaNewtonPerMeter   = App.Units.Quantity('MN/m')
+
 App.Units.Pascal        = App.Units.Quantity('Pa')
 App.Units.KiloPascal    = App.Units.Quantity('kPa')
 App.Units.MegaPascal    = App.Units.Quantity('MPa')
@@ -827,6 +832,8 @@ App.Units.YoungsModulus           = App.Units.Unit(-1,1,-2)
 App.Units.Force         = App.Units.Unit(1,1,-2)
 App.Units.Work          = App.Units.Unit(2,1,-2)
 App.Units.Power         = App.Units.Unit(2,1,-3)
+
+App.Units.Stiffness     = App.Units.Unit(0,1,-2)
 
 App.Units.SpecificEnergy               = App.Units.Unit(2,0,-2)
 App.Units.ThermalConductivity          = App.Units.Unit(1,1,-3,0,-1)
