@@ -27,8 +27,10 @@ __url__ = "https://www.freecadweb.org"
 
 
 def write_node_sets_nodes_constraints_fixed(f, femobj, fix_obj, ccxwriter):
-    if ccxwriter.femmesh.Volumes \
-            and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0):
+    if (
+        ccxwriter.femmesh.Volumes
+        and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0)
+    ):
         if len(femobj["NodesSolid"]) > 0:
             f.write("*NSET,NSET={}Solid\n".format(fix_obj.Name))
             for n in femobj["NodesSolid"]:
@@ -44,8 +46,10 @@ def write_node_sets_nodes_constraints_fixed(f, femobj, fix_obj, ccxwriter):
 
 
 def constraint_fixed_writer(f, femobj, fix_obj, ccxwriter):
-    if ccxwriter.femmesh.Volumes \
-            and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0):
+    if (
+        ccxwriter.femmesh.Volumes
+        and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0)
+    ):
         if len(femobj["NodesSolid"]) > 0:
             f.write("*BOUNDARY\n")
             f.write(fix_obj.Name + "Solid" + ",1\n")
