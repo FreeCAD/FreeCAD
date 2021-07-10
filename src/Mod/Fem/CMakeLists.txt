@@ -188,6 +188,18 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
     femsolver/calculix/writer.py
+    femsolver/calculix/con_centrif.py
+    femsolver/calculix/con_contact.py
+    femsolver/calculix/con_displacement.py
+    femsolver/calculix/con_fixed.py
+    femsolver/calculix/con_force.py
+    femsolver/calculix/con_heatflux.py
+    femsolver/calculix/con_planerotation.py
+    femsolver/calculix/con_pressure.py
+    femsolver/calculix/con_sectionprint.py
+    femsolver/calculix/con_temperature.py
+    femsolver/calculix/con_tie.py
+    femsolver/calculix/con_transform.py
 )
 
 SET(FemSolverElmer_SRCS
