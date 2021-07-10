@@ -457,7 +457,6 @@ class FemInputWriter():
                         face_table = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
                         femobj["HeatFluxFaceTable"].append((elem_info, face_table))
 
-
     # ********************************************************************************************
     # ********************************************************************************************
     # element sets constraints
