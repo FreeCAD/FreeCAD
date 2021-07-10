@@ -26,13 +26,25 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_surfacefaces_constraints_sectionprint(f, femobj, sectionprint_obj, ccxwriter):
+def get_analysis_types():
+    return "all"    # write for all analysis types
+
+
+def get_sets_name():
+    return "constraints_sectionprint_surface_sets"
+
+
+def get_constraint_title():
+    return "SectionPrint Constraints"
+
+
+def write_surfacefaces(f, femobj, sectionprint_obj, ccxwriter):
     f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
     for i in femobj["SectionPrintFaces"]:
         f.write("{},S{}\n".format(i[0], i[1]))
 
 
-def constraint_sectionprint_writer(f, femobj, sectionprint_obj, ccxwriter):
+def write_constraint(f, femobj, sectionprint_obj, ccxwriter):
     f.write(
         "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
         .format(sectionprint_obj.Name, sectionprint_obj.Name)

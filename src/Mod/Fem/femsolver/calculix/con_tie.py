@@ -26,7 +26,19 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_surfacefaces_constraints_tie(f, femobj, tie_obj, ccxwriter):
+def get_analysis_types():
+    return "all"    # write for all analysis types
+
+
+def get_sets_name():
+    return "constraints_tie_surface_sets"
+
+
+def get_constraint_title():
+    return "Tie Constraints"
+
+
+def write_surfacefaces(f, femobj, tie_obj, ccxwriter):
     # slave DEP
     f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
     for i in femobj["TieSlaveFaces"]:
@@ -37,7 +49,7 @@ def write_surfacefaces_constraints_tie(f, femobj, tie_obj, ccxwriter):
         f.write("{},S{}\n".format(i[0], i[1]))
 
 
-def constraint_tie_writer(f, femobj, tie_obj, ccxwriter):
+def write_constraint(f, femobj, tie_obj, ccxwriter):
     tolerance = str(tie_obj.Tolerance.getValueAs("mm")).rstrip()
     f.write(
         "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"

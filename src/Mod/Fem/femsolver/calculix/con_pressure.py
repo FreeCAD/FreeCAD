@@ -26,7 +26,15 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_faceloads_constraints_pressure(f, femobj, prs_obj, ccxwriter):
+def get_analysis_types():
+    return ["buckling", "static", "thermomech"]
+
+
+def get_sets_name():
+    return "constraints_pressure_element_face_loads"
+
+
+def write_pressure(f, femobj, prs_obj, ccxwriter):
     rev = -1 if prs_obj.Reversed else 1
     f.write("*DLOAD\n")
     for ref_shape in femobj["PressureFaces"]:

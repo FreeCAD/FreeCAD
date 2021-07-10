@@ -26,7 +26,19 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_node_sets_nodes_constraints_fixed(f, femobj, fix_obj, ccxwriter):
+def get_analysis_types():
+    return "all"    # write for all analysis types
+
+
+def get_sets_name():
+    return "constraints_fixed_node_sets"
+
+
+def get_constraint_title():
+    return "Fixed Constraints"
+
+
+def write_nodes(f, femobj, fix_obj, ccxwriter):
     if (
         ccxwriter.femmesh.Volumes
         and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0)
@@ -45,7 +57,7 @@ def write_node_sets_nodes_constraints_fixed(f, femobj, fix_obj, ccxwriter):
             f.write("{},\n".format(n))
 
 
-def constraint_fixed_writer(f, femobj, fix_obj, ccxwriter):
+def write_constraint(f, femobj, fix_obj, ccxwriter):
     if (
         ccxwriter.femmesh.Volumes
         and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0)

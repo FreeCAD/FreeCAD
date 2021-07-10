@@ -26,13 +26,25 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_node_sets_nodes_constraints_displacement(f, femobj, disp_obj, ccxwriter):
+def get_analysis_types():
+    return "all"    # write for all analysis types
+
+
+def get_sets_name():
+    return "constraints_displacement_node_sets"
+
+
+def get_constraint_title():
+    return "Displacement constraint applied"
+
+
+def write_nodes(f, femobj, disp_obj, ccxwriter):
     f.write("*NSET,NSET={}\n".format(disp_obj.Name))
     for n in femobj["Nodes"]:
         f.write("{},\n".format(n))
 
 
-def constraint_displacement_writer(f, femobj, disp_obj, ccxwriter):
+def write_constraint(f, femobj, disp_obj, ccxwriter):
     f.write("*BOUNDARY\n")
     if disp_obj.xFix:
         f.write("{},1\n".format(disp_obj.Name))

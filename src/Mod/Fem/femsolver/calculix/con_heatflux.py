@@ -26,7 +26,15 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_faceheatflux_constraints_heatflux(f, femobj, heatflux_obj, ccxwriter):
+def get_analysis_types():
+    return ["thermomech"]
+
+
+def get_sets_name():
+    return "constraints_heatflux_element_face_heatflux"
+
+
+def write_heatflux(f, femobj, heatflux_obj, ccxwriter):
     if heatflux_obj.ConstraintType == "Convection":
         heatflux_key_word = "FILM"
         heatflux_facetype = "F"

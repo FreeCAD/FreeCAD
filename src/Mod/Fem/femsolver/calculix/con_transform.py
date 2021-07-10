@@ -29,7 +29,19 @@ __url__ = "https://www.freecadweb.org"
 from femtools import geomtools
 
 
-def write_node_sets_nodes_constraints_transform(f, femobj, trans_obj, ccxwriter):
+def get_analysis_types():
+    return "all"    # write for all analysis types
+
+
+def get_sets_name():
+    return "constraints_transform_node_sets"
+
+
+def get_constraint_title():
+    return "Transform Constraints"
+
+
+def write_nodes(f, femobj, trans_obj, ccxwriter):
     if trans_obj.TransformType == "Rectangular":
         f.write("*NSET,NSET=Rect{}\n".format(trans_obj.Name))
     elif trans_obj.TransformType == "Cylindrical":
@@ -38,7 +50,7 @@ def write_node_sets_nodes_constraints_transform(f, femobj, trans_obj, ccxwriter)
         f.write("{},\n".format(n))
 
 
-def constraint_transform_writer(f, femobj, trans_obj, ccxwriter):
+def write_constraint(f, femobj, trans_obj, ccxwriter):
     trans_name = ""
     trans_type = ""
     if trans_obj.TransformType == "Rectangular":
