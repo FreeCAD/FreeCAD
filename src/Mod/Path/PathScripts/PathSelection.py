@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2021 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -115,7 +116,7 @@ class CHAMFERGate(PathBaseGate):
             subShape = shape.getElement(sub)
             if subShape.ShapeType == 'Edge':
                 return True
-            elif (subShape.ShapeType == 'Face' and subShape.normalAt(0, 0) == FreeCAD.Vector(0, 0, 1)):
+            elif (subShape.ShapeType == 'Face'):
                 return True
 
         return False
