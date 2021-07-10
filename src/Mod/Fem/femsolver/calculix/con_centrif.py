@@ -32,7 +32,19 @@ import six
 import FreeCAD
 
 
-def write_element_sets_elements_constraints_centrif(f, femobj, centrif_obj, ccxwriter):
+def get_analysis_types():
+    return ["buckling", "static", "thermomech"]
+
+
+def get_sets_name():
+    return "constraints_centrif_element_sets"
+
+
+def get_constraint_title():
+    return "Centrif Constraints"
+
+
+def write_elements(f, femobj, centrif_obj, ccxwriter):
     f.write("*ELSET,ELSET={}\n".format(centrif_obj.Name))
     # use six to be sure to be Python 2.7 and 3.x compatible
     if isinstance(femobj["FEMElements"], six.string_types):
@@ -42,7 +54,7 @@ def write_element_sets_elements_constraints_centrif(f, femobj, centrif_obj, ccxw
             f.write("{},\n".format(e))
 
 
-def constraint_centrif_writer(f, femobj, centrif_obj, ccxwriter):
+def write_constraint(f, femobj, centrif_obj, ccxwriter):
 
     # get some data from the centrif_obj
     refobj = centrif_obj.RotationAxis[0][0]

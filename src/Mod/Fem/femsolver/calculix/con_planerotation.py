@@ -29,7 +29,19 @@ __url__ = "https://www.freecadweb.org"
 from femmesh import meshtools
 
 
-def write_node_sets_nodes_constraints_planerotation(f, femobj, fric_obj, ccxwriter):
+def get_analysis_types():
+    return "all"    # write for all analysis types
+
+
+def get_sets_name():
+    return "constraints_planerotation_node_sets"
+
+
+def get_constraint_title():
+    return "PlaneRotation Constraints"
+
+
+def write_nodes(f, femobj, fric_obj, ccxwriter):
     # write nodes to file
     if not ccxwriter.femnodes_mesh:
         ccxwriter.femnodes_mesh = ccxwriter.femmesh.Nodes
@@ -68,6 +80,6 @@ def write_node_sets_nodes_constraints_planerotation(f, femobj, fric_obj, ccxwrit
         f.write("{},\n".format(MPC_nodes[i]))
 
 
-def constraint_planerotation_writer(f, femobj, fric_obj, ccxwriter):
+def write_constraint(f, femobj, fric_obj, ccxwriter):
     f.write("*MPC\n")
     f.write("PLANE,{}\n".format(fric_obj.Name))

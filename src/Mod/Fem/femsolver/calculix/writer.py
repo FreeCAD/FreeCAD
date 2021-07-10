@@ -40,6 +40,18 @@ from os.path import join
 import FreeCAD
 from FreeCAD import Units
 
+from . import con_centrif
+from . import con_contact
+from . import con_displacement
+from . import con_fixed
+from . import con_force
+from . import con_heatflux
+from . import con_planerotation
+from . import con_pressure
+from . import con_sectionprint
+from . import con_temperature
+from . import con_tie
+from . import con_transform
 from .. import writerbase
 from femmesh import meshtools
 from femtools import constants
@@ -327,50 +339,46 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints fixed
     def write_node_sets_constraints_fixed(self, f):
-        from .con_fixed import write_node_sets_nodes_constraints_fixed
         self.write_constraints_sets(
             f,
             femobjs=self.fixed_objects,
-            analysis_types="all",  # write for all analysis types
+            analysis_types=con_fixed.get_analysis_types(),
             sets_getter_method=self.get_constraints_fixed_nodes,
-            write_name="constraints_fixed_node_sets",
-            sets_writer_method=write_node_sets_nodes_constraints_fixed,
+            write_name=con_fixed.get_sets_name(),
+            sets_writer_method=con_fixed.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_fixed(self, f):
-        from .con_fixed import constraint_fixed_writer
         self.write_constraints_data(
             f,
             femobjs=self.fixed_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="Fixed Constraints",
-            constraint_writer_method=constraint_fixed_writer,
+            analysis_types=con_fixed.get_analysis_types(),
+            constraint_title_name=con_fixed.get_constraint_title(),
+            constraint_writer_method=con_fixed.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints displacement
     def write_node_sets_constraints_displacement(self, f):
-        from .con_displacement import write_node_sets_nodes_constraints_displacement
         self.write_constraints_sets(
             f,
             femobjs=self.displacement_objects,
-            analysis_types="all",  # write for all analysis types
+            analysis_types=con_displacement.get_analysis_types(),
             sets_getter_method=self.get_constraints_displacement_nodes,
-            write_name="constraints_displacement_node_sets",
-            sets_writer_method=write_node_sets_nodes_constraints_displacement,
+            write_name=con_displacement.get_sets_name(),
+            sets_writer_method=con_displacement.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_displacement(self, f):
-        from .con_displacement import constraint_displacement_writer
         self.write_constraints_data(
             f,
             femobjs=self.displacement_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="Displacement constraint applied",
-            constraint_writer_method=constraint_displacement_writer,
+            analysis_types=con_displacement.get_analysis_types(),
+            constraint_title_name=con_displacement.get_constraint_title(),
+            constraint_writer_method=con_displacement.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
             write_after="\n",
         )
@@ -378,150 +386,138 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints planerotation
     def write_node_sets_constraints_planerotation(self, f):
-        from .con_planerotation import write_node_sets_nodes_constraints_planerotation
         self.write_constraints_sets(
             f,
             femobjs=self.planerotation_objects,
-            analysis_types="all",  # write for all analysis types
+            analysis_types=con_planerotation.get_analysis_types(),
             sets_getter_method=self.get_constraints_planerotation_nodes,
-            write_name="constraints_planerotation_node_sets",
-            sets_writer_method=write_node_sets_nodes_constraints_planerotation,
+            write_name=con_planerotation.get_sets_name(),
+            sets_writer_method=con_planerotation.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_planerotation(self, f):
-        from .con_planerotation import constraint_planerotation_writer
         self.write_constraints_data(
             f,
             femobjs=self.planerotation_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="PlaneRotation Constraints",
-            constraint_writer_method=constraint_planerotation_writer,
+            analysis_types=con_planerotation.get_analysis_types(),
+            constraint_title_name=con_planerotation.get_constraint_title(),
+            constraint_writer_method=con_planerotation.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints contact
     def write_surfaces_constraints_contact(self, f):
-        from .con_contact import write_surfacefaces_constraints_contact
         self.write_constraints_sets(
             f,
             femobjs=self.contact_objects,
-            analysis_types="all",  # write for all analysis types
+            analysis_types=con_contact.get_analysis_types(),
             sets_getter_method=self.get_constraints_contact_faces,
-            write_name="constraints_contact_surface_sets",
-            sets_writer_method=write_surfacefaces_constraints_contact,
+            write_name=con_contact.get_sets_name(),
+            sets_writer_method=con_contact.write_surfacefaces,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_contact(self, f):
-        from .con_contact import constraint_contact_writer
         self.write_constraints_data(
             f,
             femobjs=self.contact_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="Contact Constraints",
-            constraint_writer_method=constraint_contact_writer,
+            analysis_types=con_contact.get_analysis_types(),
+            constraint_title_name=con_contact.get_constraint_title(),
+            constraint_writer_method=con_contact.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints tie
     def write_surfaces_constraints_tie(self, f):
-        from .con_tie import write_surfacefaces_constraints_tie
         self.write_constraints_sets(
             f,
             femobjs=self.tie_objects,
-            analysis_types="all",  # write for all analysis types
+            analysis_types=con_tie.get_analysis_types(),
             sets_getter_method=self.get_constraints_tie_faces,
-            write_name="constraints_tie_surface_sets",
-            sets_writer_method=write_surfacefaces_constraints_tie,
+            write_name=con_tie.get_sets_name(),
+            sets_writer_method=con_tie.write_surfacefaces,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_tie(self, f):
-        from .con_tie import constraint_tie_writer
         self.write_constraints_data(
             f,
             femobjs=self.tie_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="Tie Constraints",
-            constraint_writer_method=constraint_tie_writer,
+            analysis_types=con_tie.get_analysis_types(),
+            constraint_title_name=con_tie.get_constraint_title(),
+            constraint_writer_method=con_tie.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints sectionprint
     def write_surfaces_constraints_sectionprint(self, f):
-        from .con_sectionprint import write_surfacefaces_constraints_sectionprint
         self.write_constraints_sets(
             f,
             femobjs=self.sectionprint_objects,
-            analysis_types="all",  # write for all analysis types
+            analysis_types=con_sectionprint.get_analysis_types(),
             sets_getter_method=self.get_constraints_sectionprint_faces,
-            write_name="constraints_sectionprint_surface_sets",
-            sets_writer_method=write_surfacefaces_constraints_sectionprint,
+            write_name=con_sectionprint.get_sets_name(),
+            sets_writer_method=con_sectionprint.write_surfacefaces,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_sectionprint(self, f):
-        from .con_sectionprint import constraint_sectionprint_writer
         self.write_constraints_data(
             f,
             femobjs=self.sectionprint_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="SectionPrint Constraints",
-            constraint_writer_method=constraint_sectionprint_writer,
+            analysis_types=con_sectionprint.get_analysis_types(),
+            constraint_title_name=con_sectionprint.get_constraint_title(),
+            constraint_writer_method=con_sectionprint.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints transform
     def write_node_sets_constraints_transform(self, f):
-        from .con_transform import write_node_sets_nodes_constraints_transform
         self.write_constraints_sets(
             f,
             femobjs=self.transform_objects,
-            analysis_types="all",  # write for all analysis types
+            analysis_types=con_transform.get_analysis_types(),
             sets_getter_method=self.get_constraints_transform_nodes,
-            write_name="constraints_transform_node_sets",
-            sets_writer_method=write_node_sets_nodes_constraints_transform,
+            write_name=con_transform.get_sets_name(),
+            sets_writer_method=con_transform.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_transform(self, f):
-        from .con_transform import constraint_transform_writer
         self.write_constraints_data(
             f,
             femobjs=self.transform_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="Transform Constraints",
-            constraint_writer_method=constraint_transform_writer,
+            analysis_types=con_transform.get_analysis_types(),
+            constraint_title_name=con_transform.get_constraint_title(),
+            constraint_writer_method=con_transform.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints temperature
     def write_node_sets_constraints_temperature(self, f):
-        from .con_temperature import write_node_sets_nodes_constraints_temperature
         self.write_constraints_sets(
             f,
             femobjs=self.temperature_objects,
-            analysis_types=["thermomech"],
+            analysis_types=con_temperature.get_analysis_types(),
             sets_getter_method=self.get_constraints_temperature_nodes,
-            write_name="constraints_temperature_node_sets",
-            sets_writer_method=write_node_sets_nodes_constraints_temperature,
+            write_name=con_temperature.get_sets_name(),
+            sets_writer_method=con_temperature.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_temperature(self, f):
-        from .con_temperature import constraint_temperature_writer
         self.write_constraints_data(
             f,
             femobjs=self.temperature_objects,
-            analysis_types=["thermomech"],
-            constraint_title_name="Fixed temperature constraint applied",
-            constraint_writer_method=constraint_temperature_writer,
+            analysis_types=con_temperature.get_analysis_types(),
+            constraint_title_name=con_temperature.get_constraint_title(),
+            constraint_writer_method=con_temperature.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
@@ -580,39 +576,36 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints centrif
     def write_element_sets_constraints_centrif(self, f):
-        from .con_centrif import write_element_sets_elements_constraints_centrif
         self.write_constraints_sets(
             f,
             femobjs=self.centrif_objects,
-            analysis_types=["buckling", "static", "thermomech"],
+            analysis_types=con_centrif.get_analysis_types(),
             sets_getter_method=self.get_constraints_centrif_elements,
-            write_name="constraints_centrif_element_sets",
-            sets_writer_method=write_element_sets_elements_constraints_centrif,
+            write_name=con_centrif.get_sets_name(),
+            sets_writer_method=con_centrif.write_elements,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     def write_constraints_centrif(self, f):
-        from .con_centrif import constraint_centrif_writer
         self.write_constraints_data(
             f,
             femobjs=self.centrif_objects,
-            analysis_types="all",  # write for all analysis types
-            constraint_title_name="Centrif Constraints",
-            constraint_writer_method=constraint_centrif_writer,
+            analysis_types=con_centrif.get_analysis_types(),
+            constraint_title_name=con_centrif.get_constraint_title(),
+            constraint_writer_method=con_centrif.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints force
     def write_constraints_force(self, f):
-        from .con_force import write_nodeloads_constraints_force
         self.write_constraints_sets(
             f,
             femobjs=self.force_objects,
-            analysis_types=["buckling", "static", "thermomech"],
+            analysis_types=con_force.get_analysis_types(),
             sets_getter_method=self.get_constraints_force_nodeloads,
-            write_name="constraints_force_node_loads",
-            sets_writer_method=write_nodeloads_constraints_force,
+            write_name=con_force.get_sets_name(),
+            sets_writer_method=con_force.write_nodeloads,
             caller_method_name=sys._getframe().f_code.co_name,
             write_before="*CLOAD\n"
         )
@@ -620,28 +613,26 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints pressure
     def write_constraints_pressure(self, f):
-        from .con_pressure import write_faceloads_constraints_pressure
         self.write_constraints_sets(
             f,
             femobjs=self.pressure_objects,
-            analysis_types=["buckling", "static", "thermomech"],
+            analysis_types=con_pressure.get_analysis_types(),
             sets_getter_method=self.get_constraints_pressure_faces,
-            write_name="constraints_pressure_element_face_loads",
-            sets_writer_method=write_faceloads_constraints_pressure,
+            write_name=con_pressure.get_sets_name(),
+            sets_writer_method=con_pressure.write_pressure,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 
     # ********************************************************************************************
     # constraints heatflux
     def write_constraints_heatflux(self, f):
-        from .con_heatflux import write_faceheatflux_constraints_heatflux
         self.write_constraints_sets(
             f,
             femobjs=self.heatflux_objects,
-            analysis_types=["thermomech"],
+            analysis_types=con_heatflux.get_analysis_types(),
             sets_getter_method=self.get_constraints_heatflux_faces,
-            write_name="constraints_heatflux_element_face_heatflux",
-            sets_writer_method=write_faceheatflux_constraints_heatflux,
+            write_name=con_heatflux.get_sets_name(),
+            sets_writer_method=con_heatflux.write_heatflux,
             caller_method_name=sys._getframe().f_code.co_name,
         )
 

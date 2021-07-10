@@ -26,13 +26,25 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_node_sets_nodes_constraints_temperature(f, femobj, temp_obj, ccxwriter):
+def get_analysis_types():
+    return ["thermomech"]
+
+
+def get_sets_name():
+    return "constraints temperature node sets"
+
+
+def get_constraint_title():
+    return "Fixed temperature constraint applied"
+
+
+def write_nodes(f, femobj, temp_obj, ccxwriter):
     f.write("*NSET,NSET={}\n".format(temp_obj.Name))
     for n in femobj["Nodes"]:
         f.write("{},\n".format(n))
 
 
-def constraint_temperature_writer(f, femobj, temp_obj, ccxwriter):
+def write_constraint(f, femobj, temp_obj, ccxwriter):
     NumberOfNodes = len(femobj["Nodes"])
     if temp_obj.ConstraintType == "Temperature":
         f.write("*BOUNDARY\n")

@@ -26,7 +26,19 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-def write_surfacefaces_constraints_contact(f, femobj, contact_obj, ccxwriter):
+def get_analysis_types():
+    return "all"    # write for all analysis types
+
+
+def get_sets_name():
+    return "constraints_contact_surface_sets"
+
+
+def get_constraint_title():
+    return "Contact Constraints"
+
+
+def write_surfacefaces(f, femobj, contact_obj, ccxwriter):
     # slave DEP
     f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
     for i in femobj["ContactSlaveFaces"]:
@@ -37,7 +49,7 @@ def write_surfacefaces_constraints_contact(f, femobj, contact_obj, ccxwriter):
         f.write("{},S{}\n".format(i[0], i[1]))
 
 
-def constraint_contact_writer(f, femobj, contact_obj, ccxwriter):
+def write_constraint(f, femobj, contact_obj, ccxwriter):
     f.write(
         "*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n"
         .format(contact_obj.Name)
