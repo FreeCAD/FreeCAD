@@ -62,7 +62,10 @@ class ObjectArray:
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Maximum random offset of copies"))
         obj.addProperty("App::PropertyLink", "ToolController",
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
+        obj.addProperty("App::PropertyBool", "Active",
+                        "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"))
 
+        obj.Active = True
         obj.Type = ['Linear1D', 'Linear2D', 'Polar']
 
         self.setEditorModes(obj)
@@ -102,6 +105,12 @@ class ObjectArray:
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
+
+        if not hasattr(obj, "Active"):
+            obj.addProperty("App::PropertyBool", "Active",
+                            "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"))
+            obj.Active = True
+
         self.setEditorModes(obj)
 
     def rotatePath(self, path, angle, centre):
@@ -174,6 +183,12 @@ class ObjectArray:
             return
 
         obj.ToolController = base[0].ToolController
+
+        # Do not generate paths and clear current Path data if operation not 
+        if not obj.Active:
+            if obj.Path:
+                obj.Path = Path.Path()
+            return
 
         pa = PathArray(obj.Base, obj.Type, obj.Copies, obj.Offset,
                        obj.CopiesX, obj.CopiesY, obj.Angle, obj.Centre, obj.SwapDirection,
