@@ -38,7 +38,7 @@ def get_constraint_title():
     return "SectionPrint Constraints"
 
 
-def write_surfacefaces(f, femobj, sectionprint_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, sectionprint_obj, ccxwriter):
     f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
     for i in femobj["SectionPrintFaces"]:
         f.write("{},S{}\n".format(i[0], i[1]))

@@ -34,7 +34,7 @@ def get_sets_name():
     return "constraints_force_node_loads"
 
 
-def write_nodeloads(f, femobj, force_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
     direction_vec = femobj["Object"].DirectionVector
     for ref_shape in femobj["NodeLoadTable"]:
         f.write("** " + ref_shape[0] + "\n")

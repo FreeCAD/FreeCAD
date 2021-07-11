@@ -34,7 +34,7 @@ def get_sets_name():
     return "constraints_heatflux_element_face_heatflux"
 
 
-def write_heatflux(f, femobj, heatflux_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
     if heatflux_obj.ConstraintType == "Convection":
         heatflux_key_word = "FILM"
         heatflux_facetype = "F"

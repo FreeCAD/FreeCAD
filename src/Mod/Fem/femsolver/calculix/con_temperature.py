@@ -38,7 +38,7 @@ def get_constraint_title():
     return "Fixed temperature constraint applied"
 
 
-def write_nodes(f, femobj, temp_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, temp_obj, ccxwriter):
     f.write("*NSET,NSET={}\n".format(temp_obj.Name))
     for n in femobj["Nodes"]:
         f.write("{},\n".format(n))

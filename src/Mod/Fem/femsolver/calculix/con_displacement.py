@@ -38,7 +38,7 @@ def get_constraint_title():
     return "Displacement constraint applied"
 
 
-def write_nodes(f, femobj, disp_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, disp_obj, ccxwriter):
     f.write("*NSET,NSET={}\n".format(disp_obj.Name))
     for n in femobj["Nodes"]:
         f.write("{},\n".format(n))
