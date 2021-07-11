@@ -38,6 +38,22 @@ def get_constraint_title():
     return "SectionPrint Constraints"
 
 
+def get_before_write_meshdata_constraint():
+    return ""
+
+
+def get_after_write_meshdata_constraint():
+    return ""
+
+
+def get_before_write_constraint():
+    return ""
+
+
+def get_after_write_constraint():
+    return ""
+
+
 def write_meshdata_constraint(f, femobj, sectionprint_obj, ccxwriter):
     f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
     for i in femobj["SectionPrintFaces"]:

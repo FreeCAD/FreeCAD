@@ -34,6 +34,14 @@ def get_sets_name():
     return "constraints_pressure_element_face_loads"
 
 
+def get_before_write_meshdata_constraint():
+    return ""
+
+
+def get_after_write_meshdata_constraint():
+    return ""
+
+
 def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
     rev = -1 if prs_obj.Reversed else 1
     f.write("*DLOAD\n")

@@ -38,6 +38,22 @@ def get_constraint_title():
     return "Contact Constraints"
 
 
+def get_before_write_meshdata_constraint():
+    return ""
+
+
+def get_after_write_meshdata_constraint():
+    return ""
+
+
+def get_before_write_constraint():
+    return ""
+
+
+def get_after_write_constraint():
+    return ""
+
+
 def write_meshdata_constraint(f, femobj, contact_obj, ccxwriter):
     # slave DEP
     f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
