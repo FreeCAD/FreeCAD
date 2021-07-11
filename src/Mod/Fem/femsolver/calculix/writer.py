@@ -47,6 +47,7 @@ from . import con_heatflux
 from . import con_planerotation
 from . import con_pressure
 from . import con_sectionprint
+from . import con_selfweight
 from . import con_temperature
 from . import con_tie
 from . import con_transform
@@ -226,7 +227,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(inpfile, self.fixed_objects, con_fixed)
         self.write_constraints_data(inpfile, self.displacement_objects, con_displacement)
         self.write_constraints_data(inpfile, self.sectionprint_objects, con_sectionprint)
-        self.write_constraints_selfweight(inpfile)
+        self.write_constraints_data(inpfile, self.selfweight_objects, con_selfweight)
         self.write_constraints_data(inpfile, self.centrif_objects, con_centrif)
         self.write_constraints_sets(inpfile, self.force_objects, con_force)
         self.write_constraints_sets(inpfile, self.pressure_objects, con_pressure)
@@ -379,39 +380,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             inittemp_obj = itobj["Object"]
             # OvG: Initial temperature
             f.write("{0},{1}\n".format(self.ccx_nall, inittemp_obj.initialTemperature))
-
-    # ********************************************************************************************
-    # constraints selfweight
-    def write_constraints_selfweight(self, f):
-        if not self.selfweight_objects:
-            return
-        if self.analysis_type not in ["buckling", "static", "thermomech"]:
-            return
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Self weight Constraint\n")
-        for femobj in self.selfweight_objects:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            selwei_obj = femobj["Object"]
-            f.write("** " + selwei_obj.Label + "\n")
-            f.write("*DLOAD\n")
-            f.write(
-                # elset, GRAV, magnitude, direction x, dir y ,dir z
-                "{},GRAV,{},{},{},{}\n"
-                .format(
-                    self.ccx_eall,
-                    self.gravity,  # actual magnitude of gravity vector
-                    selwei_obj.Gravity_x,  # coordinate x of normalized gravity vector
-                    selwei_obj.Gravity_y,  # y
-                    selwei_obj.Gravity_z  # z
-                )
-            )
-            f.write("\n")
-        # grav (erdbeschleunigung) is equal for all elements
-        # should be only one constraint
-        # different element sets for different density
-        # are written in the material element sets already
 
     # ********************************************************************************************
     # handle elements for constraints fluidsection with Liquid Inlet or Outlet
