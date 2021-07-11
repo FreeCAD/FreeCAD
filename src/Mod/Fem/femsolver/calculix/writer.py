@@ -182,63 +182,65 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.split_inpfile = False
 
         # mesh
-        inpfile_main = self.write_mesh()
+        inpfile = self.write_mesh()
 
         # element sets for materials and element geometry
-        # self.write_element_sets_material_and_femelement_geometry(inpfile_main)
-        self.write_element_sets_material_and_femelement_type(inpfile_main)
+        # self.write_element_sets_material_and_femelement_geometry(inpfile)
+        self.write_element_sets_material_and_femelement_type(inpfile)
 
         if self.fluidsection_objects:
             # some fluidsection objs need special treatment, ccx_elsets are needed for this
-            inpfile_main = self.handle_fluidsection_liquid_inlet_outlet(inpfile_main)
+            inpfile = self.handle_fluidsection_liquid_inlet_outlet(inpfile)
 
         # element sets constraints
-        self.write_element_sets_constraints_centrif(inpfile_main)
+        self.write_constraints_sets(inpfile, self.centrif_objects, con_centrif)
 
-        # node sets and surface sets
-        self.write_node_sets_constraints_fixed(inpfile_main)
-        self.write_node_sets_constraints_displacement(inpfile_main)
-        self.write_node_sets_constraints_planerotation(inpfile_main)
-        self.write_surfaces_constraints_contact(inpfile_main)
-        self.write_surfaces_constraints_tie(inpfile_main)
-        self.write_surfaces_constraints_sectionprint(inpfile_main)
-        self.write_node_sets_constraints_transform(inpfile_main)
-        self.write_node_sets_constraints_temperature(inpfile_main)
+        # node sets
+        self.write_constraints_sets(inpfile, self.fixed_objects, con_fixed)
+        self.write_constraints_sets(inpfile, self.displacement_objects, con_displacement)
+        self.write_constraints_sets(inpfile, self.planerotation_objects, con_planerotation)
+        self.write_constraints_sets(inpfile, self.transform_objects, con_transform)
+        self.write_constraints_sets(inpfile, self.temperature_objects, con_temperature)
+
+        # surface sets
+        self.write_constraints_sets(inpfile, self.contact_objects, con_contact)
+        self.write_constraints_sets(inpfile, self.tie_objects, con_tie)
+        self.write_constraints_sets(inpfile, self.sectionprint_objects, con_sectionprint)
 
         # materials and fem element types
-        self.write_materials(inpfile_main)
-        self.write_constraints_initialtemperature(inpfile_main)
-        # self.write_femelement_geometry(inpfile_main)
-        self.write_femelementsets(inpfile_main)
+        self.write_materials(inpfile)
+        self.write_constraints_initialtemperature(inpfile)
+        # self.write_femelement_geometry(inpfile)
+        self.write_femelementsets(inpfile)
 
         # constraints independent from steps
-        self.write_constraints_planerotation(inpfile_main)
-        self.write_constraints_contact(inpfile_main)
-        self.write_constraints_tie(inpfile_main)
-        self.write_constraints_transform(inpfile_main)
+        self.write_constraints_data(inpfile, self.planerotation_objects, con_planerotation)
+        self.write_constraints_data(inpfile, self.contact_objects, con_contact)
+        self.write_constraints_data(inpfile, self.tie_objects, con_tie)
+        self.write_constraints_data(inpfile, self.transform_objects, con_transform)
 
         # step begin
-        self.write_step_begin(inpfile_main)
+        self.write_step_begin(inpfile)
 
         # constraints dependent from steps
-        self.write_constraints_fixed(inpfile_main)
-        self.write_constraints_displacement(inpfile_main)
-        self.write_constraints_sectionprint(inpfile_main)
-        self.write_constraints_selfweight(inpfile_main)
-        self.write_constraints_centrif(inpfile_main)
-        self.write_constraints_force(inpfile_main)
-        self.write_constraints_pressure(inpfile_main)
-        self.write_constraints_temperature(inpfile_main)
-        self.write_constraints_heatflux(inpfile_main)
-        self.write_constraints_fluidsection(inpfile_main)
+        self.write_constraints_data(inpfile, self.fixed_objects, con_fixed)
+        self.write_constraints_data(inpfile, self.displacement_objects, con_displacement)
+        self.write_constraints_data(inpfile, self.sectionprint_objects, con_sectionprint)
+        self.write_constraints_selfweight(inpfile)
+        self.write_constraints_data(inpfile, self.centrif_objects, con_centrif)
+        self.write_constraints_sets(inpfile, self.force_objects, con_force)
+        self.write_constraints_sets(inpfile, self.pressure_objects, con_pressure)
+        self.write_constraints_data(inpfile, self.temperature_objects, con_temperature)
+        self.write_constraints_sets(inpfile, self.heatflux_objects, con_heatflux)
+        self.write_constraints_fluidsection(inpfile)
 
         # output and step end
-        self.write_outputs_types(inpfile_main)
-        self.write_step_end(inpfile_main)
+        self.write_outputs_types(inpfile)
+        self.write_step_end(inpfile)
 
         # footer
-        self.write_footer(inpfile_main)
-        inpfile_main.close()
+        self.write_footer(inpfile)
+        inpfile.close()
 
     # ********************************************************************************************
     # mesh
@@ -362,70 +364,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write(write_after)
 
     # ********************************************************************************************
-    # constraints fixed
-    def write_node_sets_constraints_fixed(self, f):
-        self.write_constraints_sets(f, self.fixed_objects, con_fixed)
-
-    def write_constraints_fixed(self, f):
-        self.write_constraints_data(f, self.fixed_objects, con_fixed)
-
-    # ********************************************************************************************
-    # constraints displacement
-    def write_node_sets_constraints_displacement(self, f):
-        self.write_constraints_sets(f, self.displacement_objects, con_displacement)
-
-    def write_constraints_displacement(self, f):
-        self.write_constraints_data(f, self.displacement_objects, con_displacement)
-
-    # ********************************************************************************************
-    # constraints planerotation
-    def write_node_sets_constraints_planerotation(self, f):
-        self.write_constraints_sets(f, self.planerotation_objects, con_planerotation)
-
-    def write_constraints_planerotation(self, f):
-        self.write_constraints_data(f, self.planerotation_objects, con_planerotation)
-
-    # ********************************************************************************************
-    # constraints contact
-    def write_surfaces_constraints_contact(self, f):
-        self.write_constraints_sets(f, self.contact_objects, con_contact)
-
-    def write_constraints_contact(self, f):
-        self.write_constraints_data(f, self.contact_objects, con_contact)
-
-    # ********************************************************************************************
-    # constraints tie
-    def write_surfaces_constraints_tie(self, f):
-        self.write_constraints_sets(f, self.tie_objects, con_tie)
-
-    def write_constraints_tie(self, f):
-        self.write_constraints_data(f, self.tie_objects, con_tie)
-
-    # ********************************************************************************************
-    # constraints sectionprint
-    def write_surfaces_constraints_sectionprint(self, f):
-        self.write_constraints_sets(f, self.sectionprint_objects, con_sectionprint)
-
-    def write_constraints_sectionprint(self, f):
-        self.write_constraints_data(f, self.sectionprint_objects, con_sectionprint)
-
-    # ********************************************************************************************
-    # constraints transform
-    def write_node_sets_constraints_transform(self, f):
-        self.write_constraints_sets(f, self.transform_objects, con_transform)
-
-    def write_constraints_transform(self, f):
-        self.write_constraints_data(f, self.transform_objects, con_transform)
-
-    # ********************************************************************************************
-    # constraints temperature
-    def write_node_sets_constraints_temperature(self, f):
-        self.write_constraints_sets(f, self.temperature_objects, con_temperature)
-
-    def write_constraints_temperature(self, f):
-        self.write_constraints_data(f, self.temperature_objects, con_temperature)
-
-    # ********************************************************************************************
     # constraints initialtemperature
     def write_constraints_initialtemperature(self, f):
         if not self.initialtemperature_objects:
@@ -476,34 +414,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # are written in the material element sets already
 
     # ********************************************************************************************
-    # constraints centrif
-    def write_element_sets_constraints_centrif(self, f):
-        self.write_constraints_sets(f, self.centrif_objects, con_centrif)
-
-    def write_constraints_centrif(self, f):
-        self.write_constraints_data(f, self.centrif_objects, con_centrif)
-
-    # ********************************************************************************************
-    # constraints force
-    def write_constraints_force(self, f):
-        self.write_constraints_sets(f, self.force_objects, con_force)
-
-    # ********************************************************************************************
-    # constraints pressure
-    def write_constraints_pressure(self, f):
-        self.write_constraints_sets(f, self.pressure_objects, con_pressure)
-
-    # ********************************************************************************************
-    # constraints heatflux
-    def write_constraints_heatflux(self, f):
-        self.write_constraints_sets(f, self.heatflux_objects, con_heatflux)
-
-    # ********************************************************************************************
     # handle elements for constraints fluidsection with Liquid Inlet or Outlet
     # belongs to write_constraints_fluidsection, should be next method
     # leave the constraints fluidsection code as the last constraint method in this module
     # as it is none standard constraint method compared to all other constraints
-    def handle_fluidsection_liquid_inlet_outlet(self, inpfile_main):
+    def handle_fluidsection_liquid_inlet_outlet(self, inpfile):
 
         # Fluid sections:
         # fluidsection Liquid inlet outlet objs  requires special element definition
@@ -582,15 +497,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if is_fluidsection_inoutlet_setnames_possible(self.ccx_elsets) is not None:
             # it is not distinguished if split input file
             # for split input file the main file is just closed and reopend even if not needed
-            inpfile_main.close()
+            inpfile.close()
             meshtools.use_correct_fluidinout_ele_def(
                 self.FluidInletoutlet_ele,
                 self.femmesh_file,
                 self.fluid_inout_nodes_file
             )
-            inpfile_main = codecs.open(self.file_name, "a", encoding="utf-8")
+            inpfile = codecs.open(self.file_name, "a", encoding="utf-8")
 
-        return inpfile_main
+        return inpfile
 
     # ********************************************************************************************
     # constraints fluidsection
