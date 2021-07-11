@@ -579,16 +579,21 @@ def _get_working_edges(op, obj):
     # Get faces selected by user
     for base, subs in obj.Base:
         for sub in subs:
-            if sub not in avoidFeatures:
-                if obj.UseOutline:
-                    face = base.Shape.getElement(sub)
-                    # get outline with wire_A method used in PocketShape, but it does not play nicely later
-                    # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
-                    wire_B = face.Wires[0]
-                    shape = Part.Face(wire_B)
-                else:
-                    shape = base.Shape.getElement(sub)
-                regions.append(shape)
+            if sub.startswith("Face"):
+                if sub not in avoidFeatures:
+                    if obj.UseOutline:
+                        face = base.Shape.getElement(sub)
+                        # get outline with wire_A method used in PocketShape, but it does not play nicely later
+                        # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
+                        wire_B = face.Wires[0]
+                        shape = Part.Face(wire_B)
+                    else:
+                        shape = base.Shape.getElement(sub)
+                    regions.append(shape)
+            elif sub.startswith("Edge"):
+                # Discretize selected edges directly
+                shape = base.Shape.getElement(sub)
+                edge_list.append([discretize(shape)])
     # Efor
 
     # Return Extend Outline extension, OR regular edge extension
