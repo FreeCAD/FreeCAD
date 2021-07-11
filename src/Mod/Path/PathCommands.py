@@ -141,8 +141,10 @@ class _ToggleOperation:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(PathScripts.PathDressup.baseOp(sel.Object).Proxy, PathScripts.PathOp.ObjectOp):
-                    return False
+                selProxy = PathScripts.PathDressup.baseOp(sel.Object).Proxy
+                if not isinstance(selProxy, PathScripts.PathOp.ObjectOp) and \
+                    not isinstance(selProxy, PathScripts.PathArray.ObjectArray):
+                        return False
             return True
         except(IndexError, AttributeError):
             return False
