@@ -1161,6 +1161,7 @@ bool Document::save(void)
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
                 QString::fromLatin1(e.what()));
+            return false;
         }
         return true;
     }
