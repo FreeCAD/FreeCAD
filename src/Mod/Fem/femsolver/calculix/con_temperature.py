@@ -44,6 +44,22 @@ def write_meshdata_constraint(f, femobj, temp_obj, ccxwriter):
         f.write("{},\n".format(n))
 
 
+def get_before_write_meshdata_constraint():
+    return ""
+
+
+def get_after_write_meshdata_constraint():
+    return ""
+
+
+def get_before_write_constraint():
+    return ""
+
+
+def get_after_write_constraint():
+    return ""
+
+
 def write_constraint(f, femobj, temp_obj, ccxwriter):
     NumberOfNodes = len(femobj["Nodes"])
     if temp_obj.ConstraintType == "Temperature":

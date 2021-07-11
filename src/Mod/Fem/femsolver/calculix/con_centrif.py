@@ -44,6 +44,22 @@ def get_constraint_title():
     return "Centrif Constraints"
 
 
+def get_before_write_meshdata_constraint():
+    return ""
+
+
+def get_after_write_meshdata_constraint():
+    return ""
+
+
+def get_before_write_constraint():
+    return ""
+
+
+def get_after_write_constraint():
+    return ""
+
+
 def write_meshdata_constraint(f, femobj, centrif_obj, ccxwriter):
     f.write("*ELSET,ELSET={}\n".format(centrif_obj.Name))
     # use six to be sure to be Python 2.7 and 3.x compatible

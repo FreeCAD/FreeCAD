@@ -292,10 +292,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        write_before="",
-        write_after="",
         con_module=None
     ):
+        if not femobjs:
+            return
+
+        analysis_types = con_module.get_analysis_types()
+        if analysis_types != "all" and self.analysis_type not in analysis_types:
+            return
+
         def constraint_sets_loop_writing(the_file, femobjs, write_before, write_after):
             if write_before != "":
                 f.write(write_before)
@@ -307,12 +312,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             if write_after != "":
                 f.write(write_after)
 
-        if not femobjs:
-            return
-
-        analysis_types = con_module.get_analysis_types()
-        if analysis_types != "all" and self.analysis_type not in analysis_types:
-            return
+        write_before = con_module.get_before_write_meshdata_constraint()
+        write_after = con_module.get_after_write_meshdata_constraint()
 
         # write sets to file
         write_name = con_module.get_sets_name()
@@ -335,8 +336,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        write_before="",
-        write_after="",
         con_module=None
     ):
 
@@ -346,6 +345,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         analysis_types = con_module.get_analysis_types()
         if analysis_types != "all" and self.analysis_type not in analysis_types:
             return
+
+        write_before = con_module.get_before_write_constraint()
+        write_after = con_module.get_after_write_constraint()
 
         # write constraint to file
         f.write("\n{}\n".format(59 * "*"))
@@ -389,7 +391,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.displacement_objects,
-            write_after="\n",
             con_module=con_displacement
         )
 
@@ -561,7 +562,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.force_objects,
-            write_before="*CLOAD\n",
             con_module=con_force
         )
 
