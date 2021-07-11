@@ -462,7 +462,9 @@ class FemInputWriter():
     # element sets constraints
     def get_constraints_centrif_elements(self):
         # get element ids and write them into the femobj
-        if len(self.centrif_objects) == 1 and not self.centrif_objects[0]["Object"].References:
+        if len(self.centrif_objects) == 0:
+            return
+        elif len(self.centrif_objects) == 1 and not self.centrif_objects[0]["Object"].References:
             self.centrif_objects[0]["FEMElements"] = self.ccx_evolumes
         else:
             self.get_solid_element_sets(self.centrif_objects)
