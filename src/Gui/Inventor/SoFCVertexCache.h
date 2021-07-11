@@ -78,23 +78,23 @@ public:
 
   void addTriangles(const std::map<int, int> & faces);
   void addTriangles(const std::set<int> & faces);
-  void addTriangles(const std::vector<int> & faces = {});
+  void addTriangles(const SbFCVector<int> & faces = {});
   void addLines(const std::map<int, int> & lines);
   void addLines(const std::set<int> & lines);
-  void addLines(const std::vector<int> & lines = {});
+  void addLines(const SbFCVector<int> & lines = {});
   void addPoints(const std::map<int, int> & points);
   void addPoints(const std::set<int> & points);
-  void addPoints(const std::vector<int> & points = {});
+  void addPoints(const SbFCVector<int> & points = {});
 
   struct MergeMap {
     int mergeid = 0;
-    std::map<std::vector<SbFCUniqueId>, Gui::CoinPtr<SoFCVertexCache> > map;
+    SbFCMap<SbFCVector<SbFCUniqueId>, Gui::CoinPtr<SoFCVertexCache> > map;
     void cleanup();
   };
-  SoFCVertexCache * merge(bool allownewmerge,
-                          std::shared_ptr<MergeMap> & mergemap,
-                          std::vector<SoFCRenderCache::VertexCacheEntry> & entires,
-                          int idx, int & mergecount);
+  Gui::CoinPtr<SoFCVertexCache> merge(bool allownewmerge,
+                                      std::shared_ptr<MergeMap> & mergemap,
+                                      SoFCRenderCache::VertexCacheArray & entires,
+                                      int idx, int & mergecount);
 
   int getMergeId() const;
   SbFCUniqueId getCacheId() const;
@@ -116,7 +116,7 @@ public:
   const SbVec2f * getBumpCoordArray(void) const;
   const uint8_t * getColorArray(void) const;
 
-  void setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors = {});
+  void setFaceColors(const SbFCVector<std::pair<int, uint32_t> > &colors = {});
 
   int getNumTriangleIndices(void) const;
   const GLint * getTriangleIndices(void) const;

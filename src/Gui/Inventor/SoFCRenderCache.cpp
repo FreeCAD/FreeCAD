@@ -49,6 +49,7 @@
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/nodes/SoClipPlane.h>
+#include <Inventor/nodes/SoShape.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
@@ -78,6 +79,12 @@ typedef CoinPtr<SoFCRenderCache> RenderCachePtr;
 typedef SoFCRenderCache::Material Material;
 typedef SoFCRenderCache::VertexCacheEntry VertexCacheEntry;
 
+#ifdef _FC_RENDER_MEM_TRACE
+std::map<std::type_index, SbFCMemUnit> SbFCMemUnitStats::_MemUnits;
+int64_t SbFCMemUnitStats::_MemSize;
+int64_t SbFCMemUnitStats::_MemMaxSize;
+#endif
+
 struct CacheEntry {
   RenderCachePtr cache;
   VertexCachePtr vcache;
@@ -97,6 +104,7 @@ struct CacheEntry {
 };
 
 static FC_COIN_THREAD_LOCAL std::vector<std::unique_ptr<SoFCRenderCache::VertexCacheMap> > VertexCacheMaps;
+static FC_COIN_THREAD_LOCAL std::vector<int> VertexCacheMapCounts;
 
 class SoFCRenderCacheP {
 public:
@@ -112,11 +120,16 @@ public:
   void freeCacheMap() {
     if (!this->vcachemap)
       return;
-    SoFCRenderCache::CacheEntryCount -= this->cachecount;
-    if(this->vcachemap && VertexCacheMaps.size() < 20) {
+    if(VertexCacheMaps.size() < 10
+        && this->cachecount < 100000
+        && SoFCRenderCache::CacheEntryFreeCount + this->cachecount < 500000)
+    {
+      SoFCRenderCache::CacheEntryFreeCount += this->cachecount;
+      VertexCacheMapCounts.push_back(this->cachecount);
       this->vcachemap->clear();
       VertexCacheMaps.push_back(std::move(this->vcachemap));
     }
+    SoFCRenderCache::CacheEntryCount -= this->cachecount;
     this->vcachemap.reset();
   }
 
@@ -145,7 +158,7 @@ public:
 
   std::unique_ptr<SoFCRenderCache::VertexCacheMap> vcachemap;
 
-  std::vector<CacheEntry> caches;
+  SbFCVector<CacheEntry> caches;
   SbFCUniqueId nodeid;
   SoFCSelectionRoot *selnode = nullptr;
   int cachehint = 0;
@@ -164,9 +177,13 @@ public:
   float facetransp;
   bool resetmatrix;
   bool resetclip = false;
+
+  static FC_COIN_THREAD_LOCAL SoFCSelectionRoot::Stack RenderCacheStack;
 };
 
+SoFCSelectionRoot::Stack SoFCRenderCacheP::RenderCacheStack;
 long SoFCRenderCache::CacheEntryCount;
+long SoFCRenderCache::CacheEntryFreeCount;
 
 template<class T>
 static inline const T * constElement(SoState * state)
@@ -1111,9 +1128,26 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
   //   material.overrideflags.set(Material::FLAG_TRANSPARENCY);
 }
 
+struct RenderCacheStackHelper {
+  RenderCacheStackHelper(SoFCSelectionRoot *node)
+    :node(node)
+  {
+    if (node)
+      SoFCRenderCacheP::RenderCacheStack.push_back(node);
+  }
+  ~RenderCacheStackHelper() {
+    if (node)
+      SoFCRenderCacheP::RenderCacheStack.pop_back();
+  }
+
+  SoFCSelectionRoot *node;
+};
+
 const SoFCRenderCache::VertexCacheMap &
 SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
 {
+  RenderCacheStackHelper guard(PRIVATE(this)->selnode);
+
   if (PRIVATE(this)->vcachemap) {
     if (PRIVATE(this)->vcachemap->size())
       return *PRIVATE(this)->vcachemap;
@@ -1121,6 +1155,8 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
   else if (VertexCacheMaps.size()) {
     PRIVATE(this)->vcachemap = std::move(VertexCacheMaps.back());
     VertexCacheMaps.pop_back();
+    CacheEntryFreeCount -= VertexCacheMapCounts.back();
+    VertexCacheMapCounts.pop_back();
   } else
     PRIVATE(this)->vcachemap.reset(new VertexCacheMap);
 
@@ -1131,9 +1167,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
   std::unordered_map<CacheKeyPtr, CacheKeyPtr, CacheKeyHasher, CacheKeyHasher> keymap;
   CacheKeyPtr selfkey;
 
-  static FC_COIN_THREAD_LOCAL SoSelectionElementAction selaction(
-      SoSelectionElementAction::Retrieve, true);
-  static FC_COIN_THREAD_LOCAL std::vector<std::pair<int, uint32_t> > selcolors;
+  static FC_COIN_THREAD_LOCAL SbFCVector<std::pair<int, uint32_t> > selcolors;
 
   auto checkContext = [](Material &material,
                          const SoFCSelectionContextExPtr &ctx,
@@ -1215,19 +1249,14 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
 
   for (auto & entry : PRIVATE(this)->caches) {
     if (entry.vcache) {
-      if (!selfkey) {
-        selfkey.reset(new CacheKey);
-        if (PRIVATE(this)->selnode)
-          selfkey->push_back(PRIVATE(this)->selnode);
+      if (!selfkey && PRIVATE(this)->selnode) {
+        selfkey = std::allocate_shared<CacheKey>(SoFCAllocator<CacheKey>());
+        selfkey->push(PRIVATE(this)->selnode);
       }
-
       SoFCSelectionContextExPtr ctx;
-      if (PRIVATE(this)->selnode && entry.vcache->getNode()) {
-        SoFCSelectionRoot::setActionStack(&selaction, selfkey.get());
-        selaction.setRetrivedContext();
-        selaction.apply(entry.vcache->getNode());
-        ctx = selaction.getRetrievedContext();
-      }
+      if (selfkey)
+          ctx = selfkey->getSecondaryContext(
+              SoFCRenderCacheP::RenderCacheStack, entry.vcache->getNode());
 
       entry.material.pervertexcolor = entry.vcache->colorPerVertex();
 
@@ -1299,30 +1328,29 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
 
       VertexCacheMap::value_type value(material, {});
 
-      std::vector<VertexCacheEntry> *pushed_entries = nullptr;
+      VertexCacheArray *pushed_entries = nullptr;
       int mutated = 0;
       for (auto & childentry : child.second) {
-        std::vector<VertexCacheEntry> *ventries = pushed_entries;
+        VertexCacheArray *ventries = pushed_entries;
         int res = 1;
         auto vcache = childentry.cache;
+#if 1
         CacheKeyPtr & key = keymap[childentry.key];
+#else
+        CacheKeyPtr key;
+#endif
         if (!key) {
-          key.reset(new CacheKey);
-          if (PRIVATE(this)->selnode) {
-            key->reserve(childentry.key->size()+1);
-            key->push_back(PRIVATE(this)->selnode);
+          if (!PRIVATE(this)->selnode)
+            key = childentry.key;
+          else {
+            key = std::allocate_shared<CacheKey>(SoFCAllocator<CacheKey>());
+            key->push(PRIVATE(this)->selnode);
+            key->append(childentry.key);
           }
-          key->insert(key->end(), childentry.key->begin(), childentry.key->end());
         }
-
         SoFCSelectionContextExPtr ctx;
-        if (!childentry.mergecount && PRIVATE(this)->selnode && vcache->getNode()) {
-          SoFCSelectionRoot::setActionStack(&selaction, key.get());
-          selaction.setRetrivedContext();
-          selaction.apply(vcache->getNode());
-          ctx = selaction.getRetrievedContext();
-        }
-
+        if (PRIVATE(this)->selnode)
+          ctx = key->getSecondaryContext(SoFCRenderCacheP::RenderCacheStack, vcache->getNode());
         res = checkContext(material, ctx, vcache);
         if (!res)
           continue;
@@ -1383,7 +1411,13 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
   }
 
   if ((canmerge || PRIVATE(this)->mergemap)
-      && ViewParams::RenderCacheMergeCount() && depth > 0) {
+      && ViewParams::RenderCacheMergeCount()
+      && depth >= ViewParams::RenderCacheMergeDepthMin()
+      && (ViewParams::RenderCacheMergeDepthMax() < 0
+        || depth <= ViewParams::RenderCacheMergeDepthMax()))
+  {
+    if (ViewParams::RenderCacheMergeDepthMax()
+        && ViewParams::RenderCacheMergeDepthMin())
     for (auto & v : vcachemap) {
       int count = 0;
       for (int i=0; i<(int)v.second.size(); ++i) {
@@ -1391,7 +1425,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         i += v.second[i].mergecount;
       }
       if (count < std::max(ViewParams::RenderCacheMergeCountMin(),
-                           ViewParams::RenderCacheMergeCount()))
+            ViewParams::RenderCacheMergeCount()))
         continue;
 
       VertexCacheEntry newentry;
@@ -1408,8 +1442,8 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
             i += entry.mergecount;
         } else {
           assert(newentry.mergecount>0);
-          newentry.key = std::make_shared<CacheKey>();
-          newentry.key->forcePush(newentry.cache->getCacheId());
+          newentry.key = std::allocate_shared<CacheKey>(SoFCAllocator<CacheKey>());
+          newentry.key->forcePush(0x80000000 | newentry.cache->getCacheId());
           v.second.insert(v.second.begin()+idx, newentry);
           i = idx + newentry.mergecount;
         }
@@ -1466,7 +1500,7 @@ bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other) {
 }
 
 SoFCRenderCache::VertexCacheMap
-SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
+SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
                                      int order,
                                      const SoDetail * detail,
                                      uint32_t color,
@@ -1686,7 +1720,7 @@ SoFCRenderCache::buildHighlightCache(std::map<int, VertexCachePtr> &sharedcache,
             //
             // newentry.partidx = ld->getLineIndex();
             newentry.cache = new SoFCVertexCache(*newentry.cache);
-            newentry.cache->addLines(std::vector<int>(1, ld->getLineIndex()));
+            newentry.cache->addLines(SbFCVector<int>(1, ld->getLineIndex()));
           } else
             continue;
         }

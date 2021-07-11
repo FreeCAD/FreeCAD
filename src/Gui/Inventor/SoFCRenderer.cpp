@@ -157,9 +157,9 @@ enum RenderPass {
 struct HatchTexture
 {
   const void *key = nullptr;
-  std::vector<unsigned char> data;
+  SbFCVector<unsigned char> data;
   GLuint texture = 0;
-  int refcount = 0;
+  FC_COIN_COUNTER(int) refcount = 0;
   int width = 100;
   int height = 100;
   int nc = 0;
@@ -188,7 +188,7 @@ public:
 
   void updateSelection();
 
-  static std::size_t pushDrawEntry(std::vector<DrawEntry> & draw_entries,
+  static std::size_t pushDrawEntry(SbFCVector<DrawEntry> & draw_entries,
                                    const Material & material,
                                    const VertexCacheEntry & ventry);
 
@@ -201,47 +201,47 @@ public:
   void renderPoints(SoState *state, int array, DrawEntry &draw_entry);
 
   void renderOpaque(SoGLRenderAction * action,
-                    std::vector<DrawEntry> & draw_entries,
-                    std::vector<std::size_t> & indices,
+                    SbFCVector<DrawEntry> & draw_entries,
+                    SbFCVector<std::size_t> & indices,
                     int pass = RenderPassNormal);
 
   void renderTransparency(SoGLRenderAction * action,
-                          std::vector<DrawEntry> & draw_entries,
-                          std::vector<DrawEntryIndex> & indices,
+                          SbFCVector<DrawEntry> & draw_entries,
+                          SbFCVector<DrawEntryIndex> & indices,
                           bool sort=true);
 
   void applyKeys(const CacheKeySet &keys, int skip=1);
   void changeKey(const CacheKeySet &keys, int idx, int skip);
 
-  std::vector<DrawEntry> drawentries;
-  std::vector<DrawEntry> slentries;
-  std::vector<DrawEntry> hlentries; 
+  SbFCVector<DrawEntry> drawentries;
+  SbFCVector<DrawEntry> slentries;
+  SbFCVector<DrawEntry> hlentries; 
 
-  std::vector<std::size_t> opaquevcache;
-  std::vector<std::size_t> opaqueontop;
-  std::vector<std::size_t> opaqueselections;
-  std::vector<std::size_t> opaquehighlight;
-  std::vector<std::size_t> opaquelineshighlight; // has both lines and points
-  std::vector<std::size_t> linesontop; // has both lines and points
-  std::vector<std::size_t> trianglesontop;
+  SbFCVector<std::size_t> opaquevcache;
+  SbFCVector<std::size_t> opaqueontop;
+  SbFCVector<std::size_t> opaqueselections;
+  SbFCVector<std::size_t> opaquehighlight;
+  SbFCVector<std::size_t> opaquelineshighlight; // has both lines and points
+  SbFCVector<std::size_t> linesontop; // has both lines and points
+  SbFCVector<std::size_t> trianglesontop;
 
   SbPlane prevplane;
-  std::vector<DrawEntryIndex> transpvcache;
-  std::vector<DrawEntryIndex> transpontop;
-  std::vector<DrawEntryIndex> transpselections;
-  std::vector<DrawEntryIndex> transphighlight;
+  SbFCVector<DrawEntryIndex> transpvcache;
+  SbFCVector<DrawEntryIndex> transpontop;
+  SbFCVector<DrawEntryIndex> transpselections;
+  SbFCVector<DrawEntryIndex> transphighlight;
 
-  std::map<int, const VertexCacheMap *> selections;
-  std::map<int, const VertexCacheMap *> selectionsontop;
-  std::vector<DrawEntryIndex> transpselectionsontop;
-  std::vector<std::size_t> selstriangleontop;
-  std::vector<std::size_t> selsontop; // include only non-explicitly selected lines and points
-  std::vector<std::size_t> selslineontop; // include only explicitly selected lines
-  std::vector<std::size_t> selspointontop; // include only explictly selected points
+  SbFCMap<int, const VertexCacheMap *> selections;
+  SbFCMap<int, const VertexCacheMap *> selectionsontop;
+  SbFCVector<DrawEntryIndex> transpselectionsontop;
+  SbFCVector<std::size_t> selstriangleontop;
+  SbFCVector<std::size_t> selsontop; // include only non-explicitly selected lines and points
+  SbFCVector<std::size_t> selslineontop; // include only explicitly selected lines
+  SbFCVector<std::size_t> selspointontop; // include only explictly selected points
   bool updateselection;
 
   std::unordered_map<CacheKeyPtr,
-                     std::vector<std::size_t>,
+                     SbFCVector<std::size_t>,
                      CacheKeyHasher,
                      CacheKeyHasher> cachetable;
 
@@ -249,10 +249,8 @@ public:
   CacheKeySet highlightkeys;
   CacheKeySet selectionkeys;
   CacheKeyPtr selkey;
-  std::vector<CacheKey*> tmpkeys;
 
   RenderCachePtr scene;
-  RenderCachePtr highlight;
 
   SbBox3f scenebbox;
   SbBox3f highlightbbox;
@@ -769,13 +767,13 @@ SoFCRendererP::changeKey(const CacheKeySet & keys, int idx, int skip)
     return;
   if (!prev && draw_entry.skip) {
     for (int i=1; i<=draw_entry.ventry->mergecount; ++i) {
-      changeKey(keys, idx+i,-1);
+      changeKey(keys, idx+i, -1);
       i += this->drawentries[idx+i].ventry->mergecount;
     }
   }
   else if (prev && !draw_entry.skip) {
     for (int i=1; i<=draw_entry.ventry->mergecount; ++i) {
-      changeKey(keys, idx+i,1);
+      changeKey(keys, idx+i, 1);
       i += this->drawentries[idx+i].ventry->mergecount;
     }
   }
@@ -808,7 +806,7 @@ SoFCRenderer::clearHighlight()
 }
 
 inline std::size_t
-SoFCRendererP::pushDrawEntry(std::vector<DrawEntry> & draw_entries,
+SoFCRendererP::pushDrawEntry(SbFCVector<DrawEntry> & draw_entries,
                              const Material & material, 
                              const VertexCacheEntry & ventry)
 {
@@ -1009,7 +1007,6 @@ SoFCRendererP::updateSelection()
   this->selectionbbox = SbBox3f();
  
   CacheKeySet renderkeys;
-  CacheKeyPtr lastkey;
 
   applyKeys(this->selectionkeys, -1);
   this->selectionkeys.clear();
@@ -1023,26 +1020,19 @@ SoFCRendererP::updateSelection()
       return 0;
     if (!ventry.key || ventry.partidx >= 0 || ventry.cache != ventry.cache->getWholeCache())
       return idx;
-    if (lastkey != ventry.key) {
-      lastkey = ventry.key;
-      if (!this->selkey)
-        this->selkey.reset(new CacheKey);
-      *this->selkey = *ventry.key;
-    }
+    if (!this->selkey)
+      this->selkey = std::allocate_shared<CacheKey>(SoFCAllocator<CacheKey>());
     this->selkey->forcePush(ventry.cache->getNodeId());
     this->selkey->forcePush(material.type);
+    this->selkey->append(ventry.key);
     if (this->selectionkeys.insert(ventry.key).second) {
       renderkeys.insert(this->selkey);
       this->selkey.reset();
-      lastkey.reset();
     }
-    else if (renderkeys.insert(this->selkey).second) {
+    else if (renderkeys.insert(this->selkey).second)
       this->selkey.reset();
-      lastkey.reset();
-    }
     else {
-      this->selkey->pop_back();
-      this->selkey->pop_back();
+      this->selkey->clear();
       this->slentries.pop_back();
       return 0;
     }
@@ -1540,8 +1530,8 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
 
 void
 SoFCRendererP::renderOpaque(SoGLRenderAction * action,
-                            std::vector<DrawEntry> & draw_entries,
-                            std::vector<std::size_t> & indices,
+                            SbFCVector<DrawEntry> & draw_entries,
+                            SbFCVector<std::size_t> & indices,
                             int pass)
 {
   if (this->transpshadowmapping)
@@ -1638,8 +1628,8 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
 
 void
 SoFCRendererP::renderTransparency(SoGLRenderAction * action,
-                                  std::vector<DrawEntry> & draw_entries,
-                                  std::vector<DrawEntryIndex> & indices,
+                                  SbFCVector<DrawEntry> & draw_entries,
+                                  SbFCVector<DrawEntryIndex> & indices,
                                   bool sort)
 {
   if (indices.empty())
@@ -1793,9 +1783,9 @@ SoFCRenderer::render(SoGLRenderAction * action)
   PRIVATE(this)->matrix = SoModelMatrixElement::get(state);
   PRIVATE(this)->identity = (PRIVATE(this)->matrix == SbMatrix::identity());
 
-  PRIVATE(this)->drawcallcount = 0;
-
   if (!action->isRenderingDelayedPaths()) {
+    PRIVATE(this)->drawcallcount = 0;
+
     PRIVATE(this)->renderOpaque(action,
                                 PRIVATE(this)->drawentries,
                                 PRIVATE(this)->opaquevcache);

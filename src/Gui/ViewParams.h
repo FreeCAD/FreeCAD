@@ -346,6 +346,10 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Internal use to limit the render cache merge count")) \
     FC_VIEW_PARAM(RenderCacheMergeCountMax, int , Int, 0,  \
         QT_TRANSLATE_NOOP("ViewParams","Maximum draw crash merges on any hierarchy. Zero means no limit.")) \
+    FC_VIEW_PARAM(RenderCacheMergeDepthMax, int , Int, -1,  \
+        QT_TRANSLATE_NOOP("ViewParams","Maximum hierarchy depth that the cache merge can happen. Less than 0 means no limit.")) \
+    FC_VIEW_PARAM(RenderCacheMergeDepthMin, int , Int, 1,  \
+        QT_TRANSLATE_NOOP("ViewParams","Minimum hierarchy depth that the cache merge can happen.")) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

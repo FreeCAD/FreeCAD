@@ -64,6 +64,8 @@ static int vbo_vertex_count_max_limit = -1;
 static int vbo_render_as_vertex_arrays = -1;
 static int vbo_debug = -1;
 static int vbo_context_shared = -1;
+static long vbo_mem;
+static long vbo_buf_mem;
 
 // VBO rendering seems to be faster than other rendering, even for
 // large VBOs. Just set the default limit very high
@@ -161,8 +163,17 @@ SoFCVBO::init(void)
 }
 
 void
+SoFCVBO::onSetBuffer()
+{
+  vbo_buf_mem += (this->datasize<<20);
+}
+
+void
 SoFCVBO::discard()
 {
+  auto size = this->datasize;
+  vbo_buf_mem -= (size<<20);
+
   this->data = nullptr;
   this->datasize = 0;
 
@@ -170,6 +181,7 @@ SoFCVBO::discard()
   for (auto & v : this->vbohash) {
     void * ptr = (void*) ((uintptr_t) v.handle);
     SoGLCacheContextElement::scheduleDeleteCallback(v.context, SoFCVBO::vbo_delete, ptr);
+    vbo_mem -= (size << 20);
   }
 
   // clear hash table
@@ -213,6 +225,7 @@ SoFCVBO::bindBuffer(SoState *state, uint32_t contextid)
                            this->data,
                            this->usage);
     this->vbohash.emplace(it, contextid, buffer);
+    vbo_mem += (this->datasize<<20);
   }
   else {
     // buffer already exists, bind it
@@ -308,4 +321,15 @@ SoFCVBO::shouldRenderAsVertexArrays(SoState * state,
   return (numdata >= vbo_vertex_count_min_limit) && vbo_render_as_vertex_arrays;
 }
 
+long
+SoFCVBO::getVBOMemUsage()
+{
+  return vbo_mem;
+}
+
+long
+SoFCVBO::getSystemMemUsage()
+{
+  return vbo_buf_mem;
+}
 // vim: noai:ts=2:sw=2

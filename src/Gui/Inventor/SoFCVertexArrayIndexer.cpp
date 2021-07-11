@@ -154,14 +154,14 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & ot
 }
 
 SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
-                                               const std::vector<int> & partindices,
+                                               const SbFCVector<int> & partindices,
                                                int maxindex,
                                                bool exclude)
   :indexarray(GL_ELEMENT_ARRAY_BUFFER, GL_STREAM_DRAW)
 {
   init(other,
        partindices,
-       [](const std::vector<int>::const_iterator &it) {return *it;},
+       [](const SbFCVector<int>::const_iterator &it) {return *it;},
        maxindex,
        exclude);
 }
@@ -276,7 +276,7 @@ SoFCVertexArrayIndexer::close(const int *parts, int count)
 }
 
 void
-SoFCVertexArrayIndexer::close(std::vector<int> && parts)
+SoFCVertexArrayIndexer::close(SbFCVector<int> && parts)
 {
   if (!this->indexarray) return;
   this->partarray.move(std::move(parts));

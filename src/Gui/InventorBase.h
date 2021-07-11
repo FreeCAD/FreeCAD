@@ -25,14 +25,24 @@
 
 #include <boost/intrusive_ptr.hpp>
 
-class SoGroup;
-
 // define this only if we actually decide to run coin in multiple thread
 #ifdef FC_COIN_MULTI_THREAD
+#   include <atomic>
+#   include <mutex>
 #   define FC_COIN_THREAD_LOCAL thread_local
+#   define FC_COIN_COUNTER(_type) std::atomic<_type>
+#   define FC_COIN_MUTEX(_name) std::mutex _name
+#   define FC_COIN_STATIC_MUTEX(_name) static std::mutex _name
+#   define FC_COIN_LOCK(_name, _mutex) std::lock_guard<std_mutex> _name(_mutex)
 #else
 #   define FC_COIN_THREAD_LOCAL
+#   define FC_COIN_COUNTER(_type) _type
+#   define FC_COIN_MUTEX(_name)
+#   define FC_COIN_STATIC_MUTEX(_name)
+#   define FC_COIN_LOCK(_name, _mutex)
 #endif
+
+class SoGroup;
 
 namespace Gui {
 

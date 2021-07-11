@@ -62,13 +62,13 @@ class SoFCVertexAttribute
 
   struct VBOEntry {
     SoFCVBOData<T, L> *vbo;
-    int refcount;
+    FC_COIN_COUNTER(int) refcount;
     VBOEntry()
       :vbo(nullptr)
       ,refcount(0)
     {}
   };
-  typedef std::map<VBOKey, VBOEntry> Table;
+  typedef SbFCMap<VBOKey, VBOEntry> Table;
 
 public:
   SoFCVertexAttribute(const GLenum target = GL_ARRAY_BUFFER,
@@ -162,11 +162,11 @@ public:
       this->len = this->array.size();
   }
 
-  typename std::vector<T>::const_iterator begin() const {
+  typename SbFCVector<T>::const_iterator begin() const {
     return this->array.getData().begin();
   }
 
-  typename std::vector<T>::const_iterator end() const {
+  typename SbFCVector<T>::const_iterator end() const {
     assert(this->len <= this->array.size());
     return this->array.getData().begin() + this->len;
   }
@@ -264,7 +264,7 @@ public:
   }
 
 private:
-  COWVector<std::vector<T> > array;
+  COWVector<T> array;
   int len;
   VBOKey key;
   VBOEntry *entry;

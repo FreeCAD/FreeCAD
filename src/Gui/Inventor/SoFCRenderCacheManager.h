@@ -23,7 +23,7 @@
 #ifndef GUI_SOFCRENDERCACHEMANAGER_H
 #define GUI_SOFCRENDERCACHEMANAGER_H
 
-#include <map>
+#include "COWData.h"
 #include "../InventorBase.h"
 
 class SoSFImage;
@@ -76,7 +76,7 @@ public:
 
   bool isOnTop(const std::string & key, bool altonly = true);
 
-  const std::map<int, SoPath*> & getSelectionPaths() const;
+  const SbFCMap<int, SoPath*> & getSelectionPaths() const;
 
   void getBoundingBox(SbBox3f & bbox) const;
 

@@ -1861,9 +1861,113 @@ SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
 SO_NODE_SOURCE(SoFCSelectionRoot)
 
+static FC_COIN_COUNTER(uint32_t) SelectionRootCount;
+static FC_COIN_COUNTER(uint32_t) SelectionRootId;
+std::unordered_map<uint32_t, SoFCSelectionRoot*> SelectionRootMap;
+FC_COIN_STATIC_MUTEX(SelectionRootMapMutex);
+#define SelectionRootMapLock(_name) FC_COIN_LOCK(_name, SelectionRootMapMutex)
+
+bool SoFCSelectionRoot::NodeKey::convert(SoFCSelectionRoot::Stack &stack, bool clear) const
+{
+    if (clear)
+        stack.clear();
+    uintptr_t id = 0;
+    SelectionRootMapLock(guard);
+    for (uint8_t i=0; i<data.back(); ++i) {
+        uint8_t d = data[i];
+        id = (id << 7) | (d & 127);
+        if(!(d & 128)) {
+            if (id > SelectionRootId)
+                return false;
+            auto it = SelectionRootMap.find(id);
+            if (it == SelectionRootMap.end())
+                return false;
+            else
+                stack.push_back(it->second);
+            id = 0;
+        }
+    }
+    assert(id == 0);
+    if (next)
+        return next->convert(stack, false);
+    return true;
+}
+
+SoFCSelectionRoot *
+SoFCSelectionRoot::NodeKey::getLastNode() const
+{
+    if (empty())
+        return nullptr;
+    if (next)
+        return next->getLastNode();
+    uintptr_t id = data[data.back()-1];
+    assert(id < 128);
+    for (int i=data.back()-2; i>=0; --i) {
+        uintptr_t d = data[i];
+        if (d & 128)
+            break;
+        id |= (d & 127) << ((data.back()-i-1)*7);
+    }
+    if (id > SelectionRootId)
+        return nullptr;
+    SelectionRootMapLock(guard);
+    auto it = SelectionRootMap.find(id);
+    if (it == SelectionRootMap.end())
+        return nullptr;
+    return it->second;
+}
+
+SoFCSelectionContextExPtr
+SoFCSelectionRoot::NodeKey::getSecondaryContext(Stack &stack, SoNode *node)
+{
+    static FC_COIN_THREAD_LOCAL SoSelectionElementAction selaction(
+            SoSelectionElementAction::Retrieve, true);
+
+    SoFCSelectionContextExPtr ctx;
+    if (!node)
+        return ctx;
+
+    auto selnode = getLastNode();
+    if (!selnode || selnode->contextMap2.empty())
+        return ctx;
+
+    auto len = stack.size();
+    if (convert(stack)) {
+        SoFCSelectionRoot::setActionStack(&selaction, &stack);
+        selaction.setRetrivedContext();
+        selaction.apply(node);
+        ctx = selaction.getRetrievedContext();
+    }
+    stack.resize(len);
+    return ctx;
+}
+
+void SoFCSelectionRoot::NodeKey::append(const std::shared_ptr<NodeKey> &_other)
+{
+    if (!_other || _other->empty())
+        return;
+    assert(!this->next);
+    auto & other = *_other;
+    if (other.data.back() + data.back() <= data.size()-1) {
+        memcpy(&data[data.back()], &other.data[0], other.data.back());
+        data.back() += other.data.back();
+        return;
+    }
+    this->next = _other;
+}
+
+// ------------------------------------------------------------------------
+
 SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider *vp)
     :SoFCSeparator(trackCacheMode), viewProvider(vp)
 {
+    ++SelectionRootCount;
+    this->selnodeid = ++SelectionRootId;
+    {
+        SelectionRootMapLock(guard);
+        SelectionRootMap.emplace(this->selnodeid, this);
+    }
+
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
     SO_NODE_ADD_FIELD(resetClipPlane,(FALSE));
     SO_NODE_ADD_FIELD(selectionStyle,(Full));
@@ -1880,6 +1984,12 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider *vp)
 
 SoFCSelectionRoot::~SoFCSelectionRoot()
 {
+    {
+        SelectionRootMapLock(guard);
+        SelectionRootMap.erase(this->selnodeid);
+    }
+    if (--SelectionRootCount == 0)
+        SelectionRootId = 0;
 }
 
 void SoFCSelectionRoot::initClass(void)

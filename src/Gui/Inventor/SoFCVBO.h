@@ -66,7 +66,12 @@ public:
                                            const uint32_t contextid,
                                            const int numdata);
 
+  static long getVBOMemUsage();
+  static long getSystemMemUsage();
+
 protected:
+  void onSetBuffer();
+
   static void context_destruction_cb(uint32_t context, void * userdata);
   friend struct vbo_schedule;
   static void vbo_delete(void * closure, uint32_t contextid);
@@ -93,7 +98,7 @@ protected:
       return context < other;
     }
   };
-  std::vector<VBOContext> vbohash;
+  SbFCVector<VBOContext> vbohash;
 
 private:
   SoFCVBO(const SoFCVBO & rhs); // N/A
@@ -108,7 +113,7 @@ public:
     :SoFCVBO(target, usage)
   {}
 
-  void setBufferData(const COWVector<std::vector<T> > &data, bool convert = false) {
+  void setBufferData(const COWVector<T> &data, bool convert = false) {
     this->discard();
     this->array = data;
     if (data.empty())
@@ -125,9 +130,10 @@ public:
       this->data = &this->array2[0];
       this->datasize = this->array2.size() * sizeof(L);
     }
+    onSetBuffer();
   }
 
-  const COWVector<std::vector<T> > & getBufferData() const {
+  const COWVector<T> & getBufferData() const {
     return this->array;
   }
 
@@ -147,8 +153,8 @@ public:
   }
 
 protected:
-  COWVector<std::vector<T> > array;
-  COWVector<std::vector<L> > array2;
+  COWVector<T> array;
+  COWVector<L> array2;
 
 private:
   SoFCVBOData(const SoFCVBOData & rhs); // N/A

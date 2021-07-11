@@ -60,6 +60,7 @@ class SbBox3f;
 class SbMatrix;
 class SoFCRenderCacheManager;
 class SoFCRenderCache;
+class SoFCRenderCacheP;
 
 namespace Gui {
 
@@ -275,6 +276,10 @@ public:
     static void finish(void);
     SoFCSelectionRoot(bool trackCacheMode=false, ViewProvider *vp=0);
 
+    uint32_t getSelNodeId() const {
+        return selnodeid;
+    }
+
     ViewProvider *getViewProvider() const {return viewProvider;}
     void setViewProvider(ViewProvider *vp);
 
@@ -426,6 +431,7 @@ public:
                                             bool changeWidth = true);
 
     friend class ::SoFCRenderCache;
+    friend class ::SoFCRenderCacheP;
 
 protected:
     virtual ~SoFCSelectionRoot();
@@ -443,6 +449,103 @@ protected:
         }
         std::unordered_set<SoFCSelectionRoot*> nodeSet;
         size_t offset = 0;
+    };
+
+    // Helper class to compress vector of SoFCSelectionRoot node pointer using
+    // variable length encoding
+    class NodeKey {
+    public:
+        NodeKey() {
+            data.back() = 0;
+        }
+        
+        int size() const {
+            if (!next)
+                return data.back();
+            return data.back() + next->size();
+        }
+
+        bool empty() const {
+            return data.back() == 0;
+        }
+
+        explicit operator bool() const {
+            return empty();
+        }
+
+        void clear() {
+            data.back() = 0;
+            next.reset();
+        }
+
+        std::size_t hash() const {
+            if (empty())
+                return 0;
+            std::hash<uint32_t> hasher;
+            std::size_t seed = 0;
+            const uint32_t *d = reinterpret_cast<const uint32_t*>(&data[0]);
+            int i = 0;
+            for (int c=data.back()/4; i<c; ++i)
+                seed ^= hasher(d[i]) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+            for (i*=4; i<data.back(); ++i)
+                seed ^= hasher(data[i]) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+            if (next) 
+                seed ^= next->hash() + 0x9e3779b9 + (seed<<6) + (seed>>2);
+            return seed;
+        }
+
+        bool operator==(const NodeKey & other) const {
+            if (data.back() != other.data.back())
+                return false;
+            if ((!next && other.next) || (next && !other.next))
+                return false;
+            if (memcmp(&data[0], &other.data[0], data.back())!=0)
+                return false;
+            return next == other.next || *next == *other.next;
+        }
+
+        void forcePush(uintptr_t id) {
+            bool res = _push(id);
+            assert(res);
+        }
+
+        void push(SoFCSelectionRoot *node) {
+            if (node) {
+                bool res = _push(node->getSelNodeId());
+                assert(res);
+            }
+        }
+
+        bool convert(Stack &stack, bool clear=true) const;
+
+        SoFCSelectionRoot *getLastNode() const;
+
+        SoFCSelectionContextExPtr getSecondaryContext(Stack &stack, SoNode *node);
+
+        void append(const std::shared_ptr<NodeKey> &other);
+
+    private:
+        bool _push(uintptr_t v) {
+            assert(!next);
+            uint8_t len = 0;
+            for (uint8_t i=data.back();i<data.size()-1;++i) {
+                if (v > 127) {
+                    data[i] = static_cast<uint8_t>(v & 127) | 128;
+                    ++len;
+                    v >>= 7;
+                } else {
+                    data[i] = static_cast<uint8_t>(v) & 127;
+                    data.back() += len + 1;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        std::shared_ptr<NodeKey> next;
+
+        // data.back() (i.e. the last element) stores the data count
+        std::array<uint8_t, 32> data;
     };
 
     static void setActionStack(SoAction *action, Stack *stack);
@@ -496,6 +599,8 @@ protected:
     ViewProvider *viewProvider;
 
     int renderPathCode=0;
+
+    uint32_t selnodeid;
 };
 
 /**

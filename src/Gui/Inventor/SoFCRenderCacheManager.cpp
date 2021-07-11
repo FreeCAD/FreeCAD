@@ -292,7 +292,7 @@ public:
       SoFCRenderCacheManagerP::cachetable.erase(node);
     }
 
-    std::vector<RenderCachePtr> caches;
+    SbFCVector<RenderCachePtr> caches;
   };
 
   class VCacheSensor : public NodeSensor
@@ -306,7 +306,7 @@ public:
       SoFCRenderCacheManagerP::vcachetable.erase(node);
     }
 
-    std::vector<VertexCachePtr> caches;
+    SbFCVector<VertexCachePtr> caches;
   };
 
   class PathCacheSensor : public SoPathSensor
@@ -337,13 +337,13 @@ public:
   VertexCachePtr vcache;
 
   std::unordered_map<std::string, SelectionPathMap> selcaches;
-  std::map<int, SoPath*> selpaths;
+  SbFCMap<int, SoPath*> selpaths;
 
-  std::map<int, VertexCachePtr> sharedcache;
+  SbFCMap<int, VertexCachePtr> sharedcache;
 
   int selid;
   
-  std::vector<RenderCachePtr> stack;
+  SbFCVector<RenderCachePtr> stack;
   SbFCUniqueId sceneid;
   std::unordered_set<const SoNode *> nodeset;
   const SoNode * prunenode;
@@ -444,7 +444,7 @@ SoFCRenderCacheManagerP::~SoFCRenderCacheManagerP()
   delete this->renderer;
 }
 
-const std::map<int, SoPath*> &
+const SbFCMap<int, SoPath*> &
 SoFCRenderCacheManager::getSelectionPaths() const
 {
   return PRIVATE(this)->selpaths;
@@ -595,7 +595,7 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
     self->renderer->addSelection(elentry.id, elentry.vcachemap);
     if (elentry.vcachemap.size() == 1
         && elentry.vcachemap.begin()->second.size() == 1
-        && elentry.vcachemap.begin()->second[0].key == nullptr)
+        && !elentry.vcachemap.begin()->second[0].key)
     {
       // here means the selection shows a bounding box, so don't put it on
       // selpaths for pick list
@@ -918,6 +918,7 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
     unsigned int shapestyleflags = shapestyle->getFlags();
     if (!(shapestyleflags & SoShapeStyleElement::SHADOWMAP))
       PRIVATE(this)->sceneid = path->getTail()->getNodeId();
+
     RenderCachePtr cache = new SoFCRenderCache(state, path->getTail());
     cache->open(state);
     PRIVATE(this)->stack.resize(1, cache);
@@ -947,7 +948,7 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
   SoState * state = action->getState();
   SoFCRenderCache *currentcache = self->stack.empty() ? nullptr : self->stack.back();
   RenderCachePtr prevcache;
-  std::vector<RenderCachePtr> *sensorcaches = nullptr;
+  SbFCVector<RenderCachePtr> *sensorcaches = nullptr;
   if (action->getCurPathCode() == SoAction::BELOW_PATH
       || action->getCurPathCode() == SoAction::NO_PATH) {
     CacheSensor &sensor = self->cachetable[node];

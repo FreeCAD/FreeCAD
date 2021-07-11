@@ -49,8 +49,6 @@ class SoDepthBuffer;
 class SbBox3f;
 class SoClipPlane;
 
-// -------------------------------------------------------------
-
 class GuiExport SoFCRenderCache : public SoCache {
   typedef SoCache inherited;
 public:
@@ -87,7 +85,7 @@ public:
     }
   };
 
-  typedef COWMap<std::map<int, MatrixInfo> > TextureMatrixMap;
+  typedef COWMap<int, MatrixInfo> TextureMatrixMap;
 
   struct TextureInfo {
     Gui::CoinPtr<SoTexture> texture;
@@ -128,7 +126,7 @@ public:
     }
   };
 
-  typedef COWMap<std::map<int, TextureInfo> > TextureMap;
+  typedef COWMap<int, TextureInfo> TextureMap;
 
   struct NodeInfo {
     Gui::CoinPtr<SoNode> node;
@@ -179,7 +177,7 @@ public:
     }
   };
 
-  typedef COWVector<std::vector<NodeInfo> > NodeInfoArray;
+  typedef COWVector<NodeInfo> NodeInfoArray;
 
   struct Material {
     enum Type {
@@ -359,47 +357,24 @@ public:
   };
 
 
-  class CacheKey : public Gui::SoFCSelectionRoot::Stack {
-  public:
-    inline void hash_combine(std::size_t &seed, void *v) const
-    {
-      std::hash<void *> hasher;
-      seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
-    }
-
-    std::size_t hash() const {
-      if (_hashed_size == this->size())
-        return this->_hash;
-      _hashed_size = this->size();
-      this->_hash = 0;
-      for (std::size_t i=0; i<_hashed_size; ++i)
-        hash_combine(this->_hash, this->operator[](i));
-      return this->_hash;
-    }
-
-    bool operator==(const CacheKey &other) const {
-      if (this->size() != other.size())
-        return false;
-      if (other.empty())
-        return true;
-      return memcmp(&(*this)[0], &other[0], other.size() * sizeof(other[0]))==0;
-    }
-
-  private:
-    mutable std::size_t _hash = 0;
-    mutable std::size_t _hashed_size = 0;
-  };
-
+  typedef Gui::SoFCSelectionRoot::NodeKey CacheKey;
   typedef std::shared_ptr<CacheKey> CacheKeyPtr;
 
   struct CacheKeyHasher {
     std::size_t operator()(const CacheKeyPtr &key) const {
-      return key ? key->hash() : 0;
+      if (!key)
+        return 0;
+      return key->hash();
     }
     bool operator()(const CacheKeyPtr &a, const CacheKeyPtr &b) const {
-      return a == b || *a == *b;
+      if (a == b)
+        return true;
+      if (!a || !b)
+        return false;
+      return *a == *b;
     }
   };
+
   typedef std::unordered_set<CacheKeyPtr, CacheKeyHasher, CacheKeyHasher> CacheKeySet;
 
   struct VertexCacheEntry {
@@ -415,7 +390,7 @@ public:
                      const SbMatrix &m,
                      bool iden,
                      bool reset,
-                     CacheKeyPtr k)
+                     const CacheKeyPtr &k)
       : key(k)
       , cache(c)
       , mergecount(0)
@@ -429,7 +404,7 @@ public:
 
     VertexCacheEntry(SoFCVertexCache * c,
                      const VertexCacheEntry & other,
-                     CacheKeyPtr k)
+                     const CacheKeyPtr &k)
       : key(k)
       , cache(c)
       , mergecount(other.mergecount)
@@ -465,7 +440,16 @@ public:
     bool resetmatrix;
   };
 
-  typedef boost::container::flat_map<Material, std::vector<VertexCacheEntry> > VertexCacheMap;
+  typedef SbFCVector<VertexCacheEntry> VertexCacheArray;
+
+#ifdef _FC_RENDER_MEM_TRACE
+  typedef boost::container::flat_map<Material,
+                                     VertexCacheArray,
+                                     std::less<Material>,
+                                     SoFCAllocator<std::pair<Material, VertexCacheArray> > > VertexCacheMap;
+#else
+  typedef boost::container::flat_map<Material, VertexCacheArray> VertexCacheMap;
+#endif
 
   SoFCRenderCache(SoState * state, SoNode *node, SoFCRenderCache *prev = nullptr);
   virtual ~SoFCRenderCache();
@@ -503,7 +487,7 @@ public:
     CheckIndices = 2,
     WholeOnTop = 4,
   };
-  VertexCacheMap buildHighlightCache(std::map<int, Gui::CoinPtr<SoFCVertexCache> > &sharedcache,
+  VertexCacheMap buildHighlightCache(SbFCMap<int, Gui::CoinPtr<SoFCVertexCache> > &sharedcache,
                                      int order,
                                      const SoDetail * detail,
                                      uint32_t color,
@@ -542,6 +526,7 @@ private:
   SoFCRenderCache & operator = (const SoFCRenderCache & rhs); // N/A
 
   static long CacheEntryCount;
+  static long CacheEntryFreeCount;
 };
 
 // support for CoinPtr<SoFCRenderCache>

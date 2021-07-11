@@ -24,12 +24,90 @@
 #define FC_COWDATA_H
 
 #include <memory>
+#include <set>
+#include <map>
+#include <vector>
+#include <typeinfo>
+#include <typeindex>
+
+// -------------------------------------------------------------
+
+#define _FC_RENDER_MEM_TRACE
+#ifdef _FC_RENDER_MEM_TRACE
+struct SbFCMemUnit {
+  int count;
+  int maxcount;
+};
+
+struct SbFCMemUnitStats {
+  static std::map<std::type_index, SbFCMemUnit> _MemUnits;
+  static int64_t _MemSize;
+  static int64_t _MemMaxSize;
+};
+
+template<typename T>
+struct SoFCAllocator : std::allocator<T>, SbFCMemUnitStats {
+  typedef typename std::allocator<T>::pointer pointer;
+  typedef typename std::allocator<T>::size_type size_type;
+  template<typename U> struct rebind { typedef SoFCAllocator<U> other; };
+
+  SoFCAllocator() {}
+
+  template<typename U>
+  SoFCAllocator(const SoFCAllocator<U>& u) : std::allocator<T>(u) {}
+
+  pointer allocate(size_type size, std::allocator<void>::const_pointer = 0) {
+    void* p = std::malloc(size * sizeof(T));
+    if(p == 0)
+      throw std::bad_alloc();
+    _MemSize += size * sizeof(T);
+    if (_MemSize > _MemMaxSize)
+      _MemMaxSize = _MemSize;
+    auto &unit = _MemUnits[std::type_index(typeid(T))];
+    unit.count += size;
+    if (unit.count > unit.maxcount)
+      unit.maxcount = unit.count;
+    return static_cast<pointer>(p);
+  }
+  void deallocate(pointer p, size_type size) {
+    _MemSize -= size * sizeof(T);
+    _MemUnits[std::type_index(typeid(T))].count -= size;
+    std::free(p);
+  }
+};
+
+template<class KeyT, class ValueT>
+using SbFCMap = std::map<KeyT, ValueT, std::less<KeyT>, SoFCAllocator<std::pair<KeyT,ValueT>>>;
+
+template<class ValueT>
+using SbFCSet = std::set<ValueT, std::less<ValueT>, SoFCAllocator<ValueT>>;
+
+template<class ValueT>
+using SbFCVector = std::vector<ValueT, SoFCAllocator<ValueT>>;
+
+#else // _FC_RENDER_MEM_TRACE
+
+template<class KeyT, class ValueT>
+using SbFCMap = std::map<KeyT, ValueT>;
+
+template<class ValueT>
+using SbFCSet = std::set<ValueT>;
+
+template<class ValueT>
+using SbFCVector = std::vector<ValueT>;
+
+template<class T>
+using SoFCAllocator = std::allocator<T>;
+
+#endif //_FC_RENDER_MEM_TRACE
 
 // -------------------------------------------------------------
 // simple copy on write template container, NOT thread safe
 template<class DataT, class ValueT>
 class COWData {
 public:
+  typedef SoFCAllocator<DataT> AllocatorT;
+
   int getNum() const {
     return this->data ? static_cast<int>(this->data->size()) : 0;
   }
@@ -40,6 +118,10 @@ public:
 
   bool empty() const {
       return getNum() == 0;
+  }
+
+  explicit operator bool() const {
+      return getNum() != 0;
   }
 
   void clear() {
@@ -55,7 +137,7 @@ public:
   void detach() {
     if (!this->data) return;
     if (this->data.use_count() > 1)
-      this->data = std::make_shared<DataT>(*this->data);
+      this->data = std::allocate_shared<DataT>(AllocatorT(), *this->data);
   }
 
   bool operator<(const COWData<DataT,ValueT> & other) const {
@@ -101,7 +183,7 @@ public:
   void copy(const DataT & other) {
     if (this->data.get() != &other) {
       if (!this->data || this->data.use_count() > 1)
-        this->data = std::make_shared<DataT>(other);
+        this->data = std::allocate_shared<DataT>(AllocatorT(), other);
       else
         *this->data = other;
     }
@@ -110,7 +192,7 @@ public:
   void move(DataT && other) {
     if (this->data.get() != &other) {
       if (!this->data || this->data.use_count() > 1)
-        this->data = std::make_shared<DataT>();
+        this->data = std::allocate_shared<DataT>(AllocatorT());
       *this->data = std::move(other);
     }
   }
@@ -124,13 +206,13 @@ protected:
   std::shared_ptr<DataT> data;
 };
 
+
 // -------------------------------------------------------------
 // simple copy on write template map, NOT thread safe
-template<class MapT>
-class COWMap: public COWData<MapT, typename MapT::mapped_type> {
+template<class KeyT, class ValueT, class MapT = SbFCMap<KeyT, ValueT>>
+class COWMap: public COWData<MapT, ValueT> {
 public:
-  typedef typename MapT::key_type KeyT;
-  typedef typename MapT::mapped_type ValueT;
+  typedef SoFCAllocator<MapT> AllocatorT;
 
   const ValueT * get(const KeyT &key) const {
     if (!this->data)
@@ -155,19 +237,19 @@ public:
     }
     auto begin = this->data->begin();
     auto end = this->data->end();
-    this->data = std::make_shared<MapT>();
+    this->data = std::allocate_shared<MapT>(AllocatorT());
     this->data->insert(begin, it);
     this->data->insert(it, end);
   }
 
   void set(const KeyT &key, const ValueT &value, bool overwrite=true) {
     if (!this->data)
-      this->data = std::make_shared<MapT>();
+      this->data = std::allocate_shared<MapT>(AllocatorT());
     else {
       auto it = this->data->find(key);
       if (it != this->data->end() && (!overwrite || it->second == value)) return;
       if (this->data.use_count() > 1)
-        this->data = std::make_shared<MapT>(*this->data);
+        this->data = std::allocate_shared<MapT>(AllocatorT(),*this->data);
       else if (it != this->data->end()) {
         it->second = value;
         return;
@@ -176,7 +258,7 @@ public:
     this->data->operator[](key) = value;
   }
 
-  void add(const COWMap<MapT> &other, bool overwrite=true) {
+  void add(const COWMap<KeyT, ValueT, MapT> &other, bool overwrite=true) {
     if (!other.data || other.data == this->data) return;
     for (auto & v : *other.data)
       set(v.first, v.second, overwrite);
@@ -185,12 +267,12 @@ public:
   void combine(const KeyT &key, const ValueT &value) {
     bool found = false;
     if (!this->data) 
-      this->data = std::make_shared<MapT>();
+      this->data = std::allocate_shared<MapT>(AllocatorT());
     else {
       auto it = this->data->find(key);
       found = it != this->data->end();
       if (this->data.use_count() > 1)
-        this->data = std::make_shared<MapT>(*this->data);
+        this->data = std::allocate_shared<MapT>(AllocatorT(),*this->data);
       else if (!found) {
         it->second.combine(value);
         return;
@@ -202,7 +284,7 @@ public:
       this->data->emplace(key, value);
   }
 
-  void combine(const COWMap<MapT> &other) {
+  void combine(const COWMap<KeyT, ValueT, MapT> &other) {
     if (!other.data || other.data == this->data) return;
     for (auto & v : *other.data)
       combine(v.first, v.second);
@@ -211,10 +293,10 @@ public:
 
 // -------------------------------------------------------------
 // simple copy on write vector, NOT thread safe
-template<class VectorT>
-class COWVector: public COWData<VectorT, typename VectorT::value_type> {
+template<class ValueT, class VectorT = SbFCVector<ValueT>>
+class COWVector: public COWData<VectorT, ValueT> {
 public:
-  typedef typename VectorT::value_type ValueT;
+  typedef SoFCAllocator<VectorT> AllocatorT;
 
   const VectorT &getData() const {
     static VectorT dummy;
@@ -237,7 +319,7 @@ public:
   ValueT * at(int idx) {
     assert(idx >= 0 && idx < this->size());
     if (this->data.use_count() > 1)
-      this->data = std::make_shared<VectorT>(*this->data);
+      this->data = std::allocate_shared<VectorT>(AllocatorT(), *this->data);
     return &this->data->at(idx);
   }
 
@@ -247,7 +329,7 @@ public:
 
   void set(int idx, const ValueT &v) {
     if (this->data.use_count() > 1)
-      this->data = std::make_shared<VectorT>(*this->data);
+      this->data = std::allocate_shared<VectorT>(AllocatorT(), *this->data);
     (*this->data)[idx] = v;
   }
 
@@ -267,15 +349,15 @@ public:
   void erase(int idx) {
     assert(idx >= 0 && idx < this->size());
     if (this->data.use_count() > 1)
-      this->data = std::make_shared<VectorT>(*this->data);
+      this->data = std::allocate_shared<VectorT>(AllocatorT(), *this->data);
     this->data->erase(this->data->begin() + idx);
   }
 
   void append(const ValueT &value) {
     if (!this->data)
-      this->data = std::make_shared<VectorT>();
+      this->data = std::allocate_shared<VectorT>(AllocatorT());
     else if (this->data.use_count() > 1)
-      this->data = std::make_shared<VectorT>(*this->data);
+      this->data = std::allocate_shared<VectorT>(AllocatorT(), *this->data);
     this->data->push_back(value);
   }
 
@@ -297,11 +379,11 @@ public:
     if (size <= 0)
       return false;
     if (!this->data)
-      this->data = std::make_shared<VectorT>();
+      this->data = std::allocate_shared<VectorT>(AllocatorT());
     else if (size <= (int)this->data->capacity())
       return false;
     else if (this->data.use_count() > 1)
-      this->data = std::make_shared<VectorT>(*this->data);
+      this->data = std::allocate_shared<VectorT>(AllocatorT(), *this->data);
     this->data->reserve(size);
     return true;
   }
@@ -311,22 +393,22 @@ public:
       return;
     if (!this->data) {
       if (!size) return;
-      this->data = std::make_shared<VectorT>();
+      this->data = std::allocate_shared<VectorT>(AllocatorT());
     } else if (size == (int)this->data->size())
       return;
     else if (this->data.use_count() > 1)
-      this->data = std::make_shared<VectorT>(*this->data);
+      this->data = std::allocate_shared<VectorT>(AllocatorT(), *this->data);
     this->data->resize(size);
   }
 
-  void append(const COWVector<VectorT> &other) {
+  void append(const COWVector<ValueT, VectorT> &other) {
     if (!other.data) return;
     if (!this->data) {
       this->data = other.data;
       return;
     }
     if (this->data.use_count() > 1)
-      this->data = std::make_shared<VectorT>(*this->data);
+      this->data = std::allocate_shared<VectorT>(AllocatorT(), *this->data);
     this->data->insert(this->data->end(), other.data->begin(), other.data->end());
   }
 };

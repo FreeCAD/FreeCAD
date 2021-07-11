@@ -427,7 +427,7 @@ public:
   Vec4Array texcoord0array;
   Vec2Array bumpcoordarray;
   ByteArray colorarray;
-  std::vector<Vec4Array> multitexarray;
+  SbFCVector<Vec4Array> multitexarray;
 
   TempStorage* tmp = nullptr;
 
@@ -453,22 +453,22 @@ public:
       :index(i), index2(j), index3(k)
     {}
   };
-  std::vector<SortEntry> deptharray;
+  SbFCVector<SortEntry> deptharray;
 
-  std::vector<intptr_t> sortedpartarray;
-  std::vector<int32_t> sortedpartcounts;
+  SbFCVector<intptr_t> sortedpartarray;
+  SbFCVector<int32_t> sortedpartcounts;
 
-  COWVector<std::vector<int> > transppartindices;
-  COWVector<std::vector<intptr_t> > opaquepartarray;
-  COWVector<std::vector<int32_t> > opaquepartcounts;
+  COWVector<int> transppartindices;
+  COWVector<intptr_t> opaquepartarray;
+  COWVector<int32_t> opaquepartcounts;
 
-  COWVector<std::vector<int> > solidpartindices;
-  COWVector<std::vector<intptr_t> > solidpartarray;
-  COWVector<std::vector<int32_t> > solidpartcounts;
+  COWVector<int> solidpartindices;
+  COWVector<intptr_t> solidpartarray;
+  COWVector<int32_t> solidpartcounts;
 
-  COWVector<std::vector<SbVec3f> > partcenters;
-  COWVector<std::vector<int32_t> > nonflatparts;
-  COWVector<std::vector<int32_t> > seamindices;
+  COWVector<SbVec3f> partcenters;
+  COWVector<int32_t> nonflatparts;
+  COWVector<int32_t> seamindices;
 
   SoFCVertexArrayIndexer * triangleindexer;
   SoFCVertexArrayIndexer * lineindexer;
@@ -504,7 +504,7 @@ public:
     }
 
     SoNode * node;
-    std::vector<VertexCachePtr> caches;
+    SbFCVector<VertexCachePtr> caches;
   };
 
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoFCShapeInfo *, CacheSensor> cachetable;
@@ -512,7 +512,7 @@ public:
   bool elementselectable;
   bool ontoppattern;
 
-  COWVector<std::vector<int> > highlightindices;
+  COWVector<int> highlightindices;
 
   SbBox3f boundbox;
 };
@@ -660,7 +660,7 @@ SoFCVertexCache::~SoFCVertexCache()
 }
 
 void
-SoFCVertexCache::setFaceColors(const std::vector<std::pair<int, uint32_t> > &colors)
+SoFCVertexCache::setFaceColors(const SbFCVector<std::pair<int, uint32_t> > &colors)
 {
   if (!PRIVATE(this)->triangleindexer)
     return;
@@ -1255,10 +1255,10 @@ SoFCVertexCache::addTriangles(const std::set<int> & faces)
 }
 
 void
-SoFCVertexCache::addTriangles(const std::vector<int> & faces)
+SoFCVertexCache::addTriangles(const SbFCVector<int> & faces)
 {
   PRIVATE(this)->addTriangles(faces,
-    [](const std::vector<int> & faces, int idx) {
+    [](const SbFCVector<int> & faces, int idx) {
       return std::find(faces.begin(), faces.end(), idx) != faces.end();
     });
 }
@@ -1361,7 +1361,7 @@ SoFCVertexCache::addLines(const std::set<int> & lineindices)
 }
 
 void
-SoFCVertexCache::addLines(const std::vector<int> & lineindices)
+SoFCVertexCache::addLines(const SbFCVector<int> & lineindices)
 {
   PRIVATE(this)->addLines(lineindices);
 }
@@ -1459,7 +1459,7 @@ SoFCVertexCache::addPoints(const std::set<int> & pointindices)
 }
 
 void
-SoFCVertexCache::addPoints(const std::vector<int> & pointindices)
+SoFCVertexCache::addPoints(const SbFCVector<int> & pointindices)
 {
   PRIVATE(this)->addPoints(pointindices);
 }
@@ -2342,10 +2342,10 @@ SoFCVertexCache::MergeMap::cleanup()
   FC_LOG("discard " << count << " merged caches");
 }
 
-SoFCVertexCache *
+VertexCachePtr
 SoFCVertexCache::merge(bool allownewmerge,
                        std::shared_ptr<MergeMap> & mergemap,
-                       std::vector<VertexCacheEntry> & entries,
+                       SoFCRenderCache::VertexCacheArray & entries,
                        int idx,
                        int & mergecount)
 {
@@ -2357,14 +2357,14 @@ SoFCVertexCache::merge(bool allownewmerge,
   if (!PRIVATE(this)->canMerge(entries[idx]))
     return nullptr;
 
-  std::vector<SbFCUniqueId> mergeids;
+  SbFCVector<SbFCUniqueId> mergeids;
   mergecount = 0;
   int i = idx + entries[idx].mergecount + 1;
   int maxcount = ViewParams::getRenderCacheMergeCountMax();
   if (maxcount && maxcount < ViewParams::getRenderCacheMergeCount())
     maxcount = ViewParams::getRenderCacheMergeCount();
 
-  int mcount = 0;
+  int mcount = 1;
   for (int c=(int)entries.size(); i<c; ++i) {
     if (!PRIVATE(this)->canMergeWith(entries[i])) {
       if (!mergecount)
@@ -2376,22 +2376,26 @@ SoFCVertexCache::merge(bool allownewmerge,
     mergecount += entries[i].mergecount + 1;
     i += entries[i].mergecount;
 
-    if (maxcount && ++mcount >= maxcount)
+    ++mcount;
+    if (maxcount && mcount >= maxcount)
       break;
   }
   mergecount += entries[idx].mergecount + 1;
   ++entries[idx].skipcount;
   mergeids.push_back(PRIVATE(this)->cacheid);
-  if (!mergemap)
-    mergemap = std::make_shared<MergeMap>();
 
   if (!allownewmerge) {
+    if (!mergemap)
+      return nullptr;
     auto it = mergemap->map.find(mergeids);
     if (it == mergemap->map.end())
       return nullptr;
     FC_LOG("found merged cache " << mergecount);
     return it->second;
   }
+
+  if (!mergemap)
+    mergemap = std::allocate_shared<MergeMap>(SoFCAllocator<MergeMap>());
 
   auto & vcache = mergemap->map[mergeids];
   if (vcache) {

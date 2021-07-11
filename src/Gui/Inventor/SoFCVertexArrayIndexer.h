@@ -67,7 +67,7 @@ public:
                          bool exclude = false);
 
   SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
-                         const std::vector<int> & partindices,
+                         const SbFCVector<int> & partindices,
                          int maxindex,
                          bool exclude = false);
 
@@ -87,7 +87,7 @@ public:
   void addPoint(const int32_t v0);
 
   void close(const int *parts=nullptr, int count=0);
-  void close(std::vector<int> && parts);
+  void close(SbFCVector<int> && parts);
 
   void render(SoState * state,
               const cc_glglue * glue,
@@ -99,7 +99,7 @@ public:
 
   const IndexArray & getIndexArray() const { return indexarray; }
 
-  const std::vector<int> & getPartialIndices() const { return partialindices; }
+  const SbFCVector<int> & getPartialIndices() const { return partialindices; }
 
   int getNumIndices(void) const;
   const GLint * getIndices(void) const;
@@ -133,12 +133,13 @@ private:
 
   GLenum target;
 
-  COWVector<std::vector<int> > partarray;
-  COWVector<std::vector<intptr_t> > linestripoffsets;
-  COWVector<std::vector<int32_t> > linestripcounts;
-  std::vector<int> partialindices;
-  std::vector<intptr_t> partialoffsets;
-  std::vector<int32_t> partialcounts;
+  COWVector<int> partarray;
+  COWVector<intptr_t> linestripoffsets;
+  COWVector<int32_t> linestripcounts;
+
+  SbFCVector<int> partialindices;
+  SbFCVector<intptr_t> partialoffsets;
+  SbFCVector<int32_t> partialcounts;
 
   IndexArray indexarray;
   int indexarraylength;
