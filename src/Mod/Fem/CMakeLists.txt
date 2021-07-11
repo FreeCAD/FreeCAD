@@ -197,6 +197,7 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/con_planerotation.py
     femsolver/calculix/con_pressure.py
     femsolver/calculix/con_sectionprint.py
+    femsolver/calculix/con_selfweight.py
     femsolver/calculix/con_temperature.py
     femsolver/calculix/con_tie.py
     femsolver/calculix/con_transform.py
