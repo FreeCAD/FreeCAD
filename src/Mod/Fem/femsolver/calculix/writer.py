@@ -293,12 +293,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        analysis_types,
-        write_name,
-        sets_writer_method,
         caller_method_name="",
         write_before="",
         write_after="",
+        con_module=None
     ):
         def constraint_sets_loop_writing(the_file, femobjs, write_before, write_after):
             if write_before != "":
@@ -307,17 +305,19 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
                 the_obj = femobj["Object"]
                 f.write("** {}\n".format(the_obj.Label))
-                sets_writer_method(the_file, femobj, the_obj, self)
+                con_module.write_meshdata_constraint(the_file, femobj, the_obj, self)
             if write_after != "":
                 f.write(write_after)
 
         if not femobjs:
             return
 
+        analysis_types = con_module.get_analysis_types()
         if analysis_types != "all" and self.analysis_type not in analysis_types:
             return
 
         # write sets to file
+        write_name = con_module.get_sets_name()
         f.write("\n{}\n".format(59 * "*"))
         f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(caller_method_name))
@@ -338,22 +338,22 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        analysis_types,
-        constraint_title_name,
-        constraint_writer_method,
         caller_method_name="",
         write_before="",
         write_after="",
+        con_module=None
     ):
+
         if not femobjs:
             return
 
+        analysis_types = con_module.get_analysis_types()
         if analysis_types != "all" and self.analysis_type not in analysis_types:
             return
 
         # write constraint to file
         f.write("\n{}\n".format(59 * "*"))
-        f.write("** {}\n".format(constraint_title_name))
+        f.write("** {}\n".format(con_module.get_constraint_title()))
         f.write("** written by {} function\n".format(caller_method_name))
         if write_before != "":
             f.write(write_before)
@@ -361,7 +361,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             the_obj = femobj["Object"]
             f.write("** {}\n".format(the_obj.Label))
-            constraint_writer_method(f, femobj, the_obj, self)
+            con_module.write_constraint(f, femobj, the_obj, self)
         if write_after != "":
             f.write(write_after)
 
@@ -371,20 +371,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.fixed_objects,
-            analysis_types=con_fixed.get_analysis_types(),
-            write_name=con_fixed.get_sets_name(),
-            sets_writer_method=con_fixed.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_fixed
         )
 
     def write_constraints_fixed(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.fixed_objects,
-            analysis_types=con_fixed.get_analysis_types(),
-            constraint_title_name=con_fixed.get_constraint_title(),
-            constraint_writer_method=con_fixed.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_fixed
         )
 
     # ********************************************************************************************
@@ -393,21 +389,17 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.displacement_objects,
-            analysis_types=con_displacement.get_analysis_types(),
-            write_name=con_displacement.get_sets_name(),
-            sets_writer_method=con_displacement.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_displacement
         )
 
     def write_constraints_displacement(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.displacement_objects,
-            analysis_types=con_displacement.get_analysis_types(),
-            constraint_title_name=con_displacement.get_constraint_title(),
-            constraint_writer_method=con_displacement.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
             write_after="\n",
+            con_module=con_displacement
         )
 
     # ********************************************************************************************
@@ -416,20 +408,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.planerotation_objects,
-            analysis_types=con_planerotation.get_analysis_types(),
-            write_name=con_planerotation.get_sets_name(),
-            sets_writer_method=con_planerotation.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_planerotation
         )
 
     def write_constraints_planerotation(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.planerotation_objects,
-            analysis_types=con_planerotation.get_analysis_types(),
-            constraint_title_name=con_planerotation.get_constraint_title(),
-            constraint_writer_method=con_planerotation.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_planerotation
         )
 
     # ********************************************************************************************
@@ -438,20 +426,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.contact_objects,
-            analysis_types=con_contact.get_analysis_types(),
-            write_name=con_contact.get_sets_name(),
-            sets_writer_method=con_contact.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_contact
         )
 
     def write_constraints_contact(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.contact_objects,
-            analysis_types=con_contact.get_analysis_types(),
-            constraint_title_name=con_contact.get_constraint_title(),
-            constraint_writer_method=con_contact.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_contact
         )
 
     # ********************************************************************************************
@@ -460,20 +444,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.tie_objects,
-            analysis_types=con_tie.get_analysis_types(),
-            write_name=con_tie.get_sets_name(),
-            sets_writer_method=con_tie.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_tie
         )
 
     def write_constraints_tie(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.tie_objects,
-            analysis_types=con_tie.get_analysis_types(),
-            constraint_title_name=con_tie.get_constraint_title(),
-            constraint_writer_method=con_tie.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_tie
         )
 
     # ********************************************************************************************
@@ -482,20 +462,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.sectionprint_objects,
-            analysis_types=con_sectionprint.get_analysis_types(),
-            write_name=con_sectionprint.get_sets_name(),
-            sets_writer_method=con_sectionprint.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_sectionprint
         )
 
     def write_constraints_sectionprint(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.sectionprint_objects,
-            analysis_types=con_sectionprint.get_analysis_types(),
-            constraint_title_name=con_sectionprint.get_constraint_title(),
-            constraint_writer_method=con_sectionprint.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_sectionprint
         )
 
     # ********************************************************************************************
@@ -504,20 +480,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.transform_objects,
-            analysis_types=con_transform.get_analysis_types(),
-            write_name=con_transform.get_sets_name(),
-            sets_writer_method=con_transform.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_transform
         )
 
     def write_constraints_transform(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.transform_objects,
-            analysis_types=con_transform.get_analysis_types(),
-            constraint_title_name=con_transform.get_constraint_title(),
-            constraint_writer_method=con_transform.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_transform
         )
 
     # ********************************************************************************************
@@ -526,20 +498,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.temperature_objects,
-            analysis_types=con_temperature.get_analysis_types(),
-            write_name=con_temperature.get_sets_name(),
-            sets_writer_method=con_temperature.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_temperature
         )
 
     def write_constraints_temperature(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.temperature_objects,
-            analysis_types=con_temperature.get_analysis_types(),
-            constraint_title_name=con_temperature.get_constraint_title(),
-            constraint_writer_method=con_temperature.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_temperature
         )
 
     # ********************************************************************************************
@@ -600,20 +568,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.centrif_objects,
-            analysis_types=con_centrif.get_analysis_types(),
-            write_name=con_centrif.get_sets_name(),
-            sets_writer_method=con_centrif.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_centrif
         )
 
     def write_constraints_centrif(self, f):
         self.write_constraints_data(
             f,
             femobjs=self.centrif_objects,
-            analysis_types=con_centrif.get_analysis_types(),
-            constraint_title_name=con_centrif.get_constraint_title(),
-            constraint_writer_method=con_centrif.write_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_centrif
         )
 
     # ********************************************************************************************
@@ -622,11 +586,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.force_objects,
-            analysis_types=con_force.get_analysis_types(),
-            write_name=con_force.get_sets_name(),
-            sets_writer_method=con_force.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
-            write_before="*CLOAD\n"
+            write_before="*CLOAD\n",
+            con_module=con_force
         )
 
     # ********************************************************************************************
@@ -635,10 +597,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.pressure_objects,
-            analysis_types=con_pressure.get_analysis_types(),
-            write_name=con_pressure.get_sets_name(),
-            sets_writer_method=con_pressure.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_pressure
         )
 
     # ********************************************************************************************
@@ -647,10 +607,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.heatflux_objects,
-            analysis_types=con_heatflux.get_analysis_types(),
-            write_name=con_heatflux.get_sets_name(),
-            sets_writer_method=con_heatflux.write_meshdata_constraint,
             caller_method_name=sys._getframe().f_code.co_name,
+            con_module=con_heatflux
         )
 
     # ********************************************************************************************
