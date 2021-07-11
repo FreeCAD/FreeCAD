@@ -44,6 +44,7 @@ from . import con_displacement
 from . import con_fixed
 from . import con_force
 from . import con_heatflux
+from . import con_initialtemperature as con_initialtemp
 from . import con_planerotation
 from . import con_pressure
 from . import con_sectionprint
@@ -210,7 +211,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # materials and fem element types
         self.write_materials(inpfile)
-        self.write_constraints_initialtemperature(inpfile)
+        self.write_constraints_data(inpfile, self.initialtemperature_objects, con_initialtemp)
         # self.write_femelement_geometry(inpfile)
         self.write_femelementsets(inpfile)
 
@@ -363,23 +364,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             con_module.write_constraint(f, femobj, the_obj, self)
         if write_after != "":
             f.write(write_after)
-
-    # ********************************************************************************************
-    # constraints initialtemperature
-    def write_constraints_initialtemperature(self, f):
-        if not self.initialtemperature_objects:
-            return
-        if self.analysis_type not in ["thermomech"]:
-            return
-
-        # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Initial temperature constraint\n")
-        f.write("*INITIAL CONDITIONS,TYPE=TEMPERATURE\n")
-        for itobj in self.initialtemperature_objects:  # Should only be one
-            inittemp_obj = itobj["Object"]
-            # OvG: Initial temperature
-            f.write("{0},{1}\n".format(self.ccx_nall, inittemp_obj.initialTemperature))
 
     # ********************************************************************************************
     # handle elements for constraints fluidsection with Liquid Inlet or Outlet
