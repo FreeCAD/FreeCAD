@@ -33,7 +33,6 @@ __url__ = "https://www.freecadweb.org"
 import codecs
 import os
 import six
-import sys
 import time
 from os.path import join
 
@@ -293,7 +292,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        caller_method_name="",
         write_before="",
         write_after="",
         con_module=None
@@ -320,7 +318,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         write_name = con_module.get_sets_name()
         f.write("\n{}\n".format(59 * "*"))
         f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(caller_method_name))
 
         if self.split_inpfile is True:
             file_name_split = "{}_{}.inp".format(self.mesh_name, write_name)
@@ -338,7 +335,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        caller_method_name="",
         write_before="",
         write_after="",
         con_module=None
@@ -354,7 +350,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # write constraint to file
         f.write("\n{}\n".format(59 * "*"))
         f.write("** {}\n".format(con_module.get_constraint_title()))
-        f.write("** written by {} function\n".format(caller_method_name))
         if write_before != "":
             f.write(write_before)
         for femobj in femobjs:
@@ -371,7 +366,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.fixed_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_fixed
         )
 
@@ -379,7 +373,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.fixed_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_fixed
         )
 
@@ -389,7 +382,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.displacement_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_displacement
         )
 
@@ -397,7 +389,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.displacement_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             write_after="\n",
             con_module=con_displacement
         )
@@ -408,7 +399,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.planerotation_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_planerotation
         )
 
@@ -416,7 +406,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.planerotation_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_planerotation
         )
 
@@ -426,7 +415,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.contact_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_contact
         )
 
@@ -434,7 +422,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.contact_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_contact
         )
 
@@ -444,7 +431,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.tie_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_tie
         )
 
@@ -452,7 +438,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.tie_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_tie
         )
 
@@ -462,7 +447,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.sectionprint_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_sectionprint
         )
 
@@ -470,7 +454,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.sectionprint_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_sectionprint
         )
 
@@ -480,7 +463,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.transform_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_transform
         )
 
@@ -488,7 +470,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.transform_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_transform
         )
 
@@ -498,7 +479,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.temperature_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_temperature
         )
 
@@ -506,7 +486,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.temperature_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_temperature
         )
 
@@ -521,7 +500,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Initial temperature constraint\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         f.write("*INITIAL CONDITIONS,TYPE=TEMPERATURE\n")
         for itobj in self.initialtemperature_objects:  # Should only be one
             inittemp_obj = itobj["Object"]
@@ -539,7 +517,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Self weight Constraint\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for femobj in self.selfweight_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             selwei_obj = femobj["Object"]
@@ -568,7 +545,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.centrif_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_centrif
         )
 
@@ -576,7 +552,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(
             f,
             femobjs=self.centrif_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_centrif
         )
 
@@ -586,7 +561,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.force_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             write_before="*CLOAD\n",
             con_module=con_force
         )
@@ -597,7 +571,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.pressure_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_pressure
         )
 
@@ -607,7 +580,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_sets(
             f,
             femobjs=self.heatflux_objects,
-            caller_method_name=sys._getframe().f_code.co_name,
             con_module=con_heatflux
         )
 
@@ -719,7 +691,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** FluidSection constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         if os.path.exists(self.fluid_inout_nodes_file):
             inout_nodes_file = open(self.fluid_inout_nodes_file, "r")
             lines = inout_nodes_file.readlines()
@@ -800,7 +771,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_step_begin(self, f):
         f.write("\n***********************************************************\n")
         f.write("** At least one step is needed to run an CalculiX analysis of FreeCAD\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         # STEP line
         step = "*STEP"
         if self.solver_obj.GeometricalNonlinearity == "nonlinear":
@@ -913,7 +883,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_step_end(self, f):
         f.write("\n***********************************************************\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         f.write("*END STEP \n")
 
     # ********************************************************************************************
@@ -921,7 +890,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_outputs_types(self, f):
         f.write("\n***********************************************************\n")
         f.write("** Outputs --> frd file\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         if self.beamsection_objects or self.shellthickness_objects or self.fluidsection_objects:
             if self.solver_obj.BeamShellResultOutput3D is False:
                 f.write("*NODE FILE, OUTPUT=2d\n")
@@ -971,9 +939,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_footer(self, f):
         f.write("\n***********************************************************\n")
         f.write("** CalculiX Input file\n")
-        f.write("** written by {} function\n".format(
-            sys._getframe().f_code.co_name
-        ))
         f.write("**   written by    --> FreeCAD {}.{}.{}\n".format(
             self.fc_ver[0],
             self.fc_ver[1],
@@ -1001,7 +966,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # write ccx_elsets to file
         f.write("\n***********************************************************\n")
         f.write("** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for ccx_elset in self.ccx_elsets:
             f.write("*ELSET,ELSET=" + ccx_elset["ccx_elset_name"] + "\n")
             # use six to be sure to be Python 2.7 and 3.x compatible
@@ -1025,7 +989,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_materials(self, f):
         f.write("\n***********************************************************\n")
         f.write("** Materials\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         f.write("** Young\'s modulus unit is MPa = N/mm2\n")
         if self.is_density_needed() is True:
             f.write("** Density\'s unit is t/mm^3\n")
@@ -1104,7 +1067,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_femelementsets(self, f):
         f.write("\n***********************************************************\n")
         f.write("** Sections\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for ccx_elset in self.ccx_elsets:
             if ccx_elset["ccx_elset"]:
                 if "beamsection_obj"in ccx_elset:  # beam mesh

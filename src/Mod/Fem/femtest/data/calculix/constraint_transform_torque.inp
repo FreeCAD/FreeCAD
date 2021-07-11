@@ -8707,13 +8707,11 @@ Evolumes
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MechanicalMaterialSolid
 Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
 2,
@@ -8812,7 +8810,6 @@ Evolumes
 
 ***********************************************************
 ** constraints transform node sets
-** written by write_node_sets_constraints_transform function
 ** ConstraintTransform
 *NSET,NSET=CylinConstraintTransform
 3,
@@ -10964,7 +10961,6 @@ Evolumes
 
 ***********************************************************
 ** Materials
-** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
 ** FreeCAD material name: Calculix-Steel
 ** MechanicalMaterial
@@ -10974,26 +10970,22 @@ Evolumes
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
 ** Transform Constraints
-** written by write_constraints_transform function
 ** ConstraintTransform
 *TRANSFORM, NSET=CylinConstraintTransform, TYPE=C
 0.000000,0.000000,-35.000000,0.000000,0.000000,-15.000000
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP
 *STATIC
 
 
 ***********************************************************
 ** Fixed Constraints
-** written by write_constraints_fixed function
 ** ConstraintFixed
 *BOUNDARY
 ConstraintFixed,1
@@ -11003,7 +10995,6 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-** written by write_constraints_force function
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: Cut:Face1
@@ -13158,7 +13149,6 @@ ConstraintFixed,3
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE
 U
 *EL FILE
@@ -13170,12 +13160,10 @@ RF
 
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.20.25209 (Git)
 **   written on    --> Fri Jul  9 13:15:23 2021
 **   file name     --> constraint_transform_torque.FCStd

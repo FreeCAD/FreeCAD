@@ -865,7 +865,6 @@ Evolumes
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MechanicalMaterialLowSolid
 149,
 150,
@@ -1167,7 +1166,6 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
 9,
@@ -1214,7 +1212,6 @@ Evolumes
 
 ***********************************************************
 ** Materials
-** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
 ** FreeCAD material name: Aluminium-Generic
 ** MechanicalMaterialLow
@@ -1229,20 +1226,17 @@ Evolumes
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *SOLID SECTION, ELSET=MechanicalMaterialLowSolid, MATERIAL=MechanicalMaterialLow
 *SOLID SECTION, ELSET=MechanicalMaterialUppSolid, MATERIAL=MechanicalMaterialUpp
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP
 *STATIC
 
 
 ***********************************************************
 ** Fixed Constraints
-** written by write_constraints_fixed function
 ** ConstraintFixed
 *BOUNDARY
 ConstraintFixed,1
@@ -1252,7 +1246,6 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints pressure element face loads
-** written by write_constraints_pressure function
 ** ConstraintPressure
 *DLOAD
 ** ConstraintPressure: face load
@@ -1275,7 +1268,6 @@ ConstraintFixed,3
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE
 U
 *EL FILE
@@ -1287,12 +1279,10 @@ RF
 
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.19.19432 (Git)
 **   written on    --> Fri Jan 31 08:06:05 2020
 **   file name     --> 
