@@ -192,6 +192,7 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/con_contact.py
     femsolver/calculix/con_displacement.py
     femsolver/calculix/con_fixed.py
+    femsolver/calculix/con_fluidsection.py
     femsolver/calculix/con_force.py
     femsolver/calculix/con_heatflux.py
     femsolver/calculix/con_initialtemperature.py
