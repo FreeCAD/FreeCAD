@@ -3252,13 +3252,11 @@ Evolumes
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=FemMaterialSolid
 Evolumes
 
 ***********************************************************
 ** constraints displacement node sets
-** written by write_node_sets_constraints_displacement function
 ** FemConstraintDisplacment
 *NSET,NSET=FemConstraintDisplacment
 4,
@@ -3438,7 +3436,6 @@ Evolumes
 
 ***********************************************************
 ** constraints transform node sets
-** written by write_node_sets_constraints_transform function
 ** FemConstraintTransform1
 *NSET,NSET=CylinFemConstraintTransform1
 5,
@@ -3620,7 +3617,6 @@ Evolumes
 
 ***********************************************************
 ** Materials
-** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
 ** FreeCAD material name: CalculiX-Steel
 ** FemMaterial
@@ -3630,12 +3626,10 @@ Evolumes
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *SOLID SECTION, ELSET=FemMaterialSolid, MATERIAL=FemMaterial
 
 ***********************************************************
 ** Transform Constraints
-** written by write_constraints_transform function
 ** FemConstraintTransform1
 *TRANSFORM, NSET=CylinFemConstraintTransform1, TYPE=C
 10.000000,27.000000,10.000000,10.000000,7.000000,10.000000
@@ -3645,14 +3639,12 @@ Evolumes
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP
 *STATIC
 
 
 ***********************************************************
 ** Displacement constraint applied
-** written by write_constraints_displacement function
 ** FemConstraintDisplacment
 *BOUNDARY
 FemConstraintDisplacment,1
@@ -3660,7 +3652,6 @@ FemConstraintDisplacment,1
 
 ***********************************************************
 ** constraints pressure element face loads
-** written by write_constraints_pressure function
 ** FemConstraintPressure
 *DLOAD
 ** FemConstraintPressure: face load
@@ -3785,19 +3776,16 @@ FemConstraintDisplacment,1
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE
 U
 *EL FILE
 S, E
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.20.25211 (Git)
 **   written on    --> Fri Jul  9 17:37:32 2021
 **   file name     --> constraint_transform_beam_hinged.FCStd

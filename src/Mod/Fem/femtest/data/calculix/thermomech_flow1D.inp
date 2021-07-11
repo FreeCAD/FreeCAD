@@ -57,7 +57,6 @@ Eedges
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=M0F0
 1,
 *ELSET,ELSET=M0F1
@@ -85,7 +84,6 @@ Eedges
 
 ***********************************************************
 ** Materials
-** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
 ** Density's unit is t/mm^3
 ** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3
@@ -100,7 +98,6 @@ Eedges
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *FLUID SECTION, ELSET=M0F0, TYPE=PIPE INOUT, MATERIAL=FluidMaterial
 *FLUID SECTION, ELSET=M0F1, TYPE=PIPE ENTRANCE, MATERIAL=FluidMaterial
 31416.0,25133.0
@@ -124,14 +121,12 @@ Eedges
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP, INC=2000
 *COUPLED TEMPERATURE-DISPLACEMENT, STEADY STATE
 1.0,1.0
 
 ***********************************************************
 ** Self weight Constraint
-** written by write_constraints_selfweight function
 ** ConstraintSelfWeight
 *DLOAD
 Eall,GRAV,9806,0.0,0.0,-1.0
@@ -139,7 +134,6 @@ Eall,GRAV,9806,0.0,0.0,-1.0
 
 ***********************************************************
 ** FluidSection constraints
-** written by write_constraints_fluidsection function
 ** ElementFluid1D
 **Fluid Section Inlet 
 *BOUNDARY 
@@ -160,17 +154,14 @@ Eall,GRAV,9806,0.0,0.0,-1.0
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE, OUTPUT=2d
 MF, PS
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.17.11265 (Git)
 **   written on    --> Fri Jun  9 11:49:27 2017
 **   file name     --> Resevoir_rev1.fcstd
