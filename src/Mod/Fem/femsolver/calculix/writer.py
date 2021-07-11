@@ -294,7 +294,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f,
         femobjs,
         analysis_types,
-        sets_getter_method,
         write_name,
         sets_writer_method,
         caller_method_name="",
@@ -317,10 +316,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         if analysis_types != "all" and self.analysis_type not in analysis_types:
             return
-
-        # get the sets
-        if sets_getter_method is not None:
-            sets_getter_method()
 
         # write sets to file
         f.write("\n{}\n".format(59 * "*"))
@@ -377,7 +372,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.fixed_objects,
             analysis_types=con_fixed.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_fixed.get_sets_name(),
             sets_writer_method=con_fixed.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -400,7 +394,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.displacement_objects,
             analysis_types=con_displacement.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_displacement.get_sets_name(),
             sets_writer_method=con_displacement.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -424,7 +417,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.planerotation_objects,
             analysis_types=con_planerotation.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_planerotation.get_sets_name(),
             sets_writer_method=con_planerotation.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -447,7 +439,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.contact_objects,
             analysis_types=con_contact.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_contact.get_sets_name(),
             sets_writer_method=con_contact.write_surfacefaces,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -470,7 +461,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.tie_objects,
             analysis_types=con_tie.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_tie.get_sets_name(),
             sets_writer_method=con_tie.write_surfacefaces,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -493,7 +483,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.sectionprint_objects,
             analysis_types=con_sectionprint.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_sectionprint.get_sets_name(),
             sets_writer_method=con_sectionprint.write_surfacefaces,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -516,7 +505,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.transform_objects,
             analysis_types=con_transform.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_transform.get_sets_name(),
             sets_writer_method=con_transform.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -539,7 +527,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.temperature_objects,
             analysis_types=con_temperature.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_temperature.get_sets_name(),
             sets_writer_method=con_temperature.write_nodes,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -614,7 +601,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.centrif_objects,
             analysis_types=con_centrif.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_centrif.get_sets_name(),
             sets_writer_method=con_centrif.write_elements,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -637,7 +623,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.force_objects,
             analysis_types=con_force.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_force.get_sets_name(),
             sets_writer_method=con_force.write_nodeloads,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -651,7 +636,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.pressure_objects,
             analysis_types=con_pressure.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_pressure.get_sets_name(),
             sets_writer_method=con_pressure.write_pressure,
             caller_method_name=sys._getframe().f_code.co_name,
@@ -664,7 +648,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f,
             femobjs=self.heatflux_objects,
             analysis_types=con_heatflux.get_analysis_types(),
-            sets_getter_method=None,
             write_name=con_heatflux.get_sets_name(),
             sets_writer_method=con_heatflux.write_heatflux,
             caller_method_name=sys._getframe().f_code.co_name,
