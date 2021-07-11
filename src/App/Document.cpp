@@ -2398,8 +2398,8 @@ private:
 
         Base::FileInfo tmp(sourcename);
         if (tmp.renameFile(targetname.c_str()) == false) {
-            Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
-                                    sourcename.c_str(), targetname.c_str());
+            throw Base::FileException(
+                "Cannot rename tmp save file to project file", targetname);
         }
     }
     void applyTimeStamp(const std::string& sourcename, const std::string& targetname) {
@@ -2531,9 +2531,8 @@ private:
 
         Base::FileInfo tmp(sourcename);
         if (tmp.renameFile(targetname.c_str()) == false) {
-            Base::Console().Error("Save interrupted: Cannot rename file from '%s' to '%s'\n",
-                                  sourcename.c_str(), targetname.c_str());
-            //throw Base::FileException("Save interrupted: Cannot rename temporary file to project file", tmp);
+            throw Base::FileException(
+                "Save interrupted: Cannot rename temporary file to project file", tmp);
         }
 
         if (numberOfFiles <= 0) {
