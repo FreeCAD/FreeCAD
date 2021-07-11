@@ -38,7 +38,7 @@ def get_constraint_title():
     return "Tie Constraints"
 
 
-def write_surfacefaces(f, femobj, tie_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, tie_obj, ccxwriter):
     # slave DEP
     f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
     for i in femobj["TieSlaveFaces"]:

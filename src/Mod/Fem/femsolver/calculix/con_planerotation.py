@@ -41,7 +41,7 @@ def get_constraint_title():
     return "PlaneRotation Constraints"
 
 
-def write_nodes(f, femobj, fric_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, fric_obj, ccxwriter):
     # write nodes to file
     if not ccxwriter.femnodes_mesh:
         ccxwriter.femnodes_mesh = ccxwriter.femmesh.Nodes

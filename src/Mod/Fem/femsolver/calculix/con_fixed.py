@@ -38,7 +38,7 @@ def get_constraint_title():
     return "Fixed Constraints"
 
 
-def write_nodes(f, femobj, fix_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, fix_obj, ccxwriter):
     if (
         ccxwriter.femmesh.Volumes
         and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0)

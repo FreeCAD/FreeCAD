@@ -38,7 +38,7 @@ def get_constraint_title():
     return "Contact Constraints"
 
 
-def write_surfacefaces(f, femobj, contact_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, contact_obj, ccxwriter):
     # slave DEP
     f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
     for i in femobj["ContactSlaveFaces"]:

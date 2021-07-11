@@ -44,7 +44,7 @@ def get_constraint_title():
     return "Centrif Constraints"
 
 
-def write_elements(f, femobj, centrif_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, centrif_obj, ccxwriter):
     f.write("*ELSET,ELSET={}\n".format(centrif_obj.Name))
     # use six to be sure to be Python 2.7 and 3.x compatible
     if isinstance(femobj["FEMElements"], six.string_types):

@@ -41,7 +41,7 @@ def get_constraint_title():
     return "Transform Constraints"
 
 
-def write_nodes(f, femobj, trans_obj, ccxwriter):
+def write_meshdata_constraint(f, femobj, trans_obj, ccxwriter):
     if trans_obj.TransformType == "Rectangular":
         f.write("*NSET,NSET=Rect{}\n".format(trans_obj.Name))
     elif trans_obj.TransformType == "Cylindrical":
