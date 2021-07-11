@@ -29,7 +29,6 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-# import io
 import codecs
 import os
 import six
@@ -292,7 +291,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        con_module=None
+        con_module
     ):
         if not femobjs:
             return
@@ -336,7 +335,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self,
         f,
         femobjs,
-        con_module=None
+        con_module
     ):
 
         if not femobjs:
@@ -365,130 +364,66 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints fixed
     def write_node_sets_constraints_fixed(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.fixed_objects,
-            con_module=con_fixed
-        )
+        self.write_constraints_sets(f, self.fixed_objects, con_fixed)
 
     def write_constraints_fixed(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.fixed_objects,
-            con_module=con_fixed
-        )
+        self.write_constraints_data(f, self.fixed_objects, con_fixed)
 
     # ********************************************************************************************
     # constraints displacement
     def write_node_sets_constraints_displacement(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.displacement_objects,
-            con_module=con_displacement
-        )
+        self.write_constraints_sets(f, self.displacement_objects, con_displacement)
 
     def write_constraints_displacement(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.displacement_objects,
-            con_module=con_displacement
-        )
+        self.write_constraints_data(f, self.displacement_objects, con_displacement)
 
     # ********************************************************************************************
     # constraints planerotation
     def write_node_sets_constraints_planerotation(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.planerotation_objects,
-            con_module=con_planerotation
-        )
+        self.write_constraints_sets(f, self.planerotation_objects, con_planerotation)
 
     def write_constraints_planerotation(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.planerotation_objects,
-            con_module=con_planerotation
-        )
+        self.write_constraints_data(f, self.planerotation_objects, con_planerotation)
 
     # ********************************************************************************************
     # constraints contact
     def write_surfaces_constraints_contact(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.contact_objects,
-            con_module=con_contact
-        )
+        self.write_constraints_sets(f, self.contact_objects, con_contact)
 
     def write_constraints_contact(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.contact_objects,
-            con_module=con_contact
-        )
+        self.write_constraints_data(f, self.contact_objects, con_contact)
 
     # ********************************************************************************************
     # constraints tie
     def write_surfaces_constraints_tie(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.tie_objects,
-            con_module=con_tie
-        )
+        self.write_constraints_sets(f, self.tie_objects, con_tie)
 
     def write_constraints_tie(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.tie_objects,
-            con_module=con_tie
-        )
+        self.write_constraints_data(f, self.tie_objects, con_tie)
 
     # ********************************************************************************************
     # constraints sectionprint
     def write_surfaces_constraints_sectionprint(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.sectionprint_objects,
-            con_module=con_sectionprint
-        )
+        self.write_constraints_sets(f, self.sectionprint_objects, con_sectionprint)
 
     def write_constraints_sectionprint(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.sectionprint_objects,
-            con_module=con_sectionprint
-        )
+        self.write_constraints_data(f, self.sectionprint_objects, con_sectionprint)
 
     # ********************************************************************************************
     # constraints transform
     def write_node_sets_constraints_transform(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.transform_objects,
-            con_module=con_transform
-        )
+        self.write_constraints_sets(f, self.transform_objects, con_transform)
 
     def write_constraints_transform(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.transform_objects,
-            con_module=con_transform
-        )
+        self.write_constraints_data(f, self.transform_objects, con_transform)
 
     # ********************************************************************************************
     # constraints temperature
     def write_node_sets_constraints_temperature(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.temperature_objects,
-            con_module=con_temperature
-        )
+        self.write_constraints_sets(f, self.temperature_objects, con_temperature)
 
     def write_constraints_temperature(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.temperature_objects,
-            con_module=con_temperature
-        )
+        self.write_constraints_data(f, self.temperature_objects, con_temperature)
 
     # ********************************************************************************************
     # constraints initialtemperature
@@ -543,45 +478,25 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # constraints centrif
     def write_element_sets_constraints_centrif(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.centrif_objects,
-            con_module=con_centrif
-        )
+        self.write_constraints_sets(f, self.centrif_objects, con_centrif)
 
     def write_constraints_centrif(self, f):
-        self.write_constraints_data(
-            f,
-            femobjs=self.centrif_objects,
-            con_module=con_centrif
-        )
+        self.write_constraints_data(f, self.centrif_objects, con_centrif)
 
     # ********************************************************************************************
     # constraints force
     def write_constraints_force(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.force_objects,
-            con_module=con_force
-        )
+        self.write_constraints_sets(f, self.force_objects, con_force)
 
     # ********************************************************************************************
     # constraints pressure
     def write_constraints_pressure(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.pressure_objects,
-            con_module=con_pressure
-        )
+        self.write_constraints_sets(f, self.pressure_objects, con_pressure)
 
     # ********************************************************************************************
     # constraints heatflux
     def write_constraints_heatflux(self, f):
-        self.write_constraints_sets(
-            f,
-            femobjs=self.heatflux_objects,
-            con_module=con_heatflux
-        )
+        self.write_constraints_sets(f, self.heatflux_objects, con_heatflux)
 
     # ********************************************************************************************
     # handle elements for constraints fluidsection with Liquid Inlet or Outlet
