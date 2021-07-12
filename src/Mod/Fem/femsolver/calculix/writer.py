@@ -29,7 +29,6 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import codecs
 import six
 import time
 from os.path import join
@@ -53,10 +52,10 @@ from . import write_constraint_temperature as con_temperature
 from . import write_constraint_tie as con_tie
 from . import write_constraint_transform as con_transform
 from . import write_footer
+from . import write_mesh
 from . import write_step_equation
 from . import write_step_output
 from .. import writerbase
-from femmesh import meshtools
 from femtools import constants
 
 
@@ -159,7 +158,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.split_inpfile = False
 
         # mesh
-        inpfile = self.write_mesh()
+        inpfile = write_mesh.write_mesh(self)
 
         # element sets for materials and element geometry
         # self.write_element_sets_material_and_femelement_geometry(inpfile)
@@ -218,51 +217,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # footer
         write_footer.write_footer(inpfile, self)
         inpfile.close()
-
-    # ********************************************************************************************
-    # mesh
-    def write_mesh(self):
-        # write mesh to file
-        element_param = 1  # highest element order only
-        group_param = False  # do not write mesh group data
-        if self.split_inpfile is True:
-            write_name = "femesh"
-            file_name_split = self.mesh_name + "_" + write_name + ".inp"
-            self.femmesh_file = join(self.dir_name, file_name_split)
-
-            self.femmesh.writeABAQUS(
-                self.femmesh_file,
-                element_param,
-                group_param
-            )
-
-            # Check to see if fluid sections are in analysis and use D network element type
-            if self.fluidsection_objects:
-                meshtools.write_D_network_element_to_inputfile(self.femmesh_file)
-
-            inpfile = codecs.open(self.file_name, "w", encoding="utf-8")
-            inpfile.write("***********************************************************\n")
-            inpfile.write("** {}\n".format(write_name))
-            inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_split))
-
-        else:
-            self.femmesh_file = self.file_name
-            self.femmesh.writeABAQUS(
-                self.femmesh_file,
-                element_param,
-                group_param
-            )
-
-            # Check to see if fluid sections are in analysis and use D network element type
-            if self.fluidsection_objects:
-                # inpfile is closed
-                meshtools.write_D_network_element_to_inputfile(self.femmesh_file)
-
-            # reopen file with "append" to add all the rest
-            inpfile = codecs.open(self.femmesh_file, "a", encoding="utf-8")
-            inpfile.write("\n\n")
-
-        return inpfile
 
     # ********************************************************************************************
     # write constraint node sets, constraint face sets, constraint element sets
