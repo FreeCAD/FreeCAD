@@ -312,15 +312,23 @@ public:
   class PathCacheSensor : public SoPathSensor
   {
   public:
+    PathCacheSensor()
+    {
+      setFunction([](void *, SoSensor *sensor) {
+        auto self = static_cast<PathCacheSensor*>(sensor);
+        self->detach();
+        self->master->pathcachetable.erase(self->path);
+        return;
+      });
+    }
+
     virtual void notify(SoNotList * l) {
       SoBase * firstbase = l->getLastRec()->getBase();
       SoBase * lastbase = l->getFirstRec()->getBase();
-      if ((lastbase != firstbase) && (lastbase == (SoBase*) getAttachedPath())) {
-        this->detach();
-        master->pathcachetable.erase(this->path);
-        return;
+      if (lastbase != firstbase) {
+        if (!isScheduled())
+          schedule();
       }
-      SoPathSensor::notify(l);
     }
 
     RenderCachePtr cache;
