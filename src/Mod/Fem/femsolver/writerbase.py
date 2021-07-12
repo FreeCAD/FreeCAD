@@ -139,6 +139,8 @@ class FemInputWriter():
     # ********************************************************************************************
     # node sets
     def get_constraints_fixed_nodes(self):
+        if not self.fixed_objects:
+            return
         # get nodes
         for femobj in self.fixed_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -176,6 +178,8 @@ class FemInputWriter():
                 femobj["NodesFaceEdge"] = set(nds_faceedge)
 
     def get_constraints_displacement_nodes(self):
+        if not self.displacement_objects:
+            return
         # get nodes
         for femobj in self.displacement_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -189,6 +193,8 @@ class FemInputWriter():
                 self.constraint_conflict_nodes.append(node)
 
     def get_constraints_planerotation_nodes(self):
+        if not self.planerotation_objects:
+            return
         # get nodes
         for femobj in self.planerotation_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -199,6 +205,8 @@ class FemInputWriter():
             )
 
     def get_constraints_transform_nodes(self):
+        if not self.transform_objects:
+            return
         # get nodes
         for femobj in self.transform_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -209,6 +217,8 @@ class FemInputWriter():
             )
 
     def get_constraints_temperature_nodes(self):
+        if not self.temperature_objects:
+            return
         # get nodes
         for femobj in self.temperature_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -219,6 +229,8 @@ class FemInputWriter():
             )
 
     def get_constraints_fluidsection_nodes(self):
+        if not self.fluidsection_objects:
+            return
         # get nodes
         for femobj in self.fluidsection_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -229,6 +241,8 @@ class FemInputWriter():
             )
 
     def get_constraints_force_nodeloads(self):
+        if not self.force_objects:
+            return
         # check shape type of reference shape
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -295,6 +309,8 @@ class FemInputWriter():
     # ********************************************************************************************
     # faces sets
     def get_constraints_pressure_faces(self):
+        if not self.pressure_objects:
+            return
         # TODO see comments in get_constraints_force_nodeloads()
         # it applies here too. Mhh it applies to all constraints ...
 
@@ -337,6 +353,8 @@ class FemInputWriter():
             FreeCAD.Console.PrintLog("{}\n".format(femobj["PressureFaces"]))
 
     def get_constraints_contact_faces(self):
+        if not self.contact_objects:
+            return
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
@@ -370,6 +388,8 @@ class FemInputWriter():
     #                from one side of the geometric face are needed
 
     def get_constraints_tie_faces(self):
+        if not self.tie_objects:
+            return
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
@@ -396,6 +416,8 @@ class FemInputWriter():
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
     def get_constraints_sectionprint_faces(self):
+        if not self.sectionprint_objects:
+            return
         # TODO: use meshtools to get the surfaces
         # see constraint contact or constrint tie
         for femobj in self.sectionprint_objects:
@@ -437,6 +459,8 @@ class FemInputWriter():
                         )
 
     def get_constraints_heatflux_faces(self):
+        if not self.heatflux_objects:
+            return
         # TODO: use meshtools to get the surfaces (or move to mesh tools)
         # see constraint contact or constrint tie and constraint force
         # heatflux_obj_face_table: see force_obj_node_load_table
@@ -462,9 +486,9 @@ class FemInputWriter():
     # element sets constraints
     def get_constraints_centrif_elements(self):
         # get element ids and write them into the femobj
-        if len(self.centrif_objects) == 0:
+        if not self.centrif_objects:
             return
-        elif len(self.centrif_objects) == 1 and not self.centrif_objects[0]["Object"].References:
+        if len(self.centrif_objects) == 1 and not self.centrif_objects[0]["Object"].References:
             self.centrif_objects[0]["FEMElements"] = self.ccx_evolumes
         else:
             self.get_solid_element_sets(self.centrif_objects)
@@ -595,6 +619,8 @@ class FemInputWriter():
             )
 
     def get_element_sets_material_and_femelement_geometry(self):
+        if not self.material_objects:
+            return
         # in any case if we have beams, we're going to need the element ids for the rotation elsets
         if self.beamsection_objects:
             # we will need to split the beam even for one beamobj
