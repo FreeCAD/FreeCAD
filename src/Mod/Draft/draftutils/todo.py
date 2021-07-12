@@ -34,7 +34,6 @@ to execute the instructions stored in internal lists.
 # \ingroup draftutils
 # \brief Provides the ToDo static class to run commands with a time delay.
 
-import six
 import sys
 import traceback
 import PySide.QtCore as QtCore
@@ -65,56 +64,45 @@ class ToDo:
     Attributes
     ----------
     itinerary: list of tuples
-        Each tuple is of the form `(name, arg)`.
-        The `name` is a reference (pointer) to a function,
-        and `arg` is the corresponding argument that is passed
-        to that function.
-        It then tries executing the function with the argument,
-        if available, or without it, if not available.
-        ::
-            name(arg)
-            name()
+        Each tuple is of the form `(func, args)`. `func` is a function
+        to be called, `args` is an iterable of function argumenst (empty
+        for no arguments). Each tuple will be executed in turn as::
+            func(*args)
 
     commitlist: list of tuples
-        Each tuple is of the form `(name, command_list)`.
-        The `name` is a string identifier or description of the commands
-        that will be run, and `command_list` is a list of strings
-        that indicate the Python instructions that will be executed,
-        or a reference to a single function that will be executed.
-
-        If `command_list` is a list, the program opens a transaction,
-        then runs all commands in the list in sequence,
-        and finally commits the transaction.
-        ::
-            command_list = ["command1", "command2", "..."]
-            App.activeDocument().openTransaction(name)
-            Gui.doCommand("command1")
-            Gui.doCommand("command2")
-            Gui.doCommand("...")
-            App.activeDocument().commitTransaction()
-
-        If `command_list` is a reference to a function
-        the function is executed directly.
-        ::
-            command_list = function
-            App.activeDocument().openTransaction(name)
-            function()
-            App.activeDocument().commitTransaction()
+        Each tuple is of the form `(name, func_or_list)`.
+        The `name` is a string identifier, `func_or_list` is a python
+        function or a list of strings with python code to be executed.
 
     afteritinerary: list of tuples
-        Each tuple is of the form `(name, arg)`.
+        Each tuple is of the form `(func, args)`.
         This list is used just like `itinerary`.
-
-    Lists
-    -----
-    The lists contain tuples. Each tuple contains a `name` which is just
-    a string to identify the operation, and a `command_list` which is
-    a list of strings, each string an individual Python instruction.
     """
 
     itinerary = []
     commitlist = []
     afteritinerary = []
+    timerpending = False
+
+    @staticmethod
+    def _process_list(queue, debug):
+        for f, args in queue:
+            try:
+                if _DEBUG_inner:
+                    _msg("Debug: executing {}.\n"
+                         "function: {}\n".format(debug, f))
+                f(*args)
+            except Exception:
+                try:
+                    _log(traceback.format_exc())
+                    _err(traceback.format_exc())
+                    wrn = ("ToDo.doTasks, Unexpected error:\n"
+                           "{0}\n"
+                           "in {1} with args {2}".format(sys.exc_info()[0], f, args))
+                    _wrn(wrn)
+                except ReferenceError:
+                    _wrn("Debug: ToDo.doTasks: "
+                         "queue contains a deleted object, skipping")
 
     @staticmethod
     def doTasks():
@@ -122,115 +110,71 @@ class ToDo:
 
         The lists are `itinerary`, `commitlist` and `afteritinerary`.
         """
+        # Work on local versions on the list, so any new items added
+        # during processing will be added to new lists to be processed
+        # later.
+        itinerary, commitlist, afteritinerary = ToDo.itinerary, ToDo.commitlist, ToDo.afteritinerary
+        todo.itinerary, todo.commitlist, todo.afteritinerary = [], [], []
+
         if _DEBUG:
             _msg("Debug: doing delayed tasks.\n"
                  "itinerary: {0}\n"
                  "commitlist: {1}\n"
-                 "afteritinerary: {2}\n".format(todo.itinerary,
-                                                todo.commitlist,
-                                                todo.afteritinerary))
-        try:
-            for f, arg in ToDo.itinerary:
-                try:
-                    if _DEBUG_inner:
-                        _msg("Debug: executing.\n"
-                             "function: {}\n".format(f))
-                    if arg or (arg is False):
-                        f(arg)
-                    else:
-                        f()
-                except Exception:
-                    _log(traceback.format_exc())
-                    _err(traceback.format_exc())
-                    wrn = ("ToDo.doTasks, Unexpected error:\n"
-                           "{0}\n"
-                           "in {1}({2})".format(sys.exc_info()[0], f, arg))
-                    _wrn(wrn)
-        except ReferenceError:
-            _wrn("Debug: ToDo.doTasks: "
-                 "queue contains a deleted object, skipping")
-        ToDo.itinerary = []
+                 "afteritinerary: {2}\n".format(itinerary,
+                                                commitlist,
+                                                afteritinerary))
 
-        if ToDo.commitlist:
-            for name, func in ToDo.commitlist:
-                if six.PY2:
-                    if isinstance(name, six.text_type):
-                        name = name.encode("utf8")
-                if _DEBUG_inner:
-                    _msg("Debug: committing.\n"
-                         "name: {}\n".format(name))
-                try:
-                    name = str(name)
-                    App.activeDocument().openTransaction(name)
-                    if isinstance(func, list):
-                        for string in func:
-                            Gui.doCommand(string)
-                    else:
-                        func()
-                    App.activeDocument().commitTransaction()
-                except Exception:
-                    _log(traceback.format_exc())
-                    _err(traceback.format_exc())
-                    wrn = ("ToDo.doTasks, Unexpected error:\n"
-                           "{0}\n"
-                           "in {1}".format(sys.exc_info()[0], func))
-                    _wrn(wrn)
+        ToDo._process_list(itinerary, "delayed")
+
+        if commitlist:
+            ToDo._process_list(commitlist, "commit")
+
             # Restack Draft screen widgets after creation
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.restack()
-        ToDo.commitlist = []
 
-        for f, arg in ToDo.afteritinerary:
-            try:
-                if _DEBUG_inner:
-                    _msg("Debug: executing after.\n"
-                         "function: {}\n".format(f))
-                if arg:
-                    f(arg)
-                else:
-                    f()
-            except Exception:
-                _log(traceback.format_exc())
-                _err(traceback.format_exc())
-                wrn = ("ToDo.doTasks, Unexpected error:\n"
-                       "{0}\n"
-                       "in {1}({2})".format(sys.exc_info()[0], f, arg))
-                _wrn(wrn)
-        ToDo.afteritinerary = []
+        ToDo._process_list(afteritinerary, "after")
+
+        if ToDo.itinerary or ToDo.commitlist or ToDo.afteritinerary:
+            # New items were queued while processing, run again later
+            QtCore.QTimer.singleShot(0, ToDo.doTasks)
+        else:
+            ToDo.timerpending = False
 
     @staticmethod
-    def delay(f, arg):
-        """Add the function and argument to the itinerary list.
+    def _add_to_list(queue, debug, f, *args):
+        if _DEBUG:
+            _msg("Debug: delaying {}.\n"
+                 "function: {}\n".format(debug, f))
+        if not ToDo.timerpending:
+            QtCore.QTimer.singleShot(0, ToDo.doTasks)
+            ToDo.timerpending = True
+        queue.append((f, args))
+
+    @staticmethod
+    def delay(f, *args):
+        """Add the function and any number of arguments to the itinerary list.
 
         Schedule geometry manipulation that would crash Coin if done
         in the event callback.
 
-        If the `itinerary` list is empty, it will call
-        `QtCore.QTimer.singleShot(0, ToDo.doTasks)`
-        to execute the commands in the other lists.
-
-        Finally, it will build the tuple `(f, arg)`
-        and append it to the `itinerary` list.
-
         Parameters
         ----------
-        f: function reference
-            A reference (pointer) to a Python command
-            which can be executed directly.
-            ::
-                f()
-
-        arg: argument reference
-            A reference (pointer) to the argument to the `f` function.
-            ::
-                f(arg)
+        f: function to be executed later
+        args: zero or more arguments to be passed to f
         """
-        if _DEBUG:
-            _msg("Debug: delaying.\n"
-                 "function: {}\n".format(f))
-        if ToDo.itinerary == []:
-            QtCore.QTimer.singleShot(0, ToDo.doTasks)
-        ToDo.itinerary.append((f, arg))
+        ToDo._add_to_list(ToDo.itinerary, "delayed", f, *args)
+
+    @staticmethod
+    def _doCommit(name, func_or_list):
+        name = str(name)
+        App.activeDocument().openTransaction(name)
+        if isinstance(func_or_list, list):
+            for cmd in func_or_list:
+                Gui.doCommand(cmd)
+        else:
+            func_or_list()
+        App.activeDocument().commitTransaction()
 
     @staticmethod
     def delayCommit(cl):
@@ -239,50 +183,36 @@ class ToDo:
         Schedule geometry manipulation that would crash Coin if done
         in the event callback.
 
-        First it calls
-        `QtCore.QTimer.singleShot(0, ToDo.doTasks)`
-        to execute the commands in all lists.
-
-        Then the `cl` list is assigned as the new commit list.
-
         Parameters
         ----------
         cl: list of tuples
-            Each tuple is of the form `(name, command_list)`.
-            The `name` is a string identifier or description of the commands
-            that will be run, and `command_list` is a list of strings
-            that indicate the Python instructions that will be executed.
+            Each tuple is of the form `(name, func_or_list)`.
 
-            See the attributes of the `ToDo` class for more information.
+            The `name` is a string identifier or description of the commands
+            that will be run (used as the name of the transaction), and
+            `func_or_list` indicates what needs to be excuted.
+
+            If `func_or_list` is a list, all items must be strings
+            containing python code. The program then opens a transaction,
+            runs each string using Gui.doCommand and finally commits the
+            transaction.
+
+            If `func_or_list` is a reference to a function
+            the function is executed directly (also within a transaction).
         """
-        if _DEBUG:
-            _msg("Debug: delaying commit.\n"
-                 "commitlist: {}\n".format(cl))
-        QtCore.QTimer.singleShot(0, ToDo.doTasks)
-        ToDo.commitlist = cl
+        for (name, func_or_list) in cl:
+            ToDo._add_to_list(ToDo.commitlist, "commit", ToDo._doCommit, name, func_or_list)
 
     @staticmethod
-    def delayAfter(f, arg):
+    def delayAfter(f, *args):
         """Add the function and argument to the afteritinerary list.
 
         Schedule geometry manipulation that would crash Coin if done
         in the event callback.
 
         Works the same as `delay`.
-
-        If the `afteritinerary` list is empty, it will call
-        `QtCore.QTimer.singleShot(0, ToDo.doTasks)`
-        to execute the commands in the other lists.
-
-        Finally, it will build the tuple `(f, arg)`
-        and append it to the `afteritinerary` list.
         """
-        if _DEBUG:
-            _msg("Debug: delaying after.\n"
-                 "function: {}\n".format(f))
-        if ToDo.afteritinerary == []:
-            QtCore.QTimer.singleShot(0, ToDo.doTasks)
-        ToDo.afteritinerary.append((f, arg))
+        ToDo._add_to_list(ToDo.afteritinerary, "after", f, *args)
 
 
 # Alias for compatibility with v0.18 and earlier
