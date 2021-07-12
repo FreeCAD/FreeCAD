@@ -178,7 +178,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_file(self):
         FreeCAD.Console.PrintMessage("Start writing input file\n")
         if self.solver_obj.SplitInputWriter is True:
-            FreeCAD.Console.PrintMessage("Splitted input file.\n")
+            FreeCAD.Console.PrintMessage("Split input file.\n")
             self.split_inpfile = True
         else:
             FreeCAD.Console.PrintMessage("One monster input file.\n")
