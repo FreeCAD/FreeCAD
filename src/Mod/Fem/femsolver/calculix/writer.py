@@ -38,21 +38,21 @@ from os.path import join
 import FreeCAD
 from FreeCAD import Units
 
-from . import con_centrif
-from . import con_contact
-from . import con_displacement
-from . import con_fixed
-from . import con_fluidsection
-from . import con_force
-from . import con_heatflux
-from . import con_initialtemperature as con_initialtemp
-from . import con_planerotation
-from . import con_pressure
-from . import con_sectionprint
-from . import con_selfweight
-from . import con_temperature
-from . import con_tie
-from . import con_transform
+from . import write_constraint_centrif as con_centrif
+from . import write_constraint_contact as con_contact
+from . import write_constraint_displacement as con_displacement
+from . import write_constraint_fixed as con_fixed
+from . import write_constraint_fluidsection as con_fluidsection
+from . import write_constraint_force as con_force
+from . import write_constraint_heatflux as con_heatflux
+from . import write_constraint_initialtemperature as con_initialtemp
+from . import write_constraint_planerotation as con_planerotation
+from . import write_constraint_pressure as con_pressure
+from . import write_constraint_sectionprint as con_sectionprint
+from . import write_constraint_selfweight as con_selfweight
+from . import write_constraint_temperature as con_temperature
+from . import write_constraint_tie as con_tie
+from . import write_constraint_transform as con_transform
 from .. import writerbase
 from femmesh import meshtools
 from femtools import constants
