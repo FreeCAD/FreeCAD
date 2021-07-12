@@ -102,6 +102,17 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
+    PyErr_Clear();
+    const char *seq;
+    double a, b, c;
+    if (PyArg_ParseTuple(args, "sddd", &seq, &a, &b, &c)) {
+        PY_TRY {
+            getRotationPtr()->setEulerAngles(
+                    Rotation::eulerSequenceFromName(seq), a, b, c);
+            return 0;
+        } _PY_CATCH(return -1)
+    }
+
     double a11 = 1.0, a12 = 0.0, a13 = 0.0, a14 = 0.0;
     double a21 = 0.0, a22 = 1.0, a23 = 0.0, a24 = 0.0;
     double a31 = 0.0, a32 = 0.0, a33 = 1.0, a34 = 0.0;
@@ -280,6 +291,32 @@ PyObject* RotationPy::toEuler(PyObject * args)
     tuple.setItem(1, Py::Float(B));
     tuple.setItem(2, Py::Float(C));
     return Py::new_reference_to(tuple);
+}
+
+PyObject* RotationPy::toEulerAngles(PyObject * args)
+{
+    const char *seq = nullptr;
+    if (!PyArg_ParseTuple(args, "|s", &seq))
+        return NULL;
+    if (!seq) {
+        Py::List res;
+        for (int i=1; i<Rotation::EulerSequenceLast; ++i)
+            res.append(Py::String(Rotation::eulerSequenceName((Rotation::EulerSequence)i)));
+        return Py::new_reference_to(res);
+    }
+
+    PY_TRY {
+        double A,B,C;
+        this->getRotationPtr()->getEulerAngles(
+                Rotation::eulerSequenceFromName(seq),A,B,C);
+
+        Py::Tuple tuple(3);
+        tuple.setItem(0, Py::Float(A));
+        tuple.setItem(1, Py::Float(B));
+        tuple.setItem(2, Py::Float(C));
+        return Py::new_reference_to(tuple);
+    } PY_CATCH
+
 }
 
 PyObject* RotationPy::toMatrix(PyObject * args)
