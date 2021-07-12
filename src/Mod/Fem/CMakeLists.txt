@@ -187,22 +187,22 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
+    femsolver/calculix/write_constraint_centrif.py
+    femsolver/calculix/write_constraint_contact.py
+    femsolver/calculix/write_constraint_displacement.py
+    femsolver/calculix/write_constraint_fixed.py
+    femsolver/calculix/write_constraint_fluidsection.py
+    femsolver/calculix/write_constraint_force.py
+    femsolver/calculix/write_constraint_heatflux.py
+    femsolver/calculix/write_constraint_initialtemperature.py
+    femsolver/calculix/write_constraint_planerotation.py
+    femsolver/calculix/write_constraint_pressure.py
+    femsolver/calculix/write_constraint_sectionprint.py
+    femsolver/calculix/write_constraint_selfweight.py
+    femsolver/calculix/write_constraint_temperature.py
+    femsolver/calculix/write_constraint_tie.py
+    femsolver/calculix/write_constraint_transform.py
     femsolver/calculix/writer.py
-    femsolver/calculix/con_centrif.py
-    femsolver/calculix/con_contact.py
-    femsolver/calculix/con_displacement.py
-    femsolver/calculix/con_fixed.py
-    femsolver/calculix/con_fluidsection.py
-    femsolver/calculix/con_force.py
-    femsolver/calculix/con_heatflux.py
-    femsolver/calculix/con_initialtemperature.py
-    femsolver/calculix/con_planerotation.py
-    femsolver/calculix/con_pressure.py
-    femsolver/calculix/con_sectionprint.py
-    femsolver/calculix/con_selfweight.py
-    femsolver/calculix/con_temperature.py
-    femsolver/calculix/con_tie.py
-    femsolver/calculix/con_transform.py
 )
 
 SET(FemSolverElmer_SRCS
