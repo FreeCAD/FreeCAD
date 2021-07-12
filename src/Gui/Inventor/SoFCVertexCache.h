@@ -99,7 +99,8 @@ public:
   int getMergeId() const;
   SbFCUniqueId getCacheId() const;
 
-  SoFCVertexCache * highlightIndices(int * indices = nullptr);
+  SoFCVertexCache * checkHighlightIndices(int * indices = nullptr,
+                                          bool newcache = true);
 
   void addTriangle(const SoPrimitiveVertex * v0,
                    const SoPrimitiveVertex * v1,

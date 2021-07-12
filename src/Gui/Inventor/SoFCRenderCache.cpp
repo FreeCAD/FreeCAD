@@ -1642,14 +1642,55 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
 
       VertexCacheEntry newentry(ventry);
 
+      auto checkHighlightIndices = [&](bool newcache) {
+        auto cache = newentry.cache->checkHighlightIndices(&newentry.partidx, newcache);
+        if (!cache) {
+          Material m = child.first;
+          m.order = material.order;
+          m.depthfunc = material.depthfunc;
+          m.partialhighlight = 1;
+          if (m.type == Material::Triangle && alpha != 0xff) {
+            m.overrideflags.set(Material::FLAG_TRANSPARENCY);
+            m.diffuse = (m.diffuse & 0xffffff00) | (material.diffuse & 0xff);
+          }
+          res[m].push_back(ventry);
+          ++entrycount;
+          if (ventry.mergecount)
+            ++mergecount;
+          return true;
+        }
+        if (newentry.partidx >= 0 || cache != newentry.cache) {
+          newentry.cache = cache;
+          if (wholeontop) {
+            Material m = child.first;
+            m.order = material.order;
+            m.depthfunc = material.depthfunc;
+            m.partialhighlight = 1;
+            material.partialhighlight = -1;
+            ++material.order;
+            if (m.type == Material::Triangle && alpha != 0xff) {
+              m.overrideflags.set(Material::FLAG_TRANSPARENCY);
+              m.diffuse = (m.diffuse & 0xffffff00) | (material.diffuse & 0xff);
+            }
+            res[m].push_back(ventry);
+            ++entrycount;
+            if (ventry.mergecount)
+              ++mergecount;
+          }
+        }
+        return false;
+      };
+
       switch(material.type) {
       case Material::Point:
         if (!material.order)
           material.order = 1;
         if (!elementselectable) {
-          if (!detail)
+          if (!detail) {
+            if (checkHighlightIndices(false))
+              continue;
             res[material].push_back(ventry);
-          else {
+          } else {
             Material m = child.first;
             m.order = material.order;
             m.depthfunc = material.depthfunc;
@@ -1677,31 +1718,19 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           }
         }
         else if (checkindices) {
-          auto cache = newentry.cache->highlightIndices(&newentry.partidx);
-          if (newentry.partidx >= 0 || cache != newentry.cache) {
-            newentry.cache = cache;
-            if (wholeontop) {
-              Material m = child.first;
-              m.order = material.order;
-              m.depthfunc = material.depthfunc;
-              m.partialhighlight = 1;
-              material.partialhighlight = -1;
-              ++material.order;
-              res[m].push_back(ventry);
-              ++entrycount;
-              if (ventry.mergecount)
-                ++mergecount;
-            }
-          }
+          if (checkHighlightIndices(true))
+            continue;
         } else if (detail)
           continue;
         break;
 
       case Material::Line:
         if (!elementselectable) {
-          if (!detail)
+          if (!detail) {
+            if (checkHighlightIndices(false))
+              continue;
             res[material].push_back(ventry);
-          else {
+          } else {
             Material m = child.first;
             m.order = material.order;
             m.depthfunc = material.depthfunc;
@@ -1732,22 +1761,8 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           }
         }
         else if (checkindices) {
-          auto cache = newentry.cache->highlightIndices(&newentry.partidx);
-          if (newentry.partidx >= 0 || cache != newentry.cache) {
-            newentry.cache = cache;
-            if (wholeontop) {
-              Material m = child.first;
-              m.order = material.order;
-              m.depthfunc = material.depthfunc;
-              m.partialhighlight = 1;
-              material.partialhighlight = -1;
-              ++material.order;
-              res[m].push_back(ventry);
-              ++entrycount;
-              if (ventry.mergecount)
-                ++mergecount;
-            }
-          }
+          if (checkHighlightIndices(true))
+            continue;
         } else if (detail)
           continue;
         break;
@@ -1765,9 +1780,11 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           material.diffuse = (material.diffuse & 0xffffff00) | a;
         }
         if (!elementselectable) {
-          if (!detail)
+          if (!detail) {
+            if (checkHighlightIndices(false))
+              continue;
             res[material].push_back(ventry);
-          else {
+          } else {
             Material m = child.first;
             m.order = material.order;
             m.depthfunc = material.depthfunc;
@@ -1795,26 +1812,8 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           }
         }
         else if (checkindices) {
-          auto cache = newentry.cache->highlightIndices(&newentry.partidx);
-          if (newentry.partidx >= 0 || cache != newentry.cache) {
-            newentry.cache = cache;
-            if (wholeontop) {
-              Material m = child.first;
-              m.order = material.order;
-              m.depthfunc = material.depthfunc;
-              m.partialhighlight = 1;
-              material.partialhighlight = -1;
-              ++material.order;
-              if (alpha != 0xff) {
-                m.overrideflags.set(Material::FLAG_TRANSPARENCY);
-                m.diffuse = (m.diffuse & 0xffffff00) | (material.diffuse & 0xff);
-              }
-              res[m].push_back(ventry);
-              ++entrycount;
-              if (ventry.mergecount)
-                ++mergecount;
-            }
-          }
+          if (checkHighlightIndices(true))
+            continue;
         } else if (detail)
           continue;
         if (color && newentry.partidx >= 0) {

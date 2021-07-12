@@ -1531,14 +1531,22 @@ SoFCVertexCache::addPoint(const SoPrimitiveVertex * v0)
 }
 
 SoFCVertexCache *
-SoFCVertexCache::highlightIndices(int * pindex)
+SoFCVertexCache::checkHighlightIndices(int * pindex, bool newcache)
 {
   switch(PRIVATE(this)->highlightindices.size()) {
   case 0:
     return this;
   case 1:
+    if (PRIVATE(this)->highlightindices[0] < 0)
+      return nullptr;
     if (pindex)
       *pindex = PRIVATE(this)->highlightindices[0];
+    return this;
+  }
+
+  if (!newcache) {
+    if (pindex)
+      *pindex = -1;
     return this;
   }
 
