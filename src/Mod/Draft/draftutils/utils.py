@@ -179,7 +179,7 @@ def get_param_type(param):
                    "dimovershoot", "extovershoot","HatchPatternSize"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "saveonexit", "maxSnap",
+                   "fillmode", "saveonexit", "maxSnap", "showtray",
                    "SvgLinesBlack", "dxfStdSize", "showSnapBar",
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",

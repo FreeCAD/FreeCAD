@@ -2054,10 +2054,16 @@ class DraftToolBar:
         if self.taskmode:
             self.setWatchers()
             if hasattr(self,"tray"):
-                self.tray.show()
+                self.tray.toggleViewAction().setVisible(True)
+                self.tray.setVisible(Draft.getParam('showtray', True))
+                QtCore.QObject.connect(self.tray.toggleViewAction(),
+                        QtCore.SIGNAL("triggered(bool)"), self.onToggleTray)
         else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.draftWidget.setVisible(True)
             self.draftWidget.toggleViewAction().setVisible(True)
+    
+    def onToggleTray(self, visible):
+        Draft.setParam('showtray', visible)
 
     def Deactivated(self):
         if (FreeCAD.activeDraftCommand != None):
