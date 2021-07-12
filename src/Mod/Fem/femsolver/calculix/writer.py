@@ -30,7 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  @{
 
 import codecs
-import os
 import six
 import time
 from os.path import join
@@ -53,6 +52,9 @@ from . import write_constraint_selfweight as con_selfweight
 from . import write_constraint_temperature as con_temperature
 from . import write_constraint_tie as con_tie
 from . import write_constraint_transform as con_transform
+from . import write_footer
+from . import write_step_equation
+from . import write_step_output
 from .. import writerbase
 from femmesh import meshtools
 from femtools import constants
@@ -111,6 +113,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.file_name = self.include + ".inp"
         self.femmesh_file = ""  # the file the femmesh is in, no matter if one or split input file
         self.gravity = int(Units.Quantity(constants.gravity()).getValueAs("mm/s^2"))  # 9820 mm/s2
+        self.units_information = units_information
 
     # ********************************************************************************************
     # write calculix input
@@ -193,8 +196,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_data(inpfile, self.tie_objects, con_tie)
         self.write_constraints_data(inpfile, self.transform_objects, con_transform)
 
-        # step begin
-        self.write_step_begin(inpfile)
+        # step equation
+        write_step_equation.write_step_equation(inpfile, self)
 
         # constraints dependent from steps
         self.write_constraints_data(inpfile, self.fixed_objects, con_fixed)
@@ -209,11 +212,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         con_fluidsection.write_constraints_fluidsection(inpfile, self)
 
         # output and step end
-        self.write_outputs_types(inpfile)
-        self.write_step_end(inpfile)
+        write_step_output.write_step_output(inpfile, self)
+        write_step_equation.write_step_end(inpfile, self)
 
         # footer
-        self.write_footer(inpfile)
+        write_footer.write_footer(inpfile, self)
         inpfile.close()
 
     # ********************************************************************************************
@@ -336,198 +339,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             con_module.write_constraint(f, femobj, the_obj, self)
         if write_after != "":
             f.write(write_after)
-
-    # ********************************************************************************************
-    # step begin and end
-    def write_step_begin(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** At least one step is needed to run an CalculiX analysis of FreeCAD\n")
-        # STEP line
-        step = "*STEP"
-        if self.solver_obj.GeometricalNonlinearity == "nonlinear":
-            if self.analysis_type == "static" or self.analysis_type == "thermomech":
-                # https://www.comsol.com/blogs/what-is-geometric-nonlinearity
-                step += ", NLGEOM"
-            elif self.analysis_type == "frequency":
-                FreeCAD.Console.PrintMessage(
-                    "Analysis type frequency and geometrical nonlinear "
-                    "analysis are not allowed together, linear is used instead!\n"
-                )
-        if self.solver_obj.IterationsThermoMechMaximum:
-            if self.analysis_type == "thermomech":
-                step += ", INC={}".format(self.solver_obj.IterationsThermoMechMaximum)
-            elif (
-                self.analysis_type == "static"
-                or self.analysis_type == "frequency"
-                or self.analysis_type == "buckling"
-            ):
-                # parameter is for thermomechanical analysis only, see ccx manual *STEP
-                pass
-        # write step line
-        f.write(step + "\n")
-        # CONTROLS line
-        # all analysis types, ... really in frequency too?!?
-        if self.solver_obj.IterationsControlParameterTimeUse:
-            f.write("*CONTROLS, PARAMETERS=TIME INCREMENTATION\n")
-            f.write(self.solver_obj.IterationsControlParameterIter + "\n")
-            f.write(self.solver_obj.IterationsControlParameterCutb + "\n")
-        # ANALYSIS type line
-        # analysis line --> analysis type
-        if self.analysis_type == "static":
-            analysis_type = "*STATIC"
-        elif self.analysis_type == "frequency":
-            analysis_type = "*FREQUENCY"
-        elif self.analysis_type == "thermomech":
-            analysis_type = "*COUPLED TEMPERATURE-DISPLACEMENT"
-        elif self.analysis_type == "check":
-            analysis_type = "*NO ANALYSIS"
-        elif self.analysis_type == "buckling":
-            analysis_type = "*BUCKLE"
-        # analysis line --> solver type
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=43178
-        if self.solver_obj.MatrixSolverType == "default":
-            pass
-        elif self.solver_obj.MatrixSolverType == "spooles":
-            analysis_type += ", SOLVER=SPOOLES"
-        elif self.solver_obj.MatrixSolverType == "iterativescaling":
-            analysis_type += ", SOLVER=ITERATIVE SCALING"
-        elif self.solver_obj.MatrixSolverType == "iterativecholesky":
-            analysis_type += ", SOLVER=ITERATIVE CHOLESKY"
-        # analysis line --> user defined incrementations --> parameter DIRECT
-        # --> completely switch off ccx automatic incrementation
-        if self.solver_obj.IterationsUserDefinedIncrementations:
-            if self.analysis_type == "static":
-                analysis_type += ", DIRECT"
-            elif self.analysis_type == "thermomech":
-                analysis_type += ", DIRECT"
-            elif self.analysis_type == "frequency":
-                FreeCAD.Console.PrintMessage(
-                    "Analysis type frequency and IterationsUserDefinedIncrementations "
-                    "are not allowed together, it is ignored\n"
-                )
-        # analysis line --> steadystate --> thermomech only
-        if self.solver_obj.ThermoMechSteadyState:
-            # bernd: I do not know if STEADY STATE is allowed with DIRECT
-            # but since time steps are 1.0 it makes no sense IMHO
-            if self.analysis_type == "thermomech":
-                analysis_type += ", STEADY STATE"
-                # Set time to 1 and ignore user inputs for steady state
-                self.solver_obj.TimeInitialStep = 1.0
-                self.solver_obj.TimeEnd = 1.0
-            elif (
-                self.analysis_type == "static"
-                or self.analysis_type == "frequency"
-                or self.analysis_type == "buckling"
-            ):
-                pass  # not supported for static and frequency!
-        # ANALYSIS parameter line
-        analysis_parameter = ""
-        if self.analysis_type == "static" or self.analysis_type == "check":
-            if self.solver_obj.IterationsUserDefinedIncrementations is True \
-                    or self.solver_obj.IterationsUserDefinedTimeStepLength is True:
-                analysis_parameter = "{},{}".format(
-                    self.solver_obj.TimeInitialStep,
-                    self.solver_obj.TimeEnd
-                )
-        elif self.analysis_type == "frequency":
-            if self.solver_obj.EigenmodeLowLimit == 0.0 \
-                    and self.solver_obj.EigenmodeHighLimit == 0.0:
-                analysis_parameter = "{}\n".format(self.solver_obj.EigenmodesCount)
-            else:
-                analysis_parameter = "{},{},{}\n".format(
-                    self.solver_obj.EigenmodesCount,
-                    self.solver_obj.EigenmodeLowLimit,
-                    self.solver_obj.EigenmodeHighLimit
-                )
-        elif self.analysis_type == "thermomech":
-            # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
-            analysis_parameter = "{},{}".format(
-                self.solver_obj.TimeInitialStep,
-                self.solver_obj.TimeEnd
-            )
-        elif self.analysis_type == "buckling":
-            analysis_parameter = "{}\n".format(self.solver_obj.BucklingFactors)
-
-        # write analysis type line, analysis parameter line
-        f.write(analysis_type + "\n")
-        f.write(analysis_parameter + "\n")
-
-    def write_step_end(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("*END STEP \n")
-
-    # ********************************************************************************************
-    # output types
-    def write_outputs_types(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** Outputs --> frd file\n")
-        if self.beamsection_objects or self.shellthickness_objects or self.fluidsection_objects:
-            if self.solver_obj.BeamShellResultOutput3D is False:
-                f.write("*NODE FILE, OUTPUT=2d\n")
-            else:
-                f.write("*NODE FILE, OUTPUT=3d\n")
-        else:
-            f.write("*NODE FILE\n")
-        # MPH write out nodal temperatures if thermomechanical
-        if self.analysis_type == "thermomech":
-            if not self.fluidsection_objects:
-                f.write("U, NT\n")
-            else:
-                f.write("MF, PS\n")
-        else:
-            f.write("U\n")
-        if not self.fluidsection_objects:
-            f.write("*EL FILE\n")
-            if self.solver_obj.MaterialNonlinearity == "nonlinear":
-                f.write("S, E, PEEQ\n")
-            else:
-                f.write("S, E\n")
-
-            # dat file
-            # reaction forces: freecadweb.org/tracker/view.php?id=2934
-            if self.fixed_objects:
-                f.write("** outputs --> dat file\n")
-                # reaction forces for all Constraint fixed
-                f.write("** reaction forces for Constraint fixed\n")
-                for femobj in self.fixed_objects:
-                    # femobj --> dict, FreeCAD document object is femobj["Object"]
-                    fix_obj_name = femobj["Object"].Name
-                    f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(fix_obj_name))
-                    f.write("RF\n")
-                # TODO: add Constraint Displacement if nodes are restrained
-                f.write("\n")
-
-            # there is no need to write all integration point results
-            # as long as there is no reader for them
-            # see https://forum.freecadweb.org/viewtopic.php?f=18&t=29060
-            # f.write("*NODE PRINT , NSET=" + self.ccx_nall + "\n")
-            # f.write("U \n")
-            # f.write("*EL PRINT , ELSET=" + self.ccx_eall + "\n")
-            # f.write("S \n")
-
-    # ********************************************************************************************
-    # footer
-    def write_footer(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** CalculiX Input file\n")
-        f.write("**   written by    --> FreeCAD {}.{}.{}\n".format(
-            self.fc_ver[0],
-            self.fc_ver[1],
-            self.fc_ver[2]
-        ))
-        f.write("**   written on    --> {}\n".format(
-            time.ctime()
-        ))
-        f.write("**   file name     --> {}\n".format(
-            os.path.basename(self.document.FileName)
-        ))
-        f.write("**   analysis name --> {}\n".format(
-            self.analysis.Name
-        ))
-        f.write("**\n")
-        f.write("**\n")
-        f.write(units_information)
-        f.write("**\n")
 
     # ********************************************************************************************
     # material and fem element geometry
