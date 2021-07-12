@@ -303,7 +303,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
 
             if(!data.property) {
                 // here means we are undoing/redoing and property add operation
-                pcObj->removeDynamicProperty(v.second.name.c_str());
+                pcObj->removeDynamicProperty(data.getName());
                 continue;
             }
 
@@ -313,7 +313,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
             auto name = pcObj->getPropertyName(prop);
             if(!name) {
                 // Here means the original property is not found, probably removed
-                if(v.second.name.empty()) {
+                if(!data.hasOwnName()) {
                     // not a dynamic property, nothing to do
                     continue;
                 }
@@ -322,12 +322,12 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
                 // restored. But since restoring property is actually creating
                 // a new property, the property key inside redo stack will not
                 // match. So we search by name first.
-                prop = pcObj->getDynamicPropertyByName(v.second.name.c_str());
+                prop = pcObj->getDynamicPropertyByName(data.getName());
                 if(!prop) {
                     // Still not found, re-create the property
                     prop = pcObj->addDynamicProperty(
                             data.property->getTypeId().getName(),
-                            v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
+                            data.getName(), data.getGroupName(), data.getDocumentation(),
                             data.attr, data.readonly, data.hidden);
                     if(!prop)
                         continue;
@@ -364,7 +364,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
 void TransactionObject::setProperty(const Property* pcProp)
 {
     auto &data = _PropChangeMap[pcProp];
-    if(!data.property && data.name.empty()) {
+    if(!data.property && !data.hasOwnName()) {
         static_cast<DynamicProperty::PropData&>(data) = 
             pcProp->getContainer()->getDynamicPropertyData(pcProp);
         data.property = pcProp->Copy();
@@ -375,12 +375,11 @@ void TransactionObject::setProperty(const Property* pcProp)
 
 void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
 {
-    (void)add;
     if(!pcProp || !pcProp->getContainer())
         return;
 
     auto &data = _PropChangeMap[pcProp];
-    if(data.name.size()) {
+    if(data.hasOwnName()) {
         if(!add && !data.property) {
             // this means add and remove the same property inside a single
             // transaction, so they cancel each other out.

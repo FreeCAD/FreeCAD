@@ -144,10 +144,9 @@ namespace App {
  * Make deleting dynamic property safer by postponing its destruction.
  *
  * Dynamic property can be removed at any time, even during triggering of
- * onChanged() signal of the removing property. This patch introduced
- * static function Property::destroy() to make it safer by queueing any
- * removed property, and only deleting them when no onChanged() call is
- * active.
+ * on(Before)Changed() signal of the removing property. This patch introduced
+ * static function Property::destroy() to make it safer by queueing any removed
+ * property, and only deleting them when no on(Before)Changed() call is active.
  */
 struct PropertyCleaner {
     PropertyCleaner(Property *p)
@@ -158,39 +157,44 @@ struct PropertyCleaner {
     ~PropertyCleaner() {
         if(--_PropCleanerCounter)
             return;
-        bool found = false;
-        while (_RemovedProps.size()) {
-            auto p = _RemovedProps.back();
-            _RemovedProps.pop_back();
-            if(p != prop)
-                delete p;
+        int found = -1;
+        int i = -1;
+        for (auto &p : _RemovedProps) {
+            ++i;
+            if(p.property != prop)
+                delete p.property;
             else
-                found = true;
+                found = i;
         }
 
-        if (found)
-            _RemovedProps.push_back(prop);
+        if (found < 0)
+            _RemovedProps.clear();
+        else {
+            if (found != 0)
+                _RemovedProps[0] = _RemovedProps[found];
+            _RemovedProps.resize(1);
+        }
     }
-    static void add(Property *prop) {
-        _RemovedProps.push_back(prop);
+    static void add(const DynamicPropData &data) {
+        _RemovedProps.push_back(data);
     }
 
     Property *prop;
 
-    static std::vector<Property*> _RemovedProps;
+    static std::vector<DynamicPropData> _RemovedProps;
     static int _PropCleanerCounter;
 };
 }
 
-std::vector<Property*> PropertyCleaner::_RemovedProps;
+std::vector<DynamicPropData> PropertyCleaner::_RemovedProps;
 int PropertyCleaner::_PropCleanerCounter = 0;
 
-void Property::destroy(Property *p) {
-    if (p) {
+void Property::destroy(const DynamicPropData &p) {
+    if (p.property) {
         // Is it necessary to nullify the container? May cause crash if any
         // onChanged() caller assumes a non-null container.
         //
-        // p->setContainer(0);
+        // p.property->setContainer(0);
 
         PropertyCleaner::add(p);
     }
@@ -219,6 +223,7 @@ void Property::hasSetValue(void)
 
 void Property::aboutToSetValue(void)
 {
+    PropertyCleaner guard(this);
     if (father)
         father->onBeforeChange(this);
 }

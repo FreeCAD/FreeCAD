@@ -68,7 +68,7 @@ void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
 void DynamicProperty::getPropertyMap(std::map<std::string,Property*> &Map) const
 {
     for (auto &v : props.get<0>())
-        Map[v.name] = v.property;
+        Map[v.getName()] = v.property;
 }
 
 Property *DynamicProperty::getDynamicPropertyByName(const char* name) const
@@ -86,7 +86,7 @@ std::vector<std::string> DynamicProperty::getDynamicPropertyNames() const
     auto &index = props.get<0>();
     names.reserve(index.size());
     for(auto &v : index)
-        names.push_back(v.name);
+        names.push_back(v.getName());
     return names;
 }
 
@@ -115,7 +115,7 @@ const char* DynamicProperty::getPropertyGroup(const Property* prop) const
     auto &index = props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it!=index.end())
-        return it->group.c_str();
+        return it->getGroupName();
     return 0;
 }
 
@@ -124,7 +124,7 @@ const char* DynamicProperty::getPropertyGroup(const char *name) const
     auto &index = props.get<0>();
     auto it = index.find(name);
     if (it != index.end())
-        return it->group.c_str();
+        return it->getGroupName();
     return 0;
 }
 
@@ -133,7 +133,7 @@ const char* DynamicProperty::getPropertyDocumentation(const Property* prop) cons
     auto &index = props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it!=index.end())
-        return it->doc.c_str();
+        return it->getDocumentation();
     return 0;
 }
 
@@ -142,7 +142,7 @@ const char* DynamicProperty::getPropertyDocumentation(const char *name) const
     auto &index = props.get<0>();
     auto it = index.find(name);
     if (it != index.end())
-        return it->doc.c_str();
+        return it->getDocumentation();
     return 0;
 }
 
@@ -168,7 +168,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
             getUniquePropertyName(pc,name), nullptr, group, doc, attr, ro, hidden);
 
     pcProperty->setContainer(&pc);
-    pcProperty->myName = res.first->name.c_str();
+    pcProperty->myName = res.first->getName();
 
     if(ro) attr |= Prop_ReadOnly;
     if(hidden) attr |= Prop_Hidden;
@@ -217,8 +217,6 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
         GetApplication().signalRemoveDynamicProperty(*prop);
         Property::destroy(prop);
         index.erase(it);
-        // memory of myName has been freed
-        prop->myName = nullptr;
         return true;
     }
 
@@ -254,8 +252,8 @@ void DynamicProperty::save(const Property *prop, Base::Writer &writer) const
     auto it = index.find(const_cast<Property*>(prop));
     if(it != index.end()) {
         auto &data = *it;
-        writer.Stream() << "\" group=\"" << Base::Persistence::encodeAttribute(data.group)
-                        << "\" doc=\"" << Base::Persistence::encodeAttribute(data.doc)
+        writer.Stream() << "\" group=\"" << Base::Persistence::encodeAttribute(data.getGroupName())
+                        << "\" doc=\"" << Base::Persistence::encodeAttribute(data.getDocumentation())
                         << "\" attr=\"" << data.attr << "\" ro=\"" << data.readonly
                         << "\" hide=\"" << data.hidden;
     }
