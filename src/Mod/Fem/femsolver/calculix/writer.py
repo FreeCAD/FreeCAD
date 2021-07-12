@@ -131,7 +131,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             "writerbaseCcx --> self.file_name  -->  {}\n".format(self.file_name)
         )
 
-        self.get_mesh_data()
+        self.get_mesh_sets()
         self.write_file()
 
         FreeCAD.Console.PrintMessage(
@@ -145,35 +145,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 "Problems on writing input file, check report prints.\n\n"
             )
             return ""
-
-    def get_mesh_data(self):
-        FreeCAD.Console.PrintMessage(
-            "Get mesh data for "
-            "node sets (groups), surface sets (groups) and element sets (groups)\n"
-        )
-
-        # materials and element geometry element sets getter
-        self.get_element_sets_material_and_femelement_geometry()
-
-        # constraints element sets getter
-        self.get_constraints_centrif_elements()
-
-        # constraints node sets getter
-        self.get_constraints_fixed_nodes()
-        self.get_constraints_displacement_nodes()
-        self.get_constraints_planerotation_nodes()
-
-        # constraints suface sets getter
-        self.get_constraints_contact_faces()
-        self.get_constraints_tie_faces()
-        self.get_constraints_sectionprint_faces()
-        self.get_constraints_transform_nodes()
-        self.get_constraints_temperature_nodes()
-
-        # constraints sets with constraint data
-        self.get_constraints_force_nodeloads()
-        self.get_constraints_pressure_faces()
-        self.get_constraints_heatflux_faces()
 
     def write_file(self):
         FreeCAD.Console.PrintMessage("Start writing input file\n")
