@@ -202,6 +202,9 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_constraint_temperature.py
     femsolver/calculix/write_constraint_tie.py
     femsolver/calculix/write_constraint_transform.py
+    femsolver/calculix/write_footer.py
+    femsolver/calculix/write_step_equation.py
+    femsolver/calculix/write_step_output.py
     femsolver/calculix/writer.py
 )
 
