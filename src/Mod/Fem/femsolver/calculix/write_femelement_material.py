@@ -88,14 +88,7 @@ def write_femelement_material(f, ccxwriter):
         f.write("*MATERIAL, NAME=" + mat_name + "\n")
         if mat_obj.Category == "Solid":
             f.write("*ELASTIC\n")
-            # FIXME https://forum.freecadweb.org/viewtopic.php?f=18&t=60066&p=516434#p516433
-            if YM_in_MPa >= 1000:
-                f.write("{0:.0f}, {1:.3f}\n".format(YM_in_MPa, PR))
-            else:
-                # may be not suited for structural engineerings but such soft materials exist ;-)
-                # https://forum.freecadweb.org/viewtopic.php?f=18&t=60066
-                f.write("{0:.3e}, {1:.3f}\n".format(YM_in_MPa, PR))
-
+            f.write("{0:.13G}, {1:.3f}\n".format(YM_in_MPa, PR))
         if is_density_needed() is True:
             f.write("*DENSITY\n")
             f.write("{0:.3e}\n".format(density_in_tonne_per_mm3))
