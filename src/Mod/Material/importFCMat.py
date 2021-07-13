@@ -32,6 +32,10 @@ import FreeCAD
 
 from materialtools.cardutils import get_material_template
 
+if FreeCAD.GuiUp:
+    from PySide import QtGui
+
+
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
@@ -185,6 +189,13 @@ def write(filename, dictionary, write_group_section=True):
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
     # print(card_name_file)
+    if "CardName" not in header:
+        print(header)
+        error_message = "No card name provided. Card could not be written.".format(header)
+        FreeCAD.Console.PrintError("{}\n".format(error_message))
+        if FreeCAD.GuiUp:
+            QtGui.QMessageBox.critical(None, "No card name", error_message)
+        return
     f = pythonopen(filename, "w")
     # write header
     # first five lines are the same in any card file, see comment above read def
