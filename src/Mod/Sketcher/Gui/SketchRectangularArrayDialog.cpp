@@ -42,6 +42,9 @@ SketchRectangularArrayDialog::SketchRectangularArrayDialog(void)
 {
     ui->setupUi(this);
     
+    ui->ColsQuantitySpinBox->setMinimum(1);
+    ui->RowsQuantitySpinBox->setMinimum(1);
+
     ui->RowsQuantitySpinBox->onRestore();
     ui->ColsQuantitySpinBox->onRestore();
     ui->ConstraintSeparationCheckBox->onRestore();
