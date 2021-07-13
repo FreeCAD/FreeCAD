@@ -136,21 +136,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         )
 
         self.get_mesh_sets()
-        self.write_file()
 
-        FreeCAD.Console.PrintMessage(
-            "Writing time CalculiX input file: {} seconds \n\n"
-            .format(round((time.process_time() - timestart), 2))
-        )
-        if self.femelement_count_test is True:
-            return self.file_name
-        else:
-            FreeCAD.Console.PrintError(
-                "Problems on writing input file, check report prints.\n\n"
-            )
-            return ""
-
-    def write_file(self):
         FreeCAD.Console.PrintMessage("Start writing input file\n")
         if self.solver_obj.SplitInputWriter is True:
             FreeCAD.Console.PrintMessage("Split input file.\n")
@@ -165,9 +151,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # element sets for materials and element geometry
         write_femelement_matgeosets.write_femelement_matgeosets(inpfile, self)
 
-        if self.fluidsection_objects:
-            # some fluidsection objs need special treatment, ccx_elsets are needed for this
-            inpfile = con_fluidsection.handle_fluidsection_liquid_inlet_outlet(inpfile, self)
+        # some fluidsection objs need special treatment, ccx_elsets are needed for this
+        inpfile = con_fluidsection.handle_fluidsection_liquid_inlet_outlet(inpfile, self)
 
         # element sets constraints
         self.write_constraints_meshsets(inpfile, self.centrif_objects, con_centrif)
@@ -216,7 +201,22 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # footer
         write_footer.write_footer(inpfile, self)
+
+        # close file
         inpfile.close()
 
+        FreeCAD.Console.PrintMessage(
+            "Writing time CalculiX input file: {} seconds \n\n"
+            .format(round((time.process_time() - timestart), 2))
+        )
+
+        # return
+        if self.femelement_count_test is True:
+            return self.file_name
+        else:
+            FreeCAD.Console.PrintError(
+                "Problems on writing input file, check report prints.\n\n"
+            )
+            return ""
 
 ##  @}
