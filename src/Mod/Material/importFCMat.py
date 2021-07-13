@@ -92,7 +92,12 @@ def decode(name):
 # the implementation in Material.py uses Pythons ConfigParser module
 # in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
 # since this mixture seems to have be there for ages it should not be changed for 0.18
-# TODO and FIXME: get rid of this mixture
+# TODO and FIXME:
+# get rid of this mixture
+# best might be to switch to a more robust file schema like YAML
+# as we had and we might will have problems again and again
+# https://github.com/berndhahnebach/FreeCAD_bhb/commits/materialdev
+
 
 # Metainformation
 # first five lines are the same in any card file
@@ -108,6 +113,15 @@ def read(filename):
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
     f = pythonopen(filename, encoding="utf8")
+    try:
+        content = f.read()
+    except UnicodeDecodeError:
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912#p489721
+        # older FreeCAD do not write utf-8 for special character on windows
+        # I have seen "ISO-8859-15" or "windows-1252"
+        # explizit utf-8 writing, https://github.com/FreeCAD/FreeCAD/commit/9a564dd906f
+        FreeCAD.Console.PrintError("Error on card loading. File might not utf-8.")
+        return {}
     d = {}
     d["CardName"] = card_name_file  # CardName is the MatCard file name
     for ln, line in enumerate(f):
