@@ -165,11 +165,17 @@ def findDistance(point, edge, strict=False):
                 return None
 
             if strict and ve2:
+                # Note 1: DraftVecUtils.angle(App.Vector(1, 1, 0)) => -0.7854
+                # Note 2: Angles are in the +pi to -pi range.
                 ang1 = DraftVecUtils.angle(ve1.sub(center))
                 ang2 = DraftVecUtils.angle(ve2.sub(center))
                 angpt = DraftVecUtils.angle(newpoint.sub(center))
-                if ((angpt <= ang2 and angpt >= ang1)
-                        or (angpt <= ang1 and angpt >= ang2)):
+                if ang1 >= ang2: # Arc does not cross the 9 o'clock point.
+                    if ang1 >= angpt and angpt >= ang2:
+                        return dist
+                    else:
+                        return None
+                elif ang1 >= angpt or angpt >= ang2:
                     return dist
                 else:
                     return None
