@@ -110,8 +110,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             dir_name
         )
         self.mesh_name = self.mesh_object.Name
-        self.include = join(self.dir_name, self.mesh_name)
-        self.file_name = self.include + ".inp"
+        self.file_name = join(self.dir_name, self.mesh_name + ".inp")
         self.femmesh_file = ""  # the file the femmesh is in, no matter if one or split input file
         self.gravity = int(Units.Quantity(constants.gravity()).getValueAs("mm/s^2"))  # 9820 mm/s2
         self.units_information = units_information
@@ -119,25 +118,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # ********************************************************************************************
     # write calculix input
     def write_calculix_input_file(self):
-        timestart = time.process_time()
-        FreeCAD.Console.PrintMessage("Start writing CalculiX input file\n")
-        FreeCAD.Console.PrintMessage("Write ccx input file to: {}\n".format(self.file_name))
-        FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.mesh_name  -->  {}\n".format(self.mesh_name)
-        )
-        FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.dir_name  -->  {}\n".format(self.dir_name)
-        )
-        FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.include  -->  {}\n".format(self.mesh_name)
-        )
-        FreeCAD.Console.PrintLog(
-            "writerbaseCcx --> self.file_name  -->  {}\n".format(self.file_name)
-        )
 
+        FreeCAD.Console.PrintMessage("Get mesh sets.\n")
+        time_start = time.process_time()
         self.get_mesh_sets()
+        time_getsets = time.process_time()
 
-        FreeCAD.Console.PrintMessage("Start writing input file\n")
+        FreeCAD.Console.PrintMessage(
+            "Start writing CalculiX input file to: {}\n"
+            .format(self.file_name)
+        )
         if self.solver_obj.SplitInputWriter is True:
             FreeCAD.Console.PrintMessage("Split input file.\n")
             self.split_inpfile = True
@@ -205,9 +195,17 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # close file
         inpfile.close()
 
+        setstime = round((time_getsets - time_start), 3)
+        writetime = round((time.process_time() - time_getsets), 3)
         FreeCAD.Console.PrintMessage(
-            "Writing time CalculiX input file: {} seconds \n\n"
-            .format(round((time.process_time() - timestart), 2))
+            "Getting mesh sets or groups time: {} seconds \n".format(setstime)
+        )
+        FreeCAD.Console.PrintMessage(
+            "Writing time CalculiX input file: {} seconds \n".format(writetime)
+        )
+        FreeCAD.Console.PrintMessage(
+            "Overall time CalculiX input file: {} seconds \n\n"
+            .format(setstime + writetime)
         )
 
         # return
