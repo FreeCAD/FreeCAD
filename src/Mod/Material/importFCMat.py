@@ -196,7 +196,7 @@ def write(filename, dictionary, write_group_section=True):
         if FreeCAD.GuiUp:
             QtGui.QMessageBox.critical(None, "No card name", error_message)
         return
-    f = pythonopen(filename, "w")
+    f = pythonopen(filename, "w", encoding="utf-8")
     # write header
     # first five lines are the same in any card file, see comment above read def
     if header["CardName"] != card_name_file:
