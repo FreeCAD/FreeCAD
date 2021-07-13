@@ -66,6 +66,9 @@ def write_meshdata_constraint(f, femobj, contact_obj, ccxwriter):
 
 
 def write_constraint(f, femobj, contact_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     f.write(
         "*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n"
         .format(contact_obj.Name)
@@ -76,9 +79,9 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
     f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
     f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
     slope = contact_obj.Slope
-    f.write("{} \n".format(slope))
+    f.write("{:.13G}\n".format(slope))
     friction = contact_obj.Friction
     if friction > 0:
         f.write("*FRICTION \n")
         stick = (slope / 10.0)
-        f.write("{}, {} \n".format(friction, stick))
+        f.write("{:.13G}, {:.13G}\n".format(friction, stick))

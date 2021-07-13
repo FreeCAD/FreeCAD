@@ -92,6 +92,17 @@ units_information = """*********************************************************
 """
 
 
+# TODO 
+# {0:.13G} or {:.13G} should be used on all places writing floating points to ccx
+# All floating points fields read from ccx are F20.0 FORTRAN input fields.
+# see in dload.f in ccx's source
+# https://forum.freecadweb.org/viewtopic.php?f=18&p=516518#p516433
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=22759&#p176578
+# example "{:.13G}".format(math.sqrt(2.)*-1e100) and count chars
+# a property type is best checked in FreeCAD objects definition
+# see femobjects package for Python objects or in objects App
+
+
 class FemInputWriterCcx(writerbase.FemInputWriter):
     def __init__(
         self,

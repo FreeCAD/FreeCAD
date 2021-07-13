@@ -8205,7 +8205,7 @@ Evolumes
 ** Initial temperature constraint
 *INITIAL CONDITIONS,TYPE=TEMPERATURE
 ** ConstraintInitialTemperature
-Nall,273.0
+Nall,273
 
 ***********************************************************
 ** Sections

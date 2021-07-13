@@ -38369,7 +38369,7 @@ Efaces
 DEPConstraintContact,INDConstraintContact
 *SURFACE INTERACTION, NAME=INTConstraintContact
 *SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR
-1000000.0 
+1000000
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD

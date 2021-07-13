@@ -61,30 +61,33 @@ def write_meshdata_constraint(f, femobj, disp_obj, ccxwriter):
 
 
 def write_constraint(f, femobj, disp_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     f.write("*BOUNDARY\n")
     if disp_obj.xFix:
         f.write("{},1\n".format(disp_obj.Name))
     elif not disp_obj.xFree:
-        f.write("{},1,1,{}\n".format(disp_obj.Name, disp_obj.xDisplacement))
+        f.write("{},1,1,{:.13G}\n".format(disp_obj.Name, disp_obj.xDisplacement))
     if disp_obj.yFix:
         f.write("{},2\n".format(disp_obj.Name))
     elif not disp_obj.yFree:
-        f.write("{},2,2,{}\n".format(disp_obj.Name, disp_obj.yDisplacement))
+        f.write("{},2,2,{:.13G}\n".format(disp_obj.Name, disp_obj.yDisplacement))
     if disp_obj.zFix:
         f.write("{},3\n".format(disp_obj.Name))
     elif not disp_obj.zFree:
-        f.write("{},3,3,{}\n".format(disp_obj.Name, disp_obj.zDisplacement))
+        f.write("{},3,3,{:.13G}\n".format(disp_obj.Name, disp_obj.zDisplacement))
 
     if ccxwriter.beamsection_objects or ccxwriter.shellthickness_objects:
         if disp_obj.rotxFix:
             f.write("{},4\n".format(disp_obj.Name))
         elif not disp_obj.rotxFree:
-            f.write("{},4,4,{}\n".format(disp_obj.Name, disp_obj.xRotation))
+            f.write("{},4,4,{:.13G}\n".format(disp_obj.Name, disp_obj.xRotation))
         if disp_obj.rotyFix:
             f.write("{},5\n".format(disp_obj.Name))
         elif not disp_obj.rotyFree:
-            f.write("{},5,5,{}\n".format(disp_obj.Name, disp_obj.yRotation))
+            f.write("{},5,5,{:.13G}\n".format(disp_obj.Name, disp_obj.yRotation))
         if disp_obj.rotzFix:
             f.write("{},6\n".format(disp_obj.Name))
         elif not disp_obj.rotzFree:
-            f.write("{},6,6,{}\n".format(disp_obj.Name, disp_obj.zRotation))
+            f.write("{},6,6,{:.13G}\n".format(disp_obj.Name, disp_obj.zRotation))

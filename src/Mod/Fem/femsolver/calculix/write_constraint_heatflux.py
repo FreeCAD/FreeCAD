@@ -43,18 +43,21 @@ def get_after_write_meshdata_constraint():
 
 
 def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     if heatflux_obj.ConstraintType == "Convection":
         heatflux_key_word = "FILM"
         heatflux_facetype = "F"
         # SvdW: add factor to force heatflux to units system of t/mm/s/K
-        heatflux_values = "{},{}".format(
+        heatflux_values = "{:.13G},{:.13G}".format(
             heatflux_obj.AmbientTemp,
             heatflux_obj.FilmCoef * 0.001
         )
     elif heatflux_obj.ConstraintType == "DFlux":
         heatflux_key_word = "DFLUX"
         heatflux_facetype = "S"
-        heatflux_values = "{}".format(heatflux_obj.DFlux * 0.001)
+        heatflux_values = "{:.13G}".format(heatflux_obj.DFlux * 0.001)
 
     f.write("*{}\n".format(heatflux_key_word))
     for ref_shape in femobj["HeatFluxFaceTable"]:
