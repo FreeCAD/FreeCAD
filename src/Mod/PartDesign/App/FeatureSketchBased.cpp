@@ -1070,6 +1070,10 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
                 hasValidAxis = true;
                 axis = sketch->getAxis(Part::Part2DObject::H_Axis);
             }
+            else if (subReferenceAxis[0] == "N_Axis") {
+                hasValidAxis = true;
+                axis = sketch->getAxis(Part::Part2DObject::N_Axis);
+            }
             else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0, 4) == "Axis") {
                 int AxId = std::atoi(subReferenceAxis[0].substr(4, 4000).c_str());
                 if (AxId >= 0 && AxId < sketch->getAxisCount()) {
