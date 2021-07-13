@@ -740,8 +740,28 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         return false;
     }
 
+    // Both Mouse button is down, cancel current mode to avoid conflict with
+    // some navigation method.
+    auto btns = QApplication::mouseButtons();
+    if ((btns & Qt::RightButton) && (btns & Qt::LeftButton)) {
+        switch(_Mode) {
+        case STATUS_SKETCH_UseHandler:
+            edit->sketchHandler->quit();
+            break;
+        case STATUS_SKETCH_UseRubberBand:
+            rubberband->setWorking(false);
+
+            const_cast<Gui::View3DInventorViewer *>(viewer)->setRenderType(Gui::View3DInventorViewer::Native);
+            draw(true,false);
+            const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
+            setSketchMode(STATUS_NONE);
+            break;
+        default:
+            setSketchMode(STATUS_NONE);
+        }
+    }
     // Left Mouse button ****************************************************
-    if (Button == 1) {
+    else if (Button == 1) {
         if (pressed) {
             // Do things depending on the mode of the user interaction
             switch (_Mode) {
