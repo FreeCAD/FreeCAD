@@ -23,6 +23,7 @@
 #ifndef FC_COWDATA_H
 #define FC_COWDATA_H
 
+#include <cstdlib>
 #include <memory>
 #include <set>
 #include <map>
@@ -32,7 +33,10 @@
 
 // -------------------------------------------------------------
 
-#define _FC_RENDER_MEM_TRACE
+#ifdef FC_DEBUG
+#   define _FC_RENDER_MEM_TRACE
+#endif
+
 #ifdef _FC_RENDER_MEM_TRACE
 struct SbFCMemUnit {
   int count;

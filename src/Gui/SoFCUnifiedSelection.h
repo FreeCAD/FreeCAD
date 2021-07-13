@@ -506,12 +506,14 @@ protected:
 
         void forcePush(uintptr_t id) {
             bool res = _push(id);
+            (void)res;
             assert(res);
         }
 
         void push(SoFCSelectionRoot *node) {
             if (node) {
                 bool res = _push(node->getSelNodeId());
+                (void)res;
                 assert(res);
             }
         }
