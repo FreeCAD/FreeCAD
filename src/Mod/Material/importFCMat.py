@@ -201,7 +201,10 @@ def write(filename, dictionary, write_group_section=True):
     # first five lines are the same in any card file, see comment above read def
     if header["CardName"] != card_name_file:
         # CardName is the MatCard file name
-        FreeCAD.Console.PrintMessage("File CardName is used: {}\n".format(card_name_file))
+        FreeCAD.Console.PrintWarning(
+            "The file name {} is not equal to the card name {}. The file name is used."
+            .format(card_name_file, header["CardName"])
+        )
     f.write("; " + card_name_file + "\n")
     # f.write("; " + header["AuthorAndLicense"] + "\n")
     f.write("; " + header.get("AuthorAndLicense", "no author") + "\n")
