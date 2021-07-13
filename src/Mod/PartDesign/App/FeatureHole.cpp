@@ -55,6 +55,7 @@
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <gp_Ax1.hxx>
+# include <gp_Quaternion.hxx>
 #endif
 
 
@@ -1910,8 +1911,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             // rotate the helix so that it is pointing in the zdir.
             double angle = acos(dir_axis1*zDir);
             if (abs(angle) > Precision::Confusion()) {
-                gp_Dir rotAxis = dir_axis1^zDir;
-                mov.SetRotation(gp_Ax1(origo, rotAxis), angle);
+                mov.SetRotation(gp_Quaternion(dir_axis1, zDir));
                 TopLoc_Location loc2(mov);
                 helix.Move(loc2);
             }
