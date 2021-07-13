@@ -43,6 +43,9 @@ from femmesh import meshtools
 # as it is none standard constraint method compared to all other constraints
 def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
 
+    if not ccxwriter.fluidsection_objects:
+        return inpfile
+
     # Fluid sections:
     # fluidsection Liquid inlet outlet objs  requires special element definition
     # to fill ccxwriter.FluidInletoutlet_ele list the ccx_elset are needed
