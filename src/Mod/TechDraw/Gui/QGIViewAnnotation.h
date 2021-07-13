@@ -56,6 +56,8 @@ protected:
     void drawAnnotation();
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
     QGCustomText *m_textItem;
     QColor m_colNormal;
     QColor m_colSel;

@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2013 Jiří Procházka (Hobrasoft)
+** Copyright (C) 2013 Jiri Prochazka (Hobrasoft)
 ** Contact: http://www.hobrasoft.cz/
 **
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
@@ -315,6 +315,15 @@ void MRichTextEdit::textBold() {
 
 void MRichTextEdit::focusInEvent(QFocusEvent *) {
     f_textedit->setFocus(Qt::TabFocusReason);
+}
+
+void MRichTextEdit::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Return && event->modifiers() == Qt::ControlModifier) {
+        onSave();
+        return;
+    }
+
+    QWidget::keyPressEvent(event);
 }
 
 
