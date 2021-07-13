@@ -215,6 +215,7 @@ void TaskPocketParameters::updateUI(int index)
     else {
         isLengthEditVisable = true;
         isLengthEdit2Visable = true;
+        isReversedEnabled = true;
     }    
 
     ui->lengthEdit->setVisible( isLengthEditVisable );
