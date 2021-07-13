@@ -233,7 +233,7 @@ class FemInputWriter():
         self.get_constraints_displacement_nodes()
         self.get_constraints_planerotation_nodes()
 
-        # constraints suface sets getter
+        # constraints surface sets getter
         self.get_constraints_contact_faces()
         self.get_constraints_tie_faces()
         self.get_constraints_sectionprint_faces()
@@ -529,7 +529,7 @@ class FemInputWriter():
         if not self.sectionprint_objects:
             return
         # TODO: use meshtools to get the surfaces
-        # see constraint contact or constrint tie
+        # see constraint contact or constraint tie
         for femobj in self.sectionprint_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             sectionprint_obj = femobj["Object"]
@@ -563,7 +563,7 @@ class FemInputWriter():
                     else:
                         # in Gui only Faces can be added
                         FreeCAD.Console.PrintError(
-                            "Wrong reference shapt type for {} "
+                            "Wrong reference shape type for {} "
                             "Only Faces are allowed, but a {} was found.\n"
                             .format(sectionprint_obj.Name, ref_shape.ShapeType)
                         )
@@ -572,7 +572,7 @@ class FemInputWriter():
         if not self.heatflux_objects:
             return
         # TODO: use meshtools to get the surfaces (or move to mesh tools)
-        # see constraint contact or constrint tie and constraint force
+        # see constraint contact or constraint tie and constraint force
         # heatflux_obj_face_table: see force_obj_node_load_table
         #     [
         #         ("refshape_name:elemname", face_table),
@@ -1131,7 +1131,7 @@ def get_ccx_elset_name_short(names):
     else:
         error = (
             "FEM: Trouble in ccx input file, because an"
-            "beam elset name is longer than 20 character! {}\n"
+            "beam elset name is longer than 20 characters! {}\n"
             .format(ccx_elset_name)
         )
         raise Exception(error)

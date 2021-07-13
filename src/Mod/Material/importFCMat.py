@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD material card importer"
 __author__ = "Juergen Riegel"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 import os
@@ -119,7 +119,7 @@ def read(filename):
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912#p489721
         # older FreeCAD do not write utf-8 for special character on windows
         # I have seen "ISO-8859-15" or "windows-1252"
-        # explizit utf-8 writing, https://github.com/FreeCAD/FreeCAD/commit/9a564dd906f
+        # explicit utf-8 writing, https://github.com/FreeCAD/FreeCAD/commit/9a564dd906f
         FreeCAD.Console.PrintError("Error on card loading. File might not utf-8.")
         return {}
     d = {}
