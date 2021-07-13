@@ -44,13 +44,14 @@ struct SbFCMemUnit {
 };
 
 struct SbFCMemUnitStats {
-  static std::map<std::type_index, SbFCMemUnit> _MemUnits;
-  static int64_t _MemSize;
-  static int64_t _MemMaxSize;
+  std::map<std::type_index, SbFCMemUnit> _MemUnits;
+  int64_t _MemSize;
+  int64_t _MemMaxSize;
+  static SbFCMemUnitStats *get();
 };
 
 template<typename T>
-struct SoFCAllocator : std::allocator<T>, SbFCMemUnitStats {
+struct SoFCAllocator : std::allocator<T> {
   typedef typename std::allocator<T>::pointer pointer;
   typedef typename std::allocator<T>::size_type size_type;
   template<typename U> struct rebind { typedef SoFCAllocator<U> other; };
@@ -64,18 +65,20 @@ struct SoFCAllocator : std::allocator<T>, SbFCMemUnitStats {
     void* p = std::malloc(size * sizeof(T));
     if(p == 0)
       throw std::bad_alloc();
-    _MemSize += size * sizeof(T);
-    if (_MemSize > _MemMaxSize)
-      _MemMaxSize = _MemSize;
-    auto &unit = _MemUnits[std::type_index(typeid(T))];
+    auto stats = SbFCMemUnitStats::get();
+    stats->_MemSize += size * sizeof(T);
+    if (stats->_MemSize > stats->_MemMaxSize)
+      stats->_MemMaxSize = stats->_MemSize;
+    auto &unit = stats->_MemUnits[std::type_index(typeid(T))];
     unit.count += size;
     if (unit.count > unit.maxcount)
       unit.maxcount = unit.count;
     return static_cast<pointer>(p);
   }
   void deallocate(pointer p, size_type size) {
-    _MemSize -= size * sizeof(T);
-    _MemUnits[std::type_index(typeid(T))].count -= size;
+    auto stats = SbFCMemUnitStats::get();
+    stats->_MemSize -= size * sizeof(T);
+    stats->_MemUnits[std::type_index(typeid(T))].count -= size;
     std::free(p);
   }
 };

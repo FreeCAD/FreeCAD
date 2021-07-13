@@ -80,9 +80,13 @@ typedef SoFCRenderCache::Material Material;
 typedef SoFCRenderCache::VertexCacheEntry VertexCacheEntry;
 
 #ifdef _FC_RENDER_MEM_TRACE
-std::map<std::type_index, SbFCMemUnit> SbFCMemUnitStats::_MemUnits;
-int64_t SbFCMemUnitStats::_MemSize;
-int64_t SbFCMemUnitStats::_MemMaxSize;
+SbFCMemUnitStats *SbFCMemUnitStats::get()
+{
+  static SbFCMemUnitStats *inst;
+  if (!inst)
+    inst = new SbFCMemUnitStats;
+  return inst;
+}
 #endif
 
 struct CacheEntry {
