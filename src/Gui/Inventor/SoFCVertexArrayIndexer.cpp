@@ -347,19 +347,21 @@ SoFCVertexArrayIndexer::render(SoState * state,
         }
       }
 
-      if (renderasvbo) {
-        for (int i : this->partialindices) {
-          this->partialoffsets.push_back(this->linestripoffsets[i]);
-          this->partialcounts.push_back(this->linestripcounts[i]);
+      if (!this->linestripoffsets.empty()) {
+        if (renderasvbo) {
+          for (int i : this->partialindices) {
+            this->partialoffsets.push_back(this->linestripoffsets[i]);
+            this->partialcounts.push_back(this->linestripcounts[i]);
+          }
         }
-      }
-      else {
-        int typeshift = this->use_shorts ? 1 : 2;
-        for (int i : this->partialindices) {
-          this->partialcounts.push_back(this->linestripcounts[i]);
-          this->partialoffsets.push_back(
-              (intptr_t)(this->indexarray.getArrayPtr()
-                + (this->linestripoffsets[i] >> typeshift)));
+        else {
+          int typeshift = this->use_shorts ? 1 : 2;
+          for (int i : this->partialindices) {
+            this->partialcounts.push_back(this->linestripcounts[i]);
+            this->partialoffsets.push_back(
+                (intptr_t)(this->indexarray.getArrayPtr()
+                  + (this->linestripoffsets[i] >> typeshift)));
+          }
         }
       }
     }
