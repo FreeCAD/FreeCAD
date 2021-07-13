@@ -116,6 +116,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
 {
     TopoShape path, auxpath;
     try {
+        positionByPrevious();
         auto invTrsf = getLocation().Inverted().Transformation();
 
         //build the paths
@@ -182,7 +183,6 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
 
     try {
         //setup the location
-        feat->positionByPrevious();
         TopLoc_Location invObjLoc = feat->getLocation().Inverted();
         if(!base.isNull())
             base.move(invObjLoc);

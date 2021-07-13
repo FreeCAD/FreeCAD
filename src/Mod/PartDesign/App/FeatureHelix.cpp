@@ -133,6 +133,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
 
     // update Axis from ReferenceAxis
     try {
+        positionByPrevious();
         updateAxis();
         return Pipe::_execute(this, TopoShape(generateHelixPath()));
     }
