@@ -282,6 +282,14 @@ class _Equipment(ArchComponent.Component):
         else:
             obj.IfcType = "Undefined"
 
+        try:
+            import ArchSketchObject
+            print(" Done :  __init__() import ArchSketchObject ")
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj)  # ,linkFp)
+            print(" Done :  __init__() ArchSketchObject.setPropertiesLinkCommon() ")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, __init__() ")
+
     def setProperties(self,obj):
 
         pl = obj.PropertiesList
@@ -305,6 +313,14 @@ class _Equipment(ArchComponent.Component):
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
 
+        try:
+            import ArchSketchObject
+            print("  Done :  onDocumentRestored() import ArchSketchObject ")
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj)  # ,linkFp)
+            print("  Done :  onDocumentRestored() ArchSketchObject.setPropertiesLinkCommon() ")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, onDocumentRestored() ")
+
     def onChanged(self,obj,prop):
 
         self.hideSubobjects(obj,prop)
@@ -322,6 +338,29 @@ class _Equipment(ArchComponent.Component):
                 base = obj.Base.Shape.copy()
                 base = self.processSubShapes(obj,base,pl)
                 self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)
+
+        try:
+            import ArchSketchObject
+            print(" Done :  execute() import ArchSketchObject")
+            ArchSketchObject.updateAttachmentOffset(obj)
+            print(" Done :  execute() updateAttachmentOffset(obj)")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, execute()")
+
+    def appLinkExecute(self, fp, linkFp, index, linkElement):
+
+        try:
+            import ArchSketchObject
+            print(" Done :  appLinkExecute() import ArchSketchObject")
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, fp, linkFp)
+            print(" Done :  appLinkExecute() ArchSketchObject.setPropertiesLinkCommon(obj)")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, appLinkExecute() ")
+
+        try:
+            ArchSketchObject.updateAttachmentOffset(fp, linkFp)
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, appLinkExecute() - updateAttachmentOffset() not available")
 
     def computeAreas(self,obj):
         return
