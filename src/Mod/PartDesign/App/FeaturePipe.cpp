@@ -96,6 +96,7 @@ Pipe::Pipe()
     ADD_PROPERTY_TYPE(Transformation,(long(0)),"Sweep",App::Prop_None,"Section transformation mode");
     Mode.setEnums(ModeEnums);
     Transition.setEnums(TransitionEnums);
+    Transition.setValue(1);
     Transformation.setEnums(TransformEnums);
 }
 
