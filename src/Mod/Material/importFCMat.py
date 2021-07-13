@@ -21,18 +21,16 @@
 # ***************************************************************************
 
 
-import FreeCAD
-from materialtools.cardutils import get_material_template
-import os
-import sys
-if sys.version_info.major >= 3:
-    unicode = str
-
-
 __title__ = "FreeCAD material card importer"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+
+import os
+
+import FreeCAD
+
+from materialtools.cardutils import get_material_template
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__', 'io']:
@@ -87,10 +85,10 @@ def decode(name):
 # http://www.docuxplorer.com/WebHelp/INI_File_Format.htm
 # mainly this parser here is used in FreeCAD
 # in the module Material.py is another implementation of reading and writing FCMat files
-# this implementation uses the ConfigParser module
+# the implementation in Material.py uses Pythons ConfigParser module
 # in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
 # since this mixture seems to have be there for ages it should not be changed for 0.18
-# TODO: get rid of this mixture in FreeCAD 0.19
+# TODO and FIXME: get rid of this mixture
 
 # Metainformation
 # first five lines are the same in any card file
@@ -103,15 +101,9 @@ def read(filename):
     "reads a FCMat file and returns a dictionary from it"
     # the reader should return a dictionary in any case even if the file
     # has problems, an empty dict should be returned in such case
-    if isinstance(filename, unicode):
-        if sys.version_info.major < 3:
-            filename = filename.encode(sys.getfilesystemencoding())
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
-    if sys.version_info.major >= 3:
-        f = pythonopen(filename, encoding="utf8")
-    else:
-        f = pythonopen(filename)
+    f = pythonopen(filename, encoding="utf8")
     d = {}
     d["CardName"] = card_name_file  # CardName is the MatCard file name
     for ln, line in enumerate(f):
@@ -190,9 +182,6 @@ def write(filename, dictionary, write_group_section=True):
         FreeCAD.ConfigGet("BuildVersionMinor"),
         FreeCAD.ConfigGet("BuildRevision")
     )
-    if isinstance(filename, unicode):
-        if sys.version_info.major < 3:
-            filename = filename.encode(sys.getfilesystemencoding())
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
     # print(card_name_file)
@@ -202,13 +191,9 @@ def write(filename, dictionary, write_group_section=True):
     if header["CardName"] != card_name_file:
         # CardName is the MatCard file name
         FreeCAD.Console.PrintMessage("File CardName is used: {}\n".format(card_name_file))
-    if sys.version_info.major >= 3:
-        f.write("; " + card_name_file + "\n")
-        # f.write("; " + header["AuthorAndLicense"] + "\n")
-        f.write("; " + header.get("AuthorAndLicense", "no author") + "\n")
-    else:
-        f.write("; " + header["CardName"].encode("utf8") + "\n")
-        f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
+    f.write("; " + card_name_file + "\n")
+    # f.write("; " + header["AuthorAndLicense"] + "\n")
+    f.write("; " + header.get("AuthorAndLicense", "no author") + "\n")
     f.write("; information about the content of such cards can be found on the wiki:\n")
     f.write("; https://www.freecadweb.org/wiki/Material\n")
     f.write("; file created by FreeCAD " + rev + "\n")
@@ -226,10 +211,7 @@ def write(filename, dictionary, write_group_section=True):
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name, even if empty
-                        if sys.version_info.major >= 3:
-                            f.write(k + " = " + i + "\n")
-                        else:
-                            f.write(k + " = " + i.encode('utf-8') + "\n")
+                        f.write(k + " = " + i + "\n")
     f.close()
 
 
