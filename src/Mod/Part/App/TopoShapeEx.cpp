@@ -82,6 +82,7 @@
 # include <BRepTools_ShapeSet.hxx>
 # include <BRepTools_WireExplorer.hxx>
 # include <BRepFill_CompatibleWires.hxx>
+# include <BRepProj_Projection.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
@@ -183,6 +184,9 @@
 #include <Base/Exception.h>
 #include <Base/Console.h>
 #include <App/MappedElement.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include "PartFeature.h"
 
 #include "PartPyCXX.h"
 #include "TopoShape.h"
@@ -1792,9 +1796,9 @@ void GenericShapeMapper::init(const TopoShape &src, const TopoDS_Shape &dst)
 }
 
 TopoShape &TopoShape::makEPrism(const TopoShape &_base,
-                                const TopoShape& profileshape,
+                                const TopoShape& sketchshape,
                                 const TopoShape& supportface,
-                                const TopoShape& uptoface,
+                                const TopoShape& _uptoface,
                                 const gp_Dir& direction,
                                 Standard_Integer Mode,
                                 Standard_Boolean Modify,
@@ -1804,25 +1808,91 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
     BRepFeat_MakePrism PrismMaker;
 
+    TopoShape uptoface(_uptoface);
     TopoShape base(_base);
     if (base.isNull() && !uptoface.isNull())
         base.makEPrism(uptoface, direction);
 
-    TopoDS_Shape res = base.getShape();
-    for (auto &face : profileshape.getSubTopoShapes(TopAbs_FACE)) {
-        PrismMaker.Init(res, TopoDS::Face(face.getShape()),
-                TopoDS::Face(supportface.getShape()), direction, Mode, Modify);
+    // Check whether the face has limits or not. Unlimited faces have no wire
+    // Note: Datum planes are always unlimited
+    if (uptoface.hasSubShape(TopAbs_WIRE)) {
+        TopoDS_Face face = TopoDS::Face(uptoface.getShape());
+        bool remove_limits = false;
+        // Remove the limits of the upToFace so that the extrusion works even if sketchshape is larger
+        // than the upToFace
+        for (auto &sketchface : sketchshape.getSubTopoShapes(TopAbs_FACE)) {
+            // Get outermost wire of sketch face
+            TopoShape outerWire = sketchface.splitWires();
+            BRepProj_Projection proj(TopoDS::Wire(outerWire.getShape()), face, direction);
+            if (!proj.More() || !proj.Current().Closed()) {
+                remove_limits = true;
+                break;
+            }
+        }
 
-        PrismMaker.Perform(uptoface.getShape());
+        // It must also be checked that all projected inner wires of the upToFace
+        // lie outside the sketch shape. If this is not the case then the sketch
+        // shape is not completely covered by the upToFace. See #0003141
+        if (!remove_limits) {
+            std::vector<TopoShape> wires;
+            uptoface.splitWires(&wires);
+            for (auto & w : wires) {
+                BRepProj_Projection proj(TopoDS::Wire(w.getShape()), sketchshape.getShape(), -direction);
+                if (proj.More()) {
+                    remove_limits = true;
+                    break;
+                }
+            }
+        }
 
-        if (!PrismMaker.IsDone() || PrismMaker.Shape().IsNull())
-            FC_THROWM(Base::CADKernelError,"BRepFeat_MakePrism: Could not extrude the sketch!");
-
-        res = PrismMaker.Shape();
-
-        if (Mode == 2)
-            Mode = 1;
+        if (remove_limits) {
+            // Note: Using an unlimited face every time gives unnecessary failures for concave faces
+            TopLoc_Location loc = face.Location();
+            BRepAdaptor_Surface adapt(face, Standard_False);
+            // use the placement of the adapter, not of the upToFace
+            loc = TopLoc_Location(adapt.Trsf());
+            BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
+#if OCC_VERSION_HEX >= 0x060502
+                    , Precision::Confusion()
+#endif
+            );
+            if (!mkFace.IsDone()) 
+                remove_limits = false;
+            else
+                uptoface.setShape(mkFace.Shape().Located(loc), false);
+        }
     }
+
+    TopoDS_Shape res;
+    for (;;) {
+        try {
+            res = base.getShape();
+            for (auto &face : sketchshape.getSubTopoShapes(TopAbs_FACE)) {
+
+                PrismMaker.Init(res, TopoDS::Face(face.getShape()),
+                        TopoDS::Face(supportface.getShape()), direction, Mode, Modify);
+
+                PrismMaker.Perform(uptoface.getShape());
+
+                if (!PrismMaker.IsDone() || PrismMaker.Shape().IsNull())
+                    FC_THROWM(Base::CADKernelError,"BRepFeat_MakePrism: Could not extrude the sketch!");
+
+                res = PrismMaker.Shape();
+
+                if (Mode == 2)
+                    Mode = 1;
+            }
+            break;
+        } catch (Base::Exception &) {
+            if (_uptoface.isSame(uptoface)) throw;
+        } catch (Standard_Failure &) {
+            if (_uptoface.isSame(uptoface)) throw;
+        }
+        // retry using the original up to face in case unnecessary failure due
+        // to removing the limits
+        uptoface = _uptoface;
+    }
+
     // BRepFeat_MakePrism does not seem to have a working Generated() and
     // Modified() function, hence, the resulting element mapping will be
     // broken. We use own own mapper instead.
@@ -1831,8 +1901,8 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
     std::vector<TopoShape> srcShapes;
     srcShapes.push_back(base);
-    if (!profileshape.isNull() && !base.findShape(profileshape.getShape()))
-        srcShapes.push_back(profileshape);
+    if (!sketchshape.isNull() && !base.findShape(sketchshape.getShape()))
+        srcShapes.push_back(sketchshape);
     if (!supportface.isNull() && !base.findShape(supportface.getShape()))
         srcShapes.push_back(supportface);
     if (!uptoface.isNull() && !base.findShape(uptoface.getShape()))

@@ -572,53 +572,6 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
 
     TopoDS_Face face = TopoDS::Face(upToFace.getShape());
 
-    // Check whether the face has limits or not. Unlimited faces have no wire
-    // Note: Datum planes are always unlimited
-    if (upToFace.hasSubShape(TopAbs_WIRE)) {
-        // Remove the limits of the upToFace so that the extrusion works even if sketchshape is larger
-        // than the upToFace
-        bool remove_limits = false;
-        for (auto &sketchface : sketchshape.getSubTopoShapes(TopAbs_FACE)) {
-            // Get outermost wire of sketch face
-            TopoShape outerWire = sketchface.splitWires();
-            if (!checkWireInsideFace(TopoDS::Wire(outerWire.getShape()), face, dir)) {
-                remove_limits = true;
-                break;
-            }
-        }
-
-        // It must also be checked that all projected inner wires of the upToFace
-        // lie outside the sketch shape. If this is not the case then the sketch
-        // shape is not completely covered by the upToFace. See #0003141
-        if (!remove_limits) {
-            std::vector<TopoShape> wires;
-            upToFace.splitWires(&wires);
-            for (auto & w : wires) {
-                BRepProj_Projection proj(TopoDS::Wire(w.getShape()), sketchshape.getShape(), -dir);
-                if (proj.More()) {
-                    remove_limits = true;
-                    break;
-                }
-            }
-        }
-
-        if (remove_limits) {
-            // Note: Using an unlimited face every time gives unnecessary failures for concave faces
-            TopLoc_Location loc = face.Location();
-            BRepAdaptor_Surface adapt(face, Standard_False);
-            // use the placement of the adapter, not of the upToFace
-            loc = TopLoc_Location(adapt.Trsf());
-            BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
-    #if OCC_VERSION_HEX >= 0x060502
-                  , Precision::Confusion()
-    #endif
-            );
-            if (!mkFace.IsDone())
-                throw Base::ValueError("SketchBased: Up To Face: Failed to create unlimited face");
-            upToFace.setShape(mkFace.Shape().Located(loc), false);
-        }
-    }
-
     // Check that the upToFace does not intersect the sketch face and
     // is not parallel to the extrusion direction (for simplicity, supportface is used instead of sketchshape)
     BRepAdaptor_Surface adapt1(TopoDS::Face(supportface.getShape()));
