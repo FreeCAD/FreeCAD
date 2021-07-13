@@ -67,14 +67,14 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    refresh();
-
     ui->ThreadType->addItem(tr("None"), QByteArray("None"));
     ui->ThreadType->addItem(tr("ISO metric regular profile"), QByteArray("ISO"));
     ui->ThreadType->addItem(tr("ISO metric fine profile"), QByteArray("ISO"));
     ui->ThreadType->addItem(tr("UTS coarse profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
+
+    refresh();
 
     connect(ui->Threaded, SIGNAL(clicked(bool)), this, SLOT(threadedChanged()));
     connect(ui->ThreadType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadTypeChanged(int)));
