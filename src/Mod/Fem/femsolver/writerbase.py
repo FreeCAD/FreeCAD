@@ -29,6 +29,7 @@ __url__ = "https://www.freecadweb.org"
 #  @{
 
 import os
+from os.path import join
 
 import FreeCAD
 
@@ -126,6 +127,83 @@ class FemInputWriter():
         self.femelement_faces_table = {}
         self.femelement_edges_table = {}
         self.femelement_count_test = True
+
+    # ********************************************************************************************
+    # ********************************************************************************************
+    # generic writer for constraints mesh sets and constraints property data
+    # write constraint node sets, constraint face sets, constraint element sets
+    def write_constraints_meshsets(
+        self,
+        f,
+        femobjs,
+        con_module
+    ):
+        if not femobjs:
+            return
+
+        analysis_types = con_module.get_analysis_types()
+        if analysis_types != "all" and self.analysis_type not in analysis_types:
+            return
+
+        def constraint_sets_loop_writing(the_file, femobjs, write_before, write_after):
+            if write_before != "":
+                f.write(write_before)
+            for femobj in femobjs:
+                # femobj --> dict, FreeCAD document object is femobj["Object"]
+                the_obj = femobj["Object"]
+                f.write("** {}\n".format(the_obj.Label))
+                con_module.write_meshdata_constraint(the_file, femobj, the_obj, self)
+            if write_after != "":
+                f.write(write_after)
+
+        write_before = con_module.get_before_write_meshdata_constraint()
+        write_after = con_module.get_after_write_meshdata_constraint()
+
+        # write sets to file
+        write_name = con_module.get_sets_name()
+        f.write("\n{}\n".format(59 * "*"))
+        f.write("** {}\n".format(write_name.replace("_", " ")))
+
+        if self.split_inpfile is True:
+            file_name_split = "{}_{}.inp".format(self.mesh_name, write_name)
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            inpfile_split = open(join(self.dir_name, file_name_split), "w")
+            constraint_sets_loop_writing(inpfile_split, femobjs, write_before, write_after)
+            inpfile_split.close()
+        else:
+            constraint_sets_loop_writing(f, femobjs, write_before, write_after)
+
+    # write constraint property data
+    def write_constraints_propdata(
+        self,
+        f,
+        femobjs,
+        con_module
+    ):
+
+        if not femobjs:
+            return
+
+        analysis_types = con_module.get_analysis_types()
+        if analysis_types != "all" and self.analysis_type not in analysis_types:
+            return
+
+        write_before = con_module.get_before_write_constraint()
+        write_after = con_module.get_after_write_constraint()
+
+        # write constraint to file
+        f.write("\n{}\n".format(59 * "*"))
+        f.write("** {}\n".format(con_module.get_constraint_title()))
+        if write_before != "":
+            f.write(write_before)
+        for femobj in femobjs:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            the_obj = femobj["Object"]
+            f.write("** {}\n".format(the_obj.Label))
+            con_module.write_constraint(f, femobj, the_obj, self)
+        if write_after != "":
+            f.write(write_after)
 
     # ********************************************************************************************
     # ********************************************************************************************
