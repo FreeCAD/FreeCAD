@@ -44,7 +44,10 @@ def get_after_write_constraint():
 
 def write_constraint(f, femobj, inittemp_obj, ccxwriter):
 
-    f.write("{0},{1}\n".format(ccxwriter.ccx_nall, inittemp_obj.initialTemperature))
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
+
+    f.write("{},{:.13G}\n".format(ccxwriter.ccx_nall, inittemp_obj.initialTemperature))
 
 
 # Should only be one object in the analysis

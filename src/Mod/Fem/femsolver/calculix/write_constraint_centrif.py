@@ -72,6 +72,8 @@ def write_meshdata_constraint(f, femobj, centrif_obj, ccxwriter):
 
 def write_constraint(f, femobj, centrif_obj, ccxwriter):
 
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     # get some data from the centrif_obj
     refobj = centrif_obj.RotationAxis[0][0]
     subobj = centrif_obj.RotationAxis[0][1][0]
@@ -90,10 +92,6 @@ def write_constraint(f, femobj, centrif_obj, ccxwriter):
 
     # write to file
     f.write("*DLOAD\n")
-    # Why {:.13G} ...
-    # ccx uses F20.0 FORTRAN input fields, see in dload.f in ccx's source
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=22759&#p176578
-    # example "{:.13G}".format(math.sqrt(2.)*-1e100) and count chars
     f.write(
         "{},CENTRIF,{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n"
         .format(

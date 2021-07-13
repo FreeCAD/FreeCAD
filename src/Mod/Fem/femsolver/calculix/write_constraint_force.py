@@ -43,6 +43,9 @@ def get_after_write_meshdata_constraint():
 
 
 def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     direction_vec = femobj["Object"].DirectionVector
     for ref_shape in femobj["NodeLoadTable"]:
         f.write("** " + ref_shape[0] + "\n")

@@ -74,6 +74,9 @@ def write_meshdata_constraint(f, femobj, fix_obj, ccxwriter):
 
 
 def write_constraint(f, femobj, fix_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     if (
         ccxwriter.femmesh.Volumes
         and (len(ccxwriter.shellthickness_objects) > 0 or len(ccxwriter.beamsection_objects) > 0)
