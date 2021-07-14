@@ -175,6 +175,8 @@ class DraftLink(DraftObject):
                 obj.PlacementList = pls
                 obj.setPropertyStatus('PlacementList', 'Immutable')
                 obj.Count = len(pls)
+        elif hasattr(obj, 'Count') and obj.Count != len(pls): # required for regular pointarrays
+            obj.Count = len(pls)
 
         if obj.Base:
             shape = getattr(obj.Base, 'Shape', None)
