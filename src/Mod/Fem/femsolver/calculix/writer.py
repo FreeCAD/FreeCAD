@@ -84,11 +84,11 @@ units_information = """*********************************************************
 **
 **  This leads to:
 **  Force: N
-**  Pressure: N/mm^2
+**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
 **  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
-**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
+**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
+**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
 """
 
 
