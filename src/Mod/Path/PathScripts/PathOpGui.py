@@ -1283,7 +1283,7 @@ def Create(res):
     obj = res.objFactory(res.name)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
-        obj.ViewObject.Visibility = False
+        obj.ViewObject.Visibility = True
 
         FreeCAD.ActiveDocument.commitTransaction()
         obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
