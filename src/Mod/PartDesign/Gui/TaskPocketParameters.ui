@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>193</width>
-    <height>272</height>
+    <width>282</width>
+    <height>354</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,6 +83,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxInverse">
+     <property name="text">
+      <string>Inverse</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="labelLength2">
@@ -151,6 +158,7 @@
   <tabstop>offsetEdit</tabstop>
   <tabstop>checkBoxMidplane</tabstop>
   <tabstop>checkBoxReversed</tabstop>
+  <tabstop>checkBoxInverse</tabstop>
   <tabstop>lengthEdit2</tabstop>
   <tabstop>buttonFace</tabstop>
   <tabstop>lineFaceName</tabstop>
