@@ -8182,24 +8182,24 @@ Evolumes
 ** MaterialCopper
 *MATERIAL, NAME=MaterialCopper
 *ELASTIC
-130000, 0.354
+130000,0.354
 *CONDUCTIVITY
-200.000
+200
 *EXPANSION
-2.000e-05
+2E-05
 *SPECIFIC HEAT
-3.850e+08
+385000000
 ** FreeCAD material name: Invar
 ** MaterialInvar
 *MATERIAL, NAME=MaterialInvar
 *ELASTIC
-137000, 0.280
+137000,0.28
 *CONDUCTIVITY
-13.000
+13
 *EXPANSION
-1.200e-06
+1.2E-06
 *SPECIFIC HEAT
-5.100e+08
+510000000
 
 ***********************************************************
 ** Initial temperature constraint

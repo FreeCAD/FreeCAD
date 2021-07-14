@@ -113,13 +113,13 @@ Evolumes
 ** MechanicalMaterial
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
-200000, 0.300
+200000,0.3
 *CONDUCTIVITY
-43.270
+43.27
 *EXPANSION
-1.200e-05
+1.2E-05
 *SPECIFIC HEAT
-5.000e+08
+500000000
 
 ***********************************************************
 ** Initial temperature constraint

@@ -92,9 +92,9 @@ Eedges
 ** FluidMaterial
 *MATERIAL, NAME=FluidMaterial
 *DENSITY
-9.980e-10
+9.98E-10
 *FLUID CONSTANTS
-4.182e+06, 1.003e-09
+4182000,1.003E-09
 
 ***********************************************************
 ** Sections

@@ -3622,7 +3622,7 @@ Evolumes
 ** FemMaterial
 *MATERIAL, NAME=FemMaterial
 *ELASTIC
-210000, 0.300
+210000,0.3
 
 ***********************************************************
 ** Sections

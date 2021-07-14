@@ -19992,7 +19992,7 @@ Evolumes
 ** Material_lin
 *MATERIAL, NAME=Material_lin
 *ELASTIC
-210000, 0.300
+210000,0.3
 *PLASTIC
 240.0, 0.0
 270.0, 0.025
