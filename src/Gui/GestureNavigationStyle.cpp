@@ -416,6 +416,14 @@ public:
             return transit<NS::AwaitingReleaseState>();
         }
 
+        if (long_click && ev.mbstate() == NS::Event::BUTTON1DOWN) {
+            bool alt = ev.modifiers & NS::Event::ALTDOWN;
+            if (ViewParams::getGestureLongPressRotationCenter() != alt) {
+                ns.onSetRotationCenter(ev.inventor_event->getPosition());
+                return transit<NS::AwaitingReleaseState>();
+            }
+        }
+
         if(ev.isMouseButtonEvent() && ev.mbstate() == 0){
             //all buttons released
             if (long_click){
