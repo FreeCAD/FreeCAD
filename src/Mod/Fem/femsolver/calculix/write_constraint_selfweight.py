@@ -44,10 +44,12 @@ def get_after_write_constraint():
 
 def write_constraint(f, femobj, selwei_obj, ccxwriter):
 
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     f.write("*DLOAD\n")
     f.write(
         # elset, GRAV, magnitude, direction x, dir y ,dir z
-        "{},GRAV,{},{},{},{}\n"
+        "{},GRAV,{:.13G},{:.13G},{:.13G},{:.13G}\n"
         .format(
             ccxwriter.ccx_eall,
             ccxwriter.gravity,  # actual magnitude of gravity vector

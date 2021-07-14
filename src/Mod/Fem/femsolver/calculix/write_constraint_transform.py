@@ -67,6 +67,9 @@ def write_meshdata_constraint(f, femobj, trans_obj, ccxwriter):
 
 
 def write_constraint(f, femobj, trans_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     trans_name = ""
     trans_type = ""
     if trans_obj.TransformType == "Rectangular":
@@ -82,7 +85,7 @@ def write_constraint(f, femobj, trans_obj, ccxwriter):
         trans_obj.Name,
         trans_type,
     ))
-    f.write("{:f},{:f},{:f},{:f},{:f},{:f}\n".format(
+    f.write("{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n".format(
         coords[0],
         coords[1],
         coords[2],

@@ -61,6 +61,9 @@ def write_meshdata_constraint(f, femobj, sectionprint_obj, ccxwriter):
 
 
 def write_constraint(f, femobj, sectionprint_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     f.write(
         "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
         .format(sectionprint_obj.Name, sectionprint_obj.Name)

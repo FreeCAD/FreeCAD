@@ -8231,7 +8231,7 @@ ConstraintFixed,3
 ** Fixed temperature constraint applied
 ** ConstraintTemperature
 *BOUNDARY
-ConstraintTemperature,11,11,373.0
+ConstraintTemperature,11,11,373
 
 
 ***********************************************************

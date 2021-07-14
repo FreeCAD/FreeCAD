@@ -97,5 +97,8 @@ def write_meshdata_constraint(f, femobj, fric_obj, ccxwriter):
 
 
 def write_constraint(f, femobj, fric_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     f.write("*MPC\n")
     f.write("PLANE,{}\n".format(fric_obj.Name))
