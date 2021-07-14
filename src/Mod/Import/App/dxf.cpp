@@ -14,6 +14,7 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+#include <Base/Stream.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 #include "dxf.h"
@@ -47,7 +48,7 @@ m_layerName("none")
     // start the file
     m_fail = false;
     m_version = 12;
-    m_ofs = new ofstream(filepath, ios::out);
+    m_ofs = new Base::ofstream(filepath, ios::out);
     m_ssBlock     = new std::ostringstream();
     m_ssBlkRecord = new std::ostringstream();
     m_ssEntity    = new std::ostringstream();
@@ -433,7 +434,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
         Base::Console().Message("dxf unable to open %s!\n",fileSpec.c_str());
     } else {
         string line;
-        ifstream inFile (fi.filePath().c_str());
+        Base::ifstream inFile (fi.filePath().c_str());
 
         while (!inFile.eof())
         {
@@ -1753,7 +1754,7 @@ CDxfRead::CDxfRead(const char* filepath)
     memset( m_block_name, '\0', sizeof(m_block_name) );
     m_ignore_errors = true;
 
-    m_ifs = new ifstream(filepath);
+    m_ifs = new Base::ifstream(filepath);
     if(!(*m_ifs)){
         m_fail = true;
         printf("DXF file didn't load\n");
