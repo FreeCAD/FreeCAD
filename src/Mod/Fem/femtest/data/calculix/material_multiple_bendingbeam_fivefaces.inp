@@ -2540,11 +2540,11 @@ Efaces
 ***********************************************************
 ** Sections
 *SHELL SECTION, ELSET=FemMaterial1ShellThickness, MATERIAL=FemMaterial1
-10.0
+10
 *SHELL SECTION, ELSET=FemMaterial2ShellThickness, MATERIAL=FemMaterial2
-10.0
+10
 *SHELL SECTION, ELSET=FemMaterial3ShellThickness, MATERIAL=FemMaterial3
-10.0
+10
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
