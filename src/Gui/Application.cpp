@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include "InventorAll.h"
+# include <unordered_map>
 # include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <sstream>
@@ -188,6 +189,7 @@ struct ApplicationP
     /// Handles all commands
     CommandManager commandManager;
     std::string initWorkbench;
+    std::unordered_map<const App::DocumentObject *, ViewProvider *> viewproviderMap;
 };
 
 static PyObject *
@@ -940,6 +942,9 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
 
+    for (auto obj : Doc.getObjects())
+        d->viewproviderMap.erase(obj);
+
     // For exception-safety use a smart pointer
     unique_ptr<Document> delDoc (doc->second);
     d->documents.erase(doc);
@@ -1011,12 +1016,18 @@ void Application::slotActiveDocument(const App::Document& Doc)
 
 void Application::slotNewObject(const ViewProvider& vp)
 {
+    auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+    if (vpd && vpd->getObject())
+        d->viewproviderMap[vpd->getObject()] = vpd;
     this->signalNewObject(vp);
 }
 
 void Application::slotDeletedObject(const ViewProvider& vp)
 {
     this->signalDeletedObject(vp);
+    auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+    if (vpd && vpd->getObject())
+        d->viewproviderMap.erase(vpd->getObject());
 }
 
 void Application::slotChangedObject(const ViewProvider& vp, const App::Property& prop)
@@ -1303,16 +1314,10 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
-    App::Document* doc = obj ? obj->getDocument() : 0;
-    if (doc) {
-        Gui::Document* gui = getDocument(doc);
-        if (gui) {
-            ViewProvider* vp = gui->getViewProvider(obj);
-            return vp;
-        }
-    }
-
-    return 0;
+    auto it = d->viewproviderMap.find(obj);
+    if (it == d->viewproviderMap.end())
+        return nullptr;
+    return it->second;
 }
 
 void Application::attachView(Gui::BaseView* pcView)
