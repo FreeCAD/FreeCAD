@@ -32,8 +32,8 @@ import FreeCAD
 def write_femelement_material(f, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
+    # see unit comment in writer module
 
-    # helper inside class method
     def is_density_needed():
         if ccxwriter.analysis_type == "frequency":
             return True
@@ -50,12 +50,7 @@ def write_femelement_material(f, ccxwriter):
 
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Materials\n")
-    f.write("** Young\'s modulus unit is MPa = N/mm2\n")
-    if is_density_needed() is True:
-        f.write("** Density\'s unit is t/mm^3\n")
-    if ccxwriter.analysis_type == "thermomech":
-        f.write("** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n")
-        f.write("** Specific Heat unit is kJ/t/K = mm^2/s^2/K\n")
+    f.write("** see information about units at file end\n")
     for femobj in ccxwriter.material_objects:
         # femobj --> dict, FreeCAD document object is femobj["Object"]
         mat_obj = femobj["Object"]
