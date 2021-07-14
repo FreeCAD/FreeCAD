@@ -31,8 +31,6 @@
 # include <BRepAdaptor_Curve.hxx>
 #endif
 
-
-#include "FeaturePolarPattern.h"
 #include "DatumLine.h"
 #include <Base/Axis.h>
 #include <Base/Exception.h>
@@ -40,6 +38,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <App/OriginFeature.h>
+
+#include "FeaturePolarPattern.h"
 
 using namespace PartDesign;
 
