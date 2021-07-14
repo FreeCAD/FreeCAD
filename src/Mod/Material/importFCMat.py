@@ -100,6 +100,7 @@ def decode(name):
 
 
 # Metainformation
+# first two lines HAVE, REALLY HAVE to be the same (no comment) in any card file !!!!!
 # first five lines are the same in any card file
 # Line1: card name
 # Line2: author and licence
@@ -108,30 +109,46 @@ def decode(name):
 # Line5: FreeCAD version info or empty
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
-    # the reader should return a dictionary in any case even if the file
-    # has problems, an empty dict should be returned in such case
+
+    # the reader returns a dictionary in any case even if the file  has problems
+    # an empty dict is returned in such case
+
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
     f = pythonopen(filename, encoding="utf8")
     try:
-        content = f.read()
-    except UnicodeDecodeError:
+        content = f.readlines()
+        # print(len(content))
+        # print(type(content))
+        # print(content)
+    except Exception:
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912#p489721
         # older FreeCAD do not write utf-8 for special character on windows
         # I have seen "ISO-8859-15" or "windows-1252"
         # explicit utf-8 writing, https://github.com/FreeCAD/FreeCAD/commit/9a564dd906f
         FreeCAD.Console.PrintError("Error on card loading. File might not utf-8.")
+        error_message = "Error on loading. Material file '{}' might not utf-8.".format(filename)
+        FreeCAD.Console.PrintError("{}\n".format(error_message))
+        if FreeCAD.GuiUp:
+            QtGui.QMessageBox.critical(None, "Error on card reading", error_message)
         return {}
     d = {}
     d["CardName"] = card_name_file  # CardName is the MatCard file name
-    for ln, line in enumerate(f):
+    for ln, line in enumerate(content):
+        # print(line)
         ln += 1  # enumerate starts with 0, but we would like to have the real line number
+
+        # line numbers are used for CardName and AuthorAndLicense
+        # the use of line number is not smart for a data model
+        # a wrong user edit could break the file
+
+        # comment
         if line.startswith('#'):
             # a '#' is assumed to be a comment which is ignored
             continue
-        # the use of line number is not smart for a data model
-        # a wrong user edit could break the file
-        if line.startswith(';') and ln == 0:
+        # CardName
+        if line.startswith(';') and ln == 1:
+            # print("Line CardName: {}".format(line))
             v = line.split(";")[1].strip()  # Line 1
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
@@ -141,11 +158,16 @@ def read(filename):
                     "File CardName ( {} ) is not content CardName ( {} )\n"
                     .format(card_name_file, card_name_content)
                 )
-        elif line.startswith(';') and ln == 1:
+
+        # AuthorAndLicense
+        elif line.startswith(';') and ln == 2:
+            # print("Line AuthorAndLicense: {}".format(line))
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
             d["AuthorAndLicense"] = v
+
+        # rest
         else:
             # ; is a Comment
             # [ is a Section
