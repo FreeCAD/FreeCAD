@@ -43,7 +43,12 @@ def get_after_write_meshdata_constraint():
 
 
 def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     rev = -1 if prs_obj.Reversed else 1
+    press_rev = rev * prs_obj.Pressure
+
     f.write("*DLOAD\n")
     for ref_shape in femobj["PressureFaces"]:
         # the loop is needed for compatibility reason
@@ -52,12 +57,12 @@ def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
         f.write("** " + ref_shape[0] + "\n")
         for face, fno in ref_shape[1]:
             if fno > 0:  # solid mesh face
-                f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
+                f.write("{},P{},{:.13G}\n".format(face, fno, press_rev))
             # on shell mesh face: fno == 0
             # normal of element face == face normal
             elif fno == 0:
-                f.write("{},P,{}\n".format(face, rev * prs_obj.Pressure))
+                f.write("{},P,{:.13G}\n".format(face, press_rev))
             # on shell mesh face: fno == -1
             # normal of element face opposite direction face normal
             elif fno == -1:
-                f.write("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
+                f.write("{},P,{:.13G}\n".format(face, -1 * press_rev))

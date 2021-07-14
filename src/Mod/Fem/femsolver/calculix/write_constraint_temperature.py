@@ -61,14 +61,17 @@ def get_after_write_constraint():
 
 
 def write_constraint(f, femobj, temp_obj, ccxwriter):
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     NumberOfNodes = len(femobj["Nodes"])
     if temp_obj.ConstraintType == "Temperature":
         f.write("*BOUNDARY\n")
-        f.write("{},11,11,{}\n".format(temp_obj.Name, temp_obj.Temperature))
+        f.write("{},11,11,{:.13G}\n".format(temp_obj.Name, temp_obj.Temperature))
         f.write("\n")
     elif temp_obj.ConstraintType == "CFlux":
         f.write("*CFLUX\n")
-        f.write("{},11,{}\n".format(
+        f.write("{},11,{:.13G}\n".format(
             temp_obj.Name,
             temp_obj.CFlux * 0.001 / NumberOfNodes
         ))

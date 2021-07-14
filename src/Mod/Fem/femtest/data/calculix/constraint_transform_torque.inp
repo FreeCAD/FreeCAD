@@ -10976,7 +10976,7 @@ Evolumes
 ** Transform Constraints
 ** ConstraintTransform
 *TRANSFORM, NSET=CylinConstraintTransform, TYPE=C
-0.000000,0.000000,-35.000000,0.000000,0.000000,-15.000000
+0,0,-35,0,0,-15
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD

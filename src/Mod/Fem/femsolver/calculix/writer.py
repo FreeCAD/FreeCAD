@@ -92,7 +92,7 @@ units_information = """*********************************************************
 """
 
 
-# TODO 
+# TODO
 # {0:.13G} or {:.13G} should be used on all places writing floating points to ccx
 # All floating points fields read from ccx are F20.0 FORTRAN input fields.
 # see in dload.f in ccx's source
@@ -208,6 +208,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         setstime = round((time_getsets - time_start), 3)
         writetime = round((time.process_time() - time_getsets), 3)
+        all_time = round((setstime + writetime), 3)
         FreeCAD.Console.PrintMessage(
             "Getting mesh sets or groups time: {} seconds \n".format(setstime)
         )
@@ -216,7 +217,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         )
         FreeCAD.Console.PrintMessage(
             "Overall time CalculiX input file: {} seconds \n\n"
-            .format(setstime + writetime)
+            .format(all_time)
         )
 
         # return

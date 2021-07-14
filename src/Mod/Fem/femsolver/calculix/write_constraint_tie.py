@@ -66,9 +66,12 @@ def write_meshdata_constraint(f, femobj, tie_obj, ccxwriter):
 
 
 def write_constraint(f, femobj, tie_obj, ccxwriter):
-    tolerance = str(tie_obj.Tolerance.getValueAs("mm")).rstrip()
+
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
+    tolerance = tie_obj.Tolerance.getValueAs("mm").Value
     f.write(
-        "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"
+        "*TIE, POSITION TOLERANCE={:.13G}, ADJUST=NO, NAME=TIE{}\n"
         .format(tolerance, tie_obj.Name)
     )
     ind_surf = "TIE_IND{}".format(tie_obj.Name)

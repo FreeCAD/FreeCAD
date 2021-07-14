@@ -2171,7 +2171,7 @@ ConstraintFixed,3
 ** Self weight Constraint
 ** ConstraintSelfWeight
 *DLOAD
-Eall,GRAV,9806,0.0,0.0,-1.0
+Eall,GRAV,9806,0,0,-1
 
 
 ***********************************************************
