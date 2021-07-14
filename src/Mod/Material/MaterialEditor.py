@@ -633,6 +633,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         Type = editor.property('Type')
         model = index.model()
         item = model.itemFromIndex(index)
+        print("item1={}".format(item.text()))
 
         if Type == "Color":
 
@@ -648,6 +649,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         else:
 
             super(MaterialsDelegate, self).setEditorData(editor, index)
+        print("item2={}".format(item.text()))
 
 
 ui = FreeCADGui.UiLoader()
