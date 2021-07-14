@@ -531,6 +531,14 @@ class _Window(ArchComponent.Component):
         obj.IfcType = "Window"
         obj.MoveWithHost = True
 
+        try:
+            import ArchSketchObject
+            print(" Done :  __init__() import ArchSketchObject ")
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj)  # ,linkFp)
+            print(" Done :  __init__() ArchSketchObject.setPropertiesLinkCommon() ")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, __init__() ")
+
     def setProperties(self,obj):
 
         lp = obj.PropertiesList
@@ -579,6 +587,14 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+        try:
+            import ArchSketchObject
+            print("  Done :  onDocumentRestored() import ArchSketchObject ")
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj, mode='ODR')
+            print("  Done :  onDocumentRestored() ArchSketchObject.setPropertiesLinkCommon() ")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, onDocumentRestored() ")
 
     def onBeforeChange(self,obj,prop):
 
@@ -865,6 +881,28 @@ class _Window(ArchComponent.Component):
                 obj.Placement = pl
         if hasattr(obj,"Area"):
             obj.Area = obj.Width.Value * obj.Height.Value
+
+        try:
+            import ArchSketchObject
+            print(" Done : execute() import ArchSketchObject")
+            ArchSketchObject.updateAttachmentOffset(obj)
+            print(" Done : execute() updateAttachmentOffset(obj)")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, execute()")
+
+    def appLinkExecute(self, fp, linkFp, index, linkElement):
+
+        try:
+            import ArchSketchObject
+            print(" Done :  appLinkExecute() import ArchSketchObject")
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, fp, linkFp)
+            print(" Done :  appLinkExecute() ArchSketchObject.setPropertiesLinkCommon()")
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, appLinkExecute() ")
+        try:
+            ArchSketchObject.updateAttachmentOffset(fp, linkFp)
+        except:
+            print(" ArchSketchObject add-on module is not installed yet, appLinkExecute() - updateAttachmentOffset() not available")
 
     def getSubVolume(self,obj,plac=None):
 
