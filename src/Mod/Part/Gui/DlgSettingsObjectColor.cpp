@@ -90,6 +90,8 @@ void DlgSettingsObjectColor::saveSettings()
     ui->AdditiveColor->onSave();
     ui->SubtractiveColor->onSave();
     ui->DressUpColor->onSave();
+
+    PartParams::setRespectSystemDPI(ui->RespectSystemDPI->isChecked());
 }
 
 void DlgSettingsObjectColor::loadSettings()
@@ -109,6 +111,8 @@ void DlgSettingsObjectColor::loadSettings()
     ui->AdditiveColor->onRestore();
     ui->SubtractiveColor->onRestore();
     ui->DressUpColor->onRestore();
+
+    ui->RespectSystemDPI->setChecked(PartParams::RespectSystemDPI());
 }
 
 /**

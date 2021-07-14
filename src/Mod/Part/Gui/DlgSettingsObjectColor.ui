@@ -22,39 +22,16 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="2">
-         <widget class="Gui::PrefCheckBox" name="checkRandomColor">
-          <property name="toolTip">
-           <string>Use random color instead</string>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="text">
-           <string>Random</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>RandomColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultShapeColor">
-          <property name="toolTip">
-           <string>The default color for new shapes</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>204</red>
-            <green>204</green>
-            <blue>204</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <string>Vertex size</string>
           </property>
          </widget>
         </item>
@@ -71,20 +48,44 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultShapeLineColor">
-          <property name="toolTip">
-           <string>The default line color for new shapes</string>
+        <item row="7" column="0">
+         <widget class="Gui::PrefCheckBox" name="twosideRendering">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>25</red>
-            <green>25</green>
-            <blue>25</blue>
-           </color>
+          <property name="toolTip">
+           <string>Bottom side of surface will be rendered the same way than top.
+If not checked, it depends on the option &quot;Backlight color&quot;
+(preferences section Display -&gt; 3D View); either the backlight color
+will be used or black.</string>
+          </property>
+          <property name="text">
+           <string>Two-side rendering</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeLineColor</cstring>
+           <cstring>TwoSideRendering</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefCheckBox" name="checkRandomColor">
+          <property name="toolTip">
+           <string>Use random color instead</string>
+          </property>
+          <property name="text">
+           <string>Random</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>RandomColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -104,35 +105,20 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Line width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefSpinBox" name="DefaultShapeLineWidth">
+        <item row="6" column="1">
+         <widget class="Gui::PrefColorButton" name="BoundingBoxColor">
           <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
+           <string>The color of bounding boxes in the 3D view</string>
           </property>
-          <property name="suffix">
-           <string>px</string>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>2</number>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeLineWidth</cstring>
+           <cstring>BoundingBoxColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -172,16 +158,45 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
+        <item row="2" column="1">
+         <widget class="Gui::PrefSpinBox" name="DefaultShapeLineWidth">
+          <property name="toolTip">
+           <string>The default line thickness for new shapes</string>
           </property>
-          <property name="text">
-           <string>Vertex size</string>
+          <property name="suffix">
+           <string>px</string>
+          </property>
+          <property name="maximum">
+           <number>9</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeLineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="DefaultShapeColor">
+          <property name="toolTip">
+           <string>The default color for new shapes</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>204</red>
+            <green>204</green>
+            <blue>204</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>
@@ -207,7 +222,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_8">
           <property name="minimumSize">
            <size>
@@ -220,51 +235,46 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefColorButton" name="BoundingBoxColor">
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="DefaultShapeLineColor">
           <property name="toolTip">
-           <string>The color of bounding boxes in the 3D view</string>
+           <string>The default line color for new shapes</string>
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <red>25</red>
+            <green>25</green>
+            <blue>25</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>BoundingBoxColor</cstring>
+           <cstring>DefaultShapeLineColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="Gui::PrefCheckBox" name="twosideRendering">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_9">
           <property name="minimumSize">
            <size>
             <width>182</width>
             <height>0</height>
            </size>
           </property>
+          <property name="text">
+           <string>Line width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="RespectSystemDPI">
           <property name="toolTip">
-           <string>Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option &quot;Backlight color&quot;
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Auto scale vertex size and line width according to system device pixel ratio.&lt;/p&gt;&lt;p&gt;This may not work well if you have multiple monitors with different pixel scaling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Two-side rendering</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TwoSideRendering</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Part</cstring>
+           <string>Respect system device pixel ratio</string>
           </property>
          </widget>
         </item>

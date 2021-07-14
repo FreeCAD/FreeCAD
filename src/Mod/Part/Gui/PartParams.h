@@ -80,16 +80,19 @@ public:
     FC_PART_PARAM(EditRecomputeWait,int,Int,300) \
     FC_PART_PARAM(AdjustCameraForNewFeature,bool,Bool,true) \
     FC_PART_PARAM(DefaultDatumColor,unsigned long,Unsigned, 0xFFD70099) \
+    FC_PART_PARAM2(RespectSystemDPI, bool, Bool, false) \
 
 #undef FC_PART_PARAM
 #define FC_PART_PARAM(_name,_ctype,_type,_def) \
     static const _ctype & _name() { return instance()->_##_name; }\
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void update##_name(PartParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
 
 #undef FC_PART_PARAM2
 #define FC_PART_PARAM2(_name,_ctype,_type,_def) \
     static const _ctype & _name() { return instance()->_##_name; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     void on##_name##Changed();\
     static void update##_name(PartParams *self) { \

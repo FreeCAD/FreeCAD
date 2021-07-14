@@ -86,6 +86,10 @@ void PartParams::onOverrideTessellationChanged() {
     timer.start(100);
 }
 
+void PartParams::onRespectSystemDPIChanged() {
+    timer.start(100);
+}
+
 void PartParams::updateVisual() {
     timer.stop();
     // search for Part view providers and apply the new settings

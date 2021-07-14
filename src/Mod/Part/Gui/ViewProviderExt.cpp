@@ -94,6 +94,7 @@
 # include <Inventor/nodes/SoSphere.h>
 # include <Inventor/nodes/SoScale.h>
 # include <Inventor/nodes/SoLightModel.h>
+# include <QApplication>
 # include <QAction>
 # include <QMenu>
 #endif
@@ -472,10 +473,16 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         }
     }
     if (prop == &LineWidth) {
-        pcLineStyle->lineWidth = LineWidth.getValue();
+        if (PartParams::RespectSystemDPI())
+            pcLineStyle->lineWidth = std::min(1.0, qApp->devicePixelRatio()*LineWidth.getValue());
+        else
+            pcLineStyle->lineWidth = LineWidth.getValue();
     }
     else if (prop == &PointSize) {
-        pcPointStyle->pointSize = PointSize.getValue();
+        if (PartParams::RespectSystemDPI())
+            pcPointStyle->pointSize = std::min(1.0, qApp->devicePixelRatio()*PointSize.getValue());
+        else
+            pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &LineColor) {
         const App::Color& c = LineColor.getValue();
@@ -1220,13 +1227,32 @@ void ViewProviderPartExt::unsetHighlightedPoints()
 
 void ViewProviderPartExt::reload()
 {
+    bool update = false;
+    double pointsize = PointSize.getValue();
+    double linewidth = LineWidth.getValue();
+    if (PartParams::RespectSystemDPI()) {
+        auto dpi = qApp->devicePixelRatio();
+        pointsize = std::min(1.0, pointsize/dpi);
+        linewidth = std::min(1.0, linewidth/dpi);
+    }
+    if (pcPointStyle->pointSize.getValue() != pointsize
+            || pcLineStyle->lineWidth.getValue() != linewidth)
+    {
+        pcPointStyle->pointSize = pointsize;
+        pcLineStyle->lineWidth = linewidth;
+        update = true;
+    }
+
     tessRange.LowerBound = PartParams::MinimumDeviation();
     angDeflectionRange.LowerBound = PartParams::MinimumAngularDeflection();
 
-    if (Deviation.getValue() == PartParams::MeshDeviation()
-            && Deviation.getValue() >= PartParams::MinimumDeviation()
-            && AngularDeflection.getValue() == PartParams::MeshAngularDeflection()
-            && AngularDeflection.getValue() >= PartParams::MinimumAngularDeflection())
+    if (Deviation.getValue() != PartParams::MeshDeviation()
+            || Deviation.getValue() < PartParams::MinimumDeviation()
+            || AngularDeflection.getValue() != PartParams::MeshAngularDeflection()
+            || AngularDeflection.getValue() < PartParams::MinimumAngularDeflection())
+        update = true;
+
+    if (!update)
         return;
 
     if (!PartParams::OverrideTessellation()) {
