@@ -864,8 +864,11 @@ void Document::beforeDelete() {
             Application::Instance->setEditDocument(0);
         }
     }
-    for(auto &v : d->_ViewProviderMap)
+    for(auto &v : d->_ViewProviderMap) {
+        v.second->childSet.clear();
+        v.second->parentSet.clear();
         v.second->beforeDelete();
+    }
 }
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
