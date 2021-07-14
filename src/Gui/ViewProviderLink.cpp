@@ -115,15 +115,15 @@ static inline bool appendPathSafe(SoPath *path, SoNode *node) {
     return true;
 }
 
+#define appendPath(_path,_node)  _appendPath(__LINE__, _path, _node)
+static inline void _appendPath(int line, SoPath *path, SoNode *node) {
 #ifdef FC_DEBUG
-#define appendPath(_path,_node)  \
-do{\
-    if(!appendPathSafe(_path,_node))\
-        FC_ERR("LinkView: coin path error");\
-}while(0)
+    if(!appendPathSafe(path,node))
+        _FC_ERR(__FILE__, line, "LinkView: coin path error");
 #else
-#define appendPath(_path, _node) (_path)->append(_node)
+    path->append(node);
 #endif
+}
 
 ////////////////////////////////////////////////////////////////////////////
 class Gui::LinkInfo {
