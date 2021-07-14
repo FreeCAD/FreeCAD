@@ -31,6 +31,8 @@ import FreeCAD
 
 def write_femelement_material(f, ccxwriter):
 
+    # floats read from ccx should use {:.13G}, see comment in writer module
+
     # helper inside class method
     def is_density_needed():
         if ccxwriter.analysis_type == "frequency":
@@ -60,49 +62,52 @@ def write_femelement_material(f, ccxwriter):
         mat_info_name = mat_obj.Material["Name"]
         mat_name = mat_obj.Name
         mat_label = mat_obj.Label
+
         # get material properties of solid material, Currently in SI units: M/kg/s/Kelvin
         if mat_obj.Category == "Solid":
             YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
-            YM_in_MPa = float(YM.getValueAs("MPa"))
+            YM_in_MPa = YM.getValueAs("MPa").Value
             PR = float(mat_obj.Material["PoissonRatio"])
         if is_density_needed() is True:
             density = FreeCAD.Units.Quantity(mat_obj.Material["Density"])
-            density_in_tonne_per_mm3 = float(density.getValueAs("t/mm^3"))
+            density_in_tonne_per_mm3 = density.getValueAs("t/mm^3").Value
         if ccxwriter.analysis_type == "thermomech":
             TC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalConductivity"])
             # SvdW: Add factor to force units to results base units
             # of t/mm/s/K - W/m/K results in no factor needed
-            TC_in_WmK = float(TC.getValueAs("W/m/K"))
+            TC_in_WmK = TC.getValueAs("W/m/K").Value
             SH = FreeCAD.Units.Quantity(mat_obj.Material["SpecificHeat"])
             # SvdW: Add factor to force units to results base units of t/mm/s/K
-            SH_in_JkgK = float(SH.getValueAs("J/kg/K")) * 1e+06
+            # FIXME: why not get it directly in the units needed ?
+            SH_in_JkgK = SH.getValueAs("J/kg/K").Value * 1e+06
             if mat_obj.Category == "Solid":
                 TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
-                TEC_in_mmK = float(TEC.getValueAs("mm/mm/K"))
+                TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
             elif mat_obj.Category == "Fluid":
                 DV = FreeCAD.Units.Quantity(mat_obj.Material["DynamicViscosity"])
-                DV_in_tmms = float(DV.getValueAs("t/mm/s"))
+                DV_in_tmms = DV.getValueAs("t/mm/s").Value
+
         # write material properties
-        f.write("** FreeCAD material name: " + mat_info_name + "\n")
-        f.write("** " + mat_label + "\n")
-        f.write("*MATERIAL, NAME=" + mat_name + "\n")
+        f.write("** FreeCAD material name: {}\n".format(mat_info_name))
+        f.write("** {}\n".format(mat_label))
+        f.write("*MATERIAL, NAME={}\n".format(mat_name))
         if mat_obj.Category == "Solid":
             f.write("*ELASTIC\n")
-            f.write("{0:.13G}, {1:.3f}\n".format(YM_in_MPa, PR))
+            f.write("{:.13G},{:.13G}\n".format(YM_in_MPa, PR))
         if is_density_needed() is True:
             f.write("*DENSITY\n")
-            f.write("{0:.3e}\n".format(density_in_tonne_per_mm3))
+            f.write("{:.13G}\n".format(density_in_tonne_per_mm3))
         if ccxwriter.analysis_type == "thermomech":
             if mat_obj.Category == "Solid":
                 f.write("*CONDUCTIVITY\n")
-                f.write("{0:.3f}\n".format(TC_in_WmK))
+                f.write("{:.13G}\n".format(TC_in_WmK))
                 f.write("*EXPANSION\n")
-                f.write("{0:.3e}\n".format(TEC_in_mmK))
+                f.write("{:.13G}\n".format(TEC_in_mmK))
                 f.write("*SPECIFIC HEAT\n")
-                f.write("{0:.3e}\n".format(SH_in_JkgK))
+                f.write("{:.13G}\n".format(SH_in_JkgK))
             elif mat_obj.Category == "Fluid":
                 f.write("*FLUID CONSTANTS\n")
-                f.write("{0:.3e}, {1:.3e}\n".format(SH_in_JkgK, DV_in_tmms))
+                f.write("{:.13G},{:.13G}\n".format(SH_in_JkgK, DV_in_tmms))
 
         # nonlinear material properties
         if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
@@ -114,11 +119,11 @@ def write_femelement_material(f, ccxwriter):
                     if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
                         f.write("*PLASTIC\n")
                         if nl_mat_obj.YieldPoint1:
-                            f.write(nl_mat_obj.YieldPoint1 + "\n")
+                            f.write("{}\n".format(nl_mat_obj.YieldPoint1))
                         if nl_mat_obj.YieldPoint2:
-                            f.write(nl_mat_obj.YieldPoint2 + "\n")
+                            f.write("{}\n".format(nl_mat_obj.YieldPoint2))
                         if nl_mat_obj.YieldPoint3:
-                            f.write(nl_mat_obj.YieldPoint3 + "\n")
+                            f.write("{}\n".format(nl_mat_obj.YieldPoint3))
                 f.write("\n")
 
 

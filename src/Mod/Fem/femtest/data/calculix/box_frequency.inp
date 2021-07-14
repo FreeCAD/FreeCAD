@@ -436,9 +436,9 @@ Evolumes
 ** MechanicalMaterial
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
-200000, 0.300
+200000,0.3
 *DENSITY
-7.900e-09
+7.9E-09
 
 ***********************************************************
 ** Sections

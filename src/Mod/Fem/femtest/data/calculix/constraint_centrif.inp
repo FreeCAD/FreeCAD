@@ -18729,16 +18729,16 @@ Evolumes
 ** Steel_Scotty
 *MATERIAL, NAME=Steel_Scotty
 *ELASTIC
-210000, 0.300
+210000,0.3
 *DENSITY
-4.000e-09
+4E-09
 ** FreeCAD material name: Steel_Std
 ** Steel_Std
 *MATERIAL, NAME=Steel_Std
 *ELASTIC
-210000, 0.300
+210000,0.3
 *DENSITY
-8.000e-09
+8E-09
 
 ***********************************************************
 ** Sections

@@ -2525,17 +2525,17 @@ Efaces
 ** FemMaterial1
 *MATERIAL, NAME=FemMaterial1
 *ELASTIC
-32000, 0.170
+32000,0.17
 ** FreeCAD material name: PLA
 ** FemMaterial2
 *MATERIAL, NAME=FemMaterial2
 *ELASTIC
-3640, 0.360
+3640,0.36
 ** FreeCAD material name: Steel-Generic
 ** FemMaterial3
 *MATERIAL, NAME=FemMaterial3
 *ELASTIC
-200000, 0.300
+200000,0.3
 
 ***********************************************************
 ** Sections

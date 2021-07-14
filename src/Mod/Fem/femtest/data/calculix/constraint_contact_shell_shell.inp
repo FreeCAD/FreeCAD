@@ -38355,7 +38355,7 @@ Efaces
 ** MechanicalMaterial
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
-72000, 0.300
+72000,0.3
 
 ***********************************************************
 ** Sections
