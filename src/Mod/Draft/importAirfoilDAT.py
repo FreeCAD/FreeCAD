@@ -183,7 +183,7 @@ def process(doc, filename):
     afile.close()
 
     if len(coords) < 3:
-        print('Did not find enough coordinates\n')
+        FCC.PrintError(translate("ImportAirfoilDAT", "Did not find enough coordinates") + "\n")
         return
 
     # sometimes coords are divided in upper an lower side
