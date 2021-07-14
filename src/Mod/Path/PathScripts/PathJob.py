@@ -182,6 +182,13 @@ class ObjectJob:
         )
 
         obj.addProperty(
+            "App::PropertyEnumeration",
+            "JobType",
+            "Base",
+            QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Type of Job"),
+        )
+
+        obj.addProperty(
             "App::PropertyBool",
             "SplitOutput",
             "Output",
@@ -207,6 +214,8 @@ class ObjectJob:
         )
         obj.OrderOutputBy = ["Fixture", "Tool", "Operation"]
         obj.Fixtures = ["G54"]
+
+        obj.JobType = ["2D", "2.5D", "Lathe", "Multiaxis"]
 
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
@@ -477,6 +486,15 @@ class ObjectJob:
                 ),
             )
             obj.SplitOutput = False
+
+        if not hasattr(obj, "JobType"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "JobType",
+                "Base",
+                QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Type of Job"),
+            )
+            obj.JobType = ["2D", "2.5D", "Lathe", "Multiaxis"]
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
