@@ -435,7 +435,7 @@ void Workbench::activated()
         "PartDesign_LinearPattern",
         "PartDesign_PolarPattern",
         "PartDesign_GenericPattern",
-//        "PartDesign_Scaled",
+        "PartDesign_Scaled",
         "PartDesign_MultiTransform",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -632,7 +632,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
           << "PartDesign_GenericPattern"
-//          << "PartDesign_Scaled"
+          << "PartDesign_Scaled"
           << "PartDesign_MultiTransform"
           << "Separator"
           << "PartDesign_Fillet"

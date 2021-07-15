@@ -2358,7 +2358,9 @@ CmdPartDesignScaled::CmdPartDesignScaled()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Scaled");
-    sToolTipText  = QT_TR_NOOP("Create a scaled feature");
+    sToolTipText  = QT_TR_NOOP("Create a scaled feature. WARNING! Scaling may convert\n"
+                               "planar surface into BSpline, causing trouble in subsequent\n"
+                               "Modeling. Use with caution!");
     sWhatsThis    = "PartDesign_Scaled";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Scaled";
@@ -2753,7 +2755,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
     rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
-    //rcCmdMgr.addCommand(new CmdPartDesignScaled());
+    rcCmdMgr.addCommand(new CmdPartDesignScaled());
     rcCmdMgr.addCommand(new CmdPartDesignGenericPattern());
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
 
