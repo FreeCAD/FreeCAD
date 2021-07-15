@@ -37,6 +37,8 @@ if sys.version_info.major >= 3:
     unicode = str
 
 
+# ************************************************************************************************
+# ************************************************************************************************
 class MaterialEditor:
 
     def __init__(self, obj=None, prop=None, material=None, card_path=""):
@@ -571,6 +573,8 @@ class MaterialEditor:
         return self.widget.exec_()
 
 
+# ************************************************************************************************
+# ************************************************************************************************
 class MaterialsDelegate(QtGui.QStyledItemDelegate):
 
     """provides display and editing facilities for data items from a model."""
@@ -649,12 +653,11 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         else:
 
             super(MaterialsDelegate, self).setEditorData(editor, index)
-        # print("item2={}".format(item.text()))
 
 
-ui = FreeCADGui.UiLoader()
 
-
+# ************************************************************************************************
+# ************************************************************************************************
 def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
                     minimum=None, maximum=None, stepsize=None, precision=12):
 
@@ -664,7 +667,19 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
     # Workaround for problem from here:
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&start=20#p516811
     # set precision to 12
-    # it is strange, but for the user defined values everything works fine
+    # Better would be a similar system like used in FEM material task panel
+    # if the value in the InputField has not changed the data is not changed
+    # why does the value changes if the user clicks in
+    # the value and unit should exact stay as it is displayed before the user
+    # clicks in the field
+
+    # the user defined properties are of Type String and thus uses a "Gui::PrefLineEdit"
+
+    print(matproperty)
+    print(Type)
+    print(Value)
+
+    ui = FreeCADGui.UiLoader()
 
     if Type == "String":
 
@@ -789,6 +804,8 @@ def editMaterial(material=None, card_path=None):
         return {}
 
 
+# ************************************************************************************************
+# ************************************************************************************************
 """
 # some examples how to open the material editor in Python:
 import MaterialEditor
