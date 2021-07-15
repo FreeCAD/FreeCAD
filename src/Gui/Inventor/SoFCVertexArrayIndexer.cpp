@@ -292,6 +292,13 @@ SoFCVertexArrayIndexer::render(SoState * state,
                                int32_t drawcount)
 {
   if (!this->indexarray) return;
+
+  if (renderasvbo != vbo_used) {
+    partialcounts.clear();
+    partialoffsets.clear();
+    vbo_used = renderasvbo;
+  }
+
   if (renderasvbo) {
     if (!this->indexarray.isAttached())
       this->use_shorts = this->indexarray.attach(this->use_shorts);

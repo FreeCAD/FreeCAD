@@ -299,7 +299,8 @@ SoFCVBO::shouldCreateVBO(SoState * state, const uint32_t contextid, const int nu
   }
   if (vbo_checked < 0)
     return FALSE;
-  if (!vbo_render_as_vertex_arrays || !SoGLVBOActivatedElement::get(state))
+  // if (!vbo_render_as_vertex_arrays || !SoGLVBOActivatedElement::get(state))
+  if (!vbo_render_as_vertex_arrays)
     return FALSE;
   int minv = SoFCVBO::getVertexCountMinLimit();
   int maxv = SoFCVBO::getVertexCountMaxLimit();

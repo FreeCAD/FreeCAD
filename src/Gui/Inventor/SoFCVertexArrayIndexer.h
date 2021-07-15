@@ -144,6 +144,7 @@ private:
   IndexArray indexarray;
   int indexarraylength;
   int lastlineindex;
+  bool vbo_used = false;
   SbBool use_shorts;
 };
 
