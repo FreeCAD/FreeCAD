@@ -190,7 +190,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     auto originals = OriginalSubs.getSubListValues(true);
     for (auto it=originals.begin(); it!=originals.end(); ) {
         auto &v = *it;
-        auto obj = Base::freecad_dynamic_cast<PartDesign::Feature>(v.first);
+        auto obj = Base::freecad_dynamic_cast<Part::Feature>(v.first);
         if(!obj) 
             it = originals.erase(it);
         else
@@ -226,10 +226,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             });
     }
 
-    if(!this->BaseFeature.getValue()) {
-        if(body)
-            body->setBaseProperty(this);
-    }
+    // if(!this->BaseFeature.getValue()) {
+    //     if(body)
+    //         body->setBaseProperty(this);
+    // }
 
     this->positionBySupport();
     bool hasOffset = !TransformOffset.getValue().isIdentity();
@@ -241,7 +241,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     if (NewSolid.getValue() || !baseObj) 
         canSkipFirst = false;
     else {
-        support = getBaseShape(true);
+        support = getBaseShape(true, false, false);
         if (support.isNull())
             return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
 
@@ -255,7 +255,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     continue;
                 PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(v.first);
                 if(!feature->Suppress.getValue()) {
-                    support = feature->getBaseShape(true);
+                    support = feature->getBaseShape(true, false, false);
                     if (baseObj)
                         this->Placement.setValue(baseObj->Placement.getValue());
                     canSkipFirst = false;
@@ -265,7 +265,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         } 
     }
 
-    auto trsfInv = support.getShape().Location().Transformation().Inverted();
+    auto trsfInv = TopoShape::convert(this->Placement.getValue().toMatrix()).Inverted();
     if (hasOffset)
         trsfInv.Multiply(TopoShape::convert(TransformOffset.getValue().toMatrix()));
 
@@ -280,9 +280,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     std::vector<std::string> originalSubs;
     std::vector<bool> fuses;
     std::vector<int> startIndices;
+    bool hassolids = false;
     for (std::size_t i=0; i<originals.size(); ++i) {
         auto &v = originalIndices.size()>i ? originals[originalIndices[i].second] : originals[i];
-        auto obj = Base::freecad_dynamic_cast<PartDesign::Feature>(v.first);
+        auto obj = Base::freecad_dynamic_cast<Part::Feature>(v.first);
         if(!obj) 
             continue;
 
@@ -291,9 +292,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if (SubTransform.getValue() 
                 && obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
         {
-            if(obj->Suppress.getValue())
-                continue;
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(obj);
+            if(feature->Suppress.getValue())
+                continue;
             std::vector<std::pair<Part::TopoShape, bool> > addsubshapes;
             feature->getAddSubShape(addsubshapes);
             if (addsubshapes.empty())
@@ -311,6 +312,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 originalSubs.push_back(feature->getFullName());
                 fuses.push_back(v.second);
                 startIndices.push_back(startIndex);
+                hassolids = true;
             }
             continue;
         } 
@@ -318,18 +320,23 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         for(auto &sub : v.second) {
             TopoShape baseShape = obj->Shape.getShape();
             std::vector<TopoShape> shapes;
-            if(sub.empty()) 
+            if(sub.empty()) {
                 shapes = baseShape.getSubTopoShapes(TopAbs_SOLID);
-            else {
+                if (shapes.empty())
+                    shapes.push_back(baseShape);
+                else
+                    hassolids = true;
+            } else {
                 TopoDS_Shape subShape = baseShape.getSubShape(sub.c_str());
                 if(subShape.IsNull())
-                    return new App::DocumentObjectExecReturn("Shape of source feature is empty");
+                    return new App::DocumentObjectExecReturn("Shape of source feature is null");
                 int idx = baseShape.findAncestor(subShape,TopAbs_SOLID);
-                if(idx)
+                if(idx) {
                     shapes.push_back(baseShape.getSubTopoShape(TopAbs_SOLID,idx));
+                    hassolids = true;
+                } else
+                    return new App::DocumentObjectExecReturn("Solid shape not found");
             }
-            if(shapes.empty())
-                return new App::DocumentObjectExecReturn("Non solid source feature");
             for(auto &s : shapes) {
                 if (!addshapeSet.insert(s.getShape()).second)
                     continue;
@@ -380,7 +387,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             try {
                 try {
                     if (fuseShapes.size() > 1) {
-                        if (cutShapes.size() <= 1 && NewSolid.getValue()) {
+                        if (cutShapes.size() <= 1 && (!hassolids || NewSolid.getValue())) {
                             support.makECompound(fuseShapes);
                             addsub.emplace_back(support, true);
                         } else {

@@ -2067,7 +2067,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody,
                             "Or use SubShapeBinder to import it into the body"));
             return;
         }
-        if (!obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) || sel.getSubName().size())
+        if (sel.getSubName().size())
             subfeatures.push_back(sel);
         else
             features.push_back(obj);

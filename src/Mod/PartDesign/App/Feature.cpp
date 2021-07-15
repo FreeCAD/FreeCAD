@@ -186,7 +186,7 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
     return BaseObject;
 }
 
-TopoShape Feature::getBaseShape(bool silent, bool force) const {
+TopoShape Feature::getBaseShape(bool silent, bool force, bool checkSolid) const {
     Part::TopoShape result;
 
     if (NewSolid.getValue() && !force) {
@@ -221,7 +221,9 @@ TopoShape Feature::getBaseShape(bool silent, bool force) const {
     if (result.isNull()) {
         if (!silent)
             throw Part::NullShapeException("Base feature's TopoShape is invalid");
-    } else if (!result.hasSubShape(TopAbs_SOLID)) {
+    }
+
+    if (checkSolid && !result.hasSubShape(TopAbs_SOLID)) {
         if (silent)
             result = TopoShape();
         else

@@ -57,6 +57,7 @@
 #include <Gui/Placement.h>
 
 #include <Mod/Part/Gui/PartParams.h>
+#include <Mod/Part/App/SubShapeBinder.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
@@ -310,17 +311,21 @@ void TaskTransformedParameters::setupUI() {
     }
 
     PartDesign::Transformed* pcTransformed = getObject();
-    auto bodyVp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
-            Application::Instance->getViewProvider(PartDesign::Body::findBodyOf(pcTransformed)));
-    if(bodyVp) {
+    auto body = PartDesign::Body::findBodyOf(pcTransformed);
+    if(body) {
         std::vector<App::DocumentObjectT> objs;
-        for(auto child : bodyVp->getCachedChildren()) {
-            if(!child->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        for(auto child : body->Group.getValues()) {
+            if (child == pcTransformed)
                 continue;
-            if(child->isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
-                    !static_cast<PartDesign::Transformed*>(child)->getBaseObject(true))
+            if(child->isDerivedFrom(PartDesign::Transformed::getClassTypeId())) {
+                if (static_cast<PartDesign::Transformed*>(child)->getBaseObject(true))
+                    objs.emplace_back(child);
                 continue;
-            objs.emplace_back(child);
+            }
+            if(child->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+                    || child->isDerivedFrom(Part::SubShapeBinder::getClassTypeId())
+                    || child->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+                objs.emplace_back(child);
         }
         linkEditor->setInitObjects(std::move(objs));
     }
