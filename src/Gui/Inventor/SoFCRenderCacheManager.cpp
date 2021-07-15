@@ -345,7 +345,7 @@ public:
   VertexCachePtr vcache;
 
   std::unordered_map<std::string, SelectionPathMap> selcaches;
-  SbFCMap<int, SoPath*> selpaths;
+  SbFCMap<int, CoinPtr<SoPath> > selpaths;
 
   SbFCMap<int, VertexCachePtr> sharedcache;
 
@@ -452,7 +452,7 @@ SoFCRenderCacheManagerP::~SoFCRenderCacheManagerP()
   delete this->renderer;
 }
 
-const SbFCMap<int, SoPath*> &
+const SbFCMap<int, CoinPtr<SoPath> > &
 SoFCRenderCacheManager::getSelectionPaths() const
 {
   return PRIVATE(this)->selpaths;
