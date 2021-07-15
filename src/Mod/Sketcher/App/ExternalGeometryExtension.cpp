@@ -58,7 +58,7 @@ void ExternalGeometryExtension::restoreAttributes(Base::XMLReader &reader)
 void ExternalGeometryExtension::saveAttributes(Base::Writer &writer) const
 {
     Part::GeometryPersistenceExtension::saveAttributes(writer);
-    // For compatability with upstream FreeCAD, always save 'Ref' and 'Flags'.
+    // For compatibility with upstream FreeCAD, always save 'Ref' and 'Flags'.
     // if (Ref.size())
         writer.Stream() << "\" Ref=\"" << Base::Persistence::encodeAttribute(Ref);
     // if (Flags.any())

@@ -1500,7 +1500,7 @@ bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool cop
 
     // The following code is to catch rare crash on added paths with an invalid
     // order. Note that SoFCSwitch has special handling to specifically allow
-    // arbitary order traversing with its head/tailChild field. Other node will
+    // arbitrary order traversing with its head/tailChild field. Other node will
     // likely cause crash because of insufficient checking in
     // SoChildList::traverseInPath() and SoSeparator::GLRenderInPath().
 #if 0

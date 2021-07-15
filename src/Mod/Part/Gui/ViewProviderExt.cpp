@@ -447,7 +447,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             // DiffuseColor/LineColorArray/PointColorArray to setup the colors.
             // Because the order of restoring say DiffuseColor and ShapeColor
             // may be different depending on whether the PropertyColorList is
-            // saved into a separate file or embeded inside xml.
+            // saved into a separate file or embedded inside xml.
             ViewProviderDocumentObject::onChanged(prop);
             return;
         }

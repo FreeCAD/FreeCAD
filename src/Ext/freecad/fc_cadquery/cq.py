@@ -1274,7 +1274,7 @@ class Workplane(CQ):
 
     def polarLineTo(self, distance, angle, forConstruction=False):
         """
-        Make a line from the current point to the given polar co-ordinates
+        Make a line from the current point to the given polar coordinates
 
         Useful if it is more convenient to specify the end location rather than
         the distance and angle from the current point
@@ -2131,7 +2131,7 @@ class Workplane(CQ):
 
         extrude always *adds* material to a part.
 
-        The returned object is always a CQ object, and depends on wither combine is True, and
+        The returned object is always a CQ object, and depends on whether combine is True, and
         whether a context solid is already defined:
 
         *  if combine is False, the new value is pushed onto the stack.
@@ -2167,7 +2167,7 @@ class Workplane(CQ):
         :param boolean clean: call :py:meth:`clean` afterwards to have a clean shape
         :return: a CQ object with the resulting solid selected.
 
-        The returned object is always a CQ object, and depends on wither combine is True, and
+        The returned object is always a CQ object, and depends on whether combine is True, and
         whether a context solid is already defined:
 
         *  if combine is False, the new value is pushed onto the stack.

@@ -4,7 +4,7 @@ import logging
 import FreeCAD
 
 # Logging Handler
-#   Retain a reference to the logging handler so it may be removed on requeset.
+#   Retain a reference to the logging handler so it may be removed on request.
 #   Also to prevent 2 handlers being added
 _logging_handler = None
 

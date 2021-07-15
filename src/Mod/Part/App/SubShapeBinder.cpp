@@ -779,7 +779,7 @@ void SubShapeBinder::collapseGeoChildren()
     // features under itself but does not function as a container. In addition,
     // its parent group can directly reference the tool feature grouped without
     // referencing the child. The purpose of this function is to remove any
-    // intermediate Non group features in the object path to avoid unncessary
+    // intermediate Non group features in the object path to avoid unnecessary
     // dependencies.
     if (Support.testStatus(App::Property::User3))
         return;
@@ -898,7 +898,7 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
             slotLabelChanged();
     }
 
-    // Regardless of restoring or undo, we'll check the support for lable
+    // Regardless of restoring or undo, we'll check the support for label
     // synchronization
     if (prop == &Support && _Version.getValue() >= 7) {
         connLabelChange.disconnect();
