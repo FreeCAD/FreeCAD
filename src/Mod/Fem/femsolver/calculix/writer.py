@@ -110,7 +110,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         solver_obj,
         mesh_obj,
         member,
-        dir_name=None
+        dir_name=None,
+        mat_geo_sets=None
     ):
         writerbase.FemInputWriter.__init__(
             self,
@@ -118,7 +119,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             solver_obj,
             mesh_obj,
             member,
-            dir_name
+            dir_name,
+            mat_geo_sets
         )
         self.mesh_name = self.mesh_object.Name
         self.file_name = join(self.dir_name, self.mesh_name + ".inp")
@@ -132,7 +134,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         FreeCAD.Console.PrintMessage("Get mesh sets.\n")
         time_start = time.process_time()
-        self.get_mesh_sets()
+        if not self.ccx_elsets:
+            self.get_mesh_sets()
         time_getsets = time.process_time()
 
         FreeCAD.Console.PrintMessage(
@@ -156,44 +159,44 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         inpfile = con_fluidsection.handle_fluidsection_liquid_inlet_outlet(inpfile, self)
 
         # element sets constraints
-        self.write_constraints_meshsets(inpfile, self.centrif_objects, con_centrif)
+        self.write_constraints_meshsets(inpfile, self.member.cons_centrif, con_centrif)
 
         # node sets
-        self.write_constraints_meshsets(inpfile, self.fixed_objects, con_fixed)
-        self.write_constraints_meshsets(inpfile, self.displacement_objects, con_displacement)
-        self.write_constraints_meshsets(inpfile, self.planerotation_objects, con_planerotation)
-        self.write_constraints_meshsets(inpfile, self.transform_objects, con_transform)
-        self.write_constraints_meshsets(inpfile, self.temperature_objects, con_temperature)
+        self.write_constraints_meshsets(inpfile, self.member.cons_fixed, con_fixed)
+        self.write_constraints_meshsets(inpfile, self.member.cons_displacement, con_displacement)
+        self.write_constraints_meshsets(inpfile, self.member.cons_planerotation, con_planerotation)
+        self.write_constraints_meshsets(inpfile, self.member.cons_transform, con_transform)
+        self.write_constraints_meshsets(inpfile, self.member.cons_temperature, con_temperature)
 
         # surface sets
-        self.write_constraints_meshsets(inpfile, self.contact_objects, con_contact)
-        self.write_constraints_meshsets(inpfile, self.tie_objects, con_tie)
-        self.write_constraints_meshsets(inpfile, self.sectionprint_objects, con_sectionprint)
+        self.write_constraints_meshsets(inpfile, self.member.cons_contact, con_contact)
+        self.write_constraints_meshsets(inpfile, self.member.cons_tie, con_tie)
+        self.write_constraints_meshsets(inpfile, self.member.cons_sectionprint, con_sectionprint)
 
         # materials and fem element types
         write_femelement_material.write_femelement_material(inpfile, self)
-        self.write_constraints_propdata(inpfile, self.initialtemperature_objects, con_initialtemp)
+        self.write_constraints_propdata(inpfile, self.member.cons_initialtemperature, con_initialtemp)
         write_femelement_geometry.write_femelement_geometry(inpfile, self)
 
         # constraints independent from steps
-        self.write_constraints_propdata(inpfile, self.planerotation_objects, con_planerotation)
-        self.write_constraints_propdata(inpfile, self.contact_objects, con_contact)
-        self.write_constraints_propdata(inpfile, self.tie_objects, con_tie)
-        self.write_constraints_propdata(inpfile, self.transform_objects, con_transform)
+        self.write_constraints_propdata(inpfile, self.member.cons_planerotation, con_planerotation)
+        self.write_constraints_propdata(inpfile, self.member.cons_contact, con_contact)
+        self.write_constraints_propdata(inpfile, self.member.cons_tie, con_tie)
+        self.write_constraints_propdata(inpfile, self.member.cons_transform, con_transform)
 
         # step equation
         write_step_equation.write_step_equation(inpfile, self)
 
         # constraints dependent from steps
-        self.write_constraints_propdata(inpfile, self.fixed_objects, con_fixed)
-        self.write_constraints_propdata(inpfile, self.displacement_objects, con_displacement)
-        self.write_constraints_propdata(inpfile, self.sectionprint_objects, con_sectionprint)
-        self.write_constraints_propdata(inpfile, self.selfweight_objects, con_selfweight)
-        self.write_constraints_propdata(inpfile, self.centrif_objects, con_centrif)
-        self.write_constraints_meshsets(inpfile, self.force_objects, con_force)
-        self.write_constraints_meshsets(inpfile, self.pressure_objects, con_pressure)
-        self.write_constraints_propdata(inpfile, self.temperature_objects, con_temperature)
-        self.write_constraints_meshsets(inpfile, self.heatflux_objects, con_heatflux)
+        self.write_constraints_propdata(inpfile, self.member.cons_fixed, con_fixed)
+        self.write_constraints_propdata(inpfile, self.member.cons_displacement, con_displacement)
+        self.write_constraints_propdata(inpfile, self.member.cons_sectionprint, con_sectionprint)
+        self.write_constraints_propdata(inpfile, self.member.cons_selfweight, con_selfweight)
+        self.write_constraints_propdata(inpfile, self.member.cons_centrif, con_centrif)
+        self.write_constraints_meshsets(inpfile, self.member.cons_force, con_force)
+        self.write_constraints_meshsets(inpfile, self.member.cons_pressure, con_pressure)
+        self.write_constraints_propdata(inpfile, self.member.cons_temperature, con_temperature)
+        self.write_constraints_meshsets(inpfile, self.member.cons_heatflux, con_heatflux)
         con_fluidsection.write_constraints_fluidsection(inpfile, self)
 
         # output and step end
