@@ -1729,6 +1729,13 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
 {
     bool hex = true;
     int pos = name.rfind(tagPostfix());
+
+    // Example name, tagPosfix == ;:H
+    // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+    //                                     ^
+    //                                     |
+    //                                    pos
+
     if(pos < 0) {
         pos = name.rfind(decTagPostfix());
         if (pos < 0)
@@ -1746,15 +1753,28 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
     int size;
     const char *s = name.toConstString(offset, size);
 
+    // check if the number followed by the tagPosfix is negative
     bool isNegative = (s[0] == '-');
     if (isNegative) {
         ++s;
         --size;
     }
     bio::stream<bio::array_source> iss(s, size);
-    if (!hex)
+    if (!hex) {
+        // no hex is an older version of the encoding scheme
         iss >> _tag >> sep;
-    else {
+    } else {
+        // The purpose of tag postfix is to encode one model operation. The
+        // 'tag' field is used to record the own object ID of that model shape,
+        // and the 'len' field indicates the length of the operation codes
+        // before the tag postfix. These fields are in hex. The trailing 'F' is
+        // the shape type of this element, 'F' for face, 'E' edge, and 'V' vertex.
+        //
+        // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+        //                     |              |   ^^ ^^
+        //                     |              |   |   |  
+        //                     |--len = 0x10---  tag len
+
         iss >> std::hex;
         // _tag field can be skipped, if it is 0
         if (s[0] == ',' || s[0] == ':')
@@ -1769,18 +1789,16 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
     if (sep == ':') {
         // ':' is followed by _len field.
         //
-        // For decTagPostfix(), this is the length of the string before the
-        // entire postfix (A postfix may contain multiple segments usually
-        // separated by elementMapPrefix().
+        // For decTagPostfix() (i.e. older encoding scheme), this is the length
+        // of the string before the entire postfix (A postfix may contain
+        // multiple segments usually separated by elementMapPrefix().
         //
-        // For newer tagPostfix(), this counts the number of characters that proceeds
-        // this tag postfix segment that forms the entire postfix.
-        //
-        // For example, Face2;FUS;M2;H:6,F, the length field :6 counts the string ;FUS;M2,
-        // The entire postfix is thus ;FUS;M2;H:6,F
+        // For newer tagPostfix(), this counts the number of characters that
+        // proceeds this tag postfix segment that forms the entire postfix (see
+        // example above).
         //
         // The reason of this change is so that the postfix can stay the same
-        // regardless of the prefix, which is can increase memory efficiency.
+        // regardless of the prefix, which can increase memory efficiency.
         //
         iss >> _len >> sep2 >> tp >> eof;
 
@@ -1802,10 +1820,45 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
         if (pos-_len < 0)
            return -1; 
         if (_len && recursive && (tag || len)) {
-            // in case of recursive tag postfix (used by hierarhcy element map)
-            if (MappedName::fromRawData(name, pos-_len, _len).rfind(tagPostfix()) >= 0)
-                _len = 0;
+            // in case of recursive tag postfix (used by hierarhcy element
+            // map), look for any embedded tag postifx
+            int next = MappedName::fromRawData(name, pos-_len, _len).rfind(tagPostfix());
+            if (next >= 0) {
+                next += pos - _len;
+                // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+                //                     ^               ^
+                //                     |               |
+                //                    next            pos
+                //
+                // There maybe other operation codes after this embedded tag
+                // postfix, search for the sperator.
+                //
+                int end;
+                if (pos == next)
+                    end = -1;
+                else
+                    end = MappedName::fromRawData(
+                        name, next+1, pos-next-1).find(elementMapPrefix());
+                if (end >= 0) {
+                    end += next+1;
+                    // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+                    //                            ^
+                    //                            |
+                    //                           end
+                    _len = pos - end;
+                    // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+                    //                            |       |
+                    //                            -- len --
+                } else
+                    _len = 0;
+            }
         }
+
+        // Now convert the 'len' field back to the length of the remaining name
+        //
+        // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+        // |                         |
+        // ----------- len -----------
         _len = pos - _len;
     }
     if(type)
