@@ -74,8 +74,10 @@ def setColorRecursively(obj, color, transp):
     '''
     obj.ViewObject.ShapeColor = color
     obj.ViewObject.Transparency = transp
-    if(obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse" or
-       obj.TypeId=="Part::Cut"):
+    # Add any other relevant features to this list
+    boolean_features = ["Part::Fuse", "Part::MultiFuse", "Part::Cut",
+                        "Part::Common", "Part::MultiCommon"]
+    if (obj.TypeId in boolean_features):
         for currentObject in obj.OutList:
             print(f"Fixing up colors for: {currentObject.FullName}")
             if(currentObject not in hassetcolor):
