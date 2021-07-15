@@ -31,6 +31,7 @@
 #include <vector>
 
 #include <Base/Type.h>
+#include <Gui/Application.h>
 
 /** @defgroup CommandMacros Helper macros for running commands through Python interpreter */
 //@{
@@ -179,8 +180,8 @@
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,\
-            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",\
-            __obj->getDocument()->getName(), __obj->getNameInDocument());\
+            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %i)",\
+            __obj->getDocument()->getName(), __obj->getNameInDocument(), Gui::Application::Instance->getUserEditMode());\
     }\
 }while(0)
 
