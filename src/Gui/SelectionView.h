@@ -127,7 +127,7 @@ public:
      */
     App::SubObjectT doPick(const std::vector<App::SubObjectT> &sels);
 
-    /** Populate and show the menu for geometry histroy tracing,
+    /** Populate and show the menu for geometry history tracing,
      *
      * @param sels: a list of geometry element references
      * @return Return the picked geometry reference

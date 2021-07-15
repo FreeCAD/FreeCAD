@@ -1264,7 +1264,7 @@ void MonitorProxy::addCheckBox(QWidget * widget, int index)
 {
     QBoxLayout * layout = qobject_cast<QBoxLayout*>(widget->layout());
     if (!layout) {
-        FC_WARN("unknonw widget layout");
+        FC_WARN("unknown widget layout");
         return;
     }
 

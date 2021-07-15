@@ -71,7 +71,7 @@ float ColorUtils::getColorDeltaE(ColorUtils::rgbColor c1, ColorUtils::rgbColor c
     
     float deltaE;
     
-    // Euclidian Distance between two points in 3D matrices
+    // Euclidean Distance between two points in 3D matrices
     deltaE = sqrtf( powf(labC1.l - labC2.l, 2) + powf(labC1.a - labC2.a, 2) + powf(labC1.b - labC2.b, 2) );
     
     return deltaE;

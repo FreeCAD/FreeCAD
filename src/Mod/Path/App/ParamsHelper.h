@@ -800,7 +800,7 @@
 #define PARAM_PY_KWDS_(_param) \
     PARAM_TYPED(PARAM_PYARG_,_param)
 
-/** Generate a format string for kewords based argument
+/** Generate a format string for keywords based argument
  * \ingroup ParamPy
  */
 #define PARAM_PY_KWDS(_seq) \

@@ -2478,7 +2478,7 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
     int treeX = master->header()->sectionViewportPosition(0);
 
     // Get the x coordinate of the root item. It is required in order to calculate
-    // the identation of the item
+    // the indentation of the item
     int rootX = master->visualRect(master->rootIndex()).x();
 
     // Get the rectangle of the viewport occupied by the pressed item
