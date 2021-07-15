@@ -66,6 +66,8 @@ Split::Split()
     ADD_PROPERTY_TYPE(Solids, (), "Part Design",
             (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly), "List of solids");
     Solids.setScope(App::LinkScope::Hidden);
+
+    ADD_PROPERTY_TYPE(_Version,(0),"Part Design",(App::PropertyType)(App::Prop_Hidden), 0);
 }
 
 static inline PyObject* loadAPI(const char *name) {
@@ -78,6 +80,18 @@ static inline PyObject* loadAPI(const char *name) {
             return Py::new_reference_to(pyMod.getAttr(name));
     }
     return Py_None;
+}
+
+static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) {
+    if(shape.isNull())
+        return;
+    if(shape.getShape().ShapeType() != TopAbs_COMPOUND
+            && shape.getShape().ShapeType() != TopAbs_COMPSOLID) {
+        res.push_back(shape);
+        return;
+    }
+    for(auto &s : shape.getSubTopoShapes())
+        expandCompound(s,res);
 }
 
 App::DocumentObjectExecReturn *Split::execute(void)
@@ -143,7 +157,12 @@ App::DocumentObjectExecReturn *Split::execute(void)
         }
     }
 
-    auto solids = shape.getSubTopoShapes(TopAbs_SOLID);
+    std::vector<Part::TopoShape> solids;
+    if (_Version.getValue() > 0)
+        expandCompound(shape, solids);
+    else
+        solids = shape.getSubTopoShapes(TopAbs_SOLID);
+
     auto children = Solids.getValues();
 
     bool children_changed = false;
@@ -162,7 +181,7 @@ App::DocumentObjectExecReturn *Split::execute(void)
             ++it;
     }
     if(solids.empty())
-        return new App::DocumentObjectExecReturn("No solid found");
+        return new App::DocumentObjectExecReturn("No sub-shape found");
 
     std::size_t oldCount = children.size();
     children.reserve(solids.size());
@@ -199,7 +218,11 @@ App::DocumentObjectExecReturn *Split::execute(void)
     if(children_changed)
         Solids.setValues(children);
 
-    Shape.setValue(TopoShape().makECompound(activeShapes,0,false));
+    if (_Version.getValue() > 0) {
+        // always create a compound to hide placement
+        Shape.setValue(TopoShape().makECompound(activeShapes));
+    } else
+        Shape.setValue(TopoShape().makECompound(activeShapes,0,false));
     return App::DocumentObject::StdReturn;
 }
 
@@ -362,3 +385,8 @@ int Split::setElementVisible(const char * element, bool visible)
     }
     return 0;
 }
+
+void Split::setupObject () {
+    _Version.setValue(1);
+}
+

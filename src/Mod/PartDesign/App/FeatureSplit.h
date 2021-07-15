@@ -48,6 +48,7 @@ public:
     App::PropertyLength Tolerance;
     App::PropertyLinkList Tools;
     App::PropertyLinkList Solids;
+    App::PropertyInteger _Version;
 
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void afterRecompute() override;
@@ -68,6 +69,8 @@ public:
 
     virtual int isElementVisible(const char *element) const override;
     virtual int setElementVisible(const char *element, bool visible) override;
+
+    virtual void setupObject () override;
 
 private:
     std::size_t newSolidCount = 0;
