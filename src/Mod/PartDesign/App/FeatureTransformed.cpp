@@ -232,17 +232,40 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     }
 
     this->positionBySupport();
+    bool hasOffset = !TransformOffset.getValue().isIdentity();
 
     // Get the support
     TopoShape support;
-    if (!NewSolid.getValue()) {
-        support = getBaseShape();
+    bool canSkipFirst = true;
+    auto baseObj = getBaseObject(true);
+    if (NewSolid.getValue() || !baseObj) 
+        canSkipFirst = false;
+    else {
+        support = getBaseShape(true);
         if (support.isNull())
             return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
+
+        if (_Version.getValue() > 1
+                && hasOffset
+                && SubTransform.getValue()
+                && !Base::freecad_dynamic_cast<Transformed>(baseObj)
+                && Base::freecad_dynamic_cast<FeatureAddSub>(baseObj)) {
+            for (auto &v : originals) {
+                if (baseObj != v.first)
+                    continue;
+                PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(v.first);
+                if(!feature->Suppress.getValue()) {
+                    support = feature->getBaseShape(true);
+                    if (baseObj)
+                        this->Placement.setValue(baseObj->Placement.getValue());
+                    canSkipFirst = false;
+                }
+                break;
+            }
+        } 
     }
 
     auto trsfInv = support.getShape().Location().Transformation().Inverted();
-    bool hasOffset = !TransformOffset.getValue().isIdentity();
     if (hasOffset)
         trsfInv.Multiply(TopoShape::convert(TransformOffset.getValue().toMatrix()));
 
@@ -263,7 +286,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if(!obj) 
             continue;
 
-        int startIndex = body && body->isSibling(this, obj) ? 1 : 0;
+        int startIndex = canSkipFirst && body && body->isSibling(this, obj) ? 1 : 0;
 
         if (SubTransform.getValue() 
                 && obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
@@ -345,8 +368,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     if (allowMultiSolid() && ParallelTransform.getValue()) {
         std::vector<TopoShape> fuseShapes;
-        if (!support.isNull())
+        bool hasSupport = false;
+        if (!support.isNull()) {
+            hasSupport = true;
             fuseShapes.push_back(support);
+        }
         std::vector<TopoShape> cutShapes;
         cutShapes.push_back(TopoShape());
 
@@ -360,12 +386,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         } else {
                             if (!isRecomputePaused())
                                 support.makEFuse(fuseShapes);
-                            fuseShapes.erase(fuseShapes.begin());
+                            if (hasSupport)
+                                fuseShapes.erase(fuseShapes.begin());
                             addsub.emplace_back(
                                     TopoShape().makECompound(fuseShapes, nullptr, false), true);
                         }
                         fuseShapes.clear();
                         fuseShapes.push_back(support);
+                        hasSupport = true;
                         result = support;
                     }
                     else if(cutShapes.size() > 1) {
@@ -392,10 +420,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                             fuseShapes.push_back(support);
                         else
                             fuseShapes[0] = support;
+                        hasSupport = true;
                     }
                     else if (support.isNull() && fuseShapes.size() == 1) {
-                        support = fuseShapes[0];
+                        // Must wrap the shape to contain its placement
+                        support.makECompound(fuseShapes);
+                        addsub.emplace_back(support, true);
                         result = support;
+                        hasSupport = true;
                     }
 
                 } catch (Standard_Failure& e) {
@@ -433,7 +465,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
                 try {
                     shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str());
-                    if (idx == 0 && (_Version.getValue()==0 || !hasOffset)) {
+                    if (idx == 0 && canSkipFirst && (_Version.getValue()==0 || !hasOffset)) {
                         // Skip first transformation in case we do not transform the
                         // first instance (i.e. original feature belongs to the same
                         // sibling group)
@@ -516,12 +548,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 if (fuse) {
                     fuseShapes.push_back(shapeCopy);
                     result = support.makEFuse(shapeCopy);
-                 } else {
+                } else {
                     cutShapes.push_back(shapeCopy);
                     result = support.makECut(shapeCopy);
-                 }
-                // we have to get the solids (fuse sometimes creates compounds)
-                support = this->getSolid(result);
+                }
+                // Do not call getSolid() as we need the compound to hide the
+                // placement
+                support = _Version.getValue()>1 ? result : getSolid(result);
                 // lets check if the result is a solid
                 if (support.isNull()) {
                     std::string msg("Resulting shape is not a solid: ");
@@ -604,7 +637,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         FC_TIME_LOG(t,"done");
 
-        this->Shape.setValue(getSolid(result));
+        // Do not call getSolid() as we need the compound to hide the placement
+        this->Shape.setValue(_Version.getValue()>1 ? result : getSolid(result));
     }
 
     if (rejected.size() > 0) {
@@ -736,7 +770,7 @@ void Transformed::onChanged(const App::Property *prop) {
 
 void Transformed::setupObject () {
     CopyShape.setValue(false);
-    _Version.setValue(1);
+    _Version.setValue(2);
 }
 
 bool Transformed::isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const
@@ -775,30 +809,56 @@ bool Transformed::isElementGenerated(const TopoShape &shape, const Data::MappedN
 void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes)
 {
     Part::TopoShape res = AddSubShape.getShape();
+    if (res.isNull())
+        return;
+    if (res.shapeType(true) != TopAbs_COMPOUND) {
+        shapes.emplace_back(res, true);
+        return;
+    }
+    int count = 0;
     auto subshapes = res.getSubTopoShapes();
     if (subshapes.size() > 0 && subshapes.size() <= 2) {
         auto s = subshapes[0];
         bool proceed = false;
         if (s.isNull())
             proceed = true;
-        else if (s.countSubShapes(TopAbs_SHAPE) == 0) {
+        else if (s.shapeType(true)!=TopAbs_COMPOUND
+                || s.countSubShapes(TopAbs_SHAPE) != 0) {
+            ++count;
             shapes.emplace_back(s, true);
             proceed = true;
         }
         if (proceed && subshapes.size() > 1) {
             auto s = subshapes[1];
-            if (!s.isNull() && s.countSubShapes(TopAbs_SHAPE) == 0)
-                shapes.emplace_back(s, false);
+            if (!s.isNull()) {
+                if (s.shapeType(true) != TopAbs_COMPOUND
+                        || s.countSubShapes(TopAbs_SHAPE) != 0) {
+                    ++count;
+                    shapes.emplace_back(s, false);
+                }
+            }
         }
     }
-    if (shapes.empty()) {
+    if (!count) {
         for (auto &subshape : subshapes) {
+            if (subshape.isNull())
+                continue;
+            if (subshape.shapeType(true) != TopAbs_COMPOUND) {
+                shapes.emplace_back(subshape, true);
+                continue;
+            }
             auto s = subshape.getSubTopoShape(TopAbs_SHAPE, 1, true);
-            if (!s.isNull())
-                shapes.emplace_back(s, true);
+            if (!s.isNull()) {
+                if (s.shapeType(true) != TopAbs_COMPOUND
+                        || s.countSubShapes(TopAbs_SHAPE) != 0)
+                    shapes.emplace_back(s, true);
+            }
             s = subshape.getSubTopoShape(TopAbs_SHAPE, 2, true);
-            if (!s.isNull())
-                shapes.emplace_back(s, false);
+            if (!s.isNull()) {
+                if (s.shapeType(true) != TopAbs_COMPOUND
+                        || s.countSubShapes(TopAbs_SHAPE) != 0)
+                    shapes.emplace_back(s, false);
+            }
         }
     }
 }
