@@ -42,6 +42,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 FeatureExtensions = LazyLoader('PathScripts.PathFeatureExtensions',
                                globals(),
                                'PathScripts.PathFeatureExtensions')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 
 if FreeCAD.GuiUp:
     from pivy import coin
@@ -559,16 +560,16 @@ def Execute(op, obj):
 
 
 def _get_working_edges(op, obj):
-    """_get_working_edges(op, obj)...
+    '''_get_working_edges(op, obj)...
     Compile all working edges from the Base Geometry selection (obj.Base)
     for the current operation.
     Additional modifications to selected region(face), such as extensions,
     should be placed within this function.
-    """
-    regions = list()
+    '''
     all_regions = list()
     edge_list = list()
     avoidFeatures = list()
+    rawEdges = list()
 
     # Get extensions and identify faces to avoid
     extensions = FeatureExtensions.getExtensions(obj)
@@ -589,15 +590,25 @@ def _get_working_edges(op, obj):
                         shape = Part.Face(wire_B)
                     else:
                         shape = base.Shape.getElement(sub)
-                    regions.append(shape)
+                    all_regions.append(shape)
             elif sub.startswith("Edge"):
-                # Discretize selected edges directly
-                shape = base.Shape.getElement(sub)
-                edge_list.append([discretize(shape)])
+                # Save edges for later processing
+                rawEdges.append(base.Shape.getElement(sub))
     # Efor
 
-    # Return Extend Outline extension, OR regular edge extension
-    all_regions = regions
+    # Process selected edges
+    if rawEdges:
+        edgeWires = DraftGeomUtils.findWires(rawEdges)
+        if edgeWires:
+            for w in edgeWires:
+                # Extrude closed wire, take cross-section (flatten), and add area to regions list with faces
+                if w.isClosed():
+                    extLen = w.BoundBox.ZLength + 10.0
+                    extrudeWire = w.extrude(FreeCAD.Vector(0.0, 0.0, extLen * 5.0))
+                    slices = extrudeWire.slice(FreeCAD.Vector(0.0, 0.0, 1.0), math.floor(w.BoundBox.ZMin + (extLen * 2.5)))
+                    slices[0].translate(FreeCAD.Vector(0.0, 0.0, 0.0 - slices[0].BoundBox.ZMin))
+                    all_regions.append(Part.Face(slices[0]))  # Add wire area to all regions for combination with extensions
+
     # Apply regular Extensions
     op.exts = [] # pylint: disable=attribute-defined-outside-init
     for ext in extensions:
@@ -610,10 +621,12 @@ def _get_working_edges(op, obj):
 
     # Second face-combining method attempted
     horizontal = PathGeom.combineHorizontalFaces(all_regions)
-    for f in horizontal:
-        for w in f.Wires:
-            for e in w.Edges:
-                edge_list.append([discretize(e)])
+    if horizontal:
+        obj.removalshape = Part.makeCompound(horizontal)
+        for f in horizontal:
+            for w in f.Wires:
+                for e in w.Edges:
+                    edge_list.append([discretize(e)])
 
     return edge_list
 
@@ -667,6 +680,9 @@ class PathAdaptive(PathOp.ObjectOp):
 
         obj.addProperty("App::PropertyBool", "UseOutline", "Adaptive", "Uses the outline of the base geometry.")
 
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
+        obj.setEditorMode('removalshape', 2)  # hide
+
         FeatureExtensions.initialize_properties(obj)
 
     def opSetDefaultValues(self, obj, job):
@@ -708,6 +724,11 @@ class PathAdaptive(PathOp.ObjectOp):
                             "UseOutline",
                             "Adaptive",
                             "Uses the outline of the base geometry.")
+
+        if not hasattr(obj, "removalshape"):
+            obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
+        obj.setEditorMode('removalshape', 2)  # hide
+
         FeatureExtensions.initialize_properties(obj)
 
 
