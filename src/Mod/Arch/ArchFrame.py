@@ -219,11 +219,19 @@ class _Frame(ArchComponent.Component):
                     basepoint = profile.CenterOfMass
                 profile.translate(bpoint.sub(basepoint))
                 if obj.Align:
+                    # Align profile's Z axis with the direction of the layout edge.
                     axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                     angle = bvec.getAngle(axis)
                     if round(angle,Draft.precision()) != 0:
                         if round(angle,Draft.precision()) != round(math.pi,Draft.precision()):
                             rotaxis = axis.cross(bvec)
+                            profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(rotaxis), math.degrees(angle))
+                    # Align profile's Y axis with layouts normal vecror.
+                    axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+                    angle = normal.getAngle(axis)
+                    if round(angle,Draft.precision()) != 0:
+                        if round(angle,Draft.precision()) != round(math.pi,Draft.precision()):
+                            rotaxis = axis.cross(normal)
                             profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(rotaxis), math.degrees(angle))
                 if obj.Rotation:
                     profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(FreeCAD.Vector(bvec).normalize()), obj.Rotation)
