@@ -649,16 +649,22 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         else:
 
             super(MaterialsDelegate, self).setEditorData(editor, index)
-        print("item2={}".format(item.text()))
+        # print("item2={}".format(item.text()))
 
 
 ui = FreeCADGui.UiLoader()
 
 
 def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
-                    minimum=None, maximum=None, stepsize=None, precision=None):
+                    minimum=None, maximum=None, stepsize=None, precision=12):
 
     '''customs widgets for the material stuff.'''
+
+    # FIXME
+    # Workaround for problem from here:
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&start=20#p516811
+    # set precision to 12
+    # it is strange, but for the user defined values everything works fine
 
     if Type == "String":
 
@@ -675,23 +681,31 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
             lineEdit = widget.children()[1]
             lineEdit.setText(Value)
 
-    elif Type == "Quantity":
+    elif Type == "Quantity" or Type == "Float":
 
         widget = ui.createWidget("Gui::InputField")
+        # print(matproperty)
         if hasattr(FreeCAD.Units, matproperty):
             unit = getattr(FreeCAD.Units, matproperty)
             quantity = FreeCAD.Units.Quantity(1, unit)
             widget.setProperty('unit', quantity.getUserPreferred()[2])
         else:
-            FreeCAD.Console.PrintError('Not known unit for property: {}\n'.format(matproperty))
+            FreeCAD.Console.PrintWarning(
+                "Not known unit for property: {}. Probably the Quantity does not have a unit.\n"
+                .format(matproperty)
+            )
+            # the Gui::InputField is used for Floats too, because of the diggits
 
     elif Type == "Integer":
 
         widget = ui.createWidget("Gui::UIntSpinBox")
 
-    elif Type == "Float":
+    # elif Type == "Float":
 
-        widget = ui.createWidget("Gui::PrefDoubleSpinBox")
+    #     widget = ui.createWidget("Gui::PrefDoubleSpinBox")
+    # has only 2 diggits precision, but for example RelativePermittivity needs much more
+    # see material card for Air, thus Workaround
+    # a "Gui::InputField" without unit is used
 
     elif Type == "Enumerator":
 
