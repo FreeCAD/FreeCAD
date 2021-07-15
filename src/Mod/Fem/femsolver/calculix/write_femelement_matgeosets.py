@@ -34,11 +34,14 @@ def write_femelement_matgeosets(f, ccxwriter):
     # write ccx_elsets to file
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n")
+
     for ccx_elset in ccxwriter.ccx_elsets:
-        f.write("*ELSET,ELSET=" + ccx_elset["ccx_elset_name"] + "\n")
+
+        f.write("*ELSET,ELSET={}\n".format(ccx_elset["ccx_elset_name"]))
+
         # use six to be sure to be Python 2.7 and 3.x compatible
         if isinstance(ccx_elset["ccx_elset"], six.string_types):
-            f.write(ccx_elset["ccx_elset"] + "\n")
+            f.write("{}\n".format(ccx_elset["ccx_elset"]))
         else:
             for elid in ccx_elset["ccx_elset"]:
                 f.write(str(elid) + ",\n")
