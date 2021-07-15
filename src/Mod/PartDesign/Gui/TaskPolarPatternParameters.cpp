@@ -119,6 +119,7 @@ void TaskPolarPatternParameters::setupUI()
 
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     ui->polarAngle->bind(pcPolarPattern->Angle);
+    ui->spinOccurrences->setMinimum(1);
     ui->spinOccurrences->bind(pcPolarPattern->Occurrences);
 
     ui->comboAxis->setEnabled(true);
