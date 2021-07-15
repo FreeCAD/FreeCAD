@@ -124,15 +124,12 @@ bool ViewProviderSplit::canDelete(App::DocumentObject* obj) const {
     return !obj->isDerivedFrom(PartDesign::Solid::getClassTypeId());
 }
 
-std::vector<App::DocumentObject*> ViewProviderSplit::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderSplit::_claimChildren(void) const {
     auto owner = Base::freecad_dynamic_cast<PartDesign::Split>(getObject());
     if(owner) {
         auto children = owner->Tools.getValues();
         const auto &solids = owner->Solids.getValues();
         children.insert(children.end(),solids.begin(),solids.end());
-
-        auto res = PartDesignGui::ViewProvider::claimChildren();
-        children.insert(children.end(), res.begin(), res.end());
         return children;
     }
     return {};

@@ -837,7 +837,9 @@ int ViewProvider::replaceObject(App::DocumentObject *oldObj, App::DocumentObject
 
 std::vector<App::DocumentObject*> ViewProvider::claimChildren(void) const
 {
-    auto res = inherited::claimChildren();
+    auto res = _claimChildren();
+    auto children = inherited::claimChildren();
+    res.insert(res.end(), children.begin(), children.end());
     auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
     if (feature) {
         auto siblings = feature->_Siblings.getValues();

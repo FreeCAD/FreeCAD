@@ -39,7 +39,7 @@ public:
     /// destructor
     virtual ~ViewProviderExtrusion();
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+    virtual std::vector<App::DocumentObject*> _claimChildren(void) const;
     virtual void updateData(const App::Property* p);
 
 protected:

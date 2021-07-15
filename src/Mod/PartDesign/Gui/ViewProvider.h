@@ -87,14 +87,13 @@ public:
     virtual bool canDropObject(App::DocumentObject*) const override {return false;}
     virtual bool canReplaceObject(App::DocumentObject *, App::DocumentObject *) override;
     virtual int replaceObject(App::DocumentObject *, App::DocumentObject *) override;
-
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
-
     virtual void reattach(App::DocumentObject *) override;
     virtual void beforeDelete() override;
 
-protected:
+    virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
+    virtual std::vector<App::DocumentObject*> _claimChildren(void) const {return {};}
 
+protected:
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;

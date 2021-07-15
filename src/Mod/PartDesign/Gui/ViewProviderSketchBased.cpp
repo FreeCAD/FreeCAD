@@ -48,7 +48,7 @@ ViewProviderSketchBased::~ViewProviderSketchBased()
 }
 
 
-std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderSketchBased::_claimChildren(void) const {
     std::vector<App::DocumentObject*> temp;
     PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
@@ -57,9 +57,6 @@ std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) c
                 || !sketch->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             temp.push_back(sketch);
     }
-
-    auto res = PartDesignGui::ViewProvider::claimChildren();
-    temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
 

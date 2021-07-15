@@ -55,7 +55,7 @@ ViewProviderLoft::~ViewProviderLoft()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderLoft::_claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -70,8 +70,6 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
             temp.push_back(obj);
     }
 
-    auto res = PartDesignGui::ViewProviderAddSub::claimChildren();
-    temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
 

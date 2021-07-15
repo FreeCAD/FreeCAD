@@ -52,7 +52,7 @@ public:
     virtual bool canDelete(App::DocumentObject* obj) const override;
     virtual bool onDelete(const std::vector<std::string> &) override;
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
+    virtual std::vector<App::DocumentObject*> _claimChildren(void) const override;
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
 
 private:

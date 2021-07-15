@@ -55,7 +55,7 @@ ViewProviderPipe::~ViewProviderPipe()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderPipe::_claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -79,8 +79,6 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     if (auxspine != NULL && !auxspine->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
         temp.push_back(auxspine);
 
-    auto res = ViewProviderAddSub::claimChildren();
-    temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
 

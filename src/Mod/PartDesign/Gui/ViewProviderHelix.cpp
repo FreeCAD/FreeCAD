@@ -76,7 +76,7 @@ QIcon ViewProviderHelix::getIcon(void) const {
     return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 
-std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderHelix::_claimChildren(void) const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
     if (sketch != NULL && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))

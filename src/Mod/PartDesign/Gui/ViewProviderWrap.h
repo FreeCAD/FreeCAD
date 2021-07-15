@@ -42,7 +42,7 @@ public:
     virtual QIcon getIcon() const override;
     virtual void updateData(const App::Property*) override;
     virtual void onChanged(const App::Property* prop) override;
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
+    virtual std::vector<App::DocumentObject*> _claimChildren(void) const override;
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
     virtual SoGroup* getChildRoot(void) const override;
     virtual Gui::ViewProvider * startEditing(int ModNum) override;

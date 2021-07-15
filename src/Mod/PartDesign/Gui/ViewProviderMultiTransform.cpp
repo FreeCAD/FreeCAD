@@ -39,16 +39,13 @@ TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
     return new TaskDlgMultiTransformParameters (this);
 }
 
-std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderMultiTransform::_claimChildren(void) const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
     if (pcMultiTransform == NULL)
         return std::vector<App::DocumentObject*>(); // TODO: Show error?
 
-    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
-    auto res = PartDesignGui::ViewProvider::claimChildren();
-    transformFeatures.insert(transformFeatures.end(), res.begin(), res.end());
-    return transformFeatures;
+    return pcMultiTransform->Transformations.getValues();
 }
 
 bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) {
