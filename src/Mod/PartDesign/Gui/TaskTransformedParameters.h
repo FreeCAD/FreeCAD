@@ -45,6 +45,7 @@ class QTimer;
 namespace Gui {
 namespace Dialog {
 class DlgPropertyLink;
+class Placement;
 }
 }
 
@@ -59,6 +60,7 @@ class Transformed;
 namespace PartDesignGui {
 
 class TaskMultiTransformParameters;
+class TaskDlgTransformedParameters;
 
 /**
  * @brief The ComboLinks class is a helper class that binds to a combo box and
@@ -254,6 +256,9 @@ protected:
     bool onTopEnabled = true;
 
     bool blockUpdate;
+    Gui::Dialog::Placement *transformOffsetPlacement = nullptr;
+
+    friend class TaskDlgTransformedParameters;
 };
 
 /// simulation dialog for the TaskView
