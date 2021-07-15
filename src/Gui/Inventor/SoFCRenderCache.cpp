@@ -1278,8 +1278,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         }
         if (vcache->hasSolid() > 1) {
           material.shapetype = SoShapeHintsElement::SOLID;
-          // Hidden line draw style need the back face to draw its outline
-          // material.culling = 1;
+          material.culling = 1;
         }
         vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
