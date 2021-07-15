@@ -179,16 +179,19 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
             updateAddSubShapeIndicator();
         else if (p == &feat->BaseFeature) {
             auto base = feat->getBaseObject(true);
-            if (!base) {
+            if (base != baseFeature.getObject()) {
                 auto baseObj = baseFeature.getObject();
                 if (baseObj) {
                     setPreviewDisplayMode(false);
-                    baseFeature = App::DocumentObjectT();
+                    baseFeature = base;
                     baseObj->Visibility.setValue(false);
                     setPreviewDisplayMode(true);
-                    getObject()->Visibility.setValue(true);
+                    if (base)
+                        base->Visibility.setValue(true);
+                    else
+                        getObject()->Visibility.setValue(true);
                 }
-            } else if (isPreviewMode())  {
+            } else if (isPreviewMode()) {
                 setPreviewDisplayMode(false);
                 setPreviewDisplayMode(true);
             }
