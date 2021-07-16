@@ -48,7 +48,7 @@ def write_mesh(ccxwriter):
         )
 
         # Check to see if fluid sections are in analysis and use D network element type
-        if ccxwriter.fluidsection_objects:
+        if ccxwriter.member.geos_fluidsection:
             meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
@@ -65,7 +65,7 @@ def write_mesh(ccxwriter):
         )
 
         # Check to see if fluid sections are in analysis and use D network element type
-        if ccxwriter.fluidsection_objects:
+        if ccxwriter.member.geos_fluidsection:
             # inpfile is closed
             meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
