@@ -465,6 +465,9 @@ class ViewProviderDraft(object):
                 return ":/icons/Draft_N-Curve.svg"
             elif tp in ("ShapeString"):
                 return ":/icons/Draft_ShapeString_tree.svg"
+        if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
+            import TechDrawGui
+            return ":/icons/TechDraw_TreePageUnsync.svg"
         return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):
