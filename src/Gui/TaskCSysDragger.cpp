@@ -49,13 +49,13 @@ static double radiansToDegrees(const double &radiansIn)
   return radiansIn * (180.0 / M_PI);
 }
 
-static double degreesToRadains(const double &degreesIn)
+static double degreesToRadians(const double &degreesIn)
 {
   return degreesIn * (M_PI / 180.0);
 }
 
 static double lastTranslationIncrement = 1.0;
-static double lastRotationIncrement = degreesToRadains(15.0);
+static double lastRotationIncrement = degreesToRadians(15.0);
 
 TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDocumentObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
   dragger(draggerIn)
@@ -77,6 +77,10 @@ TaskCSysDragger::~TaskCSysDragger()
 
 void TaskCSysDragger::setupGui()
 {
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+  lastTranslationIncrement = hGrp->GetFloat("LastTranslationIncrement", 1.0);
+  lastRotationIncrement = degreesToRadians(hGrp->GetFloat("LastRotationIncrement", 15.0));
+
   Gui::TaskView::TaskBox *incrementsBox = new Gui::TaskView::TaskBox(
       Gui::BitmapFactory().pixmap("button_valid"),
       tr("Increments"), true, 0);
@@ -119,7 +123,7 @@ void TaskCSysDragger::onTIncrementSlot(double freshValue)
 
 void TaskCSysDragger::onRIncrementSlot(double freshValue)
 {
-  dragger->rotationIncrement.setValue(degreesToRadains(freshValue));
+  dragger->rotationIncrement.setValue(degreesToRadians(freshValue));
 }
 
 void TaskCSysDragger::open()
@@ -139,6 +143,9 @@ bool TaskCSysDragger::accept()
 {
   lastTranslationIncrement = dragger->translationIncrement.getValue();
   lastRotationIncrement = dragger->rotationIncrement.getValue();
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+  hGrp->SetFloat("LastTranslationIncrement", lastTranslationIncrement);
+  hGrp->SetFloat("LastRotationIncrement", radiansToDegrees(lastRotationIncrement));
 
   App::DocumentObject* dObject = vpObject.getObject();
   if (dObject) {
