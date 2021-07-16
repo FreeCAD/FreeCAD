@@ -53,12 +53,14 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_hexa20faceload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
     femexamples/constraint_section_print.py
     femexamples/constraint_selfweight_cantilever.py
     femexamples/constraint_tie.py
     femexamples/constraint_transform_beam_hinged.py
+    femexamples/constraint_transform_torque.py
     femexamples/examplesgui.py
     femexamples/elmer_nonguitutorial01_eigenvalue_of_elastic_beam.py
     femexamples/equation_electrostatics_capacitance_two_balls.py
@@ -87,6 +89,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_canticcx_hexa20.py
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_capacitance_two_balls_tetra10.py
+    femexamples/meshes/mesh_constraint_centrif_tetra10.py
     femexamples/meshes/mesh_constraint_tie_tetra10.py
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
@@ -104,6 +107,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_thermomech_flow1d_seg3.py
     femexamples/meshes/mesh_thermomech_spine_tetra10.py
     femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
+    femexamples/meshes/mesh_transform_torque_tetra10.py
 )
 
 SET(FemInOut_SRCS
@@ -129,6 +133,7 @@ SET(FemMesh_SRCS
     femmesh/__init__.py
     femmesh/femmesh2mesh.py
     femmesh/gmshtools.py
+    femmesh/meshsetsgetter.py
     femmesh/meshtools.py
 )
 
@@ -137,6 +142,7 @@ SET(FemObjects_SRCS
     femobjects/base_fempythonobject.py
     femobjects/constant_vacuumpermittivity.py
     femobjects/constraint_bodyheatsource.py
+    femobjects/constraint_centrif.py
     femobjects/constraint_electrostaticpotential.py
     femobjects/constraint_flowvelocity.py
     femobjects/constraint_initialflowvelocity.py
@@ -182,6 +188,28 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
+    femsolver/calculix/write_constraint_centrif.py
+    femsolver/calculix/write_constraint_contact.py
+    femsolver/calculix/write_constraint_displacement.py
+    femsolver/calculix/write_constraint_fixed.py
+    femsolver/calculix/write_constraint_fluidsection.py
+    femsolver/calculix/write_constraint_force.py
+    femsolver/calculix/write_constraint_heatflux.py
+    femsolver/calculix/write_constraint_initialtemperature.py
+    femsolver/calculix/write_constraint_planerotation.py
+    femsolver/calculix/write_constraint_pressure.py
+    femsolver/calculix/write_constraint_sectionprint.py
+    femsolver/calculix/write_constraint_selfweight.py
+    femsolver/calculix/write_constraint_temperature.py
+    femsolver/calculix/write_constraint_tie.py
+    femsolver/calculix/write_constraint_transform.py
+    femsolver/calculix/write_femelement_geometry.py
+    femsolver/calculix/write_femelement_material.py
+    femsolver/calculix/write_femelement_matgeosets.py
+    femsolver/calculix/write_footer.py
+    femsolver/calculix/write_mesh.py
+    femsolver/calculix/write_step_equation.py
+    femsolver/calculix/write_step_output.py
     femsolver/calculix/writer.py
 )
 
@@ -263,6 +291,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/ccxcantilever_hexa20.inp
     femtest/data/calculix/ccxcantilever_nodeload.inp
     femtest/data/calculix/ccxcantilever_prescribeddisplacement.inp
+    femtest/data/calculix/constraint_centrif.inp
     femtest/data/calculix/constraint_contact_shell_shell.FCStd
     femtest/data/calculix/constraint_contact_shell_shell.inp
     femtest/data/calculix/constraint_contact_solid_solid.FCStd
@@ -270,6 +299,8 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/constraint_sectionprint.inp
     femtest/data/calculix/constraint_selfweight_cantilever.inp
     femtest/data/calculix/constraint_tie.inp
+    femtest/data/calculix/constraint_transform_beam_hinged.inp
+    femtest/data/calculix/constraint_transform_torque.inp
     femtest/data/calculix/frequency_beamsimple.inp
     femtest/data/calculix/material_multiple_bendingbeam_fiveboxes.inp
     femtest/data/calculix/material_multiple_bendingbeam_fivefaces.inp
@@ -453,6 +484,7 @@ SET(FemGuiObjects_SRCS
 
 SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
+    femtaskpanels/task_constraint_centrif.py
     femtaskpanels/task_constraint_electrostaticpotential.py
     femtaskpanels/task_constraint_flowvelocity.py
     femtaskpanels/task_constraint_initialflowvelocity.py
@@ -489,6 +521,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_base_femobject.py
     femviewprovider/view_constant_vacuumpermittivity.py
     femviewprovider/view_constraint_bodyheatsource.py
+    femviewprovider/view_constraint_centrif.py
     femviewprovider/view_constraint_electrostaticpotential.py
     femviewprovider/view_constraint_flowvelocity.py
     femviewprovider/view_constraint_initialflowvelocity.py

@@ -7720,11 +7720,11 @@ Physical path: </source>
     </message>
     <message>
       <source>Link navigation</source>
-      <translation>Nawigacja przy użyciu łączy</translation>
+      <translation>Nawigacja przy użyciu odnośników</translation>
     </message>
     <message>
       <source>Link navigation actions</source>
-      <translation>Działania związane z nawigacją</translation>
+      <translation>Działania związane z nawigacją przy użyciu odnośników</translation>
     </message>
   </context>
   <context>
@@ -8572,7 +8572,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Przełącza własność obiektów, aby uzyskać wybrany obiekt w widoku 3D</translation>
+      <translation>Przełącza właściwość obiektów, które mają zostać wybrane w widoku 3D</translation>
     </message>
   </context>
   <context>

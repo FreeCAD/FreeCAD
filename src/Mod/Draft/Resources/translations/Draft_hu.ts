@@ -670,7 +670,7 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
       <translation>A 'Görbe tárgy' csatlakoztatott éleinek listája.
-Ha léteznek, a másolatok csak ezen alelemek mentén jönnek létre.
+Ha léteznek, a másolatok csak ezen al-elemek mentén jönnek létre.
 Hagyja üresen ezt a tulajdonságot, hogy másolatot készítsen a teljes 'Görbe tárgy' mentén.</translation>
     </message>
     <message>
@@ -1090,7 +1090,7 @@ Hagyja üresen a rendszer alapértelmezetthez.
 Használja az 'arch' kifejezést amerikai US arch jelölésének kikényszerítésére</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>A kizárási pontok listája. A pontok bármelyikét érintő élek nem kerülnek kisorsolásra.</translation>
     </message>
@@ -1098,32 +1098,35 @@ Használja az 'arch' kifejezést amerikai US arch jelölésének kikényszerít�
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Szakaszvonal- és szakaszfelületi üzemmódoknál 
+                  ez a felületeket vágási helyzetben hagyja</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>A vonalszakaszok hossza ellipszisek vagy B-görbék után 
+                vonalszakaszokká alakítható</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Ha ez igaz, csak szilárd geometriát kezelünk. Ez felülírja az alaptárgy Csak szilárd anyagok tulajdonságát</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Ha igaz, a tartalom adott esetben a szakaszsík határaira vágott. Ez felülírja az alapobjektum vágási tulajdonságát - Clip</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1646,7 +1649,7 @@ Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megv
     <message>
       <location filename="gui_offset.py" line="326"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation>Az eltolás iránya nem meghatérozott. Először mozgassa az egeret a tárgy egyik oldalára, hogy meghatározza az irányt</translation>
+      <translation>Az eltolás iránya nem meghatározott. Először mozgassa az egeret a tárgy egyik oldalára, hogy meghatározza az irányt</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
@@ -3781,7 +3784,7 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>A szöveg- és a méretvonal távolsága</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3791,7 +3794,7 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>A különböző szövegsorok közötti térköz</translation>
     </message>
   </context>
   <context>

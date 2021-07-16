@@ -1085,7 +1085,7 @@ Laisser vide pour la valeur par défaut du système.
 Utilisez 'arch' pour forcer la notation architecturale US</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Liste de points d’exclusion. Une arête touchant l’un de ces points ne sera pas dessinée.</translation>
     </message>
@@ -1093,32 +1093,33 @@ Utilisez 'arch' pour forcer la notation architecturale US</translation>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Pour les modes lignes de coupe et coupes,                     ceci laisse les faces à l'emplacement de la coupe</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Longueur des segments de la ligne si approximation d'ellipses ou de B-splines                     en ligne de segments</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Si ceci est vrai, seule la géométrie solide est prise en compte. Ceci écrase la propriété Solides uniquement de l'objet de base</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Si ceci est vrai, les contenus sont coupés aux bordures du plan de coupe, si possible. Ceci écrase la propriété Clip de l'objet de base</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1466,7 +1467,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
       <source>Object snapping</source>
-      <translation>Accrochage d'objet</translation>
+      <translation>Aimantation aux objets</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
@@ -2906,12 +2907,12 @@ Les formes fermées peuvent être utilisées pour les extrusions et les opérati
     <message>
       <location filename="gui_snaps.py" line="576"/>
       <source>Show snap toolbar</source>
-      <translation>Afficher la barre d'outils d'accrochage</translation>
+      <translation>Afficher la barre d'outils d'aimantation</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="579"/>
       <source>Show the snap toolbar if it is hidden.</source>
-      <translation>Afficher la barre d'outils d'accrochage si elle est cachée.</translation>
+      <translation>Afficher la barre d'outils d'aimantation si elle est cachée.</translation>
     </message>
   </context>
   <context>
@@ -2958,7 +2959,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="334"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
-      <translation>Paramétrer l’accrochage sur des points, dans un arc circulaire, situés à des multiples d’angles de 30 et 45 degrés.</translation>
+      <translation>Paramétrer l’aimantation sur des points, dans un arc circulaire, situés à des multiples d’angles de 30 et 45 degrés.</translation>
     </message>
   </context>
   <context>
@@ -2971,7 +2972,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="364"/>
       <source>Set snapping to the center of a circular arc.</source>
-      <translation>Fixer l'accrochage au centre d'un arc circulaire.</translation>
+      <translation>Définir l'aimantation au centre d'un arc de cercle.</translation>
     </message>
   </context>
   <context>
@@ -2984,7 +2985,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="516"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
-      <translation>Afficher les cotes linéaires temporaires lors de l'édition d'un objet et de l'utilisation d'autres méthodes d'accrochage.</translation>
+      <translation>Afficher les cotes linéaires temporaires lors de l'édition d'un objet et de l'utilisation d'autres méthodes d'aimantation.</translation>
     </message>
   </context>
   <context>
@@ -2997,7 +2998,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="303"/>
       <source>Set snapping to endpoints of an edge.</source>
-      <translation>Paramétrer l'accrochage aux extrémités d'une arête.</translation>
+      <translation>Définir l'aimantation aux extrémités d'une arête.</translation>
     </message>
   </context>
   <context>
@@ -3010,7 +3011,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="394"/>
       <source>Set snapping to the extension of an edge.</source>
-      <translation>Définir l'accrochage aux prolongement d'une arête.</translation>
+      <translation>Définir l'aimantation aux prolongement d'une arête.</translation>
     </message>
   </context>
   <context>
@@ -3023,7 +3024,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="213"/>
       <source>Set snapping to the intersection of grid lines.</source>
-      <translation>Définir l’accrochage à l’intersection des lignes de la grille.</translation>
+      <translation>Définir l’aimantation à l’intersection des lignes de la grille.</translation>
     </message>
   </context>
   <context>
@@ -3036,7 +3037,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="243"/>
       <source>Set snapping to the intersection of edges.</source>
-      <translation>Paramétrer l’accrochage à l’intersection des arêtes.</translation>
+      <translation>Définir l’aimantation à l’intersection d'arêtes.</translation>
     </message>
   </context>
   <context>
@@ -3044,12 +3045,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="120"/>
       <source>Main snapping toggle On/Off</source>
-      <translation>Active/Désactive l'accrochage principal</translation>
+      <translation>Active/Désactive l'aimantation générale</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="123"/>
       <source>Activates or deactivates all snap methods at once.</source>
-      <translation>Active ou désactive toutes les méthodes d’accrochage en même temps.</translation>
+      <translation>Active ou désactive toutes les méthodes d’aimantation en même temps.</translation>
     </message>
   </context>
   <context>
@@ -3062,7 +3063,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="153"/>
       <source>Set snapping to the midpoint of an edge.</source>
-      <translation>Paramétrer l'accrochage au point milieu d'une arête.</translation>
+      <translation>Définir l'aimantation au milieu d'une arête.</translation>
     </message>
   </context>
   <context>
@@ -3075,7 +3076,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="424"/>
       <source>Set snapping to the nearest point of an edge.</source>
-      <translation>Paramétrer l'accrochage au point le plus proche d'une arête.</translation>
+      <translation>Définir l'aimantation au point le plus proche d'une arête.</translation>
     </message>
   </context>
   <context>
@@ -3088,7 +3089,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="455"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
-      <translation>Paramétrer l'accrochage dans une direction qui est un multiple de 45 degrés à partir d'un point.</translation>
+      <translation>Définir l'aimantation à une direction multiple de 45 degrés à partir d'un point.</translation>
     </message>
   </context>
   <context>
@@ -3101,7 +3102,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="273"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
-      <translation>Paramétrer l'accrochage dans une direction parallèle à une arête.</translation>
+      <translation>Définir l'aimantation dans une direction parallèle à une arête.</translation>
     </message>
   </context>
   <context>
@@ -3114,7 +3115,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="183"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
-      <translation>Paramétrer l'accrochage dans une direction perpendiculaire à une arête.</translation>
+      <translation>Définir l'aimantation dans une direction perpendiculaire à une arête.</translation>
     </message>
   </context>
   <context>
@@ -3127,7 +3128,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="485"/>
       <source>Set snapping to the special points defined inside an object.</source>
-      <translation>Paramétrer l'accrochage sur les points spéciaux définis à l'intérieur d'un objet.</translation>
+      <translation>Définir l'aimantation sur les points spéciaux définis à l'intérieur d'un objet.</translation>
     </message>
   </context>
   <context>
@@ -3142,8 +3143,8 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
-      <translation>Restreint l'accrochage à un point dans le plan de travail actuel.
-Si vous sélectionnez un point en dehors du plan de travail, par exemple, en utilisant d'autres méthodes d'accrochage,
+      <translation>Restreint l'aimantation à un point dans le plan de travail actuel.
+Si vous sélectionnez un point en dehors du plan de travail, par exemple, en utilisant d'autres méthodes d'aimantation,
 il s'alignera sur la projection de ce point dans le plan de travail actuel.</translation>
     </message>
   </context>
@@ -3204,7 +3205,7 @@ puis tracez une ligne pour spécifier la distance et la direction de l'étiremen
     <message>
       <location filename="gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation>Crée une annotation multiligne. CTRL pour accrocher.</translation>
+      <translation>Crée une annotation multi-ligne. CTRL pour aimanter.</translation>
     </message>
   </context>
   <context>
@@ -3281,7 +3282,7 @@ Ceci est destiné à être utilisé avec des formes fermées et des solides, et 
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation>Ajuste ou étend l'objet sélectionné, ou extrude des faces uniques.
-CTRL pour accrocher, SHIFT pour contraindre au segment actuel ou à la normale, ALT pour inverser.</translation>
+CTRL pour aimanter, SHIFT pour contraindre au segment actuel ou à la normale, ALT pour inverser.</translation>
     </message>
   </context>
   <context>
@@ -3326,7 +3327,7 @@ convertir les bords fermés en faces remplies et en polygones paramétriques, et
     <message>
       <location filename="gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation>Crée une ligne à plusieurs points (polyligne). CTRL pour accrocher, SHIFT pour contraindre.</translation>
+      <translation>Crée une ligne brisée (polyligne). CTRL pour aimanter, SHIFT pour contraindre.</translation>
     </message>
   </context>
   <context>
@@ -3483,14 +3484,14 @@ sera déplacé au centre de la vue</translation>
       <source>The distance at which a point can be snapped to
 when approaching the mouse. You can also change this
 value by using the [ and ] keys while drawing</source>
-      <translation>La distance à laquelle un point peut être accroché 
+      <translation>La distance à laquelle un point peut être aimanté 
 en approchant la souris. Vous pouvez également modifier cette valeur
 en utilisant les touches [ et ] lors du dessin</translation>
     </message>
     <message>
       <location filename="TaskSelectPlane.ui" line="212"/>
       <source>Snapping radius</source>
-      <translation>Rayon d'accrochage</translation>
+      <translation>Rayon d'aimantation</translation>
     </message>
     <message>
       <location filename="TaskSelectPlane.ui" line="241"/>
@@ -3775,7 +3776,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>L'espace entre le texte et la ligne de cote</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3785,7 +3786,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>L'écartement entre les différentes lignes de texte</translation>
     </message>
   </context>
   <context>
@@ -4089,12 +4090,12 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation>Si cette case est cochée, l’ancrage est actif sans avoir à presser la touche du mode ancrage</translation>
+      <translation>Si cette case est cochée, l’aimantation est active sans avoir à presser la touche du mode aimantation</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
-      <translation>Toujours ancré (désactiver le mode ancrage)</translation>
+      <translation>Toujours aimanté (désactive le mode d'aimantation)</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="407"/>
@@ -4329,7 +4330,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="preferences-draftsnap.ui" line="14"/>
       <source>Grid and snapping</source>
-      <translation>Grille et ancrage</translation>
+      <translation>Grille et aimantation</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="26"/>
@@ -4509,7 +4510,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="preferences-draftvisual.ui" line="87"/>
       <source>The default color for snap symbols</source>
-      <translation>Couleur par défaut pour les accrochages</translation>
+      <translation>Couleur par défaut pour les symboles d'aimantation</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="111"/>
@@ -4761,7 +4762,7 @@ Les valeurs ayant des différences inférieures à cette valeur sont considéré
     <message>
       <location filename="preferences-draftinterface.ui" line="338"/>
       <source>Snap</source>
-      <translation>Accroche</translation>
+      <translation>Aimantation</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="89"/>
@@ -4895,12 +4896,12 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
     <message>
       <location filename="preferences-draftinterface.ui" line="951"/>
       <source>Enable snap statusbar widget</source>
-      <translation>Activer le widget d'accrochage dans la barre d'état</translation>
+      <translation>Activer le widget d'aimantation dans la barre d'état</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="954"/>
       <source>Draft snap widget</source>
-      <translation>Widget d'accrochage Draft</translation>
+      <translation>Widget d'aimantation Draft</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="970"/>
@@ -5224,7 +5225,7 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
     <message>
       <location filename="gui_snapper.py" line="1476"/>
       <source>Draft Snap</source>
-      <translation>Accrochage Draft</translation>
+      <translation>Aimantation Draft</translation>
     </message>
   </context>
   <context>
@@ -5564,17 +5565,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="DraftGui.py" line="96"/>
       <source>Snap On/Off</source>
-      <translation>Fermoir On/Off</translation>
+      <translation>Aimantation On/Off</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="101"/>
       <source>Increase snap radius</source>
-      <translation>Augmenter le rayon d'accrochage</translation>
+      <translation>Augmenter le rayon d'aimantation</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="106"/>
       <source>Decrease snap radius</source>
-      <translation>Augmenter le rayon d'accrochage</translation>
+      <translation>Diminuer le rayon d'aimantation</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="111"/>
@@ -5599,7 +5600,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="DraftGui.py" line="131"/>
       <source>Add custom snap point</source>
-      <translation>Ajouter un point d’accrochage personnalisé</translation>
+      <translation>Ajouter un point d’aimantation personnalisé</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="136"/>
@@ -5619,7 +5620,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="DraftGui.py" line="151"/>
       <source>Cycle snap object</source>
-      <translation>Alterner entre différents accrochages</translation>
+      <translation>Alterner entre différentes aimantation</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="741"/>
@@ -5724,7 +5725,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="DraftGui.py" line="156"/>
       <source>Toggle near snap on/off</source>
-      <translation>Activer ou désactiver l'accrochage de proximité</translation>
+      <translation>Activer ou désactiver l'aimantation de proximité</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="807"/>
@@ -6705,17 +6706,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="113"/>
       <source>Main toggle snap</source>
-      <translation>Basculer l'accrochage principal</translation>
+      <translation>Basculer l'aimantation générale</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="144"/>
       <source>Midpoint snap</source>
-      <translation>Accrochage au milieu</translation>
+      <translation>Aimantation au milieu</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="174"/>
       <source>Perpendicular snap</source>
-      <translation>Accrochage perpendiculaire</translation>
+      <translation>Aimantation perpendiculaire</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="204"/>
@@ -6725,17 +6726,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="234"/>
       <source>Intersection snap</source>
-      <translation>Accrochage d'intersection</translation>
+      <translation>Aimantation d'intersection</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="264"/>
       <source>Parallel snap</source>
-      <translation>Accrochage parallèle</translation>
+      <translation>Aimantation parallèle</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="294"/>
       <source>Endpoint snap</source>
-      <translation>Accrochage du point d'extrémité</translation>
+      <translation>Aimantation au point d'extrémité</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="325"/>
@@ -6745,27 +6746,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="355"/>
       <source>Arc center snap</source>
-      <translation>Accrochage au centre de l'arc</translation>
+      <translation>Aimantation au centre d'arc</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="385"/>
       <source>Edge extension snap</source>
-      <translation>Accrochage de l'extension d'arête</translation>
+      <translation>Aimantation à l'extension d'arête</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="415"/>
       <source>Near snap</source>
-      <translation>Près de l'accrochage</translation>
+      <translation>Aimantation de proximité</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="446"/>
       <source>Orthogonal snap</source>
-      <translation>Accrochage orthogonal</translation>
+      <translation>Aimantation orthogonal</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="476"/>
       <source>Special point snap</source>
-      <translation>Accrochage de points spéciaux</translation>
+      <translation>Aimantation aux points spéciaux</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="507"/>
@@ -6780,7 +6781,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="570"/>
       <source>Show snap toolbar</source>
-      <translation>Afficher la barre d'outils d'accrochage</translation>
+      <translation>Afficher la barre d'outils d'aimantation</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="101"/>

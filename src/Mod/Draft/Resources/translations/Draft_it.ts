@@ -1065,7 +1065,7 @@ beyond the dimension line</source>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Fattore di rotazione dell'array attorcigliato.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="59"/>
@@ -1082,7 +1082,7 @@ Lasciare vuoto per il sistema predefinito.
 Usare 'arch' per forzare la notazione dell'arco statunitense</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Un elenco di punti di esclusione. Qualsiasi bordo che tocca uno di questi punti non sarà disegnato.</translation>
     </message>
@@ -1090,32 +1090,34 @@ Usare 'arch' per forzare la notazione dell'arco statunitense</translation>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Per le modalità Cutlines e Cutfaces, 
+                questo lascia le facce nella posizione di taglio</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Lunghezza dei segmenti di linea per tassellare ellissi o B-spline</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Se questo è vero, viene gestita solo la geometria solida. Questo sovrascrive la proprietà Solidi dell'oggetto base</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Se questo è vero, i contenuti vengono ritagliati ai bordi del piano di sezione, se applicabile. Questo sovrascrive la proprietà Clip dell'oggetto base</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1663,7 +1665,7 @@ La Serie può essere trasformata in una serie polare o circolare cambiandone il 
     <message>
       <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Attenzione</translation>
     </message>
   </context>
   <context>
@@ -3775,7 +3777,7 @@ utilizzando i tasti [ e ] durante il disegno</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>La spaziatura tra il testo e la linea di quota</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3785,7 +3787,7 @@ utilizzando i tasti [ e ] durante il disegno</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>La spaziatura tra le righe del testo</translation>
     </message>
   </context>
   <context>
@@ -7409,37 +7411,37 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Locale u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Locale u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Locale u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Globale u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Globale u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Globale u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Auto-gruppo:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
@@ -7480,7 +7482,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
+      <translation>Le forme selezionate devono definire un piano
 </translation>
     </message>
   </context>

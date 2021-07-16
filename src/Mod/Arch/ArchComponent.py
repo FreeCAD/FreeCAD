@@ -1229,7 +1229,7 @@ class ViewProviderComponent:
             if hasattr(self.Object,"CloneOf"):
                 if self.Object.CloneOf:
                     return ":/icons/Arch_Component_Clone.svg"
-        return ":/icons/Arch_Component.svg"
+        return ":/icons/Arch_Component_Tree.svg"
 
     def onChanged(self,vobj,prop):
         """Method called when the view provider has a property changed.

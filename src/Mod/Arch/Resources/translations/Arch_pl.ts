@@ -1816,7 +1816,7 @@
     <message>
       <location filename="ArchTruss.py" line="166"/>
       <source>The height of the truss at the end position</source>
-      <translation>Wysokość wiązara w pozycji końcowej</translation>
+      <translation>Wysokość wiązara kratownicy w pozycji końcowej</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="170"/>
@@ -1836,7 +1836,7 @@
     <message>
       <location filename="ArchTruss.py" line="180"/>
       <source>The width of the main top and bottom elements of the truss</source>
-      <translation>Szerokość głównego górnego i dolnego elementu kratownicy</translation>
+      <translation>Szerokość głównych górnych i dolnych elementów kratownicy</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="184"/>
@@ -1851,12 +1851,12 @@
     <message>
       <location filename="ArchTruss.py" line="192"/>
       <source>The diameter or side of the rods</source>
-      <translation>Średnica lub bok prętów</translation>
+      <translation>Średnica lub wymiar boczny prętów</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="196"/>
       <source>The number of rod sections</source>
-      <translation>Liczba części prętów</translation>
+      <translation>Liczba odcinków prętów</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="200"/>
@@ -2041,7 +2041,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="933"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>Geometria znajdująca się dalej niż ta wartość zostanie przycięta. Zachowaj zero dla braku ograniczeń.</translation>
     </message>
   </context>
   <context>
@@ -3061,7 +3061,7 @@
     <message>
       <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
-      <translation>Podskładniki przełączania</translation>
+      <translation>Przełącz elementy podrzędne</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="1629"/>
@@ -3571,7 +3571,7 @@
     <message>
       <location filename="ArchTruss.py" line="125"/>
       <source>Create Truss</source>
-      <translation>Utwórz Kratownicę</translation>
+      <translation>Utwórz kratownicę</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="143"/>
@@ -4569,7 +4569,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchCommands.py" line="1696"/>
       <source>Toggle subcomponents</source>
-      <translation>Podskładniki przełączania</translation>
+      <translation>Przełącz elementy podrzędne</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1699"/>
@@ -4587,7 +4587,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchTruss.py" line="86"/>
       <source>Creates a truss object from selected line or from scratch</source>
-      <translation>Tworzy obiekt wiązara z wybranej linii lub od podstaw</translation>
+      <translation>Tworzy obiekt wiązara kratownicy z wybranej linii lub od podstaw</translation>
     </message>
   </context>
   <context>
