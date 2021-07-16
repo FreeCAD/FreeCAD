@@ -340,8 +340,18 @@ public:
                 }
             }
         }
-        // We still need to check the order of the children
+
+        // Sort the child items by their tree rank
+        std::stable_sort(newChildren.begin(), newChildren.end(),
+                         [this](App::DocumentObject *a, App::DocumentObject *b) {
+                             ViewProviderDocumentObject *vpa = this->docItem->getViewProvider(a);
+                             ViewProviderDocumentObject *vpb = this->docItem->getViewProvider(b);
+                             return vpa->TreeRank.getValue() < vpb->TreeRank.getValue();
+                         });
+
+        // Mark updated in case the order of the children did change
         updated = updated || children!=newChildren;
+
         children.swap(newChildren);
         childSet.swap(newSet);
 
@@ -551,6 +561,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onItemSelectionChanged()));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
             this, SLOT(onItemChanged(QTreeWidgetItem*, int)));
+    connect(MainWindow::getInstance(), SIGNAL(tabifiedDockWidgetActivated(QDockWidget *)),
+            this, SLOT(onTabifiedDockWidgetActivated(QDockWidget *)));
+
     connect(this->preselectTimer, SIGNAL(timeout()),
             this, SLOT(onPreSelectTimer()));
     connect(this->selectTimer, SIGNAL(timeout()),
@@ -1296,6 +1309,17 @@ void TreeWidget::keyPressEvent(QKeyEvent *event)
             return;
         }
     }
+
+    if (event->modifiers() == Qt::AltModifier
+        && (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down)) {
+        // Consume the Alt+Up/Down keypresses. This is because if the "Move Up/Down in Group"
+        // key shortcut is inactive, they are interpreted as ordinary up/down single selection
+        // move, which results in confusing behavior on item group borders crossing
+        event->accept();
+        return;
+    }
+
+
     QTreeWidget::keyPressEvent(event);
 }
 
@@ -2529,6 +2553,27 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         Selection().rmvPreselect();
 }
 
+void TreeWidget::onTabifiedDockWidgetActivated(QDockWidget *dockWidget) {
+
+    QWidget *parent = this->parentWidget();
+    while (parent) {
+        if (parent == dockWidget) {
+            this->setFocus();
+            return;
+        }
+
+        parent = parent->parentWidget();
+    }
+}
+
+void TreeWidget::focusInEvent(QFocusEvent *event) {
+
+    _LastSelectedTreeWidget = this;
+    Application::Instance->updateActions(true);
+
+    QTreeWidget::focusInEvent(event);
+}
+
 void TreeWidget::leaveEvent(QEvent *) {
     if(!updateBlocked && TreeParams::Instance()->PreSelection()) {
         preselectTimer->stop();
@@ -2872,6 +2917,144 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
     }
 }
 
+DocumentObjectItem *TreeWidget::getFirstSelectedObjectItem() const
+{
+    QList<QTreeWidgetItem *> selected = this->selectedItems();
+    for (QTreeWidgetItem *i : selected) {
+        if (i->type() == TreeWidget::ObjectType) {
+            return static_cast<DocumentObjectItem *>(i);
+        }
+    }
+
+    return 0;
+}
+
+bool TreeWidget::allowMoveUpInGroup(DocumentObjectItem *obj, DocumentObjectItem **preceding) const
+{
+    if (!obj) {
+        return false;
+    }
+
+    DocumentObjectItem *previous = obj->getPreviousSibling();
+    if (!previous) {
+        return false;
+    }
+
+    if (preceding) {
+        *preceding = previous;
+    }
+
+    QTreeWidgetItem *parent = obj->parent();
+    if (parent->type() == ObjectType) {
+        ViewProviderDocumentObject *docObj = static_cast<DocumentObjectItem *>(parent)->object();
+        if (docObj && !docObj->allowTreeOrderSwap(obj->object()->getObject(), previous->object()->getObject())) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool TreeWidget::allowMoveDownInGroup(DocumentObjectItem *obj, DocumentObjectItem **succeeding) const
+{
+    if (!obj) {
+        return false;
+    }
+
+    DocumentObjectItem *next = obj->getNextSibling();
+    if (!next) {
+        return false;
+    }
+
+    if (succeeding) {
+        *succeeding = next;
+    }
+
+    QTreeWidgetItem *parent = obj->parent();
+    if (parent->type() == ObjectType) {
+        ViewProviderDocumentObject *docObj = static_cast<DocumentObjectItem *>(parent)->object();
+        if (docObj && !docObj->allowTreeOrderSwap(obj->object()->getObject(), next->object()->getObject())) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool TreeWidget::swapSiblings(DocumentObjectItem *obj1, DocumentObjectItem *obj2)
+{
+    if (!obj1 || !obj2 || obj1 == obj2) {
+        return false;
+    }
+
+    Gui::Document *doc = obj1->object()->getDocument();
+    if (!doc || obj2->object()->getDocument() != doc) {
+        return false;
+    }
+
+    std::string path1 = obj1->getFullPath();
+    if (path1.empty()) {
+        return false;
+    }
+
+    std::string path2 = obj2->getFullPath();
+    if (path2.empty() || path1 == path2) {
+        return false;
+    }
+
+    int rank = obj1->object()->TreeRank.getValue();
+    obj1->object()->TreeRank.setValue(obj2->object()->TreeRank.getValue());
+    obj2->object()->TreeRank.setValue(rank);
+
+    int swaps = 0;
+    for (TreeWidget *tree : Instances) {
+        if (!tree->isConnectionAttached() || tree->isConnectionBlocked()) {
+            continue;
+        }
+
+        bool lock = tree->blockConnection(true);
+
+        DocumentItem *docItem = tree->getDocumentItem(doc);
+        QTreeWidgetItem *item1 = docItem->getTreeItemByPath(path1);
+        if (!item1 || item1->type() != ObjectType) {
+            continue;
+        }
+
+        QTreeWidgetItem *item2 = docItem->getTreeItemByPath(path2);
+        if (!item2 || item2->type() != ObjectType) {
+            continue;
+        }
+
+        QTreeWidgetItem *parent = item1->parent();
+        if (!parent || item2->parent() != parent) {
+            continue;
+        }
+
+        int index1 = parent->indexOfChild(item1);
+        int index2 = parent->indexOfChild(item2);
+        if (index1 < 0 || index2 < 0 || index1 == index2) {
+            continue;
+        }
+
+        if (index1 < index2) {
+            std::swap(index1, index2);
+            std::swap(item1, item2);
+        }
+
+        parent->removeChild(item2);
+        parent->insertChild(index1, item2);
+        if (index2 - index1 > 1) {
+            parent->removeChild(item1);
+            parent->insertChild(index2, item1);
+        }
+        ++swaps;
+
+        tree->blockConnection(lock);
+    }
+
+    return swaps > 0;
+}
+
 // ----------------------------------------------------------------------------
 
 /* TRANSLATOR Gui::TreePanel */
@@ -3178,7 +3361,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         parent = this;
         data->rootItem = item;
         if(index<0)
-            index = findRootIndex(obj.getObject());
+            index = findRootIndex(&obj);
     }
     if(index<0)
         parent->addChild(item);
@@ -3477,7 +3660,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->requiredAtRoot()) {
                 item->removeChild(childItem);
-                auto index = findRootIndex(childItem->object()->getObject());
+                auto index = findRootIndex(childItem->object());
                 if(index>=0)
                     this->insertChild(index,childItem);
                 else
@@ -3498,13 +3681,13 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
         getTree()->_updateStatus();
 }
 
-int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
-    if(!TreeParams::Instance()->KeepRootOrder() || !childObj || !childObj->getNameInDocument())
+int DocumentItem::findRootIndex(const ViewProviderDocumentObject *childObj) const {
+    if (!TreeParams::Instance()->KeepRootOrder() || !childObj || !childObj->getObject()
+       || !childObj->getObject()->getNameInDocument()) {
         return -1;
+    }
 
-    // object id is monotonically increasing, so use this as a hint to insert
-    // object back so that we can have a stable order in root level.
-
+    // Use view provider's tree rank to find correct place at the root level.
     int count = this->childCount();
     if(!count)
         return -1;
@@ -3515,9 +3698,10 @@ int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
     for(last=count-1;last>=0;--last) {
         auto citem = this->child(last);
         if(citem->type() == TreeWidget::ObjectType) {
-            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
-            if(obj->getID()<=childObj->getID())
-                return last+1;
+            auto obj = static_cast<DocumentObjectItem *>(citem)->object();
+            if (obj->TreeRank.getValue() <= childObj->TreeRank.getValue()) {
+                return last + 1;
+            }
             break;
         }
     }
@@ -3526,9 +3710,10 @@ int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
     for(first=0;first<count;++first) {
         auto citem = this->child(first);
         if(citem->type() == TreeWidget::ObjectType) {
-            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
-            if(obj->getID()>=childObj->getID())
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object();
+            if (obj->TreeRank.getValue() > childObj->TreeRank.getValue()) {
                 return first;
+            }
             break;
         }
     }
@@ -3544,8 +3729,8 @@ int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
             auto citem = this->child(pos);
             if(citem->type() != TreeWidget::ObjectType)
                 continue;
-            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
-            if(obj->getID()<childObj->getID()) {
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object();
+            if (obj->TreeRank.getValue() < childObj->TreeRank.getValue()) {
                 first = ++pos;
                 count -= step+1;
             } else
@@ -4403,6 +4588,50 @@ void DocumentItem::updateSelection() {
     getTree()->blockConnection(lock);
 }
 
+QTreeWidgetItem *DocumentItem::getTreeItemByPath(const std::string &path) const
+{
+    QTreeWidgetItem *result = const_cast<DocumentItem *>(this);
+    size_t pos = 0;
+
+    while (pos < path.length()) {
+        size_t slash = path.find('/', pos);
+        if (slash == std::string::npos) {
+            slash = path.length();
+        }
+
+        std::string segment = path.substr(pos, slash - pos);
+        if (!segment.empty()) {
+            QTreeWidgetItem *item = 0;
+
+            if (result->type() == TreeWidget::DocumentType) {
+                for (int i = 0; i < result->childCount(); ++i) {
+                    QTreeWidgetItem *child = result->child(i);
+                    if (child->type() == TreeWidget::ObjectType) {
+                        ViewProviderDocumentObject *docObj = static_cast<DocumentObjectItem *>(child)->object();
+                        if (docObj && docObj->getObject() && docObj->getObject()->getNameInDocument() == segment) {
+                            item = child;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (result->type() == TreeWidget::ObjectType) {
+                item = static_cast<DocumentObjectItem *>(result)->getChildByName(segment);
+            }
+
+            if (!item) {
+                return 0;
+            }
+
+            result = item;
+        }
+
+        pos = slash + 1;
+    }
+
+    return result;
+}
+
 // ----------------------------------------------------------------------------
 
 static int countItems;
@@ -4874,6 +5103,77 @@ DocumentObjectItem *DocumentObjectItem::getParentItem() const{
     if(parent()->type()!=TreeWidget::ObjectType)
         return 0;
     return static_cast<DocumentObjectItem*>(parent());
+}
+
+DocumentObjectItem *DocumentObjectItem::getNextSibling() const
+{
+    QTreeWidgetItem *parent = this->parent();
+    if (parent) {
+        int index = parent->indexOfChild(const_cast<DocumentObjectItem *>(this));
+        if (index >= 0) {
+            while (++index < parent->childCount()) {
+                QTreeWidgetItem *sibling = parent->child(index);
+                if (sibling->type() == TreeWidget::ObjectType) {
+                    return static_cast<DocumentObjectItem *>(sibling);
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+DocumentObjectItem *DocumentObjectItem::getPreviousSibling() const
+{
+    QTreeWidgetItem *parent = this->parent();
+    if (parent) {
+        int index = parent->indexOfChild(const_cast<DocumentObjectItem *>(this));
+        while (index > 0) {
+            QTreeWidgetItem *sibling = parent->child(--index);
+            if (sibling->type() == TreeWidget::ObjectType) {
+                return static_cast<DocumentObjectItem *>(sibling);
+            }
+        }
+    }
+
+    return 0;
+}
+
+DocumentObjectItem *DocumentObjectItem::getChildByName(const std::string &name) const
+{
+    for (int i = 0; i < this->childCount(); ++i) {
+        QTreeWidgetItem *child = this->child(i);
+        if (child && child->type() == TreeWidget::ObjectType) {
+            ViewProviderDocumentObject *docObj = static_cast<DocumentObjectItem *>(child)->object();
+            if (docObj && docObj->getObject() && docObj->getObject()->getNameInDocument() == name) {
+                return static_cast<DocumentObjectItem *>(child);
+            }
+        }
+    }
+
+    return 0;
+}
+
+std::string DocumentObjectItem::getFullPath() const
+{
+    const QTreeWidgetItem *item = this;
+    std::string result;
+
+    do {
+        const ViewProviderDocumentObject *docObj = static_cast<const DocumentObjectItem *>(item)->object();
+        if (!docObj || !docObj->getObject() || !docObj->getObject()->getNameInDocument()) {
+            return std::string();
+        }
+
+        result = '/' + (docObj->getObject()->getNameInDocument() + result);
+    }
+    while ((item = item->parent()) && item->type() == TreeWidget::ObjectType);
+
+    if (item && item->type() == TreeWidget::DocumentType) {
+        return result;
+    }
+
+    return std::string();
 }
 
 const char *DocumentObjectItem::getName() const {
