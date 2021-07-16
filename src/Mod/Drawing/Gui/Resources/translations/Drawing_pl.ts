@@ -151,7 +151,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Open &amp;browser view</source>
-      <translation>Otwórz &amp;widok przeglądania</translation>
+      <translation>Otwórz &amp;widok z przeglądarki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="579"/>
       <source>Different orientation</source>
-      <translation>Inna orientacja</translation>
+      <translation>Odmienna orientacja</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="580"/>
@@ -350,7 +350,7 @@ Czy chcesz kontynuować?</translation>
       <location filename="../../DrawingView.cpp" line="596"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>Drukarka używa innego rozmiaru papieru niż rysunek. Czy chcesz kontynuować?</translation>
+      <translation>Drukarka używa innego rozmiaru papieru niż zastosowano na rysunku. Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="607"/>
@@ -384,7 +384,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="302"/>
       <location filename="../../TaskOrthoViews.ui" line="362"/>
       <source>Right click for axonometric settings</source>
-      <translation>Wciśnij prawy przycisk myszy, aby ustawić aksonometrię</translation>
+      <translation>Kliknij prawym przyciskiem myszki, aby uzyskać ustawienia aksonometryczne</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="324"/>
@@ -424,7 +424,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
-      <translation>Pokaż ukryte linie</translation>
+      <translation>Pokaż niewidoczne linie szwów</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="568"/>
@@ -749,7 +749,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.cpp" line="55"/>
       <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
-      <translation>Edytuj ustawienia aksonometrii...</translation>
+      <translation>Edytuj ustawienia aksonometryczne ...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="56"/>

@@ -409,7 +409,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1188"/>
       <source>Rounded rectangle</source>
-      <translation>Zaokrąglenie prostokąta</translation>
+      <translation>Prostokąt zaokrąglony</translation>
     </message>
   </context>
   <context>
@@ -1193,7 +1193,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation>Utwórz zaokrąglenie prostokąta</translation>
+      <translation>Utwórz prostokąt zaokrąglony</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
@@ -2707,17 +2707,17 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="373"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
-      <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania zbieżności.</translation>
+      <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania zbieżności.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="454"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
-      <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania pionowego/poziomego.</translation>
+      <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania pionowego / poziomego.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="651"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
-      <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
+      <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="705"/>
@@ -2727,17 +2727,17 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="742"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
-      <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic po zastosowaniu więzów poziomych i pionowych.</translation>
+      <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic po zastosowaniu wiązań poziomych i pionowych.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="764"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
-      <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic po zastosowaniu wiązania punkt do punktu.</translation>
+      <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic po zastosowaniu wiązania zbieżności punktów.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="792"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
-      <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic po zastosowaniu wiązania równości.</translation>
+      <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="1978"/>
@@ -2777,7 +2777,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5764"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
-      <translation>Wielokrotność nie może być zmniejszona poniżej zera.</translation>
+      <translation>Wielokrotność nie może zostać zmniejszona poniżej zera.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5776"/>
@@ -2805,7 +2805,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <source>There are no modes that accept the selected set of subelements</source>
-      <translation>Nie ma trybów akceptujących wybrany zestaw podelementów</translation>
+      <translation>Nie ma trybów, które akceptują wybrany zestaw elementów podrzędnych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -3678,13 +3678,13 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../CommandSketcherBSpline.cpp" line="618"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="772"/>
       <source>Wrong OCE/OCC version</source>
-      <translation>Zła wersja OCE/OCC</translation>
+      <translation>Niepoprawna wersja OCE / OCC</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="619"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="773"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
-      <translation>Ta wersja OCE/OCC nie obsługuje operacji węzła. Potrzebujesz wersji 6.9.0 lub bardziej aktualnej</translation>
+      <translation>Ta wersja OCE / OCC nie obsługuje operacji węzła. Potrzebujesz wersji 6.9.0 lub bardziej aktualnej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="641"/>
@@ -3992,7 +3992,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6623"/>
       <source>Linking this will cause circular dependency.</source>
-      <translation>Powiązanie tego spowoduje zależność cykliczną.</translation>
+      <translation>Powiązanie to spowoduje zależność cykliczną.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6626"/>

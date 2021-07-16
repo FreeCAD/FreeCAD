@@ -75,6 +75,11 @@
       <translation>ジオメトリー参照セレクター</translation>
     </message>
     <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>ジオメトリー参照セレクター </translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>追加</translation>
@@ -90,6 +95,21 @@
       <translation>「追加」をクリックしてからジオメトリー要素を選択してリストに追加します。</translation>
     </message>
     <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>次のジオメトリー要素を選択できます: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>リストにジオメトリーが追加されない場合、残りのジオメトリー全てが使用されます。</translation>
+    </message>
+    <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on "Add" and select geometric elements to add to the list.</source>
       <translation>「追加」をクリックしてからジオメトリー要素を選択してリストに追加します。</translation>
@@ -100,14 +120,9 @@
       <translation>「追加」をクリックしてからジオメトリー要素を選択してリストに追加します。</translation>
     </message>
     <message>
-      <location filename="selection_widgets.py" line="281"/>
-      <source>The following geometry elements are allowed to select: </source>
-      <translation>次のジオメトリー要素を選択できます: </translation>
-    </message>
-    <message>
-      <location filename="selection_widgets.py" line="283"/>
-      <source>If no geometry is added to the list, all remaining ones are used.</source>
-      <translation>リストにジオメトリーが追加されない場合、残りのジオメトリー全てが使用されます。</translation>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -118,11 +133,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>ソリッド</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>ジオメトリー参照セレクター </translation>
     </message>
   </context>
   <context>

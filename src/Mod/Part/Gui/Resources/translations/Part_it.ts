@@ -260,16 +260,6 @@ Creerà un 'filtro composto' per ogni forma.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Frammenti booleani</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Dividi gli oggetti dove si intersecano</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Frammenti booleani</translation>
@@ -394,6 +384,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 o con le forme di un composto.
 Questo significa che i volumi sovrapposti delle forme saranno rimossi.
 Un 'filtro composto' può essere usato per estrarre i pezzi rimanenti.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Frammenti booleani</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Dividi gli oggetti dove si intersecano</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

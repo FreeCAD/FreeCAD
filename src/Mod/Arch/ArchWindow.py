@@ -1140,6 +1140,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         pairs = [["Mode"+str(i),"Mode"+str(i+1)] for i in range(1,len(WindowOpeningModes),2)]
         self.invertPairs(pairs)
+        FreeCAD.ActiveDocument.recompute()
 
     def invertHinge(self):
 
@@ -1147,6 +1148,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         pairs = [["Edge6","Edge8"],["Edge5","Edge7"]]
         self.invertPairs(pairs)
+        self.invertOpening()
+        FreeCAD.ActiveDocument.recompute()
 
     def invertPairs(self,pairs):
 
@@ -1166,7 +1169,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 nparts.append(part)
             if nparts != self.Object.WindowParts:
                 self.Object.WindowParts = nparts
-                FreeCAD.ActiveDocument.recompute()
             else:
                 FreeCAD.Console.PrintWarning(translate("Arch","This window has no defined opening")+"\n")
 

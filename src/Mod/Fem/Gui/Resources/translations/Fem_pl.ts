@@ -75,6 +75,11 @@
       <translation>Określenie odniesienia do geometrii dla</translation>
     </message>
     <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Selektor odniesienia geometrii dla </translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Dodaj</translation>
@@ -90,6 +95,21 @@
       <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
     </message>
     <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>Można wybrać następujące elementy geometrii: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>Jeśli żadna geometria nie zostanie dodana do listy, wszystkie pozostałe zostaną użyte.</translation>
+    </message>
+    <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on "Add" and select geometric elements to add to the list.</source>
       <translation>Kliknij na przycisk "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
@@ -100,14 +120,9 @@
       <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
     </message>
     <message>
-      <location filename="selection_widgets.py" line="281"/>
-      <source>The following geometry elements are allowed to select: </source>
-      <translation>Można wybrać następujące elementy geometrii: </translation>
-    </message>
-    <message>
-      <location filename="selection_widgets.py" line="283"/>
-      <source>If no geometry is added to the list, all remaining ones are used.</source>
-      <translation>Jeśli żadna geometria nie zostanie dodana do listy, wszystkie pozostałe zostaną użyte.</translation>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -118,11 +133,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Bryła</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Selektor odniesienia geometrii dla </translation>
     </message>
   </context>
   <context>
@@ -611,7 +621,7 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Uruchomić obliczenia dodatku solver</translation>
+      <translation>Uruchom obliczenia solwera</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
@@ -922,7 +932,7 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Uruchomić obliczenia dodatku solver</translation>
+      <translation>Uruchom obliczenia solwera</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
@@ -1043,7 +1053,7 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation>Wpisz plik .inp i uruchom CalculiX ccx</translation>
+      <translation>Zapisz plik .inp i uruchom CalculiX ccx</translation>
     </message>
   </context>
   <context>
@@ -1056,7 +1066,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>Okno dialogowe, aby rozpocząć obliczanie wybranego dodatku solver</translation>
+      <translation>Okno dialogowe, do uruchomienia obliczeń wybranym solwerem</translation>
     </message>
   </context>
   <context>
@@ -1069,7 +1079,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>Okno dialogowe, aby rozpocząć obliczanie wybranego dodatku solver</translation>
+      <translation>Okno dialogowe, do uruchomienia obliczeń wybranym solwerem</translation>
     </message>
   </context>
   <context>
@@ -1103,7 +1113,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -1117,7 +1127,7 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -1135,7 +1145,7 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
@@ -1153,7 +1163,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -1171,7 +1181,7 @@
     <message>
       <location filename="../../Command.cpp" line="356"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>
@@ -1189,7 +1199,7 @@
     <message>
       <location filename="../../Command.cpp" line="445"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="446"/>
@@ -1207,12 +1217,12 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation>Utwórz wiązanie MES ciśnienia</translation>
+      <translation>Utwórz wiązanie MES nacisku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -1225,7 +1235,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -1243,7 +1253,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
@@ -1257,7 +1267,7 @@
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="720"/>
@@ -1281,7 +1291,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="229"/>
@@ -1295,7 +1305,7 @@
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="663"/>
@@ -1725,7 +1735,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd wyboru</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
@@ -1877,7 +1887,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation>Zapiusz plik .inp</translation>
+      <translation>Zapisz plik .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
@@ -2488,7 +2498,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation>Ciśnienie</translation>
+      <translation>Nacisk</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>

@@ -94,7 +94,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="171"/>
       <source>Workbenches list was updated.</source>
-      <translation type="unfinished">Workbenches list was updated.</translation>
+      <translation>Seznam pracovních prostředí byl aktualizován.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="733"/>
@@ -149,12 +149,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="781"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully installed. Please restart FreeCAD to apply the changes.</translation>
+      <translation>Pracovní prostředí bylo úspěšně nainstalováno. Pro aplikaci změn prosím restartujte FreeCAD.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="830"/>
       <source>Missing workbench</source>
-      <translation type="unfinished">Missing workbench</translation>
+      <translation>Chybí pracovní prostředí</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="839"/>
@@ -164,12 +164,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="849"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
-      <translation type="unfinished">Missing optional python module (doesn&apos;t prevent installing)</translation>
+      <translation>Chybí volitelný modul pythonu (nebrání instalaci)</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="852"/>
       <source>Some errors were found that prevent to install this workbench</source>
-      <translation type="unfinished">Some errors were found that prevent to install this workbench</translation>
+      <translation>Byly nalezeny chyby, které brání instalaci tohoto pracovního prostředí</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="854"/>
@@ -229,12 +229,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="868"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Chyba: Nelze najít zip z</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="314"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+      <translation>Něco se pokazilo s Git Macro Retrieval, možná není spustitelný Git v cestě</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="554"/>
@@ -244,22 +244,22 @@
     <message>
       <location filename="addonmanager_workers.py" line="559"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+      <translation>Tento pracovní prostředí již nemusí být udržován a instalace do systému Python 3 bude mít pravděpodobně za následek chyby při startu nebo při používání.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="722"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Uživatel požádal o aktualizaci pracovního prostředí Pythonu 2 do systému, který používá Python 3 - </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="758"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+      <translation>Pracovní prostředí bylo úspěšně aktualizováno. Pro aplikaci změn prosím restartujte FreeCAD.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="766"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Uživatel požádal o instalaci pracovního prostředí Pythonu 2 do systému, který používá Python 3 - </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="338"/>
@@ -269,7 +269,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="428"/>
       <source>Raw markdown displayed</source>
-      <translation type="unfinished">Raw markdown displayed</translation>
+      <translation>Zobrazit čisté markdown</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="430"/>
@@ -312,12 +312,12 @@
     <message>
       <location filename="AddonManager.ui" line="127"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+      <translation>Odinstaluje vybrané makro nebo pracovní prostředí</translation>
     </message>
     <message>
       <location filename="AddonManager.ui" line="137"/>
       <source>Installs or updates the selected macro or workbench</source>
-      <translation type="unfinished">Installs or updates the selected macro or workbench</translation>
+      <translation>Instaluje nebo aktualizuje vybrané makro nebo pracovní prostředí</translation>
     </message>
     <message>
       <location filename="AddonManager.ui" line="147"/>
@@ -421,7 +421,7 @@ které mají být prohledány pro dostupné doplňky</translation>
     <message>
       <location filename="AddonManager.py" line="69"/>
       <source>Manage external workbenches and macros</source>
-      <translation type="unfinished">Manage external workbenches and macros</translation>
+      <translation>Spravovat externí pracovní prostředí a makra</translation>
     </message>
   </context>
 </TS>

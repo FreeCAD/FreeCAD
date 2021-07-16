@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="250"/>
       <source>Create a local coordinate system</source>
-      <translation>Erstelle ein lokales Koordinatensystem</translation>
+      <translation>Lokales Koordinatensystem erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="251"/>
       <source>Create a new local coordinate system</source>
-      <translation>Erstelle ein neues lokales Koordinatensystem</translation>
+      <translation>Neues lokales Koordinatensystem erstellen</translation>
     </message>
   </context>
   <context>
@@ -658,7 +658,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Cone</source>
-      <translation>Zu addierender Kegel</translation>
+      <translation>Hinzuzufügender Kegel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
@@ -673,7 +673,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Prism</source>
-      <translation>Zu addierendes Prisma</translation>
+      <translation>Hinzuzufügendes Prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="223"/>
@@ -3059,42 +3059,42 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation>Erzeugen eines zu addierenden Quaders mit Angabe von Breite, Höhe und Länge</translation>
+      <translation>Erzeugen eines hinzuzufügenden Quaders mit Angabe von Breite, Höhe und Länge</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>Erzeugen eines zu addierenden Zylinders mit Angabe von Radius, Höhe und Sektorwinkel</translation>
+      <translation>Erzeugen eines hinzuzufügenden Zylinders mit Angabe von Radius, Höhe und Winkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Erzeuge eine zusätzliche Kugel durch Angabe von Radius und verschiedene Winkel</translation>
+      <translation>Erzeugen einer hinzuzufügenden Kugel durch Angabe des Radius und verschiedener Winkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive cone</source>
-      <translation>Erzeuge einen zusätzlichen Kegel</translation>
+      <translation>Erzeugen eines hinzuzufügenden Kegels</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive ellipsoid</source>
-      <translation>Erzeuge eine zusätzliches Ellipsoid</translation>
+      <translation>Erzeugen eines hinzuzufügenden Ellipsoids</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive torus</source>
-      <translation>Erzeuge einen zusätzlichen Torus</translation>
+      <translation>Erzeugen eines hinzuzufügenden Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive prism</source>
-      <translation>Erzeuge eine zusätzliches Prisma</translation>
+      <translation>Erzeugen eines hinzuzufügenden Prismas</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive wedge</source>
-      <translation>Erzeuge einen zusätzlichen Keil</translation>
+      <translation>Erzeugen eines hinzuzufügenden Keils</translation>
     </message>
   </context>
   <context>
@@ -3102,17 +3102,17 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="352"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Erzeuge einen abzuziehenden Quader durch Angabe von Breite, Höhe und Länge</translation>
+      <translation>Erzeugen eines abzuziehenden Quaders durch Angabe von Breite, Höhe und Länge</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Erzeuge einen abzuziehenden Zylinder durch Angabe von Radius, Höhe und Sektorwinkel</translation>
+      <translation>Erzeugen eines abzuziehenden Zylinders durch Angabe von Radius, Höhe und Winkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Erzeuge eine abzuziehende Kugel durch Angabe von Radius und verschiedenen Winkeln</translation>
+      <translation>Erzeugen einer abzuziehenden Kugel durch Angabe von Radius und verschiedenen Winkeln</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
@@ -3122,7 +3122,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Erzeuge ein abzuziehendes Ellipsoid</translation>
+      <translation>Erzeugen eines abzuziehenden Ellipsoids</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
@@ -3542,7 +3542,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="266"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Es ist nicht möglich, ein subtraktives Objekt ohne ein Basis-Objekt zu erstellen</translation>
+      <translation>Es ist nicht möglich, ein abzuziehendes Objekt ohne ein Basisobjekt zu erstellen</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="205"/>
@@ -4398,12 +4398,12 @@ account for the depth of blind holes</source>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
-      <translation>Erzeugen eines additives Merkmals</translation>
+      <translation>Hinzuzufügende Objekte</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
-      <translation>Erzeuge ein subtraktives Merkmal</translation>
+      <translation>Abzuziehendes Objekte</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -4413,7 +4413,7 @@ account for the depth of blind holes</source>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
-      <translation>Wende modifizierendes Merkmal an</translation>
+      <translation>Modifikationen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>

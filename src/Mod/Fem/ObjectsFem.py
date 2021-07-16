@@ -98,6 +98,21 @@ def makeConstraintBodyHeatSource(
     return obj
 
 
+def makeConstraintCentrif(
+    doc,
+    name="ConstraintCentrif"
+):
+    """makeConstraintCentrif(document, [name]):
+    creates a centrif object to define centrifugal body load constraint"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_centrif
+    constraint_centrif.ConstraintCentrif(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_centrif
+        view_constraint_centrif.VPConstraintCentrif(obj.ViewObject)
+    return obj
+
+
 def makeConstraintContact(
     doc,
     name="ConstraintContact"

@@ -1089,7 +1089,7 @@ Leer lassen für die Standardeinstellung des Systems.
 Benutzen Sie 'arch' um die US-Bogen Notation zu erzwingen</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Eine Liste mit Ausschlusspunkten. Jede Kante, die einen dieser Punkte berührt, wird nicht gezeichnet.</translation>
     </message>
@@ -1097,32 +1097,34 @@ Benutzen Sie 'arch' um die US-Bogen Notation zu erzwingen</translation>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Für Schnittlinien- und Schnittflächenmodi, verbleiben die Flächen an der Schnittposition</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Länge der Linienabschnitte, wenn Ellipsen oder B-Splines 
+                in Linienabschnitte gewandelt werden</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Wenn dies wahr ist, wird nur Körper-Geometrie bearbeitet. Dies überschreibt die Nur-Körper-Eigenschaft des Basisobjekts</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Wenn dies wahr ist, werden die Inhalte an die Grenzen der Abschnittsebene gekoppelt. Dies überschreibt die Clip-Eigenschaft des Basisobjekts</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1607,7 +1609,7 @@ Die Anordnung kann in eine orthogonale oder polare Anordnung durch ändern des T
     <message>
       <location filename="gui_orthoarray.py" line="66"/>
       <source>Array</source>
-      <translation>Array</translation>
+      <translation>Anordnung</translation>
     </message>
     <message>
       <location filename="gui_orthoarray.py" line="68"/>
@@ -2181,7 +2183,7 @@ CTRL to snap, SHIFT to constrain.</source>
     <message>
       <location filename="gui_array_simple.py" line="68"/>
       <source>Array</source>
-      <translation>Array</translation>
+      <translation>Anordnung</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="71"/>
@@ -3771,7 +3773,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Der Abstand zwischen dem Text und der Maßlinie</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3781,7 +3783,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Der Abstand zwischen den Textzeilen</translation>
     </message>
   </context>
   <context>
@@ -6784,7 +6786,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
     <message>
       <location filename="gui_array_simple.py" line="101"/>
       <source>Array</source>
-      <translation>Array</translation>
+      <translation>Anordnung</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="77"/>
