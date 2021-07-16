@@ -203,7 +203,8 @@ void TaskPadParameters::updateUI(int index)
     bool isLengthEditVisible  = false;
     bool isLengthEdit2Visible = false;
     bool isOffsetEditVisible  = false;
-    bool isMidplateEnabled    = false;
+    bool isMidplaneEnabled    = false;
+    bool isMidplaneVisible    = false;
     bool isReversedEnabled    = false;
     bool isReversedVisible    = false;
     bool isFaceEditEnabled    = false;
@@ -216,7 +217,8 @@ void TaskPadParameters::updateUI(int index)
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        isMidplateEnabled = !ui->checkBoxReversed->isChecked();
+        isMidplaneEnabled = !ui->checkBoxReversed->isChecked();
+        isMidplaneVisible = true;
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
         isReversedVisible = true;
@@ -224,6 +226,8 @@ void TaskPadParameters::updateUI(int index)
     // up to first/last
     else if (index == 1 || index == 2) {
         isOffsetEditVisible = true;
+        isReversedEnabled = true;
+        isReversedVisible = true;
     }
     // up to face
     else if (index == 3) {
@@ -238,7 +242,8 @@ void TaskPadParameters::updateUI(int index)
     else {
         isLengthEditVisible  = true;
         isLengthEdit2Visible = true;
-        isMidplateEnabled    = !ui->checkBoxReversed->isChecked();
+        isMidplaneEnabled    = !ui->checkBoxReversed->isChecked();
+        isMidplaneVisible    = true;
         isReversedEnabled    = !ui->checkBoxMidplane->isChecked();
         isReversedVisible    = true;
     }
@@ -252,7 +257,8 @@ void TaskPadParameters::updateUI(int index)
     ui->offsetEdit->setEnabled( isOffsetEditVisible );
     ui->labelOffset->setVisible( isOffsetEditVisible );
 
-    ui->checkBoxMidplane->setEnabled( isMidplateEnabled );
+    ui->checkBoxMidplane->setEnabled( isMidplaneEnabled );
+    ui->checkBoxMidplane->setVisible( isMidplaneVisible );
 
     ui->checkBoxReversed->setEnabled( isReversedEnabled );
     ui->checkBoxReversed->setVisible( isReversedVisible );
