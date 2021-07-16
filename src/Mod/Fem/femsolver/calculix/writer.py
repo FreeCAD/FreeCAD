@@ -42,7 +42,7 @@ from . import write_constraint_fixed as con_fixed
 from . import write_constraint_fluidsection as con_fluidsection
 from . import write_constraint_force as con_force
 from . import write_constraint_heatflux as con_heatflux
-from . import write_constraint_initialtemperature as con_initialtemp
+from . import write_constraint_initialtemperature as con_itemp
 from . import write_constraint_planerotation as con_planerotation
 from . import write_constraint_pressure as con_pressure
 from . import write_constraint_sectionprint as con_sectionprint
@@ -175,7 +175,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # materials and fem element types
         write_femelement_material.write_femelement_material(inpfile, self)
-        self.write_constraints_propdata(inpfile, self.member.cons_initialtemperature, con_initialtemp)
+        self.write_constraints_propdata(inpfile, self.member.cons_initialtemperature, con_itemp)
         write_femelement_geometry.write_femelement_geometry(inpfile, self)
 
         # constraints independent from steps
