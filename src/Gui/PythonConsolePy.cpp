@@ -78,9 +78,11 @@ Py::Object PythonStdout::repr()
 Py::Object PythonStdout::write(const Py::Tuple& args)
 {
     try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
+        PyObject* output;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &output))
+            throw Py::Exception();
+        if (PyUnicode_Check(output)) {
+            PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
                 int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
@@ -89,8 +91,8 @@ Py::Object PythonStdout::write(const Py::Tuple& args)
             }
         }
         else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
+            Py::String text(output);
+            std::string string = static_cast<std::string>(text);
             int maxlen = string.size() > 10000 ? 10000 : -1;
             pyConsole->insertPythonOutput(QString::fromUtf8(string.c_str(), maxlen));
         }
@@ -155,9 +157,11 @@ Py::Object PythonStderr::repr()
 Py::Object PythonStderr::write(const Py::Tuple& args)
 {
     try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
+        PyObject* output;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &output))
+            throw Py::Exception();
+        if (PyUnicode_Check(output)) {
+            PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
                 int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
@@ -166,8 +170,8 @@ Py::Object PythonStderr::write(const Py::Tuple& args)
             }
         }
         else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
+            Py::String text(output);
+            std::string string = static_cast<std::string>(text);
             int maxlen = string.size() > 10000 ? 10000 : -1;
             pyConsole->insertPythonError(QString::fromUtf8(string.c_str(), maxlen));
         }
@@ -231,9 +235,11 @@ Py::Object OutputStdout::repr()
 Py::Object OutputStdout::write(const Py::Tuple& args)
 {
     try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
+        PyObject* output;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &output))
+            throw Py::Exception();
+        if (PyUnicode_Check(output)) {
+            PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
                 Base::Console().Message("%s",string);
@@ -241,8 +247,8 @@ Py::Object OutputStdout::write(const Py::Tuple& args)
             }
         }
         else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
+            Py::String text(output);
+            std::string string = static_cast<std::string>(text);
             Base::Console().Message("%s",string.c_str());
         }
     }
@@ -306,9 +312,11 @@ Py::Object OutputStderr::repr()
 Py::Object OutputStderr::write(const Py::Tuple& args)
 {
     try {
-        Py::Object output(args[0]);
-        if (PyUnicode_Check(output.ptr())) {
-            PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
+        PyObject* output;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &output))
+            throw Py::Exception();
+        if (PyUnicode_Check(output)) {
+            PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
                 Base::Console().Error("%s",string);
@@ -316,8 +324,8 @@ Py::Object OutputStderr::write(const Py::Tuple& args)
             }
         }
         else {
-            Py::String text(args[0]);
-            std::string string = (std::string)text;
+            Py::String text(output);
+            std::string string = static_cast<std::string>(text);
             Base::Console().Error("%s",string.c_str());
         }
     }
