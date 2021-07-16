@@ -929,6 +929,8 @@ class _SectionPlane:
         if not "UseMaterialColorForFill" in pl:
             obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
             obj.UseMaterialColorForFill = False
+        if not "Depth" in pl:
+            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."))
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):

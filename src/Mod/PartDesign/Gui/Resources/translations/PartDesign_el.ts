@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Πρόσθετο Σπείρωμα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>

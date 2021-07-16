@@ -312,7 +312,7 @@ Z ločevanjem poti z znaki ";;", lahko dodate več map</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Prikaže nasvete v zavihku Dokumenti, znotraj Začetnega okna</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>

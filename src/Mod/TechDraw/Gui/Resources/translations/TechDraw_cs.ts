@@ -1133,7 +1133,7 @@
     <message>
       <location filename="../../mrichtextedit.cpp" line="99"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Standardní</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="100"/>
