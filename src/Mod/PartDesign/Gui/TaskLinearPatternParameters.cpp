@@ -106,6 +106,7 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
 void TaskLinearPatternParameters::setupUI()
 {
     TaskTransformedParameters::setupUI();
+    ui->spinOccurrences->setMinimum(1);
 
     connect(ui->comboDirection, SIGNAL(activated(int)),
             this, SLOT(onDirectionChanged(int)));
@@ -121,7 +122,6 @@ void TaskLinearPatternParameters::setupUI()
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     ui->spinLength->bind(pcLinearPattern->Length);
     ui->spinOccurrences->setMaximum(INT_MAX);
-    ui->spinOccurrences->setMinimum(1);
     ui->spinOccurrences->bind(pcLinearPattern->Occurrences);
 
     ui->comboDirection->setEnabled(true);
