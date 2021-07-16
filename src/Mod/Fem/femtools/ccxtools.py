@@ -366,6 +366,20 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.set_inp_file_name()
 
     def write_inp_file(self):
+
+        # get mesh set data
+        # TODO use separate method for getting the mesh set data
+        from femmesh import meshsetsgetter
+        meshdatagetter = meshsetsgetter.MeshSetsGetter(
+            self.analysis,
+            self.solver,
+            self.mesh,
+            membertools.AnalysisMember(self.analysis),
+        )
+        # save the sets into the member objects of the instanz meshdatagetter
+        meshdatagetter.get_mesh_sets()
+
+        # write input file
         import femsolver.calculix.writer as iw
         self.inp_file_name = ""
         try:
@@ -373,8 +387,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.analysis,
                 self.solver,
                 self.mesh,
-                self.member,
-                self.working_dir
+                meshdatagetter.member,
+                self.working_dir,
+                meshdatagetter.mat_geo_sets
             )
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except Exception:
