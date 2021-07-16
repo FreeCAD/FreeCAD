@@ -132,10 +132,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # write calculix input
     def write_calculix_input_file(self):
 
-        FreeCAD.Console.PrintMessage("Get mesh sets.\n")
         time_start = time.process_time()
         if not self.mat_geo_sets:
-            self.get_mesh_sets()
         time_getsets = time.process_time()
 
         FreeCAD.Console.PrintMessage(
