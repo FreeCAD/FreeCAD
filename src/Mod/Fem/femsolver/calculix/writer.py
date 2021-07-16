@@ -134,7 +134,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         FreeCAD.Console.PrintMessage("Get mesh sets.\n")
         time_start = time.process_time()
-        if not self.ccx_elsets:
+        if not self.mat_geo_sets:
             self.get_mesh_sets()
         time_getsets = time.process_time()
 
@@ -155,7 +155,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # element sets for materials and element geometry
         write_femelement_matgeosets.write_femelement_matgeosets(inpfile, self)
 
-        # some fluidsection objs need special treatment, ccx_elsets are needed for this
+        # some fluidsection objs need special treatment, mat_geo_sets are needed for this
         inpfile = con_fluidsection.handle_fluidsection_liquid_inlet_outlet(inpfile, self)
 
         # element sets constraints

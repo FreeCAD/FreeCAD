@@ -49,8 +49,8 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
     # Fluid sections:
     # fluidsection Liquid inlet outlet objs  requires special element definition
     # to fill ccxwriter.FluidInletoutlet_ele list the ccx_elset are needed
-    # thus this has to be after the creation of ccx_elsets
-    # different pipe cross sections will generate ccx_elsets
+    # thus this has to be after the creation of mat_geo_sets
+    # different pipe cross sections will generate mat_geo_sets
 
     ccxwriter.FluidInletoutlet_ele = []
     ccxwriter.fluid_inout_nodes_file = join(
@@ -76,8 +76,8 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
                 return fluidsec_obj
         return None
 
-    def is_fluidsection_inoutlet_setnames_possible(ccx_elsets):
-        for ccx_elset in ccx_elsets:
+    def is_fluidsection_inoutlet_setnames_possible(mat_geo_sets):
+        for ccx_elset in mat_geo_sets:
             if (
                 ccx_elset["ccx_elset"]
                 and "fluidsection_obj" in ccx_elset  # fluid mesh
@@ -95,7 +95,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
 
     # collect elementIDs for fluidsection Liquid inlet outlet objs
     # if they have element data (happens if not "eall")
-    for ccx_elset in ccxwriter.ccx_elsets:
+    for ccx_elset in ccxwriter.mat_geo_sets:
         fluidsec_obj = get_fluidsection_inoutlet_obj_if_setdata(ccx_elset)
         if fluidsec_obj is None:
             continue
@@ -118,9 +118,9 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
                 )
 
     # create the correct element definition for fluidsection Liquid inlet outlet objs
-    # at least one "fluidsection_obj" needs to be in ccx_elsets and has the attributes
+    # at least one "fluidsection_obj" needs to be in mat_geo_sets and has the attributes
     # TODO: what if there are other objs in elsets?
-    if is_fluidsection_inoutlet_setnames_possible(ccxwriter.ccx_elsets) is not None:
+    if is_fluidsection_inoutlet_setnames_possible(ccxwriter.mat_geo_sets) is not None:
         # it is not distinguished if split input file
         # for split input file the main file is just closed and reopend even if not needed
         inpfile.close()

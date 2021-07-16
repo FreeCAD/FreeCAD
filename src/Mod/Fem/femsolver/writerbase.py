@@ -76,10 +76,7 @@ class FemInputWriter():
         self.ccx_evolumes = "Evolumes"
         self.ccx_efaces = "Efaces"
         self.ccx_eedges = "Eedges"
-        if mat_geo_sets is not None:
-            self.ccx_elsets = mat_geo_sets
-        else:
-            self.ccx_elsets = []
+        self.mat_geo_sets = mat_geo_sets
         if self.mesh_object:
             if hasattr(self.mesh_object, "Shape"):
                 self.theshape = self.mesh_object.Shape
@@ -304,7 +301,7 @@ class FemInputWriter():
 
     def get_element_sets_material_and_femelement_geometry(self):
         self.meshdatagetter.get_element_sets_material_and_femelement_geometry()
-        self.ccx_elsets = self.meshdatagetter.mat_geo_sets
+        self.mat_geo_sets = self.meshdatagetter.mat_geo_sets
 
 
 ##  @}

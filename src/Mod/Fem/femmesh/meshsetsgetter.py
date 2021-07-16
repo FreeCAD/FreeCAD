@@ -89,6 +89,7 @@ class MeshSetsGetter():
         self.femelement_faces_table = {}
         self.femelement_edges_table = {}
         self.femelement_count_test = True
+        self.mat_geo_sets = []
 
     # ********************************************************************************************
     # ********************************************************************************************
@@ -652,7 +653,7 @@ class MeshSetsGetter():
         if len(self.member.mats_linear) > 1:
             self.get_material_elements()
 
-        # create the ccx_elsets
+        # create the mat_geo_sets
         if len(self.member.mats_linear) == 1:
             if self.femmesh.Volumes:
                 # we only could do this for volumes, if a mesh contains volumes
@@ -660,19 +661,19 @@ class MeshSetsGetter():
                 # but a mesh could contain the element faces of the volumes as faces
                 # and the edges of the faces as edges
                 # there we have to check for some geometric objects
-                self.get_ccx_elsets_single_mat_solid()
+                self.get_mat_geo_sets_single_mat_solid()
             if len(self.member.geos_shellthickness) == 1:
-                self.get_ccx_elsets_single_mat_single_shell()
+                self.get_mat_geo_sets_single_mat_single_shell()
             elif len(self.member.geos_shellthickness) > 1:
-                self.get_ccx_elsets_single_mat_multiple_shell()
+                self.get_mat_geo_sets_single_mat_multiple_shell()
             if len(self.member.geos_beamsection) == 1:
-                self.get_ccx_elsets_single_mat_single_beam()
+                self.get_mat_geo_sets_single_mat_single_beam()
             elif len(self.member.geos_beamsection) > 1:
-                self.get_ccx_elsets_single_mat_multiple_beam()
+                self.get_mat_geo_sets_single_mat_multiple_beam()
             if len(self.member.geos_fluidsection) == 1:
-                self.get_ccx_elsets_single_mat_single_fluid()
+                self.get_mat_geo_sets_single_mat_single_fluid()
             elif len(self.member.geos_fluidsection) > 1:
-                self.get_ccx_elsets_single_mat_multiple_fluid()
+                self.get_mat_geo_sets_single_mat_multiple_fluid()
         elif len(self.member.mats_linear) > 1:
             if self.femmesh.Volumes:
                 # we only could do this for volumes, if a mseh contains volumes
@@ -682,19 +683,19 @@ class MeshSetsGetter():
                 # there we have to check for some geometric objects
                 # volume is a bit special
                 # because retrieving ids from group mesh data is implemented
-                self.get_ccx_elsets_multiple_mat_solid()
+                self.get_mat_geo_sets_multiple_mat_solid()
             if len(self.member.geos_shellthickness) == 1:
-                self.get_ccx_elsets_multiple_mat_single_shell()
+                self.get_mat_geo_sets_multiple_mat_single_shell()
             elif len(self.member.geos_shellthickness) > 1:
-                self.get_ccx_elsets_multiple_mat_multiple_shell()
+                self.get_mat_geo_sets_multiple_mat_multiple_shell()
             if len(self.member.geos_beamsection) == 1:
-                self.get_ccx_elsets_multiple_mat_single_beam()
+                self.get_mat_geo_sets_multiple_mat_single_beam()
             elif len(self.member.geos_beamsection) > 1:
-                self.get_ccx_elsets_multiple_mat_multiple_beam()
+                self.get_mat_geo_sets_multiple_mat_multiple_beam()
             if len(self.member.geos_fluidsection) == 1:
-                self.get_ccx_elsets_multiple_mat_single_fluid()
+                self.get_mat_geo_sets_multiple_mat_single_fluid()
             elif len(self.member.geos_fluidsection) > 1:
-                self.get_ccx_elsets_multiple_mat_multiple_fluid()
+                self.get_mat_geo_sets_multiple_mat_multiple_fluid()
 
     # self.mat_geo_sets = [ {
     #                        "ccx_elset" : [e1, e2, e3, ... , en] or elements set name strings
@@ -712,7 +713,7 @@ class MeshSetsGetter():
     # TODO support multiple beamrotations
     # we do not need any more any data from the rotation document object,
     # thus we do not need to save the rotation document object name in the else
-    def get_ccx_elsets_single_mat_single_beam(self):
+    def get_mat_geo_sets_single_mat_single_beam(self):
         mat_obj = self.member.mats_linear[0]["Object"]
         beamsec_obj = self.member.geos_beamsection[0]["Object"]
         beamrot_data = self.member.geos_beamrotation[0]
@@ -735,7 +736,7 @@ class MeshSetsGetter():
             ccx_elset["beam_normal"] = beamdirection["normal"]
             self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_single_mat_multiple_beam(self):
+    def get_mat_geo_sets_single_mat_multiple_beam(self):
         mat_obj = self.member.mats_linear[0]["Object"]
         beamrot_data = self.member.geos_beamrotation[0]
         for beamsec_data in self.member.geos_beamsection:
@@ -762,7 +763,7 @@ class MeshSetsGetter():
                     ccx_elset["beam_normal"] = beamdirection["normal"]
                     self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_multiple_mat_single_beam(self):
+    def get_mat_geo_sets_multiple_mat_single_beam(self):
         beamsec_obj = self.member.geos_beamsection[0]["Object"]
         beamrot_data = self.member.geos_beamrotation[0]
         for mat_data in self.member.mats_linear:
@@ -788,7 +789,7 @@ class MeshSetsGetter():
                     ccx_elset["beam_normal"] = beamdirection["normal"]
                     self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_multiple_mat_multiple_beam(self):
+    def get_mat_geo_sets_multiple_mat_multiple_beam(self):
         beamrot_data = self.member.geos_beamrotation[0]
         for beamsec_data in self.member.geos_beamsection:
             beamsec_obj = beamsec_data["Object"]
@@ -820,7 +821,7 @@ class MeshSetsGetter():
                         self.mat_geo_sets.append(ccx_elset)
 
     # fluid
-    def get_ccx_elsets_single_mat_single_fluid(self):
+    def get_mat_geo_sets_single_mat_single_fluid(self):
         mat_obj = self.member.mats_linear[0]["Object"]
         fluidsec_obj = self.member.geos_fluidsection[0]["Object"]
         elset_data = self.ccx_eedges
@@ -833,7 +834,7 @@ class MeshSetsGetter():
         ccx_elset["fluidsection_obj"] = fluidsec_obj
         self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_single_mat_multiple_fluid(self):
+    def get_mat_geo_sets_single_mat_multiple_fluid(self):
         mat_obj = self.member.mats_linear[0]["Object"]
         for fluidsec_data in self.member.geos_fluidsection:
             fluidsec_obj = fluidsec_data["Object"]
@@ -847,7 +848,7 @@ class MeshSetsGetter():
             ccx_elset["fluidsection_obj"] = fluidsec_obj
             self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_multiple_mat_single_fluid(self):
+    def get_mat_geo_sets_multiple_mat_single_fluid(self):
         fluidsec_obj = self.member.geos_fluidsection[0]["Object"]
         for mat_data in self.member.mats_linear:
             mat_obj = mat_data["Object"]
@@ -861,7 +862,7 @@ class MeshSetsGetter():
             ccx_elset["fluidsection_obj"] = fluidsec_obj
             self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_multiple_mat_multiple_fluid(self):
+    def get_mat_geo_sets_multiple_mat_multiple_fluid(self):
         for fluidsec_data in self.member.geos_fluidsection:
             fluidsec_obj = fluidsec_data["Object"]
             for mat_data in self.member.mats_linear:
@@ -884,7 +885,7 @@ class MeshSetsGetter():
                     self.mat_geo_sets.append(ccx_elset)
 
     # shell
-    def get_ccx_elsets_single_mat_single_shell(self):
+    def get_mat_geo_sets_single_mat_single_shell(self):
         mat_obj = self.member.mats_linear[0]["Object"]
         shellth_obj = self.member.geos_shellthickness[0]["Object"]
         elset_data = self.ccx_efaces
@@ -900,7 +901,7 @@ class MeshSetsGetter():
         ccx_elset["shellthickness_obj"] = shellth_obj
         self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_single_mat_multiple_shell(self):
+    def get_mat_geo_sets_single_mat_multiple_shell(self):
         mat_obj = self.member.mats_linear[0]["Object"]
         for shellth_data in self.member.geos_shellthickness:
             shellth_obj = shellth_data["Object"]
@@ -917,7 +918,7 @@ class MeshSetsGetter():
             ccx_elset["shellthickness_obj"] = shellth_obj
             self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_multiple_mat_single_shell(self):
+    def get_mat_geo_sets_multiple_mat_single_shell(self):
         shellth_obj = self.member.geos_shellthickness[0]["Object"]
         for mat_data in self.member.mats_linear:
             mat_obj = mat_data["Object"]
@@ -934,7 +935,7 @@ class MeshSetsGetter():
             ccx_elset["shellthickness_obj"] = shellth_obj
             self.mat_geo_sets.append(ccx_elset)
 
-    def get_ccx_elsets_multiple_mat_multiple_shell(self):
+    def get_mat_geo_sets_multiple_mat_multiple_shell(self):
         for shellth_data in self.member.geos_shellthickness:
             shellth_obj = shellth_data["Object"]
             for mat_data in self.member.mats_linear:
@@ -957,7 +958,7 @@ class MeshSetsGetter():
                     self.mat_geo_sets.append(ccx_elset)
 
     # solid
-    def get_ccx_elsets_single_mat_solid(self):
+    def get_mat_geo_sets_single_mat_solid(self):
         mat_obj = self.member.mats_linear[0]["Object"]
         elset_data = self.ccx_evolumes
         names = [
@@ -972,7 +973,7 @@ class MeshSetsGetter():
         self.mat_geo_sets.append(ccx_elset)
         print(self.mat_geo_sets)
 
-    def get_ccx_elsets_multiple_mat_solid(self):
+    def get_mat_geo_sets_multiple_mat_solid(self):
         for mat_data in self.member.mats_linear:
             mat_obj = mat_data["Object"]
             elset_data = mat_data["FEMElements"]
