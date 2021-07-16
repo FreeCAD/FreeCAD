@@ -1089,7 +1089,7 @@ Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
@@ -1097,32 +1097,35 @@ Use 'arch' to force US arch notation</translation>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Voor snijvlak- en kniplijn-modi, 
+                laat dit de vlakken achter op de snijlocatie</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Lengte van lijnsegmenten bij betegelen van Ellipsen of B-splines 
+                naar lijnsegmenten</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Als dit Waar is, wordt alleen ruimtelijke geometrie gebruikt. Dit is overschrijft over de Alleen Ruimtelijke Geometrie-eigenschap van het basisobject</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Als dit Waar is, wordt de inhoud afgesneden aan de randen van het sectievlak, indien van toepassing. Dit overschrijft de Uitgeknipt eigenschap van het basisobject</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -3781,7 +3784,7 @@ waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</t
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>De afstand tussen de tekst en de maatlijn</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3791,7 +3794,7 @@ waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</t
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>De afstand tussen twee regels tekst</translation>
     </message>
   </context>
   <context>

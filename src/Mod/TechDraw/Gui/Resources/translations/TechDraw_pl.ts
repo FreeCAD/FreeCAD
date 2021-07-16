@@ -1302,7 +1302,7 @@
     <message>
       <location filename="../../Command.cpp" line="1207"/>
       <source>Please select only 1 Arch Section.</source>
-      <translation>Proszę wybrać tylko 1 przekrój środowiska Architektura.</translation>
+      <translation>Proszę wybrać tylko jeden przekrój środowiska Architektura.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1213"/>
@@ -1678,7 +1678,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="471"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation>Potrzebne TechDraw do wykonania tego polecenia</translation>
+      <translation>Potrzebujesz strony Rysunku Technicznego dla tego polecenia</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="504"/>
@@ -4407,7 +4407,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="658"/>
       <source>Press OK or Cancel to continue</source>
-      <translation>Naciśnij OK lub Anuluj, aby kontynuować</translation>
+      <translation>Naciśnij przycisk OK lub Anuluj, aby kontynuować</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="760"/>

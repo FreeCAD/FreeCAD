@@ -2041,7 +2041,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="933"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>Geometrija izven te vrednosti bo porezana. Za neomejenost pustite vrednost nič.</translation>
     </message>
   </context>
   <context>

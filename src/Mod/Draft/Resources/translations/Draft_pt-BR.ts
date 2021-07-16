@@ -1086,7 +1086,7 @@ Deixe em branco para o padrão do sistema.
 Use 'arch' para forçar a notação de arco dos EUA</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Uma lista de pontos de exclusão. Qualquer aresta que toque em algum desses pontos não será desenhada.</translation>
     </message>
@@ -1101,25 +1101,28 @@ Use 'arch' para forçar a notação de arco dos EUA</translation>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Comprimento de segmentos de linha se existir tesselação de Elipses ou Bsplines 
+                    em segmentos de linha</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
       <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
       <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>

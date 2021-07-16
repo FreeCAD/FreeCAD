@@ -31,7 +31,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory for solving analysis</string>
+        <string>Working directory for solving analysis and gmsh meshing</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>

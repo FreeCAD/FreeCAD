@@ -740,17 +740,17 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation>ShapeBinder szerkesztése</translation>
+      <translation>Alakzatcsatoló szerkesztése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation>ShapeBinder létrehozása</translation>
+      <translation>Alakzatcsatoló létrehozása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation>SubShapeBinder létrehozása</translation>
+      <translation>Alakzatcsatoló alkatrész létrehozása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -4417,12 +4417,12 @@ a vak lyukak mélységéhez</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Evolvent fogazott kerék...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Shaft design wizard</source>
-      <translation type="unfinished">Shaft design wizard</translation>
+      <translation>Tengelytervező varázsló</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -4432,12 +4432,12 @@ a vak lyukak mélységéhez</translation>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>Part Design Helper</source>
-      <translation type="unfinished">Part Design Helper</translation>
+      <translation>Alkatrész tervezési segéd</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Part Design Modeling</source>
-      <translation type="unfinished">Part Design Modeling</translation>
+      <translation>Alkatrész tervezés modellezés</translation>
     </message>
   </context>
 </TS>

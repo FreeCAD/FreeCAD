@@ -581,7 +581,7 @@ class _ViewProviderAxis:
                     t.string = self.getNumber(vobj,num)
                     num += 1
                     if hasattr(vobj,"BubblePosition"):
-                        if vobj.BubblePosition == "Both":
+                        if vobj.BubblePosition in ["Both","Arrow left","Arrow right","Bar left","Bar right"]:
                             if not alt:
                                 num -= 1
                     alt = not alt
@@ -593,7 +593,11 @@ class _ViewProviderAxis:
             if hasattr(vobj,"ShowLabel") and hasattr(vobj.Object,"Labels"):
                 if vobj.ShowLabel:
                     self.labels = coin.SoSeparator()
-                    for i in range(len(vobj.Object.Shape.Edges)):
+                    if hasattr(vobj.Object,"Limit") and vobj.Object.Limit.Value:
+                        n = len(vobj.Object.Shape.Edges)/2
+                    else:
+                        n = len(vobj.Object.Shape.Edges)
+                    for i in range(n):
                         if len(vobj.Object.Labels) > i:
                             if vobj.Object.Labels[i]:
                                 import Draft

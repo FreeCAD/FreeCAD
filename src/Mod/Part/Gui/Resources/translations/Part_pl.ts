@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation>Dołączenie ...</translation>
+      <translation>Mocowanie ...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Dołączenie</translation>
+      <translation>Mocowanie</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -261,16 +261,6 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Fragmentacja funkcją logiczną</translation>
@@ -371,7 +361,7 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation>Pokrój</translation>
+      <translation>Pokrój część</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
@@ -395,6 +385,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 lub z kształtami wewnątrz bryły złożonej.
 Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
 Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -1100,7 +1100,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Przyciąganie jest wyłączone. Punkt może być przeniesiony przez edycję właściwości umiejscowienia.</translation>
+      <translation>Mocowanie jest wyłączone. Punkt może być przeniesiony przez edycję właściwości umiejscowienia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
@@ -1465,7 +1465,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linia prostopadłą do powierzchni w punkcie ustawionym przez wierzchołek.</translation>
+      <translation>Linia prostopadła do powierzchni w punkcie wyznaczonym przez wierzchołek.</translation>
     </message>
   </context>
   <context>
@@ -2658,12 +2658,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1095"/>
       <source>Import curve network...</source>
-      <translation>Importuj sieci krzywej...</translation>
+      <translation>Importuj sieć krzywych ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1096"/>
       <source>Import a curve network</source>
-      <translation>Importuj sieci krzywej</translation>
+      <translation>Importuj sieć krzywych</translation>
     </message>
   </context>
   <context>
@@ -2784,12 +2784,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <source>Pick curve network</source>
-      <translation>Wybierz krzywą sieci</translation>
+      <translation>Wybierz sieć krzywych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="91"/>
       <source>Pick a curve network</source>
-      <translation>Wybierz krzywą sieci</translation>
+      <translation>Wybierz sieć krzywych</translation>
     </message>
   </context>
   <context>
@@ -2861,7 +2861,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Revolve a selected shape</source>
-      <translation>Wyciągnij przez obrót zaznaczony obiekt</translation>
+      <translation>Wyciągnij przez obrót wybrany kształt</translation>
     </message>
   </context>
   <context>
@@ -3081,12 +3081,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb dołączenia:</translation>
+      <translation>Tryb mocowania:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>AttachmentOffset property. Położenie jest wyrażone w lokalnej przestrzeni dołączonego obiektu.</translation>
+      <translation>Właściwość przesunięcia mocowania. Położenie jest wyrażone w miejscowej przestrzeni dołączonego obiektu.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
@@ -3332,7 +3332,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Custom direction:</source>
-      <translation>Spersonalizowany kierunek:</translation>
+      <translation>Kierunek niestandardowy:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
@@ -4850,7 +4850,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>All shape types can be selected</source>
-      <translation>Można zaznaczyć wszystkie rodzaje obwiedni</translation>
+      <translation>Można wybrać wszystkie typy kształtów</translation>
     </message>
   </context>
   <context>
@@ -4926,7 +4926,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="435"/>
       <source>Sweep</source>
-      <translation>Wycieranie</translation>
+      <translation>Rozciągnięcie po ścieżce</translation>
     </message>
   </context>
   <context>
@@ -4964,12 +4964,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb dołączenia:</translation>
+      <translation>Tryb mocowania:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>AttachmentOffset property. Położenie jest wyrażone w lokalnej przestrzeni dołączonego obiektu.</translation>
+      <translation>Właściwość przesunięcia mocowania. Położenie jest wyrażone w miejscowej przestrzeni dołączonego obiektu.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
@@ -5025,7 +5025,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
       <source>Attachment mode failed: %1</source>
-      <translation>Tryb dołączania nie powiódł się: %1</translation>
+      <translation>Tryb mocowania nie powiódł się: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="311"/>
@@ -5220,7 +5220,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation>Samoistne przecięcie się</translation>
+      <translation>Samoprzecięcia</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
@@ -5302,7 +5302,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Wycieranie</translation>
+      <translation>Rozciągnięcie po ścieżce</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
