@@ -28,6 +28,8 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import time
+
 import FreeCAD
 
 from femmesh import meshtools
@@ -100,11 +102,14 @@ class MeshSetsGetter():
     # ********************************************************************************************
     # get all known sets
     def get_mesh_sets(self):
+
         FreeCAD.Console.PrintMessage(
-            "!!!!!!!!!!!!!!!!!!!!!!!!! MeshSetsGetter class :-) !!!!!!!!!!!!!!!!!!!!!!!!!\n"
-            "Get mesh data for "
+            "MeshSetsGetter: Get mesh data for "
             "node sets (groups), surface sets (groups) and element sets (groups)\n"
         )
+
+        time_start = time.process_time()
+        FreeCAD.Console.PrintMessage("Get mesh sets.\n")
 
         # materials and element geometry element sets getter
         self.get_element_sets_material_and_femelement_geometry()
@@ -128,6 +133,11 @@ class MeshSetsGetter():
         self.get_constraints_force_nodeloads()
         self.get_constraints_pressure_faces()
         self.get_constraints_heatflux_faces()
+
+        setstime = round((time.process_time() - time_start), 3)
+        FreeCAD.Console.PrintMessage(
+            "Getting mesh sets or groups time: {} seconds \n".format(setstime)
+        )
 
     # ********************************************************************************************
     # ********************************************************************************************
@@ -645,7 +655,6 @@ class MeshSetsGetter():
         # create the ccx_elsets
         if len(self.member.mats_linear) == 1:
             if self.femmesh.Volumes:
-                print("here1")
                 # we only could do this for volumes, if a mesh contains volumes
                 # we're going to use them in the analysis
                 # but a mesh could contain the element faces of the volumes as faces
@@ -949,7 +958,6 @@ class MeshSetsGetter():
 
     # solid
     def get_ccx_elsets_single_mat_solid(self):
-        print("here2")
         mat_obj = self.member.mats_linear[0]["Object"]
         elset_data = self.ccx_evolumes
         names = [
