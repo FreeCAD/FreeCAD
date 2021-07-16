@@ -27,6 +27,7 @@ import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
+import PathScripts.PathJob as PathJob
 import PathSimulator
 import math
 import os
@@ -96,13 +97,7 @@ class PathSimulation:
         self.onSpeedBarChange()
         form.sliderAccuracy.valueChanged.connect(self.onAccuracyBarChange)
         self.onAccuracyBarChange()
-        form.comboJobs.currentIndexChanged.connect(self.onJobChange)
-        jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
-        form.comboJobs.clear()
-        self.jobs = []
-        for j in jobList:
-            self.jobs.append(j)
-            form.comboJobs.addItem(j.ViewObject.Icon, j.Label)
+        self._populateJobSelection(form)
         FreeCADGui.Control.showDialog(self.taskForm)
         self.disableAnim = False
         self.isVoxel = True
@@ -110,6 +105,37 @@ class PathSimulation:
         self.voxSim = PathSimulator.PathSim()
         self.SimulateMill()
         self.initdone = True
+
+    def _populateJobSelection(self, form):
+        # Make Job selection combobox
+        self.jobs = []
+        setJobIdx = 0
+        jobName = ''
+        jIdx = 0
+        # Get list of Job objects in active document
+        jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
+        jCnt = len(jobList)
+
+        # Check if user has selected a specific job for simulation
+        guiSelection = FreeCADGui.Selection.getSelectionEx()
+        if guiSelection:  #  Identify job selected by user
+            sel = guiSelection[0]
+            if hasattr(sel.Object, "Proxy") and isinstance(sel.Object.Proxy, PathJob.ObjectJob):
+                jobName = sel.Object.Name
+                FreeCADGui.Selection.clearSelection()
+        
+        # populate the job selection combobox
+        form.comboJobs.clear()
+        for j in jobList:
+            form.comboJobs.addItem(j.ViewObject.Icon, j.Label)
+            self.jobs.append(j)
+            if j.Name == jobName or jCnt == 1:
+                setJobIdx = jIdx
+            jIdx += 1
+        
+        # Pre-select GUI-selected job in the combobox
+        if jobName or jCnt == 1:
+            form.comboJobs.setCurrentIndex(setJobIdx)
 
     def SetupSimulation(self):
         form = self.taskForm.form

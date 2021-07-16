@@ -104,6 +104,11 @@ class ViewProvider(object):
             self.setupTaskPanel(TaskPanel(vobj.Object, self.deleteObjectsOnReject(), page, selection))
             self.deleteOnReject = False
             return True
+        elif 5 == mode:
+            if vobj is None:
+                vobj = self.vobj
+            self.deleteOnReject = False
+            return True
         # no other editing possible
         return False
 
@@ -1280,13 +1285,13 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name)
+    obj = res.objFactory(res.name, obj=None, parentJob=res.parentJob)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Visibility = False
-
         FreeCAD.ActiveDocument.commitTransaction()
-        obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
+
+        obj.ViewObject.Document.setEdit(obj.ViewObject, res.editMode)
         return obj
     FreeCAD.ActiveDocument.abortTransaction()
     return None
@@ -1318,10 +1323,46 @@ class CommandPathOp:
     def Activated(self):
         return Create(self.res)
 
+    def CreateOp(self, parentJob=None, avoidGui=False):
+        '''CreateOp(parentJob=None, avoidGui=False) ...
+        This method is an extension of the `Activated()` method.  This method allows for customizations
+        to the operation-creation process.
+        Arguments:
+            - parentJob: Accepts a string name identifier for the parent Job object, or a direct reference to the Job object.
+            - avoidGui: Set True if you do not wish to initialize the new operation using the GUI interface.
+        '''
+
+        if parentJob:
+            msg = translate('PathOpGui', 'Invalid job.')
+            if isinstance(parentJob, str):
+                job = FreeCAD.ActiveDocument.getObject(parentJob)
+                if not job:
+                    PathLog.error(msg)
+                    return None
+            else:
+                job = parentJob
+            if not isinstance(job.Proxy, PathJob.ObjectJob):
+                PathLog.error(msg)
+                return None
+            self.res.parentJob = job
+        if avoidGui:
+            self.res.editMode = 5
+        op = self.Activated()
+        FreeCAD.ActiveDocument.recompute()
+        return op
+
 
 class CommandResources:
     '''POD class to hold command specific resources.'''
-    def __init__(self, name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip):
+    def __init__(self,
+                 name,
+                 objFactory,
+                 opPageClass,
+                 pixmap,
+                 menuText,
+                 accelKey,
+                 toolTip,
+                 setupProperties=None):  
         self.name = name
         self.objFactory = objFactory
         self.opPageClass = opPageClass
@@ -1329,16 +1370,13 @@ class CommandResources:
         self.menuText = menuText
         self.accelKey = accelKey
         self.toolTip = toolTip
+        self.setupProperties = setupProperties
+        self.parentJob = None
+        self.editMode = 0  # Set to 5 for no initial Task Panel support
 
 
-def SetupOperation(name,
-                   objFactory,
-                   opPageClass,
-                   pixmap,
-                   menuText,
-                   toolTip,
-                   setupProperties=None):
-    '''SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None)
+def SetupOperation(cmdRes):
+    '''SetupOperation(cmdRes)
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
     When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
     (see ViewProvider in this module) and starts the editor specifically for this operation (driven by opPageClass).
@@ -1346,13 +1384,11 @@ def SetupOperation(name,
     It is not expected to be called manually.
     '''
 
-    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, None, toolTip)
+    command = CommandPathOp(cmdRes)
+    FreeCADGui.addCommand("Path_%s" % cmdRes.name.replace(' ', '_'), command)
 
-    command = CommandPathOp(res)
-    FreeCADGui.addCommand("Path_%s" % name.replace(' ', '_'), command)
-
-    if setupProperties is not None:
-        PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
+    if cmdRes.setupProperties is not None:
+        PathSetupSheet.RegisterOperation(cmdRes.name, cmdRes.objFactory, cmdRes.setupProperties)
 
     return command
 

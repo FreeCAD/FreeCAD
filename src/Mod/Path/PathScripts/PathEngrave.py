@@ -48,8 +48,8 @@ def translate(context, text, disambig=None):
 class ObjectEngrave(PathEngraveBase.ObjectOp):
     '''Proxy class for Engrave operation.'''
 
-    def __init__(self, obj, name):
-        super(ObjectEngrave, self).__init__(obj, name)
+    def __init__(self, obj, name, parentJob):
+        super(ObjectEngrave, self).__init__(obj, name, parentJob)
         self.wires = []
 
     def opFeatures(self, obj):
@@ -144,9 +144,9 @@ def SetupProperties():
     return ["StartVertex"]
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns an Engrave operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectEngrave(obj, name)
+    obj.Proxy = ObjectEngrave(obj, name, parentJob)
     return obj

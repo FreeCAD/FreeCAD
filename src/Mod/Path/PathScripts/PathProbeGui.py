@@ -84,10 +84,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.setFields(self.obj)
 
 
-Command = PathOpGui.SetupOperation('Probe', PathProbe.Create, TaskPanelOpPage,
-                'Path_Probe',
-                QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
-                QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
-                PathProbe.SetupProperties)
+cmdRes = PathOpGui.CommandResources('Probe',
+            PathProbe.Create,
+            TaskPanelOpPage,
+            'Path_Probe',
+            QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
+            None,  # accelKey
+            QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
+            PathProbe.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathProbeGui... done\n")

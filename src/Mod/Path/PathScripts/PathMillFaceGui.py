@@ -39,13 +39,15 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         '''pocketFeatures() ... return FeatureFacing (see PathPocketBaseGui)'''
         return PathPocketBaseGui.FeatureFacing
 
-Command = PathOpGui.SetupOperation('MillFace',
+cmdRes = PathOpGui.CommandResources('MillFace',
         PathMillFace.Create,
         TaskPanelOpPage,
         'Path_Face',
         QtCore.QT_TRANSLATE_NOOP("Path_Face", "Face"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Face", "Create a Facing Operation from a model or face"),
         PathMillFace.SetupProperties)
 
-FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")
+Command = PathOpGui.SetupOperation(cmdRes)
+PathOpGui.FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")
 

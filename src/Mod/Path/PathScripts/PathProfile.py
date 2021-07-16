@@ -1302,9 +1302,9 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Profile based on faces operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectProfile(obj, name)
+    obj.Proxy = ObjectProfile(obj, name, parentJob)
     return obj
