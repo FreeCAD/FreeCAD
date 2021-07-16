@@ -1873,10 +1873,13 @@ bool SoFCSelectionRoot::NodeKey::convert(SoFCSelectionRoot::Stack &stack, bool c
         stack.clear();
     uintptr_t id = 0;
     SelectionRootMapLock(guard);
+    int len = 0;
     for (uint8_t i=0; i<data.back(); ++i) {
         uint8_t d = data[i];
-        id = (id << 7) | (d & 127);
-        if(!(d & 128)) {
+        id |= (d & 127) << (len*7);
+        if(d & 128)
+            ++len;
+        else {
             if (id > SelectionRootId)
                 return false;
             auto it = SelectionRootMap.find(id);
@@ -1885,6 +1888,7 @@ bool SoFCSelectionRoot::NodeKey::convert(SoFCSelectionRoot::Stack &stack, bool c
             else
                 stack.push_back(it->second);
             id = 0;
+            len = 0;
         }
     }
     assert(id == 0);
@@ -1902,11 +1906,11 @@ SoFCSelectionRoot::NodeKey::getLastNode() const
         return next->getLastNode();
     uintptr_t id = data[data.back()-1];
     assert(id < 128);
-    for (int i=data.back()-2; i>=0; --i) {
+    for (int i=static_cast<int>(data.back())-2; i>=0; --i) {
         uintptr_t d = data[i];
-        if (d & 128)
+        if (!(d & 128))
             break;
-        id |= (d & 127) << ((data.back()-i-1)*7);
+        id = (id << 7) | (d & 127);
     }
     if (id > SelectionRootId)
         return nullptr;
@@ -1951,9 +1955,9 @@ void SoFCSelectionRoot::NodeKey::append(const std::shared_ptr<NodeKey> &_other)
     if (other.data.back() + data.back() <= data.size()-1) {
         memcpy(&data[data.back()], &other.data[0], other.data.back());
         data.back() += other.data.back();
-        return;
-    }
-    this->next = _other;
+        this->next = _other->next;
+    } else
+        this->next = _other;
 }
 
 // ------------------------------------------------------------------------

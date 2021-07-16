@@ -478,11 +478,10 @@ protected:
             next.reset();
         }
 
-        std::size_t hash() const {
+        std::size_t hash(std::size_t seed = 0) const {
             if (empty())
-                return 0;
+                return seed;
             std::hash<uint32_t> hasher;
-            std::size_t seed = 0;
             const uint32_t *d = reinterpret_cast<const uint32_t*>(&data[0]);
             int i = 0;
             for (int c=data.back()/4; i<c; ++i)
@@ -490,7 +489,7 @@ protected:
             for (i*=4; i<data.back(); ++i)
                 seed ^= hasher(data[i]) + 0x9e3779b9 + (seed<<6) + (seed>>2);
             if (next) 
-                seed ^= next->hash() + 0x9e3779b9 + (seed<<6) + (seed>>2);
+                return next->hash(seed);
             return seed;
         }
 
@@ -536,7 +535,7 @@ protected:
                     ++len;
                     v >>= 7;
                 } else {
-                    data[i] = static_cast<uint8_t>(v) & 127;
+                    data[i] = static_cast<uint8_t>(v);
                     data.back() += len + 1;
                     return true;
                 }
