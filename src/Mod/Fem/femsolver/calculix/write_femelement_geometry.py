@@ -32,7 +32,7 @@ def write_femelement_geometry(f, ccxwriter):
 
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Sections\n")
-    for ccx_elset in ccxwriter.ccx_elsets:
+    for ccx_elset in ccxwriter.mat_geo_sets:
         if ccx_elset["ccx_elset"]:
             elsetdef = "ELSET={}, ".format(ccx_elset["ccx_elset_name"])
             material = "MATERIAL={}".format(ccx_elset["mat_obj_name"])
