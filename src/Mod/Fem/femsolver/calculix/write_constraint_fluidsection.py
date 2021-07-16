@@ -43,7 +43,7 @@ from femmesh import meshtools
 # as it is none standard constraint method compared to all other constraints
 def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
 
-    if not ccxwriter.fluidsection_objects:
+    if not ccxwriter.member.geos_fluidsection:
         return inpfile
 
     # Fluid sections:
@@ -139,7 +139,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
 # split method into separate methods and move some part into base writer
 # see also method handle_fluidsection_liquid_inlet_outlet
 def write_constraints_fluidsection(f, ccxwriter):
-    if not ccxwriter.fluidsection_objects:
+    if not ccxwriter.member.geos_fluidsection:
         return
     if ccxwriter.analysis_type not in ["thermomech"]:
         return
@@ -158,7 +158,7 @@ def write_constraints_fluidsection(f, ccxwriter):
         )
     # get nodes
     ccxwriter.get_constraints_fluidsection_nodes()
-    for femobj in ccxwriter.fluidsection_objects:
+    for femobj in ccxwriter.member.geos_fluidsection:
         # femobj --> dict, FreeCAD document object is femobj["Object"]
         fluidsection_obj = femobj["Object"]
         f.write("** " + fluidsection_obj.Label + "\n")

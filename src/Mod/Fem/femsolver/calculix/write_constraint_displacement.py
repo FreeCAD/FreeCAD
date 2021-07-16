@@ -78,7 +78,7 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
     elif not disp_obj.zFree:
         f.write("{},3,3,{:.13G}\n".format(disp_obj.Name, disp_obj.zDisplacement))
 
-    if ccxwriter.beamsection_objects or ccxwriter.shellthickness_objects:
+    if ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness:
         if disp_obj.rotxFix:
             f.write("{},4\n".format(disp_obj.Name))
         elif not disp_obj.rotxFree:
