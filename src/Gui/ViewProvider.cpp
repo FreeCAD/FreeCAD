@@ -117,7 +117,7 @@ ViewProvider::ViewProvider()
     //
     // pcRoot = new SoFCSeparator(true);
     pcRoot = new SoFCSelectionRoot(true,this);
-    // static_cast<SoFCSelectionRoot*>(pcRoot)->cacheHint.setValue(2);
+    static_cast<SoFCSelectionRoot*>(pcRoot)->noHandleEvent = true;
     pcRoot->ref();
     pcModeSwitch = new SoFCSwitch();
     pcModeSwitch->ref();

@@ -1383,8 +1383,9 @@ SoFCUnifiedSelection::Private::setSelection(const std::vector<PickedInfo> &infos
 void
 SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
 {
-    if (selectionRole.getValue() && pimpl->handleEvent(action))
-        return;
+    if (selectionRole.getValue()) {
+        pimpl->handleEvent(action);
+    }
 
     inherited::handleEvent(action);
 }
@@ -1974,6 +1975,7 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider *vp)
 
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
     SO_NODE_ADD_FIELD(resetClipPlane,(FALSE));
+    SO_NODE_ADD_FIELD(noHandleEvent,(FALSE));
     SO_NODE_ADD_FIELD(selectionStyle,(Full));
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Full);
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Box);
@@ -2652,6 +2654,8 @@ void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
 }
 
 void SoFCSelectionRoot::handleEvent(SoHandleEventAction * action) {
+    if (noHandleEvent.getValue())
+        return;
     auto &stack = beginAction(action);
     inherited::handleEvent(action);
     endAction(action, stack);

@@ -268,6 +268,7 @@ public:
     };
     SoSFEnum selectionStyle;
     SoSFBool resetClipPlane;
+    SoSFBool noHandleEvent;
     SoSFColor overrideColor;
     SoSFFloat overrideTransparency;
     SoSFInt32 cacheHint;
