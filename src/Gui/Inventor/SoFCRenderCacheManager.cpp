@@ -323,9 +323,14 @@ public:
     }
 
     virtual void notify(SoNotList * l) {
+#if 1
+      (void)l;
+#else
       SoBase * firstbase = l->getLastRec()->getBase();
       SoBase * lastbase = l->getFirstRec()->getBase();
-      if (lastbase != firstbase) {
+      if (lastbase != firstbase)
+#endif
+      {
         if (!isScheduled())
           schedule();
       }
@@ -339,6 +344,7 @@ public:
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, CacheSensor> cachetable;
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, VCacheSensor> vcachetable;
   std::unordered_map<PathPtr, PathCacheSensor, PathHasher, PathHasher> pathcachetable;
+  bool nosectionontop = false;
 
   SoCallbackAction *action;
   int shapetypeid;
@@ -511,6 +517,10 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
   SoState * state = PRIVATE(this)->action->getState();
 
   RenderCachePtr cache;
+  if (PRIVATE(this)->nosectionontop != ViewParams::getNoSectionOnTop()) {
+    PRIVATE(this)->nosectionontop = ViewParams::getNoSectionOnTop();
+    PRIVATE(this)->pathcachetable.clear();
+  }
   auto it = PRIVATE(this)->pathcachetable.find(path);
   if (it != PRIVATE(this)->pathcachetable.end())
     cache = it->second.cache;
