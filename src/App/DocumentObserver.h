@@ -62,6 +62,14 @@ public:
     /*! Assignment operator */
     void operator=(const std::string&);
 
+    bool operator==(const DocumentT &other) const {
+        return document == other.document;
+    }
+
+    bool operator<(const DocumentT &other) const {
+        return document < other.document;
+    }
+
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
@@ -166,7 +174,18 @@ public:
     SubObjectT(const DocumentObject*, const char *subname);
 
     /*! Constructor */
+    SubObjectT(const DocumentObject*);
+
+    /*! Constructor */
     SubObjectT(const char *docName, const char *objName, const char *subname);
+
+    /*! Constructor */
+    SubObjectT(const std::vector<App::DocumentObject*> & objs, const char *subname = nullptr);
+
+    /*! Constructor */
+    SubObjectT(std::vector<App::DocumentObject*>::const_iterator begin,
+               std::vector<App::DocumentObject*>::const_iterator end,
+               const char *subname = nullptr);
 
     /*! Assignment operator */
     SubObjectT &operator=(const SubObjectT&);
@@ -174,23 +193,56 @@ public:
     /*! Assignment operator */
     SubObjectT &operator=(SubObjectT &&);
 
+    /*! Assignment operator */
+    SubObjectT &operator=(const DocumentObjectT&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const App::DocumentObject*);
+
     /*! Equality operator */
     bool operator==(const SubObjectT&) const;
 
     /// Set the subname path to the sub-object
     void setSubName(const char *subname);
 
+    /// Set the subname path to the sub-object
+    void setSubName(const std::string &subname) {
+        setSubName(subname.c_str());
+    }
+
     /// Return the subname path
     const std::string &getSubName() const;
 
+    /** Return docname#objname (label)
+     * @param docName: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getObjectFullName(const char *docName=nullptr) const;
+
+    /** Return docname#objname.subname (label)
+     * @param doc: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getSubObjectFullName(const char *docName=nullptr) const;
+
     /// Return the subname path without sub-element
-    std::string getSubNameNoElement() const;
+    std::string getSubNameNoElement(bool withObjName=false) const;
 
     /// Return the sub-element (Face, Edge, etc) of the subname path
     const char *getElementName() const;
 
-    /// Return the new style sub-element name
-    std::string getNewElementName() const;
+    /// Check if there is any sub object reference
+    bool hasSubObject() const;
+
+    /// Check if there is any sub element reference
+    bool hasSubElement() const;
+
+    /** Return the new style sub-element name
+     *
+     * @param fallback: if true, then fallback to old style element name if
+     * there is no new style name.
+     */
+    std::string getNewElementName(bool fallback=true) const;
 
     /** Return the old style sub-element name
      * @param index: if given, then return the element type, and extract the index
@@ -205,7 +257,28 @@ public:
 
     bool operator<(const SubObjectT &other) const;
 
+    /** Obtain a string to access the sub object using DocumentObject.getSubObject() API
+     *
+     * @param force: whether to call getSubObject() even if there is no subname
+     */
     std::string getSubObjectPython(bool force=true) const;
+
+    /** Normalize the subname path to use only the object internal name and old style element name
+     * @return Return whether the subname has been changed
+     */
+    bool normalize();
+
+    /// Return a normalize copy of itself
+    SubObjectT normalized() const;
+
+    /// Return the parent object
+    SubObjectT getParent() const;
+
+    /// Return the child object
+    SubObjectT getChild(const App::DocumentObject *) const;
+
+    PyObject *getPyObject() const;
+    void setPyObject(PyObject *);
 
 private:
     std::string subname;

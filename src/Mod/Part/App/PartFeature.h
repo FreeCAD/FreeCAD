@@ -24,6 +24,8 @@
 #ifndef PART_FEATURE_H
 #define PART_FEATURE_H
 
+#include <boost/container/map.hpp>
+
 #include "TopoShape.h"
 #include "PropertyTopoShape.h"
 #include <App/GeoFeature.h>
@@ -36,6 +38,11 @@
 class gp_Dir;
 
 class BRepBuilderAPI_MakeShape;
+
+namespace Data
+{
+struct HistoryItem;
+}
 
 namespace Part
 {
@@ -64,7 +71,32 @@ public:
     virtual const char* getViewProviderName() const override;
     virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
-    virtual PyObject* getPyObject() override;
+    virtual PyObject* getPyObject(void) override;
+
+    static std::list<Data::HistoryItem> getElementHistory(App::DocumentObject *obj,
+            const char *name, bool recursive=true, bool sameType=false);
+
+    static QVector<Data::MappedElement>
+    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true, bool withCache=true);
+
+    /** Obtain the element name from a feature based of the element name of its source feature
+     *
+     * @param obj: current feature
+     * @param subname: sub-object/element reference
+     * @param src: source feature
+     * @param srcSub: sub-object/element reference of the source
+     * @param single: if true, then return upon first match is found, or else
+     *                return all matches. Multiple matches are possible for
+     *                compound of multiple instances of the same source shape.
+     *
+     * @return Return a vector of pair of new style and old style element names.
+     */
+    static QVector<Data::MappedElement>
+    getElementFromSource(App::DocumentObject *obj,
+                         const char *subname,
+                         App::DocumentObject *src,
+                         const char *srcSub,
+                         bool single = false);
 
     TopLoc_Location getLocation() const;
 
@@ -100,8 +132,6 @@ public:
             App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
             bool noElementMap=false);
 
-    static void clearShapeCache();
-
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
 
     static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=0) {
@@ -109,27 +139,29 @@ public:
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
+    virtual const std::vector<std::string>& searchElementCache(const std::string &element,
+                                                               bool checkGeometry = true,
+                                                               double tol = 1e-7,
+                                                               double atol = 1e-10) const override;
+
+    virtual const std::vector<const char*>& getElementTypes(bool all=false) const override;
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
     virtual App::DocumentObjectExecReturn *execute() override;
+    virtual void onBeforeChange(const App::Property* prop) override;
     virtual void onChanged(const App::Property* prop) override;
-    /**
-     * Build a history of changes
-     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
-     * type: The type of object we are interested in, e.g. TopAbs_FACE
-     * newS: The new shape that was created by the operation
-     * oldS: The original shape prior to the operation
-     */
-    ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
-        const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
-    ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
+
+private:
+    struct ElementCache;
+    boost::container::map<std::string, ElementCache> _elementCache;
 };
 
 class FilletBase : public Part::Feature
 {
-    PROPERTY_HEADER(Part::FilletBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 
 public:
     FilletBase();
@@ -137,7 +169,7 @@ public:
     App::PropertyLink   Base;
     PropertyFilletEdges Edges;
 
-    short mustExecute() const;
+    short mustExecute() const override;
 };
 
 typedef App::FeaturePythonT<Feature> FeaturePython;

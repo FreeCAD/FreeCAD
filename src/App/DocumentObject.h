@@ -109,6 +109,8 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChange;
     /// signal on changed  property of this object
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChanged;
+    /// signal on changed property of this object before document scoped signalChangedObject
+    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -138,7 +140,8 @@ public:
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
-    virtual std::string getFullName() const override;
+    virtual std::string getFullName(bool python=false) const override;
+    virtual App::Document *getOwnerDocument() const override;
     virtual bool isAttachedToDocument() const override;
     virtual const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
@@ -286,6 +289,20 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
 
+    /** Return the element map version of the geometry data stored in the given property
+     *
+     * @param prop: the geometry property to query for element map version
+     * @param restored: whether to query for the restored element map version.
+     *                  In case of version upgrade, the restored version may
+     *                  be different from the current version.
+     *
+     * @return Return the element map version string.
+     */
+    virtual std::string getElementMapVersion(const App::Property *prop, bool restored=false) const;
+
+    /// Return true to signal re-generation of geometry element names
+    virtual bool checkElementMapVersion(const App::Property *prop, const char *ver) const;
+       
 public:
     /** mustExecute
      *  We call this method to check if the object was modified to
@@ -597,6 +614,8 @@ protected:
     virtual void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
     virtual void onChanged(const Property* prop) override;
+    /// get called by the container when a property was changed
+    virtual void onEarlyChange(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after an undo/redo transaction is finished

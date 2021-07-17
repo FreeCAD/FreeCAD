@@ -107,6 +107,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/MappedElement.h>
 
 #include "OCCError.h"
 #include "TopoShape.h"
@@ -133,6 +134,7 @@
 #include "FaceMaker.h"
 #include "PartFeature.h"
 #include "PartPyCXX.h"
+#include "TopoShapeOpCode.h"
 #include "modelRefine.h"
 
 #ifdef FCUseFreeType
@@ -361,6 +363,9 @@ public:
         add_varargs_method("makeShell",&Module::makeShell,
             "makeShell(list) -- Create a shell out of a list of faces."
         );
+        add_varargs_method("makeWires",&Module::makeWires,
+            "makeWires(list_of_shapes_or_compound) -- Create wires from a list of a unsorted edges."
+        );
         add_varargs_method("makeFace",&Module::makeFace,
             "makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.\n"
             "maker_class_name is a string like 'Part::FaceMakerSimple'."
@@ -524,9 +529,6 @@ public:
         add_varargs_method("__fromPythonOCC__",&Module::fromPythonOCC,
             "__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"
         );
-        add_varargs_method("clearShapeCache",&Module::clearShapeCache,
-            "clearShapeCache() -- Clears internal shape cache"
-        );
         add_keyword_method("getShape",&Module::getShape,
             "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
             "Obtain the the TopoShape of a given object with SubName reference\n\n"
@@ -541,6 +543,19 @@ public:
             "              and 'mat' is the accumulated transformation matrix of that sub-object.\n" 
             "           2: same as 1, but make sure 'subObj' is resolved if it is a link.\n"
             "* refine: refine the returned shape"
+        );
+        add_varargs_method("getRelatedElements",&Module::getRelatedElements,
+            "getRelatedElements(obj,name,[sameType=True]):\n"
+            "Return a list of tuple(mapped_name, element_name) that are related to the input 'name'"
+        );
+        add_varargs_method("getElementHistory",&Module::getElementHistory,
+            "getElementHistory(obj,name,recursive=True,sameType=False)\n"
+            "Returns the element mapped name history\n\n"
+            "name: mapped element name belonging to this shape.\n"
+            "recursive: if True, then track back the history through other objects till the origin.\n"
+            "sameType: if True, then stop trace back when element type changes.\n\n"
+            "If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),\n"
+            "otherwise return a list of tuple."
         );
         add_varargs_method("splitSubname",&Module::splitSubname,
             "splitSubname(subname) -> list(sub,mapped,subElement)\n"
@@ -891,6 +906,16 @@ private:
         }
 
         return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
+    }
+    Py::Object makeWires(const Py::Tuple& args)
+    {
+        PyObject *obj;
+        const char *op = 0;
+        PyObject *fix = Py_False;
+        double tol = 0.0;
+        if(!PyArg_ParseTuple(args.ptr(), "O|sdO!", &obj, &op, &tol, &PyBool_Type,&fix))
+            throw Py::Exception();
+        return shape2pyshape(TopoShape().makEWires(getPyShapes(obj),op,PyObject_IsTrue(fix),tol));
     }
     Py::Object makeFace(const Py::Tuple& args)
     {
@@ -2228,11 +2253,60 @@ private:
                 subObj?Py::Object(subObj->getPyObject(),true):Py::Object());
     }
 
-    Py::Object clearShapeCache(const Py::Tuple &args) {
-        if (!PyArg_ParseTuple(args.ptr(),""))
+    Py::Object getRelatedElements(const Py::Tuple& args) {
+        const char *name;
+        PyObject *pyobj;
+        PyObject *sameType=Py_True;
+        PyObject *withCache=Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "O!s|OO", 
+                    &App::DocumentObjectPy::Type,&pyobj,&name,&sameType,&withCache))
             throw Py::Exception();
-        Part::Feature::clearShapeCache();
-        return Py::Object();
+        auto obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        auto ret = Part::Feature::getRelatedElements(obj,name,
+                PyObject_IsTrue(sameType), PyObject_IsTrue(withCache));
+        Py::List list;
+        std::string tmp,tmp2;
+        for(auto &v : ret) {
+            tmp.clear();
+            v.index.toString(tmp);
+            tmp2.clear();
+            v.name.toString(tmp2);
+            list.append(Py::TupleN(Py::String(tmp2),Py::String(tmp)));
+        }
+        return list;
+    }
+
+    Py::Object getElementHistory(const Py::Tuple& args) {
+        const char *name;
+        PyObject *recursive = Py_True;
+        PyObject *sameType = Py_False;
+        PyObject *pyobj;
+        if (!PyArg_ParseTuple(args.ptr(), "O!s|OO",&App::DocumentObjectPy::Type,&pyobj,&name,
+                    &recursive,&sameType))
+            throw Py::Exception();
+
+        auto feature = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        Py::List list;
+        std::string tmp;
+        for(auto &history : Part::Feature::getElementHistory(feature,name,
+                    PyObject_IsTrue(recursive),PyObject_IsTrue(sameType))) 
+        {
+            Py::Tuple ret(3);
+            if(history.obj) 
+                ret.setItem(0,Py::Object(history.obj->getPyObject(),true));
+            else
+                ret.setItem(0,Py::Int(history.tag));
+            tmp.clear();
+            ret.setItem(1,Py::String(history.element.toString(tmp)));
+            Py::List intermedates;
+            for(auto &h : history.intermediates) {
+                tmp.clear();
+                intermedates.append(Py::String(h.toString(tmp)));
+            }
+            ret.setItem(2,intermedates);
+            list.append(ret);
+        }
+        return list;
     }
 
     Py::Object splitSubname(const Py::Tuple& args) {

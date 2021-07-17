@@ -33,6 +33,8 @@
 #include <string>
 #include <memory>
 #include <cinttypes>
+#include <unordered_set>
+#include <unordered_map>
 #include "Property.h"
 
 namespace Base {
@@ -43,6 +45,8 @@ namespace App
 {
 class DocumentObject;
 class Document;
+class GeoFeature;
+class SubObjectT;
 
 class DocInfo;
 typedef std::shared_ptr<DocInfo> DocInfoPtr;
@@ -93,8 +97,8 @@ public:
      * Retrieve what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and
      * all Childs or to all objects within the Glocal scope.
      */
-    LinkScope getScope() {return _pcScope;};
-
+    LinkScope getScope() const {return _pcScope;};
+    
 protected:
     LinkScope _pcScope = LinkScope::Local;
 };
@@ -286,6 +290,8 @@ public:
         getLinkedElements(ret,newStyle,all);
         return ret;
     }
+
+    std::vector<App::SubObjectT> linkedElementsT(bool all) const;
     //@}
 
     /** Enable/disable temporary holding external object without throwing exception
@@ -349,6 +355,8 @@ public:
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject *feature, bool reverse=false);
 
+    /// Obtain link properties that contain element references to a given object
+    static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject *);
 
     /** Helper function for update individual element reference
      *
@@ -540,12 +548,16 @@ public:
         LinkRestoring,
         LinkAllowPartial,
         LinkRestoreLabel,
+        LinkSyncSubObject, // used by DlgPropertyLink
+        LinkNewElement, // return new element name in getPyObject
     };
     inline bool testFlag(int flag) const {
         return _Flags.test((std::size_t)flag);
     }
 
     virtual void setAllowPartial(bool enable) { (void)enable; }
+
+    void setReturnNewElement(bool enable);
 
 protected:
     virtual void hasSetValue() override;
@@ -860,6 +872,7 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
+    void setSyncSubObject(bool enable);
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
@@ -1045,6 +1058,7 @@ class PropertyXLinkSubList;
 class AppExport PropertyXLink : public PropertyLinkGlobal
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    typedef PropertyLinkGlobal inherited;
 
 public:
     PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=0);
@@ -1130,6 +1144,7 @@ public:
 
     virtual void setAllowPartial(bool enable) override;
 
+    virtual std::string getFullName(bool python=false) const override;
     const char *getFilePath() const {
         return filePath.c_str();
     }
@@ -1189,10 +1204,10 @@ class AppExport PropertyXLinkSubList: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+public:
     typedef typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange atomic_change;
     friend atomic_change;
 
-public:
     PropertyXLinkSubList();
     virtual ~PropertyXLinkSubList();
 

@@ -56,9 +56,9 @@ PointKernel::PointKernel(const PointKernel& pts)
 
 }
 
-std::vector<const char*> PointKernel::getElementTypes(void) const
+const std::vector<const char*>& PointKernel::getElementTypes(void) const
 {
-    std::vector<const char*> temp;
+    static std::vector<const char*> temp;
     //temp.push_back("Segment");
 
     return temp;
@@ -167,9 +167,13 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
 void PointKernel::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
+        std::string filename = _PersistenceName;
+        if(filename.empty())
+            filename = "Points";
+        filename += writer.isPreferBinary()?".bin":".txt";
         writer.Stream() << writer.ind()
-            << "<Points file=\"" << writer.addFile(writer.ObjectName.c_str(), this) << "\" " 
-            << "mtrx=\"" << _Mtrx.toString() << "\"/>" << std::endl;
+            << "<Points file=\"" << writer.addFile(filename.c_str(), this) << "\" " 
+            << "mtrx=\"" << _Mtrx.toString() << "\"/>\n";
     }
 }
 

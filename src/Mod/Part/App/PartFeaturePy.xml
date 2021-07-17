@@ -13,5 +13,20 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>This is the father of all shape object classes</UserDocu>
     </Documentation>
+    <Methode Name="getElementHistory" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>
+getElementHistory(name,recursive=True,sameType=False,showName=False) - returns the element mapped name history
+
+name: mapped element name belonging to this shape
+recursive: if True, then track back the history through other objects till the origin
+sameType: if True, then stop trace back when element type changes
+showName: if False, return the owner object, or else return a tuple of object name and label
+
+If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),
+otherwise return a list of tuple.
+        </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

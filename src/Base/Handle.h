@@ -30,8 +30,9 @@
 #include <string>
 #include <map>
 #include <typeinfo>
-
-class QAtomicInt;
+#include <atomic>
+#include <iostream>
+#include <assert.h>
 
 namespace Base
 {
@@ -71,6 +72,18 @@ public:
     ~Reference() {
         if (_toHandle)
             _toHandle->unref();
+    }
+
+    void reset(const Reference<T> &p=Reference<T>()) {
+        *this = p;
+    }
+
+    void swap(Reference<T> &p) {
+        if(*this != p) {
+            auto tmp = p;
+            p = *this;
+            *this = tmp;
+        }
     }
 
     //**************************************************************************
@@ -161,20 +174,36 @@ private:
 class BaseExport Handled
 {
 public:
-    Handled();
-    virtual ~Handled();
+    Handled()
+        :_lRefCount(0)
+    {}
 
-    void ref() const;
-    void unref() const;
+    Handled(const Handled&) = delete;
 
-    int getRefCount(void) const;
-    const Handled& operator = (const Handled&);
+    virtual ~Handled()
+    {
+        if (_lRefCount != 0)
+            std::cerr << "Reference counter of deleted object is not zero!!!!!" << std::endl;
+    }
+
+    void ref() const {++_lRefCount;}
+
+    int unref() const  
+    {
+        int res = --_lRefCount;
+        if (res == 0)
+            delete this;
+        else
+            assert(res>0);
+        return res;
+    }
+
+    int getRefCount(void) const {return _lRefCount;}
+
+    const Handled& operator = (const Handled&) {return *this;}
 
 private:
-    Handled(const Handled&);
-
-private:
-    QAtomicInt* _lRefCount;
+    mutable std::atomic<int> _lRefCount;
 };
 
 } // namespace Base

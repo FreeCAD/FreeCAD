@@ -27,17 +27,21 @@
 #include <Base/Observer.h>
 #include <Base/Persistence.h>
 #include <Base/Type.h>
+#include <Base/Handle.h>
 
 #include "PropertyContainer.h"
 #include "PropertyStandard.h"
 #include "PropertyLinks.h"
 
+#include <memory>
 #include <map>
 #include <vector>
 #include <stack>
 #include <functional>
 
 #include <boost_signals2.hpp>
+
+class QByteArray;
 
 namespace Base {
     class Writer;
@@ -52,6 +56,8 @@ namespace App
     class DocumentPy; // the python document class
     class Application;
     class Transaction;
+    class StringHasher;
+    typedef Base::Reference<StringHasher> StringHasherRef;
 }
 
 namespace App
@@ -74,7 +80,9 @@ public:
         PartialDoc = 7,
         AllowPartialRecompute = 8, // allow recomputing editing object if SkipRecompute is set
         TempDoc = 9, // Mark as temporary document without prompt for save
-        RestoreError = 10
+        RestoreError = 10,
+        RecomputeOnRestore = 11, // Mark pending recompute on restore for migration purpose
+        LinkStampChanged = 12, // Indicates during restore time if any linked document's time stamp has changed
     };
 
     /** @name Properties */
@@ -116,6 +124,8 @@ public:
     PropertyString TipName;
     /// Whether to show hidden items in TreeView
     PropertyBool ShowHidden;
+    /// Whether to use hasher on topological naming
+    PropertyBool UseHasher;
     //@}
 
     /** @name Signals of the document */
@@ -193,11 +203,13 @@ public:
     bool save (void);
     bool saveAs(const char* file);
     bool saveCopy(const char* file) const;
+    void save(Base::Writer &writer, bool archive) const;
     /// Restore the document from the file in Property Path
     void restore (const char *filename=0,
             bool delaySignal=false, const std::set<std::string> &objNames={});
-    void afterRestore(bool checkPartial=false);
-    bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
+    /// Restore the document from a pre-constructed xml reader
+    void restore (Base::XMLReader &xmlReader,
+            bool delaySignal=false, const std::set<std::string> &objNames={});
     enum ExportStatus {
         NotExporting,
         Exporting,
@@ -474,6 +486,38 @@ public:
     (const App::DocumentObject* from, const App::DocumentObject* to) const;
     //@}
 
+    /** Called by property during properly save its containing StringHasher
+     *
+     * @param hasher: the input hasher
+     * @return Returns a pair<bool,int>. Boolean member indicate if the
+     * StringHasher has been saved before. The Integer is the hasher index.
+     *
+     * The StringHasher object is designed to be shared among multiple objects.
+     * So, we must not save duplicate copies of the same hasher. And must be
+     * able to restore with the same sharing relationship. This function returns
+     * whether the hasher has been saved before by other objects, and the index
+     * of the hasher. If the hasher has not been saved before, the object must
+     * save the hasher by calling StringHasher::Save
+     */
+    std::pair<bool,int> addStringHasher(const StringHasherRef & hasher) const;
+
+    /** Called by property to restore its containing StringHasher
+     *
+     * @param index: the index previously returned by calling addStringHasher()
+     * during save. Or if is negative, then return document's own string hasher
+     * if UseHasher is True
+     *
+     * @return Return the resulting string hasher.
+     *
+     * The caller is responsible to restore the hasher itself if it is the first
+     * owner of the hasher, i.e. return addStringHasher() returns true during
+     * save
+     */
+    StringHasherRef getStringHasher(int index=-1) const;
+
+    /// Return the document's own hasher regardless of UseHasher
+    StringHasherRef getHasher() const;
+
     /** Return the links to a given object
      *
      * @param links: holds the links found
@@ -500,7 +544,9 @@ public:
 
     virtual PyObject *getPyObject(void) override;
 
-    virtual std::string getFullName() const override;
+    virtual std::string getFullName(bool python=false) const override;
+
+    virtual App::Document *getOwnerDocument() const override;
 
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
@@ -518,6 +564,9 @@ public:
 protected:
     /// Construction
     Document(const char *name = "");
+
+    void afterRestore(bool checkPartial=false);
+    bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

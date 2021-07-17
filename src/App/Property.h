@@ -117,7 +117,10 @@ public:
     /// get the name of this property in the belonging container
     const char* getName(void) const;
 
-    std::string getFullName() const;
+    /** Return a fully qualified property name that include its own's name
+     * @param python: if true, then return an expression for accessing this property in Python
+     */
+    virtual std::string getFullName(bool python=false) const;
 
     /// Get the class name of the associated property editor item
     virtual const char* getEditorName(void) const { return ""; }
@@ -233,6 +236,8 @@ public:
     /// Called before a child property changing value
     virtual void aboutToSetChildValue(Property &) {}
 
+    virtual void beforeSave() const {}
+
     friend class PropertyContainer;
     friend struct PropertyData;
     friend class DynamicProperty;
@@ -257,6 +262,9 @@ protected:
 
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
+
+    /// Return a file name suitable for saving this property
+    std::string getFileName(const char *postfix=0, const char *prefix=0) const;
 
 private:
     // forbidden

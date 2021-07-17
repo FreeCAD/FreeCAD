@@ -41,6 +41,7 @@ namespace App
 class Property;
 class PropertyContainer;
 class DocumentObject;
+class Document;
 class Extension;
 
 enum PropertyType
@@ -135,6 +136,7 @@ struct AppExport PropertyData
   void split(PropertyData *other);
 };
 
+class PropertyContainerP;
 
 /** Base class of all classes with properties
  */
@@ -158,7 +160,17 @@ public:
 
   virtual unsigned int getMemSize (void) const;
 
-  virtual std::string getFullName() const {return std::string();}
+  /** Return a fully qualified name for this container
+   *  @param python: if true, then return an expression for accessing this container in Python
+   */
+  virtual std::string getFullName(bool python=false) const {
+      (void)python;
+      return std::string();
+  }
+
+  /// Return owner document of this container
+  virtual App::Document *getOwnerDocument() const 
+    {return nullptr;}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
@@ -214,6 +226,7 @@ public:
 
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
+  virtual void beforeSave() const;
 
   const char *getPropertyPrefix() const {
       return _propertyPrefix.c_str();
@@ -228,6 +241,11 @@ public:
 
 
 protected:
+  /** get called by the container when a property has changed
+   *
+   * This function is called before onChanged()
+    */
+  virtual void onEarlyChange(const Property* /*prop*/){}
   /// get called by the container when a property has changed
   virtual void onChanged(const Property* /*prop*/){}
   /// get called before the value is changed
@@ -248,9 +266,12 @@ private:
 protected:
   DynamicProperty dynamicProps;
 
-private:
+
+private: 
   std::string _propertyPrefix;
-  static PropertyData propertyData;
+  static PropertyData propertyData; 
+
+  mutable std::unique_ptr<PropertyContainerP> _pimpl;
 };
 
 /// Property define

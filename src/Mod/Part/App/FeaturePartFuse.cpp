@@ -127,15 +127,15 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                     throw BooleanException("Fusion failed");
                 resShape = mkFuse.Shape();
 
-                ShapeHistory hist1 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape1());
-                ShapeHistory hist2 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape2());
+                ShapeHistory hist1(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape1());
+                ShapeHistory hist2(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape2());
                 if (history.empty()) {
                     history.push_back(hist1);
                     history.push_back(hist2);
                 }
                 else {
                     for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
-                        *jt = joinHistory(*jt, hist1);
+                        jt->join(hist1);
                     history.push_back(hist2);
                 }
             }
@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 
             TopoDS_Shape resShape = mkFuse.Shape();
             for (std::vector<TopoDS_Shape>::iterator it = s.begin(); it != s.end(); ++it) {
-                history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, *it));
+                history.emplace_back(mkFuse, TopAbs_FACE, resShape, *it);
             }
 #endif
             if (resShape.IsNull())
@@ -180,9 +180,9 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                     TopoDS_Shape oldShape = resShape;
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
                     resShape = mkRefine.Shape();
-                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                    ShapeHistory hist(mkRefine, TopAbs_FACE, resShape, oldShape);
                     for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
-                        *jt = joinHistory(*jt, hist);
+                        jt->join(hist);
                 }
                 catch (Standard_Failure&) {
                     // do nothing

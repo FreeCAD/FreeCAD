@@ -32,6 +32,7 @@
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include "Application.h"
 #include "DocumentObject.h"
 
@@ -65,15 +66,34 @@ const char* Property::getName(void) const
     return myName;
 }
 
-std::string Property::getFullName() const {
-    std::string name;
-    if(myName) {
-        if(father)
-            name = father->getFullName() + ".";
-        name += myName;
-    }else
-        return "?";
-    return name;
+std::string Property::getFullName(bool python) const {
+    if(!myName || (python && !father)) 
+        return std::string(python?"None":"?");
+    std::ostringstream ss;
+    if(father)
+        ss << father->getFullName(python) 
+            << '.' << father->getPropertyPrefix();
+    ss << myName;
+    return ss.str();
+}
+
+std::string Property::getFileName(const char *postfix, const char *prefix) const {
+    std::ostringstream ss;
+    if(prefix)
+        ss << prefix;
+    if(!myName)
+        ss << "Property";
+    else {
+        std::string name = getFullName();
+        auto pos = name.find('#');
+        if(pos == std::string::npos)
+            ss << name;
+        else
+            ss << (name.c_str()+pos+1);
+    }
+    if(postfix)
+        ss << postfix;
+    return ss.str();
 }
 
 short Property::getType(void) const
@@ -198,10 +218,15 @@ void Property::destroy(Property *p) {
 
 void Property::touch()
 {
+    if(GetApplication().isClosingAll())
+        return;
+
     PropertyCleaner guard(this);
-    if (father)
-        father->onChanged(this);
     StatusBits.set(Touched);
+    if (getName() && father) {
+        father->onEarlyChange(this);
+        father->onChanged(this);
+    }
 }
 
 void Property::setReadOnly(bool readOnly)

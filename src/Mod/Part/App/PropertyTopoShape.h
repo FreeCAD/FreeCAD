@@ -31,15 +31,19 @@
 #include <map>
 #include <vector>
 
+class BRepBuilderAPI_MakeShape;
+
 namespace Part
 {
+
+class Feature;
 
 /** The part shape property class.
  * @author Werner Mayer
  */
 class PartExport PropertyPartShape : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPartShape();
@@ -50,49 +54,59 @@ public:
     /// set the part shape
     void setValue(const TopoShape&);
     /// set the part shape
-    void setValue(const TopoDS_Shape&);
+    void setValue(const TopoDS_Shape&, bool resetElementMap=true);
     /// get the part shape
     const TopoDS_Shape& getValue(void) const;
-    const TopoShape& getShape() const;
-    const Data::ComplexGeoData* getComplexData() const;
+    TopoShape getShape() const;
+    virtual const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
     /** @name Modification */
     //@{
     /// Transform the real shape data
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    virtual void transformGeometry(const Base::Matrix4D &rclMat) override;
     //@}
 
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
-    Base::BoundBox3d getBoundingBox() const;
+    virtual Base::BoundBox3d getBoundingBox() const override;
     //@}
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
-    void setPyObject(PyObject *value);
+    virtual PyObject* getPyObject(void) override;
+    virtual void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    virtual void beforeSave() const override;
 
-    App::Property *Copy(void) const;
-    void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    virtual void SaveDocFile (Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
+
+    virtual App::Property *Copy(void) const override;
+    virtual void Paste(const App::Property &from) override;
+    virtual unsigned int getMemSize (void) const override;
     //@}
 
     /// Get valid paths for this property; used by auto completer
-    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
+
+    virtual std::string getElementMapVersion(bool restored=false) const override;
+    void resetElementMapVersion() {_Ver.clear();}
+
+    friend class Feature;
 
 private:
     TopoShape _Shape;
+    std::string _Ver;
+    mutable int _HasherIndex = 0;
+    mutable bool _SaveHasher = false;
 };
 
 struct PartExport ShapeHistory {
@@ -105,6 +119,21 @@ struct PartExport ShapeHistory {
 
     TopAbs_ShapeEnum type;
     MapList shapeMap;
+
+    ShapeHistory() {}
+    /**
+     * Build a history of changes
+     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+     * type: The type of object we are interested in, e.g. TopAbs_FACE
+     * newS: The new shape that was created by the operation
+     * oldS: The original shape prior to the operation
+     */
+    ShapeHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+                 const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    void reset(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+               const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    void join(const ShapeHistory &newH);
+
 };
 
 class PartExport PropertyShapeHistory : public App::PropertyLists
@@ -203,6 +232,33 @@ public:
 
 private:
     std::vector<FilletElement> _lValueList;
+};
+
+class PartExport PropertyShapeCache: public App::Property {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+    virtual App::Property *Copy(void) const override;
+
+    virtual void Paste(const App::Property &) override;
+
+    virtual PyObject *getPyObject() override;
+
+    virtual void setPyObject(PyObject *value) override;
+
+    virtual void Save (Base::Writer &writer) const override;
+
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    static PropertyShapeCache *get(const App::DocumentObject *obj, bool create);
+    static bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0);
+    static void setShape(const App::DocumentObject *obj, const TopoShape &shape, const char *subname=0);
+
+private:
+    void slotChanged(const App::DocumentObject &, const App::Property &prop);
+
+private:
+    std::unordered_map<std::string, TopoShape> cache;
+    boost::signals2::scoped_connection connChanged;
 };
 
 } //namespace Part

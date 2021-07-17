@@ -41,6 +41,7 @@
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ComplexGeoData.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/bind/bind.hpp>
 
@@ -227,13 +228,24 @@ const char* DocumentObject::getStatusString(void) const
         return "Valid";
 }
 
-std::string DocumentObject::getFullName() const {
-    if(!getDocument() || !pcNameInDocument)
-        return "?";
-    std::string name(getDocument()->getName());
-    name += '#';
-    name += *pcNameInDocument;
-    return name;
+std::string DocumentObject::getFullName(bool python) const {
+    if(!getDocument() || !pcNameInDocument) {
+        if(python)
+            return std::string("None");
+        return std::string("?") + Base::Tools::getIdentifier(oldLabel);
+    }
+
+    std::ostringstream ss;
+    if(python) {
+        ss << "FreeCAD.getDocument('" << getDocument()->getName()
+            << "').getObject('" << *pcNameInDocument << "')";
+    }else
+        ss << getDocument()->getName() << '#' << *pcNameInDocument;
+    return ss.str();
+}
+
+App::Document *DocumentObject::getOwnerDocument() const {
+    return _pDoc;
 }
 
 const char *DocumentObject::getNameInDocument() const
@@ -711,8 +723,7 @@ void DocumentObject::onBeforeChange(const Property* prop)
     signalBeforeChange(*this,*prop);
 }
 
-/// get called by the container when a Property was changed
-void DocumentObject::onChanged(const Property* prop)
+void DocumentObject::onEarlyChange(const Property *prop)
 {
     if(GetApplication().isClosingAll())
         return;
@@ -729,6 +740,15 @@ void DocumentObject::onChanged(const Property* prop)
                     << getFullName() << '.' << prop->getName());
         }
     }
+
+    signalEarlyChanged(*this, *prop);
+}
+
+/// get called by the container when a Property was changed
+void DocumentObject::onChanged(const Property* prop)
+{
+    if(GetApplication().isClosingAll())
+        return;
 
     // Delay signaling view provider until the document object has handled the
     // change
@@ -901,8 +921,6 @@ DocumentObject *DocumentObject::getLinkedObject(
 
 void DocumentObject::Save (Base::Writer &writer) const
 {
-    if (this->getNameInDocument())
-        writer.ObjectName = this->getNameInDocument();
     App::ExtensionContainer::Save(writer);
 }
 
@@ -1206,6 +1224,20 @@ bool DocumentObject::adjustRelativeLinks(
         }
     }
     return touched;
+}
+
+std::string DocumentObject::getElementMapVersion(const App::Property *_prop, bool restored) const {
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if(!prop) 
+        return std::string();
+    return prop->getElementMapVersion(restored);
+}
+
+bool DocumentObject::checkElementMapVersion(const App::Property *_prop, const char *ver) const {
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if(!prop) 
+        return false;
+    return prop->checkElementMapVersion(ver);
 }
 
 const std::string &DocumentObject::hiddenMarker() {

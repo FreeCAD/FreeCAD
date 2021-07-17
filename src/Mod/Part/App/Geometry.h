@@ -68,6 +68,8 @@
 
 #include "GeometryExtension.h"
 
+class BRepAdaptor_Surface;
+
 namespace Part {
 
 class PartExport Geometry: public Base::Persistence
@@ -75,6 +77,8 @@ class PartExport Geometry: public Base::Persistence
     TYPESYSTEM_HEADER();
 public:
     virtual ~Geometry();
+
+    static std::unique_ptr<Geometry> fromShape(const TopoDS_Shape &s, bool silent=false);
 
     virtual TopoDS_Shape toShape() const = 0;
     virtual const Handle(Geom_Geometry)& handle() const = 0;
@@ -95,6 +99,8 @@ public:
     Geometry *clone(void) const;
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const = 0;
 
     std::vector<std::weak_ptr<const GeometryExtension>> getExtensions() const;
 
@@ -153,6 +159,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     const Handle(Geom_Geometry)& handle() const;
     void setHandle(const Handle(Geom_CartesianPoint)&);
 
@@ -164,6 +172,9 @@ private:
 };
 
 class GeomBSplineCurve;
+class GeomLine;
+class GeomLineSegment;
+
 class PartExport GeomCurve : public Geometry
 {
     TYPESYSTEM_HEADER();
@@ -239,6 +250,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
 
     void setHandle(const Handle(Geom_BezierCurve)&);
     const Handle(Geom_Geometry)& handle() const;
@@ -316,6 +328,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_BSplineCurve)&);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -370,6 +384,8 @@ public:
     virtual unsigned int getMemSize(void) const = 0;
     virtual PyObject *getPyObject(void) = 0;
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     const Handle(Geom_Geometry)& handle() const = 0;
 };
 
@@ -388,6 +404,8 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
 
     void setHandle(const Handle(Geom_TrimmedCurve)&);
     const Handle(Geom_Geometry)& handle() const;
@@ -473,6 +491,8 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     const Handle(Geom_Geometry)& handle() const;
 
     void setHandle(const Handle(Geom_Circle)&);
@@ -533,6 +553,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
 
     void setHandle(const Handle(Geom_Ellipse) &e);
     const Handle(Geom_Geometry)& handle() const;
@@ -596,6 +618,8 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     const Handle(Geom_Geometry)& handle() const;
     void setHandle(const Handle(Geom_Hyperbola)&);
 
@@ -655,6 +679,8 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     const Handle(Geom_Geometry)& handle() const;
     void setHandle(const Handle(Geom_Parabola)&);
 
@@ -713,6 +739,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     const Handle(Geom_Geometry)& handle() const;
     void setHandle(const Handle(Geom_Line)&);
 
@@ -759,12 +787,17 @@ public:
     virtual ~GeomOffsetCurve();
     virtual Geometry *copy(void) const;
 
+    Base::Vector3d getDir(void) const;
+    double getOffset() const;
+
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
 
     void setHandle(const Handle(Geom_OffsetCurve)& c);
     const Handle(Geom_Geometry)& handle() const;
@@ -816,6 +849,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_BezierSurface)& b);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -839,6 +874,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_BSplineSurface)&);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -846,7 +883,25 @@ private:
     Handle(Geom_BSplineSurface) mySurface;
 };
 
-class PartExport GeomCylinder : public GeomSurface
+class PartExport GeomElementarySurface : public GeomSurface
+{
+    TYPESYSTEM_HEADER();
+
+protected:
+    GeomElementarySurface();
+
+public:
+    virtual ~GeomElementarySurface();
+
+    Base::Vector3d getLocation(void) const;
+    Base::Vector3d getDir(void) const;
+    Base::Vector3d getXDir(void) const;
+    Base::Vector3d getYDir(void) const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+};
+
+class PartExport GeomCylinder : public GeomElementarySurface
 {
     TYPESYSTEM_HEADER();
 public:
@@ -862,6 +917,10 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    double getRadius() const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_CylindricalSurface)&);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -869,7 +928,7 @@ private:
     Handle(Geom_CylindricalSurface) mySurface;
 };
 
-class PartExport GeomCone : public GeomSurface
+class PartExport GeomCone : public GeomElementarySurface
 {
     TYPESYSTEM_HEADER();
 public:
@@ -885,6 +944,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    double getRadius() const;
+    double getSemiAngle() const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_ConicalSurface)&);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -892,7 +956,7 @@ private:
     Handle(Geom_ConicalSurface) mySurface;
 };
 
-class PartExport GeomSphere : public GeomSurface
+class PartExport GeomSphere : public GeomElementarySurface
 {
     TYPESYSTEM_HEADER();
 public:
@@ -908,6 +972,10 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    double getRadius(void) const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_SphericalSurface)&);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -915,7 +983,7 @@ private:
     Handle(Geom_SphericalSurface) mySurface;
 };
 
-class PartExport GeomToroid : public GeomSurface
+class PartExport GeomToroid : public GeomElementarySurface
 {
     TYPESYSTEM_HEADER();
 public:
@@ -931,6 +999,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    double getMajorRadius(void) const;
+    double getMinorRadius(void) const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_ToroidalSurface)&);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -938,12 +1011,13 @@ private:
     Handle(Geom_ToroidalSurface) mySurface;
 };
 
-class PartExport GeomPlane : public GeomSurface
+class PartExport GeomPlane : public GeomElementarySurface
 {
     TYPESYSTEM_HEADER();
 public:
     GeomPlane();
     GeomPlane(const Handle(Geom_Plane)&);
+    GeomPlane(const gp_Pln &pln);
     virtual ~GeomPlane();
     virtual Geometry *copy(void) const;
 
@@ -953,6 +1027,8 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
 
     void setHandle(const Handle(Geom_Plane)&);
     const Handle(Geom_Geometry)& handle() const;
@@ -977,6 +1053,10 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+
+    double getOffset() const;
+
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
 
     void setHandle(const Handle(Geom_OffsetSurface)& s);
     const Handle(Geom_Geometry)& handle() const;
@@ -1003,6 +1083,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(GeomPlate_Surface)& s);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -1026,6 +1108,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+
     void setHandle(const Handle(Geom_RectangularTrimmedSurface)& s);
     const Handle(Geom_Geometry)& handle() const;
 
@@ -1033,7 +1117,22 @@ private:
     Handle(Geom_RectangularTrimmedSurface) mySurface;
 };
 
-class PartExport GeomSurfaceOfRevolution : public GeomSurface
+class PartExport GeomSweptSurface : public GeomSurface
+{
+    TYPESYSTEM_HEADER();
+
+protected:
+    GeomSweptSurface();
+
+public:
+    virtual ~GeomSweptSurface();
+
+    Base::Vector3d getDir(void) const;
+    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+};
+
+
+class PartExport GeomSurfaceOfRevolution : public GeomSweptSurface
 {
     TYPESYSTEM_HEADER();
 public:
@@ -1057,7 +1156,7 @@ private:
     Handle(Geom_SurfaceOfRevolution) mySurface;
 };
 
-class PartExport GeomSurfaceOfExtrusion : public GeomSurface
+class PartExport GeomSurfaceOfExtrusion : public GeomSweptSurface
 {
     TYPESYSTEM_HEADER();
 public:
@@ -1104,16 +1203,19 @@ PartExport
 GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
 PartExport
-std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)&);
+std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)&, bool silent=false);
 
 PartExport
-std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)&);
+std::unique_ptr<GeomSurface> makeFromSurfaceAdaptor(const BRepAdaptor_Surface&, bool silent=false);
 
 PartExport
-std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)&, double f, double l);
+std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)&, bool silent=false);
 
 PartExport
-std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&);
+std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)&, double f, double l, bool silent=false);
+
+PartExport
+std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&, bool silent=false);
 }
 
 #endif // PART_GEOMETRY_H
