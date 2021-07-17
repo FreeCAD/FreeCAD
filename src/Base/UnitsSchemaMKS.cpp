@@ -169,6 +169,21 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 0.001;
         }
     }
+    else if ((unit == Unit::Stiffness)) {
+        if (UnitValue < 1000.0) {// N/m is the smallest
+            unitString = QString::fromLatin1("N/m");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1000000.0) {
+            unitString = QString::fromLatin1("kN/m");
+            factor = 1000.0;
+        }
+        else if (UnitValue < 1000000000.0) {
+            unitString = QString::fromLatin1("MN/m");
+            factor = 1000000.0;
+        }
+        
+    }
     else if (unit == Unit::ThermalConductivity) {
         if (UnitValue > 1000000) {
             unitString = QString::fromLatin1("W/mm/K");

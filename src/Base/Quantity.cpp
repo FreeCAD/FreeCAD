@@ -314,6 +314,8 @@ Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
 
+Quantity Quantity::NewtonPerMeter   (1.00          ,Unit(0,1,-2)); //Newton per meter
+
 Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
 Quantity Quantity::MegaPascal       (1000.0        ,Unit(-1,1,-2));

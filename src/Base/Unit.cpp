@@ -509,6 +509,9 @@ Unit Unit::UltimateTensileStrength (-1,1,-2);
 Unit Unit::YieldStrength           (-1,1,-2);
 Unit Unit::YoungsModulus           (-1,1,-2);
 
+// Stiffness [kg/s^-2]
+Unit Unit::Stiffness               (0,1,-2);
+
 Unit Unit::Force   (1,1,-2);
 Unit Unit::Work    (2,1,-2);
 Unit Unit::Power   (2,1,-3);

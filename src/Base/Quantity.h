@@ -244,6 +244,8 @@ public:
     static Quantity KiloNewton;
     static Quantity MegaNewton;
 
+    static Quantity NewtonPerMeter;
+    
     static Quantity Pascal;
     static Quantity KiloPascal;
     static Quantity MegaPascal;
