@@ -64,6 +64,7 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
+        import FreeCADGui as Gui
         if Gui.ActiveDocument:
             v = Gui.ActiveDocument.ActiveView
             if "View3DInventor" in str(type(v)):
