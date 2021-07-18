@@ -65,6 +65,7 @@ def get_3d_view():
     """
     if App.GuiUp:
         import FreeCADGui as Gui
+        from pivy import coin
         if Gui.ActiveDocument:
             v = Gui.ActiveDocument.ActiveView
             if "View3DInventor" in str(type(v)):
