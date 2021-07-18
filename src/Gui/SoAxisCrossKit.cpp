@@ -40,7 +40,6 @@
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
 # include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/engines/SoCalculator.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoShape.h>
 # include <Inventor/nodes/SoScale.h>
@@ -56,6 +55,7 @@
 #endif
 
 
+#include <Inventor/engines/SoCalculator.h>
 #include "SoAxisCrossKit.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 
