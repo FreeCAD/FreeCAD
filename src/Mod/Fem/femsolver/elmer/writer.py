@@ -79,7 +79,7 @@ class Writer(object):
     def getHandledConstraints(self):
         return self._handledObjects
 
-    def write(self):
+    def write_solver_input(self):
         self._handleRedifinedConstants()
         self._handleSimulation()
         self._handleHeat()

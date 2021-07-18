@@ -130,7 +130,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     # write calculix input
-    def write_calculix_input_file(self):
+    def write_solver_input(self):
 
         time_start = time.process_time()
         FreeCAD.Console.PrintMessage(
