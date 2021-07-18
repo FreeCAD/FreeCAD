@@ -509,12 +509,11 @@ public:
   void addChildCache(SoState * state, SoFCRenderCache * cache);
   void addChildCache(SoState * state, SoFCVertexCache * cache);
 
-  void increaseRenderingOrder(int priority=0);
-  void decreaseRenderingOrder(int priority=0);
+  void increaseRenderingOrder(SoState *state, int priority=0);
 
   const char * getRenderStatistics() const;
 
-  void resetMatrix();
+  void resetMatrix(SoState *state);
 
   const SbBox3f & getBoundingBox() const;
 

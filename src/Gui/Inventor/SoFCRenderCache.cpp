@@ -151,6 +151,8 @@ public:
                      SoFCVertexCache *vcache,
                      bool opencache);
 
+  void checkState(SoState *);
+
   const SoShapeHintsElement * shapehintselement;
   const SoShadowStyleElement * shadowstyleelement;
   const SoLinePatternElement * linepatternelement;
@@ -174,6 +176,10 @@ public:
 #ifdef FCCOIN_TRACE_CACHE_NAME
   SbName nodename;
 #endif
+
+  typedef std::vector<std::pair<int, Material>> MStackEntry;
+  std::unique_ptr<MStackEntry> mstack;
+  int curdepth = 0;
 
   Material material;
   uint32_t facecolor;
@@ -470,9 +476,10 @@ SoFCRenderCacheP::captureMaterial(SoState * state)
 void
 SoFCRenderCache::setLightModel(SoState * state, const SoLightModel * lightmode)
 {
+  PRIVATE(this)->checkState(state);
+
   if (PRIVATE(this)->material.overrideflags.test(Material::FLAG_LIGHT_MODEL))
     return;
-
   if (lightmode->isOverride())
     PRIVATE(this)->material.overrideflags.test(Material::FLAG_LIGHT_MODEL);
   PRIVATE(this)->material.maskflags.set(Material::FLAG_LIGHT_MODEL);
@@ -495,7 +502,8 @@ testMaterial(SoFCRenderCache::Material &m, N node, T field, int flag, int mask)
 void
 SoFCRenderCache::setMaterial(SoState * state, const SoMaterial * material)
 {
-  (void)state;
+  PRIVATE(this)->checkState(state);
+
   Material & m = PRIVATE(this)->material;
   float t = 0.f;
   if (testMaterial(m, material, &SoMaterial::diffuseColor, Material::FLAG_DIFFUSE, Material::FLAG_DIFFUSE)) {
@@ -524,7 +532,8 @@ SoFCRenderCache::setMaterial(SoState * state, const SoMaterial * material)
 void
 SoFCRenderCache::setDepthBuffer(SoState * state, const SoDepthBuffer * node)
 {
-  (void)state;
+  PRIVATE(this)->checkState(state);
+
   Material & m = PRIVATE(this)->material;
   if (!node->test.isIgnored()) {
     m.maskflags.set(Material::FLAG_DEPTH_TEST);
@@ -563,21 +572,13 @@ copyMaterial(SoFCRenderCache::Material &res,
 }
 
 void
-SoFCRenderCache::increaseRenderingOrder(int priority)
+SoFCRenderCache::increaseRenderingOrder(SoState *state, int priority)
 {
+  PRIVATE(this)->checkState(state);
   if (priority)
     PRIVATE(this)->material.annotation += 1000 + priority;
   else
     ++PRIVATE(this)->material.annotation;
-}
-
-void
-SoFCRenderCache::decreaseRenderingOrder(int priority)
-{
-  if (priority)
-    PRIVATE(this)->material.annotation -= 1000 + priority;
-  else
-    --PRIVATE(this)->material.annotation;
 }
 
 SoFCRenderCache::Material
@@ -771,6 +772,9 @@ SoFCRenderCache::open(SoState *state, int selectstyle, bool initmaterial)
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
   PRIVATE(this)->material.selectstyle = selectstyle;
 
+  if (initmaterial)
+    PRIVATE(this)->curdepth = state->getDepth();
+
   SbBool outline = FALSE;
   if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state, &outline)) {
     PRIVATE(this)->material.outline = outline;
@@ -869,6 +873,8 @@ SoFCRenderCache::close(SoState *state)
   if (PRIVATE(this)->selnode)
     PRIVATE(this)->selnode->resetColorOverride(state);
   PRIVATE(this)->material.init();
+  PRIVATE(this)->mstack.reset();
+  PRIVATE(this)->curdepth = 0;
 }
 
 class MyMultiTextureMatrixElement : public SoMultiTextureMatrixElement
@@ -883,6 +889,35 @@ public:
   }
 };
 
+void
+SoFCRenderCacheP::checkState(SoState *state)
+{
+  int depth = state->getDepth();
+  if (!this->curdepth) {
+    this->curdepth = depth;
+    return;
+  }
+  if (depth == this->curdepth)
+    return;
+  if (!this->mstack)
+    this->mstack.reset(new MStackEntry);
+  if (depth > this->curdepth) {
+    mstack->emplace_back(this->curdepth, this->material);
+    this->curdepth = depth;
+  }
+  else if (this->mstack->empty()) {
+    this->material.init();
+    this->curdepth = 0;
+  }
+  else {
+    while (this->mstack->size() > 1
+          && (*this->mstack)[this->mstack->size()-2].first > depth)
+      this->mstack->pop_back();
+    this->material = this->mstack->back().second;
+    this->curdepth = this->mstack->back().first;
+    this->mstack->pop_back();
+  }
+}
 
 void
 SoFCRenderCacheP::addChildCache(SoState * state,
@@ -890,6 +925,8 @@ SoFCRenderCacheP::addChildCache(SoState * state,
                                 SoFCVertexCache * vcache,
                                 bool opencache)
 {
+  checkState(state);
+
   auto elem = constElement<SoModelMatrixElement>(state);
   SbMatrix matrix = elem->getModelMatrix();
   bool identity = (matrix == matrixidentity);
@@ -988,6 +1025,8 @@ public:
 void
 SoFCRenderCache::addTexture(SoState * state, const SoTexture * texture)
 {
+  PRIVATE(this)->checkState(state);
+
   int unit = SoTextureUnitElement::get(state);
 
   TextureInfo info;
@@ -1012,6 +1051,8 @@ SoFCRenderCache::addTexture(SoState * state, const SoTexture * texture)
 void
 SoFCRenderCache::addTextureTransform(SoState * state, const SoNode * node)
 {
+  PRIVATE(this)->checkState(state);
+
   (void)node;
   int unit = SoTextureUnitElement::get(state);
 
@@ -1034,6 +1075,8 @@ SoFCRenderCache::addTextureTransform(SoState * state, const SoNode * node)
 void
 SoFCRenderCache::addLight(SoState * state, const SoLight * light)
 {
+  PRIVATE(this)->checkState(state);
+
   (void)state;
   if (!light->on.getValue() || light->on.isIgnored()) return;
 
@@ -1055,6 +1098,8 @@ SoFCRenderCache::addLight(SoState * state, const SoLight * light)
 void
 SoFCRenderCache::addClipPlane(SoState * state, const SoClipPlane * node)
 {
+  PRIVATE(this)->checkState(state);
+
   (void)state;
   if (!node->on.getValue() || node->on.isIgnored()) return;
 
@@ -1076,6 +1121,8 @@ SoFCRenderCache::addClipPlane(SoState * state, const SoClipPlane * node)
 void
 SoFCRenderCache::addAutoZoom(SoState * state, const SoAutoZoomTranslation * node)
 {
+  PRIVATE(this)->checkState(state);
+
   (void)state;
 
   NodeInfo info;
@@ -1094,8 +1141,9 @@ SoFCRenderCache::addAutoZoom(SoState * state, const SoAutoZoomTranslation * node
 }
 
 void
-SoFCRenderCache::resetMatrix()
+SoFCRenderCache::resetMatrix(SoState *state)
 {
+  PRIVATE(this)->checkState(state);
   PRIVATE(this)->resetmatrix = true;
   PRIVATE(this)->material.autozoom.clear();
 }
