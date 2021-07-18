@@ -40,6 +40,7 @@ from .. import run
 from .. import settings
 from feminout import importCcxDatResults
 from feminout import importCcxFrdResults
+from femmesh import meshsetsgetter
 from femtools import femutils
 from femtools import membertools
 
@@ -60,14 +61,30 @@ class Prepare(run.Prepare):
     def run(self):
         global _inputFileName
         self.pushStatus("Preparing input files...\n")
+
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
+
+        # get mesh set data
+        # TODO evaluate if it makes sense to add new task
+        # between check and prepare to the solver frame work
+        meshdatagetter = meshsetsgetter.MeshSetsGetter(
+            self.analysis,
+            self.solver,
+            mesh_obj,
+            membertools.AnalysisMember(self.analysis),
+        )
+        meshdatagetter.get_mesh_sets()
+
+        # write input file
         w = writer.FemInputWriterCcx(
             self.analysis,
             self.solver,
-            membertools.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
-            membertools.AnalysisMember(self.analysis),
-            self.directory
+            mesh_obj,
+            meshdatagetter.member,
+            self.directory,
+            meshdatagetter.mat_geo_sets
         )
-        path = w.write_calculix_input_file()
+        path = w.write_solver_input()
         # report to user if task succeeded
         if path != "":
             self.pushStatus("Write completed!")

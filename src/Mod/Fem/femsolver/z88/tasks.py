@@ -61,7 +61,7 @@ class Prepare(run.Prepare):
             membertools.AnalysisMember(self.analysis),
             self.directory
         )
-        path = w.write_z88_input()
+        path = w.write_solver_input()
         # report to user if task succeeded
         if path is not None:
             self.pushStatus("Write completed!")

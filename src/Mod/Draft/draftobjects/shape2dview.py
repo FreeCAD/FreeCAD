@@ -292,11 +292,11 @@ class Shape2DView(DraftObject):
                             if sh.Volume < 0:
                                 sh.reverse()
                             c = sh.section(cutp)
+                            if hasattr(obj,"InPlace"):
+                                if not obj.InPlace:
+                                    c = self.getProjected(obj, c, proj)
                             faces = []
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                                if hasattr(obj,"InPlace"):
-                                    if not obj.InPlace:
-                                        c = self.getProjected(obj, c, proj)
                                 wires = DraftGeomUtils.findWires(c.Edges)
                                 for w in wires:
                                     if w.isClosed():

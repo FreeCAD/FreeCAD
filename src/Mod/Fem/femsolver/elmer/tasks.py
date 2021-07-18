@@ -84,7 +84,7 @@ class Prepare(run.Prepare):
             FreeCAD.Console.PrintLog("Machine testmode: {}\n".format(self.testmode))
             w = writer.Writer(self.solver, self.directory)
         try:
-            w.write()
+            w.write_solver_input()
             self.checkHandled(w)
         except writer.WriteError as e:
             self.report.error(str(e))

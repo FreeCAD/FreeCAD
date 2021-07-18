@@ -133,6 +133,7 @@ SET(FemMesh_SRCS
     femmesh/__init__.py
     femmesh/femmesh2mesh.py
     femmesh/gmshtools.py
+    femmesh/meshsetsgetter.py
     femmesh/meshtools.py
 )
 

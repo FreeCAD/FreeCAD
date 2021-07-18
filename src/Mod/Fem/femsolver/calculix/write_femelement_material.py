@@ -42,16 +42,16 @@ def write_femelement_material(f, ccxwriter):
             and not ccxwriter.solver_obj.ThermoMechSteadyState
         ):
             return True
-        if ccxwriter.centrif_objects:
+        if ccxwriter.member.cons_centrif:
             return True
-        if ccxwriter.selfweight_objects:
+        if ccxwriter.member.cons_selfweight:
             return True
         return False
 
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Materials\n")
     f.write("** see information about units at file end\n")
-    for femobj in ccxwriter.material_objects:
+    for femobj in ccxwriter.member.mats_linear:
         # femobj --> dict, FreeCAD document object is femobj["Object"]
         mat_obj = femobj["Object"]
         mat_info_name = mat_obj.Material["Name"]
@@ -107,7 +107,7 @@ def write_femelement_material(f, ccxwriter):
         # nonlinear material properties
         if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
 
-            for nlfemobj in ccxwriter.material_nonlinear_objects:
+            for nlfemobj in ccxwriter.member.mats_nonlinear:
                 # femobj --> dict, FreeCAD document object is nlfemobj["Object"]
                 nl_mat_obj = nlfemobj["Object"]
                 if nl_mat_obj.LinearBaseMaterial == mat_obj:

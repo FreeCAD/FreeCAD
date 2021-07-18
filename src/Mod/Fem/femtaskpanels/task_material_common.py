@@ -487,7 +487,10 @@ class _TaskPanel:
                     "May try the following in Python console:\n"
                     "from FreeCAD import Units\n"
                     "Units.Quantity('{}')\n"
-                    .format(self.material["ThermalConductivity"], self.material["ThermalConductivity"])
+                    .format(
+                        self.material["ThermalConductivity"],
+                        self.material["ThermalConductivity"]
+                    )
                 )
                 self.material["ThermalConductivity"] = "0 W/m/K"
             if "ThermalConductivity" not in str(Units.Unit(self.material["ThermalConductivity"])):
