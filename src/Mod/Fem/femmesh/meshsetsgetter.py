@@ -77,7 +77,7 @@ class MeshSetsGetter():
         else:
             FreeCAD.Console.PrintWarning(
                 "No finite element mesh object was given to the writer class. "
-                "In rare cases this might not be an error. "
+                "In rare cases this might not be an error.\n"
             )
         self.femnodes_mesh = {}
         self.femelement_table = {}
