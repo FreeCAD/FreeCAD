@@ -40,6 +40,7 @@
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
 # include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/engines/SoCalculator.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoShape.h>
 # include <Inventor/nodes/SoScale.h>
@@ -56,6 +57,7 @@
 
 
 #include "SoAxisCrossKit.h"
+#include "Inventor/SoAutoZoomTranslation.h"
 
 using namespace Gui;
 
@@ -72,9 +74,17 @@ SoShapeScale::SoShapeScale(void)
 
     SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, false, this, "", false);
     SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(shape, SoNode, SoCube, true, topSeparator, "", true);
-    SO_KIT_ADD_CATALOG_ENTRY(scale, SoScale, false, topSeparator, shape, false);
+    SO_KIT_ADD_CATALOG_ENTRY(scale, SoAutoZoomTranslation, false, topSeparator, shape, false);
 
     SO_KIT_INIT_INSTANCE();
+
+    auto scale = static_cast<SoAutoZoomTranslation*>(this->getAnyPart(SbName("scale"), true));
+    scale->scaleFactor = 0.2f;
+
+    SoCalculator *engine = new SoCalculator();
+    engine->a.connectFrom(&scaleFactor);
+    engine->expression.set1Value(0, "oa = 0.2 * a");
+    scale->scaleFactor.connectFrom(&engine->oa);
 }
 
 // Destructor.
@@ -91,6 +101,8 @@ SoShapeScale::initClass(void)
 void
 SoShapeScale::GLRender(SoGLRenderAction * action)
 {
+    // Auto scale is now done with SoAutoZoomTranslation
+#if 0
     SoState * state = action->getState();
 
     SoScale * scale = static_cast<SoScale*>(this->getAnyPart(SbName("scale"), true));
@@ -110,6 +122,7 @@ SoShapeScale::GLRender(SoGLRenderAction * action)
         if (scale->scaleFactor.getValue() != v)
             scale->scaleFactor = v;
     }
+#endif
 
     inherited::GLRender(action);
 }
