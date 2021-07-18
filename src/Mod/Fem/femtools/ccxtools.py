@@ -391,7 +391,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.working_dir,
                 meshdatagetter.mat_geo_sets
             )
-            self.inp_file_name = inp_writer.write_calculix_input_file()
+            self.inp_file_name = inp_writer.write_solver_input()
         except Exception:
             FreeCAD.Console.PrintError(
                 "Unexpected error when writing CalculiX input file: {}\n"

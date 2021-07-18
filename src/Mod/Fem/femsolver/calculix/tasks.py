@@ -84,7 +84,7 @@ class Prepare(run.Prepare):
             self.directory,
             meshdatagetter.mat_geo_sets
         )
-        path = w.write_calculix_input_file()
+        path = w.write_solver_input()
         # report to user if task succeeded
         if path != "":
             self.pushStatus("Write completed!")
