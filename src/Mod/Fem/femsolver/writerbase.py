@@ -51,7 +51,7 @@ class FemInputWriter():
         self.solver_obj = solver_obj
         self.mesh_object = mesh_obj
         self.member = member
-        # mor attributes
+        # more attributes
         self.analysis_type = self.solver_obj.AnalysisType
         self.document = self.analysis.Document
         # working dir
