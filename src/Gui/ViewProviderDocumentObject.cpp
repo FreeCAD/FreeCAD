@@ -596,7 +596,7 @@ int ViewProviderDocumentObject::replaceObject(
         for(auto o : doc->getObjects()) {
             if(o == obj)
                 continue;
-            std::vector<App::Property*> props;
+            props.clear();
             o->getPropertyList(props);
             for(auto prop : props) {
                 auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
