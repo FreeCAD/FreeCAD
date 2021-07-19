@@ -1123,7 +1123,7 @@ SoFCUnifiedSelection::Private::setHighlight(SoFullPath *path,
             if (ontop)
                 t = ViewParams::getTransparencyOnTop();
             App::SubObjectT obj(vpd->getObject(), subname);
-            if (manager.isOnTop(obj.getSubNameNoElement(true))) {
+            if (manager.isOnTop(obj.getSubNameNoElement(true), false)) {
                 ontop = true;
                 // we'll square the alpha make it more visible
                 float a = 1.f - ViewParams::getTransparencyOnTop();
