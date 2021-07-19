@@ -77,7 +77,7 @@ TaskCSysDragger::~TaskCSysDragger()
 
 void TaskCSysDragger::setupGui()
 {
-  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
   lastTranslationIncrement = hGrp->GetFloat("LastTranslationIncrement", 1.0);
   lastRotationIncrement = degreesToRadians(hGrp->GetFloat("LastRotationIncrement", 15.0));
 
@@ -143,7 +143,7 @@ bool TaskCSysDragger::accept()
 {
   lastTranslationIncrement = dragger->translationIncrement.getValue();
   lastRotationIncrement = dragger->rotationIncrement.getValue();
-  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
   hGrp->SetFloat("LastTranslationIncrement", lastTranslationIncrement);
   hGrp->SetFloat("LastRotationIncrement", radiansToDegrees(lastRotationIncrement));
 
