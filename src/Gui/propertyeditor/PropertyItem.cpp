@@ -408,6 +408,9 @@ QVariant PropertyItem::toString(const QVariant& prop) const
         Py::Object pyobj(propertyItems[0]->getPyObject(),true);
         if(pyobj.isNone())
             ss << "<None>";
+        else if(pyobj.isString()) {
+            ss << pyobj.as_string();
+        }
         else if(pyobj.isSequence()) {
             ss << '[';
             Py::Sequence seq(pyobj);
