@@ -48,7 +48,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
 
     # Fluid sections:
     # fluidsection Liquid inlet outlet objs  requires special element definition
-    # to fill ccxwriter.FluidInletoutlet_ele list the ccx_elset are needed
+    # to fill ccxwriter.FluidInletoutlet_ele list the mat_geo_sets are needed
     # thus this has to be after the creation of mat_geo_sets
     # different pipe cross sections will generate mat_geo_sets
 
@@ -58,14 +58,14 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
         "{}_inout_nodes.txt".format(ccxwriter.mesh_name)
     )
 
-    def get_fluidsection_inoutlet_obj_if_setdata(ccx_elset):
+    def get_fluidsection_inoutlet_obj_if_setdata(matgeoset):
         if (
-            ccx_elset["ccx_elset"]
+            matgeoset["ccx_elset"]
             # use six to be sure to be Python 2.7 and 3.x compatible
-            and not isinstance(ccx_elset["ccx_elset"], six.string_types)
-            and "fluidsection_obj" in ccx_elset  # fluid mesh
+            and not isinstance(matgeoset["ccx_elset"], six.string_types)
+            and "fluidsection_obj" in matgeoset  # fluid mesh
         ):
-            fluidsec_obj = ccx_elset["fluidsection_obj"]
+            fluidsec_obj = matgeoset["fluidsection_obj"]
             if (
                 fluidsec_obj.SectionType == "Liquid"
                 and (
@@ -77,12 +77,12 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
         return None
 
     def is_fluidsection_inoutlet_setnames_possible(mat_geo_sets):
-        for ccx_elset in mat_geo_sets:
+        for matgeoset in mat_geo_sets:
             if (
-                ccx_elset["ccx_elset"]
-                and "fluidsection_obj" in ccx_elset  # fluid mesh
+                matgeoset["ccx_elset"]
+                and "fluidsection_obj" in matgeoset  # fluid mesh
             ):
-                fluidsec_obj = ccx_elset["fluidsection_obj"]
+                fluidsec_obj = matgeoset["fluidsection_obj"]
                 if (
                     fluidsec_obj.SectionType == "Liquid"
                     and (
@@ -95,13 +95,13 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
 
     # collect elementIDs for fluidsection Liquid inlet outlet objs
     # if they have element data (happens if not "eall")
-    for ccx_elset in ccxwriter.mat_geo_sets:
-        fluidsec_obj = get_fluidsection_inoutlet_obj_if_setdata(ccx_elset)
+    for matgeoset in ccxwriter.mat_geo_sets:
+        fluidsec_obj = get_fluidsection_inoutlet_obj_if_setdata(matgeoset)
         if fluidsec_obj is None:
             continue
         elsetchanged = False
         counter = 0
-        for elid in ccx_elset["ccx_elset"]:
+        for elid in matgeoset["ccx_elset"]:
             counter = counter + 1
             if (elsetchanged is False) \
                     and (fluidsec_obj.LiquidSectionType == "PIPE INLET"):
@@ -111,7 +111,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
                 )
                 elsetchanged = True
             elif (fluidsec_obj.LiquidSectionType == "PIPE OUTLET") \
-                    and (counter == len(ccx_elset["ccx_elset"])):
+                    and (counter == len(matgeoset["ccx_elset"])):
                 # 3rd index is to track which line nr the element is defined
                 ccxwriter.FluidInletoutlet_ele.append(
                     [str(elid), fluidsec_obj.LiquidSectionType, 0]
