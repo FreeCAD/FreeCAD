@@ -115,6 +115,8 @@ public:
     void operator=(const Property*);
     /*! Equality operator */
     bool operator==(const DocumentObjectT&) const;
+    /*! Less than operator */
+    bool operator<(const DocumentObjectT &other) const;
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;

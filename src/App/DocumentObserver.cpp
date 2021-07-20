@@ -199,6 +199,18 @@ bool DocumentObjectT::operator==(const DocumentObjectT &other) const {
         && property == other.property;
 }
 
+bool DocumentObjectT::operator<(const DocumentObjectT &other) const {
+    if(getDocumentName() < other.getDocumentName())
+        return true;
+    if(getDocumentName() > other.getDocumentName())
+        return false;
+    if(getObjectName() < other.getObjectName())
+        return true;
+    if(getObjectName() > other.getObjectName())
+        return false;
+    return getPropertyName() < other.getPropertyName();
+}
+
 Document* DocumentObjectT::getDocument() const
 {
     return GetApplication().getDocument(document.c_str());
