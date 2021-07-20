@@ -1614,8 +1614,8 @@ void LinkBaseExtension::syncElementList() {
             {
                 element->LinkedObject.setValue(xlink->getValue(), xlink->getSubValues());
             }
-        } else if(element->LinkedObject.getValue()!=link->getValue() ||
-                  element->LinkedObject.getSubValues().size())
+        } else if(link && (element->LinkedObject.getValue()!=link->getValue()
+                            || element->LinkedObject.getSubValues().size()))
         {
             element->setLink(-1,link->getValue());
         }
