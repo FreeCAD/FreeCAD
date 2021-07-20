@@ -567,7 +567,9 @@ bool LinkBaseExtension::extensionHasChildElement() const {
 }
 
 int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visible) {
-    int index = getElementIndex(element);
+    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    if (index < 0 && !_getShowElementValue())
+        return -1;
     if(index>=0) {
         if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
             const auto &elements = _getElementListValue();
@@ -603,8 +605,10 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
 }
 
 int LinkBaseExtension::extensionIsElementVisible(const char *element) const {
-    int index = getElementIndex(element);
-    if(index>=0) {
+    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    if (index < 0 && !_getShowElementValue())
+        return -1;
+    if (index>=0) {
         if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
             const auto &elements = _getElementListValue();
             if(index<(int)elements.size()) {
@@ -633,8 +637,11 @@ int LinkBaseExtension::extensionIsElementVisibleEx(const char *subname, int reas
     if(subname != element && isSubnameHidden(getContainer(),subname))
         return 0;
 
-    int index = getElementIndex(subname);
-    if(index>=0) {
+    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    if (index < 0 && !_getShowElementValue())
+        return -1;
+
+    if (index>=0) {
         if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
             const auto &elements = _getElementListValue();
             if(index<(int)elements.size()) {
