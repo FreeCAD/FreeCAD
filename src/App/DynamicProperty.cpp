@@ -326,8 +326,7 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
             docID = document->getHasher()->getID(reader.getAttributeAsInteger("docID"));
     }
     if (reader.hasAttribute("attr")) {
-        attr = reader.getAttribute("attr");
-        if (attr) attribute = attr[0]-48;
+        attribute = atoi(reader.getAttribute("attr"));
     }
     if (reader.hasAttribute("ro")) {
         ro = reader.getAttribute("ro");
