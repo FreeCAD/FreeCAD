@@ -474,13 +474,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     if (prop == &LineWidth) {
         if (PartParams::RespectSystemDPI())
-            pcLineStyle->lineWidth = std::min(1.0, qApp->devicePixelRatio()*LineWidth.getValue());
+            pcLineStyle->lineWidth = std::max(1.0, qApp->devicePixelRatio()*LineWidth.getValue());
         else
             pcLineStyle->lineWidth = LineWidth.getValue();
     }
     else if (prop == &PointSize) {
         if (PartParams::RespectSystemDPI())
-            pcPointStyle->pointSize = std::min(1.0, qApp->devicePixelRatio()*PointSize.getValue());
+            pcPointStyle->pointSize = std::max(1.0, qApp->devicePixelRatio()*PointSize.getValue());
         else
             pcPointStyle->pointSize = PointSize.getValue();
     }
@@ -1232,8 +1232,8 @@ void ViewProviderPartExt::reload()
     double linewidth = LineWidth.getValue();
     if (PartParams::RespectSystemDPI()) {
         auto dpi = qApp->devicePixelRatio();
-        pointsize = std::min(1.0, pointsize/dpi);
-        linewidth = std::min(1.0, linewidth/dpi);
+        pointsize = std::max(1.0, pointsize*dpi);
+        linewidth = std::max(1.0, linewidth*dpi);
     }
     if (pcPointStyle->pointSize.getValue() != pointsize
             || pcLineStyle->lineWidth.getValue() != linewidth)
