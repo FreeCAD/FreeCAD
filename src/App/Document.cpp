@@ -3935,17 +3935,19 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     if(d->_RecomputeLog.size())
         Base::Console().Error("Recompute failed! Please check report view.\n");
 
-    for(auto &o : d->pendingRemove) {
-        try {
-            auto obj = o.getObject();
-            if(obj)
-                obj->getDocument()->removeObject(obj->getNameInDocument());
-        } catch (Base::Exception & e) {
-            FC_ERR("error when removing object " << o.getDocumentName() << '#' << o.getObjectName()
-                    << ": " << e.what());
+    for (auto doc : GetApplication().getDocuments()) {
+        for(auto &o : doc->d->pendingRemove) {
+            try {
+                auto obj = o.getObject();
+                if(obj)
+                    obj->getDocument()->removeObject(obj->getNameInDocument());
+            } catch (Base::Exception & e) {
+                FC_ERR("error when removing object " << o.getDocumentName() << '#' << o.getObjectName()
+                        << ": " << e.what());
+            }
         }
+        doc->d->pendingRemove.clear();
     }
-
     return objectCount;
 }
 
