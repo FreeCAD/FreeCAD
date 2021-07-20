@@ -728,7 +728,7 @@ class MeshSetsGetter():
             ]
             matgeoset = {}
             matgeoset["ccx_elset"] = elset_data
-            matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+            matgeoset["ccx_elset_name"] = get_elset_name_short(names)
             matgeoset["mat_obj_name"] = mat_obj.Name
             matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
             matgeoset["beamsection_obj"] = beamsec_obj
@@ -755,7 +755,7 @@ class MeshSetsGetter():
                     ]
                     matgeoset = {}
                     matgeoset["ccx_elset"] = elset_data
-                    matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+                    matgeoset["ccx_elset_name"] = get_elset_name_short(names)
                     matgeoset["mat_obj_name"] = mat_obj.Name
                     matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                     matgeoset["beamsection_obj"] = beamsec_obj
@@ -781,7 +781,7 @@ class MeshSetsGetter():
                     ]
                     matgeoset = {}
                     matgeoset["ccx_elset"] = elset_data
-                    matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+                    matgeoset["ccx_elset_name"] = get_elset_name_short(names)
                     matgeoset["mat_obj_name"] = mat_obj.Name
                     matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                     matgeoset["beamsection_obj"] = beamsec_obj
@@ -812,7 +812,7 @@ class MeshSetsGetter():
                         ]
                         matgeoset = {}
                         matgeoset["ccx_elset"] = elset_data
-                        matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+                        matgeoset["ccx_elset_name"] = get_elset_name_short(names)
                         matgeoset["mat_obj_name"] = mat_obj.Name
                         matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                         matgeoset["beamsection_obj"] = beamsec_obj
@@ -828,7 +828,7 @@ class MeshSetsGetter():
         names = [{"short": "M0"}, {"short": "F0"}]
         matgeoset = {}
         matgeoset["ccx_elset"] = elset_data
-        matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+        matgeoset["ccx_elset_name"] = get_elset_name_short(names)
         matgeoset["mat_obj_name"] = mat_obj.Name
         matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
         matgeoset["fluidsection_obj"] = fluidsec_obj
@@ -842,7 +842,7 @@ class MeshSetsGetter():
             names = [{"short": "M0"}, {"short": fluidsec_data["ShortName"]}]
             matgeoset = {}
             matgeoset["ccx_elset"] = elset_data
-            matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+            matgeoset["ccx_elset_name"] = get_elset_name_short(names)
             matgeoset["mat_obj_name"] = mat_obj.Name
             matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
             matgeoset["fluidsection_obj"] = fluidsec_obj
@@ -856,7 +856,7 @@ class MeshSetsGetter():
             names = [{"short": mat_data["ShortName"]}, {"short": "F0"}]
             matgeoset = {}
             matgeoset["ccx_elset"] = elset_data
-            matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+            matgeoset["ccx_elset_name"] = get_elset_name_short(names)
             matgeoset["mat_obj_name"] = mat_obj.Name
             matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
             matgeoset["fluidsection_obj"] = fluidsec_obj
@@ -878,7 +878,7 @@ class MeshSetsGetter():
                     ]
                     matgeoset = {}
                     matgeoset["ccx_elset"] = elset_data
-                    matgeoset["ccx_elset_name"] = get_ccx_elset_name_short(names)
+                    matgeoset["ccx_elset_name"] = get_elset_name_short(names)
                     matgeoset["mat_obj_name"] = mat_obj.Name
                     matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                     matgeoset["fluidsection_obj"] = fluidsec_obj
@@ -895,7 +895,7 @@ class MeshSetsGetter():
         ]
         matgeoset = {}
         matgeoset["ccx_elset"] = elset_data
-        matgeoset["ccx_elset_name"] = get_ccx_elset_name_standard(names)
+        matgeoset["ccx_elset_name"] = get_elset_name_standard(names)
         matgeoset["mat_obj_name"] = mat_obj.Name
         matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
         matgeoset["shellthickness_obj"] = shellth_obj
@@ -912,7 +912,7 @@ class MeshSetsGetter():
             ]
             matgeoset = {}
             matgeoset["ccx_elset"] = elset_data
-            matgeoset["ccx_elset_name"] = get_ccx_elset_name_standard(names)
+            matgeoset["ccx_elset_name"] = get_elset_name_standard(names)
             matgeoset["mat_obj_name"] = mat_obj.Name
             matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
             matgeoset["shellthickness_obj"] = shellth_obj
@@ -929,7 +929,7 @@ class MeshSetsGetter():
             ]
             matgeoset = {}
             matgeoset["ccx_elset"] = elset_data
-            matgeoset["ccx_elset_name"] = get_ccx_elset_name_standard(names)
+            matgeoset["ccx_elset_name"] = get_elset_name_standard(names)
             matgeoset["mat_obj_name"] = mat_obj.Name
             matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
             matgeoset["shellthickness_obj"] = shellth_obj
@@ -951,7 +951,7 @@ class MeshSetsGetter():
                     ]
                     matgeoset = {}
                     matgeoset["ccx_elset"] = elset_data
-                    matgeoset["ccx_elset_name"] = get_ccx_elset_name_standard(names)
+                    matgeoset["ccx_elset_name"] = get_elset_name_standard(names)
                     matgeoset["mat_obj_name"] = mat_obj.Name
                     matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                     matgeoset["shellthickness_obj"] = shellth_obj
@@ -967,7 +967,7 @@ class MeshSetsGetter():
         ]
         matgeoset = {}
         matgeoset["ccx_elset"] = elset_data
-        matgeoset["ccx_elset_name"] = get_ccx_elset_name_standard(names)
+        matgeoset["ccx_elset_name"] = get_elset_name_standard(names)
         matgeoset["mat_obj_name"] = mat_obj.Name
         matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
         self.mat_geo_sets.append(matgeoset)
@@ -983,7 +983,7 @@ class MeshSetsGetter():
             ]
             matgeoset = {}
             matgeoset["ccx_elset"] = elset_data
-            matgeoset["ccx_elset_name"] = get_ccx_elset_name_standard(names)
+            matgeoset["ccx_elset_name"] = get_elset_name_standard(names)
             matgeoset["mat_obj_name"] = mat_obj.Name
             matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
             self.mat_geo_sets.append(matgeoset)
@@ -1003,7 +1003,7 @@ class MeshSetsGetter():
 # TODO write comment into input file to elset ids and elset attributes
 
 
-def get_ccx_elset_name_standard(names):
+def get_elset_name_standard(names):
     # standard max length = 80
     elset_name = ""
     for name in names:
@@ -1018,15 +1018,16 @@ def get_ccx_elset_name_standard(names):
             return elset_name
         else:
             error = (
-                "FEM: Trouble in ccx input file, because an "
+                "FEM: Trouble in elset name, because an "
                 "elset name is longer than 80 character! {}\n"
                 .format(elset_name)
             )
             raise Exception(error)
 
 
-def get_ccx_elset_name_short(names):
-    # restricted max length = 20 (beam elsets)
+def get_elset_name_short(names):
+    # restricted max length = 20 (elsets)
+    # in CalculiX solver input this is needed for beam elsets
     elset_name = ""
     for name in names:
         elset_name += name["short"]
@@ -1034,8 +1035,8 @@ def get_ccx_elset_name_short(names):
         return elset_name
     else:
         error = (
-            "FEM: Trouble in ccx input file, because an"
-            "beam elset name is longer than 20 characters! {}\n"
+            "FEM: Trouble in elset name, because an"
+            "short elset name is longer than 20 characters! {}\n"
             .format(elset_name)
         )
         raise Exception(error)
