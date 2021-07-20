@@ -2386,10 +2386,21 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
     QByteArray tag;
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
     if (oitem) {
-        SelectionContext sctx(oitem->getSubObjectT());
-        ViewProviderDocumentObject* vp = oitem->object();
-        vp->iconMouseEvent(event, tag);
-        toolTipTimer->start(300);
+        try {
+            SelectionContext sctx(oitem->getSubObjectT());
+            ViewProviderDocumentObject* vp = oitem->object();
+            vp->iconMouseEvent(event, tag);
+            toolTipTimer->start(300);
+        } catch (Base::Exception &e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                e.ReportException();
+        } catch (std::exception &e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_ERR("C++ exception: " << e.what());
+        } catch (...) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_ERR("Unknown exception");
+        }
     } else {
         pimpl->tooltipItem = nullptr;
         ToolTip::hideText();
