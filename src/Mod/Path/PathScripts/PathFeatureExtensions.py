@@ -314,7 +314,14 @@ class Extension(object):
 
                 # assuming the offset produces a valid circle - go for it
                 if r > 0:
-                    e3 = Part.makeCircle(r, circle.Center, circle.Axis, edge.FirstParameter * 180 / math.pi, edge.LastParameter * 180 / math.pi)
+                    # we really only support horizontal milling... this check decides about CW/CCW
+                    if (abs(circle.Rotation.toEuler()[2]-180)<1e-5):
+                       negative=-1
+                    else:
+                       negative=1
+                    offdeg1=edge.FirstParameter * 180 / math.pi+circle.Rotation.toEuler()[0]*negative
+                    offdeg2=edge.LastParameter * 180 / math.pi+circle.Rotation.toEuler()[0]*negative
+                    e3 = Part.makeCircle(r, circle.Center, circle.Axis, offdeg1, offdeg2)
                     if endPoints(edge):
                         # need to construct the arc slice
                         e0 = Part.makeLine(edge.valueAt(edge.FirstParameter), e3.valueAt(e3.FirstParameter))
