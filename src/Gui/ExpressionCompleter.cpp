@@ -309,7 +309,7 @@ public:
         }
 
         App::DocumentObject *getSubObject(int row, App::DocumentObject **pobj=nullptr) const {
-            int propSize = (int)propList.size()*2;
+            int propSize = (int)propList.size();
             if(row < propSize)
                 return nullptr;
 
@@ -324,7 +324,11 @@ public:
             return obj->getSubObject(outList[row/2].c_str());
         }
 
-        std::pair<const char *, App::Property*> getProperty(int row, QString *name=nullptr) const {
+        std::pair<const char *, App::Property*> getProperty(int row,
+                                                            QString *name=nullptr,
+                                                            bool root=false) const
+        {
+            int scale = root ? 2 : 1;
             std::pair<const char*, App::Property*> res;
             res.first = nullptr;
             res.second = nullptr;
@@ -336,18 +340,18 @@ public:
             if(!obj)
                 return res;
 
-            if(row < (int)propList.size()*2) {
-                res.first = propList[row/2].c_str();
+            if(row < (int)propList.size()*scale) {
+                res.first = propList[row/scale].c_str();
                 if(name) {
-                    if(row & 1)
-                        *name = QLatin1String(".") + propNameList[row/2];
+                    if(root && (row & 1))
+                        *name = QLatin1String(".") + propNameList[row/scale];
                     else
-                        *name = propNameList[row/2];
+                        *name = propNameList[row/scale];
                 }
                 res.second = obj->getPropertyByName(res.first);
                 return res;
             }
-            row -= (int)propList.size()*2;
+            row -= (int)propList.size()*scale;
 
             if(row < (int)outList.size())
                 return res;
@@ -358,15 +362,15 @@ public:
             if(row < pseudoSize) {
                 res = pseudoProps[row];
                 if(name)
-                    *name = QLatin1String(".") + QString::fromLatin1(res.first);
+                    *name = QLatin1String(root ? "." : "") + QString::fromLatin1(res.first);
                 return res;
             }
 
             return res;
         }
 
-        bool getProperty(int row, App::Property *&prop, QString &propName) const {
-            prop = getProperty(row,&propName).second;
+        bool getProperty(int row, App::Property *&prop, QString &propName, bool root=false) const {
+            prop = getProperty(row,&propName,root).second;
             return prop!=nullptr;
         }
 
@@ -374,7 +378,7 @@ public:
             if(!elementCount || row < 0)
                 return nullptr;
 
-            int offset = (int)outList.size()*2 + (int)propList.size()*2
+            int offset = (int)outList.size()*2 + (int)propList.size()
                 + ObjectIdentifier::getPseudoProperties().size();
             if(row < offset)
                 return nullptr;
@@ -399,7 +403,7 @@ public:
             if(propList.empty())
                 return outList.size()*2;
 
-            return (int)outList.size()*2 + (int)propList.size()*2
+            return (int)outList.size()*2 + (int)propList.size()*(root?2:1)
                 + ObjectIdentifier::getPseudoProperties().size()
                 + (root?0:elementCount);
         }
@@ -520,15 +524,15 @@ public:
                     && !(row & 1))
             {
                 if(role == Qt::EditRole)
-                    return QString::fromLatin1(".%1.").arg(
+                    return QString::fromLatin1("%1").arg(
                         QString::fromLatin1(sobj->getNameInDocument()));
                 else if(role == Qt::UserRole && obj->getPropertyByName(sobj->getNameInDocument())) {
                     // sub object name clash with property, use special syntax for disambiguation
-                    return QString::fromLatin1(".<<%1.>>").arg(
+                    return QString::fromLatin1("<<%1.>>").arg(
                             QString::fromLatin1(sobj->getNameInDocument()));
                 }
             }
-            return objData(sobj, row, role, local);
+            return objData(sobj, row, role, local, false);
         }
 
         QVariant propData(App::Property *prop, const QString &propName,
@@ -656,7 +660,7 @@ public:
             if(sobj)
                 return true;
 
-            return objInfo.getProperty(row,prop,propName);
+            return objInfo.getProperty(row,prop,propName,true);
         }
 
         QVariant unitData(int row, int role) const {
@@ -2075,7 +2079,15 @@ QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
 
     auto parent = index;
     do {
-        res = m->data(parent, Qt::UserRole).toString() + res;
+        QString data = m->data(parent, Qt::UserRole).toString();
+        if (res.isEmpty() || data.endsWith(QLatin1Char('#'))
+                          || data.endsWith(QLatin1Char('.'))
+                          || data.endsWith(QLatin1Char(']'))
+                          || res.startsWith(QLatin1Char('.'))
+                          || res.startsWith(QLatin1Char('[')))
+            res = data + res;
+        else
+            res = data + QLatin1String(".") + res;
         parent = parent.parent();
     }while(parent.isValid());
 
@@ -2154,8 +2166,16 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 sl.back().resize(sl.back().size()-strlen(trim));
 
             for(auto &s : sl) {
-                if(s.size())
-                    l << Base::Tools::fromStdString(s);
+                if(s.size()) {
+                    QString str;
+                    if (l.size() && s[0] == '.')
+                        str = QString::fromUtf8(s.c_str()+1);
+                    else
+                        str = QString::fromUtf8(s.c_str());
+                    if (str.endsWith(QLatin1Char('.')))
+                        str.truncate(str.size()-1);
+                    l << str;
+                }
             }
 
             if(ending.size())
