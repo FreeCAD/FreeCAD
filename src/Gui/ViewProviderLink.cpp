@@ -41,11 +41,13 @@
 # include <Inventor/nodes/SoSurroundScale.h>
 # include <Inventor/nodes/SoCube.h>
 # include <Inventor/sensors/SoNodeSensor.h>
+# include <QApplication>
+# include <QMouseEvent>
+# include <QCheckBox>
 #endif
+#include <QFileInfo>
 #include <cctype>
 #include <atomic>
-#include <QApplication>
-#include <QFileInfo>
 #include <QMenu>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/range.hpp>
@@ -76,6 +78,9 @@
 #include "TaskElementColors.h"
 #include "ViewParams.h"
 #include "Tree.h"
+#include "ActionFunction.h"
+#include "Command.h"
+#include "DlgObjectSelection.h"
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
@@ -2105,7 +2110,13 @@ void ViewProviderLink::updateData(const App::Property *prop) {
         childVp->updateData(prop);
     if(!isRestoring() && !pcObject->isRestoring()) {
         auto ext = getLinkExtension();
-        if(ext) updateDataPrivate(getLinkExtension(),prop);
+        if(ext) {
+            updateDataPrivate(getLinkExtension(),prop);
+            if (prop == ext->getLinkCopyOnChangeProperty()
+                    || prop == ext->getLinkCopyOnChangeTouchedProperty()
+                    || prop == ext->getLinkCopyOnChangeSourceProperty())
+                signalChangeIcon();
+        }
     }
     return inherited::updateData(prop);
 }
@@ -2697,8 +2708,137 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (!ext)
         return;
 
+    _setupContextMenu(ext, menu, receiver, member);
+
+    Gui::ActionFunction* func = nullptr;
+    if (ext->isLinkedToConfigurableObject()) {
+        QAction *act = menu->addAction(
+                QObject::tr("Setup configurable object"));
+        act->setToolTip(QObject::tr(
+                    "Select which object to copy or exclude when configuration changes."
+                    "All external linked object are excluded by default."));
+        act->setData(-1);
+        if (!func) func = new Gui::ActionFunction(menu);
+        func->trigger(act, [ext](){
+            try {
+                std::vector<App::DocumentObject*> excludes;
+                auto src = ext->getLinkCopyOnChangeSourceValue();
+                if (!src)
+                    src = ext->getLinkedObjectValue();
+                auto objs = ext->getOnChangeCopyObjects(&excludes, src);
+                if (objs.empty())
+                    return;
+                DlgObjectSelection dlg(objs, excludes, getMainWindow());
+                dlg.setMessage(QObject::tr(
+                            "Please select which objects to copy when the configuration is changed"));
+                QCheckBox *box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
+                box->setToolTip(QObject::tr("Apply the setting to all links. Or, uncheck this\n"
+                                            "option to apply only to this link."));
+                box->setChecked(App::LinkParams::CopyOnChangeApplyToAll());
+                dlg.addCheckBox(box);
+                if(dlg.exec()!=QDialog::Accepted)
+                    return;
+                bool applyAll = box->isChecked();
+                App::LinkParams::setCopyOnChangeApplyToAll(applyAll);
+                App::AutoTransaction guard("Setup configurable object");
+                auto sels = dlg.getSelections(true, true);
+                for (auto it=excludes.begin(); it!=excludes.end(); ++it) {
+                    auto iter = std::lower_bound(sels.begin(), sels.end(), *it);
+                    if (iter == objs.end() || *iter != *it) {
+                        ext->setOnChangeCopyObject(*it, false, applyAll);
+                    } else
+                        sels.erase(iter);
+                }
+                for (auto obj : sels)
+                    ext->setOnChangeCopyObject(obj, true, applyAll);
+                Command::updateActive();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
+
+        if (ext->getLinkCopyOnChangeValue() == 0) {
+            auto submenu = menu->addMenu(QObject::tr("Copy on change"));
+            auto act = submenu->addAction(QObject::tr("Enable"));
+            act->setToolTip(QObject::tr(
+                        "Enable auto copy of linked object when its configuration is changed"));
+            act->setData(-1);
+            if (!func) func = new Gui::ActionFunction(menu);
+            func->trigger(act, [ext](){
+                try {
+                    App::AutoTransaction guard("Enable Link copy on change");
+                    ext->getLinkCopyOnChangeProperty()->setValue(1);
+                    Command::updateActive();
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            });
+            act = submenu->addAction(QObject::tr("Tracking"));
+            act->setToolTip(QObject::tr(
+                        "Copy the linked object when its configuration is changed.\n"
+                        "Also auto redo the copy if the original linked object is changed.\n"));
+            act->setData(-1);
+            func->trigger(act, [ext](){
+                try {
+                    App::AutoTransaction guard("Enable Link tracking");
+                    ext->getLinkCopyOnChangeProperty()->setValue(3);
+                    Command::updateActive();
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            });
+        }
+    }
+
+    if (ext->getLinkCopyOnChangeValue() != 2
+            && ext->getLinkCopyOnChangeValue() != 0) {
+        QAction *act = menu->addAction(
+                QObject::tr("Disable copy on change"));
+        act->setData(-1);
+        if (!func) func = new Gui::ActionFunction(menu);
+        func->trigger(act, [ext](){
+            try {
+                App::AutoTransaction guard("Disable copy on change");
+                ext->getLinkCopyOnChangeProperty()->setValue((long)0);
+                Command::updateActive();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
+    }
+    if (ext->getLinkCopyOnChangeValue() != 0
+            && ext->getLinkCopyOnChangeSourceValue()
+            && ext->getLinkCopyOnChangeTouchedValue()
+            && ext->getLinkedObjectValue()
+            && ext->getLinkCopyOnChangeSourceValue() != ext->getLinkedObjectValue())
+    {
+        QAction* act = menu->addAction(QObject::tr("Rerefresh configurable object"));
+        act->setToolTip(QObject::tr(
+                    "Synchronize the original configurable source object by\n"
+                    "creating a new deep copy. Note that any changes made to\n"
+                    "the current copy will be lost.\n"));
+        act->setData(-1);
+        if (!func) func = new Gui::ActionFunction(menu);
+        func->trigger(act, [ext](){
+            try {
+                App::AutoTransaction guard("Link refresh");
+                ext->syncCopyOnChange();
+                Command::updateActive();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
+    }
+}
+
+void ViewProviderLink::_setupContextMenu(
+        const App::LinkBaseExtension *ext, QMenu* menu, QObject* receiver, const char* member)
+{
     if(linkEdit(ext)) {
-        linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
+        if (auto linkvp = Base::freecad_dynamic_cast<ViewProviderLink>(linkView->getLinkedView()))
+            linkvp->_setupContextMenu(ext, menu, receiver, member);
+        else
+            linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
     } else if(ext->getPlacementProperty() || ext->getLinkPlacementProperty()) {
         QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
         act->setData(QVariant((int)ViewProvider::Transform));
@@ -2827,6 +2967,9 @@ bool ViewProviderLink::initDraggingPlacement() {
 }
 
 ViewProvider *ViewProviderLink::startEditing(int mode) {
+    if (mode < 0)
+        return nullptr;
+
     if(mode==ViewProvider::Color) {
         auto ext = getLinkExtension();
         if(!ext || !ext->getColoredElementsProperty()) {
@@ -3693,6 +3836,51 @@ int ViewProviderLink::replaceObject(App::DocumentObject* oldValue,
     prop->setValues(children);
     return 1;
 }
+
+static const QByteArray &_refreshIconTag()
+{
+    static QByteArray _tag("link:refresh");
+    return _tag;
+}
+
+void ViewProviderLink::getExtraIcons(
+        std::vector<std::pair<QByteArray, QPixmap> > &icons) const
+{
+    auto ext = getLinkExtension();
+    if (ext && ext->getLinkCopyOnChangeValue() != 0
+            && ext->getLinkCopyOnChangeTouchedValue()
+            && ext->getLinkCopyOnChangeSourceValue()
+            && ext->getLinkedObjectValue()
+            && ext->getLinkCopyOnChangeSourceValue() != ext->getLinkedObjectValue())
+    {
+        icons.emplace_back(_refreshIconTag(), Gui::BitmapFactory().pixmap("LinkRefresh"));
+    }
+
+    return inherited::getExtraIcons(icons);
+}
+
+QString ViewProviderLink::getToolTip(const QByteArray &tag) const
+{
+    if (tag == _refreshIconTag())
+        return QObject::tr(
+                "ALT + click this icon to refresh the configurable source object");
+    return inherited::getToolTip(tag);
+}
+
+bool ViewProviderLink::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
+{
+    if (ev->type() == QEvent::MouseButtonPress && tag == _refreshIconTag()) {
+        auto ext = getLinkExtension();
+        if (ext) {
+            App::AutoTransaction guard("Link refresh");
+            ext->syncCopyOnChange();
+            Command::updateActive();
+            return true;
+        }
+    }
+    return inherited::iconMouseEvent(ev, tag);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Gui {

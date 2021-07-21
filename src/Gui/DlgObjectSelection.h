@@ -24,6 +24,8 @@
 
 #include <QDialog>
 
+class QCheckBox;
+
 namespace Gui {
 
 class Ui_DlgObjectSelection;
@@ -34,9 +36,15 @@ class GuiExport DlgObjectSelection : public QDialog
 public:
     DlgObjectSelection(const std::vector<App::DocumentObject*> &objs,
             QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgObjectSelection(const std::vector<App::DocumentObject*> &objs,
+                       const std::vector<App::DocumentObject*> &excludes,
+            QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgObjectSelection();
 
-    std::vector<App::DocumentObject*> getSelections() const;
+    std::vector<App::DocumentObject*> getSelections(bool invert=false, bool sort=false) const;
+    void addCheckBox(QCheckBox *box);
+    void setMessage(const QString &);
+
     void accept();
     void reject();
 
@@ -49,6 +57,9 @@ private Q_SLOTS:
 private:
     QTreeWidgetItem *createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
     App::DocumentObject *objFromItem(QTreeWidgetItem *item);
+
+    void init(const std::vector<App::DocumentObject*> &objs,
+              const std::vector<App::DocumentObject*> &excludes);
 
 private:
     struct Info {

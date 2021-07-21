@@ -22,6 +22,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QTreeWidget>
+# include <QCheckBox>
 #endif
 
 #include <Base/Console.h>
@@ -41,8 +42,25 @@ using namespace Gui;
 
 DlgObjectSelection::DlgObjectSelection(
         const std::vector<App::DocumentObject*> &objs, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), ui(new Ui_DlgObjectSelection)
+  : QDialog(parent, fl)
 {
+    init(App::Document::getDependencyList(objs), {});
+}
+
+DlgObjectSelection::DlgObjectSelection(
+        const std::vector<App::DocumentObject*> &objs,
+        const std::vector<App::DocumentObject*> &excludes,
+        QWidget* parent,
+        Qt::WindowFlags fl)
+  : QDialog(parent, fl)
+{
+    init(objs, excludes);
+}
+
+void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
+                              const std::vector<App::DocumentObject*> &excludes)
+{
+    ui = new Ui_DlgObjectSelection;
     ui->setupUi(this);
 
     // make sure to show a horizontal scrollbar if needed
@@ -59,7 +77,7 @@ DlgObjectSelection::DlgObjectSelection(
     ui->depList->header()->setResizeMode(3, QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
 #endif
-    ui->depList->header()->setStretchLastSection(false);
+    // ui->depList->header()->setStretchLastSection(false);
     ui->depList->headerItem()->setText(0, tr("Dependency"));
     ui->depList->headerItem()->setText(1, tr("Document"));
     ui->depList->headerItem()->setText(2, tr("Name"));
@@ -68,7 +86,7 @@ DlgObjectSelection::DlgObjectSelection(
     ui->treeWidget->headerItem()->setText(0, tr("Hierarchy"));
     ui->treeWidget->header()->setStretchLastSection(false);
 
-    for(auto obj : App::Document::getDependencyList(objs)) {
+    for(auto obj : objs) {
         auto &info = objMap[obj];
         info.depItem = new QTreeWidgetItem(ui->depList);
         auto vp = Gui::Application::Instance->getViewProvider(obj);
@@ -117,6 +135,12 @@ DlgObjectSelection::DlgObjectSelection(
             this, SLOT(onDepSelectionChanged()));
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+    for (auto obj : excludes) {
+        auto it = objMap.find(obj);
+        if (it != objMap.end())
+            it->second.items.front()->setCheckState(0, Qt::Unchecked);
+    }
 }
 
 /**
@@ -299,12 +323,14 @@ void DlgObjectSelection::onItemChanged(QTreeWidgetItem * item, int column) {
     }
 }
 
-std::vector<App::DocumentObject*> DlgObjectSelection::getSelections() const {
+std::vector<App::DocumentObject*> DlgObjectSelection::getSelections(bool invert, bool sort) const {
     std::vector<App::DocumentObject*> res;
     for(auto &v : objMap) {
-        if(v.second.checkState != Qt::Unchecked)
+        if((v.second.checkState == Qt::Unchecked) == invert)
             res.push_back(v.first);
     }
+    if (sort)
+        std::sort(res.begin(), res.end());
     return res;
 }
 
@@ -369,6 +395,14 @@ void DlgObjectSelection::accept() {
 
 void DlgObjectSelection::reject() {
     QDialog::reject();
+}
+
+void DlgObjectSelection::addCheckBox(QCheckBox *box) {
+    ui->horizontalLayout->insertWidget(0, box);
+}
+
+void DlgObjectSelection::setMessage(const QString &msg) {
+    ui->label->setText(msg);
 }
 
 #include "moc_DlgObjectSelection.cpp"

@@ -103,7 +103,14 @@ public:
       "Enabled: enable copy linked object on change of any of its property marked as CopyOnChange\n"\
       "Owned: indicate the linked object has been copied and is now owned by the link. And the\n"\
       "       the link will try to sync any change of the original linked object back to the copy.",\
+      "Tracking: enable copy on change and auto synchronization of changes in the source object.",\
       ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...) \
+    (LinkCopyOnChangeSource, App::DocumentObject*, App::PropertyLink, 0, "The copy on change source object", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...) \
+    (LinkCopyOnChangeTouched, bool, App::PropertyBool, 0, "Indicating the copy on change source object has been changed", ##__VA_ARGS__)
 
 #define LINK_PARAM_GROUP_VISIBILITY(...) \
     (SyncGroupVisibility, bool, App::PropertyBool, false, \
@@ -198,6 +205,8 @@ public:
     LINK_PARAM(MODE)\
     LINK_PARAM(COLORED_ELEMENTS)\
     LINK_PARAM(COPY_ON_CHANGE)\
+    LINK_PARAM(COPY_ON_CHANGE_SOURCE)\
+    LINK_PARAM(COPY_ON_CHANGE_TOUCHED)\
     LINK_PARAM(GROUP_VISIBILITY)\
     LINK_PARAM(LINK_EXECUTE)\
 
@@ -351,13 +360,21 @@ public:
               std::vector<App::DocumentObject *> * /*elements, maybe null if not showing elements*/)
         > signalNewLinkElements;
 
+    void syncCopyOnChange();
+    void setOnChangeCopyObject(App::DocumentObject *obj, bool exclude, bool applyAll);
+    std::vector<App::DocumentObject *> getOnChangeCopyObjects(
+            std::vector<App::DocumentObject *> *excludes = nullptr,
+            App::DocumentObject *src = nullptr);
+
+    bool isLinkedToConfigurableObject() const;
+
 protected:
     void _handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     void checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop);
-    void setupCopyOnChange(App::DocumentObject *parent);
+    void setupCopyOnChange(App::DocumentObject *parent, bool checkSource = false);
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
     void checkGeoElementMap(const App::DocumentObject *obj,
@@ -385,8 +402,11 @@ protected:
     bool hasCopyOnChange;
 
     mutable bool checkingProperty = false;
+    bool pauseCopyOnChange = false;
 
     boost::signals2::scoped_connection connLabelChange;
+
+    boost::signals2::scoped_connection connCopyOnChangeSource;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -526,6 +546,8 @@ public:
     LINK_PARAM_EXT(LINK_EXECUTE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
     LINK_PARAM_EXT_ATYPE(AUTO_LABEL,App::Prop_Hidden)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
@@ -570,6 +592,8 @@ public:
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
@@ -634,11 +658,13 @@ public:
     FC_LINK_PARAM(CreateInPlace, bool, Bool, true) \
     FC_LINK_PARAM(CreateInContainer, bool, Bool, false) \
     FC_LINK_PARAM(ActiveContainerKey, std::string, ASCII, "") \
+    FC_LINK_PARAM(CopyOnChangeApplyToAll, bool, Bool, true) \
 
 #undef FC_LINK_PARAM
 #define FC_LINK_PARAM(_name,_ctype,_type,_def) \
     static const _ctype & _name() { return instance()->_##_name; }\
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void update##_name(LinkParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
 
     FC_LINK_PARAMS
