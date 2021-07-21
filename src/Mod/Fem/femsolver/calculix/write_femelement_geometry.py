@@ -32,14 +32,14 @@ def write_femelement_geometry(f, ccxwriter):
 
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Sections\n")
-    for ccx_elset in ccxwriter.mat_geo_sets:
-        if ccx_elset["ccx_elset"]:
-            elsetdef = "ELSET={}, ".format(ccx_elset["ccx_elset_name"])
-            material = "MATERIAL={}".format(ccx_elset["mat_obj_name"])
+    for matgeoset in ccxwriter.mat_geo_sets:
+        if matgeoset["ccx_elset"]:
+            elsetdef = "ELSET={}, ".format(matgeoset["ccx_elset_name"])
+            material = "MATERIAL={}".format(matgeoset["mat_obj_name"])
 
-            if "beamsection_obj"in ccx_elset:  # beam mesh
-                beamsec_obj = ccx_elset["beamsection_obj"]
-                normal = ccx_elset["beam_normal"]
+            if "beamsection_obj"in matgeoset:  # beam mesh
+                beamsec_obj = matgeoset["beamsection_obj"]
+                normal = matgeoset["beam_normal"]
                 if beamsec_obj.SectionType == "Rectangular":
                     height = beamsec_obj.RectHeight.getValueAs("mm").Value
                     width = beamsec_obj.RectWidth.getValueAs("mm").Value
@@ -79,8 +79,8 @@ def write_femelement_geometry(f, ccxwriter):
                 f.write(section_def)
                 f.write(section_geo)
                 f.write(section_nor)
-            elif "fluidsection_obj"in ccx_elset:  # fluid mesh
-                fluidsec_obj = ccx_elset["fluidsection_obj"]
+            elif "fluidsection_obj"in matgeoset:  # fluid mesh
+                fluidsec_obj = matgeoset["fluidsection_obj"]
                 if fluidsec_obj.SectionType == "Liquid":
                     section_type = fluidsec_obj.LiquidSectionType
                     if (section_type == "PIPE INLET") or (section_type == "PIPE OUTLET"):
@@ -101,8 +101,8 @@ def write_femelement_geometry(f, ccxwriter):
                 """
                 f.write(section_def)
                 f.write(section_geo)
-            elif "shellthickness_obj"in ccx_elset:  # shell mesh
-                shellth_obj = ccx_elset["shellthickness_obj"]
+            elif "shellthickness_obj"in matgeoset:  # shell mesh
+                shellth_obj = matgeoset["shellthickness_obj"]
                 section_def = "*SHELL SECTION, {}{}\n".format(elsetdef, material)
                 thickness = shellth_obj.Thickness.getValueAs("mm").Value
                 section_geo = "{:.13G}\n".format(thickness)
