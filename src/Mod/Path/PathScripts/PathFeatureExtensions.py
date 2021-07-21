@@ -196,9 +196,8 @@ class Extension(object):
             e2 = e0.copy()
             off = self.length.Value * direction
             e2.translate(off)
-            e2 = PathGeom.flipEdge(e2)
-            e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)))
-            e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)))
+            e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.FirstParameter), e2.valueAt(e2.FirstParameter)))
+            e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.LastParameter)))
             wire = Part.Wire([e0, e1, e2, e3])
             self.wire = wire
             return wire
