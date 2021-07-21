@@ -58,6 +58,8 @@ using namespace Gui;
 static const int ExpressionRole = Qt::UserRole;
 static const int ShapeRole = Qt::UserRole + 1;
 
+static PropertyBool _FakeProp;
+
 class ExpressionCompleterModel: public QAbstractItemModel {
 public:
     // This ExpressionCompleter model uses QModelIndex to index a tree node.
@@ -90,29 +92,34 @@ public:
     //      internal name of object 2 in owner document
     //      label of object 2 in owner document
     //      ...
-    //      property 1 of owner object with leading '.'
-    //      property 1 of owner object without leading '.'
-    //      property 2 of owner object with leading '.'
-    //      property 2 of owner object without leading '.'
+    //      property 1 of owner object
+    //      property 2 of owner object
     //      ...
-    //      internal name of sub-object 1 of owner object with leading '.'
-    //      label of sub-object 1 of owner object with leading '.'
+    //      internal name of sub-object 1 of owner object
+    //      label of sub-object 1 of owner object
     //      ...
-    //      pseudo property 1 of owner object with leading '.'
-    //      pseudo property 2 of owner object with leading '.'
+    //      special 'fake' property named '.'
+    //      ...
+    //      pseudo property 1 of owner object
+    //      pseudo property 2 of owner object
     //      ...
     //
     // The owner document/object is the one used to initialize ObjectIdentifier
     // The sub-object/pseudo property/property of the owner object is obtained
     // through struct ObjInfo, and cached inside map ExpressionCompleterModel::objMap.
     // Note that at root level, there are two way to reference the own object's
-    // property. The recommanded way is to use a leading '.' for explicit local
-    // proeprty referecing. If use without leading '.', then it may clash with
-    // object name.
+    // property. The recommended way is to use a leading '.' for explicit local
+    // property referecing. If use without leading '.', then it may clash with
+    // object name. We use a 'fake' property with name '.' for local
+    // referencing.  The Level1Data below will be responsible for auto
+    // completes the local properties if the root is referencing this 'fake'
+    // property. The benifint for adding this fake property instead of including
+    // the '.' into the property name (like the previous implementation) is that
+    // 'MatchContains' can now work properly.
     //
     // struct Level1Data is used to access children of the root data. The QModelIndex
     // of Level1Data has the Info::idx1 set as the QModelIndex::row() value of
-    // its parent index, Info::idx1 as -1, and its own QModelIndex::row() for indexing
+    // its parent index, Info::idx2 as -1, and its own QModelIndex::row() for indexing
     // its own content, which depends on the type of the parent root data,
     //
     //      Parent              Child
@@ -306,7 +313,7 @@ public:
         }
 
         App::DocumentObject *getSubObject(int row, App::DocumentObject **pobj=nullptr) const {
-            int propSize = (int)propList.size()*2;
+            int propSize = (int)propList.size();
             if(row < propSize)
                 return nullptr;
 
@@ -321,7 +328,10 @@ public:
             return obj->getSubObject(outList[row/2].c_str());
         }
 
-        std::pair<const char *, App::Property*> getProperty(int row, QString *name=nullptr) const {
+        std::pair<const char *, App::Property*> getProperty(int row,
+                                                            QString *name=nullptr,
+                                                            bool root=false) const
+        {
             std::pair<const char*, App::Property*> res;
             res.first = nullptr;
             res.second = nullptr;
@@ -333,45 +343,57 @@ public:
             if(!obj)
                 return res;
 
-            if(row < (int)propList.size()*2) {
-                res.first = propList[row/2].c_str();
-                if(name) {
-                    if(row & 1)
-                        *name = QLatin1String(".") + propNameList[row/2];
-                    else
-                        *name = propNameList[row/2];
-                }
+            if(row < (int)propList.size()) {
+                res.first = propList[row].c_str();
+                if(name)
+                    *name = QLatin1String(".") + propNameList[row];
                 res.second = obj->getPropertyByName(res.first);
                 return res;
             }
-            row -= (int)propList.size()*2;
+            row -= (int)propList.size();
 
-            if(row < (int)outList.size())
+            if(row < (int)outList.size()*2)
                 return res;
-            row -= (int)outList.size();
+            row -= (int)outList.size()*2;
+
+            if (root) {
+                if (row == 0) {
+                    if (name)
+                        *name = QStringLiteral(".");
+                    // We add a special '.' property here so that the
+                    // 'MatchContains' can work with local property reference.
+                    // It won't work otherwise, because the local property
+                    // reference starts with '.', which equivalant to
+                    // 'MatchStarts'.
+                    res.first = ".";
+                    res.second = &_FakeProp;
+                    return res;
+                }
+                --row;
+            }
 
             const auto &pseudoProps = ObjectIdentifier::getPseudoProperties();
             int pseudoSize = (int)pseudoProps.size();
             if(row < pseudoSize) {
                 res = pseudoProps[row];
                 if(name)
-                    *name = QLatin1String(".") + QString::fromLatin1(res.first);
+                    *name = QStringLiteral(".") + QString::fromLatin1(res.first);
                 return res;
             }
 
             return res;
         }
 
-        bool getProperty(int row, App::Property *&prop, QString &propName) const {
-            prop = getProperty(row,&propName).second;
-            return prop!=nullptr;
+        bool getProperty(int row, App::Property *&prop, QString &propName, bool root=false) const {
+            prop = getProperty(row,&propName,root).second;
+            return prop!=nullptr || propName == QStringLiteral(".");
         }
 
         const char *getElement(int row, int &eindex) const {
             if(!elementCount || row < 0)
                 return nullptr;
 
-            int offset = (int)outList.size()*2 + (int)propList.size()*2
+            int offset = (int)outList.size()*2 + (int)propList.size()
                 + ObjectIdentifier::getPseudoProperties().size();
             if(row < offset)
                 return nullptr;
@@ -396,7 +418,9 @@ public:
             if(propList.empty())
                 return outList.size()*2;
 
-            return (int)outList.size()*2 + (int)propList.size()*2
+            return (int)outList.size()*2
+                + (int)propList.size()
+                + (root ? 1 : 0)
                 + ObjectIdentifier::getPseudoProperties().size()
                 + (root?0:elementCount);
         }
@@ -468,6 +492,7 @@ public:
         {
             switch(role) {
             case ExpressionRole:
+                return objName(obj, row, sep || local);
             case Qt::EditRole:
                 return objName(obj, row, sep);
             case Qt::DisplayRole: {
@@ -500,15 +525,19 @@ public:
                     && !(row & 1))
             {
                 if(role == Qt::EditRole)
-                    return QString::fromLatin1(".%1.").arg(
+                    return QString::fromLatin1("%1").arg(
                         QString::fromLatin1(sobj->getNameInDocument()));
-                else if(role == ExpressionRole && obj->getPropertyByName(sobj->getNameInDocument())) {
-                    // sub object name clash with property, use special syntax for disambiguation
-                    return QString::fromLatin1(".<<%1.>>").arg(
+                else if(role == ExpressionRole) {
+                    if (obj->getPropertyByName(sobj->getNameInDocument())) {
+                        // sub object name clash with property, use special syntax for disambiguation
+                        return QString::fromLatin1(".<<%1.>>").arg(
+                                QString::fromLatin1(sobj->getNameInDocument()));
+                    }
+                    return QString::fromLatin1(".%1").arg(
                             QString::fromLatin1(sobj->getNameInDocument()));
                 }
             }
-            return objData(sobj, row, role, local);
+            return objData(sobj, row, role, local, false);
         }
 
         QVariant propData(App::Property *prop, const QString &propName,
@@ -517,6 +546,20 @@ public:
             (void)row;
             if(!prop)
                 return QVariant();
+            if (prop == &_FakeProp) {
+                if (propName != QStringLiteral("."))
+                    return QVariant();
+                switch(role) {
+                case Qt::UserRole:
+                case Qt::EditRole:
+                case Qt::DisplayRole:
+                    return propName;
+                case Qt::DecorationRole:
+                    return CallTipsList::iconOfType(CallTip::Property);
+                }
+                return QVariant();
+            }
+
             switch(role) {
             case ExpressionRole:
                 if(local && !propName.startsWith(QLatin1Char('.'))) {
@@ -528,11 +571,13 @@ public:
                         return QLatin1String(".") + propName;
                     }
                 }
+                else if (propName.startsWith(QLatin1Char('.')))
+                    return propName.mid(1);
                 return propName;
             case Qt::EditRole:
                 return propName;
             case Qt::DisplayRole:
-                if(!local && propName.startsWith(QLatin1Char('.')))
+                if (propName.startsWith(QLatin1Char('.')))
                     return propName.mid(1);
                 return propName;
             case Qt::DecorationRole: 
@@ -636,7 +681,7 @@ public:
             if(sobj)
                 return true;
 
-            return objInfo.getProperty(row,prop,propName);
+            return objInfo.getProperty(row,prop,propName,true);
         }
 
         QVariant unitData(int row, int role) const {
@@ -851,7 +896,11 @@ public:
             int eindex = 0;
             if(!RootData::_childData(mindex.row(), doc, obj, sobj, prop, propName))
                 return QVariant();
-            if(prop) {
+
+            if (prop == &_FakeProp) {
+                prop = nullptr;
+                propName.clear();
+            } else if (prop) {
                 auto mdata = getPropertyData(obj, propName);
                 if(mdata)
                     return mdata->childData(row, role);
@@ -884,7 +933,7 @@ public:
             QString propName;
             if(!RootData::_childData(mindex.row(), doc, obj, sobj, prop, propName))
                 return QModelIndex();
-            if(prop) {
+            if (prop && prop != &_FakeProp) {
                 auto mdata = getPropertyData(obj, propName);
                 if(mdata)
                     return mdata->childIndex(row);
@@ -910,7 +959,11 @@ public:
             int eindex = 0;
             if(!RootData::_childData(mindex.row(), doc, obj, sobj, prop, propName))
                 return 0;
-            if(prop) {
+            if (prop == &_FakeProp) {
+                prop = nullptr;
+                propName.clear();
+            }
+            if (prop) {
                 auto mdata = getPropertyData(obj, propName);
                 if(mdata)
                     return mdata->childCount();
@@ -946,7 +999,10 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return QVariant();
 
-            if(prop) 
+            if (prop == &_FakeProp) {
+                prop = nullptr;
+                propName.clear();
+            } else if(prop)
                 return QVariant();
 
             if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
@@ -970,10 +1026,13 @@ public:
             if(element)
                 return elementData(role, element, eindex);
 
-            if(sobj) 
+            if (prop)
+                return propData(prop, propName, row, role);
+
+            if(sobj)
                 return sobjData(obj, sobj, row, role);
 
-            return propData(prop, propName, row, role);
+            return QVariant();
         }
 
         virtual QModelIndex childIndex(int row) {
@@ -989,7 +1048,10 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return QModelIndex();
 
-            if(prop) 
+            if (prop == &_FakeProp) {
+                prop = nullptr;
+                propName.clear();
+            } else if(prop)
                 return QModelIndex();
 
             if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
@@ -1024,7 +1086,10 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return 0;
 
-            if(prop) 
+            if (prop == &_FakeProp) {
+                prop = nullptr;
+                propName.clear();
+            } else if(prop)
                 return 0;
 
             if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
@@ -1068,7 +1133,10 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return nullptr;
 
-            if(prop) 
+            if (prop == &_FakeProp) {
+                prop = nullptr;
+                propName.clear();
+            } else if(prop)
                 return nullptr;
 
             if(!Level1Data::_childData(info.d.idx2, doc, obj, sobj, prop, propName, element, eindex))
@@ -2049,7 +2117,17 @@ QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
 
     auto parent = index;
     do {
-        res = m->data(parent, ExpressionRole).toString() + res;
+        QString data = m->data(parent, ExpressionRole).toString();
+        if (res.startsWith(QLatin1Char('.')) && data.endsWith(QLatin1Char('.')))
+            res = data + res.mid(1);
+        else if (res.isEmpty() || data.endsWith(QLatin1Char('#'))
+                               || data.endsWith(QLatin1Char('.'))
+                               || data.endsWith(QLatin1Char(']'))
+                               || res.startsWith(QLatin1Char('.'))
+                               || res.startsWith(QLatin1Char('[')))
+            res = data + res;
+        else
+            res = data + QLatin1String(".") + res;
         parent = parent.parent();
     }while(parent.isValid());
 
@@ -2129,8 +2207,19 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 sl.back().resize(sl.back().size()-strlen(trim));
 
             for(auto &s : sl) {
-                if(s.size())
-                    l << Base::Tools::fromStdString(s);
+                if(s.size()) {
+                    QString str;
+                    if (l.size() && s[0] == '.')
+                        str = QString::fromUtf8(s.c_str()+1);
+                    else if (l.empty() && s.size()>1 && s[0] == '.') {
+                        l << QStringLiteral(".");
+                        str = QString::fromUtf8(s.c_str()+1);
+                    } else
+                        str = QString::fromUtf8(s.c_str());
+                    if (str.endsWith(QLatin1Char('.')))
+                        str.truncate(str.size()-1);
+                    l << str;
+                }
             }
 
             if(ending.size())
