@@ -1835,8 +1835,15 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         for(auto o : obj) {
-            if(o && o->getNameInDocument())
+            if(o && o->getNameInDocument()) {
                 FC_LOG("exporting " << o->getFullName());
+                if (!o->getPropertyByName("_ObjectUUID")) {
+                    auto prop = static_cast<PropertyUUID*>(o->addDynamicProperty(
+                            "App::PropertyUUID", "_ObjectUUID", nullptr, nullptr,
+                            Prop_Output | Prop_Hidden));
+                    prop->setValue(Base::Uuid::createUuid());
+                }
+            }
         }
     }
 
@@ -2195,6 +2202,19 @@ Document::importObjects(Base::XMLReader& reader)
         if(o && o->getNameInDocument()) {
             o->setStatus(App::ObjImporting,true);
             FC_LOG("importing " << o->getFullName());
+            if (auto propUUID = Base::freecad_dynamic_cast<PropertyUUID>(
+                        o->getPropertyByName("_ObjectUUID")))
+            {
+                auto propSource = Base::freecad_dynamic_cast<PropertyUUID>(
+                        o->getPropertyByName("_SourceUUID"));
+                if (!propSource)
+                    propSource = static_cast<PropertyUUID*>(o->addDynamicProperty(
+                                "App::PropertyUUID", "_SourceUUID", nullptr, nullptr,
+                                Prop_Output | Prop_Hidden));
+                if (propSource)
+                    propSource->setValue(propUUID->getValue());
+                propUUID->setValue(Base::Uuid::createUuid());
+            }
         }
     }
 
