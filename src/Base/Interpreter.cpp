@@ -107,7 +107,7 @@ PyException::~PyException() throw()
 void PyException::ThrowException(void)
 {
     PyException myexcp;
-    myexcp.ReportException();
+    // myexcp.ReportException();
     myexcp.raiseException();
 }
 
