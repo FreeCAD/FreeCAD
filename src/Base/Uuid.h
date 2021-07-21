@@ -50,6 +50,9 @@ public:
     const std::string& getValue(void) const;
     static std::string createUuid(void);
 
+    bool operator==(const Uuid &other) const {return _uuid == other._uuid;}
+    bool operator<(const Uuid &other) const {return _uuid < other._uuid;}
+
 private:
     std::string _uuid;
 };
