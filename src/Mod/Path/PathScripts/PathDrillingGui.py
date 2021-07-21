@@ -54,6 +54,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.peckDepthSpinBox = PathGui.QuantitySpinBox(self.form.peckDepth, obj, 'PeckDepth')
         self.peckRetractSpinBox = PathGui.QuantitySpinBox(self.form.peckRetractHeight, obj, 'RetractHeight')
         self.dwellTimeSpinBox = PathGui.QuantitySpinBox(self.form.dwellTime, obj, 'DwellTime')
+        self.centerDrillSpinBox = PathGui.QuantitySpinBox(self.form.centerDrillDepth, obj, 'CenterDrillDepth')
 
     def registerSignalHandlers(self, obj):
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
@@ -63,8 +64,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.dwellEnabled.toggled.connect(self.form.dwellTimelabel.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
 
+        self.form.centerDrillEnabled.toggled.connect(self.form.centerDrillDepth.setEnabled)
+
         self.form.peckRetractHeight.setEnabled(True)
         self.form.retractLabel.setEnabled(True)
+        self.form.centerDrillDepth.setEnabled(True)
 
         if self.form.peckEnabled.isChecked():
             self.form.dwellEnabled.setEnabled(False)
@@ -75,6 +79,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.dwellTime.setEnabled(True)
             self.form.dwellTimelabel.setEnabled(True)
 
+        if self.form.centerDrillEnabled.isChecked():
+            self.form.centerDrillDepth.setEnabled(True)
+        else:
+            self.form.centerDrillDepth.setEnabled(False)
+
     def getForm(self):
         '''getForm() ... return UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
@@ -84,6 +93,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.peckDepthSpinBox.updateSpinBox()
         self.peckRetractSpinBox.updateSpinBox()
         self.dwellTimeSpinBox.updateSpinBox()
+        self.centerDrillSpinBox.updateSpinBox()
 
     def getFields(self, obj):
         '''setFields(obj) ... update obj's properties with values from the UI'''
@@ -91,6 +101,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.peckDepthSpinBox.updateProperty()
         self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
+        self.centerDrillSpinBox.updateProperty()
 
         if obj.DwellEnabled != self.form.dwellEnabled.isChecked():
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
@@ -98,7 +109,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentText()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentText())
-
+        if obj.CenterDrillEnabled != self.form.centerDrillEnabled.isChecked():
+            obj.CenterDrillEnabled = self.form.centerDrillEnabled.isChecked()
+        print("update tool controller")
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
@@ -116,6 +129,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
+
+        if obj.CenterDrillEnabled:
+            self.form.centerDrillEnabled.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.centerDrillEnabled.setCheckState(QtCore.Qt.Unchecked)
 
         self.selectInComboBox(obj.ExtraOffset, self.form.ExtraOffset)
 
@@ -135,11 +153,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
+        signals.append(self.form.centerDrillEnabled.stateChanged)
+        signals.append(self.form.centerDrillDepth.editingFinished)
 
         return signals
 
     def updateData(self, obj, prop):
-        if prop in ['PeckDepth', 'RetractHeight'] and not prop in ['Base', 'Disabled']:
+        if prop in ['PeckDepth', 'RetractHeight', 'CenterDrillDepth'] and not prop in ['Base', 'Disabled']:
             self.updateQuantitySpinBoxes()
 
 Command = PathOpGui.SetupOperation('Drilling',

@@ -61,6 +61,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyBool", "PeckEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"))
         obj.addProperty("App::PropertyFloat", "DwellTime", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
         obj.addProperty("App::PropertyBool", "DwellEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
+        obj.addProperty("App::PropertyBool", "CenterDrillEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable Center Drilling"))
+        obj.addProperty("App::PropertyLength", "CenterDrillDepth", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Depth of CenterDrill"))
         obj.addProperty("App::PropertyBool", "AddTipLength", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
         obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G99"))
         obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished while in a peck operation"))
@@ -109,11 +111,21 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             params = {}
             params['X'] = p['x']
             params['Y'] = p['y']
+            if obj.CenterDrillEnabled:
+                params['Z'] = p['z']
 
             # move to hole location
             self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
-            self.commandlist.append(Path.Command('G0', {'Z': startHeight, 'F': self.vertRapid}))
-            self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
+            if obj.CenterDrillEnabled:
+               self.commandlist.append(Path.Command('G0', {'Z': p['z']+1.0, 'F': self.vertRapid}))
+               print("%s" % p)
+               print("CenterDrillDepth: %s" % str(obj.CenterDrillDepth.Value))
+               print("TipLength: %s" % str(tiplength))
+               cmdParams['Z'] = p['z']-obj.CenterDrillDepth.Value-tiplength
+               cmdParams['R'] = p['z']+1.0-tiplength
+            else:
+               self.commandlist.append(Path.Command('G0', {'Z': startHeight, 'F': self.vertRapid}))
+               self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
 
             # Update changes to parameters
             params.update(cmdParams)
@@ -147,6 +159,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         else:
             obj.DwellTime = 1
 
+        if hasattr(job.SetupSheet, 'CenterDrillDepth'):
+            obj.CenterDrillDepth = job.SetupSheet.CenterDrillDepth
+        else:
+            obj.CenterDrillDepth = 0
+
 def SetupProperties():
     setup = []
     setup.append("PeckDepth")
@@ -157,6 +174,8 @@ def SetupProperties():
     setup.append("ReturnLevel")
     setup.append("ExtraOffset")
     setup.append("RetractHeight")
+    setup.append("CenterDrillEnabled")
+    setup.append("CenterDrillDepth")
     return setup
 
 
@@ -167,6 +186,10 @@ def Create(name, obj=None, parentJob=None):
 
     obj.Proxy = ObjectDrilling(obj, name, parentJob)
     if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
+        selection=FreeCAD.Gui.Selection.getSelectionEx('', 1, False)
+        if (len(selection)>0):
+            obj.Proxy.addSelectedHoles(obj, selection)
+        else:
+            obj.Proxy.findAllHoles(obj)
 
     return obj

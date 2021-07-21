@@ -123,20 +123,20 @@ class ObjectOp(PathOp.ObjectOp):
 
     def holePosition(self, obj, base, sub):
         """holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
-        Note that the value for Z is set to 0."""
+        We return Z in case someone wants to do center drilling on different levels."""
 
         try:
             shape = base.Shape.getElement(sub)
             if shape.ShapeType == "Vertex":
-                return FreeCAD.Vector(shape.X, shape.Y, 0)
+                return FreeCAD.Vector(shape.X, shape.Y, shape.Z)
 
             if shape.ShapeType == "Edge" and hasattr(shape.Curve, "Center"):
-                return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
+                return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, shape.Curve.Center.z)
 
             if shape.ShapeType == "Face":
                 if hasattr(shape.Surface, "Center"):
                     return FreeCAD.Vector(
-                        shape.Surface.Center.x, shape.Surface.Center.y, 0
+                        shape.Surface.Center.x, shape.Surface.Center.y, shape.Surface.Center.z
                     )
                 if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
                     return shape.Edges[0].Curve.Center
@@ -183,13 +183,14 @@ class ObjectOp(PathOp.ObjectOp):
                             {
                                 "x": pos.x,
                                 "y": pos.y,
+                                "z": pos.z,
                                 "r": self.holeDiameter(obj, base, sub),
                             }
                         )
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+                holes.append({"x": location.x, "y": location.y, "z": location.z, "r": 0})
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)
@@ -200,6 +201,39 @@ class ObjectOp(PathOp.ObjectOp):
         Note that for Vertexes, non-circular Edges and Locations r=0.
         Must be overwritten by subclasses."""
         pass
+
+    def addSelectedHoles(self, obj, selection):
+        holelist = []
+        features = []
+        tooldiameter = None #float(obj.ToolController.Proxy.getTool(obj.ToolController).Diameter)
+        if not self.getJob(obj):
+            return
+        for base in self.model:
+            for sel in selection:
+                for i in range(len(sel.SubObjects)):
+                    candidateEdgeName = sel.SubElementNames[i]
+                    shape = Part.Shape(sel.SubObjects[i])
+                    e = sel.SubObjects[i]
+                    if PathUtils.isDrillable(shape, e, tooldiameter):
+                        PathLog.debug('edge candidate: {} (hash {})is drillable '.format(e, e.hashCode()))
+                        x = e.Curve.Center.x
+                        y = e.Curve.Center.y
+                        z = e.Curve.Center.z
+                        diameter = e.BoundBox.XLength
+                        holelist.append(
+                            {
+                                'featureName': candidateEdgeName,
+                                'feature': e,
+                                'x': x,
+                                'y': y,
+                                'z': z,
+                                'd': diameter,
+                                'enabled': True
+                            }
+                        )
+                        features.append((base, candidateEdgeName))
+        obj.Base = features
+        obj.Disabled = []
 
     def findAllHoles(self, obj):
         """findAllHoles(obj) ... find all holes of all base models and assign as features."""
@@ -236,6 +270,7 @@ class ObjectOp(PathOp.ObjectOp):
                     )
                     x = e.Curve.Center.x
                     y = e.Curve.Center.y
+                    z = e.Curve.Center.z
                     diameter = e.BoundBox.XLength
                     holelist.append(
                         {
@@ -243,6 +278,7 @@ class ObjectOp(PathOp.ObjectOp):
                             "feature": e,
                             "x": x,
                             "y": y,
+                            "z": z,
                             "d": diameter,
                             "enabled": True,
                         }
@@ -262,11 +298,13 @@ class ObjectOp(PathOp.ObjectOp):
                     if hasattr(f.Surface, "Center"):
                         x = f.Surface.Center.x
                         y = f.Surface.Center.y
+                        z = f.Surface.Center.z
                         diameter = f.BoundBox.XLength
                     else:
                         center = f.Edges[0].Curve.Center
                         x = center.x
                         y = center.y
+                        z = center.z
                         diameter = f.Edges[0].Curve.Radius * 2
                     holelist.append(
                         {
@@ -274,6 +312,7 @@ class ObjectOp(PathOp.ObjectOp):
                             "feature": f,
                             "x": x,
                             "y": y,
+                            "z": z,
                             "d": diameter,
                             "enabled": True,
                         }

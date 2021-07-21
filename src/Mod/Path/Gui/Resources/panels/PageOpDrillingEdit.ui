@@ -73,10 +73,17 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QCheckBox" name="peckEnabled">
+      <item row="8" column="1">
+       <widget class="QCheckBox" name="centerDrillEnabled">
         <property name="text">
-         <string>Peck</string>
+         <string>Center Drill</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="6">
+       <widget class="Gui::QuantitySpinBox" name="peckRetractHeight">
+        <property name="enabled">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -109,31 +116,17 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="6">
-       <widget class="Gui::QuantitySpinBox" name="peckRetractHeight">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="6">
-       <widget class="Gui::QuantitySpinBox" name="dwellTime">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="6">
-       <widget class="Gui::QuantitySpinBox" name="peckDepth">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" rowspan="2" colspan="2">
-       <widget class="QCheckBox" name="dwellEnabled">
+      <item row="1" column="1" colspan="2">
+       <widget class="QCheckBox" name="peckEnabled">
         <property name="text">
-         <string>Dwell</string>
+         <string>Peck</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="4">
+       <widget class="QLabel" name="Offsetlabel">
+        <property name="text">
+         <string>Extend Depth</string>
         </property>
        </widget>
       </item>
@@ -147,10 +140,34 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="4">
-       <widget class="QLabel" name="Offsetlabel">
+      <item row="5" column="1" rowspan="2" colspan="2">
+       <widget class="QCheckBox" name="dwellEnabled">
         <property name="text">
-         <string>Extend Depth</string>
+         <string>Dwell</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="Gui::QuantitySpinBox" name="peckDepth">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="6">
+       <widget class="Gui::QuantitySpinBox" name="dwellTime">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="6">
+       <widget class="Gui::QuantitySpinBox" name="centerDrillDepth"/>
+      </item>
+      <item row="8" column="4">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Depth</string>
         </property>
        </widget>
       </item>
