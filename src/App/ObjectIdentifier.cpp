@@ -708,8 +708,10 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
     } else if(isArray()) {
         if(pyobj.isMapping())
             res = Py::Mapping(pyobj).getItem(Py::Int(begin));
-        else
+        else if (pyobj.isSequence())
             res = Py::Sequence(pyobj).getItem(begin);
+        else
+            FC_THROWM(Base::IndexError, "Invalid object. Expecting either a map or sequence.");
     }else if(isMap() || isLabel())
         res = Py::Mapping(pyobj).getItem(getName());
     else if(isRange()){
@@ -740,8 +742,10 @@ void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value
     } else if(isArray()) {
         if(pyobj.isMapping())
             Py::Mapping(pyobj).setItem(Py::Int(begin),value);
-        else
+        else if (pyobj.isSequence())
             Py::Sequence(pyobj).setItem(begin,value);
+        else
+            FC_THROWM(Base::IndexError, "Invalid object. Expecting either a map or sequence.");
     }else if(isMap() || isLabel())
         Py::Mapping(pyobj).setItem(getName(),value);
     else if(isRange()) {
@@ -760,8 +764,10 @@ void ObjectIdentifier::Component::del(Py::Object &pyobj) const {
     else if(isArray()) {
         if(pyobj.isMapping())
             Py::Mapping(pyobj).delItem(Py::Int(begin));
-        else
+        else if (pyobj.isSequence())
             PySequence_DelItem(pyobj.ptr(),begin);
+        else
+            FC_THROWM(Base::IndexError, "Invalid object. Expecting either a map or sequence.");
     } else if(isMap() || isLabel())
         Py::Mapping(pyobj).delItem(getName());
     else if(isRange()) {
