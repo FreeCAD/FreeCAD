@@ -1065,12 +1065,8 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
         if (!results.resolvedDocumentObject)
             return;
 
-        if (components.size() > 0) {
-            results.propertyIndex = 0;
-            results.getProperty(*this);
-        }
-        else
-            return;
+        results.propertyIndex = 0;
+        results.getProperty(*this);
     }
     else {
         /* Document object name not specified, resolve from path */
