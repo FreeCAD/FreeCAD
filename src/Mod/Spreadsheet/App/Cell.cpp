@@ -273,16 +273,17 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
         }
         auto sexpr = SimpleStatement::cast<App::StringExpression>(expression.get());
         if(sexpr) {
-            const auto &txt = sexpr->getText();
-            char * end;
-            errno = 0;
-            double d = strtod(txt.c_str(), &end);
-            (void)d; // fix gcc warning
-            if (!*end && errno == 0) {
-                s = "'";
-                s += txt;
-            }else
-                s = txt;
+            s = sexpr->getText();
+            try {
+                auto expr = owner->parse(s.c_str(), 0, true);
+                // If the text is a valid expression, prepend a single quote to
+                // force it to be a string. It is not enough to just test if
+                // the text is an integer or not. Different user may have
+                // different local setting, which may enable auto parsing
+                // string content as expression.
+                s.insert(s.begin(), '\'');
+            }
+            catch (...) {}
         }
         else if (SimpleStatement::cast<App::ConstantExpression>(expression.get()))
             s = "=" + expression->toString();
