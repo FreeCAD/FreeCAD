@@ -106,7 +106,8 @@ class Solve(run.Solve):
             [binary, "-i", _inputFileName],
             cwd=self.directory,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+            stderr=subprocess.PIPE
+        )
         self.signalAbort.add(self._process.terminate)
         # output = self._observeSolver(self._process)
         self._process.communicate()
@@ -127,15 +128,22 @@ class Results(run.Results):
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
-        self.load_results_ccxfrd()
-        self.load_results_ccxdat()
+        self.load_results()
 
     def purge_results(self):
+
+        # dat file will not be removed
+        # results from other solvers will be removed too
+        # the user should decide if purge should only delete the solver results or all results
         for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
             if m.Mesh and femutils.is_of_type(m.Mesh, "Fem::MeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         self.analysis.Document.recompute()
+
+    def load_results(self):
+        self.load_results_ccxfrd()
+        self.load_results_ccxdat()
 
     def load_results_ccxfrd(self):
         frd_result_file = os.path.join(
