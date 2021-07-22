@@ -112,7 +112,7 @@ class Results(run.Results):
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
-        self.load_results_z88o2()
+        self.load_results()
 
     def purge_results(self):
         for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
@@ -121,7 +121,8 @@ class Results(run.Results):
             self.analysis.Document.removeObject(m.Name)
         self.analysis.Document.recompute()
 
-    def load_results_z88o2(self):
+    def load_results(self):
+        # displacements from z88o2 file
         disp_result_file = os.path.join(
             self.directory, "z88o2.txt")
         if os.path.isfile(disp_result_file):
