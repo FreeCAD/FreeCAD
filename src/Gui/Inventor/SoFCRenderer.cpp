@@ -1767,6 +1767,14 @@ SoFCRenderer::render(SoGLRenderAction * action)
   PRIVATE(this)->shadowmapping = (shapestyleflags & SoShapeStyleElement::SHADOWMAP) ? true : false;
   PRIVATE(this)->transpshadowmapping = PRIVATE(this)->shadowmapping && (shapestyleflags & 0x01000000);
 
+  if (PRIVATE(this)->shadowmapping
+      && !PRIVATE(this)->transpshadowmapping
+      && PRIVATE(this)->transpvcache.size())
+  {
+    // signal SoShadowGroup to render transparent shadow
+    action->handleTransparency(TRUE);
+  }
+
   PRIVATE(this)->updateSelection();
 
   PRIVATE(this)->depthwriteonly = false;
@@ -1802,30 +1810,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
     PRIVATE(this)->recheckmaterial = true;
     PRIVATE(this)->notexture = false;
 
-    PRIVATE(this)->renderTransparency(action,
-                                      PRIVATE(this)->drawentries,
-                                      PRIVATE(this)->transpvcache);
-
-    PRIVATE(this)->recheckmaterial = true;
-    // PRIVATE(this)->notexture = true;
-
-    PRIVATE(this)->renderTransparency(action,
-                                      PRIVATE(this)->slentries,
-                                      PRIVATE(this)->transpselections);
-
-    PRIVATE(this)->recheckmaterial = true;
-    PRIVATE(this)->notexture = false;
-
-    PRIVATE(this)->renderOpaque(action,
-                                PRIVATE(this)->drawentries,
-                                PRIVATE(this)->opaqueontop);
-
-    PRIVATE(this)->renderTransparency(action,
-                                      PRIVATE(this)->drawentries,
-                                      PRIVATE(this)->transpontop,
-                                      false);
-
-    if (PRIVATE(this)->shadowrendering) {
+    if (!PRIVATE(this)->shadowmapping) {
       action->addDelayedPath(action->getCurPath()->copy());
       state->pop();
       glPopAttrib();
@@ -1833,6 +1818,25 @@ SoFCRenderer::render(SoGLRenderAction * action)
       return;
     }
   }
+
+  PRIVATE(this)->renderTransparency(action,
+                                    PRIVATE(this)->drawentries,
+                                    PRIVATE(this)->transpvcache);
+
+  PRIVATE(this)->recheckmaterial = true;
+
+  PRIVATE(this)->renderTransparency(action,
+                                    PRIVATE(this)->slentries,
+                                    PRIVATE(this)->transpselections);
+
+  PRIVATE(this)->renderOpaque(action,
+                              PRIVATE(this)->drawentries,
+                              PRIVATE(this)->opaqueontop);
+
+  PRIVATE(this)->renderTransparency(action,
+                                    PRIVATE(this)->drawentries,
+                                    PRIVATE(this)->transpontop,
+                                    false);
 
   if (PRIVATE(this)->shadowmapping) {
     state->pop();
