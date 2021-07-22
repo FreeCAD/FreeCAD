@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>670</width>
-    <height>565</height>
+    <height>604</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -145,7 +145,14 @@ by holding the SHIFT key. You use mouse wheel while holding the SHIFT key to
 select hidden face at various depth.</string>
         </property>
         <property name="text">
-         <string>Enable hidden line selection for on top selected objects</string>
+         <string>Enable hidden line selection for on-top-selected objects</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxSelectElementOnTop">
+        <property name="text">
+         <string>Apply box element selection on on-top-selected objects</string>
         </property>
        </widget>
       </item>

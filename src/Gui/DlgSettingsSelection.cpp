@@ -60,6 +60,7 @@ void DlgSettingsSelection::saveSettings()
     ViewParams::setShowPreSelectedFaceOnTop(ui->checkBoxPreSelectionOnTop->isChecked());
     ViewParams::setShowSelectionBoundingBox(ui->checkBoxShowBoundBox->isChecked());
     ViewParams::setHiddenLineSelectionOnTop(ui->checkBoxHiddenLineSelect->isChecked());
+    ViewParams::setSelectElementOnTop(ui->checkBoxSelectElementOnTop->isChecked());
 
     ViewParams::setPreselectionToolTipCorner(ui->comboBoxToolTipCorner->currentIndex());
     ViewParams::setPreselectionToolTipOffsetX(ui->spinBoxToolTipOffsetX->value());
@@ -82,6 +83,7 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxPreSelectionOnTop->setChecked(ViewParams::getShowPreSelectedFaceOnTop());
     ui->checkBoxShowBoundBox->setChecked(ViewParams::getShowSelectionBoundingBox());
     ui->checkBoxHiddenLineSelect->setChecked(ViewParams::getHiddenLineSelectionOnTop());
+    ui->checkBoxSelectElementOnTop->setChecked(ViewParams::getSelectElementOnTop());
 
     ui->comboBoxToolTipCorner->setCurrentIndex(ViewParams::getPreselectionToolTipCorner());
     ui->spinBoxToolTipOffsetX->setValue(ViewParams::getPreselectionToolTipOffsetX());
