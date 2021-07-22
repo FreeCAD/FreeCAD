@@ -91,6 +91,9 @@ bool isCreateConstraintActive(Gui::Document *doc)
 // Utility method to avoid repeating the same code over and over again
 void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch, bool isDriven=true)
 {
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
     // Get the latest constraint
     const std::vector<Sketcher::Constraint *> &ConStr = sketch->Constraints.getValues();
     Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
@@ -98,15 +101,16 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
     // Guess some reasonable distance for placing the datum text
     Gui::Document *doc = cmd->getActiveGuiDocument();
     float sf = 1.f;
+    float lp = hGrp->GetFloat("RadiusDiamConstraintDispAngle", 15) * (M_PI / 180); // Get radius/diameter constraint display angle
     if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
         SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         sf = vp->getScaleFactor();
 
         constr->LabelDistance = 2. * sf;
+        constr->LabelPosition = lp; // Can safely be done for all constraints as ignored by distances & angles
         vp->draw(false,false); // Redraw
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
 
     // Ask for the value of the distance immediately
