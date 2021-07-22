@@ -2048,6 +2048,7 @@ void View3DInventorViewer::Private::activate()
 
         if(!pcShadowGroundSwitch) {
             pcShadowGroundSwitch = new SoSwitch;
+            pcShadowGroundSwitch->setName("ShadowGround");
 
             pcShadowGroundStyle = new SoShadowStyle;
             pcShadowGroundStyle->style = SoShadowStyle::SHADOWED;
@@ -2125,7 +2126,6 @@ void View3DInventorViewer::Private::activate()
 
         pcShadowGroup->addChild(pcShadowGroundSwitch);
     }
-
     static const App::PropertyFloatConstraint::Constraints _precision_cstr(0.0,1.0,0.1);
     // pcShadowGroup->quality = _shadowParam<App::PropertyFloatConstraint>(
     //         doc, "Quality", 1.0f,
