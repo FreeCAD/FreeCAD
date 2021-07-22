@@ -1566,7 +1566,7 @@ void Document::slotStartRestoreDocument(const App::Document& doc)
 }
 
 void Document::slotFinishRestoreObject(const App::DocumentObject &obj) {
-    auto vpd = dynamic_cast<ViewProviderDocumentObject*>(getViewProvider(&obj));
+    auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(&obj));
     if(vpd) {
         vpd->setStatus(Gui::isRestoring,false);
         vpd->finishRestoring();
