@@ -3112,8 +3112,8 @@ bool Document::afterRestore(bool checkPartial) {
         GetApplication().signalPendingReloadDocument(*this);
         return false;
     }
-    GetApplication().signalFinishRestoreDocument(*this);
     setStatus(Document::Restoring, false);
+    GetApplication().signalFinishRestoreDocument(*this);
     return true;
 }
 
