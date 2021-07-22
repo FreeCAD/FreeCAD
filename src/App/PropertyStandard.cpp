@@ -581,29 +581,8 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 
             values.resize(seq.size());
 
-            for (int i = 0; i < seq.size(); ++i) {
-                PyObject *item = seq[i].ptr();
-
-                if (PyUnicode_Check(item)) {
-#if PY_MAJOR_VERSION >= 3
-                    values[i] = PyUnicode_AsUTF8(item);
-#else
-                    PyObject* unicode = PyUnicode_AsUTF8String(item);
-                    values[i] = PyString_AsString(unicode);
-                    Py_DECREF(unicode);
-#endif
-                }
-#if PY_MAJOR_VERSION < 3
-                else if (PyString_Check(item)) {
-                    values[i] = PyString_AsString(item);
-                }
-#endif
-                else {
-                    FC_THROWM(Base::TypeError, "PropertyEnumeration "
-                            << getFullName() << " expects type in list to be string, not "
-                            << item->ob_type->tp_name);
-                }
-            }
+            for (int i = 0; i < seq.size(); ++i)
+                values[i] = Py::Object(seq[i].ptr()).as_string();
 
             aboutToSetValue();
             _enum.setEnums(values);
