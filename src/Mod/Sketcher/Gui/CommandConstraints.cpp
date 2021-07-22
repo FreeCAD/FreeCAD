@@ -5017,23 +5017,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)", constrSize-1,"False");
         }
 
-        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-
-        std::size_t indexConstr = constrSize - externalGeoIdRadiusMap.size();
-
-        // Guess some reasonable distance for placing the datum text
-        Gui::Document *doc = getActiveGuiDocument();
-        float sf = 1.f;
-        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            sf = vp->getScaleFactor();
-
-            for (std::size_t i=0; i<externalGeoIdRadiusMap.size();i++) {
-                Sketcher::Constraint *constr = ConStr[indexConstr + i];
-                constr->LabelDistance = 2. * sf;
-            }
-            vp->draw(false,false); // Redraw
-        }
+        finishDistanceConstraint(this, Obj, false);
 
         commitNeeded=true;
         updateNeeded=true;
@@ -5080,23 +5064,6 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                     Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)", ConStr.size()-1,"False");
                 }
             }
-        }
-
-        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-        std::size_t indexConstr = ConStr.size() - geoIdRadiusMap.size();
-
-        // Guess some reasonable distance for placing the datum text
-        Gui::Document *doc = getActiveGuiDocument();
-        float sf = 1.f;
-        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            sf = vp->getScaleFactor();
-
-            for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
-                Sketcher::Constraint *constr = ConStr[indexConstr + i];
-                constr->LabelDistance = 2. * sf;
-            }
-            vp->draw(false,false); // Redraw
         }
 
         finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
@@ -5165,20 +5132,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
             updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
         }
 
-        // Guess some reasonable distance for placing the datum text
-        Gui::Document *doc = getActiveGuiDocument();
-        float sf = 1.f;
-        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            sf = vp->getScaleFactor();
-
-            Sketcher::Constraint *constr = ConStr[ConStr.size()-1];
-            constr->LabelDistance = 2. * sf;
-            vp->draw(); // Redraw
-        }
-
-        if(!fixed)
-            finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
+        finishDistanceConstraint(this, Obj, constraintCreationMode==Driving && !fixed);
 
         //updateActive();
         getSelection().clearSelection();
@@ -5348,23 +5302,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",constrSize-1,"False");
         }
 
-        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-
-        std::size_t indexConstr = constrSize - externalGeoIdDiameterMap.size();
-
-        // Guess some reasonable distance for placing the datum text
-        Gui::Document *doc = getActiveGuiDocument();
-        float sf = 1.f;
-        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            sf = vp->getScaleFactor();
-
-            for (std::size_t i=0; i<externalGeoIdDiameterMap.size();i++) {
-                Sketcher::Constraint *constr = ConStr[indexConstr + i];
-                constr->LabelDistance = 2. * sf;
-            }
-            vp->draw(false,false); // Redraw
-        }
+        finishDistanceConstraint(this, Obj, false);
 
         commitNeeded=true;
         updateNeeded=true;
@@ -5406,22 +5344,6 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             }
         }
 
-        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-        std::size_t indexConstr = ConStr.size() - geoIdDiameterMap.size();
-
-        // Guess some reasonable distance for placing the datum text
-        Gui::Document *doc = getActiveGuiDocument();
-        float sf = 1.f;
-        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            sf = vp->getScaleFactor();
-
-            for (std::size_t i=0; i<geoIdDiameterMap.size();i++) {
-                Sketcher::Constraint *constr = ConStr[indexConstr + i];
-                constr->LabelDistance = 2. * sf;
-            }
-            vp->draw(false,false); // Redraw
-        }
         finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
 
         //updateActive();
@@ -5485,19 +5407,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
                 updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
             }
 
-            // Guess some reasonable distance for placing the datum text
-            Gui::Document *doc = getActiveGuiDocument();
-            float sf = 1.f;
-            if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-                SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-                sf = vp->getScaleFactor();
-
-                Sketcher::Constraint *constr = ConStr[ConStr.size()-1];
-                constr->LabelDistance = 2. * sf;
-                vp->draw(); // Redraw
-            }
-            if(!fixed)
-                finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
+            finishDistanceConstraint(this, Obj, constraintCreationMode==Driving && !fixed);
 
             //updateActive();
             getSelection().clearSelection();
@@ -5682,23 +5592,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",constrSize-1,"False");
         }
 
-        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-
-        std::size_t indexConstr = constrSize - externalGeoIdRadiamMap.size();
-
-        // Guess some reasonable distance for placing the datum text
-        Gui::Document *doc = getActiveGuiDocument();
-        float sf = 1.f;
-        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            sf = vp->getScaleFactor();
-
-            for (std::size_t i=0; i<externalGeoIdRadiamMap.size();i++) {
-                Sketcher::Constraint *constr = ConStr[indexConstr + i];
-                constr->LabelDistance = 2. * sf;
-            }
-            vp->draw(false,false); // Redraw
-        }
+        finishDistanceConstraint(this, Obj, false);
 
         commitNeeded=true;
         updateNeeded=true;
@@ -5757,22 +5651,6 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             }
         }
 
-        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-        std::size_t indexConstr = ConStr.size() - geoIdRadiamMap.size();
-
-        // Guess some reasonable distance for placing the datum text
-        Gui::Document *doc = getActiveGuiDocument();
-        float sf = 1.f;
-        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            sf = vp->getScaleFactor();
-
-            for (std::size_t i=0; i<geoIdRadiamMap.size();i++) {
-                Sketcher::Constraint *constr = ConStr[indexConstr + i];
-                constr->LabelDistance = 2. * sf;
-            }
-            vp->draw(false,false); // Redraw
-        }
         finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
 
         //updateActive();
@@ -5844,19 +5722,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
                 updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
             }
 
-            // Guess some reasonable distance for placing the datum text
-            Gui::Document *doc = getActiveGuiDocument();
-            float sf = 1.f;
-            if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-                SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-                sf = vp->getScaleFactor();
-
-                Sketcher::Constraint *constr = ConStr[ConStr.size()-1];
-                constr->LabelDistance = 2. * sf;
-                vp->draw(); // Redraw
-            }
-            if(!fixed)
-                finishDistanceConstraint(this, Obj, constraintCreationMode==Driving);
+            finishDistanceConstraint(this, Obj, constraintCreationMode==Driving && !fixed);
 
             //updateActive();
             getSelection().clearSelection();
