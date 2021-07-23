@@ -137,6 +137,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     FC_DRAW_STYLE_PARAM(ShadowGroundBackFaceCull, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(ShadowLightIntensity, value, setValue)\
     FC_DRAW_STYLE_PARAM(ShadowGroundScale, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowUpdateGround, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(ShadowSmoothBorder, value, setValue)\
     FC_DRAW_STYLE_PARAM(ShadowSpreadSize, value, setValue)\
     FC_DRAW_STYLE_PARAM(ShadowSpreadSampleSize, value, setValue)\

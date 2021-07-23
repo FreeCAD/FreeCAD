@@ -2076,6 +2076,7 @@ void View3DInventorViewer::Private::activate()
             pcShadowGroundLightModel = new SoLightModel;
 
             pcShadowGroundGroup = new SoSeparator;
+
             pcShadowGroundGroup->addChild(pcShadowGroundLightModel);
             pcShadowGroundGroup->addChild(pickStyle);
             pcShadowGroundGroup->addChild(pcShadowGroundShapeHints);
@@ -2241,9 +2242,13 @@ void View3DInventorViewer::Private::activate()
 
     if(_shadowParam<App::PropertyBool>(doc, "GroundBackFaceCull",
             ViewParams::docShadowGroundBackFaceCull(), ViewParams::getShadowGroundBackFaceCull()))
+    {
         pcShadowGroundShapeHints->shapeType = SoShapeHints::SOLID;
-    else
+        pcShadowGroundShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    } else {
         pcShadowGroundShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+        pcShadowGroundShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+    }
 
     pcShadowMaterial->transparency = transp;
     pcShadowGroundStyle->style = (transp == 1.0 ? 0x4 : 0) | SoShadowStyle::SHADOWED;
@@ -5308,7 +5313,10 @@ void View3DInventorViewer::Private::redraw()
         // added to Coin3D to perform only quick partial update if there is no
         // scene changes.  We shall schedule an extra redraw to perform a full
         // update by touching the shadow group.
-        pcShadowGround->touch();
+        pcShadowGroup->touch();
+        SbBox3f bbox;
+        if(owner->getSceneBoundBox(bbox))
+            updateShadowGround(bbox);
         shadowNodeId = pcShadowGroup->getNodeId();
         cameraNodeId = cam->getNodeId();
         owner->getSoRenderManager()->scheduleRedraw();

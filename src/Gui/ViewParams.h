@@ -268,6 +268,9 @@ public:
                                        "clipping of shadows when viewing up close in certain angle."))\
     FC_VIEW_PARAM(ShadowTransparentShadow, bool, Bool, false, \
         QT_TRANSLATE_NOOP("ViewParams","Whether to cast shadow from transparent objects."))\
+    FC_VIEW_PARAM(ShadowUpdateGround, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Auto update shadow ground on scene changes. You can manually\n"\
+                                       "update the ground by using the 'Fit view' command"))\
     FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100, "") \
     FC_VIEW_PARAM(HierarchyAscend, bool, Bool, false, \
         QT_TRANSLATE_NOOP("ViewParams","Enable selection of upper hierarchy by repeatedly click some already\n"\
