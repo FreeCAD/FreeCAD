@@ -602,6 +602,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
 void CmdTechDrawHorizontalDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Gestartet"),QObject::tr("Horizontal dimension"));
     bool result = _checkSelection(this,2);
     if (!result)
         return;
