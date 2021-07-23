@@ -102,6 +102,8 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
     Gui::Document *doc = cmd->getActiveGuiDocument();
     float sf = 1.f;
     float lp = hGrp->GetFloat("RadiusDiamConstraintDispAngle", 15) * (M_PI / 180); // Get radius/diameter constraint display angle
+    float lprnd = hGrp->GetFloat("RadiusDiamConstraintDispAngleRnd", 0) * (M_PI / 180); // Get randomness
+    if (lprnd != 0) lp = lp + lprnd * (static_cast<float>(std::rand())/static_cast<float>(RAND_MAX) - 0.5);
     if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
         SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         sf = vp->getScaleFactor();
