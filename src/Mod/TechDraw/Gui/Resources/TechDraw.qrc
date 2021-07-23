@@ -27,6 +27,11 @@
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_HorizontalDimension.svg</file>
+        <file>icons/TechDraw_ToolCircleCenterLines.svg</file>
+        <file>icons/TechDraw_ToolThreadHoleSide.svg</file>
+        <file>icons/TechDraw_ToolThreadBoltSide.svg</file>
+        <file>icons/TechDraw_ToolThreadHoleBottom.svg</file>
+        <file>icons/TechDraw_ToolThreadBoltBottom.svg</file>
         <file>icons/TechDraw_LengthDimension.svg</file>
         <file>icons/TechDraw_RadiusDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
