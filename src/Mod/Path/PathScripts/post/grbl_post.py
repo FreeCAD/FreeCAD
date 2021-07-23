@@ -305,6 +305,9 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
         gcode += linenumber() +'M9' + '\n'
 
+  if RETURN_TO:
+    gcode += linenumber() + "G0 X%s Y%s" % tuple(RETURN_TO)
+
   # do the post_amble
   if OUTPUT_BCNC:
     gcode += linenumber() + "(Block-name: post_amble)\n"
@@ -314,9 +317,6 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + "(Begin postamble)\n"
   for line in POSTAMBLE.splitlines(True):
     gcode += linenumber() + line
-
-  if RETURN_TO:
-    gcode += linenumber() + "G0 X%s Y%s" % tuple(RETURN_TO)
 
   # show the gCode result dialog
   if FreeCAD.GuiUp and SHOW_EDITOR:
