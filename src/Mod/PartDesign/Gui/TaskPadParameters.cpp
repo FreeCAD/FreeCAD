@@ -237,6 +237,8 @@ void TaskPadParameters::updateUI(int index)
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
+        isReversedEnabled = true;
+        isReversedVisible = true;
     }
     // two dimensions
     else {
