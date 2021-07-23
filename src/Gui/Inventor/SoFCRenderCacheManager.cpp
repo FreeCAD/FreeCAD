@@ -315,6 +315,10 @@ public:
       setFunction([](void *, SoSensor *sensor) {
         auto self = static_cast<PathCacheSensor*>(sensor);
         self->detach();
+        if (self->master->highlightcache == self->cache) {
+          self->master->highlightcache.reset();
+          self->master->renderer->clearHighlight();
+        }
         self->master->pathcachetable.erase(self->path);
         return;
       });
@@ -342,6 +346,7 @@ public:
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, CacheSensor> cachetable;
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, VCacheSensor> vcachetable;
   std::unordered_map<PathPtr, PathCacheSensor, PathHasher, PathHasher> pathcachetable;
+  RenderCachePtr highlightcache;
   bool nosectionontop = false;
 
   SoCallbackAction *action;
@@ -549,6 +554,7 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
   }
 
   int order = ontop ? 1 : 0;
+  PRIVATE(this)->highlightcache = cache;
   PRIVATE(this)->renderer->setHighlight(
         cache->buildHighlightCache(
           PRIVATE(this)->sharedcache, order, detail, color,
@@ -561,6 +567,7 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
 void
 SoFCRenderCacheManager::clearHighlight()
 {
+  PRIVATE(this)->highlightcache.reset();
   PRIVATE(this)->renderer->clearHighlight();
 }
 
