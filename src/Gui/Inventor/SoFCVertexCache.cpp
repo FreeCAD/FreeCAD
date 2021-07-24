@@ -1682,9 +1682,14 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort, const SbPla
 
   // must not mess up indices if there are parts
   if (numparts) {
+    // Treat one part as if there is no part, so that we can sort the
+    // triangles, e.g. a sphere. It's kind of strange that sphere doesn't
+    // render correctly when there is shadow without sorting.
+    //
+    // TODO: find out why.
     if (numparts == 1)
-      return FALSE;
-    if (!fullsort) {
+      numparts = 0;
+    if (numparts && !fullsort) {
       if (this->numtranspparts == numparts)
         fullsort = true;
       else {
