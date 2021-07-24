@@ -513,6 +513,9 @@ compare_line(const void * v0, const void * v1)
 void
 SoFCVertexArrayIndexer::sort_triangles(void)
 {
+#if 0
+  // Does this really helps?
+#else
   if (!this->indexarray) return;
   // sort triangles based on vertex indices to get more hits in the
   // GPU vertex cache. Not the optimal solution, but should work
@@ -537,6 +540,7 @@ SoFCVertexArrayIndexer::sort_triangles(void)
       prev = idx;
     }
   }
+#endif
 }
 
 //
