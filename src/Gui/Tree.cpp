@@ -284,6 +284,7 @@ public:
     TreeWidget *getTree() const;
 
     void setCheckState(bool checked);
+    void unselect();
 
 private:
     QBrush bgBrush;
@@ -523,6 +524,7 @@ public:
 
     bool restorePreselCursor = false;
     bool skipMouseRelease = false;
+    bool checkHiddenItems = false;
 
     QTreeWidgetItem *tooltipItem = nullptr;
 };
@@ -4026,6 +4028,29 @@ void TreeWidget::onUpdateStatus(void)
         this->blockConnection(false);
     }
 
+    if (pimpl->checkHiddenItems) {
+        pimpl->checkHiddenItems = false;
+        static std::vector<QTreeWidgetItem *> sels;
+        sels.clear();
+        for (auto item : selectedItems()) {
+            for (auto ti=item; ti; ti=ti->parent())
+                sels.push_back(ti);
+        }
+        std::sort(sels.begin(), sels.end());
+        for(auto &v : DocumentMap) {
+            if (v.first->getDocument()->ShowHidden.getValue())
+                continue;
+            for (auto &vv : v.second->ObjectMap) {
+                if (vv.second->viewObject->showInTree())
+                    continue;
+                for (auto item : vv.second->items) {
+                    if (!std::binary_search(sels.begin(), sels.end(), item))
+                        item->setHidden(true);
+                }
+            }
+        }
+    }
+
     auto activeDocItem = getDocumentItem(Application::Instance->activeDocument());
 
     QTreeWidgetItem *errItem = 0;
@@ -4419,9 +4444,10 @@ void TreeWidget::onItemSelectionChanged ()
             if((firstType==ObjectType && item->type()!=ObjectType)
                     || (firstType==DocumentType && item!=selItems.back()))
             {
-                item->setSelected(false);
                 if (item->type() == ObjectType)
-                    static_cast<DocumentObjectItem*>(item)->setCheckState(false);
+                    static_cast<DocumentObjectItem*>(item)->unselect();
+                else
+                    item->setSelected(false);
                 it = selItems.erase(it);
             } else
                 ++it;
@@ -4518,8 +4544,12 @@ void TreeWidget::onItemChanged(QTreeWidgetItem *item, int column) {
     if (column == 0 && isSelectionCheckBoxesEnabled() && item->type() == ObjectType) {
         bool selected = item->isSelected();
         bool checked = item->checkState(0) == Qt::Checked;
-        if (checked != selected)
-            item->setSelected(checked);
+        if (checked != selected) {
+            if (!checked)
+                static_cast<DocumentObjectItem*>(item)->unselect();
+            else
+                item->setSelected(checked);
+        }
     }
 }
 
@@ -4564,12 +4594,8 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
         if (sels.size()) {
             QSignalBlocker blocker(this);
             for(auto item : sels) {
-                if(item->type() == ObjectType) {
-                    auto oitem = static_cast<DocumentObjectItem*>(item);
-                    oitem->mySubs.clear();
-                    oitem->selected = 0;
-                    oitem->setCheckState(false);
-                }
+                if(item->type() == ObjectType)
+                    static_cast<DocumentObjectItem*>(item)->unselect();
             }
             selectionModel()->clearSelection();
         }
@@ -5141,7 +5167,7 @@ void TreeWidget::_selectLinkedObject(App::DocumentObject *linked) {
     if(!linkedItem)
         linkedItem = *it->second->items.begin();
 
-    if(linkedDoc->showItem(linkedItem,true)) {
+    if(linkedDoc->showItem(linkedItem, true, true)) {
         pimpl->syncView(linkedItem);
         scrollToItem(linkedItem);
     }
@@ -6017,22 +6043,20 @@ void DocumentItem::setData (int column, int role, const QVariant & value)
 void DocumentItem::clearSelection(DocumentObjectItem *exclude)
 {
     // Block signals here otherwise we get a recursion and quadratic runtime
-    bool ok = treeWidget()->blockSignals(true);
+    QSignalBlocker blocker(treeWidget());
+    bool lock = getTree()->blockConnection(true);
     FOREACH_ITEM_ALL(item);
-        if(item==exclude) {
-            if(item->selected>0)
-                item->selected = -1;
-            else
-                item->selected = 0;
-            updateItemSelection(item);
-        }else{
-            item->selected = 0;
-            item->mySubs.clear();
-            item->setSelected(false);
-            item->setCheckState(false);
-        }
+        if(item != exclude && item->selected)
+            item->unselect();
     END_FOREACH_ITEM;
-    treeWidget()->blockSignals(ok);
+    if (exclude) {
+        if(exclude->selected>0)
+            exclude->selected = -1;
+        else
+            exclude->selected = 0;
+        updateItemSelection(exclude);
+    }
+    getTree()->blockConnection(lock);
 }
 
 void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
@@ -6040,10 +6064,8 @@ void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
         auto child = ti->child(i);
         if(child && child->type()==TreeWidget::ObjectType) {
             auto childItem = static_cast<DocumentObjectItem*>(child);
-            if (unselect) {
-                childItem->setSelected(false);
-                childItem->setCheckState(false);
-            }
+            if (unselect)
+                childItem->unselect();
             updateItemSelection(childItem);
             if(unselect && childItem->isGroup()) {
                 // If the child item being force unselected by its group parent
@@ -6115,12 +6137,8 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     if(!selected) {
         SelectionNoTopParentCheck guard;
         item->mySubs.clear();
-        if(!Gui::Selection().addSelection(docname,objname,subname.c_str())) {
-            item->selected = 0;
-            item->setSelected(false);
-            item->setCheckState(false);
-            return;
-        }
+        if(!Gui::Selection().addSelection(docname,objname,subname.c_str()))
+            item->unselect();
     }
     getTree()->pimpl->syncView(item);
 }
@@ -6333,10 +6351,7 @@ void DocumentItem::selectItems(SelectionReason reason) {
         if(item->selected == 1) {
             // this means it is the old selection and is not in the current
             // selection
-            item->selected = 0;
-            item->mySubs.clear();
-            item->setSelected(false);
-            item->setCheckState(false);
+            item->unselect();
         }else if(item->selected) {
             if(sync) {
                 if (reason == SR_FORCE_EXPAND) {
@@ -6521,6 +6536,23 @@ DocumentObjectItem::~DocumentObjectItem()
             myOwner->ObjectMap.erase(object()->getObject());
         if(requiredAtRoot(true,true))
             myOwner->slotNewObject(*object());
+    }
+}
+
+void DocumentObjectItem::unselect()
+{
+    this->mySubs.clear();
+    this->selected = 0;
+    setSelected(false);
+    setCheckState(false);
+    if (!getOwnerDocument()->document()->getDocument()->ShowHidden.getValue()) {
+        for (auto item=this; item; item=item->getParentItem()) {
+            if (!item->object()->showInTree() && !item->isSelected()) {
+                getTree()->pimpl->checkHiddenItems = true;
+                getTree()->_updateStatus();
+                break;
+            }
+        }
     }
 }
 
