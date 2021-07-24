@@ -2,6 +2,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -45,8 +47,7 @@ class TestPathAdaptive(PathTestBase):
         is able to call static methods within this same class.
         '''
 
-        # Create a new document and create test geometry
-        # Open existing document with test geometry
+        # Open existing FreeCAD document with test geometry
         doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_adaptive.fcstd')
 
         # Create Job object, adding geometry objects from file opened above
@@ -97,7 +98,7 @@ class TestPathAdaptive(PathTestBase):
 
     # Unit tests
     def test00(self):
-        '''test00() Empty test: Verify default property values.'''
+        '''test00() Empty test.'''
         return
 
     def test01(self):
@@ -343,6 +344,7 @@ def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
     # Set Heights
     # default values used
 
+
 def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True):
     '''getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True)...
     Accepts command dict and returns point string coordinate.
@@ -442,7 +444,8 @@ def _addViewProvider(adaptiveOp):
         adaptiveOp.ViewObject.Proxy = PathOpGui.ViewProvider(adaptiveOp.ViewObject, cmdRes)
 
 
-# Expected moves for unit tests
+# Example string literal of expected path moves from an operation
+# Expected moves for unit test01
 expected_moves_test01 = "G1 X32.5 Y32.5 Z5.0;  \
 G1 X17.5 Y32.5 Z5.0;  \
 G1 X17.5 Y30.0 Z5.0;  \
