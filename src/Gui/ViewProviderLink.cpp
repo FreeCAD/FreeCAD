@@ -2806,12 +2806,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
             }
         });
     }
-    if (ext->getLinkCopyOnChangeValue() != 0
-            && ext->getLinkCopyOnChangeSourceValue()
-            && ext->getLinkCopyOnChangeTouchedValue()
-            && ext->getLinkedObjectValue()
-            && ext->getLinkCopyOnChangeSourceValue() != ext->getLinkedObjectValue())
-    {
+
+    if (ext->isLinkMutated()) {
         QAction* act = menu->addAction(QObject::tr("Rerefresh configurable object"));
         act->setToolTip(QObject::tr(
                     "Synchronize the original configurable source object by\n"
@@ -3843,17 +3839,21 @@ static const QByteArray &_refreshIconTag()
     return _tag;
 }
 
+static const QByteArray &_mutateIconTag()
+{
+    static QByteArray _tag("link:mutate");
+    return _tag;
+}
+
 void ViewProviderLink::getExtraIcons(
         std::vector<std::pair<QByteArray, QPixmap> > &icons) const
 {
     auto ext = getLinkExtension();
-    if (ext && ext->getLinkCopyOnChangeValue() != 0
-            && ext->getLinkCopyOnChangeTouchedValue()
-            && ext->getLinkCopyOnChangeSourceValue()
-            && ext->getLinkedObjectValue()
-            && ext->getLinkCopyOnChangeSourceValue() != ext->getLinkedObjectValue())
-    {
-        icons.emplace_back(_refreshIconTag(), Gui::BitmapFactory().pixmap("LinkRefresh"));
+    if (ext && ext->isLinkMutated()) {
+        if (ext->getLinkCopyOnChangeTouchedValue())
+            icons.emplace_back(_refreshIconTag(), Gui::BitmapFactory().pixmap("LinkRefresh"));
+        else
+            icons.emplace_back(_mutateIconTag(), Gui::BitmapFactory().pixmap("LinkMutate"));
     }
 
     return inherited::getExtraIcons(icons);
@@ -3863,18 +3863,32 @@ QString ViewProviderLink::getToolTip(const QByteArray &tag) const
 {
     if (tag == _refreshIconTag())
         return QObject::tr(
-                "ALT + click this icon to refresh the configurable source object");
+                "The configurable source object has be changed.\n"
+                "ALT + click this icon to refresh.");
+    else if (tag == _mutateIconTag())
+        return QObject::tr(
+                "This link points to a mutated instance of a configurable object.\n"
+                "ALT + click this icon to select the source object");
     return inherited::getToolTip(tag);
 }
 
 bool ViewProviderLink::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 {
-    if (ev->type() == QEvent::MouseButtonPress && tag == _refreshIconTag()) {
-        auto ext = getLinkExtension();
-        if (ext) {
-            App::AutoTransaction guard("Link refresh");
-            ext->syncCopyOnChange();
-            Command::updateActive();
+    if (ev->type() == QEvent::MouseButtonPress) {
+        if (tag == _refreshIconTag()) {
+            if (auto ext = getLinkExtension()) {
+                App::AutoTransaction guard("Link refresh");
+                ext->syncCopyOnChange();
+                Command::updateActive();
+            }
+            return true;
+        } else if (tag == _mutateIconTag()) {
+            if (auto ext = getLinkExtension()) {
+                if (auto src = ext->getLinkCopyOnChangeSourceValue()) {
+                    Selection().addSelection(App::SubObjectT(src, ""));
+                    TreeWidget::scrollItemToTop();
+                }
+            }
             return true;
         }
     }

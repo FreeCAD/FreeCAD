@@ -2220,6 +2220,14 @@ bool LinkBaseExtension::isSubnameHidden(const App::DocumentObject *obj, const ch
     return false;
 }
 
+bool LinkBaseExtension::isLinkMutated() const
+{
+    return getLinkCopyOnChangeValue()
+        && getLinkedObjectValue()
+        && (!getLinkCopyOnChangeSourceValue()
+            || (getLinkedObjectValue() != getLinkCopyOnChangeSourceValue()));
+}
+
 void LinkBaseExtension::extensionGetPropertyNamedList(
         std::vector<std::pair<const char *,Property*> > &List) const
 {
