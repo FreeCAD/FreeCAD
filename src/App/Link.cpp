@@ -26,6 +26,7 @@
 # include <boost_bind_bind.hpp>
 #endif
 
+#include <boost/range.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/preprocessor/stringize.hpp>
 #include <Base/Tools.h>
@@ -52,6 +53,8 @@ FC_LOG_LEVEL_INIT("App::Link", true,true)
 using namespace App;
 using namespace Base;
 namespace bp = boost::placeholders;
+
+typedef boost::iterator_range<const char*> CharRange;
 
 ////////////////////////////////////////////////////////////////////////
 LinkParams::LinkParams() {
@@ -731,6 +734,10 @@ void LinkBaseExtension::checkCopyOnChange(
     getLinkedObjectProperty()->setValue(linked);
     if (getLinkCopyOnChangeValue() == 1)
         getLinkCopyOnChangeProperty()->setValue(2);
+    if (LinkParams::CopyOnChangeClaimChild()) {
+        if (auto p = getLinkClaimChildProperty())
+            p->setValue(true);
+    }
 }
 
 App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
@@ -790,6 +797,8 @@ bool LinkBaseExtension::extensionHasChildElement() const {
     if(_getElementListValue().size()
             || (_getElementCountValue() && _getShowElementValue()))
         return true;
+    if (getLinkClaimChildValue())
+        return false;
     DocumentObject *linked = getTrueLinkedObject(false);
     if(linked) {
         if(linked->hasChildElement())
@@ -980,15 +989,18 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
             // redirect that reference to the first array element
             auto linked = getTrueLinkedObject(false);
             if(!linked || !linked->getNameInDocument()) return -1;
-            std::string sub(subname,dot-subname);
             if(subname[0]=='$') {
-                if(strcmp(sub.c_str()+1,linked->Label.getValue())==0)
+                CharRange sub(subname+1, dot);
+                if (boost::equals(sub, linked->Label.getValue()))
                     idx = 0;
-            }else if(sub==linked->getNameInDocument())
-                idx = 0;
+            } else {
+                CharRange sub(subname, dot);
+                if (boost::equals(sub, linked->getNameInDocument()))
+                    idx = 0;
+            }
             if(idx<0) {
                 // Lastly, try to get sub object directly from the linked object
-                auto sobj = linked->getSubObject(sub.c_str());
+                auto sobj = linked->getSubObject(std::string(subname, dot-subname+1).c_str());
                 if(!sobj)
                     return -1;
                 if(psubname)
@@ -1208,8 +1220,39 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         return true;
 
     Base::Matrix4D matNext;
-    if(mat) matNext = *mat;
-    ret = linked->getSubObject(subname,pyObj,mat?&matNext:0,false,depth+1);
+
+    // Because of the addition of LinkClaimChild, the linked object may be
+    // claimed as the first child. Regardless of the current value of
+    // LinkClaimChild, we must accept sub-object path that contains the linked
+    // object, because other link property may store such reference.
+    if (const char* dot=strchr(subname,'.')) {
+        if (subname[0] == '$') {
+            CharRange sub(subname+1,dot);
+            if(!boost::equals(sub, linked->Label.getValue()))
+                dot = nullptr;
+        } else {
+            CharRange sub(subname,dot);
+            if (!boost::equals(sub, linked->getNameInDocument()))
+                dot = nullptr;
+        }
+        if (dot) {
+            // Because of external linked object, It is possible for and
+            // child object to have the exact same internal name or label
+            // as the parent object. To resolve this potential ambiguity,
+            // try assuming the current subname is referring to the parent
+            // (i.e. the linked object), and if it fails, try again below.
+            if(mat) matNext = *mat;
+            ret = linked->getSubObject(dot+1,pyObj,mat?&matNext:0,false,depth+1);
+            if (ret && dot[1])
+                subname = dot+1;
+        }
+    }
+
+    if (!ret) {
+        if(mat) matNext = *mat;
+        ret = linked->getSubObject(subname,pyObj,mat?&matNext:0,false,depth+1);
+    }
+
     std::string postfix;
     if(ret) {
         // do not resolve the link if we are the last referenced object
@@ -1733,7 +1776,6 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
 
     }else if(prop == getLinkCopyOnChangeProperty()) {
         setupCopyOnChange(parent, getLinkCopyOnChangeSourceValue() == nullptr);
-
     } else if (prop == getLinkCopyOnChangeSourceProperty()) {
         if (auto source = getLinkCopyOnChangeSourceValue()) {
             this->connCopyOnChangeSource = source->signalChanged.connect(

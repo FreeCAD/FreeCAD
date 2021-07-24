@@ -97,6 +97,10 @@ public:
     (LinkTransform, bool, App::PropertyBool, false, \
       "Set to false to override linked object's placement", ##__VA_ARGS__)
 
+#define LINK_PARAM_CLAIM_CHILD(...) \
+    (LinkClaimChild, bool, App::PropertyBool, false, \
+      "Claim the linked object as a child", ##__VA_ARGS__)
+
 #define LINK_PARAM_COPY_ON_CHANGE(...) \
     (LinkCopyOnChange, long, App::PropertyEnumeration, ((long)0), \
       "Disabled: disable copy on change\n"\
@@ -189,6 +193,7 @@ public:
     LINK_PARAM(PLACEMENT)\
     LINK_PARAM(LINK_PLACEMENT)\
     LINK_PARAM(OBJECT)\
+    LINK_PARAM(CLAIM_CHILD)\
     LINK_PARAM(TRANSFORM)\
     LINK_PARAM(SCALE)\
     LINK_PARAM(SCALE_VECTOR)\
@@ -540,6 +545,7 @@ public:
 
 #define LINK_PARAMS_LINK \
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
+    LINK_PARAM_EXT(CLAIM_CHILD)\
     LINK_PARAM_EXT(TRANSFORM)\
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
@@ -591,6 +597,7 @@ public:
     LINK_PARAM_EXT(SCALE_VECTOR)\
     LINK_PARAM_EXT_ATYPE(MATRIX, App::Prop_Hidden)\
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
+    LINK_PARAM_EXT(CLAIM_CHILD)\
     LINK_PARAM_EXT(TRANSFORM) \
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
@@ -662,6 +669,7 @@ public:
     FC_LINK_PARAM(CreateInContainer, bool, Bool, false) \
     FC_LINK_PARAM(ActiveContainerKey, std::string, ASCII, "") \
     FC_LINK_PARAM(CopyOnChangeApplyToAll, bool, Bool, true) \
+    FC_LINK_PARAM(CopyOnChangeClaimChild, bool, Bool, true) \
 
 #undef FC_LINK_PARAM
 #define FC_LINK_PARAM(_name,_ctype,_type,_def) \

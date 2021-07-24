@@ -2168,6 +2168,12 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             linkView->renderDoubleSide(matrix.det3() < 0);
         }
     }else if(prop == ext->getLinkedObjectProperty()) {
+        if (!App::Document::isAnyRestoring() && ext->isLinkMutated()) {
+            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(ext->getLinkedObjectValue()));
+            if (vp)
+                vp->ShowInTree.setValue(false);
+        }
 
         if(!prop->testStatus(App::Property::User3)) {
             std::vector<std::string> subs;
@@ -2449,24 +2455,30 @@ ViewProvider *ViewProviderLink::getLinkedView(
 
 std::vector<App::DocumentObject*> ViewProviderLink::claimChildren(void) const {
     auto ext = getLinkExtension();
+    std::vector<App::DocumentObject*> ret;
     if(ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
         // We claim the linked object instead
-        std::vector<App::DocumentObject*> ret;
         if(ext) {
-            auto obj = ext->getTrueLinkedObject(true);
+            auto obj = ext->getLinkedObjectValue();
             if(obj) ret.push_back(obj);
         }
-        return ret;
-    } else if(hasElements(ext) || isGroup(ext))
-        return ext->getElementListValue();
-    if(!hasSubName) {
+    } else if(hasElements(ext) || isGroup(ext)) {
+        ret = ext->getElementListValue();
+        if (ext->_getElementCountValue() 
+                && ext->getLinkClaimChildValue()
+                && ext->getLinkedObjectValue())
+            ret.insert(ret.begin(), ext->getLinkedObjectValue());
+    } else if(!hasSubName) {
         auto linked = getLinkedView(true);
-        if(linked)
-            return linked->claimChildren();
+        if(linked) {
+            ret = linked->claimChildren();
+            if (ext->getLinkClaimChildValue() && ext->getLinkedObjectValue())
+                ret.insert(ret.begin(), ext->getLinkedObjectValue());
+        }
     }
-    return std::vector<App::DocumentObject*>();
+    return ret;
 }
 
 bool ViewProviderLink::canDragObject(App::DocumentObject* obj) const {
@@ -2652,13 +2664,31 @@ bool ViewProviderLink::getDetailPath(
         pPath->truncate(len);
         return false;
     }
+
     std::string _subname;
-    if(subname && subname[0] &&
-       (isGroup(ext,true) || hasElements(ext) || ext->getElementCountValue())) {
-        int index = ext->getElementIndex(subname,&subname);
-        if(index>=0) {
-            _subname = std::to_string(index)+'.'+subname;
-            subname = _subname.c_str();
+    if(subname && subname[0]) {
+        if (auto linked = ext->getLinkedObjectValue()) {
+            if (const char *dot = strchr(subname,'.')) {
+                if(subname[0]=='$') {
+                    CharRange sub(subname+1, dot);
+                    if (!boost::equals(sub, linked->Label.getValue()))
+                        dot = nullptr;
+                } else {
+                    CharRange sub(subname, dot);
+                    if (!boost::equals(sub, linked->getNameInDocument()))
+                        dot = nullptr;
+                }
+                if (dot && linked->getSubObject(dot+1))
+                    subname = dot+1;
+            }
+        }
+
+        if (isGroup(ext,true) || hasElements(ext) || ext->getElementCountValue()) {
+            int index = ext->getElementIndex(subname,&subname);
+            if(index>=0) {
+                _subname = std::to_string(index)+'.'+subname;
+                subname = _subname.c_str();
+            }
         }
     }
     if(linkView->linkGetDetailPath(subname,pPath,det))
