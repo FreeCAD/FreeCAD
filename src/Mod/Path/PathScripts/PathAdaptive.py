@@ -601,13 +601,8 @@ def _get_working_edges(op, obj):
         edgeWires = DraftGeomUtils.findWires(rawEdges)
         if edgeWires:
             for w in edgeWires:
-                # Extrude closed wire, take cross-section (flatten), and add area to regions list with faces
-                if w.isClosed():
-                    extLen = w.BoundBox.ZLength + 10.0
-                    extrudeWire = w.extrude(FreeCAD.Vector(0.0, 0.0, extLen * 5.0))
-                    slices = extrudeWire.slice(FreeCAD.Vector(0.0, 0.0, 1.0), math.floor(w.BoundBox.ZMin + (extLen * 2.5)))
-                    slices[0].translate(FreeCAD.Vector(0.0, 0.0, 0.0 - slices[0].BoundBox.ZMin))
-                    all_regions.append(Part.Face(slices[0]))  # Add wire area to all regions for combination with extensions
+                for e in w.Edges:
+                    edge_list.append([discretize(e)])
 
     # Apply regular Extensions
     op.exts = [] # pylint: disable=attribute-defined-outside-init
