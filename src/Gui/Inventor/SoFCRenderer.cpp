@@ -52,6 +52,7 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoPointSizeElement.h>
@@ -378,6 +379,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     // disable lighting
     if (this->material.lightmodel != SoLazyElement::BASE_COLOR) {
       this->material.lightmodel = SoLazyElement::BASE_COLOR;
+      SoLazyElement::setLightModel(state, this->material.lightmodel);
       glDisable(GL_LIGHTING);
       FC_GLERROR_CHECK;
     }
@@ -556,6 +558,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   }
 
   if (first || this->material.lightmodel != next.lightmodel) {
+    SoLazyElement::setLightModel(state, next.lightmodel);
     if (next.lightmodel == SoLazyElement::PHONG)
       glEnable(GL_LIGHTING);
     else
@@ -669,6 +672,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   if (transp)
     twoside = 1;
   if (first || this->material.twoside != twoside) {
+    SoLazyElement::setTwosideLighting(state, twoside);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, twoside ? GL_TRUE : GL_FALSE);
     FC_GLERROR_CHECK;
     this->material.twoside = twoside;
@@ -1604,12 +1608,16 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
           ++this->drawcallcount;
         }
         else {
-          if (!this->material.twoside)
+          if (!this->material.twoside) {
+            SoLazyElement::setTwosideLighting(state, TRUE);
             glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+          }
           draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
           ++this->drawcallcount;
-          if (!this->material.twoside)
+          if (!this->material.twoside) {
+            SoLazyElement::setTwosideLighting(state, FALSE);
             glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+          }
           FC_GLERROR_CHECK;
         }
         break;
@@ -1638,8 +1646,11 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
 
   SoState * state = action->getState();
 
-  if (this->shadowmapping && !this->transpshadowmapping)
-    return;
+  if (this->shadowmapping) {
+    if (!this->transpshadowmapping)
+      return;
+    sort = false;
+  }
 
   bool pauseshadow = (&draw_entries == &this->slentries || &draw_entries == &this->hlentries);
 
@@ -1721,7 +1732,9 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
             continue;
           }
           if (!notriangle) {
-            if (!draw_entry.ventry->cache->hasTransparency()
+            if (this->shadowmapping)
+                array |= SoFCVertexCache::NON_SORTED_ARRAY;
+            else if (!draw_entry.ventry->cache->hasTransparency()
                 || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
               array |= SoFCVertexCache::FULL_SORTED_ARRAY;
             else
@@ -1769,7 +1782,9 @@ SoFCRenderer::render(SoGLRenderAction * action)
 
   if (PRIVATE(this)->shadowmapping
       && !PRIVATE(this)->transpshadowmapping
-      && PRIVATE(this)->transpvcache.size())
+      && PRIVATE(this)->transpvcache.size()
+      && !action->isRenderingDelayedPaths()
+      && !action->isRenderingTranspPaths())
   {
     // signal SoShadowGroup to render transparent shadow
     action->handleTransparency(TRUE);
@@ -1786,6 +1801,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   glPushAttrib(GL_ALL_ATTRIB_BITS);
   state->push();
 
+  SoLazyElement::setToDefault(state);
   glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
   glEnable(GL_COLOR_MATERIAL);
 
@@ -1815,6 +1831,10 @@ SoFCRenderer::render(SoGLRenderAction * action)
       state->pop();
       glPopAttrib();
       FC_GLERROR_CHECK;
+      SoGLLazyElement::getInstance(state)->reset(state,
+                                                SoLazyElement::LIGHT_MODEL_MASK|
+                                                SoLazyElement::TWOSIDE_MASK|
+                                                SoLazyElement::SHADE_MODEL_MASK);
       return;
     }
   }
@@ -1842,6 +1862,10 @@ SoFCRenderer::render(SoGLRenderAction * action)
     state->pop();
     glPopAttrib();
     FC_GLERROR_CHECK;
+    SoGLLazyElement::getInstance(state)->reset(state,
+                                              SoLazyElement::LIGHT_MODEL_MASK|
+                                              SoLazyElement::TWOSIDE_MASK|
+                                              SoLazyElement::SHADE_MODEL_MASK);
     return;
   }
   
@@ -1990,6 +2014,10 @@ SoFCRenderer::render(SoGLRenderAction * action)
   state->pop();
   glPopAttrib();
   FC_GLERROR_CHECK;
+  SoGLLazyElement::getInstance(state)->reset(state,
+                                             SoLazyElement::LIGHT_MODEL_MASK|
+                                             SoLazyElement::TWOSIDE_MASK|
+                                             SoLazyElement::SHADE_MODEL_MASK);
 }
 
 const char *
