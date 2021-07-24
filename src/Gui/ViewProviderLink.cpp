@@ -2669,7 +2669,27 @@ bool ViewProviderLink::getDetailPath(
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
-    return !element || element->canDelete();
+    if (element && !element->canDelete())
+        return false;
+    auto ext = getLinkExtension();
+    if (ext->isLinkMutated()) {
+        auto linked = ext->getLinkedObjectValue();
+        auto doc = ext->getContainer()->getDocument();
+        if (linked->getDocument() == doc) {
+            std::deque<std::string> objs;
+            for (auto obj : ext->getOnChangeCopyObjects(nullptr, linked)) {
+                if (obj->getDocument() == doc) {
+                    // getOnChangeCopyObjects() returns object in depending
+                    // order. So we delete it in reverse to avoid error
+                    // reported by some parent object failing to find child
+                    objs.emplace_front(obj->getNameInDocument());
+                }
+            }
+            for (auto &name : objs)
+                doc->removeObject(name.c_str());
+        }
+    }
+    return true;
 }
 
 bool ViewProviderLink::canDelete(App::DocumentObject *obj) const {
