@@ -509,6 +509,8 @@ public:
 
     DocumentObjectItem *itemHitTest(QPoint pos, QByteArray *tag);
 
+    void checkItemEntered(QTreeWidgetItem *item, const QByteArray &tag);
+
     TreeWidget *master;
 
     bool disableSyncView = false;
@@ -2387,6 +2389,7 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
 
     QByteArray tag;
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
+    pimpl->checkItemEntered(oitem, tag);
     if (oitem) {
         try {
             SelectionContext sctx(oitem->getSubObjectT());
@@ -2403,9 +2406,6 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                 FC_ERR("Unknown exception");
         }
-    } else {
-        pimpl->tooltipItem = nullptr;
-        ToolTip::hideText();
     }
 
     // QAbstractionItemView has this weird DragSeletingState, where the mouse
@@ -2509,17 +2509,14 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
     }
 
     if (!rect.contains(pos)) {
-        if (tag) {
-            if (pos.x() < itemX)
-                *tag = Gui::treeBranchTag();
-            else
-                *tag = Gui::treeNoIconTag();
-        }
+        if (pos.x() < itemX)
+            *tag = Gui::treeBranchTag();
+        else
+            *tag = Gui::treeNoIconTag();
         return objitem;
     }
     if (checkboxWidth && pos.x() < itemX + checkboxWidth) {
-        if (tag)
-            *tag = Gui::treeCheckBoxTag();
+        *tag = Gui::treeCheckBoxTag();
         return objitem;
     }
     float scale = iconSize()/64.0f;
@@ -2528,10 +2525,11 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
         int ofs = itemX + checkboxWidth + offset*scale;
         if (pos.x() > ofs && pos.x() < ofs + v.second*scale) {
             *tag = v.first;
-            break;
+            return objitem;
         }
         offset += v.second;
     }
+    *tag = treeNoIconTag();
     return objitem;
 }
 
@@ -2846,8 +2844,12 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
             }
         }
     }
-    if (!targetItem) {
-        targetItem = itemAt(event->pos());
+
+    QByteArray tag;
+    if (targetItem)
+        tag = treeNoIconTag();
+    else {
+        targetItem = pimpl->itemHitTest(event->pos(), &tag);
         if (targetItem)
             setCurrentItem(targetItem, 0, QItemSelectionModel::NoUpdate);
     }
@@ -2871,7 +2873,7 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
     }
     else if (targetItem->type() == TreeWidget::ObjectType) {
         if (!action)
-            onItemEntered(targetItem);
+            pimpl->checkItemEntered(targetItem, tag);
 
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
@@ -4089,39 +4091,46 @@ void TreeWidget::onUpdateStatus(void)
     FC_LOG("done update status");
 }
 
-void TreeWidget::onItemEntered(QTreeWidgetItem * item)
+void TreeWidget::onItemEntered(QTreeWidgetItem *)
 {
-    if(hiddenItem == item) {
-        TREE_LOG("skip hidden item " << item);
-        return;
-    } else if (hiddenItem) {
-        TREE_LOG("reset hidden item " << hiddenItem);
-        hiddenItem = nullptr;
-    }
+    // the logic of mouse over highlight is moved to
+    // Private::checkItemEntered() and called by mouseMoveEvent()
+}
 
-    if (item != pimpl->tooltipItem) {
-        pimpl->tooltipItem = nullptr;
+void TreeWidget::Private::checkItemEntered(QTreeWidgetItem *item, const QByteArray &tag)
+{
+    if (item != this->tooltipItem) {
+        this->tooltipItem = nullptr;
         ToolTip::hideText();
     }
+
+    if (!item || tag != treeNoIconTag())
+        return;
+
+    if (master->hiddenItem == item)
+        return;
+
+    if (master->hiddenItem)
+        master->hiddenItem = nullptr;
 
     if (item && item->type() == TreeWidget::ObjectType) {
         if(TreeParams::PreSelection()) {
             int timeout = TreeParams::PreSelectionMinDelay();
-            if(timeout > 0 && preselectTime.elapsed() < timeout ) {
-                preselectTime.restart();
-                preselectTimer->start(timeout);
+            if(timeout > 0 && master->preselectTime.elapsed() < timeout ) {
+                master->preselectTime.restart();
+                master->preselectTimer->start(timeout);
                 return;
             }
             timeout = TreeParams::PreSelectionDelay();
             if(timeout < 0)
                 timeout = 1;
-            if(preselectTime.elapsed() < timeout)
-                onPreSelectTimer();
+            if(master->preselectTime.elapsed() < timeout)
+                master->onPreSelectTimer();
             else{
                 timeout = TreeParams::PreSelectionTimeout();
                 if(timeout < 0)
                     timeout = 1;
-                preselectTimer->start(timeout);
+                master->preselectTimer->start(timeout);
                 Selection().rmvPreselect();
             }
         }
@@ -4141,8 +4150,10 @@ void TreeWidget::leaveEvent(QEvent *) {
 void TreeWidget::onPreSelectTimer() {
     if(!TreeParams::PreSelection())
         return;
-    auto item = itemAt(viewport()->mapFromGlobal(QCursor::pos()));
-    if(!item || item->type()!=TreeWidget::ObjectType) {
+    QByteArray tag;
+    auto item = pimpl->itemHitTest(
+            viewport()->mapFromGlobal(QCursor::pos()), &tag);
+    if(!item || item->type()!=TreeWidget::ObjectType || tag != treeNoIconTag()) {
         pimpl->restoreCursor();
         return;
     }
