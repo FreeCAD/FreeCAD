@@ -132,6 +132,8 @@ private:
 
     void refresh();
 
+    virtual bool eventFilter(QObject*, QEvent *);
+
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
     std::string ObjectName;

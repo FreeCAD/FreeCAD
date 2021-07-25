@@ -158,6 +158,15 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    ui->lineRef1->installEventFilter(this);
+    ui->lineRef1->setMouseTracking(true);
+    ui->lineRef2->installEventFilter(this);
+    ui->lineRef2->setMouseTracking(true);
+    ui->lineRef3->installEventFilter(this);
+    ui->lineRef3->setMouseTracking(true);
+    ui->lineRef4->installEventFilter(this);
+    ui->lineRef4->setMouseTracking(true);
+
     connect(ui->attachmentOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetXChanged(double)));
     connect(ui->attachmentOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYChanged(double)));
     connect(ui->attachmentOffsetZ, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetZChanged(double)));
@@ -1285,6 +1294,51 @@ bool TaskDlgAttacher::reject()
     // roll back the done things
     App::GetApplication().closeActiveTransaction(true);
     return true;
+}
+
+bool TaskAttacher::eventFilter(QObject *o, QEvent *ev)
+{
+    if (!ViewProvider)
+        return false;
+    switch(ev->type()) {
+    case QEvent::Leave:
+        Gui::Selection().rmvPreselect();
+        break;
+    case QEvent::Enter:
+        if (auto edit = qobject_cast<QLineEdit*>(o)) {
+            QStringList ref = edit->text().split(QLatin1String(":"));
+            if (ref.size()) {
+                auto obj = ViewProvider->getObject()->getDocument()->getObject(
+                        ref[0].toLatin1().constData());
+                if (obj) {
+                    auto objT = editObjT.getParent();
+                    if (auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
+                        auto objs = objT.getSubObjectList();
+                        int i = 0;
+                        for (auto o : objs) {
+                            ++i;
+                            if (o == group)
+                                break;
+                        }
+                        objs.resize(i);
+                        objT = App::SubObjectT(objs);
+                    }
+                    objT = objT.getChild(obj);
+                    if (ref.size() > 1)
+                        objT.setSubName(objT.getSubName() + ref[1].toLatin1().constData());
+                    Gui::Selection().setPreselect(
+                            objT.getDocumentName().c_str(),
+                            objT.getObjectName().c_str(),
+                            objT.getSubName().c_str(),
+                            0,0,0,2,true);
+                }
+            }
+        }
+        break;
+    default:
+        break;
+    }
+    return false;
 }
 
 #include "moc_TaskAttacher.cpp"
