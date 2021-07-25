@@ -1617,7 +1617,7 @@ StdCmdRotationCenterSelection::StdCmdRotationCenterSelection()
     sGroup        = QT_TR_NOOP("Standard-View");
     sMenuText     = QT_TR_NOOP("Rotation center at selection");
     sToolTipText  = QT_TR_NOOP("Set rotation center at the center of current selection");
-    sWhatsThis    = "Std_ViewSelectionExtend";
+    sWhatsThis    = "Std_RotationCenterSelection";
     sStatusTip    = sToolTipText;
     sAccel        = "V, R";
     eType         = Alter3DView | NoDefaultAction;

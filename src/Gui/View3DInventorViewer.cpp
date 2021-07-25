@@ -4585,7 +4585,7 @@ void View3DInventorViewer::setRotationCenterSelection()
         const auto &presel = Gui::Selection().getPreselection().Object;
         sels.emplace_back(presel.getDocumentName().c_str(),
                           presel.getObjectName().c_str(),
-                          presel.getSubNameNoElement().c_str());
+                          presel.getSubName().c_str());
     }
 
     Base::BoundBox3d bound;
