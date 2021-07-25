@@ -48,13 +48,13 @@ SET(FemExamples_SRCS
     femexamples/buckling_platebuckling.py
     femexamples/buckling_lateraltorsionalbuckling.py
     femexamples/ccx_buckling_flexuralbuckling.py
-    femexamples/ccx_cantilever_base_face.py
+    # femexamples/ccx_cantilever_base_face.py
     femexamples/ccx_cantilever_base_solid.py
     femexamples/ccx_cantilever_ele_hexa20.py
-    femexamples/ccx_cantilever_ele_tetra4.py
-    femexamples/ccx_cantilever_ele_tria3.py
-    femexamples/ccx_cantilever_ele_tria6.py
-    femexamples/ccx_cantilever_ele_seg3.py
+    # femexamples/ccx_cantilever_ele_tetra4.py
+    # femexamples/ccx_cantilever_ele_tria3.py
+    # femexamples/ccx_cantilever_ele_tria6.py
+    # femexamples/ccx_cantilever_ele_seg3.py
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
@@ -92,9 +92,9 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_buckling_ibeam_tria6.py
     femexamples/meshes/mesh_buckling_plate_tria6.py
     femexamples/meshes/mesh_canticcx_hexa20.py
-    femexamples/meshes/mesh_canticcx_seg3.py
+    # femexamples/meshes/mesh_canticcx_seg3.py
     femexamples/meshes/mesh_canticcx_tetra10.py
-    femexamples/meshes/mesh_canticcx_tria6.py
+    # femexamples/meshes/mesh_canticcx_tria6.py
     femexamples/meshes/mesh_capacitance_two_balls_tetra10.py
     femexamples/meshes/mesh_constraint_centrif_tetra10.py
     femexamples/meshes/mesh_constraint_tie_tetra10.py
