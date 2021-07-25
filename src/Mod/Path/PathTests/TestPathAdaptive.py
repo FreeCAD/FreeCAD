@@ -2,6 +2,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -45,12 +47,7 @@ class TestPathAdaptive(PathTestBase):
         is able to call static methods within this same class.
         '''
 
-        # Create a new document and create test geometry
-        # doc_title = "TestAdaptive"
-        # doc = FreeCAD.newDocument(doc_title)
-        # cls._createTestGeometry(doc)
-
-        # Open existing document with test geometry
+        # Open existing FreeCAD document with test geometry
         doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_adaptive.fcstd')
 
         # Create Job object, adding geometry objects from file opened above
@@ -77,33 +74,8 @@ class TestPathAdaptive(PathTestBase):
         '''
         # FreeCAD.Console.PrintMessage("TestPathAdaptive.tearDownClass()\n")
 
-        # Do not close document unless unit tests are commandline only
-        if FreeCAD.GuiUp:
-            pass
-        else:
-            FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
-
-    @staticmethod
-    def _createTestGeometry(doc):
-        '''_createTestGeometry(doc)...
-        This contains the instructions to create test geometry for the unit tests in this class.
-        A simple example creation is provided.
-        '''
-
-        # Create a square donut
-        box0 = doc.addObject('Part::Box', 'Box0')  # Box
-        box0.Length = 50.0
-        box0.Width = 50.0
-        box0.Height = 10.0
-        box1 = doc.addObject('Part::Box', 'Box1')  # Box001
-        box1.Length = 10.0  # X
-        box1.Width = 10.0  # Y
-        box1.Height = 20.0  # Z
-        box1.Placement = FreeCAD.Placement(FreeCAD.Vector(10.0, 10.0, -5.0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
-        cut0 = doc.addObject('Part::Cut', 'Cut0')
-        cut0.Base = box0
-        cut0.Tool = box1
-        doc.recompute()
+        # Close geometry document without saving
+        FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
 
     # Setup and tear down methods called before and after each unit test
     def setUp(self):
@@ -123,7 +95,7 @@ class TestPathAdaptive(PathTestBase):
 
     # Unit tests
     def test00(self):
-        '''test00() Empty test: Verify default property values.'''
+        '''test00() Empty test.'''
         return
 
     def test01(self):
@@ -369,6 +341,7 @@ def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
     # Set Heights
     # default values used
 
+
 def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True):
     '''getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True)...
     Accepts command dict and returns point string coordinate.
@@ -461,7 +434,6 @@ def pathOriginatesInBox(cmd, minPoint, maxPoint):
     return False
 
 
-
 def _addViewProvider(adaptiveOp):
     if FreeCAD.GuiUp:
         PathOpGui = PathAdaptiveGui.PathOpGui
@@ -469,7 +441,8 @@ def _addViewProvider(adaptiveOp):
         adaptiveOp.ViewObject.Proxy = PathOpGui.ViewProvider(adaptiveOp.ViewObject, cmdRes)
 
 
-# Expected moves for unit tests
+# Example string literal of expected path moves from an operation
+# Expected moves for unit test01
 expected_moves_test01 = "G1 X32.5 Y32.5 Z5.0;  \
 G1 X17.5 Y32.5 Z5.0;  \
 G1 X17.5 Y30.0 Z5.0;  \
@@ -484,61 +457,3 @@ G1 X17.5 Y20.0 Z5.0;  \
 G1 X32.5 Y20.0 Z5.0;  \
 G1 X32.5 Y17.5 Z5.0;  \
 G1 X17.5 Y17.5 Z5.0"
-
-expected_moves_test02 = "G1 X22.5 Y-17.5 Z15.0;  \
-G1 X22.5 Y-22.5 Z15.0;  \
-G1 X17.5 Y-22.5 Z15.0;  \
-G1 X17.5 Y-17.5 Z15.0;  \
-G1 X22.5 Y-17.5 Z15.0;  \
-G1 X21.25 Y-18.75 Z15.0;  \
-G1 X21.25 Y-21.25 Z15.0;  \
-G1 X18.75 Y-21.25 Z15.0;  \
-G1 X18.75 Y-18.75 Z15.0;  \
-G1 X21.25 Y-18.75 Z15.0"
-
-expected_moves_test03 = "G1 X32.5 Y-22.5 Z5.0;  \
-G1 X32.5 Y-22.76 Z5.0;  \
-G3 I2.4 J-12.0 K0.0 X27.5 Y-25.01 Z5.0;  \
-G1 X27.5 Y-25.0 Z5.0;  \
-G1 X27.5 Y-22.5 Z5.0;  \
-G1 X32.5 Y-22.5 Z5.0;  \
-G1 X25.02 Y-27.5 Z5.0;  \
-G3 I9.66 J-7.36 K0.0 X22.76 Y-32.5 Z5.0;  \
-G1 X22.5 Y-32.5 Z5.0;  \
-G1 X22.5 Y-27.5 Z5.0;  \
-G1 X25.0 Y-27.5 Z5.0;  \
-G1 X25.02 Y-27.5 Z5.0"
-
-expected_moves_test04 = "G1 X25.0 Y-15.0 Z15.0;  \
-G1 X15.0 Y-15.0 Z15.0;  \
-G1 X15.0 Y-25.0 Z15.0;  \
-G1 X25.0 Y-25.0 Z15.0;  \
-G1 X25.0 Y-22.5 Z15.0;  \
-G1 X22.5 Y-22.5 Z15.0;  \
-G1 X22.5 Y-17.5 Z15.0;  \
-G1 X17.5 Y-17.5 Z15.0;  \
-G1 X17.5 Y-22.5 Z15.0;  \
-G1 X22.5 Y-22.5 Z15.0;  \
-G1 X25.0 Y-22.5 Z15.0;  \
-G1 X25.0 Y-15.0 Z15.0"
-
-expected_moves_test05 = "G1 X32.5 Y32.5 Z5.0;  \
-G1 X32.5 Y17.5 Z5.0;  \
-G1 X17.5 Y17.5 Z5.0;  \
-G1 X17.5 Y32.5 Z5.0;  \
-G1 X32.5 Y32.5 Z5.0;  \
-G1 X30.0 Y30.0 Z5.0;  \
-G1 X30.0 Y20.0 Z5.0;  \
-G1 X20.0 Y20.0 Z5.0;  \
-G1 X20.0 Y30.0 Z5.0;  \
-G1 X30.0 Y30.0 Z5.0;  \
-G1 X27.5 Y27.5 Z5.0;  \
-G1 X27.5 Y22.5 Z5.0;  \
-G1 X22.5 Y22.5 Z5.0;  \
-G1 X22.5 Y27.5 Z5.0;  \
-G1 X27.5 Y27.5 Z5.0;  \
-G1 X26.25 Y26.25 Z5.0;  \
-G1 X26.25 Y23.75 Z5.0;  \
-G1 X23.75 Y23.75 Z5.0;  \
-G1 X23.75 Y26.25 Z5.0;  \
-G1 X26.25 Y26.25 Z5.0"
