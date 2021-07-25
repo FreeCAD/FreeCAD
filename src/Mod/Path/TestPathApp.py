@@ -24,7 +24,6 @@ import TestApp
 
 # from PathTests.TestPathPost import PathPostTestCases
 from PathTests.TestPathAdaptive import TestPathAdaptive
-"""
 from PathTests.TestPathCore import TestPathCore
 from PathTests.TestPathDeburr import TestPathDeburr
 from PathTests.TestPathDepthParams import depthTestCases
@@ -46,17 +45,13 @@ from PathTests.TestPathTooltable import TestPathTooltable
 from PathTests.TestPathUtil import TestPathUtil
 from PathTests.TestPathVcarve import TestPathVcarve
 from PathTests.TestPathVoronoi import TestPathVoronoi
-"""
 
 # dummy usage to get flake8 and lgtm quiet
-"""
 False if depthTestCases.__name__ else True
 False if TestApp.__name__ else True
 False if TestDressupDogbone.__name__ else True
 False if TestHoldingTags.__name__ else True
-"""
 False if TestPathAdaptive.__name__ else True
-"""
 False if TestPathCore.__name__ else True
 False if TestPathDeburr.__name__ else True
 False if TestPathGeom.__name__ else True
@@ -75,4 +70,3 @@ False if TestPathTooltable.__name__ else True
 False if TestPathUtil.__name__ else True
 False if TestPathVcarve.__name__ else True
 False if TestPathVoronoi.__name__ else True
-"""
