@@ -71,22 +71,22 @@ def setup(doc=None, solvertype="ccxtools"):
     # geometric objects
     # name is important because the other method in this module use obj name
     # parts
-    face_obj1 = doc.addObject('Part::Plane', 'Face1')
+    face_obj1 = doc.addObject("Part::Plane", "Face1")
     face_obj1.Width = 10
     face_obj1.Length = 20
-    face_obj2 = doc.addObject('Part::Plane', 'Face2')
+    face_obj2 = doc.addObject("Part::Plane", "Face2")
     face_obj2.Width = 10
     face_obj2.Length = 20
     face_obj2.Placement.Base = (20, 0, 0)
-    face_obj3 = doc.addObject('Part::Plane', 'Face3')
+    face_obj3 = doc.addObject("Part::Plane", "Face3")
     face_obj3.Width = 10
     face_obj3.Length = 20
     face_obj3.Placement.Base = (40, 0, 0)
-    face_obj4 = doc.addObject('Part::Plane', 'Face4')
+    face_obj4 = doc.addObject("Part::Plane", "Face4")
     face_obj4.Width = 10
     face_obj4.Length = 20
     face_obj4.Placement.Base = (60, 0, 0)
-    face_obj5 = doc.addObject('Part::Plane', 'Face5')
+    face_obj5 = doc.addObject("Part::Plane", "Face5")
     face_obj5.Width = 10
     face_obj5.Length = 20
     face_obj5.Placement.Base = (80, 0, 0)
@@ -131,40 +131,40 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # shell thickness
-    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 10, 'ShellThickness')
+    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 10, "ShellThickness")
     analysis.addObject(thickness_obj)
 
     # materials
-    material_obj1 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial1')
+    material_obj1 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial1")
     material_obj1.References = [(doc.Face3, "Face1")]
     mat = material_obj1.Material
-    mat['Name'] = "Concrete-Generic"
-    mat['YoungsModulus'] = "32000 MPa"
-    mat['PoissonRatio'] = "0.17"
-    mat['Density'] = "0 kg/m^3"
+    mat["Name"] = "Concrete-Generic"
+    mat["YoungsModulus"] = "32000 MPa"
+    mat["PoissonRatio"] = "0.17"
+    mat["Density"] = "0 kg/m^3"
     material_obj1.Material = mat
     analysis.addObject(material_obj1)
 
-    material_obj2 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial2')
+    material_obj2 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial2")
     material_obj2.References = [
         (doc.Face2, "Face1"),
         (doc.Face4, "Face1")
     ]
     mat = material_obj2.Material
-    mat['Name'] = "PLA"
-    mat['YoungsModulus'] = "3640 MPa"
-    mat['PoissonRatio'] = "0.36"
-    mat['Density'] = "0 kg/m^3"
+    mat["Name"] = "PLA"
+    mat["YoungsModulus"] = "3640 MPa"
+    mat["PoissonRatio"] = "0.36"
+    mat["Density"] = "0 kg/m^3"
     material_obj2.Material = mat
     analysis.addObject(material_obj2)
 
-    material_obj3 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial3')
+    material_obj3 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial3")
     material_obj3.References = []
     mat = material_obj3.Material
-    mat['Name'] = "Steel-Generic"
-    mat['YoungsModulus'] = "200000 MPa"
-    mat['PoissonRatio'] = "0.30"
-    mat['Density'] = "7900 kg/m^3"
+    mat["Name"] = "Steel-Generic"
+    mat["YoungsModulus"] = "200000 MPa"
+    mat["PoissonRatio"] = "0.30"
+    mat["Density"] = "7900 kg/m^3"
     material_obj3.Material = mat
     analysis.addObject(material_obj3)
 
