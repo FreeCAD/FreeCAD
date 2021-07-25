@@ -34,7 +34,7 @@ from .manager import init_doc
 
 def get_information():
     return {
-        "name": "CCX cantilever hexa20 face load",
+        "name": "CCX cantilever hexa20 solid elements",
         "meshtype": "solid",
         "meshelement": "Hexa20",
         "constraints": ["fixed", "force"],
@@ -53,6 +53,7 @@ setup()
 
 
 See forum topic post:
+hexa20 elements and face load
 ...
 
 """

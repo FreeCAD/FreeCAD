@@ -25,7 +25,7 @@
 import ObjectsFem
 
 from . import manager
-from .ccx_cantilever_base import setup_cantileverbase
+from .ccx_cantilever_base_solid import setup_cantilever_base_solid
 from .manager import init_doc
 
 
@@ -66,7 +66,7 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
-    doc = setup_cantileverbase(doc, solvertype)
+    doc = setup_cantilever_base_solid(doc, solvertype)
     analysis = doc.Analysis
     geom_obj = doc.Box
 
