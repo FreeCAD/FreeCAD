@@ -669,7 +669,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   }
 
   int8_t twoside = next.twoside;
-  if (transp)
+  if (transp || next.isOnTop())
     twoside = 1;
   if (first || this->material.twoside != twoside) {
     SoLazyElement::setTwosideLighting(state, twoside);
