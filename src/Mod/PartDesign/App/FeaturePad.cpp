@@ -93,6 +93,10 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Pad", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
     ADD_PROPERTY_TYPE(Linearize,(false), "Pad", App::Prop_None,
             "Linearize the resut shape by simplify linear edge and planar face into line and plane");
+    ADD_PROPERTY_TYPE(CheckUpToFaceLimits,(true), "Pad", App::Prop_None,
+            "When using 'UpToXXXX' method, check whether the sketch shape is within\n"
+            "the up-to-face. And remove the up-to-face limitation to make padding/extrusion\n"
+            "work. Note that you may want to disable this if the up-to-face is concave.");
 }
 
 short Pad::mustExecute() const
@@ -266,8 +270,9 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
             // Check supportface for limits, otherwise Perform() throws an exception
             if (!supportface.hasSubShape(TopAbs_WIRE))
                 supportface = TopoShape();
-            PrismMode mode = PrismMode::None;
-            generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+            auto mode = TopoShape::PrismMode::None;
+            prism.makEPrism(base, sketchshape, supportface,
+                    upToFace, dir, mode, CheckUpToFaceLimits.getValue());
         } else {
             Part::Extrusion::ExtrusionParameters params;
             params.dir = dir;

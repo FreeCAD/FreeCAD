@@ -674,27 +674,6 @@ void ProfileBased::generatePrism(TopoShape& prism,
 
 }
 
-void ProfileBased::generatePrism(TopoShape& prism,
-                                 const std::string& method,
-                                 const TopoShape& baseShape,
-                                 const TopoShape& profileshape,
-                                 const TopoShape& supportface,
-                                 const TopoShape& uptoface,
-                                 const gp_Dir& direction,
-                                 PrismMode Mode,
-                                 Standard_Boolean Modify)
-{
-    if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
-        prism = baseShape.makEPrism(profileshape, supportface, uptoface, direction, Mode, Modify);
-    }
-    else {
-        std::stringstream str;
-        str << "ProfileBased: Internal error: Unknown method '"
-            << method << "' for generatePrism()";
-        throw Base::RuntimeError(str.str());
-    }
-}
-
 bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
                                        const gp_Dir& dir) {
     // Project wire onto the face (face, not surface! So limits of face apply)

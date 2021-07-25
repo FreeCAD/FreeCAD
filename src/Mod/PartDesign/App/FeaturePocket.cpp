@@ -88,6 +88,10 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Pocket", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
     ADD_PROPERTY_TYPE(Linearize,(false), "Pocket", App::Prop_None,
             "Linearize the resut shape by simplify linear edge and planar face into line and plane");
+    ADD_PROPERTY_TYPE(CheckUpToFaceLimits,(true), "Pocket", App::Prop_None,
+            "When using 'UpToXXXX' method, check whether the sketch shape is within\n"
+            "the up-to-face. And remove the up-to-face limitation to make the pocket\n"
+            "work. Note that you may want to disable this if the up-to-face is concave.");
 }
 
 short Pocket::mustExecute() const
@@ -198,8 +202,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 #else
             TopoShape prism(0,getDocument()->getStringHasher());
             profileshape.reTagElementMap(-getID(), getDocument()->getStringHasher());
-            PrismMode mode = PrismMode::CutFromBase;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
+            auto mode = TopoShape::PrismMode::CutFromBase;
+            prism = base.makEPrism(profileshape, supportface, upToFace,
+                    dir, mode, CheckUpToFaceLimits.getValue());
 #endif
             prism.Tag = -this->getID();
             // And the really expensive way to get the SubShape...

@@ -70,6 +70,7 @@ private Q_SLOTS:
     void onInnerAngleChanged(double);
     void onInnerAngle2Changed(double);
     void onUsePipeChanged(bool);
+    void onCheckFaceLimitsChanged(bool);
 
 protected:
     void changeEvent(QEvent *e) override;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>318</width>
-    <height>365</height>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,67 +16,14 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="0">
-      <widget class="QLabel" name="labelLength">
-       <property name="text">
-        <string>Length</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
-       <property name="keyboardTracking" stdset="0">
-        <bool>false</bool>
-       </property>
-       <property name="minimum" stdset="0">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="buttonFace">
-       <property name="text">
-        <string>Face</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="labelOffset">
-       <property name="text">
-        <string>Offset to face</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineFaceName"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="changeMode">
-       <item>
-        <property name="text">
-         <string>Dimension</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="4" column="1">
+     <item row="5" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="textLabel1">
-       <property name="text">
-        <string>Type</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
        <property name="minimumSize">
         <size>
@@ -90,9 +37,69 @@
       </widget>
      </item>
      <item row="3" column="0">
+      <widget class="QLabel" name="labelLength">
+       <property name="text">
+        <string>Length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="buttonFace">
+       <property name="text">
+        <string>Face</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="labelOffset">
+       <property name="text">
+        <string>Offset to face</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineFaceName"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="changeMode">
+       <item>
+        <property name="text">
+         <string>Dimension</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="textLabel1">
+       <property name="text">
+        <string>Type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
       <widget class="QLabel" name="labelLength2">
        <property name="text">
         <string>2nd length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="minimum" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="checkFaceLimits">
+       <property name="text">
+        <string>Check face limit</string>
        </property>
       </widget>
      </item>

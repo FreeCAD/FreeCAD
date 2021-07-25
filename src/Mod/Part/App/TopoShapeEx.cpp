@@ -1800,7 +1800,8 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
                                 const TopoShape& supportface,
                                 const TopoShape& _uptoface,
                                 const gp_Dir& direction,
-                                Standard_Integer Mode,
+                                PrismMode Mode,
+                                Standard_Boolean checkLimits,
                                 Standard_Boolean Modify,
                                 const char *op)
 {
@@ -1815,7 +1816,7 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
-    if (uptoface.hasSubShape(TopAbs_WIRE)) {
+    if (checkLimits && uptoface.hasSubShape(TopAbs_WIRE)) {
         TopoDS_Face face = TopoDS::Face(uptoface.getShape());
         bool remove_limits = false;
         // Remove the limits of the upToFace so that the extrusion works even if sketchshape is larger
@@ -1879,8 +1880,8 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
                 res = PrismMaker.Shape();
 
-                if (Mode == 2)
-                    Mode = 1;
+                if (Mode == PrismMode::None)
+                    Mode = PrismMode::FuseWithBase;
             }
             break;
         } catch (Base::Exception &) {

@@ -534,21 +534,29 @@ public:
         return TopoShape(0,Hasher).makEPrism(*this,vec,op);
     }
 
+    // See BRepFeat_MakePrism
+    enum PrismMode {
+        CutFromBase = 0,
+        FuseWithBase = 1,
+        None = 2
+    };
     TopoShape &makEPrism(const TopoShape &base, 
                          const TopoShape& profileshape,
                          const TopoShape& supportface,
                          const TopoShape& uptoface,
                          const gp_Dir& direction,
-                         Standard_Integer Mode,
-                         Standard_Boolean Modify,
+                         PrismMode Mode,
+                         Standard_Boolean checkLimits = Standard_True,
+                         Standard_Boolean Modify = Standard_True,
                          const char *op=0);
 
     TopoShape makEPrism(const TopoShape& profileshape,
                         const TopoShape& supportface,
                         const TopoShape& uptoface,
                         const gp_Dir& direction,
-                        Standard_Integer Mode,
-                        Standard_Boolean Modify,
+                        PrismMode Mode,
+                        Standard_Boolean checkLimits = Standard_True,
+                        Standard_Boolean Modify = Standard_True,
                         const char *op=0) const
     {
         return TopoShape(0,Hasher).makEPrism(*this,
@@ -557,6 +565,7 @@ public:
                                              uptoface,
                                              direction,
                                              Mode,
+                                             checkLimits,
                                              Modify,
                                              op);
     }

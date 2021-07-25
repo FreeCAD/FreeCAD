@@ -47,6 +47,7 @@ public:
     App::PropertyAngle          InnerTaperAngleRev;
     App::PropertyBool           UsePipeForDraft;
     App::PropertyBool           Linearize;
+    App::PropertyBool           CheckUpToFaceLimits;
 
     /** @name methods override feature */
     //@{

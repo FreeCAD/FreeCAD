@@ -101,6 +101,9 @@ void TaskPadParameters::setupUI(bool newObj)
     ui->innerTaperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle"));
     ui->innerTaperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle2"));
 
+    ui->checkFaceLimits->setToolTip(QApplication::translate(
+                "Property", pcPad->CheckUpToFaceLimits.getDocumentation()));
+
     ui->taperAngleEdit->setToolTip(QApplication::translate(
                 "Property", pcPad->TaperAngle.getDocumentation()));
     ui->taperAngleEdit2->setToolTip(QApplication::translate(
@@ -170,6 +173,8 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onReversedChanged(bool)));
     connect(ui->checkBoxUsePipe, SIGNAL(toggled(bool)),
             this, SLOT(onUsePipeChanged(bool)));
+    connect(ui->checkFaceLimits, SIGNAL(toggled(bool)),
+            this, SLOT(onCheckFaceLimitsChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
     connect(ui->buttonFace, SIGNAL(clicked()),
@@ -267,6 +272,8 @@ void TaskPadParameters::refresh()
 
     ui->changeMode->setCurrentIndex(index);
 
+    ui->checkFaceLimits->setChecked(pcPad->CheckUpToFaceLimits.getValue());
+
     // Temporarily prevent unnecessary feature recomputes
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
@@ -285,6 +292,8 @@ void TaskPadParameters::updateUI(int index)
     bool isMidplateEnabled    = false;
     bool isReversedEnabled    = false;
     bool isFaceEditEnabled    = false;
+
+    ui->checkFaceLimits->setVisible(index == 1 || index == 2 || index == 3);
 
     // dimension
     if (index == 0) {
@@ -494,6 +503,13 @@ void TaskPadParameters::onUsePipeChanged(bool on)
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->UsePipeForDraft.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onCheckFaceLimitsChanged(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->CheckUpToFaceLimits.setValue(on);
     recomputeFeature();
 }
 

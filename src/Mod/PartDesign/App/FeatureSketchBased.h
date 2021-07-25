@@ -164,26 +164,6 @@ protected:
                        const double L2,
                        const bool midplane,
                        const bool reversed);
-    // See BRepFeat_MakePrism
-    enum PrismMode {
-        CutFromBase = 0,
-        FuseWithBase = 1,
-        None = 2
-    };
-    /**
-      * Generate a linear prism
-      * It will be a stand-alone solid created with BRepFeat_MakePrism
-      */
-    static void generatePrism(TopoShape& prism,
-                              const std::string& method,
-                              const TopoShape& baseshape,
-                              const TopoShape& profileshape,
-                              const TopoShape& sketchface,
-                              const TopoShape& uptoface,
-                              const gp_Dir& direction,
-                              PrismMode Mode,
-                              Standard_Boolean Modify);
-
     /// Check whether the wire after projection on the face is inside the face
     static bool checkWireInsideFace(const TopoDS_Wire& wire,
                                     const TopoDS_Face& face,

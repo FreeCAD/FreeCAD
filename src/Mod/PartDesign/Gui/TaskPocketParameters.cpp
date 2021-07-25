@@ -87,6 +87,9 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
 
+    ui->checkFaceLimits->setToolTip(QApplication::translate(
+                "Property", pcPocket->CheckUpToFaceLimits.getDocumentation()));
+
     ui->taperAngleEdit->setToolTip(QApplication::translate(
                 "Property", pcPocket->TaperAngle.getDocumentation()));
     ui->taperAngleEdit2->setToolTip(QApplication::translate(
@@ -127,6 +130,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
             this, SLOT(onReversedChanged(bool)));
     connect(ui->checkBoxUsePipe, SIGNAL(toggled(bool)),
             this, SLOT(onUsePipeChanged(bool)));
+    connect(ui->checkFaceLimits, SIGNAL(toggled(bool)),
+            this, SLOT(onCheckFaceLimitsChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
     connect(ui->buttonFace, SIGNAL(clicked()),
@@ -221,6 +226,8 @@ void TaskPocketParameters::refresh()
 
     ui->changeMode->setCurrentIndex(index);
 
+    ui->checkFaceLimits->setChecked(pcPocket->CheckUpToFaceLimits.getValue());
+
     // Temporarily prevent unnecessary feature recomputes
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
@@ -288,6 +295,8 @@ void TaskPocketParameters::updateUI(int index)
         ui->lineFaceName->hide();
         ui->buttonFace->hide();
     }
+
+    ui->checkFaceLimits->setVisible(index == 2 || index == 3);
 
     ui->lengthEdit->setVisible( isLengthEditVisable );
     ui->lengthEdit->setEnabled( isLengthEditVisable );
@@ -416,6 +425,13 @@ void TaskPocketParameters::onUsePipeChanged(bool on)
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->UsePipeForDraft.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onCheckFaceLimitsChanged(bool on)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->CheckUpToFaceLimits.setValue(on);
     recomputeFeature();
 }
 
