@@ -74,11 +74,8 @@ class TestPathAdaptive(PathTestBase):
         '''
         # FreeCAD.Console.PrintMessage("TestPathAdaptive.tearDownClass()\n")
 
-        # Do not close document unless unit tests are commandline only
-        if FreeCAD.GuiUp:
-            pass
-        else:
-            FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
+        # Close geometry document without saving
+        FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
 
     # Setup and tear down methods called before and after each unit test
     def setUp(self):
