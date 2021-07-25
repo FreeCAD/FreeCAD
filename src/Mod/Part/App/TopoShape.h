@@ -317,6 +317,7 @@ public:
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
     void sewShape();
     bool fix(double, double, double);
+    bool fixSolidOrientation();
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
     TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;

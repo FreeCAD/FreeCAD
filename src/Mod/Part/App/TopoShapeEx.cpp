@@ -2657,7 +2657,10 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
         GenericShapeMapper mapper;
         mkRefine.populate(mapper);
         mapper.init(shape, mkRefine.Shape());
-        return makESHAPE(mkRefine.Shape(), mapper, {shape}, op);
+        makESHAPE(mkRefine.Shape(), mapper, {shape}, op);
+        // For some reason, refine operation may reverse the solid
+        fixSolidOrientation();
+        return *this;
 #else
         BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
         return makEShape(mkRefine,shape,op);
@@ -2666,6 +2669,7 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
         if(!no_fail) throw;
     }
     *this = shape;
+    fixSolidOrientation();
     return *this;
 }
 
@@ -3750,6 +3754,56 @@ TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
 
 TopoShape &TopoShape::makESolid(const std::vector<TopoShape> &shapes, const char *op) {
     return makESolid(TopoShape().makECompound(shapes),op);
+}
+
+bool TopoShape::fixSolidOrientation()
+{
+    if (isNull())
+        return false;
+
+    if (shapeType() == TopAbs_SOLID) {
+        TopoDS_Solid solid = TopoDS::Solid(_Shape);
+        BRepLib::OrientClosedSolid(solid);
+        if (solid.IsEqual(_Shape))
+            return false;
+        setShape(solid, false);
+        return true;
+    }
+
+    if (shapeType() == TopAbs_COMPOUND
+            || shapeType() == TopAbs_COMPSOLID)
+    {
+        auto shapes = getSubTopoShapes();
+        bool touched = false;
+        for (auto &s : shapes) {
+            if (s.fixSolidOrientation())
+                touched = true;
+        }
+        if (!touched)
+            return false;
+
+        BRep_Builder builder;
+        if (shapeType() == TopAbs_COMPOUND) {
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            for(auto &s : shapes) {
+                if (!s.isNull())
+                    builder.Add(comp, s.getShape());
+            }
+            setShape(comp, false);
+        } else {
+            TopoDS_CompSolid comp;
+            builder.MakeCompSolid(comp);
+            for(auto &s : shapes) {
+                if (!s.isNull())
+                    builder.Add(comp, s.getShape());
+            }
+            setShape(comp, false);
+        }
+        return true;
+    }
+
+    return false;
 }
 
 TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op) {
