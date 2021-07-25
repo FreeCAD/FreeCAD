@@ -91,13 +91,19 @@ TopoShape Feature::getSolid(const TopoShape& shape)
         Standard_Failure::Raise("Shape is null");
     int count = shape.countSubShapes(TopAbs_SOLID);
     if(count>1) {
-        if(allowMultiSolid())
-            return shape;
+        if(allowMultiSolid()) {
+            auto res = shape;
+            res.fixSolidOrientation();
+            return res;
+        }
         throw Base::RuntimeError("Result has multiple solids.\n"
                 "To allow multiple solids, please set 'SingleSolid' property of the body to false");
     }
-    if(count)
-        return shape.getSubTopoShape(TopAbs_SOLID,1);
+    if(count) {
+        auto res = shape.getSubTopoShape(TopAbs_SOLID,1);
+        res.fixSolidOrientation();
+        return res;
+    }
     return TopoShape();
 }
 
