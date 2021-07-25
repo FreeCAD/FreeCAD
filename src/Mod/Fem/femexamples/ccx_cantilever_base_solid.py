@@ -31,7 +31,7 @@ from .manager import get_meshname
 from .manager import init_doc
 
 
-def setup_cantileverbase(doc=None, solvertype="ccxtools"):
+def setup_cantilever_base_solid(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:

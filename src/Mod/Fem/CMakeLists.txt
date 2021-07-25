@@ -48,10 +48,15 @@ SET(FemExamples_SRCS
     femexamples/buckling_platebuckling.py
     femexamples/buckling_lateraltorsionalbuckling.py
     femexamples/ccx_buckling_flexuralbuckling.py
-    femexamples/ccx_cantilever_base.py
+    femexamples/ccx_cantilever_base_face.py
+    femexamples/ccx_cantilever_base_solid.py
+    femexamples/ccx_cantilever_ele_hexa20.py
+    femexamples/ccx_cantilever_ele_tetra4.py
+    femexamples/ccx_cantilever_ele_tria3.py
+    femexamples/ccx_cantilever_ele_tria6.py
+    femexamples/ccx_cantilever_ele_seg3.py
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
-    femexamples/ccx_cantilever_hexa20faceload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
     femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
@@ -87,7 +92,9 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_buckling_ibeam_tria6.py
     femexamples/meshes/mesh_buckling_plate_tria6.py
     femexamples/meshes/mesh_canticcx_hexa20.py
+    femexamples/meshes/mesh_canticcx_seg3.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_canticcx_tria6.py
     femexamples/meshes/mesh_capacitance_two_balls_tetra10.py
     femexamples/meshes/mesh_constraint_centrif_tetra10.py
     femexamples/meshes/mesh_constraint_tie_tetra10.py
@@ -287,10 +294,10 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/box.FCStd
     femtest/data/calculix/ccx_buckling_flexuralbuckling.dat
     femtest/data/calculix/ccx_buckling_flexuralbuckling.inp
-    femtest/data/calculix/ccxcantilever_faceload.inp
-    femtest/data/calculix/ccxcantilever_hexa20.inp
-    femtest/data/calculix/ccxcantilever_nodeload.inp
-    femtest/data/calculix/ccxcantilever_prescribeddisplacement.inp
+    femtest/data/calculix/ccx_cantilever_faceload.inp
+    femtest/data/calculix/ccx_cantilever_ele_hexa20.inp
+    femtest/data/calculix/ccx_cantilever_nodeload.inp
+    femtest/data/calculix/ccx_cantilever_prescribeddisplacement.inp
     femtest/data/calculix/constraint_centrif.inp
     femtest/data/calculix/constraint_contact_shell_shell.FCStd
     femtest/data/calculix/constraint_contact_shell_shell.inp
@@ -353,41 +360,41 @@ SET(FemTestsZ88Main_SRCS
 
 SET(FemTestsZ88Ccxcantifl_SRCS
     femtest/data/z88/__init__.py
-    femtest/data/z88/ccxcantilever_faceload/51.txt
-    femtest/data/z88/ccxcantilever_faceload/z88.dyn
-    femtest/data/z88/ccxcantilever_faceload/z88elp.txt
-    femtest/data/z88/ccxcantilever_faceload/z88i1.txt
-    femtest/data/z88/ccxcantilever_faceload/z88i2.txt
-    femtest/data/z88/ccxcantilever_faceload/z88i5.txt
-    femtest/data/z88/ccxcantilever_faceload/z88int.txt
-    femtest/data/z88/ccxcantilever_faceload/z88man.txt
-    femtest/data/z88/ccxcantilever_faceload/z88mat.txt
+    femtest/data/z88/ccx_cantilever_faceload/51.txt
+    femtest/data/z88/ccx_cantilever_faceload/z88.dyn
+    femtest/data/z88/ccx_cantilever_faceload/z88elp.txt
+    femtest/data/z88/ccx_cantilever_faceload/z88i1.txt
+    femtest/data/z88/ccx_cantilever_faceload/z88i2.txt
+    femtest/data/z88/ccx_cantilever_faceload/z88i5.txt
+    femtest/data/z88/ccx_cantilever_faceload/z88int.txt
+    femtest/data/z88/ccx_cantilever_faceload/z88man.txt
+    femtest/data/z88/ccx_cantilever_faceload/z88mat.txt
 )
 
 SET(FemTestsZ88Ccxcantihex_SRCS
     femtest/data/z88/__init__.py
-    femtest/data/z88/ccxcantilever_hexa20/51.txt
-    femtest/data/z88/ccxcantilever_hexa20/z88.dyn
-    femtest/data/z88/ccxcantilever_hexa20/z88elp.txt
-    femtest/data/z88/ccxcantilever_hexa20/z88i1.txt
-    femtest/data/z88/ccxcantilever_hexa20/z88i2.txt
-    femtest/data/z88/ccxcantilever_hexa20/z88i5.txt
-    femtest/data/z88/ccxcantilever_hexa20/z88int.txt
-    femtest/data/z88/ccxcantilever_hexa20/z88man.txt
-    femtest/data/z88/ccxcantilever_hexa20/z88mat.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/51.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88.dyn
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88elp.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i1.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i2.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i5.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88int.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88man.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88mat.txt
 )
 
 SET(FemTestsZ88Ccxcantinl_SRCS
     femtest/data/z88/__init__.py
-    femtest/data/z88/ccxcantilever_nodeload/51.txt
-    femtest/data/z88/ccxcantilever_nodeload/z88.dyn
-    femtest/data/z88/ccxcantilever_nodeload/z88elp.txt
-    femtest/data/z88/ccxcantilever_nodeload/z88i1.txt
-    femtest/data/z88/ccxcantilever_nodeload/z88i2.txt
-    femtest/data/z88/ccxcantilever_nodeload/z88i5.txt
-    femtest/data/z88/ccxcantilever_nodeload/z88int.txt
-    femtest/data/z88/ccxcantilever_nodeload/z88man.txt
-    femtest/data/z88/ccxcantilever_nodeload/z88mat.txt
+    femtest/data/z88/ccx_cantilever_nodeload/51.txt
+    femtest/data/z88/ccx_cantilever_nodeload/z88.dyn
+    femtest/data/z88/ccx_cantilever_nodeload/z88elp.txt
+    femtest/data/z88/ccx_cantilever_nodeload/z88i1.txt
+    femtest/data/z88/ccx_cantilever_nodeload/z88i2.txt
+    femtest/data/z88/ccx_cantilever_nodeload/z88i5.txt
+    femtest/data/z88/ccx_cantilever_nodeload/z88int.txt
+    femtest/data/z88/ccx_cantilever_nodeload/z88man.txt
+    femtest/data/z88/ccx_cantilever_nodeload/z88mat.txt
 )
 
 SET(FemTools_SRCS
@@ -462,9 +469,9 @@ INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
-INSTALL(FILES ${FemTestsZ88Ccxcantifl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccxcantilever_faceload)
-INSTALL(FILES ${FemTestsZ88Ccxcantihex_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccxcantilever_hexa20)
-INSTALL(FILES ${FemTestsZ88Ccxcantinl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccxcantilever_nodeload)
+INSTALL(FILES ${FemTestsZ88Ccxcantifl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_faceload)
+INSTALL(FILES ${FemTestsZ88Ccxcantihex_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)
+INSTALL(FILES ${FemTestsZ88Ccxcantinl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_nodeload)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 
 
