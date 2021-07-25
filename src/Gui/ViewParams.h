@@ -353,6 +353,9 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Maximum hierarchy depth that the cache merge can happen. Less than 0 means no limit.")) \
     FC_VIEW_PARAM(RenderCacheMergeDepthMin, int , Int, 1,  \
         QT_TRANSLATE_NOOP("ViewParams","Minimum hierarchy depth that the cache merge can happen.")) \
+    FC_VIEW_PARAM(ForceSolidSingleSideLighting, bool , Bool, true,  \
+        QT_TRANSLATE_NOOP("ViewParams","Force single side lighting on solid. This can help visualizing invalid\n" \
+                                       "solid shapes with flipped normals.")) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

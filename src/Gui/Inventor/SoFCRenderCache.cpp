@@ -1326,7 +1326,12 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         }
         if (vcache->hasSolid() > 1) {
           material.shapetype = SoShapeHintsElement::SOLID;
-          material.culling = 1;
+          // material.culling = 1;
+          if (ViewParams::ForceSolidSingleSideLighting()) {
+            material.twoside = false;
+            material.overrideflags.set(Material::FLAG_TWOSIDE);
+            material.maskflags.set(Material::FLAG_TWOSIDE);
+          }
         }
         vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
