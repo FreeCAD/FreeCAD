@@ -48,7 +48,7 @@ def get_explanation(header=""):
     return header + """
 
 To run the example from Python console use:
-from femexamples.ccx_cantilever_hexa20faceload import setup
+from femexamples.ccx_cantilever_ele_hexa20 import setup
 setup()
 
 
