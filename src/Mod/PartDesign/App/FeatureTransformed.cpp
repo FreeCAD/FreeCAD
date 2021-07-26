@@ -103,6 +103,9 @@ void Transformed::positionBySupport(void)
 }
 
 Part::Feature* Transformed::getBaseObject(bool silent) const {
+    if (_Version.getValue() > 0)
+        return Feature::getBaseObject(silent);
+
     Part::Feature *rv = Feature::getBaseObject(/* silent = */ true);
     if (rv) {
         return rv;
