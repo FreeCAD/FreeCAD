@@ -3814,19 +3814,10 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
                                      bool isNew, const char* viewType, bool isPartial)
 {
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
+    Base::Type type = getTypeIfDerivedFromDocumentObject(sType);
 
     string ObjectName;
-    if (!base)
-        return 0;
-    if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        delete base;
-        std::stringstream str;
-        str << "'" << sType << "' is not a document object type";
-        throw Base::TypeError(str.str());
-    }
-
-    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(base);
+    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(type.createInstance());
     pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!
@@ -3894,13 +3885,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
 std::vector<DocumentObject *> Document::addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew)
 {
-    Base::Type::importModule(sType);
-    Base::Type type = Base::Type::fromName(sType);
-    if (!type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        std::stringstream str;
-        str << "'" << sType << "' is not a document object type";
-        throw Base::TypeError(str.str());
-    }
+    Base::Type type = getTypeIfDerivedFromDocumentObject(sType);
 
     std::vector<DocumentObject *> objects;
     objects.resize(objectNames.size());
@@ -3985,6 +3970,26 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
     }
 
     return objects;
+}
+
+Base::Type Document::getTypeIfDerivedFromDocumentObject(const char* sType) const
+{
+    Base::Type::importModule(sType);
+    Base::Type type = Base::Type::fromName(sType);
+
+    if (type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        return type;
+    }
+    else {
+        std::stringstream str;
+        if (type == Base::Type::badType()) {
+            str << "'" << sType << "' is not a valid type";
+        }
+        else {
+            str << "Type '" << sType << "' does not inherit from 'App::DocumentObject'";
+        }
+        throw Base::TypeError(str.str());
+    }
 }
 
 void Document::addObject(DocumentObject* pcObject, const char* pObjectName)

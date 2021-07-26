@@ -322,6 +322,8 @@ public:
     int countObjectsOfType(const Base::Type& typeId) const;
     /// get the number of objects in the document
     int countObjects(void) const;
+    /// Returns the given named type if is derived from DocumentObject class, otherwise throw a TypeError exception
+    Base::Type getTypeIfDerivedFromDocumentObject(const char* sType) const;
     //@}
 
     /** @name methods for modification and state handling

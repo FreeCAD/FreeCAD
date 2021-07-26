@@ -194,22 +194,14 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
                 kwlist, &sType,&sName,&obj,&view,&attach,&sViewType))
         return NULL;
 
-    DocumentObject *pcFtr = 0;
+    DocumentObject *pcFtr = nullptr;
 
     if (!obj || !PyObject_IsTrue(attach)) {
         pcFtr = getDocumentPtr()->addObject(sType,sName,true,sViewType);
     }
     else {
-        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
-        if (base) {
-            if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-                delete base;
-                std::stringstream str;
-                str << "'" << sType << "' is not a document object type";
-                throw Base::TypeError(str.str());
-            }
-            pcFtr = static_cast<DocumentObject*>(base);
-        }
+        Base::Type type = getDocumentPtr()->getTypeIfDerivedFromDocumentObject(sType);
+        pcFtr = static_cast<DocumentObject*>(type.createInstance());
     }
     if (pcFtr) {
         // Allows to hide the handling with Proxy in client python code
@@ -538,16 +530,7 @@ PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
                 kwlist, &sType, &sName, &sLabel))
         return nullptr;
 
-    Base::Type type = Base::Type::fromName(sType);
-    if (type == Base::Type::badType()) {
-        PyErr_Format(PyExc_TypeError, "'%s' is not a valid type", sType);
-        return nullptr;
-    }
-
-    if (!type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        PyErr_Format(PyExc_TypeError, "Type '%s' does not inherit from 'App::DocumentObject'", sType);
-        return nullptr;
-    }
+    Base::Type type = getDocumentPtr()->getTypeIfDerivedFromDocumentObject(sType);
 
     std::vector<DocumentObject*> res;
 
