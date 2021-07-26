@@ -93,7 +93,10 @@ def get_binary(name):
     """
     if name in _SOLVER_PARAM:
         binary = _SOLVER_PARAM[name].get_binary()
-        FreeCAD.Console.PrintMessage("Solver binary path: {} \n".format(binary))
+        FreeCAD.Console.PrintMessage(
+            'Solver binary path (returned from binary getter): {} \n'
+            .format(binary)
+        )
         return binary
     else:
         FreeCAD.Console.PrintError(
@@ -190,19 +193,31 @@ class _SolverDlg(object):
     def get_binary(self):
 
         # set the binary path to the FreeCAD defaults
-        # ATM pure unix shell commands without path names are used
+        # ATM pure unix shell commands without path names are used as standard
+        # TODO the binaries provieded with the FreeCAD distribution should be found
+        # without any additional user input
+        # see ccxttols, it works for Windows and Linux there
         binary = self.default
-        FreeCAD.Console.PrintLog("Solver binary path: {} \n".format(binary))
+        FreeCAD.Console.PrintLog("Solver binary path default: {} \n".format(binary))
 
         # check if use_default is set to True
         # if True the standard binary path will be overwritten with a user binary path
         if self.param_group.GetBool(self.use_default, True) is False:
             binary = self.param_group.GetString(self.custom_path)
-        FreeCAD.Console.PrintLog("Solver binary path: {} \n".format(binary))
+        FreeCAD.Console.PrintLog("Solver binary path user setting: {} \n".format(binary))
 
         # get the whole binary path name for the given command or binary path and return it
+        # None is returned if the binary has not been found
+        # The user does not know what exactly has going wrong.
         from distutils.spawn import find_executable as find_bin
-        return find_bin(binary)
+        the_found_binary = find_bin(binary)
+        if the_found_binary is None:
+            FreeCAD.Console.PrintError(
+                "The binary has not been found. Full binary search path: {}\n"
+                .format(binary)
+            )
+        FreeCAD.Console.PrintLog("Solver binary found path: {}\n".format(the_found_binary))
+        return the_found_binary
 
     def get_write_comments(self):
         return self.param_group.GetBool(self.WRITE_COMMENTS_PARAM, True)
