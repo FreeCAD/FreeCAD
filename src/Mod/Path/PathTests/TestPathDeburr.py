@@ -52,7 +52,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test01(self):
-        '''Verify chamfer depth and offset for a 90° v-bit.'''
+        '''Verify chamfer depth and offset for a 90 deg v-bit.'''
         tool = Path.Tool()
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 90
@@ -68,7 +68,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test02(self):
-        '''Verify chamfer depth and offset for a 90° v-bit with non 0 flat radius.'''
+        '''Verify chamfer depth and offset for a 90 deg v-bit with non 0 flat radius.'''
         tool = Path.Tool()
         tool.FlatRadius = 0.3
         tool.CuttingEdgeAngle = 90
@@ -84,7 +84,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test03(self):
-        '''Verify chamfer depth and offset for a 60° v-bit with non 0 flat radius.'''
+        '''Verify chamfer depth and offset for a 60 deg v-bit with non 0 flat radius.'''
         tool = Path.Tool()
         tool.FlatRadius = 10
         tool.CuttingEdgeAngle = 60
