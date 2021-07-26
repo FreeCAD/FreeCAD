@@ -119,9 +119,8 @@ QIcon ViewProviderPart::getIcon(void) const
     App::Part* part = static_cast<App::Part*>(this->getObject());
     // the normal case for Std_Part
     const char* pixmap = sPixmap;
-    std::string type = part->Type.getStrValue();
     // if it's flagged as an Assembly in its Type, it gets another icon
-    if (type == "Assembly") { pixmap = aPixmap; }
+    if (part->Type.getStrValue() == "Assembly") { pixmap = aPixmap; }
     
     return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(pixmap));
 }
