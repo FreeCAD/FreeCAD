@@ -72,33 +72,33 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # geometric objects
     # name is important because the other method in this module use obj name
-    box_obj1 = doc.addObject('Part::Box', 'Box1')
+    box_obj1 = doc.addObject("Part::Box", "Box1")
     box_obj1.Height = 10
     box_obj1.Width = 10
     box_obj1.Length = 20
-    box_obj2 = doc.addObject('Part::Box', 'Box2')
+    box_obj2 = doc.addObject("Part::Box", "Box2")
     box_obj2.Height = 10
     box_obj2.Width = 10
     box_obj2.Length = 20
     box_obj2.Placement.Base = (20, 0, 0)
-    box_obj3 = doc.addObject('Part::Box', 'Box3')
+    box_obj3 = doc.addObject("Part::Box", "Box3")
     box_obj3.Height = 10
     box_obj3.Width = 10
     box_obj3.Length = 20
     box_obj3.Placement.Base = (40, 0, 0)
-    box_obj4 = doc.addObject('Part::Box', 'Box4')
+    box_obj4 = doc.addObject("Part::Box", "Box4")
     box_obj4.Height = 10
     box_obj4.Width = 10
     box_obj4.Length = 20
     box_obj4.Placement.Base = (60, 0, 0)
-    box_obj5 = doc.addObject('Part::Box', 'Box5')
+    box_obj5 = doc.addObject("Part::Box", "Box5")
     box_obj5.Height = 10
     box_obj5.Width = 10
     box_obj5.Length = 20
     box_obj5.Placement.Base = (80, 0, 0)
 
     # make a CompSolid out of the boxes, to be able to remesh with GUI
-    j = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+    j = BOPTools.SplitFeatures.makeBooleanFragments(name="BooleanFragments")
     j.Objects = [box_obj1, box_obj2, box_obj3, box_obj4, box_obj5]
     j.Mode = "CompSolid"
     j.Proxy.execute(j)
@@ -108,7 +108,7 @@ def setup(doc=None, solvertype="ccxtools"):
         for obj in j.ViewObject.Proxy.claimChildren():
             obj.ViewObject.hide()
 
-    geom_obj = doc.addObject('Part::Feature', 'CompSolid')
+    geom_obj = doc.addObject("Part::Feature", "CompSolid")
     geom_obj.Shape = j.Shape.CompSolids[0]
     if FreeCAD.GuiUp:
         j.ViewObject.hide()
@@ -142,33 +142,33 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # material
-    material_obj1 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial1')
+    material_obj1 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial1")
     material_obj1.References = [(doc.Box3, "Solid1")]
     mat = material_obj1.Material
-    mat['Name'] = "Concrete-Generic"
-    mat['YoungsModulus'] = "32000 MPa"
-    mat['PoissonRatio'] = "0.17"
-    mat['Density'] = "0 kg/m^3"
+    mat["Name"] = "Concrete-Generic"
+    mat["YoungsModulus"] = "32000 MPa"
+    mat["PoissonRatio"] = "0.17"
+    mat["Density"] = "0 kg/m^3"
     material_obj1.Material = mat
     analysis.addObject(material_obj1)
 
-    material_obj2 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial2')
+    material_obj2 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial2")
     material_obj2.References = [(doc.Box2, "Solid1"), (doc.Box4, "Solid1")]
     mat = material_obj2.Material
-    mat['Name'] = "PLA"
-    mat['YoungsModulus'] = "3640 MPa"
-    mat['PoissonRatio'] = "0.36"
-    mat['Density'] = "0 kg/m^3"
+    mat["Name"] = "PLA"
+    mat["YoungsModulus"] = "3640 MPa"
+    mat["PoissonRatio"] = "0.36"
+    mat["Density"] = "0 kg/m^3"
     material_obj2.Material = mat
     analysis.addObject(material_obj2)
 
-    material_obj3 = ObjectsFem.makeMaterialSolid(doc, 'FemMaterial3')
+    material_obj3 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial3")
     material_obj3.References = []
     mat = material_obj3.Material
-    mat['Name'] = "Steel-Generic"
-    mat['YoungsModulus'] = "200000 MPa"
-    mat['PoissonRatio'] = "0.30"
-    mat['Density'] = "7900 kg/m^3"
+    mat["Name"] = "Steel-Generic"
+    mat["YoungsModulus"] = "200000 MPa"
+    mat["PoissonRatio"] = "0.30"
+    mat["Density"] = "7900 kg/m^3"
     material_obj3.Material = mat
     analysis.addObject(material_obj3)
 

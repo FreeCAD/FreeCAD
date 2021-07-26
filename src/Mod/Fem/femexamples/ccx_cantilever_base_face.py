@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -31,19 +30,24 @@ from .manager import get_meshname
 from .manager import init_doc
 
 
-def setup_cantileverbase(doc=None, solvertype="ccxtools"):
+def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometric object
-    # object name is important in this base setup method
-    # all module which use this base setup, use the object name to find the object
-    geom_obj = doc.addObject("Part::Box", "Box")
-    geom_obj.Height = geom_obj.Width = 1000
+    # geometric objects
+    geom_obj = doc.addObject("Part::Plane", "CanileverPlate")
+    geom_obj.Width = 1000
     geom_obj.Length = 8000
+    geom_obj.Placement = FreeCAD.Placement(
+        FreeCAD.Vector(0, 500, 0),
+        FreeCAD.Rotation(0, 0, 90),
+        FreeCAD.Vector(1, 0, 0),
+    )
+
     doc.recompute()
+
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
@@ -57,42 +61,48 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     elif solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         solver_obj.WorkingDir = u""
-    elif solvertype == "elmer":
-        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        ObjectsFem.makeEquationElasticity(doc, solver_obj)
-    elif solvertype == "z88":
-        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
         solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
     analysis.addObject(solver_obj)
 
+    # shell thickness
+    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 1000, 'Thickness')
+    analysis.addObject(thickness_obj)
+
     # material
-    material_obj = ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
     mat = material_obj.Material
-    mat["Name"] = "CalculiX-Steel"
+    mat["Name"] = "Calculix-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [(geom_obj, "Face1")]
+    con_fixed.References = [(geom_obj, "Edge1")]
     analysis.addObject(con_fixed)
 
+    # constraint force
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force.References = [(geom_obj, "Edge3")]
+    con_force.Force = 9000000.0  # 9'000'000 N = 9 MN
+    con_force.Direction = (geom_obj, ["Edge3"])
+    con_force.Reversed = True
+    analysis.addObject(con_force)
+
     # mesh
-    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_canticcx_tria6 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -104,6 +114,8 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.ElementDimension = "2D"
+    femmesh_obj.CharacteristicLengthMax = "500.0 mm"
 
     doc.recompute()
     return doc

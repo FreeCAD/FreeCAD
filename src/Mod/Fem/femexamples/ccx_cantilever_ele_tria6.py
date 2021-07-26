@@ -21,44 +21,50 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM calculix constraint force"
-__author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+from . import manager
+from .ccx_cantilever_base_face import setup_cantilever_base_face
+from .manager import init_doc
 
 
-def get_analysis_types():
-    return ["buckling", "static", "thermomech"]
+def get_information():
+    return {
+        "name": "CCX cantilever tria6 face elements",
+        "meshtype": "face",
+        "meshelement": "Tria6",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
 
 
-def get_sets_name():
-    return "constraints_force_node_loads"
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.ccx_cantilever_ele_tria6 import setup
+setup()
 
 
-def get_before_write_meshdata_constraint():
-    return "*CLOAD\n"
+See forum topic post:
+
+CalculiX cantilever modeled with face elements
+
+"""
 
 
-def get_after_write_meshdata_constraint():
-    return ""
+def setup(doc=None, solvertype="ccxtools"):
 
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
 
-def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
-    # floats read from ccx should use {:.13G}, see comment in writer module
+    # setup CalculiX cantilever
+    doc = setup_cantilever_base_face(doc, solvertype)
 
-    direction_vec = femobj["Object"].DirectionVector
-    for ref_shape in femobj["NodeLoadTable"]:
-        f.write("** {}\n".format(ref_shape[0]))
-        for n in sorted(ref_shape[1]):
-            node_load = ref_shape[1][n]
-            if (direction_vec.x != 0.0):
-                v1 = "{:.13E}".format(direction_vec.x * node_load)
-                f.write("{},1,{}\n".format(n, v1))
-            if (direction_vec.y != 0.0):
-                v2 = "{:.13E}".format(direction_vec.y * node_load)
-                f.write("{},2,{}\n".format(n, v2))
-            if (direction_vec.z != 0.0):
-                v3 = "{:.13E}".format(direction_vec.z * node_load)
-                f.write("{},3,{}\n".format(n, v3))
-        f.write("\n")
-    f.write("\n")
+    doc.recompute()
+    return doc

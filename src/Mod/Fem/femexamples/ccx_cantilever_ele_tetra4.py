@@ -22,20 +22,21 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ObjectsFem
+import Fem
 
 from . import manager
-from .ccx_cantilever_base_solid import setup_cantilever_base_solid
+from .ccx_cantilever_faceload import setup as setup_with_faceload
+from .manager import get_meshname
 from .manager import init_doc
 
 
 def get_information():
     return {
-        "name": "CCX cantilever prescibed displacement",
+        "name": "CCX cantilever tetra4 solid elements",
         "meshtype": "solid",
-        "meshelement": "Tet10",
-        "constraints": ["fixed", "displacement"],
-        "solvers": ["calculix", "elmer"],
+        "meshelement": "Tetra4",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix", "elmer", "z88"],
         "material": "solid",
         "equation": "mechanical"
     }
@@ -45,22 +46,18 @@ def get_explanation(header=""):
     return header + """
 
 To run the example from Python console use:
-from femexamples.ccx_cantilever_prescribeddisplacement import setup
+from femexamples.ccx_cantilever_ele_tetra4 import setup
 setup()
 
 
-See forum topic post:
+Tetra4 elements. There are really a lot needed thus mesh is cleared.
+Mesh before run the example.
 ...
 
 """
 
 
 def setup(doc=None, solvertype="ccxtools"):
-
-    if solvertype == "z88":
-        # constraint displacement is not supported for Z88
-        # pass a not valid solver name for z88, thus no solver is created
-        solvertype = "z88_not_valid"
 
     # init FreeCAD document
     if doc is None:
@@ -70,19 +67,17 @@ def setup(doc=None, solvertype="ccxtools"):
     # just keep the following line and change text string in get_explanation method
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
-    # setup CalculiX cantilever
-    # apply a prescribed displacement of 250 mm in -z on the front end face
-    doc = setup_cantilever_base_solid(doc, solvertype)
-    analysis = doc.Analysis
-    geom_obj = doc.Box
+    # setup cantilever faceload and exchange the mesh
+    doc = setup_with_faceload(doc, solvertype)
+    femmesh_obj = doc.getObject(get_meshname())
 
-    # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    con_disp.References = [(geom_obj, "Face2")]
-    con_disp.zFix = False
-    con_disp.zFree = False
-    con_disp.zDisplacement = -250.0
-    analysis.addObject(con_disp)
+    # clear mesh and set meshing parameter
+    femmesh_obj.FemMesh = Fem.FemMesh()
+    femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.ElementDimension = "3D"
+    femmesh_obj.ElementOrder = "1st"
+    femmesh_obj.CharacteristicLengthMax = "150.0 mm"
+    femmesh_obj.CharacteristicLengthMin = "150.0 mm"
 
     doc.recompute()
     return doc

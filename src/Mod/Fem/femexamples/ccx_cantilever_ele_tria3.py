@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,20 +21,23 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ObjectsFem
+import FreeCAD
+
+import Fem
 
 from . import manager
-from .ccx_cantilever_base_solid import setup_cantilever_base_solid
+from .ccx_cantilever_base_face import setup_cantilever_base_face
+from .manager import get_meshname
 from .manager import init_doc
 
 
 def get_information():
     return {
-        "name": "CCX cantilever prescibed displacement",
-        "meshtype": "solid",
-        "meshelement": "Tet10",
-        "constraints": ["fixed", "displacement"],
-        "solvers": ["calculix", "elmer"],
+        "name": "CCX cantilever tria3 face elements",
+        "meshtype": "face",
+        "meshelement": "Tria3",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix"],
         "material": "solid",
         "equation": "mechanical"
     }
@@ -45,22 +47,19 @@ def get_explanation(header=""):
     return header + """
 
 To run the example from Python console use:
-from femexamples.ccx_cantilever_prescribeddisplacement import setup
+from femexamples.ccx_cantilever_ele_tria3 import setup
 setup()
 
 
 See forum topic post:
-...
+
+
+CalculiX cantilever modeled with tria3 face elements
 
 """
 
 
 def setup(doc=None, solvertype="ccxtools"):
-
-    if solvertype == "z88":
-        # constraint displacement is not supported for Z88
-        # pass a not valid solver name for z88, thus no solver is created
-        solvertype = "z88_not_valid"
 
     # init FreeCAD document
     if doc is None:
@@ -71,18 +70,28 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # setup CalculiX cantilever
-    # apply a prescribed displacement of 250 mm in -z on the front end face
-    doc = setup_cantilever_base_solid(doc, solvertype)
-    analysis = doc.Analysis
-    geom_obj = doc.Box
+    doc = setup_cantilever_base_face(doc, solvertype)
+    femmesh_obj = doc.getObject(get_meshname())
 
-    # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    con_disp.References = [(geom_obj, "Face2")]
-    con_disp.zFix = False
-    con_disp.zFree = False
-    con_disp.zDisplacement = -250.0
-    analysis.addObject(con_disp)
+    # load the tria3 mesh
+    from .meshes.mesh_canticcx_tria3 import create_nodes, create_elements
+    new_fem_mesh = Fem.FemMesh()
+    control = create_nodes(new_fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating nodes.\n")
+    control = create_elements(new_fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating elements.\n")
+
+    # overwrite mesh with the tria3 mesh
+    femmesh_obj.FemMesh = new_fem_mesh
+
+    # set mesh obj parameter
+    femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.ElementDimension = "2D"
+    femmesh_obj.ElementOrder = "1st"
+    femmesh_obj.CharacteristicLengthMax = "150.0 mm"
+    femmesh_obj.CharacteristicLengthMin = "150.0 mm"
 
     doc.recompute()
     return doc

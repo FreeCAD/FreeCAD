@@ -1,6 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
-# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,66 +23,27 @@
 # ***************************************************************************
 
 import FreeCAD
-from FreeCAD import Vector
-
-import Part
 
 import Fem
 import ObjectsFem
 
-from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
 
-def get_information():
-    return {
-        "name": "Square Pipe End Twisted Edgeforces",
-        "meshtype": "face",
-        "meshelement": "Tria6",
-        "constraints": ["force", "fixed"],
-        "solvers": ["calculix"],
-        "material": "solid",
-        "equation": "mechanical"
-    }
-
-
-def get_explanation(header=""):
-    return header + """
-
-To run the example from Python console use:
-from femexamples.square_pipe_end_twisted_edgeforces import setup
-setup()
-
-
-See forum topic post:
-...
-
-"""
-
-
-def setup(doc=None, solvertype="ccxtools"):
+def setup_cantilever_base_solid(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # explanation object
-    # just keep the following line and change text string in get_explanation method
-    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
-
     # geometric object
-    # name is important because the other method in this module use obj name
-    l1 = Part.makeLine((-142.5, -142.5, 0), (142.5, -142.5, 0))
-    l2 = Part.makeLine((142.5, -142.5, 0), (142.5, 142.5, 0))
-    l3 = Part.makeLine((142.5, 142.5, 0), (-142.5, 142.5, 0))
-    l4 = Part.makeLine((-142.5, 142.5, 0), (-142.5, -142.5, 0))
-    wire = Part.Wire([l1, l2, l3, l4])
-    shape = wire.extrude(Vector(0, 0, 1000))
-    geom_obj = doc.addObject("Part::Feature", "SquareTube")
-    geom_obj.Shape = shape
+    # object name is important in this base setup method
+    # all module which use this base setup, use the object name to find the object
+    geom_obj = doc.addObject("Part::Box", "Box")
+    geom_obj.Height = geom_obj.Width = 1000
+    geom_obj.Length = 8000
     doc.recompute()
-
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
@@ -96,6 +57,11 @@ def setup(doc=None, solvertype="ccxtools"):
     elif solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         solver_obj.WorkingDir = u""
+    elif solvertype == "elmer":
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        ObjectsFem.makeEquationElasticity(doc, solver_obj)
+    elif solvertype == "z88":
+        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
@@ -110,15 +76,11 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj.IterationsControlParameterTimeUse = False
     analysis.addObject(solver_obj)
 
-    # shell thickness
-    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 15.0, "ShellThickness")
-    analysis.addObject(thickness_obj)
-
     # material
     material_obj = ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
     mat = material_obj.Material
-    mat["Name"] = "Steel-Generic"
-    mat["YoungsModulus"] = "200000 MPa"
+    mat["Name"] = "CalculiX-Steel"
+    mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
@@ -126,47 +88,11 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [
-        (doc.SquareTube, "Edge4"),
-        (doc.SquareTube, "Edge7"),
-        (doc.SquareTube, "Edge10"),
-        (doc.SquareTube, "Edge12")]
+    con_fixed.References = [(geom_obj, "Face1")]
     analysis.addObject(con_fixed)
 
-    # con_force1
-    con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
-    con_force1.References = [(geom_obj, "Edge9")]
-    con_force1.Force = 100000.00
-    con_force1.Direction = (geom_obj, ["Edge9"])
-    con_force1.Reversed = True
-    analysis.addObject(con_force1)
-
-    # con_force2
-    con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
-    con_force2.References = [(geom_obj, "Edge3")]
-    con_force2.Force = 100000.00
-    con_force2.Direction = (geom_obj, ["Edge3"])
-    con_force2.Reversed = True
-    analysis.addObject(con_force2)
-
-    # con_force3
-    con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
-    con_force3.References = [(geom_obj, "Edge11")]
-    con_force3.Force = 100000.00
-    con_force3.Direction = (geom_obj, ["Edge11"])
-    con_force3.Reversed = True
-    analysis.addObject(con_force3)
-
-    # con_force4
-    con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
-    con_force4.References = [(geom_obj, "Edge6")]
-    con_force4.Force = 100000.00
-    con_force4.Direction = (geom_obj, ["Edge6"])
-    con_force4.Reversed = True
-    analysis.addObject(con_force4)
-
     # mesh
-    from .meshes.mesh_square_pipe_end_twisted_tria6 import create_nodes, create_elements
+    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
