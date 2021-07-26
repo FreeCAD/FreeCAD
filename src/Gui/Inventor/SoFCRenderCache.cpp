@@ -581,6 +581,16 @@ SoFCRenderCache::increaseRenderingOrder(SoState *state, int priority)
     ++PRIVATE(this)->material.annotation;
 }
 
+void
+SoFCRenderCache::decreaseRenderingOrder(SoState *state, int priority)
+{
+  PRIVATE(this)->checkState(state);
+  if (priority)
+    PRIVATE(this)->material.annotation -= 1000 + priority;
+  else
+    --PRIVATE(this)->material.annotation;
+}
+
 SoFCRenderCache::Material
 SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
                                 bool &identity,

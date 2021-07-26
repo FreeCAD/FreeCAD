@@ -510,6 +510,7 @@ public:
   void addChildCache(SoState * state, SoFCVertexCache * cache);
 
   void increaseRenderingOrder(SoState *state, int priority=0);
+  void decreaseRenderingOrder(SoState *state, int priority=0);
 
   const char * getRenderStatistics() const;
 
