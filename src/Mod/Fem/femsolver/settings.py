@@ -85,7 +85,7 @@ def get_binary(name):
 
     Return the specific path set by the user in FreeCADs settings/parameter
     system if set or the default binary name if no specific path is set. If no
-    path was found because the solver *name* isn't supported ``None`` is
+    path was found because the solver *name* is not supported ``None`` is
     returned. This method does not check whether the binary actually exists
     and is callable.
 
@@ -93,12 +93,12 @@ def get_binary(name):
     """
     if name in _SOLVER_PARAM:
         binary = _SOLVER_PARAM[name].get_binary()
-        FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
+        FreeCAD.Console.PrintMessage("Solver binary path: {} \n".format(binary))
         return binary
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            "Settings solver name: {} not found in "
+            "solver settings modules _SOLVER_PARAM dirctionary.\n"
             .format(name)
         )
         return None
@@ -108,8 +108,8 @@ def get_write_comments(name):
     """ Check whether "write_comments" is set for solver.
 
     Returns ``True`` if the "write_comments" setting/parameter is set for the
-    solver with the id *name*. Returns ``False`` otherwise. If the solver isn't
-    supported ``None`` is returned.
+    solver with the id *name*. Returns ``False`` otherwise. If the solver is
+    not supported ``None`` is returned.
 
     :param name: solver id as a ``str`` (see :mod:`femsolver.settings`)
     """
@@ -117,8 +117,8 @@ def get_write_comments(name):
         return _SOLVER_PARAM[name].get_write_comments()
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            "Settings solver name: {} not found in "
+            "solver settings modules _SOLVER_PARAM dirctionary.\n"
             .format(name)
         )
         return None
