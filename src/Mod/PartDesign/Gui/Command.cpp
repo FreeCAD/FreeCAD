@@ -2084,6 +2084,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody,
     if (Feat) {
         func(Feat, features, subfeatures);
         Gui::Command::updateActive();
+        Gui::Application::Instance->commandManager().runCommandByName("Std_ViewFitSelection");
     }
 }
 
