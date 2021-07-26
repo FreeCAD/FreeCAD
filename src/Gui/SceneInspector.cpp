@@ -122,10 +122,10 @@ QVariant SceneModel::data(const QModelIndex & index, int role) const
         if (obj->Label.getStrValue() != obj->getNameInDocument())
             stream << QString::fromLatin1(" (%1)").arg(QString::fromUtf8(obj->Label.getValue()));
     }
+    else if (node->getName() != SbName::empty())
+        stream << node->getName();
     else if (itName != nodeNames.end())
         stream << itName.value();
-    else if (!node->getName().empty())
-        stream << node->getName();
     return name;
 }
 
