@@ -56,7 +56,7 @@ class FemInputWriter():
         self.document = self.analysis.Document
         # working dir
         self.dir_name = dir_name
-        # if dir_name was not given or if it exists but isn't empty: create a temporary dir
+        # if dir_name was not given or if it exists but is not empty: create a temporary dir
         # Purpose: makes sure the analysis can be run even on wired situation
         if not dir_name:
             FreeCAD.Console.PrintWarning(
