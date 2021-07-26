@@ -4471,7 +4471,16 @@ void View3DInventorViewer::viewSelection(bool extend)
     if (extend && editViewProvider)
         return;
 
-    viewObjects(Gui::Selection().getSelectionT(guiDocument->getDocument()->getName(),0), extend);
+    if (!guiDocument)
+        return;
+
+    auto sels = Gui::Selection().getSelectionT(guiDocument->getDocument()->getName(),0);
+    if (sels.empty()) {
+        sels.push_back(Gui::Selection().getContext());
+        if (sels.back().getDocument() != guiDocument->getDocument())
+            return;
+    }
+    viewObjects(sels, extend);
 }
 
 void View3DInventorViewer::viewObjects(const std::vector<App::SubObjectT> &objs, bool extend)
