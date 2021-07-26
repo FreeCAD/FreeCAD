@@ -62,6 +62,8 @@ Property::~Property()
 
 const char* Property::getName(void) const
 {
+    if (myName == NULL)
+        return "?";
     return myName;
 }
 
