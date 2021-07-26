@@ -33,6 +33,7 @@ from PathTests.TestPathGeom import TestPathGeom
 from PathTests.TestPathHelix import TestPathHelix
 from PathTests.TestPathLog import TestPathLog
 from PathTests.TestPathOpTools import TestPathOpTools
+from PathTests.TestPathPocketShape import TestPathPocketShape
 from PathTests.TestPathPreferences import TestPathPreferences
 from PathTests.TestPathPropertyBag import TestPathPropertyBag
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
@@ -58,6 +59,7 @@ False if TestPathGeom.__name__ else True
 False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpTools.__name__ else True
+False if TestPathPocketShape.__name__ else True
 False if TestPathPreferences.__name__ else True
 False if TestPathPropertyBag.__name__ else True
 False if TestPathSetupSheet.__name__ else True
