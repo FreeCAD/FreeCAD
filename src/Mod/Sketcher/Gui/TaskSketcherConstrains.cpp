@@ -676,6 +676,10 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
         this                     , SLOT  (on_filterInternalAlignment_stateChanged(int))
         );
     QObject::connect(
+        ui->hideListedConstraints, SIGNAL(stateChanged(int)),
+        this, SLOT(on_hideListedConstraints_stateChanged(int))
+    );
+    QObject::connect(
         ui->extendedInformation, SIGNAL(stateChanged(int)),
                      this                     , SLOT  (on_extendedInformation_stateChanged(int))
         );
@@ -752,6 +756,40 @@ void TaskSketcherConstrains::on_filterInternalAlignment_stateChanged(int state)
     slotConstraintsChanged();
 }
 
+// show/hides all constraints that are currently listed in listWidgetConstraints
+void TaskSketcherConstrains::on_hideListedConstraints_stateChanged(int state)
+{
+    Qt::CheckState oppositeState = Qt::Checked;
+    if (state == Qt::Checked)
+        oppositeState = Qt::Unchecked;
+
+    // Build up ListView with the constraints
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+    const std::vector< Sketcher::Constraint* >& vals = sketch->Constraints.getValues();
+
+    for (int i = 0; i < ui->listWidgetConstraints->count(); ++i) {
+
+        // QListWidget has no own method to get all visible entries
+        if (ui->listWidgetConstraints->item(i)->isHidden())
+            continue;
+
+        ConstraintItem* it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        if (!it)
+            return;
+
+        // toggle if not already in desired state
+        if (ui->listWidgetConstraints->item(i)->checkState() == state) {
+            // setCheckState() will invoke slotConstraintsChanged
+            // We must avoid that slotConstraintsChanged executed
+            // because hiding e.g. 500 constraints would otherwise mean
+            // to rebuild the constraints ListView 500 times
+            // to return slotConstraintsChanged directly, we use isHideListed
+            isHideListed = true;
+            ui->listWidgetConstraints->item(i)->setCheckState(oppositeState);  
+        } 
+    }
+}
+
 void TaskSketcherConstrains::on_extendedInformation_stateChanged(int state)
 {
     Q_UNUSED(state);
@@ -783,7 +821,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemSelectionChanged(void)
 void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetItem *item)
 {
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
-    if (!it) return;
+    if (!it)
+        return;
 
     // if its the right constraint
     if (it->isDimensional()) {
@@ -797,7 +836,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_updateDrivingStatus(QListW
 {
     Q_UNUSED(status);
     ConstraintItem *citem = dynamic_cast<ConstraintItem*>(item);
-    if (!citem) return;
+    if (!citem)
+        return;
 
     Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ToggleDrivingConstraint");
     slotConstraintsChanged();
@@ -807,7 +847,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_updateActiveStatus(QListWi
 {
     Q_UNUSED(status);
     ConstraintItem *citem = dynamic_cast<ConstraintItem*>(item);
-    if (!citem) return;
+    if (!citem)
+        return;
 
     Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ToggleActiveConstraint");
     slotConstraintsChanged();
@@ -874,6 +915,10 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
 
 void TaskSketcherConstrains::slotConstraintsChanged(void)
 {
+    if (isHideListed) {
+        isHideListed = false;
+        return;
+    }
     assert(sketchView);
     // Build up ListView with the constraints
     const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
@@ -907,7 +952,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
 
     /* Update filtering */
     int Filter = ui->comboBoxFilter->currentIndex();
-    for(std::size_t i = 0; i < vals.size(); ++i) {
+    for (std::size_t i = 0; i < vals.size(); ++i) {
         const Sketcher::Constraint * constraint = vals[i];
         ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
         bool visible = true;
@@ -974,7 +1019,6 @@ void TaskSketcherConstrains::changeEvent(QEvent *e)
         ui->retranslateUi(proxy);
     }
 }
-
 
 
 #include "moc_TaskSketcherConstrains.cpp"

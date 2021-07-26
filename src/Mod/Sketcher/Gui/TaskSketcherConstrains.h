@@ -90,6 +90,7 @@ public Q_SLOTS:
     void on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *item, bool status);
     void on_listWidgetConstraints_emitCenterSelectedItems(void);
     void on_filterInternalAlignment_stateChanged(int state);
+    void on_hideListedConstraints_stateChanged(int state);
     void on_extendedInformation_stateChanged(int state);
 
 protected:
@@ -101,6 +102,7 @@ protected:
 private:
     QWidget* proxy;
     bool inEditMode;
+    bool isHideListed = false;
     std::unique_ptr<Ui_TaskSketcherConstrains> ui;
 };
 
