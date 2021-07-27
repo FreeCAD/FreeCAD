@@ -52,8 +52,21 @@ class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
-        self.checkMesh()
-        self.checkMaterial()
+        self.check_mesh_exists()
+
+        # workaround use Calculix ccxtools pre checks
+        from femtools.checksanalysis import check_member_for_solver_calculix
+        message = check_member_for_solver_calculix(
+            self.analysis,
+            self.solver,
+            membertools.get_mesh_to_solve(self.analysis)[0],
+            membertools.AnalysisMember(self.analysis)
+        )
+        if message:
+            text = "CalculiX can not be started...\n"
+            self.report.error("{}{}".format(text, message))
+            self.fail()
+            return
 
 
 class Prepare(run.Prepare):

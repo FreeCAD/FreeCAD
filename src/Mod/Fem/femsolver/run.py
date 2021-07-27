@@ -418,11 +418,11 @@ class Machine(BaseTask):
 
 class Check(BaseTask):
 
-    def checkMesh(self):
-        meshes = membertools.get_member(
-            self.analysis,
-            "Fem::FemMeshObject"
-        )
+    def get_several_member(self, t):
+        return membertools.get_several_member(self.analysis, t)
+
+    def check_mesh_exists(self):
+        meshes = self.get_several_member("Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
             self.fail()
@@ -436,13 +436,48 @@ class Check(BaseTask):
             return False
         return True
 
-    def checkMaterial(self):
-        matObjs = membertools.get_member(
-            self.analysis, "App::MaterialObjectPython")
-        if len(matObjs) == 0:
+    def check_material_exists(self):
+        objs = self.get_several_member("App::MaterialObjectPython")
+        if len(objs) == 0:
             self.report.error(
                 "Missing a material object. "
                 "At least one material is required."
+            )
+            self.fail()
+            return False
+        return True
+
+    def check_material_single(self):
+        objs = self.get_several_member("App::MaterialObjectPython")
+        if len(objs) > 1:
+            self.report.error("Only one Material allowed for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_single(self):
+        objs = self.get_several_member("Fem::ElementGeometry1D")
+        if len(objs) > 1:
+            self.report.error("Only one beamsection allowed for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_shellthickness_single(self):
+        objs = self.get_several_member("Fem::ElementGeometry2D")
+        if len(objs) > 1:
+            self.report.error("Only one shellthickness allowed for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_and_shellthickness(self):
+        beamsec_obj = self.get_several_member("Fem::ElementGeometry1D")
+        shellth_obj = self.get_several_member("Fem::ElementGeometry2D")
+        if len(beamsec_obj) > 0 and len(shellth_obj) > 0:
+            self.report.error(
+                "Either beamsection or shellthickness objects are allowed for this solver, "
+                "but not both in one analysis."
             )
             self.fail()
             return False

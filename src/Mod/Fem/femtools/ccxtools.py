@@ -260,8 +260,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 "Working directory \'{}\' doesn't exist."
                 .format(self.working_dir)
             )
-        from femtools.checksanalysis import check_analysismember
-        message += check_analysismember(
+        from femtools.checksanalysis import check_member_for_solver_calculix
+        message += check_member_for_solver_calculix(
             self.analysis,
             self.solver,
             self.mesh,
