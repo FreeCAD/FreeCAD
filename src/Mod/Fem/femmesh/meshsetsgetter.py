@@ -104,13 +104,16 @@ class MeshSetsGetter():
     # get all known sets
     def get_mesh_sets(self):
 
+        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
         FreeCAD.Console.PrintMessage(
+            "Get mesh data for constraints, materials and element geometry...\n"
+        )
+        FreeCAD.Console.PrintLog(
             "MeshSetsGetter: Get mesh data for "
             "node sets (groups), surface sets (groups) and element sets (groups)\n"
         )
 
         time_start = time.process_time()
-        FreeCAD.Console.PrintMessage("Get mesh sets.\n")
 
         # materials and element geometry element sets getter
         self.get_element_sets_material_and_femelement_geometry()
@@ -137,7 +140,7 @@ class MeshSetsGetter():
 
         setstime = round((time.process_time() - time_start), 3)
         FreeCAD.Console.PrintMessage(
-            "Getting mesh sets or groups time: {} seconds \n".format(setstime)
+            "Getting mesh data time: {} seconds.\n".format(setstime)
         )
 
     # ********************************************************************************************
