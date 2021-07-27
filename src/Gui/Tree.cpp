@@ -6057,16 +6057,15 @@ void DocumentItem::clearSelection(DocumentObjectItem *exclude)
     QSignalBlocker blocker(treeWidget());
     bool lock = getTree()->blockConnection(true);
     FOREACH_ITEM_ALL(item);
-        if(item != exclude && item->selected)
+        if(item == exclude) {
+            if(exclude->selected>0)
+                exclude->selected = -1;
+            else
+                exclude->selected = 0;
+            updateItemSelection(exclude);
+        } else if (item->selected)
             item->unselect();
     END_FOREACH_ITEM;
-    if (exclude) {
-        if(exclude->selected>0)
-            exclude->selected = -1;
-        else
-            exclude->selected = 0;
-        updateItemSelection(exclude);
-    }
     getTree()->blockConnection(lock);
 }
 
