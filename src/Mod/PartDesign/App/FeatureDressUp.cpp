@@ -62,6 +62,9 @@ DressUp::DressUp()
             "If disabled, only the dressed part of the shape is used for patterning.");
 
     AddSubShape.setStatus(App::Property::Output, true);
+
+    AddSubType.setStatus(App::Property::Hidden, true);
+    AddSubType.setStatus(App::Property::ReadOnly, true);
 }
 
 short DressUp::mustExecute() const
@@ -212,9 +215,10 @@ void DressUp::onChanged(const App::Property* prop)
     }
 
     Feature::onChanged(prop);
+
 }
 
-void DressUp::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &addsubshapes)
+void DressUp::getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &addsubshapes)
 {
     Part::TopoShape res = AddSubShape.getShape();
 
@@ -284,7 +288,7 @@ void DressUp::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &add
         throw Part::NullShapeException("Null AddSub shape");
 
     if(res.getShape().ShapeType() != TopAbs_COMPOUND) {
-        addsubshapes.emplace_back(res, true);
+        addsubshapes.emplace_back(res, Additive);
     } else {
         int count = res.countSubShapes(TopAbs_SHAPE);
         if(!count)
@@ -292,12 +296,12 @@ void DressUp::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &add
         if(count) {
             Part::TopoShape s = res.getSubTopoShape(TopAbs_SHAPE, 1);
             if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
-                addsubshapes.emplace_back(s, true);
+                addsubshapes.emplace_back(s, Additive);
         }
         if(count > 1) {
             Part::TopoShape s = res.getSubTopoShape(TopAbs_SHAPE, 2);
             if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
-                addsubshapes.emplace_back(s, false);
+                addsubshapes.emplace_back(s, Subtractive);
         }
     }
 }

@@ -54,6 +54,7 @@
 #include <Base/Reader.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
 #include <Mod/Part/App/PartParams.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeaturePad.h"
 
@@ -331,7 +332,18 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
             // Let's call algorithm computing a fuse operation:
             TopoShape result(0,getDocument()->getStringHasher());
             try {
-                result.makEFuse({base,prism});
+                const char *maker;
+                switch (getAddSubType()) {
+                case Subtractive:
+                    maker = TOPOP_CUT;
+                    break;
+                case Common:
+                    maker = TOPOP_COMMON;
+                    break;
+                default:
+                    maker = TOPOP_FUSE;
+                }
+                result.makEShape(maker, {base,prism});
             }catch(Standard_Failure &){
                 return new App::DocumentObjectExecReturn("Fusion with base feature failed");
             }

@@ -96,43 +96,39 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
              return  App::DocumentObject::StdReturn;
         }
+
+        AddSubShape.setValue(primitiveShape);
+        if (isRecomputePaused())
+            return App::DocumentObject::StdReturn;
          
         TopoShape boolOp(0,getDocument()->getStringHasher());
 
-        if(getAddSubType() == FeatureAddSub::Additive) {
-            try {
-                boolOp.makEFuse({base,primitiveShape});
-            }catch(Standard_Failure &) {
-                return new App::DocumentObjectExecReturn("Adding the primitive failed");
-            }
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(boolOp);
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-            AddSubShape.setValue(primitiveShape);
+        const char *maker;
+        switch(getAddSubType()) {
+        case Additive:
+            maker = TOPOP_FUSE;
+            break;
+        case Subtractive:
+            maker = TOPOP_CUT;
+            break;
+        case Common:
+            maker = TOPOP_COMMON;
+            break;
+        default:
+            return new App::DocumentObjectExecReturn("Unknown operation type");
         }
-        else if(getAddSubType() == FeatureAddSub::Subtractive) {
-            try {
-                boolOp.makECut({base,primitiveShape});
-            }catch(Standard_Failure &) {
-                return new App::DocumentObjectExecReturn("Subtracting the primitive failed");
-            }
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(boolOp);
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-            AddSubShape.setValue(primitiveShape);
+        try {
+            boolOp.makEShape(maker, {base,primitiveShape});
+        }catch(Standard_Failure &e) {
+            return new App::DocumentObjectExecReturn("Failed to perform boolean operation");
         }
+        boolOp = this->getSolid(boolOp);
+        // lets check if the result is a solid
+        if (boolOp.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
-
+        boolOp = refineShapeIfActive(boolOp);
+        Shape.setValue(getSolid(boolOp));
     }
     catch (Standard_Failure& e) {
 

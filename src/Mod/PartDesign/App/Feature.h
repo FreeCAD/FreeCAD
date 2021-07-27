@@ -95,7 +95,7 @@ public:
     virtual App::DocumentObject *getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const;
 
-    TopoShape getSolid(const TopoShape&);    
+    TopoShape getSolid(const TopoShape &, bool force = true);    
 
 protected:
 

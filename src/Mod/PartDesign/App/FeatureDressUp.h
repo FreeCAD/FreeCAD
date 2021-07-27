@@ -63,7 +63,7 @@ public:
 
     std::vector<TopoShape> getFaces(const TopoShape &shape);
 
-    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes);
+    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes);
 
     static const std::string &addsubElementPrefix();
 

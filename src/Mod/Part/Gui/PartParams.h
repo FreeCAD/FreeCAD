@@ -75,6 +75,7 @@ public:
     FC_PART_PARAM(PreviewAddColor,unsigned long,Unsigned,0x64ffff30) \
     FC_PART_PARAM(PreviewSubColor,unsigned long,Unsigned,0xff646430) \
     FC_PART_PARAM(PreviewDressColor,unsigned long,Unsigned,0xff64ff30) \
+    FC_PART_PARAM(PreviewCommonColor,unsigned long,Unsigned,0x6464ff30) \
     FC_PART_PARAM(PreviewOnEdit,bool,Bool,true) \
     FC_PART_PARAM(EditOnTop,bool,Bool,false) \
     FC_PART_PARAM(EditRecomputeWait,int,Int,300) \

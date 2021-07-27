@@ -17,10 +17,10 @@
    <item>
     <widget class="QCheckBox" name="checkBoxNewSolid">
      <property name="toolTip">
-      <string>Make new solid using the tool features without base feature.</string>
+      <string>Make new shape using the tool features without base feature.</string>
      </property>
      <property name="text">
-      <string>New solid</string>
+      <string>New shape</string>
      </property>
     </widget>
    </item>
@@ -100,6 +100,11 @@
      <item>
       <property name="text">
        <string>Compound</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Section</string>
       </property>
      </item>
     </widget>

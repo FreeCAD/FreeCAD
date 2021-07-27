@@ -64,8 +64,6 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderAddSub,PartDesignGui::ViewProvider)
 
 ViewProviderAddSub::ViewProviderAddSub()
 {
-    ADD_PROPERTY(AddSubColor,((long)0));
-
     previewTransform = new SoTransform;
     auto group = new Gui::SoFCPathAnnotation;
     group->priority = -2;
@@ -80,6 +78,9 @@ ViewProviderAddSub::~ViewProviderAddSub()
 void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 
     ViewProvider::attach(obj);
+    std::string name(obj->getNameInDocument());
+    name += "_preview";
+    previewGroup->setName(name.c_str());
     addDisplayMaskMode(previewGroup, "Shape preview");
 }
 
@@ -108,7 +109,6 @@ PartGui::ViewProviderPart * ViewProviderAddSub::getAddSubView()
         pAddSubView->LineWidth.setValue(2.0f);
 
     pAddSubView->attach(getObject());
-    onChanged(&AddSubColor);
     pAddSubView->setDefaultMode(0);
     pAddSubView->show();
     previewGroup->addChild(pAddSubView->getRoot());
@@ -128,30 +128,21 @@ void ViewProviderAddSub::updateAddSubShapeIndicator()
         view->updateVisual();
 }
 
-void ViewProviderAddSub::onChanged(const App::Property *p)
-{
-    if (p == & AddSubColor)
-        checkAddSubColor();
-    ViewProvider::onChanged(p);
-}
-
 void ViewProviderAddSub::checkAddSubColor()
 {
     auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
     if (!feat)
         return;
     App::Color color((uint32_t)PartGui::PartParams::PreviewAddColor());
-    if (AddSubColor.getValue().getPackedValue()) {
-        color = AddSubColor.getValue();
-    } else {
-        if (feat) {
-            if (feat->isDerivedFrom(PartDesign::DressUp::getClassTypeId())) {
-                color = App::Color((uint32_t)PartGui::PartParams::PreviewDressColor());
-            } else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-                color = App::Color((uint32_t)PartGui::PartParams::PreviewAddColor());
-            else
-                color = App::Color((uint32_t)PartGui::PartParams::PreviewSubColor());
-        }
+    if (feat) {
+        if (feat->isDerivedFrom(PartDesign::DressUp::getClassTypeId()))
+            color = App::Color((uint32_t)PartGui::PartParams::PreviewDressColor());
+        else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
+            color = App::Color((uint32_t)PartGui::PartParams::PreviewSubColor());
+        else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Common)
+            color = App::Color((uint32_t)PartGui::PartParams::PreviewCommonColor());
+        else
+            color = App::Color((uint32_t)PartGui::PartParams::PreviewAddColor());
     }
     // clamp transparency between 0.1 ~ 0.8
     float t = std::max(0.1f, std::min(0.8f, 1.0f - color.a));
@@ -177,21 +168,11 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
     if (feat) {
         if (p == &feat->AddSubShape)
             updateAddSubShapeIndicator();
-        else if (p == &feat->BaseFeature) {
-            auto base = feat->getBaseObject(true);
-            if (base != baseFeature.getObject()) {
-                auto baseObj = baseFeature.getObject();
-                if (baseObj) {
-                    setPreviewDisplayMode(false);
-                    baseFeature = base;
-                    baseObj->Visibility.setValue(false);
-                    setPreviewDisplayMode(true);
-                    if (base)
-                        base->Visibility.setValue(true);
-                    else
-                        getObject()->Visibility.setValue(true);
-                }
-            } else if (isPreviewMode()) {
+        else if (p == &feat->AddSubType) {
+            checkAddSubColor();
+            signalChangeIcon();
+        } else if (p == &feat->BaseFeature) {
+            if (previewActive) {
                 setPreviewDisplayMode(false);
                 setPreviewDisplayMode(true);
             }
@@ -200,7 +181,7 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
         if (p == &feat->BaseFeature || p == &feat->Placement) {
             Base::Matrix4D matrix;
             auto base = Base::freecad_dynamic_cast<Part::Feature>(
-                    feat->getBaseObject(true));
+                    feat->BaseFeature.getValue());
             if (base)
                 matrix = base->Placement.getValue().inverse().toMatrix()
                          * feat->Placement.getValue().toMatrix();
@@ -219,16 +200,16 @@ bool ViewProviderAddSub::isPreviewMode() const
         && pcModeSwitch->getChild(mode) == previewGroup;
 }
 
-void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
+void ViewProviderAddSub::setPreviewDisplayMode(bool on) {
     SoFCSwitch *fcSwitch =  nullptr;
     if (pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId()))
         fcSwitch = static_cast<SoFCSwitch*>(pcModeSwitch);
 
-    if (onoff) {
+    if (on) {
         checkAddSubColor();
 
         auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
-        auto base = feat ? feat->getBaseObject(true) : nullptr;
+        auto base = feat ? feat->BaseFeature.getValue() : nullptr;
         if (base) {
             baseFeature = App::DocumentObjectT(base);
 
@@ -240,16 +221,18 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(SoFCSwitch::getClassTypeId()))
             {
-                feat->Visibility.setValue(false);
+                hide();
                 base->Visibility.setValue(true);
                 auto baseSwitch = static_cast<SoFCSwitch*>(baseVp->getModeSwitch());
                 baseSwitch->addChild(previewGroup);
                 baseChild = baseSwitch->headChild.getValue();
                 baseSwitch->headChild = baseSwitch->getNumChildren()-1;
+                previewActive = true;
                 return;
             }
         }
     } else {
+        previewActive = false;
         auto base = baseFeature.getObject();
         baseFeature = App::DocumentObjectT();
         if (base) {
@@ -269,16 +252,20 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         }
     }
 
-    if (onoff && !isPreviewMode()) {
-        displayMode = getActiveDisplayMode();
-        if (fcSwitch) {
-            defaultChild = fcSwitch->defaultChild.getValue();
-            fcSwitch->allowNamedOverride = false;
+    if (on) {
+        previewActive = true;
+        if (!isPreviewMode()) {
+            show();
+            displayMode = getActiveDisplayMode();
+            if (fcSwitch) {
+                defaultChild = fcSwitch->defaultChild.getValue();
+                fcSwitch->allowNamedOverride = false;
+            }
+            setDisplayMaskMode("Shape preview");
+            if (fcSwitch)
+                fcSwitch->defaultChild = pcModeSwitch->whichChild.getValue();
         }
-        setDisplayMaskMode("Shape preview");
-        if (fcSwitch)
-            fcSwitch->defaultChild = pcModeSwitch->whichChild.getValue();
-    } else if (!onoff && isPreviewMode()) {
+    } else if (isPreviewMode()) {
         setDisplayMaskMode(displayMode.c_str());
         if (fcSwitch) {
             fcSwitch->defaultChild.setValue(defaultChild);

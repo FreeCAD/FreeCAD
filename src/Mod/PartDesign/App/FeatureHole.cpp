@@ -69,6 +69,7 @@
 #include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "json.hpp"
 #include "FeatureHole.h"
@@ -2030,8 +2031,22 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         // First try cuting with compound which will be faster as it is done in
         // parallel
         bool retry = true;
+        const char *maker;
+        switch (getAddSubType()) {
+        case Additive:
+            maker = TOPOP_FUSE;
+            break;
+        case Common:
+            maker = TOPOP_COMMON;
+            break;
+        default:
+            maker = TOPOP_CUT;
+        }
         try {
-            result.makECut({base,compound});
+            if (base.isNull())
+                result = compound;
+            else
+                result.makEShape(maker, {base,compound});
             result = getSolid(result);
             retry = false;
         } catch (Standard_Failure & e) {
@@ -2047,7 +2062,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             for (auto & hole : holes) {
                 ++i;
                 try {
-                    result.makECut({base,hole});
+                    result.makEShape(maker, {base,hole});
                 } catch (Standard_Failure &) {
                     std::string msg("Cut failed on profile Edge");
                     msg += std::to_string(i);

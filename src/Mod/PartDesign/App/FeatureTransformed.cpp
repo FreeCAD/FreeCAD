@@ -37,6 +37,7 @@
 #endif
 
 
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include "FeatureTransformed.h"
 #include "FeatureMultiTransform.h"
 #include "FeatureAddSub.h"
@@ -88,10 +89,15 @@ Transformed::Transformed()
 
     ADD_PROPERTY_TYPE(_Version,(0),"Part Design",(App::PropertyType)(App::Prop_Hidden), 0);
 
+    ADD_PROPERTY(CommonShape,(TopoDS_Shape()));
+
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
+
+    AddSubType.setStatus(App::Property::Hidden, true);
+    AddSubType.setStatus(App::Property::ReadOnly, true);
 }
 
 void Transformed::positionBySupport(void)
@@ -279,9 +285,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> addshapeSet;
     std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> cutshapeSet;
+    std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> commonshapeSet;
     std::vector<TopoShape> originalShapes;
     std::vector<std::string> originalSubs;
-    std::vector<bool> fuses;
+    std::vector<Type> operations;
     std::vector<int> startIndices;
     bool hassolids = false;
     for (std::size_t i=0; i<originals.size(); ++i) {
@@ -298,7 +305,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(obj);
             if(feature->Suppress.getValue())
                 continue;
-            std::vector<std::pair<Part::TopoShape, bool> > addsubshapes;
+            std::vector<std::pair<Part::TopoShape, Type> > addsubshapes;
             feature->getAddSubShape(addsubshapes);
             if (addsubshapes.empty())
                 continue;
@@ -306,14 +313,15 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 auto &shape = v.first;
                 if(shape.isNull())
                     continue;
-                auto &shapeSet = v.second ? addshapeSet : cutshapeSet;
+                auto &shapeSet = v.second == Additive ? addshapeSet
+                            : (v.second == Subtractive ? cutshapeSet : commonshapeSet);
                 if (!shapeSet.insert(shape.getShape()).second)
                     continue;
                 shape.Tag = -shape.Tag;
                 auto trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
                 originalShapes.push_back(shape.makETransform(trsf));
                 originalSubs.push_back(feature->getFullName());
-                fuses.push_back(v.second);
+                operations.push_back(v.second);
                 startIndices.push_back(startIndex);
                 hassolids = true;
             }
@@ -348,7 +356,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     originalSubs.push_back(obj->getFullName() + '.' + sub);
                 else
                     originalSubs.push_back(obj->getFullName());
-                fuses.push_back(true);
+                operations.push_back(Additive);
                 startIndices.push_back(startIndex);
             }
         }
@@ -374,7 +382,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     FC_TIME_INIT(t);
 
-    std::vector<std::pair<TopoShape, bool> > addsub;
+    std::vector<std::pair<TopoShape, Type> > addsub;
 
     if (allowMultiSolid() && ParallelTransform.getValue()) {
         std::vector<TopoShape> fuseShapes;
@@ -383,49 +391,74 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             hasSupport = true;
             fuseShapes.push_back(support);
         }
-        std::vector<TopoShape> cutShapes;
+        std::vector<TopoShape> cutShapes, commonShapes;
         cutShapes.push_back(TopoShape());
+        commonShapes.push_back(TopoShape());
 
         auto buildShape = [&]() {
             try {
                 try {
                     if (fuseShapes.size() > 1) {
-                        if (cutShapes.size() <= 1 && (!hassolids || NewSolid.getValue())) {
+                        if (cutShapes.size() <= 1
+                                && commonShapes.size() <= 1
+                                && (!hassolids || NewSolid.getValue())) {
                             support.makECompound(fuseShapes);
-                            addsub.emplace_back(support, true);
+                            addsub.emplace_back(support, Additive);
                         } else {
                             if (!isRecomputePaused())
                                 support.makEFuse(fuseShapes);
                             if (hasSupport)
                                 fuseShapes.erase(fuseShapes.begin());
                             addsub.emplace_back(
-                                    TopoShape().makECompound(fuseShapes, nullptr, false), true);
+                                    TopoShape().makECompound(fuseShapes, nullptr, false), Additive);
                         }
                         fuseShapes.clear();
                         fuseShapes.push_back(support);
                         hasSupport = true;
                         result = support;
                     }
-                    else if(cutShapes.size() > 1) {
+                    else if(cutShapes.size() > 1 || commonShapes.size() > 1) {
                         if (support.isNull()) { // means new solid without fuseShapes
-                            if (cutShapes.size() == 2)
+                            if (cutShapes.size() == 2) {
                                 result = cutShapes[1];
-                            else {
+                                addsub.emplace_back(result, Subtractive);
+                            } else if (cutShapes.size() > 2) {
                                 cutShapes.erase(cutShapes.begin());
                                 result.makECompound(cutShapes);
+                                addsub.emplace_back(result, Subtractive);
                             }
-                            addsub.emplace_back(result, false);
+                            if (commonShapes.size() == 2) {
+                                result = commonShapes[1];
+                                addsub.emplace_back(result, Common);
+                            } else if (commonShapes.size() > 2) {
+                                commonShapes.erase(commonShapes.begin());
+                                result.makECompound(commonShapes);
+                                addsub.emplace_back(result, Common);
+                            }
                         } else {
-                            cutShapes[0] = support;
-                            if (!isRecomputePaused())
-                                result.makECut(cutShapes);
-                            support = result;
-                            cutShapes.erase(cutShapes.begin());
-                            addsub.emplace_back(TopoShape().makECompound(
-                                        cutShapes, nullptr, false), false);
+                            if (cutShapes.size() > 1) {
+                                cutShapes[0] = support;
+                                if (!isRecomputePaused())
+                                    result.makECut(cutShapes);
+                                support = result;
+                                cutShapes.erase(cutShapes.begin());
+                                addsub.emplace_back(TopoShape().makECompound(
+                                            cutShapes, nullptr, false), Subtractive);
+                            }
+                            if (commonShapes.size() > 1) {
+                                commonShapes[0] = support;
+                                if (!isRecomputePaused())
+                                    result.makEShape(TOPOP_COMMON, commonShapes);
+                                support = result;
+                                commonShapes.erase(commonShapes.begin());
+                                addsub.emplace_back(TopoShape().makECompound(
+                                            commonShapes, nullptr, false), Common);
+                            }
                         }
                         cutShapes.clear();
                         cutShapes.push_back(TopoShape());
+                        commonShapes.clear();
+                        commonShapes.push_back(TopoShape());
                         if (fuseShapes.empty())
                             fuseShapes.push_back(support);
                         else
@@ -435,7 +468,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     else if (support.isNull() && fuseShapes.size() == 1) {
                         // Must wrap the shape to contain its placement
                         support.makECompound(fuseShapes);
-                        addsub.emplace_back(support, true);
+                        addsub.emplace_back(support, Additive);
                         result = support;
                         hasSupport = true;
                     }
@@ -449,6 +482,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             } catch (Base::Exception &) {
                 for(auto &s : cutShapes)
                     rejected.emplace_back(s,std::vector<gp_Trsf>());
+                for(auto &s : commonShapes)
+                    rejected.emplace_back(s,std::vector<gp_Trsf>());
                 for(auto &s : fuseShapes)
                     rejected.emplace_back(s,std::vector<gp_Trsf>());
                 throw;
@@ -456,13 +491,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         };
 
         int i=0;
-        bool lastfuse = true;
+        auto lastop = Additive;
         for (const TopoShape &shape : originalShapes) {
             auto &sub = originalSubs[i];
             int idx = startIndices[i];
-            bool fuse = fuses[i++];
-            if (fuse != lastfuse) {
-                lastfuse = fuse;
+            auto op = operations[i++];
+            if (op != lastop) {
+                lastop = op;
                 buildShape();
             }
             std::vector<gp_Trsf>::const_iterator t = transformations.begin();
@@ -479,13 +514,20 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         // Skip first transformation in case we do not transform the
                         // first instance (i.e. original feature belongs to the same
                         // sibling group)
-                        addsub.emplace_back(shapeCopy, fuse);
+                        addsub.emplace_back(shapeCopy, op);
                         continue; 
                     }
-                    if(fuse)
+                    switch(op) {
+                    case Additive:
                         fuseShapes.push_back(shapeCopy);
-                    else
+                        break;
+                    case Subtractive:
                         cutShapes.push_back(shapeCopy);
+                        break;
+                    case Common:
+                        commonShapes.push_back(shapeCopy);
+                        break;
+                    }
                 }catch(Standard_Failure &) {
                     rejected.emplace_back(shape,std::vector<gp_Trsf>(t,t+1));
                     std::string msg("Transformation failed ");
@@ -508,10 +550,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     int i=0;
     std::vector<TopoShape> fuseShapes;
     std::vector<TopoShape> cutShapes;
+    std::vector<TopoShape> commonShapes;
     for (TopoShape &shape : originalShapes) {
         auto &sub = originalSubs[i];
         int idx = startIndices[i];
-        bool fuse = fuses[i++];
+        auto op = operations[i++];
 
         // Transform the add/subshape and collect the resulting shapes for overlap testing
         /*typedef std::vector<std::vector<gp_Trsf>::const_iterator> trsf_it_vec;
@@ -519,17 +562,22 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<TopoDS_Shape> v_transformedShapes;*/
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-        if (idx != 0)
-            ++t; // Skip first transformation, which is always the identity transformation
         for (; t != transformations.end(); ++t,++idx) {
-            // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
-            // seems to be pretty broken
-            ss.str("");
-            ss << 'I' << idx;
             auto shapeCopy = CopyShape.getValue()?shape.makECopy():shape;
             if (shapeCopy.isNull())
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
+            if (idx == 0 && canSkipFirst && (_Version.getValue()==0 || !hasOffset)) {
+                // Skip first transformation in case we do not transform the
+                // first instance (i.e. original feature belongs to the same
+                // sibling group)
+                addsub.emplace_back(shapeCopy, op);
+                continue; 
+            }
+            if (idx) {
+                ss.str("");
+                ss << 'I' << idx;
+            }
             try {
                 shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str());
             }catch(Standard_Failure &) {
@@ -552,16 +600,28 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 // if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) 
 
 
-                addsub.emplace_back(shapeCopy, fuse);
+                addsub.emplace_back(shapeCopy, op);
                 if (isRecomputePaused())
                     continue;
-                if (fuse) {
+                const char *maker;
+                switch(op) {
+                case Additive:
+                    maker = TOPOP_FUSE;
                     fuseShapes.push_back(shapeCopy);
-                    result = support.makEFuse(shapeCopy);
-                } else {
+                    break;
+                case Subtractive:
+                    maker = TOPOP_CUT;
                     cutShapes.push_back(shapeCopy);
-                    result = support.makECut(shapeCopy);
+                    break;
+                case Common:
+                    maker = TOPOP_COMMON;
+                    commonShapes.push_back(shapeCopy);
+                    break;
+                default:
+                    return new App::DocumentObjectExecReturn("Unknown operation type");
                 }
+                result.makEShape(maker, {support, shapeCopy});
+
                 // Do not call getSolid() as we need the compound to hide the
                 // placement
                 support = _Version.getValue()>1 ? result : getSolid(result);
@@ -590,11 +650,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     else {
         std::vector<TopoShape> addsubshapes;
         std::vector<TopoShape> tmpshapes;
-        // compact consecutive shapes that has the same operation (fuse or cut)
+        // compact consecutive shapes that has the same operation (fuse, cut, or common)
         for (std::size_t i=0; i<addsub.size(); ++i) {
-            bool fuse = addsub[i].second;
+            auto op = addsub[i].second;
             for (auto it=addsub.begin()+i+1; it!=addsub.end();) {
-                if (it->second != fuse)
+                if (it->second != op)
                     break;
                 if (tmpshapes.empty())
                     tmpshapes.push_back(addsub[i].first);
@@ -607,20 +667,24 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             }
         }
         if (addsub.size() == 1 && addsub[0].first.shapeType() != TopAbs_COMPOUND) {
-            if (addsub[0].second)
+            if (addsub[0].second == Additive) {
                 addsubshapes.push_back(addsub[0].first);
-            else {
-                std::vector<TopoShape> tmpshapes;
+            } else {
                 // Push an empty compound to mark the cut shape
+                tmpshapes.clear();
                 tmpshapes.push_back(TopoShape().makECompound({}));
+                if (addsub[0].second == Common) {
+                    // Push two empty compound to mark the common shape
+                    tmpshapes.push_back(TopoShape().makECompound({}));
+                }
                 tmpshapes.push_back(addsub[0].first);
                 addsubshapes.push_back(TopoShape().makECompound(tmpshapes));
             }
             AddSubShape.setValue(addsubshapes[0]);
         }
         else if (addsub.size() == 2
-                && addsub[0].second
-                && !addsub[1].second
+                && addsub[0].second == Additive
+                && addsub[1].second == Subtractive
                 && addsub[0].first.shapeType() != TopAbs_COMPOUND
                 && addsub[1].first.shapeType() != TopAbs_COMPOUND) {
             addsubshapes.push_back(addsub[0].first);
@@ -630,9 +694,12 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         else {
             std::vector<TopoShape> tmpshapes;
             for (auto &v : addsub) {
-                if (!v.second) {
+                if (v.second != Additive) {
                     // Add an empty compound shape to mark this is a subtractive shape
                     tmpshapes.push_back(TopoShape().makECompound({}));
+                    if (v.second == Common)
+                        // Add a second empty compound shape to mark this is a common shape
+                        tmpshapes.push_back(TopoShape().makECompound({}));
                 }
                 tmpshapes.push_back(v.first);
                 addsubshapes.push_back(TopoShape().makECompound(tmpshapes));
@@ -816,13 +883,13 @@ bool Transformed::isElementGenerated(const TopoShape &shape, const Data::MappedN
     return res;
 }
 
-void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes)
+void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes)
 {
     Part::TopoShape res = AddSubShape.getShape();
     if (res.isNull())
         return;
     if (res.shapeType(true) != TopAbs_COMPOUND) {
-        shapes.emplace_back(res, true);
+        shapes.emplace_back(res, Additive);
         return;
     }
     int count = 0;
@@ -835,7 +902,7 @@ void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > 
         else if (s.shapeType(true)!=TopAbs_COMPOUND
                 || s.countSubShapes(TopAbs_SHAPE) != 0) {
             ++count;
-            shapes.emplace_back(s, true);
+            shapes.emplace_back(s, Additive);
             proceed = true;
         }
         if (proceed && subshapes.size() > 1) {
@@ -844,7 +911,11 @@ void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > 
                 if (s.shapeType(true) != TopAbs_COMPOUND
                         || s.countSubShapes(TopAbs_SHAPE) != 0) {
                     ++count;
-                    shapes.emplace_back(s, false);
+                    shapes.emplace_back(s, Subtractive);
+                }
+                else if (subshapes.size() > 2) {
+                    ++count;
+                    shapes.emplace_back(subshapes[2], Common);
                 }
             }
         }
@@ -854,20 +925,35 @@ void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > 
             if (subshape.isNull())
                 continue;
             if (subshape.shapeType(true) != TopAbs_COMPOUND) {
-                shapes.emplace_back(subshape, true);
+                shapes.emplace_back(subshape, Additive);
                 continue;
             }
             auto s = subshape.getSubTopoShape(TopAbs_SHAPE, 1, true);
             if (!s.isNull()) {
                 if (s.shapeType(true) != TopAbs_COMPOUND
                         || s.countSubShapes(TopAbs_SHAPE) != 0)
-                    shapes.emplace_back(s, true);
+                {
+                    shapes.emplace_back(s, Additive);
+                    continue;
+                }
             }
             s = subshape.getSubTopoShape(TopAbs_SHAPE, 2, true);
             if (!s.isNull()) {
                 if (s.shapeType(true) != TopAbs_COMPOUND
                         || s.countSubShapes(TopAbs_SHAPE) != 0)
-                    shapes.emplace_back(s, false);
+                {
+                    shapes.emplace_back(s, Subtractive);
+                    continue;
+                }
+            }
+            s = subshape.getSubTopoShape(TopAbs_SHAPE, 3, true);
+            if (!s.isNull()) {
+                if (s.shapeType(true) != TopAbs_COMPOUND
+                        || s.countSubShapes(TopAbs_SHAPE) != 0)
+                {
+                    shapes.emplace_back(s, Common);
+                    continue;
+                }
             }
         }
     }

@@ -61,6 +61,7 @@
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 using namespace PartDesignGui;
+using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderTransformed,PartDesignGui::ViewProviderAddSub)
 
@@ -138,28 +139,31 @@ void ViewProviderTransformed::checkAddSubColor()
     auto view = getAddSubView();
     if (!view)
         return;
-    auto feat = Base::freecad_dynamic_cast<PartDesign::Transformed>(getObject());
+    auto feat = Base::freecad_dynamic_cast<Transformed>(getObject());
     if (!feat)
         return;
-    std::vector<std::pair<Part::TopoShape, bool> > shapes;
+    std::vector<std::pair<Part::TopoShape, FeatureAddSub::Type> > shapes;
     feat->getAddSubShape(shapes);
     if (shapes.empty())
         return;
-    int addCount=0, subCount=0;
+    int addCount=0, subCount=0, commonCount=0;
     for (auto &v : shapes) {
-        if (v.second)
+        if (v.second == FeatureAddSub::Additive)
             ++addCount;
-        else
+        else if (v.second == FeatureAddSub::Subtractive)
             ++subCount;
+        else if (v.second == FeatureAddSub::Common)
+            ++commonCount;
     }
     App::Color addcolor((uint32_t)PartGui::PartParams::PreviewAddColor());
     App::Color subcolor((uint32_t)PartGui::PartParams::PreviewSubColor());
-    if (AddSubColor.getValue().getPackedValue()) {
-        addcolor = AddSubColor.getValue();
-        subcolor = App::Color((uint32_t)(0xFFFFFF00 ^ addcolor.getPackedValue()));
+    App::Color commoncolor((uint32_t)PartGui::PartParams::PreviewCommonColor());
+    if (!addCount) {
+        if (!commonCount)
+            addcolor = subcolor;
+        else if (!subCount)
+            addcolor = commoncolor;
     }
-    if (!addCount)
-        addcolor = subcolor;
     // clamp transparency between 0.1 ~ 0.8
     float t = std::max(0.1f, std::min(0.8f, 1.0f - addcolor.a));
     view->LineColor.setValue(addcolor);
@@ -170,7 +174,9 @@ void ViewProviderTransformed::checkAddSubColor()
     view->ShapeColor.setValue(addcolor);
     view->Transparency.setValue(t*100);
 
-    if (!addCount || !subCount)
+    if ((!addCount && !subCount)
+            || (!addCount && !commonCount)
+            || (!subCount && !commonCount))
         return;
 
     auto addsubShape = feat->AddSubShape.getShape();
@@ -179,23 +185,38 @@ void ViewProviderTransformed::checkAddSubColor()
     App::PropertyColorList *props[] = {&view->LineColorArray,
                                        &view->DiffuseColor};
     int j=0;
-    for (auto type : types)
-        colors[j++].resize(addsubShape.countSubShapes(type),
-                addCount > subCount ? addcolor : subcolor);
+    FeatureAddSub::Type majorType;
+    App::Color color;
+    if (addCount > subCount && addCount > commonCount) {
+        majorType = FeatureAddSub::Additive;
+        color = addcolor;
+    } else if (subCount > addCount && subCount > commonCount) {
+        majorType = FeatureAddSub::Subtractive;
+        color = subcolor;
+    } else {
+        majorType = FeatureAddSub::Common;
+        color = commoncolor;
+    }
 
     addcolor.a = t;
     subcolor.a = t;
-    auto color = addCount > subCount ? subcolor : addcolor;
+    commoncolor.a = t;
+
+    for (auto type : types)
+        colors[j++].resize(addsubShape.countSubShapes(type), color);
+
     for (auto &v : shapes) {
-        if ((addCount > subCount) == v.second)
+        if (majorType == v.second)
             continue;
         auto &shape = v.first;
         j = 0;
         for (auto type : types) {
             for (auto &s : shape.getSubShapes(type)) {
                 int idx = addsubShape.findShape(s);
-                if (idx >= 1 && idx <= (int)colors[j].size())
-                    colors[j][idx-1] = color;
+                if (idx >= 1 && idx <= (int)colors[j].size()) {
+                    colors[j][idx-1] = v.second == FeatureAddSub::Additive ? addcolor
+                        : (v.second == FeatureAddSub::Subtractive ? subcolor : commoncolor);
+                }
             }
             auto prop = props[j];
             prop->setValues(colors[j]);

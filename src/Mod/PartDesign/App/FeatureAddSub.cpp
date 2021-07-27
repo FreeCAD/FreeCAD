@@ -49,11 +49,51 @@ FeatureAddSub::FeatureAddSub()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
+
+    static const char* TypeEnums[]= {"Additive","Subtractive","Common",NULL};
+    ADD_PROPERTY_TYPE(AddSubType,((long)0),"Part Design",
+            (App::PropertyType)(App::Prop_None), "Operation type");
+    AddSubType.setEnums(TypeEnums);
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
 {
     return addSubType;
+}
+
+void FeatureAddSub::setupObject()
+{
+    Feature::setupObject();
+
+    switch(addSubType) {
+    case 0:
+        AddSubType.setValue((long)0);
+        break;
+    case 1:
+        AddSubType.setValue((long)1);
+        break;
+    case 2:
+        AddSubType.setValue((long)2);
+        break;
+    }
+}
+
+void FeatureAddSub::onChanged(const App::Property *prop)
+{
+    if (prop == &AddSubType) {
+        switch(AddSubType.getValue()) {
+        case 0:
+            addSubType = Additive;
+            break;
+        case 1:
+            addSubType = Subtractive;
+            break;
+        case 2:
+            addSubType = Common;
+            break;
+        }
+    }
+    PartDesign::Feature::onChanged(prop);
 }
 
 short FeatureAddSub::mustExecute() const
@@ -70,14 +110,11 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
     return oldShape;
 }
 
-void FeatureAddSub::getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes)
+void FeatureAddSub::getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes)
 {
     if (Suppress.getValue())
         return;
-    else if (addSubType == Additive)
-        shapes.emplace_back(AddSubShape.getShape(), true);
-    else if (addSubType == Subtractive)
-        shapes.emplace_back(AddSubShape.getShape(), false);
+    shapes.emplace_back(AddSubShape.getShape(), addSubType);
 }
 
 const std::string &FeatureAddSub::addsubElementPrefix()
@@ -146,6 +183,17 @@ FeatureSubtractivePython::FeatureSubtractivePython()
 }
 
 FeatureSubtractivePython::~FeatureSubtractivePython()
+{
+}
+
+PROPERTY_SOURCE(PartDesign::FeatureCommonPython, PartDesign::FeatureAddSubPython)
+
+FeatureCommonPython::FeatureCommonPython()
+{
+    addSubType = Common;
+}
+
+FeatureCommonPython::~FeatureCommonPython()
 {
 }
 

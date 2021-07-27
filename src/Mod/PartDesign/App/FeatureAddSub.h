@@ -39,8 +39,9 @@ class PartDesignExport FeatureAddSub : public PartDesign::Feature
 
 public:
     enum Type {
-        Additive = 0,
-        Subtractive 
+        Additive    = 0,
+        Subtractive = 1,
+        Common      = 2,
     };
     
     FeatureAddSub();
@@ -48,13 +49,15 @@ public:
     Type getAddSubType();
 
     virtual short mustExecute() const override;
+    virtual void onChanged(const App::Property *) override;
+    virtual void setupObject() override;
 
-    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes);
-
+    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes);
     TopoShape refineShapeIfActive(const TopoShape&) const;
 
     Part::PropertyPartShape   AddSubShape;
-    App::PropertyBool Refine;
+    App::PropertyBool         Refine;
+    App::PropertyEnumeration  AddSubType;
 
     static const std::string &addsubElementPrefix();
 
@@ -87,6 +90,15 @@ class FeatureSubtractivePython : public FeatureAddSubPython
 public:
     FeatureSubtractivePython();
     ~FeatureSubtractivePython();
+};
+
+class FeatureCommonPython : public FeatureAddSubPython
+{
+    PROPERTY_HEADER(PartDesign::FeatureCommonPython);
+
+public:
+    FeatureCommonPython();
+    ~FeatureCommonPython();
 };
 
 } //namespace PartDesign

@@ -54,17 +54,18 @@
 using namespace PartDesignGui;
 
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
+  : TaskFeatureParameters(vp, parent, tr("Primitive parameters"))
   , ui(new Ui_DlgPrimitives)
-  , vp(vp)
 {
     proxy = new QWidget(this);
     ui->setupUi(proxy);
 
     this->groupLayout()->addWidget(proxy);
-    this->addNewSolidCheckBox(proxy);
-    PartDesignGui::addTaskCheckBox(proxy);
 
+    PartDesignGui::addTaskCheckBox(proxy);
+    this->addNewSolidCheckBox(qobject_cast<QBoxLayout*>(proxy->layout()));
+
+    _refresh();
     refresh();
 
     Gui::Document* doc = vp->getDocument();
@@ -156,53 +157,6 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
         }
     } catch (const Base::Exception &ex) {
         Base::Console().Error ("%s\n", ex.what () );
-    }
-}
-
-void TaskBoxPrimitives::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
-{
-    if (this->vp == &Obj)
-        this->vp = nullptr;
-}
-
-void TaskBoxPrimitives::slotUndoDocument(const Gui::Document &)
-{
-    refresh();
-}
-
-void TaskBoxPrimitives::slotRedoDocument(const Gui::Document &)
-{
-    refresh();
-}
-
-void TaskBoxPrimitives::onNewSolidChanged(bool on)
-{
-    if (vp) {
-        PartDesign::Feature* feat =
-            Base::freecad_dynamic_cast<PartDesign::Feature>(vp->getObject());
-        if (feat) {
-            feat->NewSolid.setValue(on);
-            feat->getDocument()->recomputeFeature ( feat );
-        }
-    }
-}
-
-void TaskBoxPrimitives::addNewSolidCheckBox(QWidget *widget)
-{
-    if (!vp || !vp->getObject())
-        return;
-
-    auto *addsub = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(vp->getObject());
-    if (addsub && addsub->getAddSubType() != PartDesign::FeatureAddSub::Additive)
-        return;
-
-    QBoxLayout * layout = qobject_cast<QBoxLayout*>(widget->layout());
-    if (layout) {
-        checkBoxNewSolid = new QCheckBox(widget);
-        checkBoxNewSolid->setText(tr("New solid"));
-        checkBoxNewSolid->setToolTip(tr("Make a new separate solid using this feature"));
-        layout->insertWidget(0, checkBoxNewSolid);
-        connect(checkBoxNewSolid, SIGNAL(toggled(bool)), this, SLOT(onNewSolidChanged(bool)));
     }
 }
 

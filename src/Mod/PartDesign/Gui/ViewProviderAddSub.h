@@ -34,8 +34,6 @@ class PartDesignGuiExport ViewProviderAddSub : public ViewProvider
     PROPERTY_HEADER(PartDesignGui::ViewProviderAddSub);
 
 public:
-    App::PropertyColor AddSubColor;
-
     /// constructor
     ViewProviderAddSub();
     /// destructor
@@ -45,7 +43,6 @@ public:
     virtual void reattach(App::DocumentObject *);
     virtual void beforeDelete();
     virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property *p);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     bool isPreviewMode() const;
@@ -73,6 +70,7 @@ private:
     App::DocumentObjectT        baseFeature;
     int                         baseChild = -1;
     std::unique_ptr<PartGui::ViewProviderPart> pAddSubView;
+    bool                        previewActive = false;
 };
 
 } // namespace PartDesignGui

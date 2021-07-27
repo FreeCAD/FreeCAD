@@ -85,10 +85,10 @@ bool Feature::allowMultiSolid() const {
     return body && !body->SingleSolid.getValue();
 }
 
-TopoShape Feature::getSolid(const TopoShape& shape)
+TopoShape Feature::getSolid(const TopoShape& shape, bool force)
 {
     if (shape.isNull())
-        Standard_Failure::Raise("Shape is null");
+        throw Part::NullShapeException("Null shape");
     int count = shape.countSubShapes(TopAbs_SOLID);
     if(count>1) {
         if(allowMultiSolid()) {
@@ -104,7 +104,9 @@ TopoShape Feature::getSolid(const TopoShape& shape)
         res.fixSolidOrientation();
         return res;
     }
-    return TopoShape();
+    if (force)
+        return TopoShape();
+    return shape;
 }
 
 void Feature::onChanged(const App::Property *prop)

@@ -50,6 +50,7 @@
 #include <App/Document.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
 #include <Mod/Part/App/PartParams.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeaturePocket.h"
 
@@ -220,8 +221,13 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             if (NewSolid.getValue())
                 prism = this->AddSubShape.getShape();
+            else if (getAddSubType() == Common)
+                prism.makEShape(TOPOP_COMMON, {base, this->AddSubShape.getShape()});
+            else if (getAddSubType() == Additive)
+                prism = base.makEFuse(this->AddSubShape.getShape());
             else
                 prism = refineShapeIfActive(prism);
+
             this->Shape.setValue(getSolid(prism));
 
         } else {
@@ -284,8 +290,20 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             try {
                 if (NewSolid.getValue())
                     result = prism;
-                else
-                    result.makECut({base,prism});
+                else {
+                    const char *maker;
+                    switch (getAddSubType()) {
+                    case Additive:
+                        maker = TOPOP_FUSE;
+                        break;
+                    case Common:
+                        maker = TOPOP_COMMON;
+                        break;
+                    default:
+                        maker = TOPOP_CUT;
+                    }
+                    result.makEShape(maker, {base,prism});
+                }
             }catch(Standard_Failure &){
                 return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
             }

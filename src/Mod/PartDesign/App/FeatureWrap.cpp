@@ -33,6 +33,7 @@
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include "Body.h"
 #include "FeatureWrap.h"
 #include "FeaturePy.h"
@@ -55,14 +56,19 @@ FeatureWrap::FeatureWrap()
             "Additive: fuse the wrapped feature with the base feature.\n"
             "Subtractive: cut the wrapped feature from the base feature.\n"
             "Standalone: standalone feature, which may or may not be a solid.\n"
-            "AutoDetect: auto detect feature type based on resulting shape.\n");
-    static const char *TypeEnums[] = {"Additive", "Subtractive", "Standalone", "Auto Detect", nullptr};
+            "AutoDetect: auto detect feature type based on resulting shape.\n"
+            "Common: obtain the common shape of the wrapped feature and the base feature.\n");
+    static const char *TypeEnums[] = {
+        "Additive", "Subtractive", "Standalone", "Auto Detect", "Common", nullptr};
     Type.setEnums(TypeEnums);
 
     ADD_PROPERTY_TYPE(Frozen,(false),"Part Design",(App::PropertyType)(App::Prop_None),
             "Whether to update shape on change of wrapped feature");
 
     AddSubShape.setStatus(App::Property::Transient, true);
+
+    AddSubType.setStatus(App::Property::Hidden, true);
+    AddSubType.setStatus(App::Property::ReadOnly, true);
 }
 
 void FeatureWrap::setWrappedLinkScope()
@@ -86,10 +92,15 @@ void FeatureWrap::onNewSolidChanged()
         return;
 
     if (Type.getValue() == 2) {
-        this->addSubType = Additive;
+        this->AddSubType.setValue((long)0);
         BaseFeature.setValue(nullptr);
     } else {
-        this->addSubType = Type.getValue() == 1 ? Subtractive : Additive;
+        if (Type.getValue() == 1)
+            this->AddSubType.setValue((long)1);
+        else if (Type.getValue() == 4)
+            this->AddSubType.setValue((long)2);
+        else
+            this->AddSubType.setValue((long)0);
         if (!NewSolid.getValue()) {
             BaseFeature.setValue(nullptr);
         } else {
@@ -185,41 +196,33 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
 
         TopoShape boolOp(0,getDocument()->getStringHasher());
 
-        if(getAddSubType() == FeatureAddSub::Additive) {
-            try {
-                boolOp.makEFuse({base,shape});
-            }catch(Standard_Failure &e) {
-                FC_ERR(getFullName() << ": " << e.GetMessageString());
-                return new App::DocumentObjectExecReturn("Failed to fuse with base feature");
-            }
-            boolOp = this->getSolid(boolOp);
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
+        const char *maker;
+        switch(getAddSubType()) {
+        case Additive:
+            maker = TOPOP_FUSE;
+            break;
+        case Subtractive:
+            maker = TOPOP_CUT;
+            break;
+        case Common:
+            maker = TOPOP_COMMON;
+            break;
+        default:
+            return new App::DocumentObjectExecReturn("Unknown operation type");
         }
-        else if(getAddSubType() == FeatureAddSub::Subtractive) {
-            try {
-                boolOp.makECut({base,shape});
-            }catch(Standard_Failure & e) {
-                FC_ERR(getFullName() << ": " << e.GetMessageString());
-                return new App::DocumentObjectExecReturn("Failed to cut from base feature");
-            }
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(boolOp);
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-            boolOp = refineShapeIfActive(boolOp);
-            boolOp = getSolid(boolOp);
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is null");
-            Shape.setValue(boolOp);
+        try {
+            boolOp.makEShape(maker, {base,shape});
+        }catch(Standard_Failure &e) {
+            FC_ERR(getFullName() << ": " << e.GetMessageString());
+            return new App::DocumentObjectExecReturn("Failed to perform boolean operation");
         }
+        boolOp = this->getSolid(boolOp);
+        // lets check if the result is a solid
+        if (boolOp.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
+        boolOp = refineShapeIfActive(boolOp);
+        Shape.setValue(getSolid(boolOp));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

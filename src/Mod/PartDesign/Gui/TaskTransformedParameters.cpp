@@ -268,8 +268,8 @@ void TaskTransformedParameters::setupUI() {
     connect(checkBoxParallel, SIGNAL(toggled(bool)), this, SLOT(onChangedParallelTransform(bool)));
 
     checkBoxNewSolid = new QCheckBox(this);
-    checkBoxNewSolid->setText(tr("New solid"));
-    checkBoxNewSolid->setToolTip(tr("Make a separate solid using the resulting pattern shape"));
+    checkBoxNewSolid->setText(tr("New shape"));
+    checkBoxNewSolid->setToolTip(tr("Make a new shape using the resulting pattern shape"));
     checkBoxNewSolid->setChecked(getObject()->NewSolid.getValue());
     connect(checkBoxNewSolid, SIGNAL(toggled(bool)), this, SLOT(onChangedNewSolid(bool)));
 

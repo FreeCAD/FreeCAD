@@ -55,6 +55,8 @@ public:
     App::PropertyBool CopyShape;
     App::PropertyBool ParallelTransform;
 
+    Part::PropertyPartShape   CommonShape;
+
     App::PropertyPlacement TransformOffset;
     App::PropertyInteger _Version;
 
@@ -100,7 +102,7 @@ public:
 
     virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const;
 
-    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, bool> > &shapes);
+    virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes);
 
 protected:
     virtual void handleChangedPropertyType(

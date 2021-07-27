@@ -43,6 +43,7 @@
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureGroove.h"
 
@@ -166,7 +167,18 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         }
 
         try {
-            result = TopoShape(0,getDocument()->getStringHasher()).makECut({base,result});
+            const char *maker;
+            switch (getAddSubType()) {
+            case Additive:
+                maker = TOPOP_FUSE;
+                break;
+            case Common:
+                maker = TOPOP_COMMON;
+                break;
+            default:
+                maker = TOPOP_CUT;
+            }
+            result.makEShape(maker, {base,result});
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Failed to cut base feature");
         }

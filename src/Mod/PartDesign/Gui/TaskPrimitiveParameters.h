@@ -48,8 +48,7 @@ class ViewProvider;
 
 namespace PartDesignGui { 
 class Ui_DlgPrimitives;
-class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
-                          public Gui::DocumentObserver
+class TaskBoxPrimitives : public TaskFeatureParameters
 {
     Q_OBJECT
 
@@ -100,25 +99,13 @@ public Q_SLOTS:
     void onWedgeX2minChanged(double);
     void onWedgeZ2maxChanged(double);
     void onWedgeZ2minChanged(double);
-    void onNewSolidChanged(bool);
 
 private:
-    /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
-    /** Notifies on undo */
-    virtual void slotUndoDocument(const Gui::Document& Doc);
-    /** Notifies on redo */
-    virtual void slotRedoDocument(const Gui::Document& Doc);
-
-    void addNewSolidCheckBox(QWidget *widget);
-
-    void refresh();
+    virtual void refresh();
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_DlgPrimitives> ui;
-    ViewProviderPrimitive* vp;
-    QCheckBox* checkBoxNewSolid = nullptr;
 };
 
 class TaskPrimitiveParameters :  public TaskDlgFeatureParameters

@@ -44,6 +44,7 @@
 #include <App/Document.h>
 
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include "FeatureRevolution.h"
 
 
@@ -160,18 +161,40 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
         result.Tag = -getID();
 
-        if (!base.isNull()) {
-            try {
-                // Let's call algorithm computing a fuse operation:
-                result = TopoShape(0,result.Hasher).makEFuse({base,result});
-            }catch(Standard_Failure &) {
-                return new App::DocumentObjectExecReturn("Fusion with base feature failed");
-            }
+        if(base.isNull()) {
             result = refineShapeIfActive(result);
+            Shape.setValue(getSolid(result));
+            return App::DocumentObject::StdReturn;
         }
 
-        this->Shape.setValue(getSolid(result));
+        TopoShape boolOp(0,getDocument()->getStringHasher());
 
+        const char *maker;
+        switch(getAddSubType()) {
+        case Additive:
+            maker = TOPOP_FUSE;
+            break;
+        case Subtractive:
+            maker = TOPOP_CUT;
+            break;
+        case Common:
+            maker = TOPOP_COMMON;
+            break;
+        default:
+            return new App::DocumentObjectExecReturn("Unknown operation type");
+        }
+        try {
+            boolOp.makEShape(maker, {base,result});
+        }catch(Standard_Failure &e) {
+            return new App::DocumentObjectExecReturn("Failed to perform boolean operation");
+        }
+        boolOp = this->getSolid(boolOp);
+        // lets check if the result is a solid
+        if (boolOp.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+
+        boolOp = refineShapeIfActive(boolOp);
+        Shape.setValue(getSolid(boolOp));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

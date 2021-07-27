@@ -88,13 +88,31 @@ void TaskFeatureParameters::slotRedoDocument(const Gui::Document &)
 
 void TaskFeatureParameters::_refresh()
 {
-    if (!this->vp || !checkBoxNewSolid)
+    if (!this->vp)
         return;
 
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(this->vp->getObject());
-    if (feat && feat->NewSolid.getValue() != checkBoxNewSolid->isChecked()) {
-        QSignalBlocker guard(checkBoxNewSolid);
-        checkBoxNewSolid->setChecked(feat->NewSolid.getValue());
+    if (feat) {
+        if (checkBoxNewSolid) {
+            QSignalBlocker guard(checkBoxNewSolid);
+            checkBoxNewSolid->setChecked(feat->NewSolid.getValue());
+        } else if (comboAddSubType) {
+            QSignalBlocker guard(comboAddSubType);
+            if (feat->NewSolid.getValue())
+                comboAddSubType->setCurrentIndex(0);
+            else {
+                switch(static_cast<PartDesign::FeatureAddSub*>(feat)->getAddSubType()) {
+                case PartDesign::FeatureAddSub::Subtractive:
+                    comboAddSubType->setCurrentIndex(2);
+                    break;
+                case PartDesign::FeatureAddSub::Common:
+                    comboAddSubType->setCurrentIndex(3);
+                    break;
+                default:
+                    comboAddSubType->setCurrentIndex(1);
+                }
+            }
+        }
     }
 }
 
@@ -139,13 +157,33 @@ void TaskFeatureParameters::recomputeFeature(bool delay)
     }
 }
 
-void TaskFeatureParameters::onNewSolidChanged(bool on)
+void TaskFeatureParameters::onNewSolidChanged()
 {
     if (vp) {
         PartDesign::Feature* pc =
             Base::freecad_dynamic_cast<PartDesign::Feature>(vp->getObject());
         if (pc) {
-            pc->NewSolid.setValue(on);
+            if (checkBoxNewSolid)
+                pc->NewSolid.setValue(checkBoxNewSolid->isChecked());
+            else if (comboAddSubType) {
+                pc->NewSolid.setValue(comboAddSubType->currentIndex() == 0);
+                auto feat = static_cast<PartDesign::FeatureAddSub*>(pc);
+                if (pc->NewSolid.getValue())
+                    feat->AddSubType.setValue("Additive");
+                else {
+                    switch(comboAddSubType->currentIndex()) {
+                    case 2:
+                        feat->AddSubType.setValue("Subtractive");
+                        break;
+                    case 3:
+                        feat->AddSubType.setValue("Common");
+                        break;
+                    default:
+                        feat->AddSubType.setValue("Additive");
+                        break;
+                    }
+                }
+            }
             recomputeFeature();
         }
     }
@@ -207,15 +245,27 @@ void TaskFeatureParameters::setupTransaction()
 
 void TaskFeatureParameters::addNewSolidCheckBox(QBoxLayout *layout)
 {
-    if (!vp || !vp->getObject())
+    if (!vp || !vp->getObject() || !layout)
         return;
 
-    if (layout) {
+    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(vp->getObject());
+    if (feat && !feat->AddSubType.testStatus(App::Property::Hidden)) {
+        QHBoxLayout *l = new QHBoxLayout;
+        l->addWidget(new QLabel(tr("Operation:")));
+        comboAddSubType = new QComboBox(this);
+        comboAddSubType->addItem(tr("New shape"));
+        comboAddSubType->addItem(tr("Additive"));
+        comboAddSubType->addItem(tr("Subtractive"));
+        comboAddSubType->addItem(tr("Common"));
+        l->addWidget(comboAddSubType);
+        layout->insertLayout(0, l);
+        connect(comboAddSubType, SIGNAL(currentIndexChanged(int)), this, SLOT(onNewSolidChanged()));
+    } else {
         checkBoxNewSolid = new QCheckBox(this);
-        checkBoxNewSolid->setText(tr("New solid"));
+        checkBoxNewSolid->setText(tr("New shape"));
         checkBoxNewSolid->setToolTip(tr("Make a new separate solid using this feature"));
         layout->insertWidget(0, checkBoxNewSolid);
-        connect(checkBoxNewSolid, SIGNAL(toggled(bool)), this, SLOT(onNewSolidChanged(bool)));
+        connect(checkBoxNewSolid, SIGNAL(toggled(bool)), this, SLOT(onNewSolidChanged()));
     }
 }
 

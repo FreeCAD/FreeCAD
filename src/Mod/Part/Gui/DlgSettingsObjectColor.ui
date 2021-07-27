@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>475</width>
-    <height>562</height>
+    <height>572</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -354,18 +354,44 @@ will be used or black.</string>
       <string>Preview color for editing</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="3" column="1">
+       <widget class="Gui::PrefColorButton" name="DressUpColor">
+        <property name="toolTip">
+         <string>The default color for new shapes</string>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="prefEntry" stdset="0">
+         <cstring>PreviewDressColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="minimumSize">
          <size>
-          <width>28</width>
-          <height>20</height>
+          <width>182</width>
+          <height>0</height>
          </size>
         </property>
-       </spacer>
+        <property name="text">
+         <string>Subtractive color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Dress up color</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_12">
@@ -399,28 +425,28 @@ will be used or black.</string>
          <string>The default color for new shapes</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>PreviewSubColor</cstring>
+         <cstring>PreviewCommonColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Part</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_13">
-        <property name="minimumSize">
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>182</width>
-          <height>0</height>
+          <width>28</width>
+          <height>20</height>
          </size>
         </property>
-        <property name="text">
-         <string>Subtractive color</string>
-        </property>
-       </widget>
+       </spacer>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_14">
+       <widget class="QLabel" name="label_15">
         <property name="minimumSize">
          <size>
           <width>182</width>
@@ -428,17 +454,17 @@ will be used or black.</string>
          </size>
         </property>
         <property name="text">
-         <string>Dress up color</string>
+         <string>Common color</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefColorButton" name="DressUpColor">
+       <widget class="Gui::PrefColorButton" name="CommonColor">
         <property name="toolTip">
          <string>The default color for new shapes</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>PreviewDressColor</cstring>
+         <cstring>PreviewSubColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Part</cstring>

@@ -53,7 +53,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
-const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common","Compound", NULL};
+const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common","Compound","Section",NULL};
 
 Boolean::Boolean()
 {
@@ -170,6 +170,8 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         op = TOPOP_COMMON;
     else if(type == "Compound")
         op = TOPOP_COMPOUND;
+    else if(type == "Section")
+        op = TOPOP_SECTION;
     else
         return new App::DocumentObjectExecReturn("Unsupported boolean operation");
 
@@ -180,10 +182,10 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         FC_ERR("Boolean operation failed: " << e.GetMessageString());
         return new App::DocumentObjectExecReturn("Boolean operation failed");
     }
-    result = this->getSolid(result);
-        // lets check if the result is a solid
+    result = this->getSolid(result, false);
+    // lets check if the result is a solid
     if (result.isNull())
-        return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+        return new App::DocumentObjectExecReturn("Resulting shape is null");
 
     if (this->Refine.getValue())
         result = result.makERefine();

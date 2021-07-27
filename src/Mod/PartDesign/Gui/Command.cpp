@@ -932,9 +932,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             if (count)
                 Gui::cmdAppObject(Feat, ss << "]");
         }
-
         // for additive and subtractive pipes allow the user to preselect the spines
-        if (which.compare("AdditivePipe") == 0 || which.compare("SubtractivePipe") == 0) {
+        else if (which.compare("AdditivePipe") == 0 || which.compare("SubtractivePipe") == 0) {
             if (sels.size() > 1) {
                 //treat additional selected object as spine
                 App::DocumentObject *spine = nullptr;
@@ -960,6 +959,36 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                         ss << "'" << s << "',";
                     Gui::cmdAppObject(Feat, std::ostringstream()
                             <<"Spine = (" << ref.getObjectPython() << ", [" << ss.str() << "])");
+                }
+            }
+        }
+        // for Revolution and Groove allow the user to preselect the axis
+        else if (which.compare("Revolution") == 0 || which.compare("Groove") == 0) {
+            if (sels.size() > 1) {
+                //treat additional selected object as Axis
+                App::DocumentObject *axis = nullptr;
+                App::SubObjectT ref;
+                std::vector<std::string> subs;
+                for (unsigned i=1; i<sels.size(); ++i) {
+                    if (!axis) {
+                        ref = PartDesignGui::importExternalObject(sels[i], false);
+                        if (ref.getObjectName().empty())
+                            continue;
+                        axis = sels[i].getSubObject();
+                        if (!axis)
+                            continue;
+                    } else if (axis != sels[i].getSubObject())
+                        continue;
+                    auto sub = sels[i].getOldElementName();
+                    if (sub.size())
+                        subs.push_back(std::move(sub));
+                }
+                if (axis) {
+                    std::ostringstream ss;
+                    for(auto &s : subs)
+                        ss << "'" << s << "',";
+                    Gui::cmdAppObject(Feat, std::ostringstream()
+                            <<"ReferenceAxis = (" << ref.getObjectPython() << ", [" << ss.str() << "])");
                 }
             }
         }
@@ -1307,15 +1336,17 @@ void CmdPartDesignRevolution::activated(int iMsg)
 
         if (!Feat) return;
 
-        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
-        }
-        else {
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = (" << getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])");
+        PartDesign::Revolution* pcRevolution = dynamic_cast<PartDesign::Revolution*>(Feat);
+        if (!pcRevolution->ReferenceAxis.getValue()) {
+            if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
+            }
+            else {
+                Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = (" << getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])");
+            }
         }
 
         Gui::cmdAppObject(Feat, std::ostringstream() <<"Angle = 360.0");
-        PartDesign::Revolution* pcRevolution = dynamic_cast<PartDesign::Revolution*>(Feat);
         if (pcRevolution && pcRevolution->suggestReversed())
             Gui::cmdAppObject(Feat, std::ostringstream() <<"Reversed = 1");
 
@@ -1364,11 +1395,14 @@ void CmdPartDesignGroove::activated(int iMsg)
 
         if (!Feat) return;
 
-        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = ("<<getObjectCmd(sketch)<<",['V_Axis'])");
-        }
-        else {
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = ("<<getObjectCmd(pcActiveBody->getOrigin()->getY())<<",[''])");
+        PartDesign::Groove* pcGroove = dynamic_cast<PartDesign::Groove*>(Feat);
+        if (!pcGroove->ReferenceAxis.getValue()) {
+            if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = ("<<getObjectCmd(sketch)<<",['V_Axis'])");
+            }
+            else {
+                Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = ("<<getObjectCmd(pcActiveBody->getOrigin()->getY())<<",[''])");
+            }
         }
 
         Gui::cmdAppObject(Feat, std::ostringstream() <<"Angle = 360.0");
@@ -1376,7 +1410,6 @@ void CmdPartDesignGroove::activated(int iMsg)
         try {
             // This raises as exception if line is perpendicular to sketch/support face.
             // Here we should continue to give the user a chance to change the default values.
-            PartDesign::Groove* pcGroove = dynamic_cast<PartDesign::Groove*>(Feat);
             if (pcGroove && pcGroove->suggestReversed())
                 Gui::cmdAppObject(Feat, std::ostringstream() <<"Reversed = 1");
         }
@@ -1647,11 +1680,8 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
         // To avoid this the base object will be made tmp. visible again.
         if (Feat->isError()) {
             App::DocumentObject* base = static_cast<PartDesign::Feature*>(Feat)->BaseFeature.getValue();
-            if (base) {
-                PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(base));
-                if (view)
-                    view->makeTemporaryVisible(true);
-            }
+            if (base)
+                base->Visibility.setValue(true);
         }
 
         cmd->adjustCameraPosition();

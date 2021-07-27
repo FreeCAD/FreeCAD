@@ -351,43 +351,33 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
 
         TopoShape boolOp(0,feat->getDocument()->getStringHasher());
 
-        if(feat->getAddSubType() == FeatureAddSub::Additive) {
-            try {
-                boolOp.makEFuse({base,result});
-            }catch(Standard_Failure&) {
-                return new App::DocumentObjectExecReturn("Solid adding failed");
-            }
-            boolOp = feat->getSolid(boolOp);
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-            boolOp = feat->refineShapeIfActive(boolOp);
-            feat->Shape.setValue(feat->getSolid(boolOp));
+        const char *maker;
+        switch(feat->getAddSubType()) {
+        case Additive:
+            maker = TOPOP_FUSE;
+            break;
+        case Subtractive:
+            maker = TOPOP_CUT;
+            break;
+        case Common:
+            maker = TOPOP_COMMON;
+            break;
+        default:
+            return new App::DocumentObjectExecReturn("Unknown operation type");
         }
-        else if(feat->getAddSubType() == FeatureAddSub::Subtractive) {
-            try {
-                // Outside property from FeatureHelix, maybe we should offer this for all ProfileBased?
-                auto prop = Base::freecad_dynamic_cast<App::PropertyBool>(
-                        feat->getPropertyByName("Outside"));
-                if (prop && prop->getValue())
-                    boolOp.makEShape(TOPOP_COMMON,{base,result});
-                else
-                    boolOp.makECut({base,result});
-                boolOp.makECut({base,result});
-            }catch(Standard_Failure&) {
-                return new App::DocumentObjectExecReturn("Solid subtracting failed");
-            }
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = feat->getSolid(boolOp);
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-            boolOp = feat->refineShapeIfActive(boolOp);
-            feat->Shape.setValue(feat->getSolid(boolOp));
+        try {
+            boolOp.makEShape(maker, {base,result});
+        }catch(Standard_Failure &e) {
+            FC_ERR(feat->getFullName() << ": " << e.GetMessageString());
+            return new App::DocumentObjectExecReturn("Failed to perform boolean operation");
         }
+        boolOp = feat->getSolid(boolOp);
+        // lets check if the result is a solid
+        if (boolOp.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
+        boolOp = feat->refineShapeIfActive(boolOp);
+        feat->Shape.setValue(feat->getSolid(boolOp));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

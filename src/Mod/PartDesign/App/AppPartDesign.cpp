@@ -98,6 +98,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::FeatureAddSubPython         ::init();
     PartDesign::FeatureAdditivePython       ::init();
     PartDesign::FeatureSubtractivePython    ::init();
+    PartDesign::FeatureCommonPython         ::init();
     PartDesign::DressUp                     ::init();
     PartDesign::ProfileBased                ::init();
     PartDesign::Transformed                 ::init();

@@ -30,6 +30,7 @@
 #include "ViewProvider.h"
 
 class QCheckBox;
+class QComboBox;
 class QTimer;
 class QBoxLayout;
 
@@ -71,7 +72,7 @@ public:
 protected Q_SLOTS:
     // TODO Add update view to all dialogs (2015-12-05, Fat-Zer)
     void onUpdateView(bool on);
-    void onNewSolidChanged(bool);
+    void onNewSolidChanged();
     void onUpdateViewTimer();
 
 protected:
@@ -93,6 +94,7 @@ protected:
     bool blockUpdate;
 
     QCheckBox *checkBoxNewSolid = nullptr;
+    QComboBox *comboAddSubType = nullptr;
     Gui::PrefCheckBox * checkBoxUpdateView = nullptr;
     QTimer *updateViewTimer = nullptr;
     int transactionID = 0;
