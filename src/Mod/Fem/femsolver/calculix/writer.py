@@ -133,8 +133,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_solver_input(self):
 
         time_start = time.process_time()
+        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
+        FreeCAD.Console.PrintMessage("CalculiX solver input writing...\n")
         FreeCAD.Console.PrintMessage(
-            "Start writing CalculiX input file to: {}\n"
+            "Input file:{}\n"
             .format(self.file_name)
         )
 
@@ -207,7 +209,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         writetime = round((time.process_time() - time_start), 3)
         FreeCAD.Console.PrintMessage(
-            "Writing time CalculiX input file: {} seconds \n".format(writetime)
+            "Writing time CalculiX input file: {} seconds.\n".format(writetime)
         )
 
         # return
