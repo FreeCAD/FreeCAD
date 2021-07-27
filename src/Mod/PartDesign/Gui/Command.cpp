@@ -506,11 +506,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
         pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
         if (pcActiveBody == nullptr) {
-            if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
+            if ( doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0 ) {
                 shouldMakeBody = true;
             } else {
-                PartDesignGui::needActiveBodyError();
-                return;
+                pcActiveBody = PartDesignGui::needActiveBodyMessage(doc);
+                if (pcActiveBody == nullptr)
+                    return;
             }
         }
 

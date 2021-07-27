@@ -89,8 +89,9 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
             shouldMakeBody = true;
         } else {
-            PartDesignGui::needActiveBodyError();
-            return;
+            pcActiveBody = PartDesignGui::needActiveBodyMessage(doc);
+            if (pcActiveBody == nullptr)
+                return;
         }
     }
 

@@ -59,6 +59,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPipeScaling.ui
     TaskLoftParameters.ui
     DlgReference.ui
+    DlgActiveBody.ui
     TaskHelixParameters.ui
 )
 

@@ -53,6 +53,9 @@
 #include "Utils.h"
 #include "WorkflowManager.h"
 
+// TODO: Apparently this header can be avoided. See ./Command.cpp:74.
+#include "ui_DlgActiveBody.h"
+
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
 //===========================================================================
@@ -148,6 +151,55 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                                 ));
             }
         }
+    }
+
+    return activeBody;
+}
+
+PartDesign::Body * needActiveBodyMessage (App::Document *doc,
+                                          const QString& infoText)
+{
+    PartDesign::Body* activeBody = nullptr;
+    QDialog dia(Gui::getMainWindow());
+    PartDesignGui::Ui_DlgActiveBody dlg;
+    dlg.setupUi(&dia);
+
+    if(!infoText.isEmpty()) {
+        dlg.label->setText(infoText + QObject::tr("\n\n") +
+                           QObject::tr("Please select"));
+    }
+
+    auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
+
+    for (auto body : bodies) {
+        dlg.bodySelect->addItem(QString::fromUtf8(body->Label.getValue()));
+        // TODO: Any other logic (hover, select effects on view etc.)
+    }
+
+    int result = dia.exec();
+    if (result == QDialog::DialogCode::Accepted) {
+        // TODO: Currently using an index system. Could we avoid it in any way?
+        int offset = 1;
+        int idx = dlg.bodySelect->currentRow();
+        // Check for selection because current != selected
+        if (!dlg.bodySelect->item(idx)->isSelected()) {
+            return activeBody;
+        }
+        if (idx == offset-1) {
+            // Index 0 is for "Create Body"
+            return makeBody(doc);
+        } else if (idx >= offset) {
+            // Index 1 and above for each of the bodies
+            // TODO: Could we avoid casting here?
+            activeBody = dynamic_cast<PartDesign::Body*>(bodies[idx-offset]);
+        }
+    }
+
+    if (activeBody) {
+        // Once an body is selected, make it active
+        // TODO: Text copied from `getBody()` above. Ensure this is correct.
+        _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
+                      << Gui::Command::getObjectCmd(activeBody) << ",'')");
     }
 
     return activeBody;
