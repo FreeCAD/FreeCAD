@@ -37,7 +37,7 @@ from . import femutils
 from femsolver.calculix.solver import ANALYSIS_TYPES
 
 
-def check_analysismember(analysis, solver, mesh, member):
+def check_member_for_solver_calculix(analysis, solver, mesh, member):
 
     message = ""
 
