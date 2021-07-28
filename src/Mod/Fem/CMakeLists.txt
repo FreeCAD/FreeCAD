@@ -366,6 +366,32 @@ SET(FemTestsZ88Main_SRCS
     femtest/data/z88/__init__.py
 )
 
+SET(FemTestsZ88CcxcantiEleHex20_SRCS
+    femtest/data/z88/__init__.py
+    femtest/data/z88/ccx_cantilever_ele_hexa20/51.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88.dyn
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88elp.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i1.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i2.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i5.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88int.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88man.txt
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88mat.txt
+)
+
+SET(FemTestsZ88CcxcantiEleTria6_SRCS
+    femtest/data/z88/__init__.py
+    femtest/data/z88/ccx_cantilever_ele_tria6/51.txt
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88.dyn
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88elp.txt
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88i1.txt
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88i2.txt
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88i5.txt
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88int.txt
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88man.txt
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88mat.txt
+)
+
 SET(FemTestsZ88Ccxcantifl_SRCS
     femtest/data/z88/__init__.py
     femtest/data/z88/ccx_cantilever_faceload/51.txt
@@ -377,19 +403,6 @@ SET(FemTestsZ88Ccxcantifl_SRCS
     femtest/data/z88/ccx_cantilever_faceload/z88int.txt
     femtest/data/z88/ccx_cantilever_faceload/z88man.txt
     femtest/data/z88/ccx_cantilever_faceload/z88mat.txt
-)
-
-SET(FemTestsZ88Ccxcantihex_SRCS
-    femtest/data/z88/__init__.py
-    femtest/data/z88/ccx_cantilever_ele_hexa20/51.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88.dyn
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88elp.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i1.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i2.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88i5.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88int.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88man.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88mat.txt
 )
 
 SET(FemTestsZ88Ccxcantinl_SRCS
@@ -442,7 +455,8 @@ SET(FemAllScripts
     ${FemTestsOpen_SRCS}
     ${FemTestsZ88Main_SRCS}
     ${FemTestsZ88Ccxcantifl_SRCS}
-    ${FemTestsZ88Ccxcantihex_SRCS}
+    ${FemTestsZ88CcxcantiEleHex20_SRCS}
+    ${FemTestsZ88CcxcantiEleTria6_SRCS}
     ${FemTestsZ88Ccxcantinl_SRCS}
     ${FemTools_SRCS}
 )
@@ -477,8 +491,9 @@ INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
+INSTALL(FILES ${FemTestsZ88CcxcantiEleHex20_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)
+INSTALL(FILES ${FemTestsZ88CcxcantiEleTria6_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_tria6)
 INSTALL(FILES ${FemTestsZ88Ccxcantifl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_faceload)
-INSTALL(FILES ${FemTestsZ88Ccxcantihex_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)
 INSTALL(FILES ${FemTestsZ88Ccxcantinl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_nodeload)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 

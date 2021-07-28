@@ -70,7 +70,8 @@ class Prepare(run.Prepare):
         if path is not None:
             self.pushStatus("Write completed!")
         else:
-            self.pushStatus("Writing Z88 input files failed!")
+            self.pushStatus("Writing Z88 solver input files failed!")
+            self.fail()
         # print(path)
 
 
