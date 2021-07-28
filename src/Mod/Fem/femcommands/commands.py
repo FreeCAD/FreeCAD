@@ -741,9 +741,9 @@ class _SolverCalculix(CommandManager):
     def __init__(self):
         super(_SolverCalculix, self).__init__()
         self.pixmap = "FEM_SolverStandard"
-        self.menuetext = "Solver CalculiX (new, beta)"
+        self.menuetext = "Solver CalculiX (new framework)"
         self.accel = "S, C"
-        self.tooltip = "Creates a FEM solver CalculiX (New Solver Framwork, has less error handling)"
+        self.tooltip = "Creates a FEM solver CalculiX new framework (less result error handling)"
         self.is_active = "with_analysis"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
