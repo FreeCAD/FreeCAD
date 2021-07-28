@@ -118,8 +118,10 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
     bool oldVal_blockUpdate = blockUpdate;
     blockUpdate = true;
 
-    if (axesInList.empty())
+    if (axesInList.empty()){
         forceRefill = true;//not filled yet, full refill
+        exitSelectionMode(); //in case user double clicks to edit feature
+    }
 
     if (forceRefill){
         ui->axis->clear();
