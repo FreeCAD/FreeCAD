@@ -99,21 +99,19 @@ class Prepare(run.Prepare):
         )
         path = w.write_solver_input()
         # report to user if task succeeded
-        if path != "":
-            self.pushStatus("Write completed!")
+        if path != "" and os.path.isfile(path):
+            self.pushStatus("Write completed.")
         else:
-            self.pushStatus("Writing CalculiX input file failed!")
+            self.pushStatus("Writing CalculiX solver input file failed,")
+            self.fail()
         _inputFileName = os.path.splitext(os.path.basename(path))[0]
 
 
 class Solve(run.Solve):
 
     def run(self):
-        if not _inputFileName:
-            # TODO do not run solver
-            # do not try to read results in a smarter way than an Exception
-            raise Exception("Error on writing CalculiX input file.\n")
         self.pushStatus("Executing solver...\n")
+
         binary = settings.get_binary("Calculix")
         self._process = subprocess.Popen(
             [binary, "-i", _inputFileName],
