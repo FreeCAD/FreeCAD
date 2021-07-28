@@ -120,6 +120,38 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_ccx_cantilever_ele_seg2(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_seg2 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_seg3(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_seg3 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_tria3(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_tria3 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_tria6(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_tria6 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def test_ccx_cantilever_nodeload(
         self
     ):
