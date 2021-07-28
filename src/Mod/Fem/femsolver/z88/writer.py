@@ -176,54 +176,43 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         f.close()
 
     def write_z88_materials(self):
-        if len(self.material_objects) == 1:
-            material_data_file_name = "51.txt"
-            materials_file_path = self.file_name + "mat.txt"
-            fms = open(materials_file_path, "w")
-            fms.write("1\n")
-            fms.write("1 " + str(self.element_count) + " " + material_data_file_name)
-            fms.write("\n")
-            fms.close()
-            material_data_file_path = self.dir_name + "/" + material_data_file_name
-            fmd = open(material_data_file_path, "w")
-            mat_obj = self.material_objects[0]["Object"]
-            YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
-            YM_in_MPa = YM.getValueAs("MPa")
-            PR = float(mat_obj.Material["PoissonRatio"])
-            fmd.write("{0} {1:.3f}".format(YM_in_MPa, PR))
-            fmd.write("\n")
-            fmd.close()
-        else:
-            FreeCAD.Console.PrintError("Multiple Materials for Z88 not yet supported!\n")
+        mat_obj = self.material_objects[0]["Object"]
+        material_data_file_name = "51.txt"
+        materials_file_path = self.file_name + "mat.txt"
+        fms = open(materials_file_path, "w")
+        fms.write("1\n")
+        fms.write("1 " + str(self.element_count) + " " + material_data_file_name)
+        fms.write("\n")
+        fms.close()
+        material_data_file_path = self.dir_name + "/" + material_data_file_name
+        fmd = open(material_data_file_path, "w")
+        YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
+        YM_in_MPa = YM.getValueAs("MPa")
+        PR = float(mat_obj.Material["PoissonRatio"])
+        fmd.write("{0} {1:.3f}".format(YM_in_MPa, PR))
+        fmd.write("\n")
+        fmd.close()
 
     def write_z88_elements_properties(self):
         element_properties_file_path = self.file_name + "elp.txt"
         elements_data = []
         if meshtools.is_edge_femmesh(self.femmesh):
-            if len(self.beamsection_objects) == 1:
-                beam_obj = self.beamsection_objects[0]["Object"]
-                width = beam_obj.RectWidth.getValueAs("mm")
-                height = beam_obj.RectHeight.getValueAs("mm")
-                area = str(width * height)
-                elements_data.append(
-                    "1 " + str(self.element_count) + " " + area + " 0 0 0 0 0 0 "
-                )
-                FreeCAD.Console.PrintMessage(
-                    "Be aware, only trusses are supported for edge meshes!\n"
-                )
-            else:
-                FreeCAD.Console.PrintError("Multiple beamsections for Z88 not yet supported!\n")
+            beam_obj = self.beamsection_objects[0]["Object"]
+            width = beam_obj.RectWidth.getValueAs("mm")
+            height = beam_obj.RectHeight.getValueAs("mm")
+            area = str(width * height)
+            elements_data.append(
+                "1 " + str(self.element_count) + " " + area + " 0 0 0 0 0 0 "
+            )
+            FreeCAD.Console.PrintMessage(
+                "Be aware, only trusses are supported for edge meshes!\n"
+            )
         elif meshtools.is_face_femmesh(self.femmesh):
-            if len(self.shellthickness_objects) == 1:
-                thick_obj = self.shellthickness_objects[0]["Object"]
-                thickness = str(thick_obj.Thickness.getValueAs("mm"))
-                elements_data.append(
-                    "1 " + str(self.element_count) + " " + thickness + " 0 0 0 0 0 0 "
-                )
-            else:
-                FreeCAD.Console.PrintError(
-                    "Multiple thicknesses for Z88 not yet supported!\n"
-                )
+            thick_obj = self.shellthickness_objects[0]["Object"]
+            thickness = str(thick_obj.Thickness.getValueAs("mm"))
+            elements_data.append(
+                "1 " + str(self.element_count) + " " + thickness + " 0 0 0 0 0 0 "
+            )
         elif meshtools.is_solid_femmesh(self.femmesh):
             elements_data.append("1 " + str(self.element_count) + " 0 0 0 0 0 0 0")
         else:
