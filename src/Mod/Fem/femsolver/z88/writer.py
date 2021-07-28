@@ -71,7 +71,9 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         if not self.femelement_table:
             self.femelement_table = meshtools.get_femelement_table(self.femmesh)
             self.element_count = len(self.femelement_table)
-        self.set_z88_elparam()
+        control = self.set_z88_elparam()
+        if control is False:
+            return None
         self.write_z88_mesh()
         self.write_z88_constraints()
         self.write_z88_face_loads()
@@ -105,9 +107,12 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         if self.z88_element_type in param:
             self.z88_elparam = param[self.z88_element_type]
         else:
-            raise Exception("Element type not supported by Z88.")
+            FreeCAD.Console.PrintError(
+                "Element type not supported by Z88. Can not write Z88 solver input.\n")
+            return False
         FreeCAD.Console.PrintMessage(self.z88_elparam)
         FreeCAD.Console.PrintMessage("\n")
+        return True
 
     def write_z88_mesh(self):
         mesh_file_path = self.file_name + "i1.txt"
