@@ -52,6 +52,7 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_base_face.py
     femexamples/ccx_cantilever_base_solid.py
     femexamples/ccx_cantilever_ele_hexa20.py
+    femexamples/ccx_cantilever_ele_quad4.py
     femexamples/ccx_cantilever_ele_tetra4.py
     femexamples/ccx_cantilever_ele_tria3.py
     femexamples/ccx_cantilever_ele_tria6.py
@@ -94,6 +95,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_buckling_ibeam_tria6.py
     femexamples/meshes/mesh_buckling_plate_tria6.py
     femexamples/meshes/mesh_canticcx_hexa20.py
+    femexamples/meshes/mesh_canticcx_quad4.py
     femexamples/meshes/mesh_canticcx_seg2.py
     femexamples/meshes/mesh_canticcx_seg3.py
     femexamples/meshes/mesh_canticcx_tetra10.py
@@ -300,6 +302,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/ccx_buckling_flexuralbuckling.inp
     femtest/data/calculix/ccx_cantilever_faceload.inp
     femtest/data/calculix/ccx_cantilever_ele_hexa20.inp
+    femtest/data/calculix/ccx_cantilever_ele_quad4.inp
     femtest/data/calculix/ccx_cantilever_ele_seg2.inp
     femtest/data/calculix/ccx_cantilever_ele_seg3.inp
     femtest/data/calculix/ccx_cantilever_ele_tria3.inp
