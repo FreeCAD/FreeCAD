@@ -111,13 +111,12 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
     if (activeView) {
-        bool singleBodyDocument = activeView->getAppDocument()->
-            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
-        if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
+        auto doc = activeView->getAppDocument();
+        bool singleBodyDocument = doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
+        if (assertModern && PartDesignGui::assureModernWorkflow (doc) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
             if (!activeBody && singleBodyDocument && autoActivate) {
-                auto doc = activeView->getAppDocument();
                 auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
                 App::DocumentObject *body = 0;
                 if(bodies.size()==1) {
@@ -126,11 +125,12 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 }
             }
             if (!activeBody && messageIfNot) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+                activeBody = needActiveBodyMessage(
+                    doc,
                     QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                                "Please make one active (double click) or create one.\n\nIf you have a legacy document "
-                                "with PartDesign objects without Body, use the migrate function in "
-                                "PartDesign to put them into a Body."
+                                "Please make one active (double click) or create one."
+                                "\n\nIf you have a legacy document with PartDesign objects without Body, "
+                                "use the migrate function in PartDesign to put them into a Body."
                                 ));
             }
         }
