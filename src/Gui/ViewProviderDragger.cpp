@@ -55,6 +55,7 @@
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
+#include <App/ComplexGeoDataPy.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/nodes/SoResetTransform.h>
 #if (COIN_MAJOR_VERSION > 2)
@@ -106,7 +107,11 @@ bool ViewProviderDragger::doubleClicked(void)
 void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+    act->setToolTip(QObject::tr("Transform at the origin of the placement"));
     act->setData(QVariant((int)ViewProvider::Transform));
+    act = menu->addAction(QObject::tr("Transform at"), receiver, member);
+    act->setToolTip(QObject::tr("Transform at the center of the shape"));
+    act->setData(QVariant((int)ViewProvider::TransformAt));
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
 
@@ -118,7 +123,7 @@ ViewProvider *ViewProviderDragger::startEditing(int mode) {
     return _linkDragger?_linkDragger:ret;
 }
 
-bool ViewProviderDragger::checkLink() {
+bool ViewProviderDragger::checkLink(int mode) {
     // Trying to detect if the editing request is forwarded by a link object,
     // usually by doubleClicked(). If so, we route the request back. There shall
     // be no risk of infinite recursion, as ViewProviderLink handles
@@ -137,25 +142,76 @@ bool ViewProviderDragger::checkLink() {
     auto vp = Application::Instance->getViewProvider(sobj);
     if(!vp)
         return false;
-    _linkDragger = vp->startEditing(ViewProvider::Transform);
+    _linkDragger = vp->startEditing(mode);
     if(_linkDragger)
         return true;
     return false;
 }
 
+Base::Matrix4D ViewProviderDragger::getDragOffset(const ViewProviderDocumentObject *vp)
+{
+    Base::Matrix4D res;
+    if (!vp || !vp->getObject())
+        return res;
+    auto selctx = Gui::Selection().getExtendedContext(vp->getObject());
+    auto objs = selctx.getSubObjectList();
+    auto it = std::find(objs.begin(), objs.end(), vp->getObject());
+    if (it != objs.end()) {
+        objs.erase(objs.begin(), it+1);
+        std::string element = selctx.getElementName();
+        selctx = App::SubObjectT(objs);
+        selctx.setSubName(selctx.getSubName() + element);
+    }
+
+    Base::Rotation rot;
+    Base::BoundBox3d bbox;
+
+    PyObject *pyobj = nullptr;
+    vp->getObject()->getSubObject(selctx.getSubName().c_str(), &pyobj, nullptr, false);
+    if (pyobj) {
+        Base::PyGILStateLocker lock;
+        Py::Object pyObj(pyobj, true);
+        try {
+            if (PyObject_TypeCheck(pyobj, &Data::ComplexGeoDataPy::Type)) {
+                auto geodata = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+                geodata->getRotation(rot);
+                bbox = geodata->getBoundBox();
+            }
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+    }
+
+    if (!bbox.IsValid())
+        bbox = vp->getBoundingBox(selctx.getSubName().c_str(),0,false);
+    if (bbox.IsValid()) 
+        res = Base::Placement(bbox.GetCenter(), rot).toMatrix();
+    return res;
+}
+
 bool ViewProviderDragger::setEdit(int ModNum)
 {
-  if (ModNum != ViewProvider::Transform && ModNum != ViewProvider::Default)
+  if (ModNum != ViewProvider::Transform 
+          && ModNum != ViewProvider::TransformAt
+          && ModNum != ViewProvider::Default)
       return ViewProviderDocumentObject::setEdit(ModNum);
 
-  if(checkLink())
+  if(checkLink(ModNum))
       return true;
 
   App::DocumentObject *genericObject = this->getObject();
   if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
   {
     App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
-    const Base::Placement &placement = geoFeature->Placement.getValue();
+
+    if (ModNum == TransformAt) {
+        this->dragOffset = getDragOffset(this);
+    } else
+        this->dragOffset = Base::Matrix4D();
+    
+    Base::Placement placement =
+        geoFeature->Placement.getValue().toMatrix() * this->dragOffset;
+    this->dragOffset.inverse();
     SoTransform *tempTransform = new SoTransform();
     tempTransform->ref();
     updateTransform(placement, tempTransform);
@@ -168,11 +224,9 @@ bool ViewProviderDragger::setEdit(int ModNum)
 
     tempTransform->unref();
 
-    pcTransform->translation.connectFrom(&csysDragger->translation);
-    pcTransform->rotation.connectFrom(&csysDragger->rotation);
-
     csysDragger->addStartCallback(dragStartCallback, this);
     csysDragger->addFinishCallback(dragFinishCallback, this);
+    csysDragger->addMotionCallback(dragMotionCallback, this);
 
     // dragger node is added to viewer's editing root in setEditViewer
     // pcRoot->insertChild(csysDragger, 0);
@@ -191,9 +245,6 @@ void ViewProviderDragger::unsetEdit(int ModNum)
 
   if(csysDragger)
   {
-    pcTransform->translation.disconnect(&csysDragger->translation);
-    pcTransform->rotation.disconnect(&csysDragger->rotation);
-
     // dragger node is added to viewer's editing root in setEditViewer
     // pcRoot->removeChild(csysDragger); //should delete csysDragger
     csysDragger->unref();
@@ -254,87 +305,34 @@ void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
+void ViewProviderDragger::dragMotionCallback(void *data, SoDragger *d)
+{
+    ViewProviderDragger* sudoThis = reinterpret_cast<ViewProviderDragger *>(data);
+    SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
+    SbVec3f v;
+    SbRotation r;
+    v = dragger->translation.getValue();
+    r = dragger->rotation.getValue();
+    float q1,q2,q3,q4;
+    r.getValue(q1,q2,q3,q4);
+    Base::Placement pla(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
+    updateTransform(pla * sudoThis->dragOffset, sudoThis->pcTransform);
+}
+
 void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoThis, SoFCCSysDragger* draggerIn)
 {
   App::DocumentObject *genericObject = sudoThis->getObject();
   if (!genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
     return;
   App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
-  Base::Placement originalPlacement = geoFeature->Placement.getValue();
-  double pMatrix[16];
-  originalPlacement.toMatrix().getMatrix(pMatrix);
-  Base::Placement freshPlacement = originalPlacement;
-
-  //local cache for brevity.
-  double translationIncrement = draggerIn->translationIncrement.getValue();
-  double rotationIncrement = draggerIn->rotationIncrement.getValue();
-  int tCountX = draggerIn->translationIncrementCountX.getValue();
-  int tCountY = draggerIn->translationIncrementCountY.getValue();
-  int tCountZ = draggerIn->translationIncrementCountZ.getValue();
-  int rCountX = draggerIn->rotationIncrementCountX.getValue();
-  int rCountY = draggerIn->rotationIncrementCountY.getValue();
-  int rCountZ = draggerIn->rotationIncrementCountZ.getValue();
-
-  //just as a little sanity check make sure only 1 field has changed.
-  int numberOfFieldChanged = 0;
-  if (tCountX) numberOfFieldChanged++;
-  if (tCountY) numberOfFieldChanged++;
-  if (tCountZ) numberOfFieldChanged++;
-  if (rCountX) numberOfFieldChanged++;
-  if (rCountY) numberOfFieldChanged++;
-  if (rCountZ) numberOfFieldChanged++;
-  if (numberOfFieldChanged == 0)
-    return;
-  assert(numberOfFieldChanged == 1);
-
-  //helper lamdas.
-  auto getVectorX = [&pMatrix]() {return Base::Vector3d(pMatrix[0], pMatrix[4], pMatrix[8]);};
-  auto getVectorY = [&pMatrix]() {return Base::Vector3d(pMatrix[1], pMatrix[5], pMatrix[9]);};
-  auto getVectorZ = [&pMatrix]() {return Base::Vector3d(pMatrix[2], pMatrix[6], pMatrix[10]);};
-
-  if (tCountX)
-  {
-    Base::Vector3d movementVector(getVectorX());
-    movementVector *= (tCountX * translationIncrement);
-    freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  else if (tCountY)
-  {
-    Base::Vector3d movementVector(getVectorY());
-    movementVector *= (tCountY * translationIncrement);
-    freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  else if (tCountZ)
-  {
-    Base::Vector3d movementVector(getVectorZ());
-    movementVector *= (tCountZ * translationIncrement);
-    freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  else if (rCountX)
-  {
-    Base::Vector3d rotationVector(getVectorX());
-    Base::Rotation rotation(rotationVector, rCountX * rotationIncrement);
-    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  else if (rCountY)
-  {
-    Base::Vector3d rotationVector(getVectorY());
-    Base::Rotation rotation(rotationVector, rCountY * rotationIncrement);
-    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  else if (rCountZ)
-  {
-    Base::Vector3d rotationVector(getVectorZ());
-    Base::Rotation rotation(rotationVector, rCountZ * rotationIncrement);
-    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-
+  SbVec3f v;
+  SbRotation r;
+  v = draggerIn->translation.getValue();
+  r = draggerIn->rotation.getValue();
+  float q1,q2,q3,q4;
+  r.getValue(q1,q2,q3,q4);
+  Base::Placement pla(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
+  geoFeature->Placement.setValue(pla * sudoThis->dragOffset);
   draggerIn->clearIncrementCounts();
 }
 

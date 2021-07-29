@@ -2885,9 +2885,36 @@ void ViewProviderLink::_setupContextMenu(
             linkvp->_setupContextMenu(ext, menu, receiver, member);
         else
             linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
-    } else if(ext->getPlacementProperty() || ext->getLinkPlacementProperty()) {
-        QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
-        act->setData(QVariant((int)ViewProvider::Transform));
+    }
+
+
+    if((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
+            || (ext->getLinkPlacementProperty() && !ext->getLinkPlacementProperty()->isReadOnly()))
+    {
+        bool found = false;
+        for(auto action : menu->actions()) {
+            if(action->data().toInt() == ViewProvider::Transform) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+            act->setToolTip(QObject::tr("Transform at the origin of the placement"));
+            act->setData(QVariant((int)ViewProvider::Transform));
+        }
+        found = false;
+        for(auto action : menu->actions()) {
+            if(action->data().toInt() == ViewProvider::TransformAt) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            auto act = menu->addAction(QObject::tr("Transform at"), receiver, member);
+            act->setToolTip(QObject::tr("Transform at the center of the shape"));
+            act->setData(QVariant((int)ViewProvider::TransformAt));
+        }
     }
 
     if(ext->getColoredElementsProperty()) {
@@ -2906,7 +2933,7 @@ void ViewProviderLink::_setupContextMenu(
     }
 }
 
-bool ViewProviderLink::initDraggingPlacement() {
+bool ViewProviderLink::initDraggingPlacement(int mode) {
     Base::PyGILStateLocker lock;
     try {
         auto* proxy = getPropertyByName("Proxy");
@@ -2967,7 +2994,16 @@ bool ViewProviderLink::initDraggingPlacement() {
     // the dragger is meant to change our transformation.
     dragCtx->preTransform *= pla.inverse().toMatrix();
 
-    dragCtx->bbox = getBoundingBox(0,0,false);
+    auto selctx = Gui::Selection().getExtendedContext(getObject());
+    auto objs = selctx.getSubObjectList();
+    auto it = std::find(objs.begin(), objs.end(), getObject());
+    if (it != objs.end()) {
+        objs.erase(objs.begin(), it+1);
+        std::string element = selctx.getElementName();
+        selctx = App::SubObjectT(objs);
+        selctx.setSubName(selctx.getSubName() + element);
+    }
+    dragCtx->bbox = getBoundingBox(selctx.getSubName().c_str(),0,false);
     // The returned bounding box is before our own transform, but we still need
     // to scale it to get the correct center.
     auto scale = ext->getScaleVector();
@@ -2981,7 +3017,8 @@ bool ViewProviderLink::initDraggingPlacement() {
     // if SHIFT key is down, force to use origine,
     // if not a sub link, use origine,
     // else (e.g. group, array, sub link), use bound box center
-    if(modifier != Qt::ShiftModifier
+    if(mode != TransformAt
+            && modifier != Qt::ShiftModifier
             && ((ext->getLinkedObjectValue() && !linkView->hasSubs())
                 || modifier == Qt::ControlModifier))
     {
@@ -2997,16 +3034,17 @@ bool ViewProviderLink::initDraggingPlacement() {
             dragCtx->initialPlacement = pla;
 
     } else {
-        auto offset = dragCtx->bbox.GetCenter();
+        auto offset = ViewProviderDragger::getDragOffset(this);
 
-        // This determines the initial placement of the dragger. We place it at the
-        // center of our bounding box.
-        dragCtx->initialPlacement = pla * Base::Placement(offset, Base::Rotation());
+        // This determines the initial placement of the dragger. We place it at
+        // the center and orientation of the focused sub-shape element
+        // (obtained using ViewProviderDragger::getDragOffset()).
+        dragCtx->initialPlacement = pla.toMatrix() * offset;
 
         // dragCtx->mat is to transform the dragger placement to our own placement.
-        // Since the dragger is placed at the center, we set the transformation by
-        // moving the same amount in reverse direction.
-        dragCtx->mat.move(Vector3d() - offset);
+        // So inverse the transform
+        dragCtx->mat = offset;
+        dragCtx->mat.inverse();
     }
 
     return true;
@@ -3030,11 +3068,11 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
 
     auto doc = Application::Instance->editDocument();
 
-    if(mode==ViewProvider::Transform) {
+    if(mode == ViewProvider::Transform || mode == ViewProvider::TransformAt) {
         if(_pendingTransform && doc)
             doc->setEditingTransform(_editingTransform);
 
-        if(!initDraggingPlacement())
+        if(!initDraggingPlacement(mode))
             return 0;
         if(useCenterballDragger)
             pcDragger = CoinPtr<SoCenterballDragger>(new SoCenterballDragger);

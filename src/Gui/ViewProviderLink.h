@@ -356,7 +356,7 @@ protected:
 
     ViewProvider *getLinkedView(bool real,const App::LinkBaseExtension *ext=0) const;
 
-    bool initDraggingPlacement();
+    bool initDraggingPlacement(int mode);
     bool callDraggerProxy(const char *fname, bool update);
 
 private:

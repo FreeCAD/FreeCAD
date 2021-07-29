@@ -63,6 +63,8 @@ public:
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
 
+    static Base::Matrix4D getDragOffset(const ViewProviderDocumentObject *vp);
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -74,12 +76,14 @@ protected:
 private:
     static void dragStartCallback(void * data, SoDragger * d);
     static void dragFinishCallback(void * data, SoDragger * d);
+    static void dragMotionCallback(void * data, SoDragger * d);
 
     static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
 
-    bool checkLink();
+    bool checkLink(int mode);
 
     ViewProvider *_linkDragger = nullptr;
+    Base::Matrix4D dragOffset;
 };
 
 } // namespace Gui

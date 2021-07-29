@@ -428,6 +428,7 @@ public:
                    Cutting,
                    Color,
                    ExportInGroup,
+                   TransformAt,
                    UserEditMode = 100,
     };
 protected:
