@@ -817,12 +817,24 @@ const App::SubObjectT &SelectionSingleton::getContext() const
 
 App::SubObjectT SelectionSingleton::getExtendedContext(App::DocumentObject *obj) const
 {
-    auto sobj = ContextObject.getSubObject();
-    if (!obj || obj == sobj)
+    auto checkSel = [this, obj](const App::SubObjectT &sel) {
+        auto sobj = sel.getSubObject();
+        if (!sobj)
+            return false;
+        if (!obj || obj == sobj)
+            return true;
+        if (obj) {
+            auto objs = ContextObject.getSubObjectList();
+            if (std::find(objs.begin(), objs.end(), obj) != objs.end())
+                return true;
+        }
+        return false;
+    };
+
+    if (checkSel(ContextObject))
         return ContextObject;
 
-    sobj = CurrentPreselection.Object.getSubObject();
-    if (!obj || obj == sobj)
+    if (checkSel(CurrentPreselection.Object))
         return CurrentPreselection.Object;
 
     if (!obj) {
@@ -830,9 +842,15 @@ App::SubObjectT SelectionSingleton::getExtendedContext(App::DocumentObject *obj)
         if (sels.size())
             return sels.front();
     } else {
-        for (auto &sel : getSelectionT(nullptr, 0)) {
-            sobj = sel.getSubObject();
+        auto objs = getSelectionT(nullptr, 0);
+        for (auto &sel : objs) {
+            auto sobj = sel.getSubObject();
             if (sobj == obj)
+                return sel;
+        }
+        for (auto &sel : objs) {
+            auto sobjs = sel.getSubObjectList();
+            if (std::find(sobjs.begin(), sobjs.end(), obj) != sobjs.end())
                 return sel;
         }
     }
@@ -840,8 +858,7 @@ App::SubObjectT SelectionSingleton::getExtendedContext(App::DocumentObject *obj)
     auto gdoc = Application::Instance->editDocument();
     if (gdoc && gdoc == Application::Instance->activeDocument()) {
         auto objT = gdoc->getInEditT();
-        sobj = objT.getSubObject();
-        if (!obj || sobj == obj)
+        if (checkSel(objT))
             return objT;
     }
 
