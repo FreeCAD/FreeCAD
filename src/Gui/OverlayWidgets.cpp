@@ -2939,8 +2939,7 @@ public:
                 for(auto o : _overlayInfos) {
                     if(tabWidget == o->tabWidget) {
                         tabWidget->touch();
-                        onTimer();
-                        return;
+                        break;
                     }
                 }
             }
