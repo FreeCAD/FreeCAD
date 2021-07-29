@@ -71,6 +71,8 @@ protected:
     ///get the given edges and all their tangent ones
     void getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     TopoShape buildPipePath(const App::PropertyLinkSub &link, const gp_Trsf &trsf);
+    void buildPipePathOld(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
+    void setupAlgorithmOld(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape);
     static void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell,
                                int mode,
                                const Base::Vector3d &binormalVector,

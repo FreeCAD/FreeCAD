@@ -207,15 +207,17 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
                 if(shape.countSubShapes(TopAbs_WIRE) != wiresections.size())
                     return new App::DocumentObjectExecReturn(
                             "Multisections need to have the same amount of inner wires as the base section");
-
+                // Since we are calling getVerifiedFace() above, we shall make
+                // a face here as well to make sure the wires returned are in
+                // corresponding orders, assuming out wires first.
+                auto face = shape.makEFace();
                 if (std::abs(feat->Fit.getValue()) > Precision::Confusion()
                         || std::abs(feat->InnerFit.getValue()) > Precision::Confusion()) {
                     try {
-                        auto face = shape.makEFace();
-                        shape = face.makEOffsetFace(feat->Fit.getValue(),
-                                                    feat->InnerFit.getValue(),
-                                                    static_cast<short>(feat->FitJoin.getValue()),
-                                                    static_cast<short>(feat->InnerFitJoin.getValue()));
+                        face = face.makEOffsetFace(feat->Fit.getValue(),
+                                                   feat->InnerFit.getValue(),
+                                                   static_cast<short>(feat->FitJoin.getValue()),
+                                                   static_cast<short>(feat->InnerFitJoin.getValue()));
                     } catch (Standard_Failure &e) {
                         FC_ERR("Failed to fit wires of section "
                                 << obj->getFullName() << ": " << e.GetMessageString());
@@ -225,7 +227,7 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
                     }
                 }
                 int i=0;
-                for(auto &wire : shape.getSubTopoShapes(TopAbs_WIRE))
+                for(auto &wire : face.getSubTopoShapes(TopAbs_WIRE))
                     wiresections[i++].push_back(wire);
             }
         }
