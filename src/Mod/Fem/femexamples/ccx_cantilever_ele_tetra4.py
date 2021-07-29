@@ -67,6 +67,11 @@ def setup(doc=None, solvertype="ccxtools"):
     # just keep the following line and change text string in get_explanation method
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
+    # delete explanation object wrongly added with setup faceload
+    if hasattr(doc, "Explanation_Report001"):
+        doc.removeObject("Explanation_Report001")
+    doc.recompute()
+
     # setup cantilever faceload and exchange the mesh
     doc = setup_with_faceload(doc, solvertype)
     femmesh_obj = doc.getObject(get_meshname())
