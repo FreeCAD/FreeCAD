@@ -74,7 +74,7 @@ public:
      */
     QIcon iconFromTheme(const char* name, const QIcon& fallback = QIcon());
     /// Retrieves a pixmap by name
-    QPixmap pixmap(const char* name) const;
+    QPixmap pixmap(const char* name, bool silent = false) const;
     /** Retrieves a pixmap by name and size created by an
      * scalable vector graphics (SVG).
      *

@@ -249,7 +249,7 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
     return !icon.isNull();
 }
 
-QPixmap BitmapFactoryInst::pixmap(const char* name) const
+QPixmap BitmapFactoryInst::pixmap(const char* name, bool silent) const
 {
     if (!name || *name == '\0')
         return QPixmap();
@@ -293,6 +293,8 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         return icon;
     }
 
+    if (silent)
+        return QPixmap();
     Base::Console().Warning("Cannot find icon: %s\n", name);
     return QPixmap(not_found);
 }
