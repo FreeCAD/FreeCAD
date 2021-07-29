@@ -55,15 +55,6 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         return super(TaskPanelBaseGeometryPage, self)
 
     def addBaseGeometry(self, selection):
-        for sel in selection:
-            if sel.HasSubObjects:
-                # selectively add some elements of the drawing to the Base
-                for sub in sel.SubObjects:
-                    if isinstance(sub, Part.Face):
-                        if sub.normalAt(0, 0) != FreeCAD.Vector(0, 0, 1):
-                            PathLog.info(translate("Path", "Ignoring non-horizontal Face"))
-                            return
-
         self.super().addBaseGeometry(selection)
 
 

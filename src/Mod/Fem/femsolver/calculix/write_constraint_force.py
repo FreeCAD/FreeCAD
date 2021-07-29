@@ -48,7 +48,7 @@ def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
 
     direction_vec = femobj["Object"].DirectionVector
     for ref_shape in femobj["NodeLoadTable"]:
-        f.write("** " + ref_shape[0] + "\n")
+        f.write("** {}\n".format(ref_shape[0]))
         for n in sorted(ref_shape[1]):
             node_load = ref_shape[1][n]
             if (direction_vec.x != 0.0):

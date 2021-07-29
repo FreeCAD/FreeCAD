@@ -1,0 +1,144 @@
+** written by FreeCAD inp file writer for CalculiX,Abaqus meshes
+** highest dimension mesh elements only.
+
+** Nodes
+*Node, NSET=Nall
+1, 0, 500, 0
+2, 0, 500, 1000
+3, 8000, 500, 0
+4, 8000, 500, 1000
+5, 0, 500, 500
+6, 4000, 500, 0
+7, 2000, 500, 0
+8, 6000, 500, 0
+9, 8000, 500, 500
+10, 4000, 500, 1000
+11, 2000, 500, 1000
+12, 6000, 500, 1000
+13, 4000, 500, 500
+14, 2000, 500, 500
+15, 6000, 500, 500
+
+
+** Face elements
+*Element, TYPE=S4, ELSET=Efaces
+13, 1, 7, 14, 5
+14, 2, 5, 14, 11
+15, 10, 11, 14, 13
+16, 6, 13, 14, 7
+17, 3, 9, 15, 8
+18, 6, 8, 15, 13
+19, 10, 13, 15, 12
+20, 4, 12, 15, 9
+
+** Define element set Eall
+*ELSET, ELSET=Eall
+Efaces
+
+
+
+***********************************************************
+** Element sets for materials and FEM element type (solid, shell, beam, fluid)
+*ELSET,ELSET=MechanicalMaterialThickness
+Efaces
+
+***********************************************************
+** constraints fixed node sets
+** ConstraintFixed
+*NSET,NSET=ConstraintFixed
+1,
+2,
+5,
+
+***********************************************************
+** Materials
+** see information about units at file end
+** FreeCAD material name: Calculix-Steel
+** MechanicalMaterial
+*MATERIAL, NAME=MechanicalMaterial
+*ELASTIC
+210000,0.3
+
+***********************************************************
+** Sections
+*SHELL SECTION, ELSET=MechanicalMaterialThickness, MATERIAL=MechanicalMaterial
+1000
+
+***********************************************************
+** At least one step is needed to run an CalculiX analysis of FreeCAD
+*STEP
+*STATIC
+
+
+***********************************************************
+** Fixed Constraints
+** ConstraintFixed
+*BOUNDARY
+ConstraintFixed,1
+ConstraintFixed,2
+ConstraintFixed,3
+ConstraintFixed,4
+ConstraintFixed,5
+ConstraintFixed,6
+
+
+***********************************************************
+** constraints force node loads
+*CLOAD
+** ConstraintForce
+** node loads on shape: CanileverPlate:Edge3
+3,2,-4.9960036108132E-10
+3,3,-2.2500000000000E+06
+4,2,-4.9960036108132E-10
+4,3,-2.2500000000000E+06
+9,2,-9.9920072216264E-10
+9,3,-4.5000000000000E+06
+
+
+
+***********************************************************
+** Outputs --> frd file
+*NODE FILE, OUTPUT=2d
+U
+*EL FILE
+S, E
+** outputs --> dat file
+** reaction forces for Constraint fixed
+*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+RF
+
+
+***********************************************************
+*END STEP 
+
+***********************************************************
+** CalculiX Input file
+**   written by    --> FreeCAD 0.20.25341 (Git)
+**   written on    --> Thu Jul 29 07:45:55 2021
+**   file name     --> test.FCStd
+**   analysis name --> Analysis
+**
+**
+***********************************************************
+**  About units:
+**  See ccx manual, ccx does not know about any unit.
+**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  The user is the FreeCAD calculix writer module ;-)
+**
+**  The unit system which is used at Guido Dhondt's company: mm, N, s, K
+**  Since Length and Mass are connected by Force, if Length is mm the Mass is in t to get N
+**  The following units are used to write to inp file:
+**
+**  Length: mm (this includes the mesh geometry)
+**  Mass: t
+**  TimeSpan: s
+**  Temperature: K
+**
+**  This leads to:
+**  Force: N
+**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
+**  Density: t/mm^3
+**  Gravity: mm/s^2
+**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
+**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
+**

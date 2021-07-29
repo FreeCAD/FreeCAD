@@ -79,7 +79,7 @@ def setup(doc=None, solvertype="ccxtools"):
     l4 = Part.makeLine((-142.5, 142.5, 0), (-142.5, -142.5, 0))
     wire = Part.Wire([l1, l2, l3, l4])
     shape = wire.extrude(Vector(0, 0, 1000))
-    geom_obj = doc.addObject('Part::Feature', 'SquareTube')
+    geom_obj = doc.addObject("Part::Feature", "SquareTube")
     geom_obj.Shape = shape
 
     points_forces = []
@@ -182,9 +182,9 @@ def setup(doc=None, solvertype="ccxtools"):
     points_fixes.append(Part.Vertex(-71.25, 142.5, 1000.0))
     points_fixes.append(Part.Vertex(-118.75, 142.5, 1000.0))
 
-    geoforces_obj = doc.addObject('Part::Feature', 'Forces')
+    geoforces_obj = doc.addObject("Part::Feature", "Forces")
     geoforces_obj.Shape = Part.makeCompound(points_forces)
-    geofixes_obj = doc.addObject('Part::Feature', 'Fixes')
+    geofixes_obj = doc.addObject("Part::Feature", "Fixes")
     geofixes_obj.Shape = Part.makeCompound(points_fixes)
 
     doc.recompute()
@@ -237,59 +237,59 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     con_fixed.References = [
-        (geofixes_obj, 'Vertex6'),
-        (geofixes_obj, 'Vertex15'),
-        (geofixes_obj, 'Vertex5'),
-        (geofixes_obj, 'Vertex29'),
-        (geofixes_obj, 'Vertex42'),
-        (geofixes_obj, 'Vertex30'),
-        (geofixes_obj, 'Vertex9'),
-        (geofixes_obj, 'Vertex31'),
-        (geofixes_obj, 'Vertex33'),
-        (geofixes_obj, 'Vertex32'),
-        (geofixes_obj, 'Vertex3'),
-        (geofixes_obj, 'Vertex34'),
-        (geofixes_obj, 'Vertex46'),
-        (geofixes_obj, 'Vertex1'),
-        (geofixes_obj, 'Vertex36'),
-        (geofixes_obj, 'Vertex11'),
-        (geofixes_obj, 'Vertex38'),
-        (geofixes_obj, 'Vertex12'),
-        (geofixes_obj, 'Vertex39'),
-        (geofixes_obj, 'Vertex13'),
-        (geofixes_obj, 'Vertex40'),
-        (geofixes_obj, 'Vertex16'),
-        (geofixes_obj, 'Vertex35'),
-        (geofixes_obj, 'Vertex14'),
-        (geofixes_obj, 'Vertex47'),
-        (geofixes_obj, 'Vertex20'),
-        (geofixes_obj, 'Vertex37'),
-        (geofixes_obj, 'Vertex18'),
-        (geofixes_obj, 'Vertex41'),
-        (geofixes_obj, 'Vertex17'),
-        (geofixes_obj, 'Vertex10'),
-        (geofixes_obj, 'Vertex26'),
-        (geofixes_obj, 'Vertex43'),
-        (geofixes_obj, 'Vertex21'),
-        (geofixes_obj, 'Vertex44'),
-        (geofixes_obj, 'Vertex19'),
-        (geofixes_obj, 'Vertex4'),
-        (geofixes_obj, 'Vertex28'),
-        (geofixes_obj, 'Vertex48'),
-        (geofixes_obj, 'Vertex22'),
-        (geofixes_obj, 'Vertex8'),
-        (geofixes_obj, 'Vertex23'),
-        (geofixes_obj, 'Vertex7'),
-        (geofixes_obj, 'Vertex24'),
-        (geofixes_obj, 'Vertex45'),
-        (geofixes_obj, 'Vertex27'),
-        (geofixes_obj, 'Vertex2'),
-        (geofixes_obj, 'Vertex25')]
+        (geofixes_obj, "Vertex6"),
+        (geofixes_obj, "Vertex15"),
+        (geofixes_obj, "Vertex5"),
+        (geofixes_obj, "Vertex29"),
+        (geofixes_obj, "Vertex42"),
+        (geofixes_obj, "Vertex30"),
+        (geofixes_obj, "Vertex9"),
+        (geofixes_obj, "Vertex31"),
+        (geofixes_obj, "Vertex33"),
+        (geofixes_obj, "Vertex32"),
+        (geofixes_obj, "Vertex3"),
+        (geofixes_obj, "Vertex34"),
+        (geofixes_obj, "Vertex46"),
+        (geofixes_obj, "Vertex1"),
+        (geofixes_obj, "Vertex36"),
+        (geofixes_obj, "Vertex11"),
+        (geofixes_obj, "Vertex38"),
+        (geofixes_obj, "Vertex12"),
+        (geofixes_obj, "Vertex39"),
+        (geofixes_obj, "Vertex13"),
+        (geofixes_obj, "Vertex40"),
+        (geofixes_obj, "Vertex16"),
+        (geofixes_obj, "Vertex35"),
+        (geofixes_obj, "Vertex14"),
+        (geofixes_obj, "Vertex47"),
+        (geofixes_obj, "Vertex20"),
+        (geofixes_obj, "Vertex37"),
+        (geofixes_obj, "Vertex18"),
+        (geofixes_obj, "Vertex41"),
+        (geofixes_obj, "Vertex17"),
+        (geofixes_obj, "Vertex10"),
+        (geofixes_obj, "Vertex26"),
+        (geofixes_obj, "Vertex43"),
+        (geofixes_obj, "Vertex21"),
+        (geofixes_obj, "Vertex44"),
+        (geofixes_obj, "Vertex19"),
+        (geofixes_obj, "Vertex4"),
+        (geofixes_obj, "Vertex28"),
+        (geofixes_obj, "Vertex48"),
+        (geofixes_obj, "Vertex22"),
+        (geofixes_obj, "Vertex8"),
+        (geofixes_obj, "Vertex23"),
+        (geofixes_obj, "Vertex7"),
+        (geofixes_obj, "Vertex24"),
+        (geofixes_obj, "Vertex45"),
+        (geofixes_obj, "Vertex27"),
+        (geofixes_obj, "Vertex2"),
+        (geofixes_obj, "Vertex25")]
     analysis.addObject(con_fixed)
 
     # con_force1
     con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
-    con_force1.References = [(geoforces_obj, 'Vertex1'), (geoforces_obj, 'Vertex14')]
+    con_force1.References = [(geoforces_obj, "Vertex1"), (geoforces_obj, "Vertex14")]
     con_force1.Force = 5555.56
     con_force1.Direction = (geom_obj, ["Edge9"])
     con_force1.Reversed = False
@@ -297,7 +297,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # con_force2
     con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
-    con_force2.References = [(geoforces_obj, 'Vertex2'), (geoforces_obj, 'Vertex8')]
+    con_force2.References = [(geoforces_obj, "Vertex2"), (geoforces_obj, "Vertex8")]
     con_force2.Force = 5555.56
     con_force2.Direction = (geom_obj, ["Edge3"])
     con_force2.Reversed = False
@@ -306,11 +306,11 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force3
     con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
     con_force3.References = [
-        (geoforces_obj, 'Vertex20'),
-        (geoforces_obj, 'Vertex21'),
-        (geoforces_obj, 'Vertex22'),
-        (geoforces_obj, 'Vertex23'),
-        (geoforces_obj, 'Vertex24'), ]
+        (geoforces_obj, "Vertex20"),
+        (geoforces_obj, "Vertex21"),
+        (geoforces_obj, "Vertex22"),
+        (geoforces_obj, "Vertex23"),
+        (geoforces_obj, "Vertex24"), ]
     con_force3.Force = 27777.78
     con_force3.Direction = (geom_obj, ["Edge9"])
     con_force3.Reversed = False
@@ -319,11 +319,11 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force4
     con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
     con_force4.References = [
-        (geoforces_obj, 'Vertex9'),
-        (geoforces_obj, 'Vertex10'),
-        (geoforces_obj, 'Vertex11'),
-        (geoforces_obj, 'Vertex12'),
-        (geoforces_obj, 'Vertex13'), ]
+        (geoforces_obj, "Vertex9"),
+        (geoforces_obj, "Vertex10"),
+        (geoforces_obj, "Vertex11"),
+        (geoforces_obj, "Vertex12"),
+        (geoforces_obj, "Vertex13"), ]
     con_force4.Force = 27777.78
     con_force4.Direction = (geom_obj, ["Edge3"])
     con_force4.Reversed = False
@@ -332,12 +332,12 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force5
     con_force5 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce5")
     con_force5.References = [
-        (geoforces_obj, 'Vertex43'),
-        (geoforces_obj, 'Vertex44'),
-        (geoforces_obj, 'Vertex45'),
-        (geoforces_obj, 'Vertex46'),
-        (geoforces_obj, 'Vertex47'),
-        (geoforces_obj, 'Vertex48'), ]
+        (geoforces_obj, "Vertex43"),
+        (geoforces_obj, "Vertex44"),
+        (geoforces_obj, "Vertex45"),
+        (geoforces_obj, "Vertex46"),
+        (geoforces_obj, "Vertex47"),
+        (geoforces_obj, "Vertex48"), ]
     con_force5.Force = 66666.67
     con_force5.Direction = (geom_obj, ["Edge9"])
     con_force5.Reversed = False
@@ -346,12 +346,12 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force6
     con_force6 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce6")
     con_force6.References = [
-        (geoforces_obj, 'Vertex31'),
-        (geoforces_obj, 'Vertex32'),
-        (geoforces_obj, 'Vertex33'),
-        (geoforces_obj, 'Vertex34'),
-        (geoforces_obj, 'Vertex35'),
-        (geoforces_obj, 'Vertex36'), ]
+        (geoforces_obj, "Vertex31"),
+        (geoforces_obj, "Vertex32"),
+        (geoforces_obj, "Vertex33"),
+        (geoforces_obj, "Vertex34"),
+        (geoforces_obj, "Vertex35"),
+        (geoforces_obj, "Vertex36"), ]
     con_force6.Force = 66666.67
     con_force6.Direction = (geom_obj, ["Edge3"])
     con_force6.Reversed = False
@@ -359,7 +359,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # con_force7
     con_force7 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce7")
-    con_force7.References = [(geoforces_obj, 'Vertex1'), (geoforces_obj, 'Vertex2')]
+    con_force7.References = [(geoforces_obj, "Vertex1"), (geoforces_obj, "Vertex2")]
     con_force7.Force = 5555.56
     con_force7.Direction = (geom_obj, ["Edge11"])
     con_force7.Reversed = False
@@ -367,7 +367,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # con_force8
     con_force8 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce8")
-    con_force8.References = [(geoforces_obj, 'Vertex8'), (geoforces_obj, 'Vertex14')]
+    con_force8.References = [(geoforces_obj, "Vertex8"), (geoforces_obj, "Vertex14")]
     con_force8.Force = 5555.56
     con_force8.Direction = (geom_obj, ["Edge6"])
     con_force8.Reversed = False
@@ -376,11 +376,11 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force9
     con_force9 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce9")
     con_force9.References = [
-        (geoforces_obj, 'Vertex3'),
-        (geoforces_obj, 'Vertex4'),
-        (geoforces_obj, 'Vertex5'),
-        (geoforces_obj, 'Vertex6'),
-        (geoforces_obj, 'Vertex7'), ]
+        (geoforces_obj, "Vertex3"),
+        (geoforces_obj, "Vertex4"),
+        (geoforces_obj, "Vertex5"),
+        (geoforces_obj, "Vertex6"),
+        (geoforces_obj, "Vertex7"), ]
     con_force9.Force = 27777.78
     con_force9.Direction = (geom_obj, ["Edge11"])
     con_force9.Reversed = False
@@ -389,11 +389,11 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force10
     con_force10 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce10")
     con_force10.References = [
-        (geoforces_obj, 'Vertex15'),
-        (geoforces_obj, 'Vertex16'),
-        (geoforces_obj, 'Vertex17'),
-        (geoforces_obj, 'Vertex18'),
-        (geoforces_obj, 'Vertex19'), ]
+        (geoforces_obj, "Vertex15"),
+        (geoforces_obj, "Vertex16"),
+        (geoforces_obj, "Vertex17"),
+        (geoforces_obj, "Vertex18"),
+        (geoforces_obj, "Vertex19"), ]
     con_force10.Force = 27777.78
     con_force10.Direction = (geom_obj, ["Edge6"])
     con_force10.Reversed = False
@@ -402,12 +402,12 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force11
     con_force11 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce11")
     con_force11.References = [
-        (geoforces_obj, 'Vertex25'),
-        (geoforces_obj, 'Vertex26'),
-        (geoforces_obj, 'Vertex27'),
-        (geoforces_obj, 'Vertex28'),
-        (geoforces_obj, 'Vertex29'),
-        (geoforces_obj, 'Vertex30'), ]
+        (geoforces_obj, "Vertex25"),
+        (geoforces_obj, "Vertex26"),
+        (geoforces_obj, "Vertex27"),
+        (geoforces_obj, "Vertex28"),
+        (geoforces_obj, "Vertex29"),
+        (geoforces_obj, "Vertex30"), ]
     con_force11.Force = 66666.67
     con_force11.Direction = (geom_obj, ["Edge11"])
     con_force11.Reversed = False
@@ -416,12 +416,12 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force12
     con_force12 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce12")
     con_force12.References = [
-        (geoforces_obj, 'Vertex37'),
-        (geoforces_obj, 'Vertex38'),
-        (geoforces_obj, 'Vertex39'),
-        (geoforces_obj, 'Vertex40'),
-        (geoforces_obj, 'Vertex41'),
-        (geoforces_obj, 'Vertex42'), ]
+        (geoforces_obj, "Vertex37"),
+        (geoforces_obj, "Vertex38"),
+        (geoforces_obj, "Vertex39"),
+        (geoforces_obj, "Vertex40"),
+        (geoforces_obj, "Vertex41"),
+        (geoforces_obj, "Vertex42"), ]
     con_force12.Force = 66666.67
     con_force12.Direction = (geom_obj, ["Edge6"])
     con_force12.Reversed = False

@@ -31,17 +31,17 @@ import six
 
 def write_femelement_matgeosets(f, ccxwriter):
 
-    # write ccx_elsets to file
+    # write mat_geo_sets to file
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n")
 
-    for ccx_elset in ccxwriter.ccx_elsets:
+    for matgeoset in ccxwriter.mat_geo_sets:
 
-        f.write("*ELSET,ELSET={}\n".format(ccx_elset["ccx_elset_name"]))
+        f.write("*ELSET,ELSET={}\n".format(matgeoset["ccx_elset_name"]))
 
         # use six to be sure to be Python 2.7 and 3.x compatible
-        if isinstance(ccx_elset["ccx_elset"], six.string_types):
-            f.write("{}\n".format(ccx_elset["ccx_elset"]))
+        if isinstance(matgeoset["ccx_elset"], six.string_types):
+            f.write("{}\n".format(matgeoset["ccx_elset"]))
         else:
-            for elid in ccx_elset["ccx_elset"]:
+            for elid in matgeoset["ccx_elset"]:
                 f.write(str(elid) + ",\n")
