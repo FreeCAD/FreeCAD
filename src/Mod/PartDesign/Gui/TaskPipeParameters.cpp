@@ -226,6 +226,10 @@ public:
             this->notAllowedReason = QT_TR_NOOP("Profile object cannot be used as section.");
             return false;
         }
+        if (pipe->Sections.find(pObj->getNameInDocument())) {
+            this->notAllowedReason = QT_TR_NOOP("Section object already selected.");
+            return false;
+        }
         if (pipe->Profile.getValue()) {
             if (!wireCount) {
                 wireCount = Part::Feature::getTopoShape(

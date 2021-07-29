@@ -50,7 +50,7 @@ FeatureAddSub::FeatureAddSub()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 
-    static const char* TypeEnums[]= {"Additive","Subtractive","Common",NULL};
+    static const char* TypeEnums[]= {"Additive","Subtractive","Intersecting",NULL};
     ADD_PROPERTY_TYPE(AddSubType,((long)0),"Part Design",
             (App::PropertyType)(App::Prop_None), "Operation type");
     AddSubType.setEnums(TypeEnums);
@@ -89,7 +89,7 @@ void FeatureAddSub::onChanged(const App::Property *prop)
             addSubType = Subtractive;
             break;
         case 2:
-            addSubType = Common;
+            addSubType = Intersecting;
             break;
         }
     }
@@ -186,14 +186,14 @@ FeatureSubtractivePython::~FeatureSubtractivePython()
 {
 }
 
-PROPERTY_SOURCE(PartDesign::FeatureCommonPython, PartDesign::FeatureAddSubPython)
+PROPERTY_SOURCE(PartDesign::FeatureIntersectingPython, PartDesign::FeatureAddSubPython)
 
-FeatureCommonPython::FeatureCommonPython()
+FeatureIntersectingPython::FeatureIntersectingPython()
 {
-    addSubType = Common;
+    addSubType = Intersecting;
 }
 
-FeatureCommonPython::~FeatureCommonPython()
+FeatureIntersectingPython::~FeatureIntersectingPython()
 {
 }
 

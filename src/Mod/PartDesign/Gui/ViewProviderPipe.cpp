@@ -49,6 +49,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe,PartDesignGui::ViewProviderAddSu
 
 ViewProviderPipe::ViewProviderPipe()
 {
+    sPixmap = "PartDesign_AdditivePipe";
 }
 
 ViewProviderPipe::~ViewProviderPipe()
@@ -92,16 +93,5 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog() {
     return new TaskDlgPipeParameters(this, false);
-}
-
-QIcon ViewProviderPipe::getIcon(void) const {
-    auto prim = Base::freecad_dynamic_cast<PartDesign::Pipe>(getObject());
-    if (prim) {
-        if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_AdditivePipe";
-        else
-            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_SubtractivePipe";
-    }
-    return ViewProvider::getIcon();
 }
 

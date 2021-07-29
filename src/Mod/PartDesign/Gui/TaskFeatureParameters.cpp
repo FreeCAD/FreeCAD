@@ -105,7 +105,7 @@ void TaskFeatureParameters::_refresh()
                 case PartDesign::FeatureAddSub::Subtractive:
                     comboAddSubType->setCurrentIndex(2);
                     break;
-                case PartDesign::FeatureAddSub::Common:
+                case PartDesign::FeatureAddSub::Intersecting:
                     comboAddSubType->setCurrentIndex(3);
                     break;
                 default:
@@ -176,7 +176,7 @@ void TaskFeatureParameters::onNewSolidChanged()
                         feat->AddSubType.setValue("Subtractive");
                         break;
                     case 3:
-                        feat->AddSubType.setValue("Common");
+                        feat->AddSubType.setValue("Intersecting");
                         break;
                     default:
                         feat->AddSubType.setValue("Additive");
@@ -256,7 +256,7 @@ void TaskFeatureParameters::addNewSolidCheckBox(QBoxLayout *layout)
         comboAddSubType->addItem(tr("New shape"));
         comboAddSubType->addItem(tr("Additive"));
         comboAddSubType->addItem(tr("Subtractive"));
-        comboAddSubType->addItem(tr("Common"));
+        comboAddSubType->addItem(tr("Intersecting"));
         l->addWidget(comboAddSubType);
         layout->insertLayout(0, l);
         connect(comboAddSubType, SIGNAL(currentIndexChanged(int)), this, SLOT(onNewSolidChanged()));

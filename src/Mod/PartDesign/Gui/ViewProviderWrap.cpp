@@ -104,6 +104,9 @@ QIcon ViewProviderWrap::getIcon() const
         case 2:
             colormap[defcolor] = 0xefefef;
             break;
+        case 4:
+            colormap[defcolor] = 0x3434ef;
+            break;
         }
     }
 

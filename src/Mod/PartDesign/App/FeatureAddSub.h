@@ -41,7 +41,7 @@ public:
     enum Type {
         Additive    = 0,
         Subtractive = 1,
-        Common      = 2,
+        Intersecting      = 2,
     };
     
     FeatureAddSub();
@@ -92,13 +92,13 @@ public:
     ~FeatureSubtractivePython();
 };
 
-class FeatureCommonPython : public FeatureAddSubPython
+class FeatureIntersectingPython : public FeatureAddSubPython
 {
-    PROPERTY_HEADER(PartDesign::FeatureCommonPython);
+    PROPERTY_HEADER(PartDesign::FeatureIntersectingPython);
 
 public:
-    FeatureCommonPython();
-    ~FeatureCommonPython();
+    FeatureIntersectingPython();
+    ~FeatureIntersectingPython();
 };
 
 } //namespace PartDesign

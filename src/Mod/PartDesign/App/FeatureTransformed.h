@@ -55,8 +55,6 @@ public:
     App::PropertyBool CopyShape;
     App::PropertyBool ParallelTransform;
 
-    Part::PropertyPartShape   CommonShape;
-
     App::PropertyPlacement TransformOffset;
     App::PropertyInteger _Version;
 

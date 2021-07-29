@@ -57,9 +57,9 @@ FeatureWrap::FeatureWrap()
             "Subtractive: cut the wrapped feature from the base feature.\n"
             "Standalone: standalone feature, which may or may not be a solid.\n"
             "AutoDetect: auto detect feature type based on resulting shape.\n"
-            "Common: obtain the common shape of the wrapped feature and the base feature.\n");
+            "Intersecting: obtain the intersecting shape of the wrapped and the base features.\n");
     static const char *TypeEnums[] = {
-        "Additive", "Subtractive", "Standalone", "Auto Detect", "Common", nullptr};
+        "Additive", "Subtractive", "Standalone", "Auto Detect", "Intersecting", nullptr};
     Type.setEnums(TypeEnums);
 
     ADD_PROPERTY_TYPE(Frozen,(false),"Part Design",(App::PropertyType)(App::Prop_None),
@@ -204,7 +204,7 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
         case Subtractive:
             maker = TOPOP_CUT;
             break;
-        case Common:
+        case Intersecting:
             maker = TOPOP_COMMON;
             break;
         default:

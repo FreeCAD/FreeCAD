@@ -53,6 +53,7 @@ public:
                                SoDetail *&det) const;
     
     void setPreviewDisplayMode(bool);
+    virtual QIcon getIcon(void) const;
 
 protected: 
     virtual void checkAddSubColor();

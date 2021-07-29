@@ -49,7 +49,7 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     ui->DressUpColor->setAllowChangeAlpha(true);
     ui->AdditiveColor->setAllowChangeAlpha(true);
     ui->SubtractiveColor->setAllowChangeAlpha(true);
-    ui->CommonColor->setAllowChangeAlpha(true);
+    ui->IntersectingColor->setAllowChangeAlpha(true);
 
     App::Color c;
     QColor qc;
@@ -61,9 +61,9 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     qc.setRgbF(c.r, c.g, c.b, c.a);
     ui->SubtractiveColor->setColor(qc);
 
-    c.setPackedValue(PartParams::PreviewCommonColor());
+    c.setPackedValue(PartParams::PreviewIntersectColor());
     qc.setRgbF(c.r, c.g, c.b, c.a);
-    ui->CommonColor->setColor(qc);
+    ui->IntersectingColor->setColor(qc);
 
     c.setPackedValue(PartParams::PreviewDressColor());
     qc.setRgbF(c.r, c.g, c.b, c.a);
@@ -94,7 +94,7 @@ void DlgSettingsObjectColor::saveSettings()
     // Preview
     ui->AdditiveColor->onSave();
     ui->SubtractiveColor->onSave();
-    ui->CommonColor->onSave();
+    ui->IntersectingColor->onSave();
     ui->DressUpColor->onSave();
 
     PartParams::setRespectSystemDPI(ui->RespectSystemDPI->isChecked());
@@ -116,7 +116,7 @@ void DlgSettingsObjectColor::loadSettings()
     // Preview
     ui->AdditiveColor->onRestore();
     ui->SubtractiveColor->onRestore();
-    ui->CommonColor->onRestore();
+    ui->IntersectingColor->onRestore();
     ui->DressUpColor->onRestore();
 
     ui->RespectSystemDPI->setChecked(PartParams::RespectSystemDPI());

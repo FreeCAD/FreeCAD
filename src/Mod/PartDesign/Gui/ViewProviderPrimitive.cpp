@@ -67,6 +67,34 @@ ViewProviderPrimitive::~ViewProviderPrimitive()
 }
 
 void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
+    auto* prim = static_cast<PartDesign::FeaturePrimitive*>(obj);
+    switch(prim->getPrimitiveType()) {
+    case PartDesign::FeaturePrimitive::Box:
+        sPixmap = "PartDesign_AdditiveBox.svg";
+        break;
+    case PartDesign::FeaturePrimitive::Cylinder:
+        sPixmap = "PartDesign_AdditiveCylinder.svg";
+        break;
+    case PartDesign::FeaturePrimitive::Sphere:
+        sPixmap = "PartDesign_AdditiveSphere.svg";
+        break;
+    case PartDesign::FeaturePrimitive::Cone:
+        sPixmap = "PartDesign_AdditiveCone.svg";
+        break;
+    case PartDesign::FeaturePrimitive::Ellipsoid:
+        sPixmap = "PartDesign_AdditiveEllipsoid.svg";
+        break;
+    case PartDesign::FeaturePrimitive::Torus:
+        sPixmap = "PartDesign_AdditiveTorus.svg";
+        break;
+    case PartDesign::FeaturePrimitive::Prism:
+        sPixmap = "PartDesign_AdditivePrism.svg";
+        break;
+    case PartDesign::FeaturePrimitive::Wedge:
+        sPixmap = "PartDesign_AdditiveWedge.svg";
+        break;
+    }
+
     ViewProviderAddSub::attach(obj);
 }
 
@@ -84,44 +112,4 @@ TaskDlgFeatureParameters* ViewProviderPrimitive::getEditDialog() {
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {
     PartDesignGui::ViewProviderAddSub::updateData(p);
-}
-
-QIcon ViewProviderPrimitive::getIcon(void) const {
-
-    QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
-    else
-        str += QString::fromLatin1("Subtractive");
-
-    switch(prim->getPrimitiveType()) {
-    case PartDesign::FeaturePrimitive::Box:
-        str += QString::fromLatin1("Box");
-        break;
-    case PartDesign::FeaturePrimitive::Cylinder:
-        str += QString::fromLatin1("Cylinder");
-        break;
-    case PartDesign::FeaturePrimitive::Sphere:
-        str += QString::fromLatin1("Sphere");
-        break;
-    case PartDesign::FeaturePrimitive::Cone:
-        str += QString::fromLatin1("Cone");
-        break;
-    case PartDesign::FeaturePrimitive::Ellipsoid:
-        str += QString::fromLatin1("Ellipsoid");
-        break;
-    case PartDesign::FeaturePrimitive::Torus:
-        str += QString::fromLatin1("Torus");
-        break;
-    case PartDesign::FeaturePrimitive::Prism:
-        str += QString::fromLatin1("Prism");
-        break;
-    case PartDesign::FeaturePrimitive::Wedge:
-        str += QString::fromLatin1("Wedge");
-        break;
-    }
-
-    str += QString::fromLatin1(".svg");
-    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

@@ -337,7 +337,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                 case Subtractive:
                     maker = TOPOP_CUT;
                     break;
-                case Common:
+                case Intersecting:
                     maker = TOPOP_COMMON;
                     break;
                 default:

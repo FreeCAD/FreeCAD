@@ -359,7 +359,7 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
         case Subtractive:
             maker = TOPOP_CUT;
             break;
-        case Common:
+        case Intersecting:
             maker = TOPOP_COMMON;
             break;
         default:

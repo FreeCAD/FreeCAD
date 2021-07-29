@@ -46,7 +46,6 @@ public:
     virtual void updateData(const App::Property*);
     
 protected:
-    virtual QIcon getIcon(void) const;
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual TaskDlgFeatureParameters *getEditDialog();
     

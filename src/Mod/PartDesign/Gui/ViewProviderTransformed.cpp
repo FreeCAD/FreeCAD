@@ -146,23 +146,23 @@ void ViewProviderTransformed::checkAddSubColor()
     feat->getAddSubShape(shapes);
     if (shapes.empty())
         return;
-    int addCount=0, subCount=0, commonCount=0;
+    int addCount=0, subCount=0, intersectCount=0;
     for (auto &v : shapes) {
         if (v.second == FeatureAddSub::Additive)
             ++addCount;
         else if (v.second == FeatureAddSub::Subtractive)
             ++subCount;
-        else if (v.second == FeatureAddSub::Common)
-            ++commonCount;
+        else if (v.second == FeatureAddSub::Intersecting)
+            ++intersectCount;
     }
     App::Color addcolor((uint32_t)PartGui::PartParams::PreviewAddColor());
     App::Color subcolor((uint32_t)PartGui::PartParams::PreviewSubColor());
-    App::Color commoncolor((uint32_t)PartGui::PartParams::PreviewCommonColor());
+    App::Color intersectcolor((uint32_t)PartGui::PartParams::PreviewIntersectColor());
     if (!addCount) {
-        if (!commonCount)
+        if (!intersectCount)
             addcolor = subcolor;
         else if (!subCount)
-            addcolor = commoncolor;
+            addcolor = intersectcolor;
     }
     // clamp transparency between 0.1 ~ 0.8
     float t = std::max(0.1f, std::min(0.8f, 1.0f - addcolor.a));
@@ -175,8 +175,8 @@ void ViewProviderTransformed::checkAddSubColor()
     view->Transparency.setValue(t*100);
 
     if ((!addCount && !subCount)
-            || (!addCount && !commonCount)
-            || (!subCount && !commonCount))
+            || (!addCount && !intersectCount)
+            || (!subCount && !intersectCount))
         return;
 
     auto addsubShape = feat->AddSubShape.getShape();
@@ -187,20 +187,20 @@ void ViewProviderTransformed::checkAddSubColor()
     int j=0;
     FeatureAddSub::Type majorType;
     App::Color color;
-    if (addCount > subCount && addCount > commonCount) {
+    if (addCount > subCount && addCount > intersectCount) {
         majorType = FeatureAddSub::Additive;
         color = addcolor;
-    } else if (subCount > addCount && subCount > commonCount) {
+    } else if (subCount > addCount && subCount > intersectCount) {
         majorType = FeatureAddSub::Subtractive;
         color = subcolor;
     } else {
-        majorType = FeatureAddSub::Common;
-        color = commoncolor;
+        majorType = FeatureAddSub::Intersecting;
+        color = intersectcolor;
     }
 
     addcolor.a = t;
     subcolor.a = t;
-    commoncolor.a = t;
+    intersectcolor.a = t;
 
     for (auto type : types)
         colors[j++].resize(addsubShape.countSubShapes(type), color);
@@ -215,7 +215,7 @@ void ViewProviderTransformed::checkAddSubColor()
                 int idx = addsubShape.findShape(s);
                 if (idx >= 1 && idx <= (int)colors[j].size()) {
                     colors[j][idx-1] = v.second == FeatureAddSub::Additive ? addcolor
-                        : (v.second == FeatureAddSub::Subtractive ? subcolor : commoncolor);
+                        : (v.second == FeatureAddSub::Subtractive ? subcolor : intersectcolor);
                 }
             }
             auto prop = props[j];

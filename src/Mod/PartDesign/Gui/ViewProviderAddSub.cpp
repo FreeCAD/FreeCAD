@@ -139,8 +139,8 @@ void ViewProviderAddSub::checkAddSubColor()
             color = App::Color((uint32_t)PartGui::PartParams::PreviewDressColor());
         else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
             color = App::Color((uint32_t)PartGui::PartParams::PreviewSubColor());
-        else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Common)
-            color = App::Color((uint32_t)PartGui::PartParams::PreviewCommonColor());
+        else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Intersecting)
+            color = App::Color((uint32_t)PartGui::PartParams::PreviewIntersectColor());
         else
             color = App::Color((uint32_t)PartGui::PartParams::PreviewAddColor());
     }
@@ -319,4 +319,38 @@ void ViewProviderAddSub::reattach(App::DocumentObject *obj)
     ViewProvider::reattach(obj);
     if (pAddSubView)
         pAddSubView->reattach(obj);
+}
+
+QIcon ViewProviderAddSub::getIcon() const
+{
+    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
+    if (!sPixmap || !feat)
+        return QIcon();
+    std::string name;
+    static const char prefixNone[] = "PartDesign_";
+    static const char prefixAdditive[] = "PartDesign_Additive";
+    static const char prefixSubtractive[] = "PartDesign_Subtractive";
+    static const char prefixIntersecting[] = "PartDesign_Intersecting";
+    switch(feat->getAddSubType()) {
+    case PartDesign::FeatureAddSub::Subtractive:
+        name = prefixSubtractive;
+        break;
+    case PartDesign::FeatureAddSub::Intersecting:
+        name = prefixIntersecting;
+        break;
+    default:
+        name = prefixAdditive;
+    }
+
+    if (boost::starts_with(sPixmap, prefixAdditive))
+        name += sPixmap + sizeof(prefixAdditive) - 1;
+    else if (boost::starts_with(sPixmap, prefixNone))
+        name += sPixmap + sizeof(prefixNone) -1;
+    else
+        return PartDesignGui::ViewProvider::getIcon();
+
+    auto pixmap = Gui::BitmapFactory().pixmap(name.c_str(), true);
+    if (pixmap.isNull())
+        return PartDesignGui::ViewProvider::getIcon();
+    return pixmap;
 }

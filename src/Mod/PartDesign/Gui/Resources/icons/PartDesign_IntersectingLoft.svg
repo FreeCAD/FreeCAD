@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg3364"
+   sodipodi:version="0.32"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="PartDesign_CommonLoft.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.1426354"
+     inkscape:cx="56.962154"
+     inkscape:cy="39.633588"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="1315"
+     inkscape:window-height="713"
+     inkscape:window-x="51"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:snap-page="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3211"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs3366">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4654">
+      <stop
+         style="stop-color:#000000;stop-opacity:0"
+         offset="0"
+         id="stop4650" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0.63819093"
+         offset="1"
+         id="stop4652" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4654"
+       id="linearGradient3809-950-2-364-167-991-742-739-921"
+       x1="-32.855556"
+       y1="26.147802"
+       x2="-23.38752"
+       y2="49.862415"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(66.871305,7.6159776)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4654"
+       id="linearGradient4689"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(66.871305,7.6159776)"
+       x1="-32.855556"
+       y1="26.147802"
+       x2="-23.38752"
+       y2="49.862415" />
+  </defs>
+  <metadata
+     id="metadata3369">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Stefan Tröger]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>PartDesign_Subtractive_Loft</dc:title>
+        <dc:date>2015-06-03</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/PartDesign/Gui/Resources/icons/PartDesign_Subtractive_Loft.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <path
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 25,11 30,6 v 38"
+       id="path3870-9"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(-15.738548,-4.74202)"
+       id="g4658-9">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path3015-9"
+         d="M 55,17 V 55 L 23,51 V 35 Z"
+         style="fill:#9d6cfc;fill-opacity:1;stroke:#191919;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path3015-3-1"
+         d="m 49.821353,23.728449 0.137499,27.900034 -22.087547,-2.812505 v -13 z"
+         style="fill:url(#linearGradient4689);fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:#9d6cfc;fill-opacity:1;stroke:#191919;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="M 25,11 9,31 23,35 55,17 Z"
+       id="path3013"
+       inkscape:connector-curvature="0" />
+    <g
+       id="g4658">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path3015"
+         d="M 55,17 V 55 L 23,51 V 35 Z"
+         style="fill:#9d6cfc;fill-opacity:1;stroke:#191919;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path3015-3"
+         d="m 49.821353,23.728449 0.137499,27.900034 -22.087547,-2.812505 v -13 z"
+         style="fill:url(#linearGradient3809-950-2-364-167-991-742-739-921);fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:none;stroke:#a40000;stroke-width:6;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="m 9,30.957273 v 16 l 14,4 v -16 z"
+       id="path3850-20"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="m 9,30.957273 v 16 l 14,4 v -16 z"
+       id="path3850-2-2"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a40000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 25,10.957272 29.999999,6 v 38.000001"
+       id="path3870-3"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 25,10.957272 29.999999,6 v 38.000001"
+       id="path3870-9-7"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

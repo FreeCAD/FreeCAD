@@ -47,8 +47,6 @@ public:
     virtual bool onDelete(const std::vector<std::string> &);
 
 protected:
-    virtual QIcon getIcon(void) const;
-
     /// Returns a newly created TaskDlgHelixParameters
     virtual TaskDlgFeatureParameters *getEditDialog();
 };

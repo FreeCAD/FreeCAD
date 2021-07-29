@@ -111,7 +111,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         case Subtractive:
             maker = TOPOP_CUT;
             break;
-        case Common:
+        case Intersecting:
             maker = TOPOP_COMMON;
             break;
         default:

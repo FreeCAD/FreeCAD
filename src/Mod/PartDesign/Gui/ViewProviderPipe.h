@@ -51,8 +51,6 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
 
 protected:
-    virtual QIcon getIcon(void) const;
-    
     /// Returns a newly created TaskDlgPipeParameters
     virtual TaskDlgFeatureParameters *getEditDialog();
 };

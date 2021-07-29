@@ -221,7 +221,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             if (NewSolid.getValue())
                 prism = this->AddSubShape.getShape();
-            else if (getAddSubType() == Common)
+            else if (getAddSubType() == Intersecting)
                 prism.makEShape(TOPOP_COMMON, {base, this->AddSubShape.getShape()});
             else if (getAddSubType() == Additive)
                 prism = base.makEFuse(this->AddSubShape.getShape());
@@ -296,7 +296,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                     case Additive:
                         maker = TOPOP_FUSE;
                         break;
-                    case Common:
+                    case Intersecting:
                         maker = TOPOP_COMMON;
                         break;
                     default:

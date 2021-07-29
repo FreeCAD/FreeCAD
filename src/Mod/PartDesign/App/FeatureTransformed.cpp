@@ -89,8 +89,6 @@ Transformed::Transformed()
 
     ADD_PROPERTY_TYPE(_Version,(0),"Part Design",(App::PropertyType)(App::Prop_Hidden), 0);
 
-    ADD_PROPERTY(CommonShape,(TopoDS_Shape()));
-
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
@@ -285,7 +283,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> addshapeSet;
     std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> cutshapeSet;
-    std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> commonshapeSet;
+    std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> intsectshapeSet;
     std::vector<TopoShape> originalShapes;
     std::vector<std::string> originalSubs;
     std::vector<Type> operations;
@@ -314,7 +312,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 if(shape.isNull())
                     continue;
                 auto &shapeSet = v.second == Additive ? addshapeSet
-                            : (v.second == Subtractive ? cutshapeSet : commonshapeSet);
+                            : (v.second == Subtractive ? cutshapeSet : intsectshapeSet);
                 if (!shapeSet.insert(shape.getShape()).second)
                     continue;
                 shape.Tag = -shape.Tag;
@@ -391,16 +389,16 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             hasSupport = true;
             fuseShapes.push_back(support);
         }
-        std::vector<TopoShape> cutShapes, commonShapes;
+        std::vector<TopoShape> cutShapes, intsectShapes;
         cutShapes.push_back(TopoShape());
-        commonShapes.push_back(TopoShape());
+        intsectShapes.push_back(TopoShape());
 
         auto buildShape = [&]() {
             try {
                 try {
                     if (fuseShapes.size() > 1) {
                         if (cutShapes.size() <= 1
-                                && commonShapes.size() <= 1
+                                && intsectShapes.size() <= 1
                                 && (!hassolids || NewSolid.getValue())) {
                             support.makECompound(fuseShapes);
                             addsub.emplace_back(support, Additive);
@@ -417,7 +415,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         hasSupport = true;
                         result = support;
                     }
-                    else if(cutShapes.size() > 1 || commonShapes.size() > 1) {
+                    else if(cutShapes.size() > 1 || intsectShapes.size() > 1) {
                         if (support.isNull()) { // means new solid without fuseShapes
                             if (cutShapes.size() == 2) {
                                 result = cutShapes[1];
@@ -427,13 +425,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                                 result.makECompound(cutShapes);
                                 addsub.emplace_back(result, Subtractive);
                             }
-                            if (commonShapes.size() == 2) {
-                                result = commonShapes[1];
-                                addsub.emplace_back(result, Common);
-                            } else if (commonShapes.size() > 2) {
-                                commonShapes.erase(commonShapes.begin());
-                                result.makECompound(commonShapes);
-                                addsub.emplace_back(result, Common);
+                            if (intsectShapes.size() == 2) {
+                                result = intsectShapes[1];
+                                addsub.emplace_back(result, Intersecting);
+                            } else if (intsectShapes.size() > 2) {
+                                intsectShapes.erase(intsectShapes.begin());
+                                result.makECompound(intsectShapes);
+                                addsub.emplace_back(result, Intersecting);
                             }
                         } else {
                             if (cutShapes.size() > 1) {
@@ -445,20 +443,20 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                                 addsub.emplace_back(TopoShape().makECompound(
                                             cutShapes, nullptr, false), Subtractive);
                             }
-                            if (commonShapes.size() > 1) {
-                                commonShapes[0] = support;
+                            if (intsectShapes.size() > 1) {
+                                intsectShapes[0] = support;
                                 if (!isRecomputePaused())
-                                    result.makEShape(TOPOP_COMMON, commonShapes);
+                                    result.makEShape(TOPOP_COMMON, intsectShapes);
                                 support = result;
-                                commonShapes.erase(commonShapes.begin());
+                                intsectShapes.erase(intsectShapes.begin());
                                 addsub.emplace_back(TopoShape().makECompound(
-                                            commonShapes, nullptr, false), Common);
+                                            intsectShapes, nullptr, false), Intersecting);
                             }
                         }
                         cutShapes.clear();
                         cutShapes.push_back(TopoShape());
-                        commonShapes.clear();
-                        commonShapes.push_back(TopoShape());
+                        intsectShapes.clear();
+                        intsectShapes.push_back(TopoShape());
                         if (fuseShapes.empty())
                             fuseShapes.push_back(support);
                         else
@@ -482,7 +480,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             } catch (Base::Exception &) {
                 for(auto &s : cutShapes)
                     rejected.emplace_back(s,std::vector<gp_Trsf>());
-                for(auto &s : commonShapes)
+                for(auto &s : intsectShapes)
                     rejected.emplace_back(s,std::vector<gp_Trsf>());
                 for(auto &s : fuseShapes)
                     rejected.emplace_back(s,std::vector<gp_Trsf>());
@@ -524,8 +522,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     case Subtractive:
                         cutShapes.push_back(shapeCopy);
                         break;
-                    case Common:
-                        commonShapes.push_back(shapeCopy);
+                    case Intersecting:
+                        intsectShapes.push_back(shapeCopy);
                         break;
                     }
                 }catch(Standard_Failure &) {
@@ -550,7 +548,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     int i=0;
     std::vector<TopoShape> fuseShapes;
     std::vector<TopoShape> cutShapes;
-    std::vector<TopoShape> commonShapes;
+    std::vector<TopoShape> intsectShapes;
     for (TopoShape &shape : originalShapes) {
         auto &sub = originalSubs[i];
         int idx = startIndices[i];
@@ -613,9 +611,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     maker = TOPOP_CUT;
                     cutShapes.push_back(shapeCopy);
                     break;
-                case Common:
+                case Intersecting:
                     maker = TOPOP_COMMON;
-                    commonShapes.push_back(shapeCopy);
+                    intsectShapes.push_back(shapeCopy);
                     break;
                 default:
                     return new App::DocumentObjectExecReturn("Unknown operation type");
@@ -673,7 +671,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 // Push an empty compound to mark the cut shape
                 tmpshapes.clear();
                 tmpshapes.push_back(TopoShape().makECompound({}));
-                if (addsub[0].second == Common) {
+                if (addsub[0].second == Intersecting) {
                     // Push two empty compound to mark the common shape
                     tmpshapes.push_back(TopoShape().makECompound({}));
                 }
@@ -697,7 +695,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 if (v.second != Additive) {
                     // Add an empty compound shape to mark this is a subtractive shape
                     tmpshapes.push_back(TopoShape().makECompound({}));
-                    if (v.second == Common)
+                    if (v.second == Intersecting)
                         // Add a second empty compound shape to mark this is a common shape
                         tmpshapes.push_back(TopoShape().makECompound({}));
                 }
@@ -915,7 +913,7 @@ void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > 
                 }
                 else if (subshapes.size() > 2) {
                     ++count;
-                    shapes.emplace_back(subshapes[2], Common);
+                    shapes.emplace_back(subshapes[2], Intersecting);
                 }
             }
         }
@@ -951,7 +949,7 @@ void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > 
                 if (s.shapeType(true) != TopAbs_COMPOUND
                         || s.countSubShapes(TopAbs_SHAPE) != 0)
                 {
-                    shapes.emplace_back(s, Common);
+                    shapes.emplace_back(s, Intersecting);
                     continue;
                 }
             }

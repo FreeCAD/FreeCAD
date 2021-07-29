@@ -425,7 +425,7 @@ will be used or black.</string>
          <string>The default color for new shapes</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>PreviewCommonColor</cstring>
+         <cstring>PreviewIntersectColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Part</cstring>
@@ -454,12 +454,12 @@ will be used or black.</string>
          </size>
         </property>
         <property name="text">
-         <string>Common color</string>
+         <string>Intersecting color</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefColorButton" name="CommonColor">
+       <widget class="Gui::PrefColorButton" name="IntersectingColor">
         <property name="toolTip">
          <string>The default color for new shapes</string>
         </property>

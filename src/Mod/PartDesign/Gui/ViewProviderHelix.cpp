@@ -45,6 +45,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderHelix,PartDesignGui::ViewProviderAddS
 
 ViewProviderHelix::ViewProviderHelix()
 {
+    sPixmap = "PartDesign_AdditiveHelix.svg";
 }
 
 ViewProviderHelix::~ViewProviderHelix()
@@ -62,18 +63,6 @@ void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const c
 TaskDlgFeatureParameters *ViewProviderHelix::getEditDialog()
 {
     return new TaskDlgHelixParameters( this );
-}
-
-QIcon ViewProviderHelix::getIcon(void) const {
-    QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::Helix*>(getObject());
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
-    else
-        str += QString::fromLatin1("Subtractive");
-
-    str += QString::fromLatin1("Helix.svg");
-    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 
 std::vector<App::DocumentObject*> ViewProviderHelix::_claimChildren(void) const {

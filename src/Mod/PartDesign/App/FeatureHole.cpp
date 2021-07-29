@@ -2036,7 +2036,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         case Additive:
             maker = TOPOP_FUSE;
             break;
-        case Common:
+        case Intersecting:
             maker = TOPOP_COMMON;
             break;
         default:

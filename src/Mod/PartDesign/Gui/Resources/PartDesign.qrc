@@ -11,6 +11,8 @@
         <file>icons/PartDesign_AdditiveSphere.svg</file>
         <file>icons/PartDesign_AdditiveTorus.svg</file>
         <file>icons/PartDesign_AdditiveWedge.svg</file>
+        <file>icons/PartDesign_AdditiveHole.svg</file>
+        <file>icons/PartDesign_AdditiveGroove.svg</file>
         <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
         <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
@@ -61,6 +63,25 @@
         <file>icons/PartDesign_SubtractiveSphere.svg</file>
         <file>icons/PartDesign_SubtractiveTorus.svg</file>
         <file>icons/PartDesign_SubtractiveWedge.svg</file>
+        <file>icons/PartDesign_SubtractiveRevolution.svg</file>
+        <file>icons/PartDesign_SubtractivePad.svg</file>
+        <file>icons/PartDesign_SubtractivePocket.svg</file>
+        <file>icons/PartDesign_IntersectingBox.svg</file>
+        <file>icons/PartDesign_IntersectingCone.svg</file>
+        <file>icons/PartDesign_IntersectingCylinder.svg</file>
+        <file>icons/PartDesign_IntersectingEllipsoid.svg</file>
+        <file>icons/PartDesign_IntersectingLoft.svg</file>
+        <file>icons/PartDesign_IntersectingPipe.svg</file>
+        <file>icons/PartDesign_IntersectingHelix.svg</file>
+        <file>icons/PartDesign_IntersectingPrism.svg</file>
+        <file>icons/PartDesign_IntersectingSphere.svg</file>
+        <file>icons/PartDesign_IntersectingTorus.svg</file>
+        <file>icons/PartDesign_IntersectingWedge.svg</file>
+        <file>icons/PartDesign_IntersectingPad.svg</file>
+        <file>icons/PartDesign_IntersectingPocket.svg</file>
+        <file>icons/PartDesign_IntersectingGroove.svg</file>
+        <file>icons/PartDesign_IntersectingRevolution.svg</file>
+        <file>icons/PartDesign_IntersectingHole.svg</file>
         <file>icons/PartDesign_Thickness.svg</file>
         <file>icons/PartDesign_Overlay.svg</file>
         <file>icons/PartDesign_Suppressed.svg</file>

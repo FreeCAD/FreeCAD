@@ -48,8 +48,6 @@ public:
 protected:
     virtual TaskDlgFeatureParameters* getEditDialog();
     
-    virtual QIcon getIcon(void) const;
-    
 private:
     std::vector<App::Color> originalLineColors;
 };
