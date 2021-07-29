@@ -1902,7 +1902,7 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
     }
   }
 
-  FC_LOG("highlight cache " << res.size() << " materials, "
+  FC_TRACE("highlight cache " << res.size() << " materials, "
         << entrycount << " entries, "
         << mergecount << " merged caches, "
         << PRIVATE(this)->facecount << " faces");

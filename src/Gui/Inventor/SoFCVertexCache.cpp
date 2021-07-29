@@ -2352,7 +2352,7 @@ SoFCVertexCache::MergeMap::cleanup()
       ++it;
   }
 
-  FC_LOG("discard " << count << " merged caches");
+  FC_TRACE("discard " << count << " merged caches");
 }
 
 VertexCachePtr
@@ -2403,7 +2403,7 @@ SoFCVertexCache::merge(bool allownewmerge,
     auto it = mergemap->map.find(mergeids);
     if (it == mergemap->map.end())
       return nullptr;
-    FC_LOG("found merged cache " << mergecount);
+    FC_TRACE("found merged cache " << mergecount);
     return it->second;
   }
 
@@ -2413,7 +2413,7 @@ SoFCVertexCache::merge(bool allownewmerge,
   auto & vcache = mergemap->map[mergeids];
   if (vcache) {
     PRIVATE(vcache)->mergeid = mergemap->mergeid + 1;
-    FC_LOG("reuse merged cache " << mergecount);
+    FC_TRACE("reuse merged cache " << mergecount);
     return vcache;
   }
 
@@ -2430,7 +2430,7 @@ SoFCVertexCache::merge(bool allownewmerge,
   if (PRIVATE(vcache)->lineindexer)
     PRIVATE(vcache)->lineindexer->sort_lines();
 
-  FC_LOG("new merged cache " << mergecount);
+  FC_TRACE("new merged cache " << mergecount);
   return vcache;
 }
 

@@ -903,7 +903,7 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
     }
   }
 
-  FC_LOG("update scene " << caches.size() << " materials, "
+  FC_TRACE("update scene " << caches.size() << " materials, "
         << PRIVATE(this)->drawentries.size() << " entries, "
         << mergecount << " after merge");
 
