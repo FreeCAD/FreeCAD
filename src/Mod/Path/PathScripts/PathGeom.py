@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2021 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -342,8 +343,11 @@ def edgeForCmd(cmd, startPoint):
             PathLog.debug("StartPoint:{}".format(startPoint))
             PathLog.debug("MidPoint:{}".format(midPoint))
             PathLog.debug("EndPoint:{}".format(endPoint))
-
-            return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
+            
+            if pointsCoincide(startPoint, endPoint, 0.001):
+                return Part.makeCircle(R, center, FreeCAD.Vector(0, 0, 1))
+            else:
+                return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
 
         # It's a Helix
         #print('angle: A=%.2f B=%.2f' % (getAngle(A)/math.pi, getAngle(B)/math.pi))

@@ -51,12 +51,12 @@ class FemInputWriter():
         self.solver_obj = solver_obj
         self.mesh_object = mesh_obj
         self.member = member
-        # mor attributes
+        # more attributes
         self.analysis_type = self.solver_obj.AnalysisType
         self.document = self.analysis.Document
         # working dir
         self.dir_name = dir_name
-        # if dir_name was not given or if it exists but isn't empty: create a temporary dir
+        # if dir_name was not given or if it exists but is not empty: create a temporary dir
         # Purpose: makes sure the analysis can be run even on wired situation
         if not dir_name:
             FreeCAD.Console.PrintWarning(
@@ -76,10 +76,7 @@ class FemInputWriter():
         self.ccx_evolumes = "Evolumes"
         self.ccx_efaces = "Efaces"
         self.ccx_eedges = "Eedges"
-        if mat_geo_sets is not None:
-            self.ccx_elsets = mat_geo_sets
-        else:
-            self.ccx_elsets = []
+        self.mat_geo_sets = mat_geo_sets
         if self.mesh_object:
             if hasattr(self.mesh_object, "Shape"):
                 self.theshape = self.mesh_object.Shape
@@ -100,6 +97,7 @@ class FemInputWriter():
                 "In rare cases this might not be an error. "
             )
 
+        # *************************************************
         # deprecated, leave for compatibility reasons
         # if these are calculated here they are calculated twice :-(
         self.femnodes_mesh = {}
@@ -113,6 +111,9 @@ class FemInputWriter():
         self.femelement_edges_table = {}
         self.femelement_count_test = True
 
+        # deprecated, leave for compatibility reasons
+        # do not add new objects
+        # only the ones which exists on 0.19 release are kept
         # materials
         self.material_objects = member.mats_linear
         self.material_nonlinear_objects = member.mats_nonlinear
@@ -122,7 +123,6 @@ class FemInputWriter():
         self.fluidsection_objects = member.geos_fluidsection
         self.shellthickness_objects = member.geos_shellthickness
         # constraints
-        self.centrif_objects = member.cons_centrif
         self.contact_objects = member.cons_contact
         self.displacement_objects = member.cons_displacement
         self.fixed_objects = member.cons_fixed
@@ -131,7 +131,6 @@ class FemInputWriter():
         self.initialtemperature_objects = member.cons_initialtemperature
         self.planerotation_objects = member.cons_planerotation
         self.pressure_objects = member.cons_pressure
-        self.sectionprint_objects = member.cons_sectionprint
         self.selfweight_objects = member.cons_selfweight
         self.temperature_objects = member.cons_temperature
         self.tie_objects = member.cons_tie
@@ -223,46 +222,8 @@ class FemInputWriter():
             f.write(write_after)
 
     # ********************************************************************************************
-    # ********************************************************************************************
-    # use set for node sets to be sure all nodes are unique
-    # use sorted to be sure the order is the same on different runs
-    # be aware a sorted set returns a list, because set are not sorted by default
-    #     - done in return value of meshtools.get_femnodes_by_femobj_with_references
-    # TODO FIXME might be appropriate for element sets and surfaceface sets too
-
-    # ********************************************************************************************
-    # get all known sets
-    def get_mesh_sets(self):
-        FreeCAD.Console.PrintMessage(
-            "Get mesh data for "
-            "node sets (groups), surface sets (groups) and element sets (groups)\n"
-        )
-
-        # materials and element geometry element sets getter
-        self.get_element_sets_material_and_femelement_geometry()
-
-        # constraints element sets getter
-        self.get_constraints_centrif_elements()
-
-        # constraints node sets getter
-        self.get_constraints_fixed_nodes()
-        self.get_constraints_displacement_nodes()
-        self.get_constraints_planerotation_nodes()
-
-        # constraints surface sets getter
-        self.get_constraints_contact_faces()
-        self.get_constraints_tie_faces()
-        self.get_constraints_sectionprint_faces()
-        self.get_constraints_transform_nodes()
-        self.get_constraints_temperature_nodes()
-
-        # constraints sets with constraint data
-        self.get_constraints_force_nodeloads()
-        self.get_constraints_pressure_faces()
-        self.get_constraints_heatflux_faces()
-
-    # ********************************************************************************************
-    # sets
+    # deprecated, do not add new constraints
+    # only the ones which exists on 0.19 release are kept
     def get_constraints_fixed_nodes(self):
         self.meshdatagetter.get_constraints_fixed_nodes()
 
@@ -293,18 +254,8 @@ class FemInputWriter():
     def get_constraints_tie_faces(self):
         self.meshdatagetter.get_constraints_tie_faces()
 
-    def get_constraints_sectionprint_faces(self):
-        self.meshdatagetter.get_constraints_sectionprint_faces()
-
     def get_constraints_heatflux_faces(self):
         self.meshdatagetter.get_constraints_heatflux_faces()
-
-    def get_constraints_centrif_elements(self):
-        self.meshdatagetter.get_constraints_centrif_elements()
-
-    def get_element_sets_material_and_femelement_geometry(self):
-        self.meshdatagetter.get_element_sets_material_and_femelement_geometry()
-        self.ccx_elsets = self.meshdatagetter.mat_geo_sets
 
 
 ##  @}

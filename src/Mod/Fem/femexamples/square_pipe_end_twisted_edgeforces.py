@@ -79,7 +79,7 @@ def setup(doc=None, solvertype="ccxtools"):
     l4 = Part.makeLine((-142.5, 142.5, 0), (-142.5, -142.5, 0))
     wire = Part.Wire([l1, l2, l3, l4])
     shape = wire.extrude(Vector(0, 0, 1000))
-    geom_obj = doc.addObject('Part::Feature', 'SquareTube')
+    geom_obj = doc.addObject("Part::Feature", "SquareTube")
     geom_obj.Shape = shape
     doc.recompute()
 
