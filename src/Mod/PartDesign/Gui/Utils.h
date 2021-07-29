@@ -54,6 +54,13 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assert
 PartDesign::Body * needActiveBodyMessage(App::Document *doc,
                                          const QString& infoText=QString());
 
+/**
+ * Set given body active, and return pointer to it.
+ * \param body the pointer to the body
+ * \param doc the pointer to the document in question
+ */
+PartDesign::Body * makeBodyActive(App::DocumentObject* body, App::Document *doc);
+
 /// Display error when there are existing Body objects, but none are active
 void needActiveBodyError(void);
 

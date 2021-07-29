@@ -119,27 +119,10 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
             if (!activeBody && singleBodyDocument && autoActivate) {
                 auto doc = activeView->getAppDocument();
                 auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-                App::DocumentObject *parent = 0;
                 App::DocumentObject *body = 0;
-                std::string sub;
                 if(bodies.size()==1) {
                     body = bodies[0];
-                    for(auto &v : body->getParents()) {
-                        if(v.first->getDocument()!=doc)
-                            continue;
-                        if(parent) {
-                            body = 0;
-                            break;
-                        }
-                        parent = v.first;
-                        sub = v.second;
-                    }
-                }
-                if(body) {
-                    auto doc = parent?parent->getDocument():body->getDocument();
-                    _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
-                            << Gui::Command::getObjectCmd(parent?parent:body) << ",'" << sub << "')");
-                    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+                    activeBody = makeBodyActive(body, doc);
                 }
             }
             if (!activeBody && messageIfNot) {
@@ -154,6 +137,34 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     }
 
     return activeBody;
+}
+
+PartDesign::Body * makeBodyActive(App::DocumentObject* body, App::Document *doc)
+{
+    App::DocumentObject *parent = 0;
+    std::string sub;
+
+    for(auto &v : body->getParents()) {
+        if(v.first->getDocument()!=doc)
+            continue;
+        if(parent) {
+            body = 0;
+            break;
+        }
+        parent = v.first;
+        sub = v.second;
+    }
+
+    if(body) {
+        auto _doc = parent?parent->getDocument():body->getDocument();
+        _FCMD_DOC_CMD(Gui, _doc, "ActiveView.setActiveObject('" << PDBODYKEY
+                      << "'," << Gui::Command::getObjectCmd(parent?parent:body)
+                      << ",'" << sub << "')");
+        // return Gui::Application::Instance->activeView()->
+        //     getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+    }
+
+    return dynamic_cast<PartDesign::Body*>(body);
 }
 
 PartDesign::Body * needActiveBodyMessage (App::Document *doc,
@@ -206,16 +217,8 @@ PartDesign::Body * needActiveBodyMessage (App::Document *doc,
             return makeBody(doc);
         } else if (currentRow >= offset) {
             // Index 1 and above for each of the bodies
-            // TODO: Could we avoid casting here?
-            activeBody = dynamic_cast<PartDesign::Body*>(bodies[idx-offset]);
+            activeBody = makeBodyActive(bodies[currentRow-offset], doc);
         }
-    }
-
-    if (activeBody) {
-        // Once an body is selected, make it active
-        // TODO: Text copied from `getBody()` above. Ensure this is correct.
-        _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
-                      << Gui::Command::getObjectCmd(activeBody) << ",'')");
     }
 
     return activeBody;
@@ -239,11 +242,7 @@ PartDesign::Body * makeBody(App::Document *doc)
                              doc->getName(), bodyName.c_str() );
     auto body = dynamic_cast<PartDesign::Body*>(doc->getObject(bodyName.c_str()));
     if(body) {
-        auto vp = Gui::Application::Instance->getViewProvider(body);
-        if(vp) {
-            // make the new body active
-            vp->doubleClicked();
-        }
+        makeBodyActive(body, doc);
     }
     return body;
 }
