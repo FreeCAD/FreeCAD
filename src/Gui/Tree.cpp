@@ -2008,8 +2008,10 @@ bool TreeWidget::setupObjectMenu(QMenu &menu,
     if(!item)
         return false;
     contextItem = item;
-    if (ctxObj)
+    if (ctxObj) {
         *ctxObj = item->getSubObjectT();
+        ctxObj->setSubName(ctxObj->getSubName() + sobj->getElementName());
+    }
     return tree->_setupObjectMenu(item, menu);
 }
 
