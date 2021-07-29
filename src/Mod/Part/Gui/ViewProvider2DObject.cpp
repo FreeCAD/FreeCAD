@@ -107,6 +107,10 @@ ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()
 
 SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
 {
+    if (this->getEditingMode() == Transform
+            || this->getEditingMode() == TransformAt)
+        return GridRoot;
+
     //double dx = 10 * GridSize.getValue();                       // carpet size
     //double dy = 10 * GridSize.getValue();
     // float Size = (MaxX-MinX > MaxY-MinY) ? MaxX-MinX : MaxY-MinY;
@@ -373,6 +377,9 @@ void ViewProvider2DObjectGrid::updateGridScale(Gui::View3DInventorViewer *viewer
 
 void ViewProvider2DObjectGrid::setEditViewer(Gui::View3DInventorViewer *viewer, int ModNum)
 {
+    if (ModNum == Transform || ModNum == TransformAt)
+        return ViewProvider2DObject::setEditViewer(viewer, ModNum);
+
     if (!CameraSensor) {
         CameraSensor = new SoNodeSensor;
         CameraSensor->setData(this);
@@ -393,16 +400,22 @@ void ViewProvider2DObjectGrid::unsetEditViewer(Gui::View3DInventorViewer *viewer
     ViewProvider2DObject::unsetEditViewer(viewer);
 }
 
-bool ViewProvider2DObjectGrid::setEdit(int)
+bool ViewProvider2DObjectGrid::setEdit(int ModNum)
 {
+    if (ModNum == Transform || ModNum == TransformAt)
+        return ViewProvider2DObject::setEdit(ModNum);
+
     if (ShowGrid.getValue())
         createGrid();
 
     return false;
 }
 
-void ViewProvider2DObjectGrid::unsetEdit(int)
+void ViewProvider2DObjectGrid::unsetEdit(int ModNum)
 {
+    if (ModNum == Transform || ModNum == TransformAt)
+        return ViewProvider2DObject::unsetEdit(ModNum);
+
     if (ShowGrid.getValue() && ShowOnlyInEditMode.getValue())
         Gui::coinRemoveAllChildren(GridRoot);
 }
