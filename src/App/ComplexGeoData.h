@@ -172,6 +172,11 @@ public:
      * The default implementation only returns false.
      */
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
+    /** Get the orientation of the geometry element
+     * If this method is implemented then true is returned and the orentiation.
+     * The default implementation only returns false.
+     */
+    virtual bool getRotation(Base::Rotation &) const {return false;}
     //@}
 
     /** @name Element name mapping */

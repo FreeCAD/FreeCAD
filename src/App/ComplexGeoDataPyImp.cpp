@@ -244,6 +244,14 @@ void ComplexGeoDataPy::setHasher(Py::Object obj) {
         throw Py::TypeError("invalid type");
 }
 
+Py::Object ComplexGeoDataPy::getRotation(void) const
+{
+    Base::Rotation rot;
+    if (getComplexGeoDataPtr()->getRotation(rot))
+        return Py::Rotation(rot);
+    return Py::Rotation(getComplexGeoDataPtr()->getPlacement().getRotation());
+}
+
 Py::Object ComplexGeoDataPy::getBoundBox(void) const
 {
     return Py::BoundingBox(getComplexGeoDataPtr()->getBoundBox());

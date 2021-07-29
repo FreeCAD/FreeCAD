@@ -56,6 +56,17 @@ to one element
 		  </Documentation>
 		  <Parameter Name="BoundBox" Type="Object" />
 	  </Attribute>
+      <Attribute Name="Rotation" ReadOnly="true">
+        <Documentation>
+            <UserDocu>
+Get the orientation of the geometry element.
+
+Note that the rotation returned is the intrinsic orientation of the
+the underlying geometry, which may not be the same as its 'Placement'.
+            </UserDocu>
+        </Documentation>
+		<Parameter Name="Rotation" Type="Object" />
+      </Attribute>
 	  <Attribute Name="Placement" ReadOnly="false">
 		  <Documentation>
 			  <UserDocu>Get the current transformation of the object as placement</UserDocu>

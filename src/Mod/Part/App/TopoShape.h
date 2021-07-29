@@ -132,6 +132,7 @@ public:
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
+    virtual bool getRotation(Base::Rotation& rot) const;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
     static Base::Matrix4D convert(const gp_Trsf& trsf);

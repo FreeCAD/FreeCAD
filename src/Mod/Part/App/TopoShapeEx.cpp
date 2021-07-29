@@ -4782,3 +4782,48 @@ bool TopoShape::linearize(bool face, bool edge)
     }
     return touched;
 }
+
+bool TopoShape::getRotation(Base::Rotation& rot) const
+{
+    if (_Shape.IsNull())
+        return false;
+
+    int facecount = countSubShapes(TopAbs_FACE);
+    if (facecount == 0) {
+        int edgecount = countSubShapes(TopAbs_EDGE);
+        if (edgecount == 0)
+            return false;
+        if (edgecount == 1 && isLinearEdge()) {
+            if (std::unique_ptr<Geometry> geo = Geometry::fromShape(getShape())) {
+                std::unique_ptr<GeomLine> gline(static_cast<GeomCurve*>(geo.get())->toLine());
+                if (gline) {
+                    rot = Base::Rotation(Base::Vector3d(0,0,1), gline->getDir());
+                    return true;
+                }
+            }
+        }
+    } else if (facecount == 1) {
+        if (std::unique_ptr<Geometry> geo = Geometry::fromShape(getShape())) {
+            if (geo->isDerivedFrom(GeomElementarySurface::getClassTypeId())) {
+                auto dir = static_cast<GeomElementarySurface*>(geo.get())->getDir();
+                auto xdir = static_cast<GeomElementarySurface*>(geo.get())->getXDir();
+                rot = Base::Rotation(Base::Vector3d(0,0,1), dir);
+                auto xd = rot.multVec(xdir);
+                rot *= Base::Rotation(Base::Vector3d(1,0,0), xd);
+                return true;
+            }
+        }
+    }
+
+    gp_Pln pln;
+    if (!findPlane(pln))
+        return false;
+
+    auto dir = pln.Position().Direction();
+    auto xdir = pln.Position().XDirection();
+    rot = Base::Rotation(Base::Vector3d(0,0,1), Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
+    auto xd = rot.multVec(Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z()));
+    rot *= Base::Rotation(Base::Vector3d(1,0,0), xd);
+    return true;
+}
+
