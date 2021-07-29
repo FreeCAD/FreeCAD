@@ -38,7 +38,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Hexa20",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "z88", "elmer"],
+        "solvers": ["calculix", "elmer", "z88"],
         "material": "solid",
         "equation": "mechanical"
     }
