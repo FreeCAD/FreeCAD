@@ -450,11 +450,13 @@ SoFCUnifiedSelection::Private::getPickedInfo(std::vector<PickedInfo> &ret,
                                              bool copy,
                                              Filter &filter) const
 {
-    ViewProvider *edit_vp = 0;
+    ViewProvider *vpEdit = 0;
+    ViewProviderDocumentObject *vpParent = nullptr;
+    std::string editSub;
     if (this->pcDocument) {
-       edit_vp = this->pcDocument->getInEdit();
-       if (!edit_vp || !edit_vp->isEditingPickExclusive())
-           edit_vp = 0;
+       vpEdit = this->pcDocument->getInEdit(&vpParent, &editSub);
+       if (!vpEdit || !vpEdit->isEditingPickExclusive())
+           vpEdit = 0;
     }
     ViewProvider *last_vp = 0;
     for(int i=0,count=points.getLength();i<count;++i) {
@@ -469,7 +471,7 @@ SoFCUnifiedSelection::Private::getPickedInfo(std::vector<PickedInfo> &ret,
                 return;
         }
         if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())
-               || (edit_vp && vp != edit_vp))
+               || (vpEdit && vp != vpEdit))
         {
             if(!singlePick) continue;
             if(ret.empty()) {
@@ -494,6 +496,11 @@ SoFCUnifiedSelection::Private::getPickedInfo(std::vector<PickedInfo> &ret,
 
         if(!info.vpd->getElementPicked(info.pp,info.subname))
             continue;
+
+        if (info.vpd == vpEdit && vpParent && vpParent != vpEdit) {
+            info.vpd = vpParent;
+            info.subname = editSub + info.subname;
+        }
 
         if(singlePick) {
             last_vp = vp;
