@@ -524,7 +524,7 @@ class ObjectSlot(PathOp.ObjectOp):
             begExt = obj.ExtendPathStart.Value
             endExt = obj.ExtendPathEnd.Value
             # invert endExt, begExt args to apply extensions to correct ends
-            # XY geom is postitive CCW; Gcode postitive CW
+            # XY geom is positive CCW; Gcode positive CW
             pnts = self._extendArcSlot(p1, p2, self.arcCenter, endExt, begExt)
 
         if not pnts:
@@ -558,8 +558,8 @@ class ObjectSlot(PathOp.ObjectOp):
         CMDS = list()
         PATHS = [(p2, p1, 'G2'), (p1, p2, 'G3')]
         if obj.ReverseDirection :
-            path_index = 1 
-        else : 
+            path_index = 1
+        else :
             path_index = 0
 
         def arcPass(POINTS, depth):
@@ -620,7 +620,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 pnts = self._makePerpendicular(p1, p2, initPerpDist)  # 10.0 offset below
         else:
             # Modify path points if user selected two parallel edges
-            if (featureCnt == 2 and self.shapeType1 == 'Edge' and 
+            if (featureCnt == 2 and self.shapeType1 == 'Edge' and
                     self.shapeType2 == 'Edge'):
                 if self.featureDetails[0] == "arc" and self.featureDetails[1] == "arc":
                     perpZero = False
@@ -725,7 +725,7 @@ class ObjectSlot(PathOp.ObjectOp):
             pnts = False
             norm = shape_1.normalAt(0.0, 0.0)
             PathLog.debug('{}.normalAt(): {}'.format(sub1, norm))
-            
+
             if PathGeom.isRoughly(shape_1.BoundBox.ZMax, shape_1.BoundBox.ZMin):
                 # Horizontal face
                 if norm.z == 1 or norm.z == -1:
@@ -743,7 +743,7 @@ class ObjectSlot(PathOp.ObjectOp):
             else:
                 if len(shape_1.Edges) == 4:
                     pnts = self._processSingleHorizFace(obj, shape_1)
-                else: 
+                else:
                     pnts = self._processSingleComplexFace(obj, shape_1)
 
             if not pnts:
@@ -812,7 +812,7 @@ class ObjectSlot(PathOp.ObjectOp):
         eCnt = len(shape.Edges)
         lstE = eCnt - 1
         for i in range(0, eCnt):  # populate empty parallel edge flag list
-            parallel_edge_flags.append(0)        
+            parallel_edge_flags.append(0)
         for i in range(0, eCnt):  # Cycle through edges to identify parallel pairs
             if i < lstE:
                 ni = i + 1
@@ -976,14 +976,14 @@ class ObjectSlot(PathOp.ObjectOp):
         p1 = FreeCAD.Vector(V1.X, V1.Y, 0.0)
         if len(edge.Vertexes) == 1:   # circle has one virtex
             p2 = FreeCAD.Vector(p1)
-        else :  
+        else :
             V2 = edge.Vertexes[1]
             p2 = FreeCAD.Vector(V2.X, V2.Y, 0.0)
-         
+
         # Process edge based on curve type
         if edge.Curve.TypeId in lineTypes:
             return (p1, p2)
-            
+
         elif edge.Curve.TypeId in curveTypes:
             if len(edge.Vertexes) == 1:
                 # Circle edge
@@ -1009,7 +1009,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 midPnt = edge.valueAt(edge.getParameterByLength(edge.Length / 2.0))
                 if not isHorizontal(V1.Z, V2.Z, midPnt.z):
                     return False
-                    
+
                 midPnt.z = 0.0
                 circleCenter = circumCircleFrom3Points(p1, p2, midPnt)
                 if not circleCenter:
@@ -1025,7 +1025,7 @@ class ObjectSlot(PathOp.ObjectOp):
         else :
             msg = translate('PathSlot','Failed, slot from edge only accepts lines, arcs and circles.')
             FreeCAD.Console.PrintError(msg + '\n')
-           
+
             return False  # not line , not circle
 
     # Methods for processing double geometry
@@ -1089,7 +1089,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _normalizeVector(self, v):
         """_normalizeVector(v)...
         Returns a copy of the vector received with values rounded to 10 decimal places."""
-        posTol = 0.0000000001  # abitrary, use job Geometry Tolerance ???
+        posTol = 0.0000000001  # arbitrary, use job Geometry Tolerance ???
         negTol = -1 * posTol
         V = FreeCAD.Vector(v.x, v.y, v.z)
         V.normalize()
@@ -1245,7 +1245,7 @@ class ObjectSlot(PathOp.ObjectOp):
         n1 = p1
         n2 = p2
 
-        # Create a chord of the right length, on XY plane, starting on x axis 
+        # Create a chord of the right length, on XY plane, starting on x axis
         def makeChord(rads):
             x = self.newRadius * math.cos(rads)
             y = self.newRadius * math.sin(rads)
@@ -1256,7 +1256,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         # Convert extension to radians; make a generic chord ( line ) on XY plane from the x axis
         # rotate and shift into place so it has same vertices as the required arc extension
-        # adjust rotation angle to provide +ve or -ve extension as needed 
+        # adjust rotation angle to provide +ve or -ve extension as needed
         origin = FreeCAD.Vector(0.0, 0.0, 0.0)
         if begExt:
             ExtRadians = abs(begExt / self.newRadius)
@@ -1264,19 +1264,19 @@ class ObjectSlot(PathOp.ObjectOp):
 
             beginRadians = self._getVectorAngle(p1.sub(self.arcCenter))
             if begExt < 0:
-                beginRadians += 0  # negative Ext shortens slot so chord endpoint is slot start point 
+                beginRadians += 0  # negative Ext shortens slot so chord endpoint is slot start point
             else :
                 beginRadians -= 2*ExtRadians  # positive Ext lengthens slot so decrease start point angle
-                
+
             # PathLog.debug('begExt angles are: {},  {}'.format(beginRadians, math.degrees(beginRadians)))
 
             chord.rotate(origin, FreeCAD.Vector(0, 0, 1), math.degrees(beginRadians))
             chord.translate(self.arcCenter)
             self._addDebugObject(chord, 'ExtendStart')
-            
+
             v1 = chord.Vertexes[1]
             n1 = FreeCAD.Vector(v1.X, v1.Y, 0.0)
-            
+
         if endExt:
             ExtRadians = abs(endExt / self.newRadius)
             chord = makeChord(ExtRadians)
@@ -1286,13 +1286,13 @@ class ObjectSlot(PathOp.ObjectOp):
                 endRadians += 0  # positive Ext lengthens slot so chord endpoint is good
             else :
                 endRadians -= 2*ExtRadians  # negative Ext shortens slot so decrease end point angle
-                
+
             # PathLog.debug('endExt angles are: {},  {}'.format(endRadians, math.degrees(endRadians)))
 
             chord.rotate(origin, FreeCAD.Vector(0, 0, 1), math.degrees(endRadians))
             chord.translate(self.arcCenter)
             self._addDebugObject(chord, 'ExtendEnd')
-               
+
             v1 = chord.Vertexes[1]
             n2 = FreeCAD.Vector(v1.X, v1.Y, 0.0)
 
@@ -1321,7 +1321,7 @@ class ObjectSlot(PathOp.ObjectOp):
           n2 = p2.add(end.normalize()*endExt)
         else:
             n2 = p2
-        return (n1, n2) 
+        return (n1, n2)
 
     def _getOppMidPoints(self, same):
         """_getOppMidPoints(same)...

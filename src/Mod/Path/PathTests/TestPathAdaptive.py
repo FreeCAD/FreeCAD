@@ -56,7 +56,7 @@ class TestPathAdaptive(PathTestBase):
         if FreeCAD.GuiUp:
             job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
 
-        # Instantiate an Adaptive operation for quering available properties
+        # Instantiate an Adaptive operation for querying available properties
         prototype = PathAdaptive.Create("Adaptive")
         prototype.Base = [(doc.Fusion, ["Face3"])]
         prototype.Label = "Prototype"
