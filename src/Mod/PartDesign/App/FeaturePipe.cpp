@@ -284,25 +284,27 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
         TopoShape result(0,feat->getDocument()->getStringHasher());
 
         if (!frontwires.empty()) {
-            // build the end faces, sew the shell and build the final solid
-            //
-            // auto front = TopoShape().makEFace(frontwires,0,"Part::FaceMakerCheese");
-            // auto back = TopoShape().makEFace(backwires,0,"Part::FaceMakerCheese");
-            // 
-            // Use default Part::FaceMakerBullseye instead
-            auto front = TopoShape().makEFace(frontwires);
-            auto back = TopoShape().makEFace(backwires);
+            if (frontface.shapeType(true) == TopAbs_FACE && !frontface.isPlanarFace())
+                frontface.makEBSplineFace(TopoShape().makECompound(frontwires, nullptr, false));
+            else
+                frontface = TopoShape().makEFace(frontwires);
+
+            if (backface.shapeType(true) == TopAbs_FACE && !backface.isPlanarFace())
+                backface.makEBSplineFace(TopoShape().makECompound(backwires, nullptr, false));
+            else
+                backface = TopoShape().makEFace(backwires);
+
 
             BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front.getShape());
-            sewer.Add(back.getShape());
+            sewer.Add(frontface.getShape());
+            sewer.Add(backface.getShape());
 
             for(auto& s : shells)
                 sewer.Add(s.getShape());
 
-            shells.push_back(front);
-            shells.push_back(back);
+            shells.push_back(frontface);
+            shells.push_back(backface);
 
             sewer.Perform();
             result = result.makEShape(sewer,shells).makESolid();
