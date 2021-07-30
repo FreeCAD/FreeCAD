@@ -80,6 +80,7 @@ SET(FemExamples_SRCS
     femexamples/material_multiple_bendingbeam_fivefaces.py
     femexamples/material_multiple_tensionrod_twoboxes.py
     femexamples/material_nl_platewithhole.py
+    femexamples/mystran_plate.py
     femexamples/rc_wall_2d.py
     femexamples/square_pipe_end_twisted_edgeforces.py
     femexamples/square_pipe_end_twisted_nodeforces.py
@@ -113,6 +114,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_flexural_buckling.py
     femexamples/meshes/mesh_multibodybeam_tetra10.py
     femexamples/meshes/mesh_multibodybeam_tria6.py
+    femexamples/meshes/mesh_plate_mystran_quad4.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_section_print_tetra10.py
@@ -378,6 +380,16 @@ SET(FemTestsMesh_SRCS
     femtest/data/mesh/tetra10_mesh.z88
 )
 
+SET(FemTestsMystran_SRCS
+    femtest/data/mystran/__init__.py
+    femtest/data/mystran/ccx_cantilever_ele_quad4.bdf
+    femtest/data/mystran/ccx_cantilever_ele_seg2.bdf
+    femtest/data/mystran/ccx_cantilever_ele_tria3.bdf
+    femtest/data/mystran/ccx_cantilever_faceload.bdf
+    femtest/data/mystran/ccx_cantilever_nodeload.bdf
+    femtest/data/mystran/mystran_plate.bdf
+)
+
 SET(FemTestsOpen_SRCS
     femtest/data/open/__init__.py
     femtest/data/open/all_objects_de9b3fb438.FCStd
@@ -474,6 +486,7 @@ SET(FemAllScripts
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
+    ${FemTestsMystran_SRCS}
     ${FemTestsOpen_SRCS}
     ${FemTestsZ88Main_SRCS}
     ${FemTestsZ88Ccxcantifl_SRCS}
@@ -512,6 +525,7 @@ INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
+INSTALL(FILES ${FemTestsMystran_SRCS} DESTINATION Mod/Fem/femtest/data/mystran)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
 INSTALL(FILES ${FemTestsZ88CcxcantiEleHex20_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)
