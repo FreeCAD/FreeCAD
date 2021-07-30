@@ -255,6 +255,19 @@ SET(FemSolverFenics_SRCS
     femsolver/fenics/fenics_tools.py
 )
 
+SET(FemSolverMystran_SRCS
+    femsolver/mystran/__init__.py
+    femsolver/mystran/add_con_fixed.py
+    femsolver/mystran/add_con_force.py
+    femsolver/mystran/add_femelement_geometry.py
+    femsolver/mystran/add_femelement_material.py
+    femsolver/mystran/add_mesh.py
+    femsolver/mystran/add_solver_control.py
+    femsolver/mystran/solver.py
+    femsolver/mystran/tasks.py
+    femsolver/mystran/writer.py
+)
+
 SET(FemSolverZ88_SRCS
     femsolver/z88/__init__.py
     femsolver/z88/solver.py
@@ -281,6 +294,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_result.py
     femtest/app/test_solver_calculix.py
     femtest/app/test_solver_elmer.py
+    femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py
 )
 
@@ -452,6 +466,7 @@ SET(FemAllScripts
     ${FemSolverElmer_SRCS}
     ${FemSolverElmerEquations_SRCS}
     ${FemSolverFenics_SRCS}
+    ${FemSolverMystran_SRCS}
     ${FemSolverZ88_SRCS}
     ${FemTests_SRCS}
     ${FemTestsApp_SRCS}
@@ -489,6 +504,7 @@ INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
 INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
 INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
 INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
+INSTALL(FILES ${FemSolverMystran_SRCS} DESTINATION Mod/Fem/femsolver/mystran)
 INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)

@@ -799,6 +799,17 @@ def makeSolverElmer(
     return obj
 
 
+def makeSolverMystran(
+    doc,
+    name="SolverMystran"
+):
+    """makeSolverMystran(document, [name]):
+    makes a Mystran solver object"""
+    import femsolver.mystran.solver
+    obj = femsolver.mystran.solver.create(doc, name)
+    return obj
+
+
 def makeSolverZ88(
     doc,
     name="SolverZ88"
