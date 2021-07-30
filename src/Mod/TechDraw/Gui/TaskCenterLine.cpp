@@ -106,7 +106,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     setUiEdit();
     // connect the dialog objects
     setUiConnect();
-    // save the existing centerline to restore in in case the user rejects the changes
+    // save the existing centerline to restore in case the user rejects the changes
     orig_cl = *m_cl;
 }
 

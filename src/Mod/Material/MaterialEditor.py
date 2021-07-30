@@ -709,7 +709,7 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
                 "Not known unit for property: {}. Probably the Quantity does not have a unit.\n"
                 .format(matproperty)
             )
-            # the Gui::InputField is used for Floats too, because of the diggits
+            # the Gui::InputField is used for Floats too, because of the digits
 
     elif Type == "Integer":
 
@@ -718,7 +718,7 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
     # elif Type == "Float":
 
     #     widget = ui.createWidget("Gui::PrefDoubleSpinBox")
-    # has only 2 diggits precision, but for example RelativePermittivity needs much more
+    # has only 2 digit precision, but for example RelativePermittivity needs much more
     # see material card for Air, thus Workaround
     # a "Gui::InputField" without unit is used
 

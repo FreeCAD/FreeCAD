@@ -759,8 +759,8 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
     return false;
 #else
     // This is not as easy as it looks, because a distance of zero might be OK if
-    // the axis touches the sketchshape in in a linear edge or a vertex
-    // Note: This algorithm does not catch cases where the sketchshape touches the
+    // the axis touches the sketchshape in a linear edge or a vertex
+    // Note: This algorithm doesn't catch cases where the sketchshape touches the
     // axis in two or more points
     // Note: And it only works on closed outer wires
     TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
