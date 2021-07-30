@@ -129,10 +129,9 @@ SoGroup* ViewProviderWrap::getChildRoot(void) const
 std::vector<App::DocumentObject*> ViewProviderWrap::_claimChildren(void) const
 {
     auto owner = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(getObject());
-    auto res = inherited::claimChildren();
     if(owner && owner->WrapFeature.getValue())
-        res.insert(res.begin(), owner->WrapFeature.getValue());
-    return res;
+        return {owner->WrapFeature.getValue()};
+    return {};
 }
 
 std::vector<App::DocumentObject*> ViewProviderWrap::claimChildren3D(void) const
