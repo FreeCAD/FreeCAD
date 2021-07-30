@@ -1268,8 +1268,17 @@ void MonitorProxy::addCheckBox(QWidget * widget, int index)
         return;
     }
 
+    QCheckBox *checkbox;
+
+    checkbox = new QCheckBox(widget);
+    checkbox->setText(tr("Show on top"));
+    checkbox->setToolTip(tr("Show the editing feature always on top"));
+    checkbox->setChecked(PartGui::PartParams::EditOnTop());
+    connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onShowOnTop(bool)));
+    layout->insertWidget(index, checkbox);
+
     QHBoxLayout * hlayout = new QHBoxLayout;
-    auto checkbox = new QCheckBox(widget);
+    checkbox = new QCheckBox(widget);
     checkbox->setText(tr("Show preview"));
     checkbox->setToolTip(tr("Show base feature with preview shape"));
     checkbox->setChecked(PartGui::PartParams::PreviewOnEdit());
@@ -1277,10 +1286,10 @@ void MonitorProxy::addCheckBox(QWidget * widget, int index)
     hlayout->addWidget(checkbox);
 
     checkbox = new QCheckBox(widget);
-    checkbox->setText(tr("Show on top"));
-    checkbox->setToolTip(tr("Show the editing feature always on top"));
-    checkbox->setChecked(PartGui::PartParams::EditOnTop());
-    connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onShowOnTop(bool)));
+    checkbox->setText(tr("Transparent preview"));
+    checkbox->setToolTip(tr("Show preview shape with transarency"));
+    checkbox->setChecked(PartGui::PartParams::PreviewWithTransparency());
+    connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onPreviewTransparency(bool)));
     hlayout->addWidget(checkbox);
 
     layout->insertLayout(index, hlayout);
@@ -1308,6 +1317,18 @@ void MonitorProxy::onPreview(bool checked)
             editObj->recomputeFeature(true);
             vp->show();
         }
+    }
+}
+
+void MonitorProxy::onPreviewTransparency(bool checked)
+{
+    PartGui::PartParams::set_PreviewWithTransparency(checked);
+    if (PartGui::PartParams::PreviewOnEdit()) {
+        auto editObj = _MonitorInstance->editObjT.getObject();
+        auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
+                Gui::Application::Instance->getViewProvider(editObj));
+        if (vp)
+            vp->checkAddSubColor();
     }
 }
 

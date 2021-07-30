@@ -54,6 +54,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/Gui/PartParams.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
@@ -166,6 +167,12 @@ void ViewProviderTransformed::checkAddSubColor()
     }
     // clamp transparency between 0.1 ~ 0.8
     float t = std::max(0.1f, std::min(0.8f, 1.0f - addcolor.a));
+    if (!PartGui::PartParams::PreviewWithTransparency()) {
+        t = 0.0f;
+        previewGroup->priority = 0;
+    } else
+        previewGroup->priority = -2;
+
     view->LineColor.setValue(addcolor);
     auto material = view->PointMaterial.getValue();
     material.diffuseColor = addcolor;

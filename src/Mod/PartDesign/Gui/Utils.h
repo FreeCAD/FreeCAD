@@ -130,6 +130,7 @@ public:
     
 protected Q_SLOTS:
     void onPreview(bool);
+    void onPreviewTransparency(bool);
     void onShowOnTop(bool);
     void onEditTimer();
 };

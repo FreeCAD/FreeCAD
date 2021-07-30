@@ -51,9 +51,9 @@ public:
     std::string featureName;
 
     virtual Gui::ViewProvider *startEditing(int ModNum=0) override;
+    virtual void checkAddSubColor() override;
 
 protected:
-    virtual void checkAddSubColor() override;
     virtual void updateAddSubShapeIndicator() override;
 
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);

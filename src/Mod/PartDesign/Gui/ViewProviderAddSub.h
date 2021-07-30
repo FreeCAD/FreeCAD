@@ -27,6 +27,10 @@
 #include <App/DocumentObserver.h>
 #include "ViewProvider.h"
 
+namespace Gui {
+class SoFCPathAnnotation;
+}
+
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderAddSub : public ViewProvider
@@ -54,15 +58,15 @@ public:
     
     void setPreviewDisplayMode(bool);
     virtual QIcon getIcon(void) const;
+    virtual void checkAddSubColor();
 
 protected: 
-    virtual void checkAddSubColor();
     virtual void setAddSubColor(const App::Color &color, float t);
     virtual void updateAddSubShapeIndicator();
     virtual PartGui::ViewProviderPart * getAddSubView();
 
 protected:
-    Gui::CoinPtr<SoSeparator>   previewGroup;
+    Gui::CoinPtr<Gui::SoFCPathAnnotation>   previewGroup;
     Gui::CoinPtr<SoTransform>   previewTransform;
 
 private:
