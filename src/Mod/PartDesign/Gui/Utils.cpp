@@ -164,6 +164,9 @@ PartDesign::Body * needActiveBodyMessage (App::Document *doc,
     PartDesignGui::Ui_DlgActiveBody dlg;
     dlg.setupUi(&dia);
 
+    QObject::connect(dlg.bodySelect, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+                     &dia, SLOT(accept()));
+
     if(!infoText.isEmpty()) {
         dlg.label->setText(infoText + QObject::tr("\n\n") +
                            QObject::tr("Please select"));
@@ -171,8 +174,21 @@ PartDesign::Body * needActiveBodyMessage (App::Document *doc,
 
     auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
 
+    PartDesign::Body* bodyOfActiveObject = nullptr;
+    for (Gui::SelectionSingleton::SelObj obj :  Gui::Selection().getSelection()) {
+        bodyOfActiveObject = PartDesign::Body::findBodyOf(obj.pObject);
+        break; // Just get the body for first selected object
+    }
+
+    int row = 0;
     for (auto body : bodies) {
+        row++;
         dlg.bodySelect->addItem(QString::fromUtf8(body->Label.getValue()));
+
+        if (body == bodyOfActiveObject) {
+            dlg.bodySelect->setCurrentRow(row);
+        }
+
         // TODO: Any other logic (hover, select effects on view etc.)
     }
 
@@ -180,15 +196,15 @@ PartDesign::Body * needActiveBodyMessage (App::Document *doc,
     if (result == QDialog::DialogCode::Accepted) {
         // TODO: Currently using an index system. Could we avoid it in any way?
         int offset = 1;
-        int idx = dlg.bodySelect->currentRow();
+        int currentRow = dlg.bodySelect->currentRow();
         // Check for selection because current != selected
-        if (!dlg.bodySelect->item(idx)->isSelected()) {
+        if (!dlg.bodySelect->item(currentRow)->isSelected()) {
             return activeBody;
         }
-        if (idx == offset-1) {
+        if (currentRow == offset-1) {
             // Index 0 is for "Create Body"
             return makeBody(doc);
-        } else if (idx >= offset) {
+        } else if (currentRow >= offset) {
             // Index 1 and above for each of the bodies
             // TODO: Could we avoid casting here?
             activeBody = dynamic_cast<PartDesign::Body*>(bodies[idx-offset]);
