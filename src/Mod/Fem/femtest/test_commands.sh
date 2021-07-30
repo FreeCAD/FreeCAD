@@ -17,6 +17,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88
 
 
@@ -35,6 +36,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open.TestObjectOpen
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran.TestSolverMystran
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88
 
 
@@ -111,9 +113,15 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.t
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload_1_si
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload_0_mm
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement_0_mm
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_faceload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_ele_quad4
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_ele_seg2
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_ele_tria3
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_faceload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_nodeload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_mystran.TestSolverMystran.test_mystran_plate
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_ele_hexa20
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_ele_tria6
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_faceload
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_nodeload
 
 
@@ -481,7 +489,32 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_faceload'
+    'femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_ele_quad4'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_ele_seg2'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_ele_tria3'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_faceload'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_mystran.TestSolverMystran.test_ccx_cantilever_nodeload'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_mystran.TestSolverMystran.test_mystran_plate'
 ))
 
 import unittest
@@ -492,6 +525,11 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_ele_tria6'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_z88.TestSolverZ88.test_ccx_cantilever_faceload'
 ))
 
 import unittest

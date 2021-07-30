@@ -37,7 +37,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria3",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "mystran"],
         "material": "solid",
         "equation": "mechanical"
     }
