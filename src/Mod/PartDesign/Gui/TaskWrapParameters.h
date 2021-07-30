@@ -44,7 +44,6 @@ public:
     ~TaskWrapParameters();
 
 private Q_SLOTS:
-    void onTypeChanged(int);
     void onFrozenChanged();
 
 protected:

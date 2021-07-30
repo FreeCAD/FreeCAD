@@ -7,43 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>298</width>
-    <height>103</height>
+    <height>70</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="textLabel1">
-       <property name="text">
-        <string>Type</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBoxType">
-       <item>
-        <property name="text">
-         <string>Additive</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Subtractive</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Standalone</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item>
     <widget class="QCheckBox" name="checkBoxFrozen">
      <property name="toolTip">

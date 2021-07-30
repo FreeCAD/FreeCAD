@@ -70,21 +70,10 @@ void TaskWrapParameters::setupUI()
 
     this->groupLayout()->addWidget(proxy);
 
-    connect(ui->comboBoxType, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onTypeChanged(int)));
     connect(ui->checkBoxFrozen, SIGNAL(toggled(bool)),
             this, SLOT(onFrozenChanged()));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
-
-    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(
-            this->vp->getObject());
-    if (feat) {
-        ui->comboBoxType->setToolTip(QApplication::translate(
-                    "App::Property", feat->Type.getDocumentation()));
-        ui->checkBoxFrozen->setToolTip(QApplication::translate(
-                    "App::Property", feat->Frozen.getDocumentation()));
-    }
 
     refresh();
 }
@@ -104,21 +93,6 @@ void TaskWrapParameters::refresh()
         QSignalBlocker guard(ui->checkBoxFrozen);
         ui->checkBoxFrozen->setChecked(feat->Frozen.getValue());
     }
-    {
-        QSignalBlocker guard(ui->comboBoxType);
-        ui->comboBoxType->setCurrentIndex(feat->Type.getValue());
-    }
-}
-
-void TaskWrapParameters::onTypeChanged(int index)
-{
-    if (!vp)
-        return;
-    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(this->vp->getObject());
-    if (!feat)
-        return;
-    feat->Type.setValue(index);
-    recomputeFeature();
 }
 
 void TaskWrapParameters::onFrozenChanged()

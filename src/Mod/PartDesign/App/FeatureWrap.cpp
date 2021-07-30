@@ -52,7 +52,9 @@ FeatureWrap::FeatureWrap()
             "Wrapped feature");
     WrapFeature.setScope(App::LinkScope::Global);
 
-    ADD_PROPERTY_TYPE(Type,((long)3),"Part Design",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Type,((long)3),"Part Design",
+            (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly),
+            "Deprecated! Use AddSubType instead\n"
             "Additive: fuse the wrapped feature with the base feature.\n"
             "Subtractive: cut the wrapped feature from the base feature.\n"
             "Standalone: standalone feature, which may or may not be a solid.\n"
@@ -92,15 +94,17 @@ void FeatureWrap::onNewSolidChanged()
         return;
 
     if (Type.getValue() == 2) {
-        this->AddSubType.setValue((long)0);
+        AddSubType.setValue((long)0);
         BaseFeature.setValue(nullptr);
     } else {
-        if (Type.getValue() == 1)
-            this->AddSubType.setValue((long)1);
-        else if (Type.getValue() == 4)
-            this->AddSubType.setValue((long)2);
-        else
-            this->AddSubType.setValue((long)0);
+        if (AddSubType.getValue() == 0) {
+            if (Type.getValue() != 2)
+                Type.setValue((long)0);
+        }
+        else if (AddSubType.getValue() == 1)
+            Type.setValue((long)1);
+        else if (AddSubType.getValue() == 2)
+            Type.setValue((long)4);
         if (!NewSolid.getValue()) {
             BaseFeature.setValue(nullptr);
         } else {
@@ -126,7 +130,7 @@ void FeatureWrap::onChanged(const App::Property * prop)
     if (!this->isRestoring() 
             && this->getDocument()
             && !this->getDocument()->isPerformingTransaction()) {
-        if (prop == &Type) {
+        if (prop == &AddSubType || prop == &Type) {
             onNewSolidChanged();
         } else if (prop == &Frozen || prop == &WrapFeature) {
             if (prop == &WrapFeature)
@@ -173,20 +177,10 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
         if(!base.isNull())
             base.move(invObjLoc);
 
-        if(base.isNull() || Type.getValue() > 1) {
-            if (Type.getValue() < 2)
-                return new App::DocumentObjectExecReturn("No base shape");
-            if (Type.getValue() != 2) {
-                shape = getSolid(shape);
-                if (shape.isNull())
-                    return new App::DocumentObjectExecReturn("No solid shape");
-            }
-        }
-            
         if (!Frozen.getValue())
             AddSubShape.setValue(shape);
 
-        if(base.isNull() || Type.getValue() > 1) {
+        if(base.isNull()) {
             Shape.setValue(shape);
             return App::DocumentObject::StdReturn;
         }
@@ -267,7 +261,7 @@ bool FeatureWrap::isElementGenerated(const TopoShape &shape, const Data::MappedN
 
 bool FeatureWrap::isSolidFeature() const
 {
-    return NewSolid.getValue() || (BaseFeature.getValue() && Type.getValue() <= 1);
+    return NewSolid.getValue() || BaseFeature.getValue();
 }
 
 App::DocumentObject *FeatureWrap::getSubObject(const char *subname, 
