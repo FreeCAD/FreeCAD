@@ -2248,9 +2248,9 @@ def get_femmesh_eletype(
             FreeCAD.Console.PrintError("no tria, no quad\n")
             return "None"
     elif is_edge_femmesh(femmesh):
-        if elem_length == 3:
+        if elem_length == 2:
             return "seg2"
-        elif elem_length == 6:
+        elif elem_length == 3:
             return "seg3"
         else:
             FreeCAD.Console.PrintError("Seg with neither 2 nor 3 nodes.\n")
