@@ -35,6 +35,7 @@
 #if defined(HAVE_PCL_SURFACE)
 #include <pcl/pcl_config.h>
 #include <pcl/point_types.h>
+#include <pcl/common/io.h> // for concatenateFields
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/mls.h>
 #include <pcl/point_traits.h>
