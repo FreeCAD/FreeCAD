@@ -100,11 +100,20 @@ public:
 
     /**
      * Verifies the linked Object and returns the shape used as profile
-     * @param silent if profirle property is malformed and the parameter is true
-     *               silently returns nullptr, otherwise throw a Base::Exception.
-     *               Default is false.
+     * @param silent: if profirle property is malformed and the parameter is true
+     *                silently returns nullptr, otherwise throw a Base::Exception.
+     *                Default is false.
+     * @param doFit: Whether to fitting according to the 'Fit' property
+     * @param allowOpen: Whether allow open wire
+     * @param profile: optional profile object, if not given then use 'Profile' property
+     * @param subs: optional profile sub-object names, if not given then use 'Profile' property
      */
-    TopoShape getVerifiedFace(bool silent = false, bool dofit = true) const;
+    TopoShape getVerifiedFace(bool silent = false,
+                              bool doFit = true,
+                              bool allowOpen = false,
+                              const App::DocumentObject *profile = nullptr,
+                              const std::vector<std::string> &subs = {}) const;
+
     TopoDS_Shape getVerifiedFaceOld(bool silent = false) const;
     
     /// Returns the wires the sketch is composed of

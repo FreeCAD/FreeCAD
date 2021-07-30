@@ -161,26 +161,20 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
                                               int transformation,
                                               const std::vector<App::DocumentObject*> &multisections)
 {
-    TopoShape sketchshape = feat->getVerifiedFace();
-    if (sketchshape.isNull())
-        return new App::DocumentObjectExecReturn("No valid sketch or face as section");
-    else {
-        //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could
-        //not use the current simulate approach and build the start and end face from the wires. As the shell
-        //begins always at the spine and not the profile, the sketchshape cannot be used directly as front face.
-        //We would need a method to translate the front shape to match the shell starting position somehow...
-        gp_Pln pln;
-        if (!sketchshape.findPlane(pln))
-            return new App::DocumentObjectExecReturn("Only planar faces supported");
-    }
-    auto wires = sketchshape.getSubTopoShapes(TopAbs_WIRE);
-
     // if the Base property has a valid shape, fuse the pipe into it
     TopoShape base;
     try {
         base = feat->getBaseShape();
     } catch (const Base::Exception&) {
     }
+
+    // If base is null, it means we are creating a new shape, and we shall
+    // allow non closed wire to create face from sweeping wire.
+    TopoShape sketchshape = feat->getVerifiedFace(false, true, base.isNull());
+    if (sketchshape.isNull())
+        return new App::DocumentObjectExecReturn("No valid sketch or face as section");
+    auto wires = sketchshape.getSubTopoShapes(TopAbs_WIRE);
+    bool closed = sketchshape.shapeType(true) == TopAbs_FACE;
 
     try {
         //setup the location
@@ -196,6 +190,9 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
         //maybe we need a sacling law
         Handle(Law_Function) scalinglaw;
 
+        TopoShape frontface = sketchshape;
+        TopoShape backface = frontface;
+
         //see if we shall use multiple sections
         if(transformation == 1) {
 
@@ -203,31 +200,13 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
             //the sections in the order of adding
 
             for(App::DocumentObject* obj : multisections) {
-                auto shape = Part::Feature::getTopoShape(obj);
-                if(shape.countSubShapes(TopAbs_WIRE) != wiresections.size())
+                backface = feat->getVerifiedFace(false, true, base.isNull(), obj);
+                if(backface.countSubShapes(TopAbs_WIRE) != wiresections.size())
                     return new App::DocumentObjectExecReturn(
                             "Multisections need to have the same amount of inner wires as the base section");
-                // Since we are calling getVerifiedFace() above, we shall make
-                // a face here as well to make sure the wires returned are in
-                // corresponding orders, assuming out wires first.
-                auto face = shape.makEFace();
-                if (std::abs(feat->Fit.getValue()) > Precision::Confusion()
-                        || std::abs(feat->InnerFit.getValue()) > Precision::Confusion()) {
-                    try {
-                        face = face.makEOffsetFace(feat->Fit.getValue(),
-                                                   feat->InnerFit.getValue(),
-                                                   static_cast<short>(feat->FitJoin.getValue()),
-                                                   static_cast<short>(feat->InnerFitJoin.getValue()));
-                    } catch (Standard_Failure &e) {
-                        FC_ERR("Failed to fit wires of section "
-                                << obj->getFullName() << ": " << e.GetMessageString());
-                        std::ostringstream ss;
-                        ss << "Failed to fit wires of section: " << obj->Label.getValue();
-                        return new App::DocumentObjectExecReturn(ss.str().c_str());
-                    }
-                }
+
                 int i=0;
-                for(auto &wire : face.getSubTopoShapes(TopAbs_WIRE))
+                for(auto &wire : backface.getSubTopoShapes(TopAbs_WIRE))
                     wiresections[i++].push_back(wire);
             }
         }
@@ -279,7 +258,7 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
             shell.makEShape(mkPS,wires);
             shells.push_back(shell);
 
-            if (!mkPS.Shape().Closed()) {
+            if (closed && !mkPS.Shape().Closed()) {
                 // shell is not closed - use simulate to get the end wires
                 TopTools_ListOfShape sim;
                 mkPS.Simulate(2, sim);
@@ -332,10 +311,12 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
             result.makESolid(shells);
         }
 
-        BRepClass3d_SolidClassifier SC(result.getShape());
-        SC.PerformInfinitePoint(Precision::Confusion());
-        if (SC.State() == TopAbs_IN) {
-            result.setShape(result.getShape().Reversed(),false);
+        if (closed) {
+            BRepClass3d_SolidClassifier SC(result.getShape());
+            SC.PerformInfinitePoint(Precision::Confusion());
+            if (SC.State() == TopAbs_IN) {
+                result.setShape(result.getShape().Reversed(),false);
+            }
         }
 
         //result.Move(invObjLoc);
@@ -347,7 +328,7 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
 
         if(base.isNull()) {
             result = feat->refineShapeIfActive(result);
-            feat->Shape.setValue(feat->getSolid(result));
+            feat->Shape.setValue(closed ? feat->getSolid(result) : result);
             return App::DocumentObject::StdReturn;
         }
 

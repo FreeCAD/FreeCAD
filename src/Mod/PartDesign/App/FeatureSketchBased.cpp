@@ -197,21 +197,32 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
     return static_cast<Part::Feature*>(result);
 }
 
-TopoShape ProfileBased::getVerifiedFace(bool silent, bool dofit) const {
-    auto obj = Profile.getValue();
+TopoShape ProfileBased::getVerifiedFace(bool silent,
+                                        bool dofit,
+                                        bool allowOpen,
+                                        const App::DocumentObject *profile,
+                                        const std::vector<std::string> &_subs) const
+{
+    auto obj = profile ? profile : Profile.getValue();
     if(!obj || !obj->getNameInDocument()) {
         if(silent)
             return TopoShape();
         throw Base::ValueError("No profile linked");
     }
+    auto &subs = profile ? _subs : Profile.getSubValues(true);
     try {
         TopoShape shape;
         if(AllowMultiFace.getValue()) {
-            shape = getProfileShape();
+            shape = Part::Feature::getTopoShape(obj);
+            if (!shape.isNull() && subs.size()) {
+                std::vector<TopoShape> shapes;
+                for (auto &sub : subs)
+                    shapes.push_back(shape.getSubTopoShape(sub.c_str()));
+                shape.makECompound(shapes);
+            }
         } else {
             std::string sub;
             if(!obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-                const auto &subs = Profile.getSubValues(true);
                 if(!subs.empty())
                     sub = subs[0];
             }
@@ -222,16 +233,36 @@ TopoShape ProfileBased::getVerifiedFace(bool silent, bool dofit) const {
                 return shape;
             throw Base::CADKernelError("Linked shape object is empty");
         }
+        TopoShape openshape;
         if(!shape.hasSubShape(TopAbs_FACE)) {
             try {
                 if(!shape.hasSubShape(TopAbs_WIRE))
                     shape = shape.makEWires();
                 if(shape.hasSubShape(TopAbs_WIRE)) {
                     shape.Hasher = getDocument()->getStringHasher();
-                    if (AllowMultiFace.getValue())
-                        shape = shape.makEFace(); // default to use FaceMakerBullseye
-                    else
-                        shape = shape.makEFace(0,"Part::FaceMakerCheese");
+                    if (allowOpen) {
+                        std::vector<TopoShape> openwires;
+                        std::vector<TopoShape> wires;
+                        for (auto &wire : shape.getSubTopoShapes(TopAbs_WIRE)) {
+                            if (!wire.isClosed())
+                                openwires.push_back(wire);
+                            else
+                                wires.push_back(wire);
+                        }
+                        if (openwires.size()) {
+                            openshape.makECompound(openwires, nullptr, false);
+                            if (wires.empty())
+                                shape = TopoShape();
+                            else
+                                shape.makECompound(wires, nullptr, false);
+                        }
+                    }
+                    if (!shape.isNull()) {
+                        if (AllowMultiFace.getValue())
+                            shape = shape.makEFace(); // default to use FaceMakerBullseye
+                        else
+                            shape = shape.makEFace(0,"Part::FaceMakerCheese");
+                    }
                 }
             } catch (const Base::Exception &) {
                 if (silent)
@@ -244,7 +275,7 @@ TopoShape ProfileBased::getVerifiedFace(bool silent, bool dofit) const {
             }
         }
         int count = shape.countSubShapes(TopAbs_FACE);
-        if(!count) {
+        if(!count && !allowOpen) {
             if(silent)
                 return TopoShape();
             throw Base::CADKernelError("Cannot make face from profile");
@@ -253,12 +284,21 @@ TopoShape ProfileBased::getVerifiedFace(bool silent, bool dofit) const {
         if (dofit && (std::abs(Fit.getValue()) > Precision::Confusion()
                       || std::abs(InnerFit.getValue()) > Precision::Confusion())) {
 
-            shape = shape.makEOffsetFace(Fit.getValue(),
-                                         InnerFit.getValue(),
-                                         static_cast<short>(FitJoin.getValue()),
-                                         static_cast<short>(InnerFitJoin.getValue()));
+            if (!shape.isNull())
+                shape = shape.makEOffsetFace(Fit.getValue(),
+                                            InnerFit.getValue(),
+                                            static_cast<short>(FitJoin.getValue()),
+                                            static_cast<short>(InnerFitJoin.getValue()));
+            if (!openshape.isNull())
+                openshape.makEOffset2D(Fit.getValue());
         }
 
+        if (!openshape.isNull()) {
+            if (shape.isNull())
+                shape = openshape;
+            else
+                shape.makECompound({shape, openshape});
+        }
         if(count>1) {
             if(AllowMultiFace.getValue()
                     || allowMultiSolid()
@@ -266,7 +306,11 @@ TopoShape ProfileBased::getVerifiedFace(bool silent, bool dofit) const {
                 return shape;
             FC_WARN("Found more than one face from profile");
         }
-        return shape.getSubTopoShape(TopAbs_FACE,1);
+        if (!openshape.isNull())
+            return shape;
+        if (count)
+            return shape.getSubTopoShape(TopAbs_FACE,1);
+        return shape;
     }catch (Standard_Failure &) {
         if(silent)
             return TopoShape();
