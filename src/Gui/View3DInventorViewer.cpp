@@ -527,6 +527,7 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
 
 void View3DInventorViewer::init()
 {
+    pcEditingRoot = nullptr;
     _pimpl.reset(new Private(this));
     _pimpl->timer.setSingleShot(true);
     connect(&_pimpl->timer,SIGNAL(timeout()),this,SLOT(redrawShadow()));
@@ -3992,8 +3993,9 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
         group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
     }
 
+    SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
+
     if(guiDocument && ViewParams::instance()->getUseTightBoundingBox()) {
-        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
         for(int i=0;i<pcViewProviderRoot->getNumChildren();++i) {
             auto node = pcViewProviderRoot->getChild(i);
             auto vp = guiDocument->getViewProvider(node);
@@ -4014,7 +4016,6 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
                 box.Add(sbox);
         }
     } else {
-        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
         action.apply(pcViewProviderRoot);
         auto bbox = action.getBoundingBox();
         if(!bbox.isEmpty()) {
@@ -4026,6 +4027,16 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
             box.MaxX = maxx;
             box.MaxY = maxy;
             box.MaxZ = maxz;
+        }
+    }
+
+    if (pcEditingRoot) { 
+        action.apply(pcEditingRoot);
+        auto bbox = action.getBoundingBox();
+        if(!bbox.isEmpty()) {
+            float minx,miny,minz,maxx,maxy,maxz;
+            bbox.getBounds(minx,miny,minz,maxx,maxy,maxz);
+            box.Add(Base::BoundBox3d(minx,miny,minz,maxx,maxy,maxz));
         }
     }
 
