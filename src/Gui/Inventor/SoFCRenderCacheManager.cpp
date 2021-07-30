@@ -1064,7 +1064,7 @@ SoFCRenderCacheManagerP::postPathAnnotation(void *userdata,
   auto annotation = static_cast<const SoFCPathAnnotation*>(node);
   if (annotation->priority.getValue())
     self->stack.back()->decreaseRenderingOrder(action->getState(), annotation->priority.getValue());
-  else if (++self->annotation == 1)
+  else if (annotation->getPath() && --self->annotation == 0)
     self->stack.back()->decreaseRenderingOrder(action->getState());
   return SoCallbackAction::CONTINUE;
 }
@@ -1081,7 +1081,7 @@ SoFCRenderCacheManagerP::prePathAnnotation(void *userdata,
   auto annotation = static_cast<const SoFCPathAnnotation*>(node);
   if (annotation->priority.getValue())
     self->stack.back()->increaseRenderingOrder(action->getState(), annotation->priority.getValue());
-  else if (++self->annotation == 1)
+  else if (annotation->getPath() && ++self->annotation == 1)
     self->stack.back()->increaseRenderingOrder(action->getState());
   return SoCallbackAction::CONTINUE;
 }

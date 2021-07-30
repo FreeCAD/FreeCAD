@@ -207,7 +207,7 @@ public:
     SoFCPathAnnotation(ViewProvider *vp=0, const char *subname=0, View3DInventorViewer *viewer=0);
 
     void setPath(SoPath *);
-    SoPath *getPath() {return path;}
+    SoPath *getPath() const {return path;}
     void setDetail(bool det);
     bool hasDetail() {return det;}
 

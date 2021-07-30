@@ -3202,7 +3202,9 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
         else {
             SoCacheElement::invalidate(action->getState());
             auto p =this->priority.getValue();
-            if (p && action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
+            if (!p)
+                inherited::GLRenderBelowPath(action);
+            else if (action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
                 static_cast<SoBoxSelectionRenderAction*>(action)->addLateDelayedPath(
                         action->getCurPath(), true, p);
             else
@@ -3347,7 +3349,9 @@ void SoFCPathAnnotation::GLRenderInPath(SoGLRenderAction * action)
     else {
         SoCacheElement::invalidate(action->getState());
         auto p =this->priority.getValue();
-        if (p && action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
+        if (!p)
+            inherited::GLRenderInPath(action);
+        else if (action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
             static_cast<SoBoxSelectionRenderAction*>(action)->addLateDelayedPath(
                     action->getCurPath(), true, p);
         else
