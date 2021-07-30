@@ -59,7 +59,8 @@ private:
     App::DocumentObject *objFromItem(QTreeWidgetItem *item);
 
     void init(const std::vector<App::DocumentObject*> &objs,
-              const std::vector<App::DocumentObject*> &excludes);
+              const std::vector<App::DocumentObject*> &excludes,
+              bool checkdeps);
 
 private:
     struct Info {

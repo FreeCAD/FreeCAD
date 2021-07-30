@@ -44,7 +44,8 @@ DlgObjectSelection::DlgObjectSelection(
         const std::vector<App::DocumentObject*> &objs, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
-    init(App::Document::getDependencyList(objs), {});
+    // init(objs, {}, true);
+    init(App::Document::getDependencyList(objs), {}, false);
 }
 
 DlgObjectSelection::DlgObjectSelection(
@@ -54,14 +55,17 @@ DlgObjectSelection::DlgObjectSelection(
         Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
-    init(objs, excludes);
+    init(objs, excludes, false);
 }
 
-void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
-                              const std::vector<App::DocumentObject*> &excludes)
+void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &_objs,
+                              const std::vector<App::DocumentObject*> &excludes,
+                              bool checkdeps)
 {
     ui = new Ui_DlgObjectSelection;
     ui->setupUi(this);
+
+    const auto &objs = checkdeps ? App::Document::getDependencyList(_objs) : _objs;
 
     // make sure to show a horizontal scrollbar if needed
 #if QT_VERSION >= 0x050000
@@ -156,8 +160,10 @@ QTreeWidgetItem *DlgObjectSelection::createItem(App::DocumentObject *obj, QTreeW
     QTreeWidgetItem* item;
     if(parent)
         item = new QTreeWidgetItem(parent);
-    else
+    else {
         item = new QTreeWidgetItem(ui->treeWidget);
+        objMap[obj].items.push_back(item);
+    }
     auto vp = Gui::Application::Instance->getViewProvider(obj);
     if(vp) item->setIcon(0, vp->getIcon());
     item->setText(0, QString::fromUtf8((obj)->Label.getValue()));
@@ -255,6 +261,10 @@ void DlgObjectSelection::onItemChanged(QTreeWidgetItem * item, int column) {
     }else{
         info.depItem->setCheckState(0,state);
         info.depItem->setText(3,state==Qt::Checked?tr("Selected"):QString());
+        for (auto other : info.items) {
+            if (other != item)
+                other->setCheckState(0, state);
+        }
     }
 
     if(state == Qt::Unchecked) {
