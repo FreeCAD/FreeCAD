@@ -66,6 +66,7 @@ public:
 
     PropertyBool _LinkTouched;
     PropertyInteger _LinkVersion;
+    PropertyInteger _LinkOwner;
     PropertyLinkList _ChildCache; // cache for plain group expansion
 
     enum {
@@ -399,7 +400,6 @@ protected:
 
     std::vector<boost::signals2::scoped_connection> plainGroupConns;
 
-    long myOwner;
     long prevLinkedObjectID = 0;
 
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
