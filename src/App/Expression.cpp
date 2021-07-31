@@ -962,7 +962,7 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
 
 void Expression::Component::set(const Expression *owner, Py::Object &pyobj, const Py::Object &value) const 
 {
-    ExpressionBlocker::check();
+    assert(_ExpressionBlockerStack.size());
 
     if(!e1 && !e2 && !e3)
         return comp.set(pyobj,value);
@@ -2687,16 +2687,19 @@ public:
             if (!name || !name[0]) {
                 PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
                 if (module) {
-                    name = PyModule_GetName(module);
-                    if (!name || strcmp(name, "None")==0)
-                        name = nullptr;
-                    else {
-                        _name = name;
-                        name = _name.c_str();
+                    if (PyModule_Check(module)) {
+                        name = PyModule_GetName(module);
+                        if (!name || strcmp(name, "None")==0)
+                            name = nullptr;
+                        else {
+                            _name = name;
+                            name = _name.c_str();
+                        }
                     }
                     Py_DECREF(module);
                     module = nullptr;
-                } else {
+                }
+                if (PyErr_Occurred()) {
                     Base::PyException e;
                     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
                         e.ReportException();
@@ -2737,16 +2740,19 @@ public:
                         PyObject *module = PyObject_CallFunction(
                                 this->inspect.ptr(), "O", self->ob_type);
                         if (module) {
-                            name = PyModule_GetName(module);
-                            if (!name || strcmp(name, "None")==0)
-                                name = nullptr;
-                            else {
-                                _name = name;
-                                name = _name.c_str();
+                            if (PyModule_Check(module)) {
+                                name = PyModule_GetName(module);
+                                if (!name || strcmp(name, "None")==0)
+                                    name = nullptr;
+                                else {
+                                    _name = name;
+                                    name = _name.c_str();
+                                }
                             }
                             Py_DECREF(module);
                             module = nullptr;
-                        } else {
+                        }
+                        if (PyErr_Occurred()) {
                             Base::PyException e;
                             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
                                 e.ReportException();
@@ -4750,6 +4756,8 @@ void VariableExpression::assign(const ObjectIdentifier &path) const
 
 void VariableExpression::assign(Py::Object value) const
 {
+    assert(_ExpressionBlockerStack.size());
+
     if(components.empty()) {
         var.setPyValue(value);
         return;
