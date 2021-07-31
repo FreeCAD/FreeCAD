@@ -36,6 +36,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/elements/SoInt32Element.h>
 
 namespace Gui {
 
@@ -102,6 +103,25 @@ public:
 
 protected:
     virtual ~SoSkipBoundingGroup();
+};
+
+class GuiExport SoSkipBoundingBoxElement: public SoInt32Element {
+    typedef SoInt32Element inherited;
+
+    SO_ELEMENT_HEADER(SoSkipBoundingBoxElement);
+
+public:
+    static void initClass(void);
+protected:
+    virtual ~SoSkipBoundingBoxElement();
+
+public:
+    typedef SoSkipBoundingGroup::Modes Modes;
+
+    virtual void init(SoState *state);
+
+    static void set(SoState * const state, Modes mode);
+    static Modes get(SoState * const state);
 };
 
 } // namespace Gui

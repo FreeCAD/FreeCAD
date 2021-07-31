@@ -133,6 +133,7 @@ void Gui::SoFCDB::init()
     SoFCDisplayModeElement          ::initClass();
     SoFCDisplayMode                 ::initClass();
     SoSkipBoundingGroup             ::initClass();
+    SoSkipBoundingBoxElement        ::initClass();
     SoTextLabel                     ::initClass();
     SoStringLabel                   ::initClass();
     SoFrameLabel                    ::initClass();

@@ -37,19 +37,20 @@
 
 #include <Inventor/SbBox.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/actions/SoActions.h>
 
 #include <string.h>
 #include <iostream>
 
 #include "ViewParams.h"
 #include "SoFCUnifiedSelection.h"
+#include "SoFCSelectionAction.h"
 #include "SoFCBoundingBox.h"
 
 using namespace Gui;
@@ -313,7 +314,64 @@ void SoSkipBoundingGroup::finish()
 
 void SoSkipBoundingGroup::getBoundingBox(SoGetBoundingBoxAction *action)
 {
-    if (mode.getValue() == INCLUDE_BBOX)
+    if (mode.getValue() == INCLUDE_BBOX
+            && SoSkipBoundingBoxElement::get(action->getState()) == INCLUDE_BBOX)
         inherited::getBoundingBox(action);
 }
 
+
+// ---------------------------------------------------------------
+
+SO_ELEMENT_SOURCE(SoSkipBoundingBoxElement)
+
+void
+SoSkipBoundingBoxElement::initClass(void)
+{
+    SO_ELEMENT_INIT_CLASS(SoSkipBoundingBoxElement, inherited);
+    SO_ENABLE(SoGLRenderAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGetBoundingBoxAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoAudioRenderAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoSearchAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGetMatrixAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoPickAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoCallbackAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGetPrimitiveCountAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoHandleEventAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoSelectionElementAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoHighlightElementAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCEnableSelectionAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCEnableHighlightAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCSelectionColorAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCHighlightColorAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCSelectionAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCHighlightAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCDocumentAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCDocumentObjectAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGLSelectAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoVisibleFaceAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoUpdateVBOAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoVRMLAction, SoSkipBoundingBoxElement);
+}
+
+SoSkipBoundingBoxElement::~SoSkipBoundingBoxElement()
+{
+}
+
+void
+SoSkipBoundingBoxElement::set(SoState * const state, Modes mode)
+{
+    inherited::set(classStackIndex, state, nullptr, static_cast<int>(mode));
+}
+
+SoSkipBoundingBoxElement::Modes
+SoSkipBoundingBoxElement::get(SoState * const state)
+{
+    return static_cast<Modes>(inherited::get(classStackIndex, state));
+}
+
+void
+SoSkipBoundingBoxElement::init(SoState * state)
+{
+  inherited::init(state);
+  this->data = SoSkipBoundingGroup::INCLUDE_BBOX;
+}
