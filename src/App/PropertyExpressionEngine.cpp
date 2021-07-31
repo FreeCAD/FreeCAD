@@ -393,7 +393,7 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
             if(info.first.empty())
                 continue;
             for(auto &oid : info.second) {
-                ObjectIdentifier cPath(oid.canonicalPath());
+                ObjectIdentifier cPath(canonicalPath(oid));
                 if (nodes.find(cPath) == nodes.end()) {
                     int s = nodes.size();
                     nodes[cPath] = s;
@@ -426,6 +426,9 @@ ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier 
         throw Base::RuntimeError(p.resolveErrorString().c_str());
 
     if(ptype)
+        return p;
+
+    if (prop->getContainer() != docObj)
         return p;
 
     // In case someone calls this with p pointing to a PropertyExpressionEngine for some reason
@@ -640,10 +643,15 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
     std::vector<int> c;
     topological_sort(g, std::back_inserter(c));
 
-    for (std::vector<int>::iterator i = c.begin(); i != c.end(); ++i) {
-        if (revNodes.find(*i) != revNodes.end())
-            evaluationOrder.push_back(revNodes[*i]);
+    for (int i : c) {
+        auto it = revNodes.find(i);
+        if (it != revNodes.end()) {
+            evaluationOrder.push_back(it->second);
+            revNodes.erase(it);
+        }
     }
+    for (auto &v : revNodes)
+        evaluationOrder.push_back(v.second);
 
     return evaluationOrder;
 }
