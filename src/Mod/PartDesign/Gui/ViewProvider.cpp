@@ -862,6 +862,23 @@ void ViewProvider::reattach(App::DocumentObject *obj)
         pSuppressedView->reattach(obj);
 }
 
+bool ViewProvider::getDetailPath(
+        const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
+{
+    if (!Data::ComplexGeoData::isElementName(subname)) {
+        auto body = PartDesign::Body::findBodyOf(getObject());
+        auto dot = strchr(subname ? subname : "", '.');
+        if (body && dot) {
+            std::string sub(subname, dot-subname+1);
+            auto svp = Gui::Application::Instance->getViewProvider(body->getSubObject(sub.c_str()));
+            if (svp)
+                return svp->getDetailPath(dot+1, path, append, det);
+        }
+    }
+    return inherited::getDetailPath(subname, path, append, det);
+}
+
+
 namespace Gui {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider)
