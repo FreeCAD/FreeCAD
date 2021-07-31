@@ -145,7 +145,7 @@ public:
 
     virtual std::vector<std::string> getSubObjects(int reason=0) const override;
     virtual App::DocumentObject *getSubObject(const char *subname,
-        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+        PyObject **pyObj=nullptr, Base::Matrix4D *pmat=nullptr, bool transform=false, int depth=0) const override;
 
     void setShowTip(bool enable) {
         showTip = enable;

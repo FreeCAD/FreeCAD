@@ -546,7 +546,7 @@ bool Body::getChildDefaultExport(App::DocumentObject *) const
 
 const App::PropertyLinkList& Body::getExportGroupProperty(int reason) const
 {
-    return reason == GS_DEFAULT ? Group : _ExportChildren;
+    return reason == GS_SELECT ? Group : _ExportChildren;
 }
 
 void Body::onChanged (const App::Property* prop) {
