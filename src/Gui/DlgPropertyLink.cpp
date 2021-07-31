@@ -78,6 +78,8 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent, int flags)
 {
     ui->setupUi(this);
 
+    selContext = Gui::Selection().getExtendedContext(nullptr);
+
     unsigned long col = TreeParams::TreeActiveColor();
     selBrush = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
     bgBrush = QColor(255, 255, 0, 100);
@@ -312,7 +314,7 @@ static std::pair<App::DocumentObject *, const char *> resolveContext(
         subname = sobjT.getSubName();
         return {sobjT.getObject(), subname.c_str()};
     }
-    subname = ctx.getSubName();
+    subname = ctx.getSubNameNoElement();
     subname += sobjT.getObjectName();
     subname += ".";
     auto sobj = sobjT.getObject();
