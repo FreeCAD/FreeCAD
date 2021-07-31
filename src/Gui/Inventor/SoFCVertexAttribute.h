@@ -229,7 +229,7 @@ public:
       this->len += other.array.size();
       return;
     }
-    this->array.reserve(this->len + other.len);
+    reserve(this->len + other.len);
     for (auto &v : other)
       append(v);
   }

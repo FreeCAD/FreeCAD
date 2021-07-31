@@ -300,8 +300,7 @@ SoFCVertexArrayIndexer::render(SoState * state,
   }
 
   if (renderasvbo) {
-    if (!this->indexarray.isAttached())
-      this->use_shorts = this->indexarray.attach(this->use_shorts);
+    this->use_shorts = this->indexarray.attach(this->use_shorts);
     assert(this->indexarray.getTarget() == GL_ELEMENT_ARRAY_BUFFER);
     this->indexarray.bindBuffer(state, contextid);
   }
