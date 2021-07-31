@@ -258,6 +258,10 @@ void SketcherSettingsColors::saveSettings()
     ui->FullyConstraintInternalAlignmentColor->onSave();
     ui->FullyConstraintConstructionPointColor->onSave();
 
+    ui->FrozenColor->onSave();
+    ui->DetachedColor->onSave();
+    ui->MissingColor->onSave();
+
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
@@ -285,6 +289,10 @@ void SketcherSettingsColors::loadSettings()
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
     ui->FullyConstraintConstructionPointColor->onRestore();
+
+    ui->FrozenColor->onRestore();
+    ui->DetachedColor->onRestore();
+    ui->MissingColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
