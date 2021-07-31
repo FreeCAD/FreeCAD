@@ -220,6 +220,10 @@ void DlgExpressionInput::onTimer()
 
     try {
         const QString &text = ui->expression->toPlainText();
+        if (text.isEmpty()) {
+            ui->msg->setPlainText(QString());
+            return;
+        }
         boost::shared_ptr<Expression> expr(
                 Expression::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
