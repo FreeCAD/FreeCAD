@@ -72,6 +72,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever
     doc = setup_cantilever_base_face(doc, solvertype)
     femmesh_obj = doc.getObject(get_meshname())
+    geom_obj = doc.getObject("CanileverPlate")
 
     # load the tria3 mesh
     from .meshes.mesh_canticcx_tria3 import create_nodes, create_elements
@@ -87,6 +88,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = new_fem_mesh
 
     # set mesh obj parameter
+    femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "2D"
     femmesh_obj.ElementOrder = "1st"
