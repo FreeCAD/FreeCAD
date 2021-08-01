@@ -4,6 +4,12 @@ from femtest.app.support_utils import get_fem_test_defs
 get_fem_test_defs()
 
 
+# all FEM App tests
+make -j 4 && ./bin/FreeCAD --run-test 'TestFemApp'
+
+make -j 4 && ./bin/FreeCADCmd --run-test 'TestFemApp'
+
+
 '''
 
 # modules
