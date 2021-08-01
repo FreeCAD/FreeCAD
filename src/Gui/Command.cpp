@@ -904,11 +904,6 @@ void Command::applyCommandData(const char* context, Action* action)
             context, getToolTipText()));
     QString accel = action->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
-        // show shortcut inside tooltip
-        QString ttip = QString::fromLatin1("%1 (%2)")
-            .arg(action->toolTip(), accel);
-        action->setToolTip(ttip);
-
         // show shortcut inside status tip
         QString stip = QString::fromLatin1("(%1)\t%2")
             .arg(accel, action->statusTip());
@@ -1090,7 +1085,8 @@ void GroupCommand::setup(Action *pcAction) {
         const char *statustip = cmd->getStatusTip();
         if (!statustip || '\0' == *statustip)
             statustip = tooltip;
-        pcAction->setToolTip(QCoreApplication::translate(context,tooltip));
+        pcAction->setToolTip(QCoreApplication::translate(context,tooltip),
+                             QCoreApplication::translate(cmd->className(), cmd->getMenuText()));
         pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
     } else {
         applyCommandData(this->className(), pcAction);

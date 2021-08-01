@@ -182,6 +182,7 @@ void Action::setVisible(bool b)
 void Action::setShortcut(const QString & key)
 {
     _action->setShortcut(key);
+    setToolTip(_tooltip, _title);
 }
 
 QKeySequence Action::shortcut() const
@@ -212,6 +213,8 @@ QString Action::statusTip() const
 void Action::setText(const QString & s)
 {
     _action->setText(s);
+    if (_title.isEmpty())
+        setToolTip(_tooltip);
 }
 
 QString Action::text() const
@@ -219,14 +222,93 @@ QString Action::text() const
     return _action->text();
 }
 
-void Action::setToolTip(const QString & s)
+void Action::setToolTip(const QString & s, const QString & title)
 {
-    _action->setToolTip(s);
+    _tooltip = s;
+    _title = title;
+
+    QString text;
+    if (_title.size())
+        text = _title.remove(QLatin1Char('&'));
+    else
+        text = _action->text().remove(QLatin1Char('&'));
+    while(text.size() && text[text.size()-1].isPunct())
+        text.resize(text.size()-1);
+
+    if (text.isEmpty()) {
+        _action->setToolTip(_tooltip);
+        return;
+    }
+
+    // The follow code tries to make a more useful tooltip by inserting at the
+    // begining of the tooltip the action title in bold followed by the
+    // shortcut.
+    //
+    // The long winding code is to deal with the fact that Qt will auto wrap
+    // a rich text tooltip but the width is too short. We can escape the auto
+    // wrappin using <p style='white-space:pre'>.
+
+    QString shortcut = _action->shortcut().toString(QKeySequence::NativeText);
+    if (shortcut.size() && _tooltip.endsWith(shortcut))
+        _tooltip.resize(_tooltip.size() - shortcut.size());
+    if (shortcut.size())
+        shortcut = QString::fromLatin1(" (%1)").arg(shortcut);
+
+    QString tooltip = QString::fromLatin1(
+            "<p style='white-space:pre'><b>%1</b>%2</p>").arg(
+            text.toHtmlEscaped(), shortcut.toHtmlEscaped());
+
+    if (shortcut.size() && _tooltip.endsWith(shortcut))
+        _tooltip.resize(_tooltip.size() - shortcut.size());
+
+    if (_tooltip.isEmpty()
+            || _tooltip == _action->text()
+            || _tooltip == text
+            || _tooltip == _title)
+    {
+        _action->setToolTip(tooltip);
+        return;
+    }
+    if (Qt::mightBeRichText(_tooltip)) {
+        // already rich text, so let it be to avoid duplicated unwrapping
+        tooltip += _tooltip;
+        _action->setToolTip(tooltip + _tooltip);
+        return;
+    }
+
+    tooltip += QString::fromLatin1(
+            "<style>p { margin: 0 }</style>" // remove any margin of a paragraph
+            "<p style='white-space:pre'>");
+
+    // If the user supplied tooltip contains line break, we shall honour it.
+    if (_tooltip.indexOf(QLatin1Char('\n')) >= 0)
+        tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+    else {
+        // If not, try to end the non wrapping paragraph at some pre defined
+        // width, so that the following text can wrap at that width.
+        float tipWidth = 400;
+        QFontMetrics fm(_action->font());
+        int width = fm.width(_tooltip);
+        if (width <= tipWidth)
+            tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+        else {
+            int index = tipWidth / width * _tooltip.size();
+            // Try to only break at white space
+            for(int i=0; i<50 && index<_tooltip.size(); ++i, ++index) {
+                if (_tooltip[index] == QLatin1Char(' '))
+                    break;
+            }
+            tooltip += _tooltip.left(index).toHtmlEscaped()
+                + QString::fromLatin1("</p>")
+                + _tooltip.right(_tooltip.size()-index).trimmed().toHtmlEscaped();
+        }
+    }
+    _action->setToolTip(tooltip);
 }
 
 QString Action::toolTip() const
 {
-    return _action->toolTip();
+    return _tooltip;
 }
 
 void Action::setWhatsThis(const QString & s)
@@ -592,7 +674,7 @@ void WorkbenchGroup::addTo(QWidget *w)
         QToolBar* bar = qobject_cast<QToolBar*>(w);
         auto box = new WorkbenchComboBox(this, w);
         box->setIconSize(QSize(16, 16));
-        box->setToolTip(_action->toolTip());
+        box->setToolTip(_tooltip);
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
         connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated (QAction*)));

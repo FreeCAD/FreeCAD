@@ -73,7 +73,7 @@ public:
     QString statusTip() const;
     void setText (const QString &);
     QString text() const;
-    void setToolTip (const QString &);
+    void setToolTip (const QString &, const QString &title = QString());
     QString toolTip() const;
     void setWhatsThis (const QString &);
     QString whatsThis() const;
@@ -89,6 +89,8 @@ public Q_SLOTS:
 protected:
     QAction* _action;
     Command *_pcCmd;
+    QString _tooltip;
+    QString _title;
 };
 
 // --------------------------------------------------------------------
