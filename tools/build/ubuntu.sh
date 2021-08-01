@@ -11,5 +11,5 @@ apt-get install --no-install-recommends --yes build-essential cmake doxygen git 
     libqt5xmlpatterns5-dev libshiboken2-dev libvtk9-dev libvtk9-qt-dev \
     libvtk-dicom-dev libx11-dev libxerces-c-dev libxmu-dev libxmuu-dev \
     libzipios++-dev netgen netgen-headers pyside2-tools python3-dev \
-    python3-matplotlib python3-pivy python3-pyside2.qtuitools qtchooser \
-    qttools5-dev shiboken2 swig
+    python3-matplotlib python3-pivy python3-ply python3-pyside2.qtsvg \
+    python3-pyside2.qtuitools qtchooser qttools5-dev shiboken2 swig
