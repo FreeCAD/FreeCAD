@@ -563,11 +563,11 @@ z88_ele_types = {
     "tetra10": 16,
     "hexa8": 1,
     "hexa20": 10,
-    "tria3": 0,
+    "tria3": 0,  # no tria3 available in Z88
     "tria6": 24,
-    "quad4": 0,
+    "quad4": 0,  # no quad4 available in Z88
     "quad8": 23,
-    "seg2": 4,
-    "seg3": 4,
+    "seg2": 4,  # 3D Truss element
+    "seg3": 4,  # 3D Truss element
     "None": 0,
 }
