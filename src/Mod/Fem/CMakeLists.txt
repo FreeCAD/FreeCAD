@@ -80,6 +80,7 @@ SET(FemExamples_SRCS
     femexamples/material_multiple_bendingbeam_fivefaces.py
     femexamples/material_multiple_tensionrod_twoboxes.py
     femexamples/material_nl_platewithhole.py
+    femexamples/mystran_plate.py
     femexamples/rc_wall_2d.py
     femexamples/square_pipe_end_twisted_edgeforces.py
     femexamples/square_pipe_end_twisted_nodeforces.py
@@ -113,6 +114,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_flexural_buckling.py
     femexamples/meshes/mesh_multibodybeam_tetra10.py
     femexamples/meshes/mesh_multibodybeam_tria6.py
+    femexamples/meshes/mesh_plate_mystran_quad4.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_section_print_tetra10.py
@@ -128,6 +130,7 @@ SET(FemExampleMeshes_SRCS
 SET(FemInOut_SRCS
     feminout/__init__.py
     feminout/convert2TetGen.py
+    feminout/exportNastranMesh.py
     feminout/importCcxDatResults.py
     feminout/importCcxFrdResults.py
     feminout/importFenicsMesh.py
@@ -254,6 +257,19 @@ SET(FemSolverFenics_SRCS
     femsolver/fenics/fenics_tools.py
 )
 
+SET(FemSolverMystran_SRCS
+    femsolver/mystran/__init__.py
+    femsolver/mystran/add_con_fixed.py
+    femsolver/mystran/add_con_force.py
+    femsolver/mystran/add_femelement_geometry.py
+    femsolver/mystran/add_femelement_material.py
+    femsolver/mystran/add_mesh.py
+    femsolver/mystran/add_solver_control.py
+    femsolver/mystran/solver.py
+    femsolver/mystran/tasks.py
+    femsolver/mystran/writer.py
+)
+
 SET(FemSolverZ88_SRCS
     femsolver/z88/__init__.py
     femsolver/z88/solver.py
@@ -280,6 +296,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_result.py
     femtest/app/test_solver_calculix.py
     femtest/app/test_solver_elmer.py
+    femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py
 )
 
@@ -361,6 +378,16 @@ SET(FemTestsMesh_SRCS
     femtest/data/mesh/tetra10_mesh.vtk
     femtest/data/mesh/tetra10_mesh.yml
     femtest/data/mesh/tetra10_mesh.z88
+)
+
+SET(FemTestsMystran_SRCS
+    femtest/data/mystran/__init__.py
+    femtest/data/mystran/ccx_cantilever_ele_quad4.bdf
+    femtest/data/mystran/ccx_cantilever_ele_seg2.bdf
+    femtest/data/mystran/ccx_cantilever_ele_tria3.bdf
+    femtest/data/mystran/ccx_cantilever_faceload.bdf
+    femtest/data/mystran/ccx_cantilever_nodeload.bdf
+    femtest/data/mystran/mystran_plate.bdf
 )
 
 SET(FemTestsOpen_SRCS
@@ -451,6 +478,7 @@ SET(FemAllScripts
     ${FemSolverElmer_SRCS}
     ${FemSolverElmerEquations_SRCS}
     ${FemSolverFenics_SRCS}
+    ${FemSolverMystran_SRCS}
     ${FemSolverZ88_SRCS}
     ${FemTests_SRCS}
     ${FemTestsApp_SRCS}
@@ -458,6 +486,7 @@ SET(FemAllScripts
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
+    ${FemTestsMystran_SRCS}
     ${FemTestsOpen_SRCS}
     ${FemTestsZ88Main_SRCS}
     ${FemTestsZ88Ccxcantifl_SRCS}
@@ -488,6 +517,7 @@ INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
 INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
 INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
 INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
+INSTALL(FILES ${FemSolverMystran_SRCS} DESTINATION Mod/Fem/femsolver/mystran)
 INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
@@ -495,6 +525,7 @@ INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
+INSTALL(FILES ${FemTestsMystran_SRCS} DESTINATION Mod/Fem/femtest/data/mystran)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
 INSTALL(FILES ${FemTestsZ88CcxcantiEleHex20_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)

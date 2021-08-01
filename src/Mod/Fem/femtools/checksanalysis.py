@@ -338,6 +338,14 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
                 message += (
                     "Beam sections defined but FEM mesh has no edge elements.\n"
                 )
+            if not (
+                hasattr(mesh, "Shape")
+                or hasattr(mesh, "Part")
+            ):
+                message += (
+                    "Mesh without geometry link. "
+                    "The mesh needs to know his geometry for the beam rotations.\n"
+                )
         if len(member.geos_beamrotation) > 1:
             message += (
                 "Multiple beam rotations in one analysis are not supported at the moment.\n"

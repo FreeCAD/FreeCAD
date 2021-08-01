@@ -109,10 +109,6 @@ unittest.TextTestRunner().run(alltest)
 ```bash
 ./bin/FreeCAD --run-test "femtest.app.test_common.TestFemCommon"
 ```
-```bash
-make -j 4 && ./bin/FreeCADCmd --run-test "femtest.app.test_solver_calculix.TestSolverCalculix"
-make -j 4 && ./bin/FreeCAD --run-test "femtest.app.test_solver_calculix.TestSolverCalculix"
-```
 
 ### method
 

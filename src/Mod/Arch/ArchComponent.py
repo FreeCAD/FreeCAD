@@ -1537,7 +1537,7 @@ class ViewProviderComponent:
         return False
 
     def colorize(self,obj,force=False):
-        """If an object is a clone, set it it to copy the color of its parent.
+        """If an object is a clone, set it to copy the color of its parent.
 
         Only change the color of the clone if the clone and its parent have
         colors that are distinguishably different from each other.

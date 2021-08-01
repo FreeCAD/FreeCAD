@@ -775,6 +775,19 @@ class _SolverElmer(CommandManager):
         self.do_activated = "add_obj_on_gui_noset_edit"
 
 
+class _SolverMystran(CommandManager):
+    "The FEM_SolverMystran command definition"
+
+    def __init__(self):
+        super(_SolverMystran, self).__init__()
+        self.pixmap = "FEM_SolverStandard"
+        self.menuetext = "Solver Mystran"
+        self.accel = "S, M"
+        self.tooltip = "Creates a FEM solver Mystran"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
+
+
 class _SolverRun(CommandManager):
     "The FEM_SolverRun command definition"
 
@@ -972,6 +985,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_SolverElmer",
     _SolverElmer()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverMystran",
+    _SolverMystran()
 )
 FreeCADGui.addCommand(
     "FEM_SolverRun",

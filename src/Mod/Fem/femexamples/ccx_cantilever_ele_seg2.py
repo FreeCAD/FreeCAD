@@ -37,7 +37,7 @@ def get_information():
         "meshtype": "edge",
         "meshelement": "Seg2",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "mystran"],
         "material": "solid",
         "equation": "mechanical"
     }
@@ -72,6 +72,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever
     doc = setup_cantilever_base_edge(doc, solvertype)
     femmesh_obj = doc.getObject(get_meshname())
+    geom_obj = doc.getObject("CantileverLine")
 
     # load the seg2 mesh
     from .meshes.mesh_canticcx_seg2 import create_nodes, create_elements
@@ -87,6 +88,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = new_fem_mesh
 
     # set mesh obj parameter
+    femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "1D"
     femmesh_obj.ElementOrder = "1st"
