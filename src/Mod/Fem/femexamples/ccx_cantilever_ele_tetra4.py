@@ -75,9 +75,11 @@ def setup(doc=None, solvertype="ccxtools"):
     # setup cantilever faceload and exchange the mesh
     doc = setup_with_faceload(doc, solvertype)
     femmesh_obj = doc.getObject(get_meshname())
+    geom_obj = doc.getObject("Box")
 
     # clear mesh and set meshing parameter
     femmesh_obj.FemMesh = Fem.FemMesh()
+    femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "3D"
     femmesh_obj.ElementOrder = "1st"
