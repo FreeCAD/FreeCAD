@@ -196,12 +196,19 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             // this is undesired behaviour. So, if this change marks the document as
             // modified then it must be be reversed.
             if (!testStatus(Gui::ViewStatus::TouchDocument)) {
-                bool mod = false;
-                if (pcDocument)
-                    mod = pcDocument->isModified();
+                // Note: reverting document modified status like that is not
+                // appropreiate because we can't tell if there is any other
+                // property being changed due to the change of Visibility here.
+                // Temporary setting the Visibility property as 'NoModify' is
+                // the proper way.
+                Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
+                        App::Property::NoModify, &Visibility);
+                // bool mod = false;
+                // if (pcDocument)
+                //     mod = pcDocument->isModified();
                 getObject()->Visibility.setValue(Visibility.getValue());
-                if (pcDocument)
-                    pcDocument->setModified(mod);
+                // if (pcDocument)
+                //     pcDocument->setModified(mod);
             }
             else {
                 getObject()->Visibility.setValue(Visibility.getValue());
@@ -215,7 +222,10 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         }
     }
 
-    if (pcDocument && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
+    if (prop && !prop->testStatus(App::Property::NoModify)
+             && pcDocument
+             && !pcDocument->isModified()
+             && testStatus(Gui::ViewStatus::TouchDocument)) {
         if (prop)
             FC_LOG(prop->getFullName() << " changed");
         pcDocument->setModified(true);
