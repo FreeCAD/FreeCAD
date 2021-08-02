@@ -218,7 +218,7 @@ public:
     LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp)
     {
-        FC_LOG("new link to " << pcLinked->getObject()->getFullName());
+        FC_TRACE("new link to " << pcLinked->getObject()->getFullName());
         connChangeIcon = vp->signalChangeIcon.connect(
                 boost::bind(&LinkInfo::slotChangeIcon,this));
         vp->forceUpdate(true);

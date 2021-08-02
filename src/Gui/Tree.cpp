@@ -6528,7 +6528,7 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjec
 
     myData->items.insert(this);
     ++countItems;
-    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullName());
+    TREE_TRACE("Create item: " << countItems << ", " << object()->getObject()->getFullName());
 }
 
 DocumentObjectItem::~DocumentObjectItem()
@@ -6537,7 +6537,7 @@ DocumentObjectItem::~DocumentObjectItem()
         TreeWidget::contextItem = nullptr;
 
     --countItems;
-    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
+    TREE_TRACE("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
     myData->items.erase(this);
 
     if(myData->rootItem == this)
