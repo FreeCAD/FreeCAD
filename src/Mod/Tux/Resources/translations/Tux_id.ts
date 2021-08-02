@@ -56,7 +56,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Setelan</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="292"/>

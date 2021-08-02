@@ -566,60 +566,39 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <translation>Parametrizazio-faktorea</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
       <translation>2D bista honek irudikatu behar duen oinarri-objektua</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
       <translation>Objektu honen proiekzio-bektorea</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
       <translation>Bistaratutako objektua nola proiektatu behar den</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>Banakako aurpegien moduan proiektatuko diren aurpegien indizeak</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>Erakutsi ezkutuko lerroak</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation>Fusionatu mota eta material bereko hormak eta egiturak</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="79"/>
+      <location filename="shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>Teselatu elipseak eta B-spline elementuak lerro-segmentuetara</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation>Mozketa-lerroen eta mozketa-aurpegien moduetarako, 
-                honek mozketa-tokian uzten ditu aurpegiak</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation>Lerro-segmentuen luzera, elipseak edo B-spline kurbak 
-                lerro-segmentuetara teselatzen badira</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation>Hau egia bada, objektu hau birkalkulatuko da 
-                ikusgai badago soilik</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -1021,62 +1000,62 @@ haratago duen luzera</translation>
       <translation>Geruza honetako objektuen lerro-kolorea, TechDraw orri batean daudenean</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>Lerro-zabalera</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Lerro-kolorea</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation>Testuaren tamaina</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
       <translation>Testuaren letra-tipoa</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
       <translation>Testuaren lerrokatze bertikala</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation>Testu-kolorea</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Lerroartea (letra-tipoarekiko)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation>Textu-kutxako lerro bakoitzaren karaktere kopuru maximoa</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
       <translation>Geziaren tamaina</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
       <translation>Etiketa honen gezi mota</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
       <translation>Objektu honen testuaren inguruko marko mota</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation>Bistaratu gida-marra bat edo ez</translation>
     </message>
@@ -1110,9 +1089,43 @@ Utzi hutsik sistemaren unitate lehenetsia erabiltzeko.
 Erabili 'arch' US arku-notazioa behartzeko.</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="102"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Esklusio-puntuen zerrenda bat. Puntu horietako edozein ukitzen duten ertzak ez dira marraztuko.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation type="unfinished">For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1638,27 +1651,27 @@ Matrizearen mota aldatu daiteke, polarra edo zirkularra izan dadin.</translation
       <translation>Desplazamenduaren norabidea ez dago definituta. Eraman sagua objektuaren aldeetako batera, norabide bat adierazteko</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="259"/>
+      <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation>Gorde estiloa</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="260"/>
+      <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
       <translation>Estilo berriaren izena:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="268"/>
+      <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
       <translation>Izena badago lehendik. Gainidatzi?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="303"/>
+      <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Errorea: Ez da aurkitu JSON modulua. Ezin izan da estiloa gorde</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="267"/>
+      <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
       <translation>Abisua</translation>
     </message>
@@ -3743,19 +3756,39 @@ value by using the [ and ] keys while drawing</source>
       <translation>Gorde uneko estiloa aurrezarpen gisa...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
       <translation>Aplikatu goiko estiloa hautatutako objektuei</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>Hautatua</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
       <translation>Testuak/kotak</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Testu-tartea</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation type="unfinished">The space between the text and the dimension line</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Lerro-tartea</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation type="unfinished">The spacing between different lines of text</translation>
     </message>
   </context>
   <context>
@@ -6989,12 +7022,12 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Hautatu zirriborro-objektu bat, hura editatzeko</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="563"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
       <translation>Ez da edizio-punturik aurkitu hautatutako objekturako</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="823"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation>: objektu hau ezin da editatu</translation>
     </message>
@@ -7432,7 +7465,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <translation>Ezin dira objektuak eskalatu:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="815"/>
+      <location filename="gui_edit.py" line="814"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Objektu gehiegi dago hautatuta, kopuru maximoa honakoa izango da:</translation>
     </message>

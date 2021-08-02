@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Additatieve helix</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Veeg de geselecteerde schets langs een pad of naar andere profielen</translation>
+      <translation>Trek de geselecteerde schets langs een pad of naar andere profielen</translation>
     </message>
   </context>
   <context>
@@ -565,7 +565,7 @@
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Subtractive helix</source>
-      <translation type="unfinished">Subtractive helix</translation>
+      <translation>Subtractieve helix</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1764"/>
@@ -875,17 +875,17 @@
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Face tools</source>
       <translation>Vlakgereedschappen</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Sketch tools</source>
       <translation>Schetsgereedschappen</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Create Geometry</source>
       <translation>Geometrie aanmaken</translation>
     </message>
@@ -4386,39 +4386,69 @@ account for the depth of blind holes</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
       <translation type="unfinished">&amp;Part Design</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation type="unfinished">&amp;Sketch</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Create a datum</source>
       <translation type="unfinished">Create a datum</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
       <translation type="unfinished">Create an additive feature</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
       <translation type="unfinished">Create a subtractive feature</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a pattern</source>
       <translation type="unfinished">Apply a pattern</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
       <translation type="unfinished">Apply a dress-up feature</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="60"/>
+      <source>Sprocket...</source>
+      <translation type="unfinished">Sprocket...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Involute gear...</source>
+      <translation type="unfinished">Involute gear...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Shaft design wizard</source>
+      <translation type="unfinished">Shaft design wizard</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="67"/>
+      <source>Measure</source>
+      <translation>Meten</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="68"/>
+      <source>Part Design Helper</source>
+      <translation type="unfinished">Part Design Helper</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="69"/>
+      <source>Part Design Modeling</source>
+      <translation type="unfinished">Part Design Modeling</translation>
     </message>
   </context>
 </TS>

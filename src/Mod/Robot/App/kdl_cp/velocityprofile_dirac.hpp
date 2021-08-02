@@ -35,7 +35,7 @@
 namespace KDL {
 	/**
 	 * A Dirac VelocityProfile generates an infinite velocity
-	 * so that the position jumps from A to B in in infinite short time.
+	 * so that the position jumps from A to B in an infinite short time.
 	 * In practice, this means that the maximum values are ignored and
 	 * for any t : Vel(t) == 0 and Acc(t) == 0.
 	 * Further Pos( -0 ) = pos1 and Pos( +0 ) = pos2.

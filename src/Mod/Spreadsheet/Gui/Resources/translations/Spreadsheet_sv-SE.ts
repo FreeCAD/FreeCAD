@@ -618,9 +618,9 @@ Spreadsheet.my_alias_name, istället för Spreadsheet.B1</translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Ta bort kolumn</numerusform>
+        <numerusform>Ta bort kolumner</numerusform>
       </translation>
     </message>
   </context>

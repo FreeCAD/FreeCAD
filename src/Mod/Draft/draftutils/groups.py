@@ -41,6 +41,34 @@ from draftutils.translate import _tr
 from draftutils.messages import _msg, _err
 
 
+def is_group(obj):
+    """Return True if the given object is considered a group.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to check.
+
+    Returns
+    -------
+    bool
+        Returns `True` if `obj` is considered a group:
+
+        The object is derived from `App::DocumentObjectGroup` but not
+        a `'LayerContainer'`.
+
+        Or the object is of the type `'Project'`, `'Site'`, `'Building'`,
+        `'Floor'` or `'BuildingPart'` from the Arch Workbench.
+
+        Otherwise returns `False`.
+    """
+
+    return ((obj.isDerivedFrom("App::DocumentObjectGroup")
+                and obj.Name != "LayerContainer")
+            or utils.get_type(obj) in ("Project", "Site", "Building",
+                                       "Floor", "BuildingPart"))
+
+
 def get_group_names(doc=None):
     """Return a list of names of existing groups in the document.
 
@@ -54,12 +82,10 @@ def get_group_names(doc=None):
     Returns
     -------
     list of str
-        A list of names of objects that are "groups".
-        These are objects derived from `App::DocumentObjectGroup`
-        or which are of types `'Floor'`, `'Building'`, or `'Site'`
-        from the Arch Workbench.
+        A list of names of objects that are considered groups.
+        See the is_group function.
 
-        Otherwise, return an empty list.
+        Otherwise returns an empty list.
     """
     if not doc:
         found, doc = utils.find_doc(App.activeDocument())
@@ -71,8 +97,7 @@ def get_group_names(doc=None):
     glist = []
 
     for obj in doc.Objects:
-        if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                or utils.get_type(obj) in ("Floor", "Building", "Site")):
+        if is_group(obj):
             glist.append(obj.Name)
 
     return glist

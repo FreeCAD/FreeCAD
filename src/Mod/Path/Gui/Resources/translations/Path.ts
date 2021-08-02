@@ -189,6 +189,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathProfileEdges.py" line="56"/>
+        <source>The base geometry of this toolpath</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathProfileEdges.py" line="70"/>
         <source>The tool controller that will be used to calculate the path</source>
         <translation type="unfinished"></translation>
@@ -504,11 +509,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathPocket.py" line="55"/>
-        <source>The library to use to generate the path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="PathPocket.py" line="78"/>
         <source>Start pocketing at center or boundary</source>
         <translation type="unfinished"></translation>
@@ -704,8 +704,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathProfileEdges.py" line="56"/>
-        <source>The base geometry of this toolpath</source>
+        <location filename="PathPocket.py" line="55"/>
+        <source>The library to use to generate the path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -987,13 +987,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathUtils.py" line="762"/>
-        <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
+        <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+        <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathUtils.py" line="808"/>
-        <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+        <location filename="PathUtils.py" line="762"/>
+        <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1158,31 +1158,6 @@ Increased to stock top.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
-        <source>Face appears misaligned after initial rotation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
-        <source>Consider toggling the &apos;InverseAngle&apos; property and recomputing.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
-        <source>Multiple faces in Base Geometry.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
-        <source>Depth settings will be applied to all faces.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
-        <source>EnableRotation property is &apos;Off&apos;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
         <source>Unable to create path for face(s).</source>
         <translation type="unfinished"></translation>
@@ -1245,6 +1220,31 @@ Increased to stock top.</source>
     <message>
         <location filename="../../../InitGui.py" line="158"/>
         <source>Utils</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
+        <source>Face appears misaligned after initial rotation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
+        <source>Consider toggling the &apos;InverseAngle&apos; property and recomputing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
+        <source>Multiple faces in Base Geometry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
+        <source>Depth settings will be applied to all faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
+        <source>EnableRotation property is &apos;Off&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1970,16 +1970,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
 <context>
     <name>PathPocket</name>
     <message>
-        <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-        <source>Pocket Shape</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-        <source>Creates a Path Pocket object from a face or faces</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
@@ -2027,6 +2017,16 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="../../../PathScripts/PathPocket.py" line="110"/>
         <source>Final depth set below ZMin of face(s) selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+        <source>Pocket Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+        <source>Creates a Path Pocket object from a face or faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3440,6 +3440,16 @@ If it is necessary to set the FinalDepth manually please select a different oper
 <context>
     <name>Path_Dressup</name>
     <message>
+        <location filename="PathDressup.py" line="98"/>
+        <source>Dress-up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDressup.py" line="100"/>
+        <source>Creates a Path Dess-up object from a selected path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathDressup.py" line="110"/>
         <source>Please select one path object
 </source>
@@ -3454,16 +3464,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
         <source>Please select a Path object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathDressup.py" line="98"/>
-        <source>Dress-up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathDressup.py" line="100"/>
-        <source>Creates a Path Dess-up object from a selected path</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3939,12 +3939,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathHop.py" line="119"/>
-        <source>The selected object is not a path
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathHop.py" line="111"/>
         <source>Please select one path object</source>
         <translation type="unfinished"></translation>
@@ -3957,6 +3951,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="PathHop.py" line="122"/>
         <source>Create Hop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathHop.py" line="119"/>
+        <source>The selected object is not a path
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4616,11 +4616,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
 <context>
     <name>Path_ToolController</name>
     <message>
-        <location filename="PathToolController.py" line="132"/>
-        <source>Tool Number to Load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="PathToolController.py" line="156"/>
         <source>Add Tool Controller to the Job</source>
         <translation type="unfinished"></translation>
@@ -4628,6 +4623,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
         <source>Add Tool Controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathToolController.py" line="132"/>
+        <source>Tool Number to Load</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4657,11 +4657,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
-        <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathVcarve.py" line="309"/>
         <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
         <translation type="unfinished"></translation>
@@ -4669,6 +4664,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
         <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+        <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4706,53 +4706,8 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-        <source>Tooltable JSON (*.json)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-        <source>HeeksCAD tooltable (*.tooltable)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-        <source>LinuxCNC tooltable (*.tbl)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
         <source>Open tooltable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="TooltableEditor.py" line="610"/>
-        <source>Save tooltable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-        <source>Rename Tooltable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-        <source>Enter Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-        <source>Add New Tool Table</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-        <source>Delete Selected Tool Table</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-        <source>Rename Selected Tool Table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4967,6 +4922,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
     <message>
         <location filename="TooltableEditor.py" line="610"/>
+        <source>Save tooltable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TooltableEditor.py" line="610"/>
         <source>Tooltable XML (*.xml)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4978,6 +4938,46 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="TooltableEditor.py" line="653"/>
         <source>Object doesn&apos;t have a tooltable property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+        <source>Rename Tooltable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+        <source>Enter Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+        <source>Add New Tool Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+        <source>Delete Selected Tool Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+        <source>Rename Selected Tool Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+        <source>Tooltable JSON (*.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+        <source>HeeksCAD tooltable (*.tooltable)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+        <source>LinuxCNC tooltable (*.tbl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

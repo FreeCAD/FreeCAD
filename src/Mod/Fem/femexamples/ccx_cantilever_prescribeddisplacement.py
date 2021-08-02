@@ -25,7 +25,7 @@
 import ObjectsFem
 
 from . import manager
-from .ccx_cantilever_base import setup_cantileverbase
+from .ccx_cantilever_base_solid import setup_cantilever_base_solid
 from .manager import init_doc
 
 
@@ -72,7 +72,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # setup CalculiX cantilever
     # apply a prescribed displacement of 250 mm in -z on the front end face
-    doc = setup_cantileverbase(doc, solvertype)
+    doc = setup_cantilever_base_solid(doc, solvertype)
     analysis = doc.Analysis
     geom_obj = doc.Box
 

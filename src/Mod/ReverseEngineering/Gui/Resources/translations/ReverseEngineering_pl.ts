@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="381"/>
       <source>Create mesh segments</source>
-      <translation>Utwórz segmenty siatki</translation>
+      <translation>Tworzy segmenty siatki</translation>
     </message>
   </context>
   <context>
@@ -485,7 +485,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="82"/>
       <source>&lt; faces than</source>
-      <translation>&lt;powierzchnie niż</translation>
+      <translation>&lt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="89"/>

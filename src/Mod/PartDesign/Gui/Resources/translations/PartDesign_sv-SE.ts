@@ -761,7 +761,7 @@
       <location filename="../../Command.cpp" line="641"/>
       <location filename="../../Command.cpp" line="1155"/>
       <source>Make copy</source>
-      <translation type="unfinished">Make copy</translation>
+      <translation>Skapa kopia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
@@ -875,17 +875,17 @@
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Face tools</source>
       <translation>Ytverktyg</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Sketch tools</source>
       <translation>Skissverktyg</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Create Geometry</source>
       <translation>Skapa Geometri</translation>
     </message>
@@ -905,7 +905,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module:</source>
-      <translation type="unfinished">Module:</translation>
+      <translation>Modul:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
@@ -1413,7 +1413,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="85"/>
       <source>Distance and angle</source>
-      <translation type="unfinished">Distance and angle</translation>
+      <translation>Avstånd och vinkel</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="98"/>
@@ -1428,7 +1428,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="158"/>
       <source>Size 2</source>
-      <translation type="unfinished">Size 2</translation>
+      <translation>Storlek 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
@@ -1760,7 +1760,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="23"/>
       <source>Status:</source>
-      <translation type="unfinished">Status:</translation>
+      <translation>Status:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="30"/>
@@ -1859,7 +1859,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="277"/>
       <source>Left handed</source>
-      <translation type="unfinished">Left handed</translation>
+      <translation>Vänsterhänt</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="288"/>
@@ -3717,7 +3717,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Synkronisera</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
@@ -3799,72 +3799,72 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
       <source>ANSI 25</source>
-      <translation type="unfinished">ANSI 25</translation>
+      <translation>ANSI 25</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="53"/>
       <source>ANSI 35</source>
-      <translation type="unfinished">ANSI 35</translation>
+      <translation>ANSI 35</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="58"/>
       <source>ANSI 41</source>
-      <translation type="unfinished">ANSI 41</translation>
+      <translation>ANSI 41</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="63"/>
       <source>ANSI 40</source>
-      <translation type="unfinished">ANSI 40</translation>
+      <translation>ANSI 40</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="68"/>
       <source>ANSI 50</source>
-      <translation type="unfinished">ANSI 50</translation>
+      <translation>ANSI 50</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="73"/>
       <source>ANSI 60</source>
-      <translation type="unfinished">ANSI 60</translation>
+      <translation>ANSI 60</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="78"/>
       <source>ANSI 80</source>
-      <translation type="unfinished">ANSI 80</translation>
+      <translation>ANSI 80</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="83"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="88"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="98"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="103"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="108"/>
       <source>ANSI 200</source>
-      <translation type="unfinished">ANSI 200</translation>
+      <translation>ANSI 200</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="113"/>
       <source>ANSI 240</source>
-      <translation type="unfinished">ANSI 240</translation>
+      <translation>ANSI 240</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="118"/>
@@ -3879,37 +3879,37 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
       <source>ISO 606 06B</source>
-      <translation type="unfinished">ISO 606 06B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="133"/>
       <source>ISO 606 08B</source>
-      <translation type="unfinished">ISO 606 08B</translation>
+      <translation>ISO 606 08B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="138"/>
       <source>ISO 606 10B</source>
-      <translation type="unfinished">ISO 606 10B</translation>
+      <translation>ISO 606 10B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="143"/>
       <source>ISO 606 12B</source>
-      <translation type="unfinished">ISO 606 12B</translation>
+      <translation>ISO 606 12B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="148"/>
       <source>ISO 606 16B</source>
-      <translation type="unfinished">ISO 606 16B</translation>
+      <translation>ISO 606 16B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="153"/>
       <source>ISO 606 20B</source>
-      <translation type="unfinished">ISO 606 20B</translation>
+      <translation>ISO 606 20B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="158"/>
       <source>ISO 606 24B</source>
-      <translation type="unfinished">ISO 606 24B</translation>
+      <translation>ISO 606 24B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
@@ -4259,7 +4259,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>
       <source>Custom values</source>
-      <translation type="unfinished">Custom values</translation>
+      <translation>Anpassade värden</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="730"/>
@@ -4381,39 +4381,69 @@ account for the depth of blind holes</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
       <translation type="unfinished">&amp;Part Design</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation type="unfinished">&amp;Sketch</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Create a datum</source>
       <translation type="unfinished">Create a datum</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
       <translation type="unfinished">Create an additive feature</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
       <translation type="unfinished">Create a subtractive feature</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a pattern</source>
       <translation type="unfinished">Apply a pattern</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
       <translation type="unfinished">Apply a dress-up feature</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="60"/>
+      <source>Sprocket...</source>
+      <translation type="unfinished">Sprocket...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Involute gear...</source>
+      <translation type="unfinished">Involute gear...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Shaft design wizard</source>
+      <translation type="unfinished">Shaft design wizard</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="67"/>
+      <source>Measure</source>
+      <translation>Mätning</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="68"/>
+      <source>Part Design Helper</source>
+      <translation type="unfinished">Part Design Helper</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="69"/>
+      <source>Part Design Modeling</source>
+      <translation type="unfinished">Part Design Modeling</translation>
     </message>
   </context>
 </TS>

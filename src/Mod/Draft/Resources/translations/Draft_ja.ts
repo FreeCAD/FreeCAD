@@ -556,57 +556,39 @@ This property is read-only, as the number depends on the points contained within
       <translation>パラメーター化係数</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
       <translation>この2Dビューが表現する必要のあるベースオブジェクト</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
       <translation>このオブジェクトの投影ベクトル</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
       <translation>表示オブジェクトの投影方向</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>個別面モードで投影される面のインデックス</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>隠線を表示</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation>壁と構造物を同じ種類と材質に融合</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="79"/>
+      <location filename="shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>楕円、B-スプラインを線分に分割</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation>カットラインモード、カットフェイスモードでカット位置の面を残します。</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation>楕円、B-スプラインを線分に分割する際の線分長さ</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation>True の場合、このオブジェクトは表示されている場合にのみ再計算されます。</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -1004,62 +986,62 @@ beyond the dimension line</source>
       <translation>TechDraw ページで使用する場合の、このレイヤーに含まれるオブジェクトの線の色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>ライン幅</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>線の色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation>テキストのサイズ</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
       <translation>テキストのフォント</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
       <translation>テキストの垂直方向の位置</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation>テキストの色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
       <translation>行間隔(フォント サイズに対する相対値)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation>テキストボックスの各行の最大文字数</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
       <translation>矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
       <translation>このラベルの矢印の種類</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
       <translation>このオブジェクトのテキストを囲む枠の種類</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation>引き出し線を表示するかどうか</translation>
     </message>
@@ -1093,9 +1075,43 @@ Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="102"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation type="unfinished">For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1618,27 +1634,27 @@ X、Y、Zの軸の指定方向にコピーを並べます。
       <translation>オフセット方向が定義されていません。最初にオブジェクトのどちらか一方にマウスを動かして方向を指定してください。</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="259"/>
+      <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation type="unfinished">Save style</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="260"/>
+      <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
       <translation type="unfinished">Name of this new style:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="268"/>
+      <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
       <translation type="unfinished">Name exists. Overwrite?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="303"/>
+      <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="267"/>
+      <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
       <translation>警告</translation>
     </message>
@@ -3713,19 +3729,39 @@ value by using the [ and ] keys while drawing</source>
       <translation type="unfinished">Save current style as a preset...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
       <translation type="unfinished">Apply above style to selected object(s)</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>選択</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
       <translation type="unfinished">Texts/dims</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>テキストの間隔</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation type="unfinished">The space between the text and the dimension line</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>行間</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation type="unfinished">The spacing between different lines of text</translation>
     </message>
   </context>
   <context>
@@ -6955,12 +6991,12 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>編集するDraftオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="563"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
       <translation>選択オブジェクトの中に編集点がありません。</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="823"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation>: このオブジェクトは編集できません</translation>
     </message>
@@ -7398,7 +7434,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="815"/>
+      <location filename="gui_edit.py" line="814"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>

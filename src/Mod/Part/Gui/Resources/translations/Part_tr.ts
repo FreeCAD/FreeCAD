@@ -360,16 +360,6 @@ Bölümleri nesneden çıkarmak için 'Birleşik Filtresi' kullanılabilir.</tra
       <translation>Parçalara ayır</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Mantıksal (Boolean) Parçalar</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Nesnelerin kesiştiği yerlerden ayır</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -390,6 +380,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <translation>İki veya daha fazla seçilen nesne ile ya da bir birleşik içerisindeki şekillerle 'özel bir OR' mantıksal işlemi gerçekleştirin.
 Bu; şekillerin örtüşen hacimleri kaldırılacak anlamına gelir.
 Kalan parçaları çıkarmak için 'Birleşik Filtresi' kullanılabilir.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Mantıksal (Boolean) Parçalar</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Nesnelerin kesiştiği yerlerden ayır</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

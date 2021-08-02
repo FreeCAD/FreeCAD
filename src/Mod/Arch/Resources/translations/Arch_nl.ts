@@ -574,47 +574,47 @@
       <translation>Wanneer onwaar, dan zullen de non-volumemodellen ook geknipt worden met mogelijke onjuiste resultaten.</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="995"/>
+      <location filename="ArchSectionPlane.py" line="997"/>
       <source>The display length of this section plane</source>
       <translation>De weergavelengte van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1001"/>
+      <location filename="ArchSectionPlane.py" line="1003"/>
       <source>The display height of this section plane</source>
       <translation>De weergavehoogte van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1007"/>
+      <location filename="ArchSectionPlane.py" line="1009"/>
       <source>The size of the arrows of this section plane</source>
       <translation>De grootte van de pijlen van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1021"/>
+      <location filename="ArchSectionPlane.py" line="1023"/>
       <source>Show the cut in the 3D view</source>
       <translation>Toon de snede in 3D-weergave</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1268"/>
+      <location filename="ArchSectionPlane.py" line="1270"/>
       <source>The rendering mode to use</source>
       <translation>De rendermethode te gebruiken</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1272"/>
+      <location filename="ArchSectionPlane.py" line="1274"/>
       <source>If cut geometry is shown or not</source>
       <translation>Na het knippen zal de geometrie wel of niet worden weergegeven</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1274"/>
+      <location filename="ArchSectionPlane.py" line="1276"/>
       <source>If cut geometry is filled or not</source>
       <translation>Na het knippen zal de geometrie wel of niet worden weergegeven</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1279"/>
+      <location filename="ArchSectionPlane.py" line="1281"/>
       <source>The size of the texts inside this object</source>
       <translation>De grootte van de teksten binnen dit object</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1282"/>
+      <location filename="ArchSectionPlane.py" line="1284"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Indien aangevinkt, worden bronobjecten weergegeven ongeacht de zichtbaarheid in het 3D-model</translation>
     </message>
@@ -769,7 +769,7 @@
       <translation>De tekst weergeven. Gebruik $area, $label, $tag, $floor, $walls, $ceiling om de betrokken gegevens in te voegen</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1028"/>
+      <location filename="ArchSectionPlane.py" line="1030"/>
       <source>The name of the font</source>
       <translation>De naam van het lettertype</translation>
     </message>
@@ -779,7 +779,7 @@
       <translation>De kleur van het gebied tekst</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1031"/>
+      <location filename="ArchSectionPlane.py" line="1033"/>
       <source>The size of the text font</source>
       <translation>De grootte van het lettertype</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>De lijst met diktes van lagen</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1284"/>
+      <location filename="ArchSectionPlane.py" line="1286"/>
       <source>The line color of the projected objects</source>
       <translation>De lijnkleur van de geprojecteerde objecten</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1286"/>
+      <location filename="ArchSectionPlane.py" line="1288"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>De kleur van de oppervlaktes van de doorsnede (indien ingeschakeld)</translation>
     </message>
@@ -1219,7 +1219,7 @@
       <translation>De vorm van dit object</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1013"/>
+      <location filename="ArchSectionPlane.py" line="1015"/>
       <source>The line width of this object</source>
       <translation>De lijnbreedte van dit object</translation>
     </message>
@@ -1349,17 +1349,17 @@
       <translation>De objecten die door dit sectievlak moeten worden overwogen. Leeg betekent het hele document.</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1010"/>
+      <location filename="ArchSectionPlane.py" line="1012"/>
       <source>The transparency of this object</source>
       <translation>De mate van doorzichtigheid van dit object</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1018"/>
+      <location filename="ArchSectionPlane.py" line="1020"/>
       <source>The color of this object</source>
       <translation>De kleur van dit object</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1023"/>
+      <location filename="ArchSectionPlane.py" line="1025"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>De afstand tussen te knippen vlak en de werkelijke weergegeven knip (Houd dit een zeer lage waarde maar niet nul)</translation>
     </message>
@@ -1989,7 +1989,7 @@
       <translation>Geeft de richting aan van het dak moet worden omgedraaid</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1026"/>
+      <location filename="ArchSectionPlane.py" line="1028"/>
       <source>Show the label in the 3D view</source>
       <translation>Toon het label in de 3D-weergave</translation>
     </message>
@@ -2037,6 +2037,11 @@
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
       <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+    </message>
+    <message>
+      <location filename="ArchSectionPlane.py" line="933"/>
+      <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
+      <translation>Geometrie boven dan deze waarde wordt afgetopt. Zet op nul voor onbeperkt.</translation>
     </message>
   </context>
   <context>
@@ -2087,47 +2092,47 @@
       <translation>Hoek</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="704"/>
+      <location filename="ArchCommands.py" line="711"/>
       <source>is not closed</source>
       <translation>is niet gesloten</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="706"/>
+      <location filename="ArchCommands.py" line="713"/>
       <source>is not valid</source>
       <translation>is niet geldig</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="708"/>
+      <location filename="ArchCommands.py" line="715"/>
       <source>doesn't contain any solid</source>
       <translation>bevat geen volumemodel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="714"/>
+      <location filename="ArchCommands.py" line="721"/>
       <source>contains a non-closed solid</source>
       <translation>bevat een niet-gesloten volumemodel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="716"/>
+      <location filename="ArchCommands.py" line="723"/>
       <source>contains faces that are not part of any solid</source>
       <translation>bevat vlakken die niet deel uitmaken van een volumemodel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1362"/>
+      <location filename="ArchCommands.py" line="1369"/>
       <source>Grouping</source>
       <translation>Groeperen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1394"/>
+      <location filename="ArchCommands.py" line="1401"/>
       <source>Ungrouping</source>
       <translation>Degroeperen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1425"/>
+      <location filename="ArchCommands.py" line="1432"/>
       <source>Split Mesh</source>
       <translation>Net splitten</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1465"/>
+      <location filename="ArchCommands.py" line="1472"/>
       <source>Mesh to Shape</source>
       <translation>Net naar Vorm</translation>
     </message>
@@ -2267,12 +2272,12 @@
       <translation>bestand %s met succes aangemaakt.</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1358"/>
+      <location filename="ArchCommands.py" line="1365"/>
       <source>Add space boundary</source>
       <translation>Ruimtegrens toevoegen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1390"/>
+      <location filename="ArchCommands.py" line="1397"/>
       <source>Remove space boundary</source>
       <translation>Ruimtegrens verwijderen</translation>
     </message>
@@ -2357,17 +2362,17 @@
       <translation>Creëer Structureel Systeem</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1157"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Object heeft geen instelbare IFC Attributen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1156"/>
+      <location filename="ArchCommands.py" line="1163"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Zet de Brep forceer stand van het object uit</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1162"/>
+      <location filename="ArchCommands.py" line="1169"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Zet de Brep forceer stand van het object aan</translation>
     </message>
@@ -2487,7 +2492,7 @@
       <translation>Hoogte (mm)</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1623"/>
+      <location filename="ArchCommands.py" line="1630"/>
       <source>Create Component</source>
       <translation>Creëer Component</translation>
     </message>
@@ -2512,22 +2517,22 @@
       <translation>Categorie</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1644"/>
+      <location filename="ArchCommands.py" line="1651"/>
       <source>Key</source>
       <translation>Sleutel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1646"/>
+      <location filename="ArchCommands.py" line="1653"/>
       <source>Value</source>
       <translation>Waarde</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1647"/>
+      <location filename="ArchCommands.py" line="1654"/>
       <source>Unit</source>
       <translation>Eenheid</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1672"/>
+      <location filename="ArchCommands.py" line="1679"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>IFC eigenschappen werkblad maken</translation>
     </message>
@@ -2727,7 +2732,7 @@
       <translation>Importeer CSV bestand</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1108"/>
+      <location filename="ArchCommands.py" line="1115"/>
       <source>Export CSV File</source>
       <translation>Exporteren als CSV bestand</translation>
     </message>
@@ -2948,47 +2953,47 @@
       <translation>Venster elementen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1011"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Survey</source>
       <translation>Enquête</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1012"/>
+      <location filename="ArchCommands.py" line="1019"/>
       <source>Set description</source>
       <translation>Vul omschrijving in</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1013"/>
+      <location filename="ArchCommands.py" line="1020"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1014"/>
+      <location filename="ArchCommands.py" line="1021"/>
       <source>Copy Length</source>
       <translation>Lengte kopiëren</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1015"/>
+      <location filename="ArchCommands.py" line="1022"/>
       <source>Copy Area</source>
       <translation>Kopieer gebied</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1023"/>
       <source>Export CSV</source>
       <translation>Exporteer CSV</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1017"/>
+      <location filename="ArchCommands.py" line="1024"/>
       <source>Description</source>
       <translation>Omschrijving</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1019"/>
+      <location filename="ArchCommands.py" line="1026"/>
       <source>Area</source>
       <translation>Oppervlakte</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1066"/>
+      <location filename="ArchCommands.py" line="1073"/>
       <source>Total</source>
       <translation>Totaal</translation>
     </message>
@@ -3038,17 +3043,17 @@
       <translation>Maak een gebouwonderdeel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="426"/>
+      <location filename="ArchCommands.py" line="427"/>
       <source>Invalid cutplane</source>
       <translation>Ongeldig snijvlak</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1546"/>
+      <location filename="ArchCommands.py" line="1553"/>
       <source>All good! No problems found</source>
       <translation>Alle goed! Geen problemen gevonden</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1654"/>
+      <location filename="ArchCommands.py" line="1661"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Het object heeft geen IndustriesFoundationClassesProperties. Spreadsheet annuleren voor:</translation>
     </message>
@@ -3203,37 +3208,37 @@
       <translation>Maak externe verwijzing</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1503"/>
+      <location filename="ArchSectionPlane.py" line="1505"/>
       <source>Section plane settings</source>
       <translation>Doorsnede instellingen</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1508"/>
+      <location filename="ArchSectionPlane.py" line="1510"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objecten zichtbaar in deze doorsnede:</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1509"/>
+      <location filename="ArchSectionPlane.py" line="1511"/>
       <source>Section plane placement:</source>
       <translation>Plaats doorsnede:</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1510"/>
+      <location filename="ArchSectionPlane.py" line="1512"/>
       <source>Rotate X</source>
       <translation>Rotatie X</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1512"/>
+      <location filename="ArchSectionPlane.py" line="1514"/>
       <source>Rotate Y</source>
       <translation>Rotatie Y</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1514"/>
+      <location filename="ArchSectionPlane.py" line="1516"/>
       <source>Rotate Z</source>
       <translation>Rotatie Z</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1516"/>
+      <location filename="ArchSectionPlane.py" line="1518"/>
       <source>Resize</source>
       <translation>Grootte aanpassen</translation>
     </message>
@@ -3368,42 +3373,42 @@
       <translation>Succesvol geïmporteerd</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1505"/>
+      <location filename="ArchSectionPlane.py" line="1507"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Verwijder de gemarkeerde objecten uit de bovenstaande lijst</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1506"/>
+      <location filename="ArchSectionPlane.py" line="1508"/>
       <source>Add selected</source>
       <translation>Voeg geselecteerde toe</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1507"/>
+      <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Voeg het(de) geselecteerde object(en) toe aan het bereik van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1511"/>
+      <location filename="ArchSectionPlane.py" line="1513"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Draait het vlak langs de X-as</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1513"/>
+      <location filename="ArchSectionPlane.py" line="1515"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Draait het vlak langs de Y-as</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1515"/>
+      <location filename="ArchSectionPlane.py" line="1517"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Draait het vlak langs de Z-as</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1517"/>
+      <location filename="ArchSectionPlane.py" line="1519"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Past de grootte van het vlak aan om te passen aan de objecten in de bovenstaande lijst</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1519"/>
+      <location filename="ArchSectionPlane.py" line="1521"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centreert het vlak op de objecten in de bovenstaande lijst</translation>
     </message>
@@ -3890,12 +3895,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="1349"/>
+      <location filename="ArchCommands.py" line="1356"/>
       <source>Add component</source>
       <translation>Voeg component toe</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1352"/>
+      <location filename="ArchCommands.py" line="1359"/>
       <source>Adds the selected components to the active object</source>
       <translation>De geselecteerde onderdelen toevoegen aan het actieve object</translation>
     </message>
@@ -3973,12 +3978,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1537"/>
+      <location filename="ArchCommands.py" line="1544"/>
       <source>Check</source>
       <translation>Controleer</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1540"/>
+      <location filename="ArchCommands.py" line="1547"/>
       <source>Checks the selected objects for problems</source>
       <translation>Controleer de geselecteerde objecten op problemen</translation>
     </message>
@@ -3986,12 +3991,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="ArchCommands.py" line="1613"/>
+      <location filename="ArchCommands.py" line="1620"/>
       <source>Clone component</source>
       <translation>Kloon onderdeel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1617"/>
+      <location filename="ArchCommands.py" line="1624"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Kloont een object als een niet-gedefinieerde architectonisch onderdeel</translation>
     </message>
@@ -3999,12 +4004,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1520"/>
+      <location filename="ArchCommands.py" line="1527"/>
       <source>Close holes</source>
       <translation>Sluit gaten</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1523"/>
+      <location filename="ArchCommands.py" line="1530"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Kloont gaten in open vormen, maakt er volumemodellen van</translation>
     </message>
@@ -4012,12 +4017,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1588"/>
+      <location filename="ArchCommands.py" line="1595"/>
       <source>Component</source>
       <translation>Onderdeel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1592"/>
+      <location filename="ArchCommands.py" line="1599"/>
       <source>Creates an undefined architectural component</source>
       <translation>Maakt een ongedefineert architectonisch onderdeel</translation>
     </message>
@@ -4176,12 +4181,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1663"/>
+      <location filename="ArchCommands.py" line="1670"/>
       <source>Create IFC spreadsheet...</source>
       <translation>IFC rekenblad aanmaken...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1667"/>
+      <location filename="ArchCommands.py" line="1674"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Maakt een rekenblad voor het bewaren van IFC eigenschappen van een object.</translation>
     </message>
@@ -4223,12 +4228,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1441"/>
+      <location filename="ArchCommands.py" line="1448"/>
       <source>Mesh to Shape</source>
       <translation>Net naar Vorm</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1444"/>
+      <location filename="ArchCommands.py" line="1451"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>De geselecteerde meshes worden verandert in Onderdeel Vorm objecten</translation>
     </message>
@@ -4395,12 +4400,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="1381"/>
+      <location filename="ArchCommands.py" line="1388"/>
       <source>Remove component</source>
       <translation>Verwijderen component</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1384"/>
+      <location filename="ArchCommands.py" line="1391"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Verwijder de geselecteerde onderdelen van hun ouders, of maak een gat in een component</translation>
     </message>
@@ -4408,12 +4413,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1505"/>
+      <location filename="ArchCommands.py" line="1512"/>
       <source>Remove Shape from Arch</source>
       <translation>Vorm verwijderen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1508"/>
+      <location filename="ArchCommands.py" line="1515"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Verwijdert kubieke vormen uit Arch-componenten</translation>
     </message>
@@ -4460,12 +4465,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1476"/>
+      <location filename="ArchCommands.py" line="1483"/>
       <source>Select non-manifold meshes</source>
       <translation>Niet-manifold netten selecteren</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1479"/>
+      <location filename="ArchCommands.py" line="1486"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Selecteert alle niet-manifold netten van het document of van de geselecteerde groepen</translation>
     </message>
@@ -4504,12 +4509,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1416"/>
+      <location filename="ArchCommands.py" line="1423"/>
       <source>Split Mesh</source>
       <translation>Net splitten</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1419"/>
+      <location filename="ArchCommands.py" line="1426"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Splits geselecteerde netten in onafhankelijke componenten</translation>
     </message>
@@ -4538,12 +4543,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1558"/>
+      <location filename="ArchCommands.py" line="1565"/>
       <source>Survey</source>
       <translation>Enquête</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1561"/>
+      <location filename="ArchCommands.py" line="1568"/>
       <source>Starts survey</source>
       <translation>Start enquête</translation>
     </message>
@@ -4551,12 +4556,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1573"/>
+      <location filename="ArchCommands.py" line="1580"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep vlag in-/ uitschakelen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1576"/>
+      <location filename="ArchCommands.py" line="1583"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Dwing een object geëxporteerd te worden als Brep of niet</translation>
     </message>
@@ -4564,12 +4569,12 @@ Vloer object wordt niet gemaakt.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="ArchCommands.py" line="1689"/>
+      <location filename="ArchCommands.py" line="1696"/>
       <source>Toggle subcomponents</source>
       <translation>Wissel tussen sub-onderdelen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1692"/>
+      <location filename="ArchCommands.py" line="1699"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Toont of verbergt de subonderdelen voor dit object</translation>
     </message>

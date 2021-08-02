@@ -360,16 +360,6 @@ Ein 'Verbundobjekt-Filter' kann verwendet werden, um die einzelnen Scheiben zu e
       <translation>Auseinanderschneiden</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolesche Fragmente</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -390,6 +380,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 oder mit den Formen innerhalb einer Verbindung durchführen.
 Das bedeutet, dass die sich überschneidenden Volumen der Formen entfernt werden.
 Ein 'Compoundfilter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolesche Fragmente</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -1293,7 +1293,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Zweite leitgerade für Ellipse und Hyperbel.</translation>
+      <translation>Zweite Leitgerade für Ellipse und Hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
@@ -4162,7 +4162,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
       <location filename="../../DlgPrimitives.ui" line="1055"/>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
       <source>Polygon:</source>
-      <translation>Polygon:</translation>
+      <translation>Vieleck:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1075"/>

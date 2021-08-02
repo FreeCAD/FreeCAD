@@ -47,9 +47,9 @@ class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
-        if (self.checkMesh()):
+        if (self.check_mesh_exists()):
             self.checkMeshType()
-        self.checkMaterial()
+        self.check_material_exists()
         self.checkEquations()
 
     def checkMeshType(self):
@@ -84,7 +84,7 @@ class Prepare(run.Prepare):
             FreeCAD.Console.PrintLog("Machine testmode: {}\n".format(self.testmode))
             w = writer.Writer(self.solver, self.directory)
         try:
-            w.write()
+            w.write_solver_input()
             self.checkHandled(w)
         except writer.WriteError as e:
             self.report.error(str(e))

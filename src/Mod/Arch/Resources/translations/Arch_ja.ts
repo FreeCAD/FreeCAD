@@ -574,47 +574,47 @@
       <translation>False の場合、非ソリッドも切断され、不正な結果となる可能性があります。</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="995"/>
+      <location filename="ArchSectionPlane.py" line="997"/>
       <source>The display length of this section plane</source>
       <translation>この断面平面の表示長さ</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1001"/>
+      <location filename="ArchSectionPlane.py" line="1003"/>
       <source>The display height of this section plane</source>
       <translation>この断面平面の表示高さ</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1007"/>
+      <location filename="ArchSectionPlane.py" line="1009"/>
       <source>The size of the arrows of this section plane</source>
       <translation>この断面平面の矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1021"/>
+      <location filename="ArchSectionPlane.py" line="1023"/>
       <source>Show the cut in the 3D view</source>
       <translation>3Dビューでカットを表示</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1268"/>
+      <location filename="ArchSectionPlane.py" line="1270"/>
       <source>The rendering mode to use</source>
       <translation>使用するレンダリングモード</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1272"/>
+      <location filename="ArchSectionPlane.py" line="1274"/>
       <source>If cut geometry is shown or not</source>
       <translation>カット・ジオメトリーを表示するかどうか</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1274"/>
+      <location filename="ArchSectionPlane.py" line="1276"/>
       <source>If cut geometry is filled or not</source>
       <translation>カット・ジオメトリーを塗りつぶすかどうか</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1279"/>
+      <location filename="ArchSectionPlane.py" line="1281"/>
       <source>The size of the texts inside this object</source>
       <translation>このオブジェクト内部のテキストの幅</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1282"/>
+      <location filename="ArchSectionPlane.py" line="1284"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>チェックされている場合、ソースオブジェクトが3Dモデル内で表示されているかどうかに関わらず表示されます。</translation>
     </message>
@@ -769,7 +769,7 @@
       <translation>表示されるテキスト。$area、$label、$tag、$floor、$walls、$ceilingを使用して各データを挿入してください。</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1028"/>
+      <location filename="ArchSectionPlane.py" line="1030"/>
       <source>The name of the font</source>
       <translation>フォントの名前</translation>
     </message>
@@ -779,7 +779,7 @@
       <translation>エリアの文字色</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1031"/>
+      <location filename="ArchSectionPlane.py" line="1033"/>
       <source>The size of the text font</source>
       <translation>テキストフォントのサイズ</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>レイヤー厚みのリスト</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1284"/>
+      <location filename="ArchSectionPlane.py" line="1286"/>
       <source>The line color of the projected objects</source>
       <translation>投影オブジェクトの線の色</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1286"/>
+      <location filename="ArchSectionPlane.py" line="1288"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>カット面の色（有効な場合）</translation>
     </message>
@@ -1219,7 +1219,7 @@
       <translation>このオブジェクトの形</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1013"/>
+      <location filename="ArchSectionPlane.py" line="1015"/>
       <source>The line width of this object</source>
       <translation>オブジェクトの線幅</translation>
     </message>
@@ -1349,17 +1349,17 @@
       <translation>この切断面の対象となるオブジェクト。空はドキュメント全体が対象。</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1010"/>
+      <location filename="ArchSectionPlane.py" line="1012"/>
       <source>The transparency of this object</source>
       <translation>オブジェクトの透過度</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1018"/>
+      <location filename="ArchSectionPlane.py" line="1020"/>
       <source>The color of this object</source>
       <translation>このオブジェクトの色</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1023"/>
+      <location filename="ArchSectionPlane.py" line="1025"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>切断面と実際のビュー切断面の間の距離（ゼロでない非常に小さな値を設定してください）</translation>
     </message>
@@ -1989,7 +1989,7 @@
       <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1026"/>
+      <location filename="ArchSectionPlane.py" line="1028"/>
       <source>Show the label in the 3D view</source>
       <translation type="unfinished">Show the label in the 3D view</translation>
     </message>
@@ -2037,6 +2037,11 @@
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
       <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+    </message>
+    <message>
+      <location filename="ArchSectionPlane.py" line="933"/>
+      <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
+      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
     </message>
   </context>
   <context>
@@ -2087,47 +2092,47 @@
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="704"/>
+      <location filename="ArchCommands.py" line="711"/>
       <source>is not closed</source>
       <translation>が閉じていません</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="706"/>
+      <location filename="ArchCommands.py" line="713"/>
       <source>is not valid</source>
       <translation>は無効です</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="708"/>
+      <location filename="ArchCommands.py" line="715"/>
       <source>doesn't contain any solid</source>
       <translation>ソリッドが含まれていません</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="714"/>
+      <location filename="ArchCommands.py" line="721"/>
       <source>contains a non-closed solid</source>
       <translation>閉じていないソリッドが含まれています</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="716"/>
+      <location filename="ArchCommands.py" line="723"/>
       <source>contains faces that are not part of any solid</source>
       <translation>どのソリッドにも属していない面が含まれています</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1362"/>
+      <location filename="ArchCommands.py" line="1369"/>
       <source>Grouping</source>
       <translation>グループ化</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1394"/>
+      <location filename="ArchCommands.py" line="1401"/>
       <source>Ungrouping</source>
       <translation>グループ化の解除</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1425"/>
+      <location filename="ArchCommands.py" line="1432"/>
       <source>Split Mesh</source>
       <translation>メッシュを分割</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1465"/>
+      <location filename="ArchCommands.py" line="1472"/>
       <source>Mesh to Shape</source>
       <translation>メッシュからシェイプへ</translation>
     </message>
@@ -2267,12 +2272,12 @@
       <translation>ファイル %s が正常に作成されました。</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1358"/>
+      <location filename="ArchCommands.py" line="1365"/>
       <source>Add space boundary</source>
       <translation>スペース境界を追加</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1390"/>
+      <location filename="ArchCommands.py" line="1397"/>
       <source>Remove space boundary</source>
       <translation>スペース境界を削除</translation>
     </message>
@@ -2357,17 +2362,17 @@
       <translation>構造システムを作成</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1157"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>オブジェクトに設定可能な IFC 属性がありません</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1156"/>
+      <location filename="ArchCommands.py" line="1163"/>
       <source>Disabling Brep force flag of object</source>
       <translation>オブジェクトの Brep 強制フラグを無効化</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1162"/>
+      <location filename="ArchCommands.py" line="1169"/>
       <source>Enabling Brep force flag of object</source>
       <translation>オブジェクトの Brep 強制フラグを有効化</translation>
     </message>
@@ -2487,7 +2492,7 @@
       <translation>高さ (mm)</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1623"/>
+      <location filename="ArchCommands.py" line="1630"/>
       <source>Create Component</source>
       <translation>コンポーネントを作成</translation>
     </message>
@@ -2512,22 +2517,22 @@
       <translation>カテゴリ</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1644"/>
+      <location filename="ArchCommands.py" line="1651"/>
       <source>Key</source>
       <translation>キー名</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1646"/>
+      <location filename="ArchCommands.py" line="1653"/>
       <source>Value</source>
       <translation>値</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1647"/>
+      <location filename="ArchCommands.py" line="1654"/>
       <source>Unit</source>
       <translation>単位</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1672"/>
+      <location filename="ArchCommands.py" line="1679"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>IFCプロパティー・スプレッドシートを作成</translation>
     </message>
@@ -2727,7 +2732,7 @@
       <translation>CSVファイルをインポート</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1108"/>
+      <location filename="ArchCommands.py" line="1115"/>
       <source>Export CSV File</source>
       <translation>CSVファイルをエクスポート</translation>
     </message>
@@ -2949,47 +2954,47 @@
       <translation>窓要素</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1011"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Survey</source>
       <translation>調査</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1012"/>
+      <location filename="ArchCommands.py" line="1019"/>
       <source>Set description</source>
       <translation>説明を設定</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1013"/>
+      <location filename="ArchCommands.py" line="1020"/>
       <source>Clear</source>
       <translation>クリア</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1014"/>
+      <location filename="ArchCommands.py" line="1021"/>
       <source>Copy Length</source>
       <translation>長さをコピー</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1015"/>
+      <location filename="ArchCommands.py" line="1022"/>
       <source>Copy Area</source>
       <translation>面積をコピー</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1023"/>
       <source>Export CSV</source>
       <translation>CSVをエクスポート</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1017"/>
+      <location filename="ArchCommands.py" line="1024"/>
       <source>Description</source>
       <translation>説明</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1019"/>
+      <location filename="ArchCommands.py" line="1026"/>
       <source>Area</source>
       <translation>面積</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1066"/>
+      <location filename="ArchCommands.py" line="1073"/>
       <source>Total</source>
       <translation>合計</translation>
     </message>
@@ -3039,17 +3044,17 @@
       <translation>ビルディング・パートを作成</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="426"/>
+      <location filename="ArchCommands.py" line="427"/>
       <source>Invalid cutplane</source>
       <translation>切断面が無効です</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1546"/>
+      <location filename="ArchCommands.py" line="1553"/>
       <source>All good! No problems found</source>
       <translation>すべて良好！問題は見つかりませんでした</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1654"/>
+      <location filename="ArchCommands.py" line="1661"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>オブジェクトにIfcProperties属性がありません。このオブジェクトのためのスプレッドシート作成をキャンセルしてください：</translation>
     </message>
@@ -3204,37 +3209,37 @@
       <translation>外部参照を作成</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1503"/>
+      <location filename="ArchSectionPlane.py" line="1505"/>
       <source>Section plane settings</source>
       <translation>断面平面の設定</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1508"/>
+      <location filename="ArchSectionPlane.py" line="1510"/>
       <source>Objects seen by this section plane:</source>
       <translation type="unfinished">Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1509"/>
+      <location filename="ArchSectionPlane.py" line="1511"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1510"/>
+      <location filename="ArchSectionPlane.py" line="1512"/>
       <source>Rotate X</source>
       <translation>X軸で回転</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1512"/>
+      <location filename="ArchSectionPlane.py" line="1514"/>
       <source>Rotate Y</source>
       <translation>Y軸で回転</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1514"/>
+      <location filename="ArchSectionPlane.py" line="1516"/>
       <source>Rotate Z</source>
       <translation>Z軸で回転</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1516"/>
+      <location filename="ArchSectionPlane.py" line="1518"/>
       <source>Resize</source>
       <translation>リサイズ</translation>
     </message>
@@ -3369,42 +3374,42 @@
       <translation>インポート成功</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1505"/>
+      <location filename="ArchSectionPlane.py" line="1507"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>リスト上からハイライトしたオブジェクトを削除します</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1506"/>
+      <location filename="ArchSectionPlane.py" line="1508"/>
       <source>Add selected</source>
       <translation>選択追加</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1507"/>
+      <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>選択したオブジェクト(複数可) をこの断面平面のスコープに追加</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1511"/>
+      <location filename="ArchSectionPlane.py" line="1513"/>
       <source>Rotates the plane along the X axis</source>
       <translation>X軸に沿って平面を回転</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1513"/>
+      <location filename="ArchSectionPlane.py" line="1515"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Y軸に沿って平面を回転</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1515"/>
+      <location filename="ArchSectionPlane.py" line="1517"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Z軸に沿って平面を回転</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1517"/>
+      <location filename="ArchSectionPlane.py" line="1519"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>リスト上のオブジェクトがフィットするように平面のサイズを変更します</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1519"/>
+      <location filename="ArchSectionPlane.py" line="1521"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -3891,12 +3896,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="1349"/>
+      <location filename="ArchCommands.py" line="1356"/>
       <source>Add component</source>
       <translation>コンポーネントを追加</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1352"/>
+      <location filename="ArchCommands.py" line="1359"/>
       <source>Adds the selected components to the active object</source>
       <translation>選択したコンポーネントをアクティブなオブジェクトに追加します</translation>
     </message>
@@ -3974,12 +3979,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1537"/>
+      <location filename="ArchCommands.py" line="1544"/>
       <source>Check</source>
       <translation>チェック</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1540"/>
+      <location filename="ArchCommands.py" line="1547"/>
       <source>Checks the selected objects for problems</source>
       <translation>選択されているオブジェクトの問題を確認します</translation>
     </message>
@@ -3987,12 +3992,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="ArchCommands.py" line="1613"/>
+      <location filename="ArchCommands.py" line="1620"/>
       <source>Clone component</source>
       <translation>コンポーネントのクローン</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1617"/>
+      <location filename="ArchCommands.py" line="1624"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>オブジェクトを未定義建築コンポーネントとしてクローン</translation>
     </message>
@@ -4000,12 +4005,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1520"/>
+      <location filename="ArchCommands.py" line="1527"/>
       <source>Close holes</source>
       <translation>穴をふさぐ</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1523"/>
+      <location filename="ArchCommands.py" line="1530"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>開いたシェイプの穴をふさいでソリッドにします</translation>
     </message>
@@ -4013,12 +4018,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1588"/>
+      <location filename="ArchCommands.py" line="1595"/>
       <source>Component</source>
       <translation>コンポーネント</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1592"/>
+      <location filename="ArchCommands.py" line="1599"/>
       <source>Creates an undefined architectural component</source>
       <translation>未定義建築コンポーネントを作成</translation>
     </message>
@@ -4177,12 +4182,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1663"/>
+      <location filename="ArchCommands.py" line="1670"/>
       <source>Create IFC spreadsheet...</source>
       <translation>IFCスプレッドシートを作成...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1667"/>
+      <location filename="ArchCommands.py" line="1674"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>オブジェクトのIFCプロパティーを保存するためのスプレッドシートを作成</translation>
     </message>
@@ -4224,12 +4229,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1441"/>
+      <location filename="ArchCommands.py" line="1448"/>
       <source>Mesh to Shape</source>
       <translation>メッシュからシェイプへ</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1444"/>
+      <location filename="ArchCommands.py" line="1451"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>選択されているメッシュをパートシェイプオブジェクトへ変換します</translation>
     </message>
@@ -4396,12 +4401,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="1381"/>
+      <location filename="ArchCommands.py" line="1388"/>
       <source>Remove component</source>
       <translation>コンポーネントの削除</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1384"/>
+      <location filename="ArchCommands.py" line="1391"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>選択されているオブジェクトを親オブジェクトから取り除くか、またはコンポーネントに穴を作成します</translation>
     </message>
@@ -4409,12 +4414,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1505"/>
+      <location filename="ArchCommands.py" line="1512"/>
       <source>Remove Shape from Arch</source>
       <translation>Archからシェイプを削除します。</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1508"/>
+      <location filename="ArchCommands.py" line="1515"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Archコンポーネントから立方体シェイプを取り除きます</translation>
     </message>
@@ -4461,12 +4466,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1476"/>
+      <location filename="ArchCommands.py" line="1483"/>
       <source>Select non-manifold meshes</source>
       <translation>ノンマニフォールドメッシュを選択</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1479"/>
+      <location filename="ArchCommands.py" line="1486"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>ドキュメントまたは選択されているグループから全てのノンマニフォールドメッシュを選択</translation>
     </message>
@@ -4505,12 +4510,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1416"/>
+      <location filename="ArchCommands.py" line="1423"/>
       <source>Split Mesh</source>
       <translation>メッシュを分割</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1419"/>
+      <location filename="ArchCommands.py" line="1426"/>
       <source>Splits selected meshes into independent components</source>
       <translation>選択されたメッシュを分割して独立したコンポーネントにします</translation>
     </message>
@@ -4539,12 +4544,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1558"/>
+      <location filename="ArchCommands.py" line="1565"/>
       <source>Survey</source>
       <translation>調査</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1561"/>
+      <location filename="ArchCommands.py" line="1568"/>
       <source>Starts survey</source>
       <translation>調査開始</translation>
     </message>
@@ -4552,12 +4557,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1573"/>
+      <location filename="ArchCommands.py" line="1580"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep フラグの切り替え</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1576"/>
+      <location filename="ArchCommands.py" line="1583"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>オブジェクトを強制的に Brep としてエクスポートするかどうか</translation>
     </message>
@@ -4565,12 +4570,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="ArchCommands.py" line="1689"/>
+      <location filename="ArchCommands.py" line="1696"/>
       <source>Toggle subcomponents</source>
       <translation>サブコンポーネントを切り替え</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1692"/>
+      <location filename="ArchCommands.py" line="1699"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>このオブジェクトのサブコンポーネントを表示/非表示</translation>
     </message>

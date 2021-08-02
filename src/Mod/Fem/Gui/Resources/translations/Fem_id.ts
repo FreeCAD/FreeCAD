@@ -75,6 +75,11 @@
       <translation>Pemilih referensi geometri untuk</translation>
     </message>
     <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Pemilih referensi geometri untuk </translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Menambahkan</translation>
@@ -90,6 +95,21 @@
       <translation>Klik "Tambahkan" dan pilih elemen geometri untuk menambahkannya ke daftar.</translation>
     </message>
     <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>Elemen geometri berikut adalah yang diperbolehkan untuk dipilih: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>Jika tidak ada geometri yang ditambahkan ke daftar, semua yang tersisa akan digunakan.</translation>
+    </message>
+    <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on "Add" and select geometric elements to add to the list.</source>
       <translation>Klik "Tambahkan" dan pilih elemen geometri untuk menambahkan ke daftar.</translation>
@@ -100,14 +120,9 @@
       <translation>Klik 'Tambahkan' dan pilih elemen geometri untuk menambahkannya ke daftar.</translation>
     </message>
     <message>
-      <location filename="selection_widgets.py" line="281"/>
-      <source>The following geometry elements are allowed to select: </source>
-      <translation>Elemen geometri berikut adalah yang diperbolehkan untuk dipilih: </translation>
-    </message>
-    <message>
-      <location filename="selection_widgets.py" line="283"/>
-      <source>If no geometry is added to the list, all remaining ones are used.</source>
-      <translation>Jika tidak ada geometri yang ditambahkan ke daftar, semua yang tersisa akan digunakan.</translation>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -118,11 +133,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Padat</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Pemilih referensi geometri untuk </translation>
     </message>
   </context>
   <context>

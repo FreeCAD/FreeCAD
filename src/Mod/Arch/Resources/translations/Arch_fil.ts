@@ -574,47 +574,47 @@
       <translation>Kung mali, ang mga di-solido ay pumutol din, na may posibleng mga maling resulta.</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="995"/>
+      <location filename="ArchSectionPlane.py" line="997"/>
       <source>The display length of this section plane</source>
       <translation>Ang haba ng displey ng seksyon na ito ay patag</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1001"/>
+      <location filename="ArchSectionPlane.py" line="1003"/>
       <source>The display height of this section plane</source>
       <translation>Ang haba ng displey ng seksyon na ito ay patag</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1007"/>
+      <location filename="ArchSectionPlane.py" line="1009"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Ang sukat ng palaso sa sekyon na ito ay patag</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1021"/>
+      <location filename="ArchSectionPlane.py" line="1023"/>
       <source>Show the cut in the 3D view</source>
       <translation>Ipakita ang hiwa sa tatlong dimensyong tanaw</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1268"/>
+      <location filename="ArchSectionPlane.py" line="1270"/>
       <source>The rendering mode to use</source>
       <translation>Ang maglalapat sa paraan ng paggamit</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1272"/>
+      <location filename="ArchSectionPlane.py" line="1274"/>
       <source>If cut geometry is shown or not</source>
       <translation>Kapag hiniwa ang heometriya ito ba ay magpapakita o hindi</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1274"/>
+      <location filename="ArchSectionPlane.py" line="1276"/>
       <source>If cut geometry is filled or not</source>
       <translation>Kapag hiniwa ang heometriya ito ba ay tambak o hindi</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1279"/>
+      <location filename="ArchSectionPlane.py" line="1281"/>
       <source>The size of the texts inside this object</source>
       <translation>Ang sukat ng mga teksto sa loob ng bagay na ito</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1282"/>
+      <location filename="ArchSectionPlane.py" line="1284"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Kapag tsek, ang pinagmulan ng bagay ay ipamalas ng hindi alintana ang pagiging tatlong dimensyong modelo na nakikita</translation>
     </message>
@@ -769,7 +769,7 @@
       <translation>Ang teksto upang ipakita ay. Gamitin ang $area, $label, $tag, $floor, $walls, $ceiling upang ipasok ang kani kanilang datus</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1028"/>
+      <location filename="ArchSectionPlane.py" line="1030"/>
       <source>The name of the font</source>
       <translation>Ang pangalan ng titik</translation>
     </message>
@@ -779,7 +779,7 @@
       <translation>Ang kulay ng lugar ng teksto</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1031"/>
+      <location filename="ArchSectionPlane.py" line="1033"/>
       <source>The size of the text font</source>
       <translation>Ang sukat ng teksto ng titik</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>Ang listahan ng mga hanay thicknesses</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1284"/>
+      <location filename="ArchSectionPlane.py" line="1286"/>
       <source>The line color of the projected objects</source>
       <translation>Ang kulay ng linya ng inaasahang layunin</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1286"/>
+      <location filename="ArchSectionPlane.py" line="1288"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Ang kulay ng mga mukha ng cut (kung naka-on)</translation>
     </message>
@@ -1219,7 +1219,7 @@
       <translation type="unfinished">The shape of this object</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1013"/>
+      <location filename="ArchSectionPlane.py" line="1015"/>
       <source>The line width of this object</source>
       <translation type="unfinished">The line width of this object</translation>
     </message>
@@ -1349,17 +1349,17 @@
       <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1010"/>
+      <location filename="ArchSectionPlane.py" line="1012"/>
       <source>The transparency of this object</source>
       <translation type="unfinished">The transparency of this object</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1018"/>
+      <location filename="ArchSectionPlane.py" line="1020"/>
       <source>The color of this object</source>
       <translation type="unfinished">The color of this object</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1023"/>
+      <location filename="ArchSectionPlane.py" line="1025"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
     </message>
@@ -1989,7 +1989,7 @@
       <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1026"/>
+      <location filename="ArchSectionPlane.py" line="1028"/>
       <source>Show the label in the 3D view</source>
       <translation type="unfinished">Show the label in the 3D view</translation>
     </message>
@@ -2037,6 +2037,11 @@
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
       <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+    </message>
+    <message>
+      <location filename="ArchSectionPlane.py" line="933"/>
+      <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
+      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
     </message>
   </context>
   <context>
@@ -2087,47 +2092,47 @@
       <translation>Anggulo</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="704"/>
+      <location filename="ArchCommands.py" line="711"/>
       <source>is not closed</source>
       <translation>hindi sarado</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="706"/>
+      <location filename="ArchCommands.py" line="713"/>
       <source>is not valid</source>
       <translation>hindi katanggap tanggap</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="708"/>
+      <location filename="ArchCommands.py" line="715"/>
       <source>doesn't contain any solid</source>
       <translation>hindi naglalaman ng kahit solido</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="714"/>
+      <location filename="ArchCommands.py" line="721"/>
       <source>contains a non-closed solid</source>
       <translation>naglalaman ng hindi saradong solido</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="716"/>
+      <location filename="ArchCommands.py" line="723"/>
       <source>contains faces that are not part of any solid</source>
       <translation>naglalaman ng mga anyo na hindi parte ng mga kahit anong solido</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1362"/>
+      <location filename="ArchCommands.py" line="1369"/>
       <source>Grouping</source>
       <translation>Pagpapangkat</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1394"/>
+      <location filename="ArchCommands.py" line="1401"/>
       <source>Ungrouping</source>
       <translation>Paghihiwalay</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1425"/>
+      <location filename="ArchCommands.py" line="1432"/>
       <source>Split Mesh</source>
       <translation>Biak na mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1465"/>
+      <location filename="ArchCommands.py" line="1472"/>
       <source>Mesh to Shape</source>
       <translation>Hugis para sa mata</translation>
     </message>
@@ -2267,12 +2272,12 @@
       <translation>matagumpay na pagkakagawa sa payl %s.</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1358"/>
+      <location filename="ArchCommands.py" line="1365"/>
       <source>Add space boundary</source>
       <translation>Dagdagan ang hangganan ng espasyo</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1390"/>
+      <location filename="ArchCommands.py" line="1397"/>
       <source>Remove space boundary</source>
       <translation>Alisin ang mga hangganan ng espasyo</translation>
     </message>
@@ -2357,17 +2362,17 @@
       <translation>Gumawa ng sistema para sa mga istruktura</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1157"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Ang mga bagay ay walang katangian ng mga sitabol na IFC</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1156"/>
+      <location filename="ArchCommands.py" line="1163"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Ipahinto ang puwersa ng brep na bandila sa mga bagay</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1162"/>
+      <location filename="ArchCommands.py" line="1169"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Paganahin ang puwersa ng brep na bandila sa mga bagay</translation>
     </message>
@@ -2487,7 +2492,7 @@
       <translation>Taas (mm)</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1623"/>
+      <location filename="ArchCommands.py" line="1630"/>
       <source>Create Component</source>
       <translation>Gumawa ng mga sangkap</translation>
     </message>
@@ -2512,22 +2517,22 @@
       <translation>Kategorya</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1644"/>
+      <location filename="ArchCommands.py" line="1651"/>
       <source>Key</source>
       <translation>Susi</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1646"/>
+      <location filename="ArchCommands.py" line="1653"/>
       <source>Value</source>
       <translation>Halaga</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1647"/>
+      <location filename="ArchCommands.py" line="1654"/>
       <source>Unit</source>
       <translation>Unit</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1672"/>
+      <location filename="ArchCommands.py" line="1679"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Gumawa ng katangian ng spreadsheet</translation>
     </message>
@@ -2727,7 +2732,7 @@
       <translation>Mag angkat ng CSV sa hanay</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1108"/>
+      <location filename="ArchCommands.py" line="1115"/>
       <source>Export CSV File</source>
       <translation>Mga padala ng mga CSV sa hanay</translation>
     </message>
@@ -2949,47 +2954,47 @@
       <translation>Mga pasimulang aral ng window</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1011"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Survey</source>
       <translation>Pagsisiyasat</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1012"/>
+      <location filename="ArchCommands.py" line="1019"/>
       <source>Set description</source>
       <translation>Itakda ang paglalarawan</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1013"/>
+      <location filename="ArchCommands.py" line="1020"/>
       <source>Clear</source>
       <translation>Malinaw</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1014"/>
+      <location filename="ArchCommands.py" line="1021"/>
       <source>Copy Length</source>
       <translation>Kopyahin ang Haba</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1015"/>
+      <location filename="ArchCommands.py" line="1022"/>
       <source>Copy Area</source>
       <translation>Kopyahin ang Lugar</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1023"/>
       <source>Export CSV</source>
       <translation>-I-luwas ang CSV</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1017"/>
+      <location filename="ArchCommands.py" line="1024"/>
       <source>Description</source>
       <translation>Paglalarawan</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1019"/>
+      <location filename="ArchCommands.py" line="1026"/>
       <source>Area</source>
       <translation>Laki</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1066"/>
+      <location filename="ArchCommands.py" line="1073"/>
       <source>Total</source>
       <translation>Kabuuan</translation>
     </message>
@@ -3039,17 +3044,17 @@
       <translation type="unfinished">Create BuildingPart</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="426"/>
+      <location filename="ArchCommands.py" line="427"/>
       <source>Invalid cutplane</source>
       <translation type="unfinished">Invalid cutplane</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1546"/>
+      <location filename="ArchCommands.py" line="1553"/>
       <source>All good! No problems found</source>
       <translation type="unfinished">All good! No problems found</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1654"/>
+      <location filename="ArchCommands.py" line="1661"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
     </message>
@@ -3204,37 +3209,37 @@
       <translation type="unfinished">Create external reference</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1503"/>
+      <location filename="ArchSectionPlane.py" line="1505"/>
       <source>Section plane settings</source>
       <translation type="unfinished">Section plane settings</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1508"/>
+      <location filename="ArchSectionPlane.py" line="1510"/>
       <source>Objects seen by this section plane:</source>
       <translation type="unfinished">Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1509"/>
+      <location filename="ArchSectionPlane.py" line="1511"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1510"/>
+      <location filename="ArchSectionPlane.py" line="1512"/>
       <source>Rotate X</source>
       <translation type="unfinished">Rotate X</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1512"/>
+      <location filename="ArchSectionPlane.py" line="1514"/>
       <source>Rotate Y</source>
       <translation type="unfinished">Rotate Y</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1514"/>
+      <location filename="ArchSectionPlane.py" line="1516"/>
       <source>Rotate Z</source>
       <translation type="unfinished">Rotate Z</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1516"/>
+      <location filename="ArchSectionPlane.py" line="1518"/>
       <source>Resize</source>
       <translation type="unfinished">Resize</translation>
     </message>
@@ -3369,42 +3374,42 @@
       <translation>Matagumpay na naimport</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1505"/>
+      <location filename="ArchSectionPlane.py" line="1507"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1506"/>
+      <location filename="ArchSectionPlane.py" line="1508"/>
       <source>Add selected</source>
       <translation>Idagdag ang mga napili</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1507"/>
+      <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1511"/>
+      <location filename="ArchSectionPlane.py" line="1513"/>
       <source>Rotates the plane along the X axis</source>
       <translation type="unfinished">Rotates the plane along the X axis</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1513"/>
+      <location filename="ArchSectionPlane.py" line="1515"/>
       <source>Rotates the plane along the Y axis</source>
       <translation type="unfinished">Rotates the plane along the Y axis</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1515"/>
+      <location filename="ArchSectionPlane.py" line="1517"/>
       <source>Rotates the plane along the Z axis</source>
       <translation type="unfinished">Rotates the plane along the Z axis</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1517"/>
+      <location filename="ArchSectionPlane.py" line="1519"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="1519"/>
+      <location filename="ArchSectionPlane.py" line="1521"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -3891,12 +3896,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="1349"/>
+      <location filename="ArchCommands.py" line="1356"/>
       <source>Add component</source>
       <translation>Magdagdag ng mga sangkap</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1352"/>
+      <location filename="ArchCommands.py" line="1359"/>
       <source>Adds the selected components to the active object</source>
       <translation>Idagdag ang mga piling sangkap sa mga aktibong bagay</translation>
     </message>
@@ -3974,12 +3979,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1537"/>
+      <location filename="ArchCommands.py" line="1544"/>
       <source>Check</source>
       <translation>Tsek</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1540"/>
+      <location filename="ArchCommands.py" line="1547"/>
       <source>Checks the selected objects for problems</source>
       <translation>Para sa mga problema tsekan ang mga napiling bagay</translation>
     </message>
@@ -3987,12 +3992,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="ArchCommands.py" line="1613"/>
+      <location filename="ArchCommands.py" line="1620"/>
       <source>Clone component</source>
       <translation>Kopya ng mga sangkap</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1617"/>
+      <location filename="ArchCommands.py" line="1624"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Gumawa ng kopya ng mga bagay para sa mga arkitektura na sangkap na hindi naipaliwanag</translation>
     </message>
@@ -4000,12 +4005,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1520"/>
+      <location filename="ArchCommands.py" line="1527"/>
       <source>Close holes</source>
       <translation>Saradong butas</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1523"/>
+      <location filename="ArchCommands.py" line="1530"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Tinatanggal ang mga butas sa bukas na mga hugis, nagiging mga solido</translation>
     </message>
@@ -4013,12 +4018,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1588"/>
+      <location filename="ArchCommands.py" line="1595"/>
       <source>Component</source>
       <translation>Isa sa bumubuò</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1592"/>
+      <location filename="ArchCommands.py" line="1599"/>
       <source>Creates an undefined architectural component</source>
       <translation>Lumilikha ng hindi natukoy na arkitektural na bahagi</translation>
     </message>
@@ -4177,12 +4182,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1663"/>
+      <location filename="ArchCommands.py" line="1670"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Gumawa ng IFC spreadsyit...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1667"/>
+      <location filename="ArchCommands.py" line="1674"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation type="unfinished">Creates a spreadsheet to store IFC properties of an object.</translation>
     </message>
@@ -4224,12 +4229,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1441"/>
+      <location filename="ArchCommands.py" line="1448"/>
       <source>Mesh to Shape</source>
       <translation>Hugis para sa mata</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1444"/>
+      <location filename="ArchCommands.py" line="1451"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Pagiiba ng napiling mesyes papunta sa bahagi ng mga bagay na hugis</translation>
     </message>
@@ -4396,12 +4401,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="1381"/>
+      <location filename="ArchCommands.py" line="1388"/>
       <source>Remove component</source>
       <translation>Alisin ang mga sangkap</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1384"/>
+      <location filename="ArchCommands.py" line="1391"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Alisin ang mga napiling bahagi na mula sa kanilang mga magulang, o gumawa ng butas sa isang bahagi</translation>
     </message>
@@ -4409,12 +4414,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1505"/>
+      <location filename="ArchCommands.py" line="1512"/>
       <source>Remove Shape from Arch</source>
       <translation>Alisin ang mga hugis mula sa arko</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1508"/>
+      <location filename="ArchCommands.py" line="1515"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Alisin ang mga hugis kubiko mula sa bahagi ng arko</translation>
     </message>
@@ -4461,12 +4466,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1476"/>
+      <location filename="ArchCommands.py" line="1483"/>
       <source>Select non-manifold meshes</source>
       <translation>Pumili ng hindi maraming mesyes</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1479"/>
+      <location filename="ArchCommands.py" line="1486"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Piliin ang lahat ng hindi maraming mesyes na mula sa dokumento o mula sa mga napiling grupo</translation>
     </message>
@@ -4505,12 +4510,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1416"/>
+      <location filename="ArchCommands.py" line="1423"/>
       <source>Split Mesh</source>
       <translation>Biak na mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1419"/>
+      <location filename="ArchCommands.py" line="1426"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Pagkakahati sa mga napiling meshes patungo sa pagkakahiwalay na mga bahagi</translation>
     </message>
@@ -4539,12 +4544,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1558"/>
+      <location filename="ArchCommands.py" line="1565"/>
       <source>Survey</source>
       <translation>Pagsisiyasat</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1561"/>
+      <location filename="ArchCommands.py" line="1568"/>
       <source>Starts survey</source>
       <translation>Simulan ang pagsisiyasat</translation>
     </message>
@@ -4552,12 +4557,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1573"/>
+      <location filename="ArchCommands.py" line="1580"/>
       <source>Toggle IFC Brep flag</source>
       <translation>I-tagel ang IFC at brep na watawat</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1576"/>
+      <location filename="ArchCommands.py" line="1583"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Pwersahin ang mga bagay upang mapalabas bilang brep o kaya ay hindi</translation>
     </message>
@@ -4565,12 +4570,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="ArchCommands.py" line="1689"/>
+      <location filename="ArchCommands.py" line="1696"/>
       <source>Toggle subcomponents</source>
       <translation>I-tagel ang iba't ibang bahagi</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1692"/>
+      <location filename="ArchCommands.py" line="1699"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Ipakita o itago ang mga iba't ibang bahagi ng mga bagay na ito</translation>
     </message>

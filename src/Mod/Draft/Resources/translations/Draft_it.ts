@@ -560,59 +560,39 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <translation>Fattore di parametrizzazione</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
       <translation>L'oggetto di base che questa vista 2D deve rappresentare</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
       <translation>Il vettore di proiezione di questo oggetto</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
       <translation>Il modo in cui l'oggetto osservato deve essere proiettato</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>Gli indici delle facce da proiettare in modalità Facce singole</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>Visualizza le linee nascoste</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation>Fusione delle pareti e degli oggetti della struttura dello stesso tipo e materiale</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="79"/>
+      <location filename="shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>Tessellare ellissi e B-spline in segmenti di linea</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation>Per le modalità Cutlines e Cutfaces, 
-                questo lascia le facce nella posizione di taglio</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation>Lunghezza dei segmenti di linea per tessellare ellissi o B-spline</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation>Se questo è vero, questo oggetto sarà ricalcolato solo se è 
-                visibile</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -1013,62 +993,62 @@ beyond the dimension line</source>
       <translation>Il colore della riga degli oggetti contenuti in questo layer, quando usato in una pagina TechDraw</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>Spessore linea</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Colore della linea</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation>Dimensione del testo</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
       <translation>Il carattere del testo</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
       <translation>L'allineamento verticale del testo</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation>Colore testo</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Interlinea (relativo alla dimensione del carattere)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation>Il numero massimo di caratteri in ogni riga della casella di testo</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
       <translation>La dimensione della freccia</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
       <translation>Il tipo di freccia di questa etichetta</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
       <translation>Il tipo di cornice attorno al testo di questo oggetto</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation>Visualizza linee guida o no</translation>
     </message>
@@ -1085,7 +1065,7 @@ beyond the dimension line</source>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Fattore di rotazione dell'array attorcigliato.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="59"/>
@@ -1102,9 +1082,42 @@ Lasciare vuoto per il sistema predefinito.
 Usare 'arch' per forzare la notazione dell'arco statunitense</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="102"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Un elenco di punti di esclusione. Qualsiasi bordo che tocca uno di questi punti non sarà disegnato.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation>Per le modalità Cutlines e Cutfaces, 
+                questo lascia le facce nella posizione di taglio</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation>Lunghezza dei segmenti di linea per tassellare ellissi o B-spline</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation>Se questo è vero, viene gestita solo la geometria solida. Questo sovrascrive la proprietà Solidi dell'oggetto base</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation>Se questo è vero, i contenuti vengono ritagliati ai bordi del piano di sezione, se applicabile. Questo sovrascrive la proprietà Clip dell'oggetto base</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1630,29 +1643,29 @@ La Serie può essere trasformata in una serie polare o circolare cambiandone il 
       <translation>La direzione di Offset non è definita. Si prega di spostare il mouse su entrambi i lati dell'oggetto prima per indicare una direzione</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="259"/>
+      <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation>Salva stile</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="260"/>
+      <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
       <translation>Nome di questo nuovo stile:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="268"/>
+      <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
       <translation>Il nome esiste. Sovrascrivere?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="303"/>
+      <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Errore: modulo json non trovato. Impossibile salvare lo stile</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="267"/>
+      <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Attenzione</translation>
     </message>
   </context>
   <context>
@@ -3742,19 +3755,39 @@ utilizzando i tasti [ e ] durante il disegno</translation>
       <translation>Salva lo stile corrente come preimpostato...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
       <translation>Applica lo stile sopra agli oggetti selezionati</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>Selezionato</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
       <translation>Testi/quote</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Spaziatura del testo</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation>La spaziatura tra il testo e la linea di quota</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Interlinea</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation>La spaziatura tra le righe del testo</translation>
     </message>
   </context>
   <context>
@@ -6989,12 +7022,12 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
       <translation>Selezionare un oggetto Draft da modificare</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="563"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
       <translation>Nessun punto di modifica trovato per l'oggetto selezionato</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="823"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation>: questo oggetto non è modificabile</translation>
     </message>
@@ -7378,37 +7411,37 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Locale u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Locale u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Locale u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Globale u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Globale u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Globale u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Auto-gruppo:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
@@ -7431,7 +7464,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Impossibile scalare gli oggetti:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="815"/>
+      <location filename="gui_edit.py" line="814"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Troppi oggetti selezionati, numero massimo impostato a:</translation>
     </message>
@@ -7449,7 +7482,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
+      <translation>Le forme selezionate devono definire un piano
 </translation>
     </message>
   </context>

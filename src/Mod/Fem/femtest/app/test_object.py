@@ -234,6 +234,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintSelfWeight(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintCentrif",
+            type_of_obj(ObjectsFem.makeConstraintCentrif(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintTemperature",
             type_of_obj(ObjectsFem.makeConstraintTemperature(doc))
         )
@@ -317,6 +321,10 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual(
             "Fem::SolverElmer",
             type_of_obj(solverelmer)
+        )
+        self.assertEqual(
+            "Fem::SolverMystran",
+            type_of_obj(ObjectsFem.makeSolverMystran(doc))
         )
         self.assertEqual(
             "Fem::SolverZ88",
@@ -443,6 +451,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintSelfWeight"
         ))
         self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintCentrif(doc),
+            "Fem::ConstraintCentrif"
+        ))
+        self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintTemperature(doc),
             "Fem::ConstraintTemperature"
         ))
@@ -528,6 +540,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             solverelmer,
             "Fem::SolverElmer"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeSolverMystran(doc),
+            "Fem::SolverMystran"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeSolverZ88(doc),
@@ -871,6 +887,21 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintSelfWeight"
         ))
 
+        # ConstraintCentrif
+        constraint_centrif = ObjectsFem.makeConstraintCentrif(doc)
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "Fem::ConstraintCentrif"
+        ))
+
         # ConstraintTemperature
         constraint_temperature = ObjectsFem.makeConstraintTemperature(doc)
         self.assertTrue(is_derived_from(
@@ -1194,6 +1225,25 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverElmer"
         ))
 
+        # SolverMystran
+        solver_mystran = ObjectsFem.makeSolverMystran(doc)
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::FemSolverObject"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::FemSolverObjectPython"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::SolverMystran"
+        ))
+
         # SolverZ88
         solver_z88 = ObjectsFem.makeSolverZ88(doc)
         self.assertTrue(is_derived_from(
@@ -1416,6 +1466,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintCentrif(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintTemperature(
                 doc
             ).isDerivedFrom("Fem::ConstraintTemperature")
@@ -1521,6 +1576,11 @@ class TestObjectType(unittest.TestCase):
             solverelmer.isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(
+            ObjectsFem.makeSolverMystran(
+                doc
+            ).isDerivedFrom("Fem::FemSolverObjectPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeSolverZ88(
                 doc
             ).isDerivedFrom("Fem::FemSolverObjectPython")
@@ -1595,6 +1655,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
     analysis.addObject(ObjectsFem.makeConstraintSectionPrint(doc))
     analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
+    analysis.addObject(ObjectsFem.makeConstraintCentrif(doc))
     analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
     analysis.addObject(ObjectsFem.makeConstraintTie(doc))
     analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
@@ -1628,6 +1689,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
+    analysis.addObject(ObjectsFem.makeSolverMystran(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
     ObjectsFem.makeEquationElasticity(doc, sol)

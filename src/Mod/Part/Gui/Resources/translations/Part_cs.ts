@@ -364,16 +364,6 @@ Výsledné části budou definovány jako složenina.
       <translation>Rozdělit plátkováním</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleovské fragmenty</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Rozdělit objekty, kde se protínají</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -395,6 +385,16 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 nebo s tvary uvnitř složeniny.
 To znamená, že budou odstraněny překrývající se objemy tvarů.
 K extrakci zbývajících částí může být použitý 'Filtr složenin'.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleovské fragmenty</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Rozdělit objekty, kde se protínají</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

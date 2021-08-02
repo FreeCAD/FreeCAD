@@ -62,6 +62,11 @@ import Test, femtest.app.test_common
 Test.runTestsFromClass(femtest.app.test_common.TestFemCommon)
 
 ```
+```python
+import Test, femtest.app.test_solver_calculix
+Test.runTestsFromClass(femtest.app.test_solver_calculix.TestSolverCalculix)
+
+```
 
 ### method
 

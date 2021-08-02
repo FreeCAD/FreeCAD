@@ -566,60 +566,39 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
       <translation>Paraméterezés tényező</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
       <translation>Az alap tárgyat ennek a 2D nézetnek kell képviselnie</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
       <translation>Ennek a tárgynak a vetítési vektora</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
       <translation>A megtekintett tárgy vetítésének az útja</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>A mutatott felületek vetítése az Egyéni felület módban</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>Mutassa a rejtett vonalakat</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation>Ugyanazon típusú anyagból készült fal és építő elemeket olvaszt egybe</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="79"/>
+      <location filename="shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>Mozaikos ellipsziseket és B-Görbéket vonalszakaszokba</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation>Szakaszvonal- és szakaszfelületi üzemmódoknál 
-                  ez a felületeket vágási helyzetben hagyja</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation>A vonalszakaszok hossza ellipszisek vagy B-görbék után 
-                vonalszakaszokká alakítható</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation>Ha ez igaz, a cél csak akkor kerül újraszámításra, ha 
-                látható</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -691,7 +670,7 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
       <translation>A 'Görbe tárgy' csatlakoztatott éleinek listája.
-Ha léteznek, a másolatok csak ezen alelemek mentén jönnek létre.
+Ha léteznek, a másolatok csak ezen al-elemek mentén jönnek létre.
 Hagyja üresen ezt a tulajdonságot, hogy másolatot készítsen a teljes 'Görbe tárgy' mentén.</translation>
     </message>
     <message>
@@ -1022,62 +1001,62 @@ a méretvonalon túl</translation>
       <translation>A rétegen belüli tárgyak vonalszíne, ha MűszakiRajz oldalon használják</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>Vonalvastagság</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Vonalszín</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation>A szöveg mérete</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
       <translation>A szöveg betütípusa</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
       <translation>A szöveg függőleges igazítása</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation>Szöveg szín</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Egyenes illesztés (relatív a betűméretehez)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation>A szöveg doboz soronkénti karaktereinek maximális száma</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
       <translation>A nyíl mérete</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
       <translation>Ennek a címkének a nyíl típusa</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
       <translation>Az tárgy szövege körüli keret típusa</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation>Vezéregyenes mutatása vagy elrejtése</translation>
     </message>
@@ -1111,9 +1090,43 @@ Hagyja üresen a rendszer alapértelmezetthez.
 Használja az 'arch' kifejezést amerikai US arch jelölésének kikényszerítésére</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="102"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>A kizárási pontok listája. A pontok bármelyikét érintő élek nem kerülnek kisorsolásra.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation>Szakaszvonal- és szakaszfelületi üzemmódoknál 
+                  ez a felületeket vágási helyzetben hagyja</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation>A vonalszakaszok hossza ellipszisek vagy B-görbék után 
+                vonalszakaszokká alakítható</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation>Ha ez igaz, csak szilárd geometriát kezelünk. Ez felülírja az alaptárgy Csak szilárd anyagok tulajdonságát</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation>Ha igaz, a tartalom adott esetben a szakaszsík határaira vágott. Ez felülírja az alapobjektum vágási tulajdonságát - Clip</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1636,30 +1649,30 @@ Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megv
     <message>
       <location filename="gui_offset.py" line="326"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation>Az eltolás iránya nem meghatérozott. Először mozgassa az egeret a tárgy egyik oldalára, hogy meghatározza az irányt</translation>
+      <translation>Az eltolás iránya nem meghatározott. Először mozgassa az egeret a tárgy egyik oldalára, hogy meghatározza az irányt</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="259"/>
+      <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation>Stílus mentése</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="260"/>
+      <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
       <translation>Az új stílus neve:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="268"/>
+      <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
       <translation>A név már létezik. Felülírjuk?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="303"/>
+      <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Hiba: a json modul nem található. A stílus mentése sikertelen</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="267"/>
+      <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
       <translation>Riasztás</translation>
     </message>
@@ -3749,19 +3762,39 @@ módosíthatja rajzolás közben</translation>
       <translation>Mentse az aktuális stílust előre beállítottként...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
       <translation>A fenti stílus alkalmazása kijelölt tárgy(ak)ra</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>Kiválasztott</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
       <translation>Szöveg / méretek</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Szövegtérköz</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation>A szöveg- és a méretvonal távolsága</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Sorköz</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation>A különböző szövegsorok közötti térköz</translation>
     </message>
   </context>
   <context>
@@ -7001,12 +7034,12 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Szerkesztéshez tervrajz tárgyat választ</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="563"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
       <translation>A kijelölt tárgyhoz nem található szerkesztési pont</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="823"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation>: ez a tárgy nem szerkeszthető</translation>
     </message>
@@ -7444,7 +7477,7 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>A tárgyak méretezése sikertelen:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="815"/>
+      <location filename="gui_edit.py" line="814"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Túl sok tárgy van kijelölve, a beállított maximális szám:</translation>
     </message>

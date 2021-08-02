@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Vložit měření</translation>
     </message>
     <message>
       <source>Insert text document</source>
@@ -168,7 +168,7 @@
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>Přidat část</translation>
     </message>
     <message>
       <source>Add a group</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Transformace odkazu</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Zadejte výraz...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Výraz: </translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Command</name>
     <message>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Standardní</translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD by nebyl možný bez příspěvků od</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Jednotlivci</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organizace</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Řádky kódu budou očíslovány</translation>
     </message>
   </context>
   <context>
@@ -2552,11 +2552,11 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>Distribuován</translation>
     </message>
     <message>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>Centrální</translation>
     </message>
     <message>
       <source>Transparent objects:</source>
@@ -2568,7 +2568,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Jeden průchod</translation>
     </message>
     <message>
       <source>Backface pass</source>
@@ -2580,7 +2580,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Vzdálenost mezi oky pro stereo režimy</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -3011,7 +3011,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>Výchozí licence pro nové dokumenty</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -3251,11 +3251,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
       <source>Offscreen (New)</source>
-      <translation type="unfinished">Offscreen (New)</translation>
+      <translation>Na pozadí (Nové)</translation>
     </message>
     <message>
       <source>Offscreen (Old)</source>
-      <translation type="unfinished">Offscreen (Old)</translation>
+      <translation>Na pozadí (Staré)</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
@@ -3373,7 +3373,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Počet zástupců</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
@@ -3381,11 +3381,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Modifikátory klávesnice</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Modifikátory klávesnice, výchozí = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3400,11 +3400,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Steps by turn</source>
-      <translation type="unfinished">Steps by turn</translation>
+      <translation>Kroků na otáčku</translation>
     </message>
     <message>
       <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
+      <translation>Počet kroků otáčení při použití šipek (výchozí hodnota = 8 : úhel kroku = 360/8 = 45 °)</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -3446,7 +3446,7 @@ Select a set and then press the button to view said configurations.</translation
     </message>
     <message>
       <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
+      <translation>Nastavení navigace</translation>
     </message>
     <message>
       <source>Orbit style</source>
@@ -3475,8 +3475,8 @@ Turntable: the part will be rotated around the z-axis.</translation>
     <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
-      <translation type="unfinished">Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</translation>
+      <translation>Nastaví přiblížení kamery pro nové dokumenty.
+Hodnota je průměr koule tak, aby se vešla na obrazovku.</translation>
     </message>
     <message>
       <source>mm</source>
@@ -3484,7 +3484,7 @@ The value is the diameter of the sphere to fit on the screen.</translation>
     </message>
     <message>
       <source>Enable animated rotations</source>
-      <translation type="unfinished">Enable animated rotations</translation>
+      <translation>Povolit animované otáčení</translation>
     </message>
     <message>
       <source>Enable animation</source>
@@ -3492,7 +3492,7 @@ The value is the diameter of the sphere to fit on the screen.</translation>
     </message>
     <message>
       <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
+      <translation>Přiblížení bude provedeno na pozici kurzoru myši</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
@@ -3504,7 +3504,7 @@ The value is the diameter of the sphere to fit on the screen.</translation>
     </message>
     <message>
       <source>Direction of zoom operations will be inverted</source>
-      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
+      <translation>Směr operace přiblížení bude obrácen</translation>
     </message>
     <message>
       <source>Invert zoom</source>
@@ -3524,7 +3524,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
+      <translation>3D Rotace bude používat aktuální pozici kurzoru jako střed rotace</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3568,7 +3568,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
+      <translation>Výchozí orientace kamery</translation>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
@@ -3576,7 +3576,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>Režim rotace</translation>
     </message>
     <message>
       <source>Window center</source>
@@ -3584,11 +3584,11 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>Přetáhněte kurzorem</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>Střed objektu</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
@@ -3600,11 +3600,11 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Velikost krychle</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Velikost navigační krychle</translation>
     </message>
     <message>
       <source>How much will be zoomed.
@@ -3740,7 +3740,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <translation>Imperiální jednotky pro stavebnictví (ft, ft/sec)</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
@@ -3795,19 +3795,19 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+      <translation>Povolit zvýraznění výběru a použit určenou barvu</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Barva pozadí pro zobrazení modelu</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>Pozadí bude mít vybranou barvu</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>Barevný přechod získá vybranou barvu jako střední barvu</translation>
     </message>
     <message>
       <source>Bottom color</source>
@@ -3815,7 +3815,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>Pozadí bude mít vybraný barevný přechod</translation>
     </message>
     <message>
       <source>Top color</source>
@@ -3901,7 +3901,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Decimals:</source>
-      <translation type="unfinished">Decimals:</translation>
+      <translation>Desetinná místa:</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
@@ -3909,7 +3909,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Unit category:</source>
-      <translation type="unfinished">Unit category:</translation>
+      <translation>Kategorie jednotky:</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
@@ -3917,7 +3917,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
-      <translation type="unfinished">Copy the result into the clipboard</translation>
+      <translation>Zkopírovat výsledek do schránky</translation>
     </message>
   </context>
   <context>
@@ -3928,7 +3928,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>neznámá jednotka:</translation>
     </message>
   </context>
   <context>
@@ -4522,7 +4522,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Redirect output</source>
-      <translation type="unfinished">Redirect output</translation>
+      <translation>Přesměrování výstupu</translation>
     </message>
   </context>
   <context>
@@ -4617,7 +4617,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Závislost</translation>
     </message>
     <message>
       <source>Document</source>
@@ -4629,11 +4629,11 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>State</source>
-      <translation type="unfinished">State</translation>
+      <translation>Stav</translation>
     </message>
     <message>
       <source>Hierarchy</source>
-      <translation type="unfinished">Hierarchy</translation>
+      <translation>Hierarchie</translation>
     </message>
     <message>
       <source>Selected</source>
@@ -4831,7 +4831,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Seznam vybraných objektů</translation>
     </message>
   </context>
   <context>
@@ -4904,14 +4904,14 @@ Chcete uložit provedené změny?</translation>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Přesná shoda</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Přesná shoda</translation>
     </message>
   </context>
   <context>
@@ -5733,11 +5733,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Box select</source>
-      <translation type="unfinished">Box select</translation>
+      <translation>Výběr oknem</translation>
     </message>
     <message>
       <source>On-top when selected</source>
-      <translation type="unfinished">On-top when selected</translation>
+      <translation>Při výběru nahoře</translation>
     </message>
   </context>
   <context>
@@ -6123,26 +6123,26 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation type="unfinished">Enable or disable recomputating editing object when 'skip recomputation' is enabled</translation>
+      <translation>Povolit nebo zakázat přepočítávání objektu, když je povoleno 'přeskočit přepočítávání'</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Přepočítat objekt</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>Přepočítat vybraný objekt</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (ale musí být provedeno)</translation>
     </message>
   </context>
   <context>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vektory</translation>
     </message>
     <message>
       <source>Table</source>
@@ -6745,23 +6745,23 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Smazání se nezdařilo</translation>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Chyba závislosti</translation>
     </message>
     <message>
       <source>Copy selected</source>
-      <translation type="unfinished">Copy selected</translation>
+      <translation>Kopírovat výběr</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Kopírovat aktivní dokument</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Kopírovat všechny dokumenty</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6769,7 +6769,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Chyba výrazu</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
@@ -6779,11 +6779,11 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Failed to paste expressions</source>
-      <translation type="unfinished">Failed to paste expressions</translation>
+      <translation>Nepodařilo se vložit výrazy</translation>
     </message>
     <message>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>Jednoduchá skupina</translation>
     </message>
     <message>
       <source>Group with links</source>
@@ -6823,7 +6823,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Neplatný název</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
@@ -6833,7 +6833,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>The property '%1' already exists in '%2'</source>
-      <translation type="unfinished">The property '%1' already exists in '%2'</translation>
+      <translation>Vlastnost '%1' již existuje v '%2'</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -6853,7 +6853,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Dokumentu se nezdařilo uložit</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
@@ -6885,7 +6885,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
-      <translation type="unfinished">Apply answer to all</translation>
+      <translation>Použít odpověď na všechny</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
@@ -6893,7 +6893,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>Přepsat barvy...</translation>
     </message>
     <message>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
@@ -6929,7 +6929,7 @@ Cesta: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Identická fyzická cesta</translation>
     </message>
     <message>
       <source>Error</source>
@@ -6951,9 +6951,9 @@ Cesta: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Fyzická cesta: </translation>
     </message>
   </context>
   <context>
@@ -7399,7 +7399,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Vyberte objekty, které chcete exportovat před výběrem exportu.</translation>
     </message>
   </context>
   <context>
@@ -7440,7 +7440,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Přispět na vývoj FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -7636,7 +7636,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
-      <translation type="unfinished">Import selected external link(s)</translation>
+      <translation>Importovat vybrané externí odkaz(y)</translation>
     </message>
   </context>
   <context>
@@ -7651,7 +7651,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
-      <translation type="unfinished">Import all links of the active document</translation>
+      <translation>Importovat všechny odkazy aktivního dokumentu</translation>
     </message>
   </context>
   <context>
@@ -7782,7 +7782,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Zrušit propojení</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -8184,11 +8184,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Nedávná makra</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Seznam nedávných maker</translation>
     </message>
   </context>
   <context>
@@ -8394,11 +8394,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>&amp;Send to Python Console</source>
-      <translation type="unfinished">&amp;Send to Python Console</translation>
+      <translation>&amp;Poslat do konzoly Pythonu</translation>
     </message>
     <message>
       <source>Sends the selected object to the Python console</source>
-      <translation type="unfinished">Sends the selected object to the Python console</translation>
+      <translation>Odelat vybraný objekt do konzoly Pythonu</translation>
     </message>
   </context>
   <context>
@@ -8473,7 +8473,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation type="unfinished">Add text document to active document</translation>
+      <translation>Přidat textový dokument do aktivního dokumentu</translation>
     </message>
   </context>
   <context>
@@ -8645,11 +8645,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Collapse selected item</source>
-      <translation type="unfinished">Collapse selected item</translation>
+      <translation>Sbalit vybranou položku</translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
-      <translation type="unfinished">Collapse currently selected tree items</translation>
+      <translation>Sbalit aktuálně vybrané položky stromu</translation>
     </message>
   </context>
   <context>
@@ -8660,11 +8660,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>Rozbalit vybranou položku</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>Rozbalit aktuálně vybrané položky stromu</translation>
     </message>
   </context>
   <context>
@@ -8679,7 +8679,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>Vybrat všechny instance aktuálně vybraného objektu</translation>
     </message>
   </context>
   <context>
@@ -8690,7 +8690,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation type="unfinished">TreeView actions</translation>
+      <translation>Akce zobrazení stromu</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
@@ -8889,7 +8889,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Nastavit jako výchozí domovské zobrazení</translation>
     </message>
   </context>
   <context>
@@ -9035,11 +9035,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Obnovit uloženou kameru</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Obnovit uložené nastavení kamery</translation>
     </message>
   </context>
   <context>
@@ -9069,7 +9069,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° counter-clockwise</translation>
+      <translation>Otočit pohled o 90° doleva</translation>
     </message>
   </context>
   <context>
@@ -9084,7 +9084,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>Otočit pohled o 90° doprava</translation>
     </message>
   </context>
   <context>
@@ -9095,11 +9095,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Uložit aktuální kameru</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Uložit aktuální nastavení kamery</translation>
     </message>
   </context>
   <context>
@@ -9301,7 +9301,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>Předvýběr</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
@@ -9361,7 +9361,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>Synchronizovat umístění</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
@@ -9376,7 +9376,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Sync selection</source>
-      <translation type="unfinished">Sync selection</translation>
+      <translation>Synchronizovat výběr</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
@@ -9391,7 +9391,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>Synchronizovat zobrazení</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>

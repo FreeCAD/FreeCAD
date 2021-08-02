@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="521"/>
       <source>Export a Raytracing project to a file</source>
-      <translation>将追踪项目导出到文件</translation>
+      <translation>将光线追踪项目导出到文件</translation>
     </message>
   </context>
   <context>

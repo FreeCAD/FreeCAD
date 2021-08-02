@@ -565,60 +565,39 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">Parameterization factor</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
       <translation type="unfinished">The base object this 2D view must represent</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
       <translation type="unfinished">The projection vector of this object</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
       <translation type="unfinished">The way the viewed object must be projected</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>显示隐藏线</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="79"/>
+      <location filename="shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                visible</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -637,12 +616,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>椭圆的短半径</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>椭圆的长半径</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="61"/>
@@ -652,12 +631,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>贝塞尔曲线的点</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>贝塞尔函数的次数</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -667,17 +646,17 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>贝塞尔曲线是封闭的还是开放的</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>如果曲线闭合, 则创建一个面</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>此对象的高度</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
@@ -915,7 +894,7 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="view_dimension.py" line="164"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>将尺寸文本旋转 180 度</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="174"/>
@@ -954,7 +933,7 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
     <message>
       <location filename="view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>尺寸箭头旋转 180 度</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="260"/>
@@ -1021,62 +1000,62 @@ beyond the dimension line</translation>
       <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>线宽</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>线条颜色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation type="unfinished">The size of the text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
       <translation type="unfinished">The font of the text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
       <translation type="unfinished">The vertical alignment of the text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation>文本颜色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
       <translation type="unfinished">Line spacing (relative to font size)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
       <translation type="unfinished">The size of the arrow</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
       <translation type="unfinished">The type of arrow of this label</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
       <translation type="unfinished">The type of frame around the text of this object</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation type="unfinished">Display a leader line or not</translation>
     </message>
@@ -1110,9 +1089,43 @@ Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="102"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation>对于剪切线和剪切板模式， 
+                    这将把面留在切割位置上</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation>镶嵌椭圆或 B 样条时的线段长度 
+                    成线段</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation>如果这是真的，只处理固体几何形状。这将覆盖基础对象的唯一固存属性</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation>如果这是真的，内容将被剪切到部分平面的边框，如果适用，这将覆盖基础对象的片段属性</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1636,27 +1649,27 @@ The array can be turned into a polar or a circular array by changing its type.</
       <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="259"/>
+      <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation type="unfinished">Save style</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="260"/>
+      <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
       <translation type="unfinished">Name of this new style:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="268"/>
+      <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
       <translation type="unfinished">Name exists. Overwrite?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="303"/>
+      <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="267"/>
+      <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
       <translation type="unfinished">Warning</translation>
     </message>
@@ -2223,8 +2236,8 @@ to polar or circular, and its properties can be modified.</translation>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>创建一个 N 次贝塞尔曲线。您选择的点数越多，次数越高。
+按CTRL以捕捉，按SHIFT以约束。</translation>
     </message>
   </context>
   <context>
@@ -2295,9 +2308,9 @@ The resulting clone can be scaled in each of its three directions.</translation>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>创建一个二次(平方)和三次(立方)的贝塞尔曲线。点击并拖动来定义每段。
+在曲线创建后，您可以返回编辑每个控制点并设置每个节点的属性。
+按CTRL以捕捉，按SHIFT以约束.</translation>
     </message>
   </context>
   <context>
@@ -2953,7 +2966,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="334"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
-      <translation type="unfinished">Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</translation>
+      <translation>设置捕捉到圆弧中位于角度30和45度的点。</translation>
     </message>
   </context>
   <context>
@@ -3749,19 +3762,39 @@ value by using the [ and ] keys while drawing</translation>
       <translation type="unfinished">Save current style as a preset...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
       <translation type="unfinished">Apply above style to selected object(s)</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>选定</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
       <translation type="unfinished">Texts/dims</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>文字间距</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation>文本和尺寸线之间的间距</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>行距</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation>文本线条之间的间距</translation>
     </message>
   </context>
   <context>
@@ -6723,7 +6756,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_snaps.py" line="325"/>
       <source>Angle snap (30 and 45 degrees)</source>
-      <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
+      <translation>角度捕捉(30和45度)</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="355"/>
@@ -6996,12 +7029,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Select a Draft object to edit</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="563"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
       <translation type="unfinished">No edit point found for selected object</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="823"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation type="unfinished">: this object is not editable</translation>
     </message>
@@ -7439,7 +7472,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="815"/>
+      <location filename="gui_edit.py" line="814"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7457,7 +7490,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
+      <translation>所选图形必须定义平面
 </translation>
     </message>
   </context>

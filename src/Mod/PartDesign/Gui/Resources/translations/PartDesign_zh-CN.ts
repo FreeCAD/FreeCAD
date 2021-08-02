@@ -624,7 +624,7 @@
     <message>
       <location filename="../../Command.cpp" line="2042"/>
       <source>Make a thick solid</source>
-      <translation>做一个厚的实体</translation>
+      <translation>抽壳</translation>
     </message>
   </context>
   <context>
@@ -875,17 +875,17 @@
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Face tools</source>
       <translation>面工具</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Sketch tools</source>
       <translation>草图工具</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Create Geometry</source>
       <translation>创建几何元素</translation>
     </message>
@@ -1157,7 +1157,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch:</source>
-      <translation>间距:</translation>
+      <translation>节距：</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
@@ -1814,12 +1814,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="96"/>
       <source>Pitch-Height-Angle</source>
-      <translation type="unfinished">Pitch-Height-Angle</translation>
+      <translation>节距-高度-角度</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="101"/>
       <source>Pitch-Turns-Angle</source>
-      <translation type="unfinished">Pitch-Turns-Angle</translation>
+      <translation>节距-圈数-角度</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="106"/>
@@ -1834,7 +1834,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="124"/>
       <source>Pitch:</source>
-      <translation>间距:</translation>
+      <translation>节距：</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="155"/>
@@ -4219,10 +4219,10 @@ Only available for holes without thread</translation>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation type="unfinished">Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</translation>
+      <translation>孔的锥度：
+90度：直孔
+小于90：底部的较小孔半径
+大于90：底部的较大孔半径</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="789"/>
@@ -4386,39 +4386,69 @@ account for the depth of blind holes</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
       <translation>&amp;零件设计</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation type="unfinished">&amp;Sketch</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Create a datum</source>
       <translation>创建基准</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
       <translation>创建增料体</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
       <translation>创建减料特征</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a pattern</source>
       <translation>应用图样</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
       <translation>应用修饰特征</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="60"/>
+      <source>Sprocket...</source>
+      <translation type="unfinished">Sprocket...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Involute gear...</source>
+      <translation type="unfinished">Involute gear...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Shaft design wizard</source>
+      <translation type="unfinished">Shaft design wizard</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="67"/>
+      <source>Measure</source>
+      <translation>测量</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="68"/>
+      <source>Part Design Helper</source>
+      <translation type="unfinished">Part Design Helper</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="69"/>
+      <source>Part Design Modeling</source>
+      <translation type="unfinished">Part Design Modeling</translation>
     </message>
   </context>
 </TS>

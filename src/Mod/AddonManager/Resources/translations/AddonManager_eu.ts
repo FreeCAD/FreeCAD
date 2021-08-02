@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="addonmanager_workers.py" line="534"/>
+      <location filename="addonmanager_workers.py" line="530"/>
       <source>Installed location</source>
       <translation>Instalatutako kokapena</translation>
     </message>
@@ -87,107 +87,107 @@
       <translation>Makroa ezin izan da kendu.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="170"/>
+      <location filename="addonmanager_workers.py" line="166"/>
       <source>Unable to download addon list.</source>
       <translation>Ezin izan da gehigarrien zerrenda deskargatu.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="175"/>
+      <location filename="addonmanager_workers.py" line="171"/>
       <source>Workbenches list was updated.</source>
       <translation>Lan-mahaien zerrenda eguneratu da.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="737"/>
+      <location filename="addonmanager_workers.py" line="733"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>GitPython zaharkitua detektatu da, eguneratu ezazu pip bidez.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="295"/>
+      <location filename="addonmanager_workers.py" line="291"/>
       <source>List of macros successfully retrieved.</source>
       <translation>Makroen zerrenda ongi atzitu da.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="650"/>
+      <location filename="addonmanager_workers.py" line="646"/>
       <source>Retrieving description...</source>
       <translation>Deskribapena atzitzen...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="390"/>
+      <location filename="addonmanager_workers.py" line="386"/>
       <source>Retrieving info from</source>
       <translation>Informazioa berreskuratzen hemendik</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="532"/>
+      <location filename="addonmanager_workers.py" line="528"/>
       <source>An update is available for this addon.</source>
       <translation>Eguneraketa bat eskuragarri dago gehigarri honetarako.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="520"/>
+      <location filename="addonmanager_workers.py" line="516"/>
       <source>This addon is already installed.</source>
       <translation>Gehigarri hau instalatuta dago.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="652"/>
+      <location filename="addonmanager_workers.py" line="648"/>
       <source>Retrieving info from git</source>
       <translation>Informazioa atzitzen git biltegitik</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="655"/>
+      <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving info from wiki</source>
       <translation>Informazioa atzitzen wikitik</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="699"/>
+      <location filename="addonmanager_workers.py" line="695"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython ez da aurkitu. Deskarga estandarra erabiltzen.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="704"/>
+      <location filename="addonmanager_workers.py" line="700"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>Badirudi zure Python bertsioak ez duela ZIP fitxategirik onartzen. Ezin da jarraitu.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="785"/>
+      <location filename="addonmanager_workers.py" line="781"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Lan-mahaia ongi instalatu da. Berrabiarazi FreeCAD aldaketak aplikatzeko.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="834"/>
+      <location filename="addonmanager_workers.py" line="830"/>
       <source>Missing workbench</source>
       <translation>Lan-mahaia falta da</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="843"/>
+      <location filename="addonmanager_workers.py" line="839"/>
       <source>Missing python module</source>
       <translation>Python modulua falta da</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="853"/>
+      <location filename="addonmanager_workers.py" line="849"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Aukerako Python modulua falta da (ez du instalazioa eragozten)</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="856"/>
+      <location filename="addonmanager_workers.py" line="852"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Lan-mahai hau instalatzea eragozten duten zenbait errore aurkitu dira</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="858"/>
+      <location filename="addonmanager_workers.py" line="854"/>
       <source>Please install the missing components first.</source>
       <translation>Instalatu falta diren osagaiak.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="879"/>
+      <location filename="addonmanager_workers.py" line="875"/>
       <source>Error: Unable to download</source>
       <translation>Errorea: Ezin da deskargatu</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="892"/>
+      <location filename="addonmanager_workers.py" line="888"/>
       <source>Successfully installed</source>
       <translation>Ongi instalatu da</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="309"/>
+      <location filename="addonmanager_workers.py" line="305"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>GitPython ez dago instalatuta! Ezin dira makroak atzitu git biltegitik</translation>
     </message>
@@ -207,72 +207,72 @@
       <translation>Berrabiaraztea beharrezkoa da</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="664"/>
+      <location filename="addonmanager_workers.py" line="660"/>
       <source>This macro is already installed.</source>
       <translation>Makro hau instalatuta dago.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="798"/>
+      <location filename="addonmanager_workers.py" line="794"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Makro bat instalatu da eta 'Makroa -&gt; Makroak' menuan erabilgarri dago</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="546"/>
+      <location filename="addonmanager_workers.py" line="542"/>
       <source>This addon is marked as obsolete</source>
       <translation>Gehigarri hau zaharkituta dago</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="550"/>
+      <location filename="addonmanager_workers.py" line="546"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Horrek esan nahi du ez dela mantentzen eta zerrenda honetako gehigarri aurreratuagoren batek funtzionaltasun bera eskaintzen duela.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="872"/>
+      <location filename="addonmanager_workers.py" line="868"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Errorea: Ezin izan da ZIP fitxategia aurkitu</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="318"/>
+      <location filename="addonmanager_workers.py" line="314"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
       <translation>Zerbait gaizki atera da Git makroak atzitzean, ziur aski Git exekutagarria ez dago bidean</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="558"/>
+      <location filename="addonmanager_workers.py" line="554"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>Gehigarri hau Python 2 bertsiorako soilik da</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="563"/>
+      <location filename="addonmanager_workers.py" line="559"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Lan-mahai honek beharbada ez du jadanik mantenimendurik eta Python 3 duen sistema batean instalatzen bada erroreak sortu ditzake bai abioan bai erabiltzen ari denean.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="726"/>
+      <location filename="addonmanager_workers.py" line="722"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>Erabiltzaileak Python 2 lan-mahai bat eguneratzea eskatu du Python 3 duen sistema batean - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="762"/>
+      <location filename="addonmanager_workers.py" line="758"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>Lan-mahaia ongi eguneratu da. Berrabiarazi FreeCAD aldaketak aplikatzeko.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="770"/>
+      <location filename="addonmanager_workers.py" line="766"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>Erabiltzaileak Python 2 lan-mahai bat instalatzea eskatu du Python 3 duen sistema batean - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="342"/>
+      <location filename="addonmanager_workers.py" line="338"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
       <translation>Badirudi arazo bat dagoela wikiarekin konektatzean, ezin da atzitu wikiko makroen zerrenda momentu honetan</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="432"/>
+      <location filename="addonmanager_workers.py" line="428"/>
       <source>Raw markdown displayed</source>
       <translation>Markdown gordina bistaratzen ari da.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="434"/>
+      <location filename="addonmanager_workers.py" line="430"/>
       <source>Python Markdown library is missing.</source>
       <translation>Python Markdown liburutegia falta da.</translation>
     </message>

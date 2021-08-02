@@ -69,7 +69,8 @@ def insert(
 def importFrd(
     filename,
     analysis=None,
-    result_name_prefix=""
+    result_name_prefix="",
+    result_analysis_type=""
 ):
     import ObjectsFem
     from . import importToolsFem
@@ -107,14 +108,23 @@ def importFrd(
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = (
-                        "{}Mode{}_Results"
+                        "{}EigenMode_{}_Results"
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
-                    results_name = (
-                        "{}Time{}_Results"
-                        .format(result_name_prefix, step_time)
-                    )
+
+                    if result_analysis_type == "buckling":
+
+                        results_name = (
+                            "{}BucklingFactor_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
+                    else:
+                        results_name = (
+                            "{}Time_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
+
                 else:
                     results_name = (
                         "{}Results"
@@ -387,7 +397,7 @@ def read_frd_result(
                 CalculiX uses a different node order in
                 input file *.inp and result file *.frd for hexa20 (C3D20)
                 according to Guido (the developer of ccx):
-                see note in in first line of cgx manuel part element types
+                see note in the first line of cgx manual part element types
                 ccx (and thus the *.inp) follows the ABAQUS convention
                 documented in the ccx-documentation
                 cgx (and thus the *.frd) follows the FAM2 convention

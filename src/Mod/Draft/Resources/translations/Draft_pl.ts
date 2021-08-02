@@ -103,7 +103,7 @@ Pozostaw tę właściwość pustą, aby móc ustawić " Oś" i "Środek" ręczni
     <message>
       <location filename="array.py" line="238"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation>Odległość i orientacja przedziałów w kierunku 'osi'</translation>
+      <translation>Odległość i orientacja przedziałów w kierunku "osi"</translation>
     </message>
     <message>
       <location filename="array.py" line="247"/>
@@ -118,12 +118,12 @@ Pozostaw tę właściwość pustą, aby móc ustawić " Oś" i "Środek" ręczni
     <message>
       <location filename="array.py" line="270"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation>Odległość między kopiami w tej samej warstwie kołowej</translation>
+      <translation>Odległość między kopiami w tej samej warstwie szyku kołowego</translation>
     </message>
     <message>
       <location filename="array.py" line="280"/>
       <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation>Liczba warstw kołowych. Obiekt 'Baza' liczy się jako jedna warstwa.</translation>
+      <translation>Liczba warstw kołowych. Obiekt "Podstawowy" zalicza się jako jedna warstwa.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -134,8 +134,8 @@ Pozostaw tę właściwość pustą, aby móc ustawić " Oś" i "Środek" ręczni
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation>Całkowita liczba elementów w tablicy.
-Ta właściwość jest tylko do odczytu, ponieważ liczba zależy od parametrów tablicy.</translation>
+      <translation>Całkowita liczba elementów w szyku.
+Ta właściwość jest tylko do odczytu, ponieważ liczba zależy od parametrów szyku.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
@@ -217,8 +217,8 @@ są mierzone przez ten obiekt wymiaru.
 
 Istnieją różne możliwości:
 - Obiekt i jedna z jego krawędzi.
-- Obiekt i dwa wierzchołki.
-- Obiekt łuku i jego krawędź.
+- Obiekt i dwa jego wierzchołki.
+- Obiekt łukowy i jego krawędź.
 </translation>
     </message>
     <message>
@@ -359,7 +359,7 @@ Jest to lista ciągów; każdy element na liście będzie wyświetlany w osobnej
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation>Liczba płaszczyzn</translation>
+      <translation>Liczba ścian</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>
@@ -457,7 +457,7 @@ w zależności od wartości "kierunek na wprost".</translation>
     <message>
       <location filename="label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation>Umieszczenie elementu "Tekst" w przestrzeni 3D</translation>
+      <translation>Umiejscowienie elementu "Tekst" w przestrzeni 3D</translation>
     </message>
     <message>
       <location filename="label.py" line="166"/>
@@ -566,59 +566,39 @@ Tą właściwość można tylko przeglądać, ponieważ ilość jest zależna od
       <translation>Współczynnik parametryzacji</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
       <translation>Obiekt bazowy musi reprezentować widok 2D</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
       <translation>Wektor rzutowania tego obiektu</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
       <translation>Sposób rzutowania oglądanego obiektu</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>Wskaźniki powierzchni będą wyświetlane w trybie indywidualnych powierzchni</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
-      <translation>Pokaż ukryte linie</translation>
+      <translation>Pokaż niewidoczne linie szwów</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation>Powiąż ścianę i obiekty struktury tego samego typu i materiału</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="79"/>
+      <location filename="shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>Elipsy Mozaikowe i Krzywe B-sklejone w segmentach liniowych</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation>W trybach Cutlines i Cutfaces 
-                pozostawia ściany w miejscu cięcia</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation>Długość segmentów liniowych, jeśli mozaikowe elipsy lub krzywe B-sklejone są
-                w segmentach liniowych</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation>Jeśli to jest Prawda, obiekt ten zostanie przeliczony tylko wtedy, gdy będzie widoczny</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -1018,62 +998,62 @@ beyond the dimension line</source>
       <translation>Kolor linii obiektów znajdujących się w tej warstwie, gdy są używane na stronie TechDraw</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>Szerokość linii</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Kolor linii</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation>Rozmiar tekstu</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
       <translation>Czcionka tekstu</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
       <translation>Wyrównanie tekstu w pionie</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation>Kolor tekstu</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Odstęp między wierszami (w stosunku do rozmiaru czcionki)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation>Maksymalna liczba znaków w każdym wierszu pola tekstowego</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
       <translation>Rozmiar strzałki</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
       <translation>Typ strzałki tej etykiety</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
       <translation>Typ ramki wokół tekstu tego obiektu</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation>Wyświetl lub ukryj linie odniesienia</translation>
     </message>
@@ -1107,9 +1087,43 @@ Pozostaw puste dla systemowych ustawień domyślnych..
 Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="102"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Lista punktów wykluczenia. Każda krawędź dotykająca któregokolwiek z tych punktów nie zostanie narysowana.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation>W trybach Linie cięcia i Powierzchnie cięcia 
+                pozostawia płaszczyzny w miejscu cięcia</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation>Długość segmentów linii w przypadku rozdrobnienia elipsy lub linii złożonych 
+                     w segmenty linii</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation>Jeśli parametr ma wartość Prawda, obsługiwana jest tylko geometria bryłowa. Zastępuje to właściwość obiektu bazowego - Tylko bryły</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation>Jeśli parametr ma wartość Prawda, zawartość jest przycinana do granic płaszczyzny przekroju, jeśli ma to zastosowanie. Nadpisuje to właściwość obiektu bazowego - Clip</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1367,8 +1381,9 @@ Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation>Pobieranie biblioteki dxf nie powiodło się.
-Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; menedżer dodadków</translation>
+      <translation>Pobieranie biblioteki DXF nie powiodło się.
+Proszę zainstalować bibliotekę DXF ręcznie
+z menu Przybory -&gt; Menedżer dodatków</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="145"/>
@@ -1383,7 +1398,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="init_tools.py" line="151"/>
       <source>Draft modification tools</source>
-      <translation>Narzędzia do modyfikacji rysunku</translation>
+      <translation>Narzędzia do modyfikacji kreślarskich</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>
@@ -1453,7 +1468,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="init_draft_statusbar.py" line="244"/>
       <source>Toggles Grid On/Off</source>
-      <translation>Włącz/wyłącz siatkę</translation>
+      <translation>Włącz / wyłącz wyświetlanie siatki</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
@@ -1463,17 +1478,17 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation>Włącz/wyłącz wizualną pomoc wymiarów</translation>
+      <translation>Włącz / wyłącz wizualną pomoc dla wymiarów</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="314"/>
       <source>Toggles Ortho On/Off</source>
-      <translation>Włącz/wyłącz Tryb ortogonalny</translation>
+      <translation>Włącz / wyłącz tryb ortogonalny</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="332"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation>Przełącza wiązanie do płaszczyzny roboczej włącz / wyłącz</translation>
+      <translation>Włącz / wyłącz wiązanie do płaszczyzny roboczej</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="150"/>
@@ -1528,7 +1543,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="task_scale.py" line="140"/>
       <source>Modify subelements</source>
-      <translation>Modyfikuj podelementy</translation>
+      <translation>Modyfikuj elementy podrzędne</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="141"/>
@@ -1634,27 +1649,27 @@ Tablicę można przekształcić w tablicę polarną lub okrągłą, zmieniając 
       <translation>Kierunek przesunięcia nie jest zdefiniowany. Proszę najpierw przesunąć kursor myszki po obu stronach obiektu, aby wskazać kierunek</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="259"/>
+      <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation>Zapisz styl</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="260"/>
+      <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
       <translation>Nazwa nowego stylu:</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="268"/>
+      <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
       <translation>Nazwa istnieje. Nadpisać?</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="303"/>
+      <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Błąd: nie znaleziono modułu json. Nie można zapisać stylu</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="267"/>
+      <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
       <translation>Ostrzeżenie</translation>
     </message>
@@ -1713,7 +1728,7 @@ Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</transla
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="150"/>
       <source>Fuse</source>
-      <translation>Suma</translation>
+      <translation>Scalenie</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="157"/>
@@ -1832,7 +1847,7 @@ Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</transla
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="141"/>
       <source>Fuse</source>
-      <translation>Suma</translation>
+      <translation>Scalenie</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="148"/>
@@ -1955,7 +1970,7 @@ Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</transla
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="150"/>
       <source>Fuse</source>
-      <translation>Suma</translation>
+      <translation>Scalenie</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="157"/>
@@ -2383,7 +2398,7 @@ Jednak pojedynczy szkic z rozłączonymi elementami zostanie przekonwertowany na
     <message>
       <location filename="gui_drawing.py" line="71"/>
       <source>Drawing</source>
-      <translation>Rysunek roboczy</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="gui_drawing.py" line="74"/>
@@ -2933,7 +2948,7 @@ prostych linii projektowych, które są rysowane w płaszczyźnie XY. Wybrane ob
     <message>
       <location filename="gui_snapper.py" line="1535"/>
       <source>Toggles Grid On/Off</source>
-      <translation>Włącz/wyłącz siatkę</translation>
+      <translation>Włącz / wyłącz wyświetlanie siatki</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1536"/>
@@ -3748,19 +3763,39 @@ używając klawisza [ i ] podczas rysowania</translation>
       <translation>Zapisz bieżący styl jako ustawienie wstępne ...</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
       <translation>Zastosuj powyższy styl do wybranych obiektów</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="354"/>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>Wybrane</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="366"/>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
       <translation>Tekst / wymiary</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Odstępy w tekście</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation>Odstęp między tekstem a linią wymiarową</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Odstępy między wierszami</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation>Odstępy między poszczególnymi wierszami tekstu</translation>
     </message>
   </context>
   <context>
@@ -5204,7 +5239,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
     <message>
       <location filename="gui_snapper.py" line="1476"/>
       <source>Draft Snap</source>
-      <translation>Rysunek Roboczy przyciąganie</translation>
+      <translation>Rysunek Roboczy - przyciąganie</translation>
     </message>
   </context>
   <context>
@@ -5317,7 +5352,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
     <message>
       <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
-      <translation>&amp;Odsunięcie stylu OpenCascade</translation>
+      <translation>&amp;Odsunięcie w stylu OpenCascade</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="792"/>
@@ -5675,7 +5710,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
-      <translation>Modyfikuj podelementy</translation>
+      <translation>Modyfikuj elementy podrzędne</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="798"/>
@@ -6346,7 +6381,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_orthoarray.py" line="348"/>
       <source>Fuse:</source>
-      <translation>Suma:</translation>
+      <translation>Scalenie:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="362"/>
@@ -6486,7 +6521,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_shapestrings.py" line="141"/>
       <source>Create ShapeString</source>
-      <translation>Utwórz ciąg kształtów</translation>
+      <translation>Utwórz kształt z tekstu</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="85"/>
@@ -6999,12 +7034,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Wybierz obiekt rysunku roboczego do edycji</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="563"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
       <translation>Nie znaleziono punktu edycji dla wybranego obiektu</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="823"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation>: tego obiektu nie można edytować</translation>
     </message>
@@ -7442,7 +7477,7 @@ Niedostępne, jeśli opcja preferencji Rysunku Roboczego "używaj elementów pie
       <translation>Nie można skalować obiektów:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="815"/>
+      <location filename="gui_edit.py" line="814"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Wybrano zbyt wiele obiektów, maksymalna liczba została ustawiona na:</translation>
     </message>

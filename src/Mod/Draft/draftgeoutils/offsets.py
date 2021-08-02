@@ -295,13 +295,14 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # check against dvec provided for the offset direction
         # would not know if dvec is vector of width (Left/Right Align)
         # or width/2 (Center Align)
-        dvec0 = DraftVecUtils.scaleTo(v0, dvec.Length)
-        if DraftVecUtils.equals(dvec0, dvec):
+        v0.normalize()
+        v1 = App.Vector(dvec).normalize()
+        if v0.isEqual(v1, 0.0001):
             # "Left Offset" (Left Align or 'left offset' in Centre Align)
             firstDir = 1
             firstAlign = 'Left'
             alignListC.append('Left')
-        elif DraftVecUtils.equals(dvec0, dvec.negative()):
+        elif v0.isEqual(v1.negative(), 0.0001):
             # "Right Offset" (Right Align or 'right offset' in Centre Align)
             firstDir = -1
             firstAlign = 'Right'
