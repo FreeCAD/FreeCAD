@@ -85,7 +85,7 @@ hTrimCurve::hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
     //just a convenient struct for now.
 }
 
-//All this OCC math is being done on on edges(&vertices) that have been through the center/scale/mirror process.
+//All this OCC math is being done on edges(&vertices) that have been through the center/scale/mirror process.
 
 //TODO: this needs to be exposed to Python
 void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,

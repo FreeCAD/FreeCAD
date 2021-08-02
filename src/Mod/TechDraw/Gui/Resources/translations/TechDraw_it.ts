@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Salva File Dxf</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -3457,7 +3457,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="862"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Salva File Dxf</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="864"/>

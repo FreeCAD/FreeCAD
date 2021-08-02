@@ -376,7 +376,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation>Funkcja zmiany rozmiaru siatki...</translation>
+      <translation>Funkcja zmiany rozmiaru siatki ...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="258"/>

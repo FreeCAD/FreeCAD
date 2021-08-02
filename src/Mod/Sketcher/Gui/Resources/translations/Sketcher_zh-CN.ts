@@ -1445,12 +1445,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="526"/>
       <source>Decrease B-spline degree</source>
-      <translation type="unfinished">Decrease B-spline degree</translation>
+      <translation>减少 B 样条次数</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation type="unfinished">Decreases the degree of the B-spline</translation>
+      <translation>降低B-样条的次数</translation>
     </message>
   </context>
   <context>
@@ -1571,7 +1571,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="453"/>
       <source>Increase B-spline degree</source>
-      <translation type="unfinished">Increase B-spline degree</translation>
+      <translation>增加B 样条次数</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="454"/>
@@ -1877,7 +1877,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="846"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
-      <translation type="unfinished">Select geometrical elements where the solver still detects unconstrained degrees of freedom.</translation>
+      <translation>选择求解器仍检测为无约束自由度的元素。</translation>
     </message>
   </context>
   <context>
@@ -2603,12 +2603,12 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
       <source>Increase spline degree</source>
-      <translation type="unfinished">Increase spline degree</translation>
+      <translation>增加样条次数</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
       <source>Decrease spline degree</source>
-      <translation type="unfinished">Decrease spline degree</translation>
+      <translation>减少样条次数</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="647"/>
@@ -5385,12 +5385,12 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6604"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
+      <translation>约束不足草图有 &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 个&lt;/span&gt;&lt;/a&gt; 自由度. %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6607"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
+      <translation>约束不足草图有 &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 个&lt;/span&gt;&lt;/a&gt; 自由度. %2</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6612"/>

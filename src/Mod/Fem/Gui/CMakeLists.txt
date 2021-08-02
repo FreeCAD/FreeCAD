@@ -63,6 +63,7 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemGmsh.ui
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemMaterial.ui
+    DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
@@ -129,6 +130,9 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemMaterial.ui
     DlgSettingsFemMaterialImp.cpp
     DlgSettingsFemMaterialImp.h
+    DlgSettingsFemMystran.ui
+    DlgSettingsFemMystranImp.cpp
+    DlgSettingsFemMystranImp.h
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
@@ -365,6 +369,7 @@ INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Re
 # Python modules ui files, they are copied as they are, thus the need not to be added to Fem.qrc
 # see https://forum.freecadweb.org/viewtopic.php?f=10&t=25833
 SET(FemGuiPythonUI_SRCS
+    Resources/ui/ConstraintCentrif.ui
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/ElectrostaticPotential.ui

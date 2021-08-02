@@ -1087,7 +1087,7 @@ Use 'arch' to force US arch notation</source>
 Če želite vsiliti anglosaški arhitekturni zapis, uporabite "arch"</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Seznam izključujočih točk. Katerikoli rob bi se dotaknil teh točk, ne bo izrisan.</translation>
     </message>
@@ -1095,32 +1095,35 @@ Use 'arch' to force US arch notation</source>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Za načine prereznic in prereznih ploskev, 
+                    to pušča ploskve na mestu rezanja</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Dolžina ravnih odsekov, če se na njih razdeli elipse ali B-zlepke 
+                    </translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Če drži, potem se obravnava le telesne geometrije. To povozi lastnost "Le telesa" osnovnega predmeta</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Če drži, je vsebina rezana do robov prerezne ravnine v primeru izvedljivosti. To povozi lastnost "Zamejitev" osnovnega predmeta</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -3777,7 +3780,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Razmik med besedilom in kotirnico</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3787,7 +3790,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Razmik med različnimi vrsticami besedila</translation>
     </message>
   </context>
   <context>

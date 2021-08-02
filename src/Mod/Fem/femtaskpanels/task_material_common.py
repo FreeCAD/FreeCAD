@@ -477,6 +477,22 @@ class _TaskPanel:
                 self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
         # Thermal properties
         if "ThermalConductivity" in self.material:
+            # TODO implement for all task panel values
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&p=516826#p516800
+            try:
+                Units.Quantity(self.material["ThermalConductivity"])
+            except Exception:
+                FreeCAD.Console.PrintError(
+                    "Problem with the quantity for ThermalConductivity: '{}' Reset value.\n"
+                    "May try the following in Python console:\n"
+                    "from FreeCAD import Units\n"
+                    "Units.Quantity('{}')\n"
+                    .format(
+                        self.material["ThermalConductivity"],
+                        self.material["ThermalConductivity"]
+                    )
+                )
+                self.material["ThermalConductivity"] = "0 W/m/K"
             if "ThermalConductivity" not in str(Units.Unit(self.material["ThermalConductivity"])):
                 FreeCAD.Console.PrintMessage(
                     "ThermalConductivity in material data seems to have no unit "

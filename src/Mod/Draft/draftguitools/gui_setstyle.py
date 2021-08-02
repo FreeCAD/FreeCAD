@@ -192,7 +192,7 @@ class Draft_SetStyle_TaskPanel:
             vobj = obj.ViewObject
             if vobj:
                 if "LineColor" in vobj.PropertiesList:
-                    vobj.LineColor = self.form.LineColor.property("color").rgb()<<8
+                    vobj.LineColor = self.form.LineColor.property("color").getRgbF()
                 if "LineWidth" in vobj.PropertiesList:
                     vobj.LineWidth = self.form.LineWidth.value()
                 if "DrawStyle" in vobj.PropertiesList:
@@ -208,7 +208,7 @@ class Draft_SetStyle_TaskPanel:
                         except Exception:
                             pass
                 if "ShapeColor" in vobj.PropertiesList:
-                    vobj.ShapeColor = self.form.ShapeColor.property("color").rgb()<<8
+                    vobj.ShapeColor = self.form.ShapeColor.property("color").getRgbF()
                 if "Transparency" in vobj.PropertiesList:
                     vobj.Transparency = self.form.Transparency.value()
                 if "FontName" in vobj.PropertiesList:
@@ -218,7 +218,7 @@ class Draft_SetStyle_TaskPanel:
                 if "FontSize" in vobj.PropertiesList:
                     vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
                 if "TextColor" in vobj.PropertiesList:
-                    vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
+                    vobj.TextColor = self.form.TextColor.property("color").getRgbF()
                 if "ArrowType" in vobj.PropertiesList:
                     vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
                 if "ArrowSize" in vobj.PropertiesList:
@@ -243,7 +243,7 @@ class Draft_SetStyle_TaskPanel:
             vobj = obj.ViewObject
             vobj.FontName = self.form.TextFont.currentFont().family()
             vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
-            vobj.LineColor = self.form.TextColor.property("color").rgb()<<8
+            vobj.LineColor = self.form.TextColor.property("color").getRgbF()
             vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
             vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
             vobj.ShowUnit = self.form.ShowUnit.isChecked()
@@ -255,7 +255,7 @@ class Draft_SetStyle_TaskPanel:
             vobj = obj.ViewObject
             vobj.FontName = self.form.TextFont.currentFont().family()
             vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
-            vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
+            vobj.TextColor = self.form.TextColor.property("color").getRgbF()
             vobj.LineSpacing = self.form.LineSpacing.value()
 
     def onLoadStyle(self,index):

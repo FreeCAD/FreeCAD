@@ -809,8 +809,8 @@ Otherwise the copies will have the same orientation as the original Base object.
       <location filename="clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>Если клоны включают несколько объектов,
+установите истина для слияния или ложь для соединения</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="82"/>
@@ -842,7 +842,7 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>Базовым объектом является ломаная, состоящая из 2 объектов</translation>
     </message>
     <message>
       <location filename="wire.py" line="61"/>
@@ -1085,7 +1085,7 @@ Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Список точек исключения. Любое ребро коснувшееся любой из этих точек не будет рисоваться.</translation>
     </message>
@@ -1093,32 +1093,34 @@ Use 'arch' to force US arch notation</translation>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Для режимов обрезки линий и обрезки граней,
+                    это оставляет грани в месте разрезания</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Длина сегментов линии при тесселяции Эллипсов или B-Сплайнов в линейные сегменты</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Если это истина, обрабатывается только твердотельная геометрия. Это переопределяет свойство только твердое тело базового объекта</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Если это истина, содержимое обрезается по границам плоскости сечения, если применимо. Это переопределяет свойство срез базового объекта</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1466,7 +1468,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
       <source>Object snapping</source>
-      <translation type="unfinished">Object snapping</translation>
+      <translation>Привязка к объекту</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
@@ -3771,7 +3773,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Расстояние между текстом и размерной линией</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3781,7 +3783,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Межстрочный интервал в тексте</translation>
     </message>
   </context>
   <context>

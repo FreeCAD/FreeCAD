@@ -17,7 +17,8 @@
       <location filename="../../Command.cpp" line="849"/>
       <location filename="../../Command.cpp" line="851"/>
       <source>Add triangle manually to a mesh</source>
-      <translation>bir kafese elle Üçgen Ekle</translation>
+      <translation>Bir kafese elle Üçgen Ekle
+Bir kafese manuel üçgen ekle</translation>
     </message>
   </context>
   <context>
@@ -30,7 +31,8 @@
     <message>
       <location filename="../../Command.cpp" line="1563"/>
       <source>Boundings info...</source>
-      <translation>Sınır bilgileri...</translation>
+      <translation>Sınır bilgileri..
+Sınırlamala Bilgisi...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1564"/>
@@ -49,13 +51,15 @@
     <message>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Regular solid...</source>
-      <translation>Normal katı...</translation>
+      <translation>Normal katı...
+Düzenli Katı...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1606"/>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Builds a regular solid</source>
-      <translation>Düzenli bir solid oluşturur</translation>
+      <translation>Düzenli bir solid oluşturur
+Düzenli bir katı oluşturma</translation>
     </message>
   </context>
   <context>
@@ -740,7 +744,7 @@
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>Mesh oluştur </translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>

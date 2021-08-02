@@ -46,8 +46,12 @@ class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
-        self.checkMesh()
-        self.checkMaterial()
+        self.check_mesh_exists()
+        self.check_material_exists()
+        self.check_material_single()  # no multiple material
+        self.check_geos_beamsection_single()  # no multiple beamsection
+        self.check_geos_shellthickness_single()  # no multiple shellsection
+        self.check_geos_beamsection_and_shellthickness()  # either beams or shells
 
 
 class Prepare(run.Prepare):
@@ -61,12 +65,13 @@ class Prepare(run.Prepare):
             membertools.AnalysisMember(self.analysis),
             self.directory
         )
-        path = w.write_z88_input()
+        path = w.write_solver_input()
         # report to user if task succeeded
         if path is not None:
             self.pushStatus("Write completed!")
         else:
-            self.pushStatus("Writing Z88 input files failed!")
+            self.pushStatus("Writing Z88 solver input files failed!")
+            self.fail()
         # print(path)
 
 
@@ -112,7 +117,7 @@ class Results(run.Results):
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
-        self.load_results_z88o2()
+        self.load_results()
 
     def purge_results(self):
         for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
@@ -121,7 +126,8 @@ class Results(run.Results):
             self.analysis.Document.removeObject(m.Name)
         self.analysis.Document.recompute()
 
-    def load_results_z88o2(self):
+    def load_results(self):
+        # displacements from z88o2 file
         disp_result_file = os.path.join(
             self.directory, "z88o2.txt")
         if os.path.isfile(disp_result_file):

@@ -103,7 +103,7 @@ Pozostaw tę właściwość pustą, aby móc ustawić " Oś" i "Środek" ręczni
     <message>
       <location filename="array.py" line="238"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation>Odległość i orientacja przedziałów w kierunku 'osi'</translation>
+      <translation>Odległość i orientacja przedziałów w kierunku "osi"</translation>
     </message>
     <message>
       <location filename="array.py" line="247"/>
@@ -134,8 +134,8 @@ Pozostaw tę właściwość pustą, aby móc ustawić " Oś" i "Środek" ręczni
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation>Całkowita liczba elementów w tablicy.
-Ta właściwość jest tylko do odczytu, ponieważ liczba zależy od parametrów tablicy.</translation>
+      <translation>Całkowita liczba elementów w szyku.
+Ta właściwość jest tylko do odczytu, ponieważ liczba zależy od parametrów szyku.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
@@ -217,8 +217,8 @@ są mierzone przez ten obiekt wymiaru.
 
 Istnieją różne możliwości:
 - Obiekt i jedna z jego krawędzi.
-- Obiekt i dwa wierzchołki.
-- Obiekt łuku i jego krawędź.
+- Obiekt i dwa jego wierzchołki.
+- Obiekt łukowy i jego krawędź.
 </translation>
     </message>
     <message>
@@ -359,7 +359,7 @@ Jest to lista ciągów; każdy element na liście będzie wyświetlany w osobnej
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation>Liczba płaszczyzn</translation>
+      <translation>Liczba ścian</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>
@@ -457,7 +457,7 @@ w zależności od wartości "kierunek na wprost".</translation>
     <message>
       <location filename="label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation>Umieszczenie elementu "Tekst" w przestrzeni 3D</translation>
+      <translation>Umiejscowienie elementu "Tekst" w przestrzeni 3D</translation>
     </message>
     <message>
       <location filename="label.py" line="166"/>
@@ -588,7 +588,7 @@ Tą właściwość można tylko przeglądać, ponieważ ilość jest zależna od
     <message>
       <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
-      <translation>Pokaż ukryte linie</translation>
+      <translation>Pokaż niewidoczne linie szwów</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="86"/>
@@ -1087,7 +1087,7 @@ Pozostaw puste dla systemowych ustawień domyślnych..
 Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="118"/>
+      <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Lista punktów wykluczenia. Każda krawędź dotykająca któregokolwiek z tych punktów nie zostanie narysowana.</translation>
     </message>
@@ -1095,32 +1095,35 @@ Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>W trybach Linie cięcia i Powierzchnie cięcia 
+                pozostawia płaszczyzny w miejscu cięcia</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Długość segmentów linii w przypadku rozdrobnienia elipsy lub linii złożonych 
+                     w segmenty linii</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="112"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                    visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                    visible</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="123"/>
+      <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Jeśli parametr ma wartość Prawda, obsługiwana jest tylko geometria bryłowa. Zastępuje to właściwość obiektu bazowego - Tylko bryły</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="128"/>
+      <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Jeśli parametr ma wartość Prawda, zawartość jest przycinana do granic płaszczyzny przekroju, jeśli ma to zastosowanie. Nadpisuje to właściwość obiektu bazowego - Clip</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1468,7 @@ z menu Przybory -&gt; Menedżer dodatków</translation>
     <message>
       <location filename="init_draft_statusbar.py" line="244"/>
       <source>Toggles Grid On/Off</source>
-      <translation>Włącz/wyłącz siatkę</translation>
+      <translation>Włącz / wyłącz wyświetlanie siatki</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
@@ -1475,17 +1478,17 @@ z menu Przybory -&gt; Menedżer dodatków</translation>
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation>Włącz/wyłącz wizualną pomoc wymiarów</translation>
+      <translation>Włącz / wyłącz wizualną pomoc dla wymiarów</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="314"/>
       <source>Toggles Ortho On/Off</source>
-      <translation>Włącz/wyłącz Tryb ortogonalny</translation>
+      <translation>Włącz / wyłącz tryb ortogonalny</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="332"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation>Przełącza wiązanie do płaszczyzny roboczej włącz / wyłącz</translation>
+      <translation>Włącz / wyłącz wiązanie do płaszczyzny roboczej</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="150"/>
@@ -2945,7 +2948,7 @@ prostych linii projektowych, które są rysowane w płaszczyźnie XY. Wybrane ob
     <message>
       <location filename="gui_snapper.py" line="1535"/>
       <source>Toggles Grid On/Off</source>
-      <translation>Włącz/wyłącz siatkę</translation>
+      <translation>Włącz / wyłącz wyświetlanie siatki</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1536"/>
@@ -3782,7 +3785,7 @@ używając klawisza [ i ] podczas rysowania</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Odstęp między tekstem a linią wymiarową</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3792,7 +3795,7 @@ używając klawisza [ i ] podczas rysowania</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Odstępy między poszczególnymi wierszami tekstu</translation>
     </message>
   </context>
   <context>
@@ -6518,7 +6521,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_shapestrings.py" line="141"/>
       <source>Create ShapeString</source>
-      <translation>Utwórz ciąg kształtów</translation>
+      <translation>Utwórz kształt z tekstu</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="85"/>

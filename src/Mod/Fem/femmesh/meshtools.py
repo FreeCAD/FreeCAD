@@ -734,6 +734,7 @@ def get_elset_short_name(
     obj,
     i
 ):
+    # ATM for CalculiX needed for all objects which will write element sets into solver input file
     from femtools.femutils import is_of_type
     if is_of_type(obj, "Fem::MaterialCommon"):
         return "M" + str(i)
@@ -745,6 +746,8 @@ def get_elset_short_name(
         return "F" + str(i)
     elif is_of_type(obj, "Fem::ElementGeometry2D"):
         return "S" + str(i)
+    elif is_of_type(obj, "Fem::ConstraintCentrif"):
+        return "C" + str(i)
     else:
         FreeCAD.Console.PrintError(
             "Error in creating short elset name "
@@ -2188,6 +2191,74 @@ def is_zplane_2D_mesh(
         return True
     else:
         return False
+
+
+# ************************************************************************************************
+def get_femmesh_eletype(
+    femmesh,
+    femelement_table=None
+):
+    if not femmesh:
+        FreeCAD.Console.PrintError("Error: No femmesh.\n")
+    if not femelement_table:
+        FreeCAD.Console.PrintError("The femelement_table need to be calculated.\n")
+        femelement_table = get_femelement_table(femmesh)
+    # in some cases lowest key in femelement_table is not [1]
+    for elem in sorted(femelement_table):
+        elem_length = len(femelement_table[elem])
+        FreeCAD.Console.PrintLog("Node count of first element: {}\n".format(elem_length))
+        break  # break after the first elem
+    if is_solid_femmesh(femmesh):
+        if femmesh.TetraCount == femmesh.VolumeCount:
+            if elem_length == 4:
+                return "tetra4"
+            elif elem_length == 10:
+                return "tetra10"
+            else:
+                FreeCAD.Console.PrintMessage("Tetra with neither 4 nor 10 nodes.\n")
+                return "None"
+        elif femmesh.HexaCount == femmesh.VolumeCount:
+            if elem_length == 8:
+                return "hexa8"
+            elif elem_length == 20:
+                return "hexa20"
+            else:
+                FreeCAD.Console.PrintError("Hexa with neither 8 nor 20 nodes.\n")
+                return "None"
+        else:
+            FreeCAD.Console.PrintError("no tetra, no hexa or Mixed Volume Elements.\n")
+    elif is_face_femmesh(femmesh):
+        if femmesh.TriangleCount == femmesh.FaceCount:
+            if elem_length == 3:
+                return "tria3"
+            elif elem_length == 6:
+                return "tria6"
+            else:
+                FreeCAD.Console.PrintError("Tria with neither 3 nor 6 nodes.\n")
+                return "None"
+        elif femmesh.QuadrangleCount == femmesh.FaceCount:
+            if elem_length == 4:
+                return "quad4"
+            elif elem_length == 8:
+                return "quad8"
+            else:
+                FreeCAD.Console.PrintError("Quad with neither 4 nor 8 nodes.\n")
+                return "None"
+        else:
+            FreeCAD.Console.PrintError("no tria, no quad\n")
+            return "None"
+    elif is_edge_femmesh(femmesh):
+        if elem_length == 2:
+            return "seg2"
+        elif elem_length == 3:
+            return "seg3"
+        else:
+            FreeCAD.Console.PrintError("Seg with neither 2 nor 3 nodes.\n")
+            return "None"
+    else:
+        FreeCAD.Console.PrintError("Neither edge nor face nor solid femmesh.\n")
+        return "None"
+    return "None"
 
 
 # ************************************************************************************************
