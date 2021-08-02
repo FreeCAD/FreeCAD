@@ -164,6 +164,10 @@ SET(PathScripts_post_SRCS
     PathScripts/post/uccnc_post.py
 )
 
+SET(Tools_SRCS
+    Tools/README.md
+)
+
 SET(Tools_Bit_SRCS
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/5mm-thread-cutter.fctb
@@ -256,6 +260,7 @@ SET(Path_Data
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${Tools_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
@@ -306,6 +311,13 @@ INSTALL(
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${Tools_SRCS}
+    DESTINATION
+        Mod/Path/Tools
 )
 
 INSTALL(

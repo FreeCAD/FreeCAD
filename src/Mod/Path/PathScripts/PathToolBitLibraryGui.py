@@ -85,6 +85,15 @@ def checkWorkingDir():
     PathPreferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
     PathLog.debug('setting workingdir to: {}'.format(workingdir))
 
+    # Copy only files of default Path\Tools folder to working directory (targeting the README.md help file)
+    src_toolfiles = os.listdir(defaultdir)
+    for file_name in src_toolfiles:
+        if file_name in ["README.md"]:
+            full_file_name = os.path.join(defaultdir, file_name)
+            if os.path.isfile(full_file_name):
+                shutil.copy(full_file_name, workingdir)
+
+    # Determine which subdirectories are missing
     subdirlist = ['Bit', 'Library', 'Shape']
     mode = 0o777
     for dir in subdirlist.copy():
@@ -92,6 +101,7 @@ def checkWorkingDir():
         if os.path.exists(subdir):
             subdirlist.remove(dir)
 
+    # Query user for creation permission of any missing subdirectories
     if len(subdirlist) >= 1:
         needed = ', '.join([str(d) for d in subdirlist])
         qm = PySide.QtGui.QMessageBox
@@ -100,9 +110,11 @@ def checkWorkingDir():
         if ret == qm.No:
             return False
         else:
+            # Create missing subdirectories if user agrees to creation
             for dir in subdirlist:
                 subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
                 os.mkdir(subdir, mode)
+                # Query user to copy example files into subdirectories created
                 if dir != 'Shape':
                     qm = PySide.QtGui.QMessageBox
                     ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
@@ -452,6 +464,7 @@ class ToolBitLibrary(object):
         if shapefile is None:  # user canceled
             return
 
+        # select the bit file location and filename
         filename = PathToolBitGui.GetNewToolFile()
         if filename is None:
             return
@@ -460,7 +473,7 @@ class ToolBitLibrary(object):
         loc, fil = os.path.split(filename)
         fname = os.path.splitext(fil)[0]
         fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
-        PathLog.debug(fullpath)
+        PathLog.debug("fullpath: {}".format(fullpath))
 
         self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
         self.temptool.BitShape = shapefile
@@ -565,6 +578,7 @@ class ToolBitLibrary(object):
         self.form.librarySave.setEnabled(True)
 
     def toolEdit(self, selected):
+        PathLog.track()
         item = self.toolModel.item(selected.row(), 0)
 
         if self.temptool is not None:
@@ -620,9 +634,13 @@ class ToolBitLibrary(object):
             toolNr = self.toolModel.data(self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole)
             toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
             if PathPreferences.toolsStoreAbsolutePaths():
-                tools.append({'nr': toolNr, 'path': toolPath})
+                bitPath = toolPath
             else:
-                tools.append({'nr': toolNr, 'path': PathToolBit.findRelativePathTool(toolPath)})
+                # bitPath = PathToolBit.findRelativePathTool(toolPath)
+                # Extract the name of the shape file
+                __, filShp = os.path.split(toolPath)  #  __ is an ignored placeholder acknowledged by LGTM
+                bitPath = str(filShp)
+            tools.append({'nr': toolNr, 'path': bitPath})
 
         if self.path is not None:
             with open(self.path, 'w') as fp:
