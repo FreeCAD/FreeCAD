@@ -215,7 +215,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
                 )
                 # TODO make the check in prechecks and delete it here
                 # no extensive errorhandling in writer
-                # this way the solver will fail and an exeption is raised somehow
+                # this way the solver will fail and an exception is raised somehow
             elements_data.append(
                 "1 {} {} 0 0 0 0 0 0 "
                 .format(self.element_count, area)
