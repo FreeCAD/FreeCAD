@@ -198,13 +198,29 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         elements_data = []
         if meshtools.is_edge_femmesh(self.femmesh):
             beam_obj = self.beamsection_objects[0]["Object"]
-            width = beam_obj.RectWidth.getValueAs("mm")
-            height = beam_obj.RectHeight.getValueAs("mm")
-            area = str(width * height)
+            area = 0
+            if beam_obj.SectionType == "Rectangular":
+                width = beam_obj.RectWidth.getValueAs("mm").Value
+                height = beam_obj.RectHeight.getValueAs("mm").Value
+                area = width * height
+            elif beam_obj.SectionType == "Circular":
+                diameter = beam_obj.CircDiameter.getValueAs("mm").Value
+                from math import pi
+                area = 0.25 * pi * diameter * diameter
+            else:
+                FreeCAD.Console.PrintError(
+                    "Cross section type {} not supported, "
+                    "cross section area will be 0 in solver input.\n"
+                    .format(beam_obj.SectionType)
+                )
+                # TODO make the check in prechecks and delete it here
+                # no extensive errorhandling in writer
+                # this way the solver will fail and an exeption is raised somehow
             elements_data.append(
-                "1 " + str(self.element_count) + " " + area + " 0 0 0 0 0 0 "
+                "1 {} {} 0 0 0 0 0 0 "
+                .format(self.element_count, area)
             )
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintWarning(
                 "Be aware, only trusses are supported for edge meshes!\n"
             )
         elif meshtools.is_face_femmesh(self.femmesh):
