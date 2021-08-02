@@ -276,7 +276,11 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             setSelectable(Selectable.getValue());
     }
 
-    if (pcDocument && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
+    if (prop && !prop->testStatus(App::Property::NoModify)
+             && pcDocument
+             && !pcDocument->isModified()
+             && testStatus(Gui::ViewStatus::TouchDocument))
+    {
         if (prop)
             FC_LOG(prop->getFullName() << " changed");
         pcDocument->setModified(true);
