@@ -104,6 +104,7 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/TimeInfo.h>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -396,6 +397,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         // if the object was invisible and has been changed, recreate the visual
         if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
             updateVisual();
+            // updateVisual() may not be triggered by any change (e.g.
+            // triggered by an external object through forceUpdate()). And
+            // since DiffuseColor is not changed here either, do not falsly set
+            // the document modified status
+            Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
+                    App::Property::NoModify, &DiffuseColor);
             // The material has to be checked again (#0001736)
             onChanged(&DiffuseColor);
         }
@@ -1292,8 +1299,8 @@ void ViewProviderPartExt::updateVisual()
 void ViewProviderPartExt::forceUpdate(bool enable) {
     if(enable) {
         if(++forceUpdateCount == 1) {
-            if(!isShow())
-                Visibility.touch();
+            if(!isShow() && VisualTouched)
+                updateVisual();
         }
     }else if(forceUpdateCount)
         --forceUpdateCount;
