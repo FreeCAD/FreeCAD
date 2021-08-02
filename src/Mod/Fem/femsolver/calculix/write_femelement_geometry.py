@@ -51,9 +51,9 @@ def write_femelement_geometry(f, ccxwriter):
                         section_type
                     )
                 elif beamsec_obj.SectionType == "Circular":
-                    radius = 0.5 * beamsec_obj.CircDiameter.getValueAs("mm").Value
+                    diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
                     section_type = ", SECTION=CIRC"
-                    section_geo = "{:.13G}\n".format(radius)
+                    section_geo = "{:.13G}\n".format(diameter)
                     section_def = "*BEAM SECTION, {}{}{}\n".format(
                         elsetdef,
                         material,
