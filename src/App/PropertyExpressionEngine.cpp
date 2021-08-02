@@ -393,7 +393,13 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
             if(info.first.empty())
                 continue;
             for(auto &oid : info.second) {
-                ObjectIdentifier cPath(canonicalPath(oid));
+                Property * prop = oid.getProperty();
+                // During restore, it is possible to not be able to resolve
+                // property in external object. So we shouldn't call
+                // PropertyExpressionEngine::canonicalPath(), which will throw
+                // exception
+                const ObjectIdentifier &cPath = 
+                    prop && prop->getContainer() == getContainer() ? oid.canonicalPath() : oid;
                 if (nodes.find(cPath) == nodes.end()) {
                     int s = nodes.size();
                     nodes[cPath] = s;
