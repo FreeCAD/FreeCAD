@@ -380,7 +380,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         else:  # Try to build targets from the job models
             # No base geometry selected, so treating operation like a exterior contour operation
             self.opUpdateDepths(obj)
-            obj.Side = 'Outside'  # Force outside for whole model profile
 
             if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
                 if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
