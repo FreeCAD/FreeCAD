@@ -46,8 +46,12 @@ class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
-        self.checkMesh()
-        self.checkMaterial()
+        self.check_mesh_exists()
+        self.check_material_exists()
+        self.check_material_single()  # no multiple material
+        self.check_geos_beamsection_single()  # no multiple beamsection
+        self.check_geos_shellthickness_single()  # no multiple shellsection
+        self.check_geos_beamsection_and_shellthickness()  # either beams or shells
 
 
 class Prepare(run.Prepare):
@@ -66,7 +70,8 @@ class Prepare(run.Prepare):
         if path is not None:
             self.pushStatus("Write completed!")
         else:
-            self.pushStatus("Writing Z88 input files failed!")
+            self.pushStatus("Writing Z88 solver input files failed!")
+            self.fail()
         # print(path)
 
 

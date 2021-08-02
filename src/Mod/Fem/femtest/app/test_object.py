@@ -323,6 +323,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(solverelmer)
         )
         self.assertEqual(
+            "Fem::SolverMystran",
+            type_of_obj(ObjectsFem.makeSolverMystran(doc))
+        )
+        self.assertEqual(
             "Fem::SolverZ88",
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
         )
@@ -536,6 +540,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             solverelmer,
             "Fem::SolverElmer"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeSolverMystran(doc),
+            "Fem::SolverMystran"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeSolverZ88(doc),
@@ -1217,6 +1225,25 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverElmer"
         ))
 
+        # SolverMystran
+        solver_mystran = ObjectsFem.makeSolverMystran(doc)
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::FemSolverObject"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::FemSolverObjectPython"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::SolverMystran"
+        ))
+
         # SolverZ88
         solver_z88 = ObjectsFem.makeSolverZ88(doc)
         self.assertTrue(is_derived_from(
@@ -1549,6 +1576,11 @@ class TestObjectType(unittest.TestCase):
             solverelmer.isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(
+            ObjectsFem.makeSolverMystran(
+                doc
+            ).isDerivedFrom("Fem::FemSolverObjectPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeSolverZ88(
                 doc
             ).isDerivedFrom("Fem::FemSolverObjectPython")
@@ -1657,6 +1689,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
+    analysis.addObject(ObjectsFem.makeSolverMystran(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
     ObjectsFem.makeEquationElasticity(doc, sol)

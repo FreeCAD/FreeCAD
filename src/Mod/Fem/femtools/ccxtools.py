@@ -226,22 +226,26 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def update_objects(self):
         ## @var mesh
-        #  mesh of the analysis. Used to generate .inp file and to show results
+        #  mesh for the analysis
         self.mesh = None
         mesh, message = membertools.get_mesh_to_solve(self.analysis)
         if mesh is not None:
             self.mesh = mesh
         else:
-            if FreeCAD.GuiUp:
-                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-            raise Exception(message + "\n")
+            # the prerequisites will run anyway and they will print a message box anyway
+            # thus do not print one here, but print a console warning
+            FreeCAD.Console.PrintWarning(
+                "{} The prerequisite check will fail.\n"
+                .format(message)
+            )
 
         ## @var members
-        # members of the analysis. All except solvers and the mesh
+        # members of the analysis. All except the solver and the mesh
         self.member = membertools.AnalysisMember(self.analysis)
 
     def check_prerequisites(self):
-        FreeCAD.Console.PrintMessage("Check prerequisites.\n")
+        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
+        FreeCAD.Console.PrintMessage("Check prerequisites...\n")
         message = ""
         # analysis
         if not self.analysis:
@@ -251,13 +255,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             message += "No solver object defined in the analysis\n"
         if not self.working_dir:
             message += "Working directory not set\n"
-        if not (os.path.isdir(self.working_dir)):
+        if not os.path.isdir(self.working_dir):
             message += (
                 "Working directory \'{}\' doesn't exist."
                 .format(self.working_dir)
             )
-        from femtools.checksanalysis import check_analysismember
-        message += check_analysismember(
+        from femtools.checksanalysis import check_member_for_solver_calculix
+        message += check_member_for_solver_calculix(
             self.analysis,
             self.solver,
             self.mesh,
@@ -577,7 +581,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return (int(m.group(1)), int(m.group(2)))
 
     def ccx_run(self):
-        FreeCAD.Console.PrintMessage("Run CalculiX ...\n")
+        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
+        FreeCAD.Console.PrintMessage("CalculiX solver run...\n")
         if self.test_mode:
             FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
             return
@@ -627,16 +632,15 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.setup_working_dir()
         message = self.check_prerequisites()
         if message:
-            error_message = (
-                "CalculiX was not started due to missing prerequisites:\n{}\n"
-                .format(message)
-            )
-            FreeCAD.Console.PrintError(error_message)
+            text = "CalculiX can not be started due to missing prerequisites:\n"
+            error_app = "{}{}".format(text, message)
+            error_gui = "{}\n{}".format(text, message)
+            FreeCAD.Console.PrintError(error_app)
             if FreeCAD.GuiUp:
                 QtGui.QMessageBox.critical(
                     None,
                     "Missing prerequisite",
-                    error_message
+                    error_gui
                 )
             return False
         else:
@@ -652,7 +656,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     )
                 return False
             else:
-                FreeCAD.Console.PrintMessage(
+                FreeCAD.Console.PrintLog(
                     "Writing CalculiX input file completed.\n"
                 )
                 ret_code = self.ccx_run()
@@ -670,7 +674,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         )
                     return False
                 else:
-                    FreeCAD.Console.PrintMessage("**** try to read result files\n")
+                    FreeCAD.Console.PrintLog("Try to read result files\n")
                     self.load_results()
                     # TODO: output an error message if there where problems reading the results
         return True
@@ -788,7 +792,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             return False
 
     def load_results(self):
-        FreeCAD.Console.PrintMessage("We will load the ccx frd and dat result file.\n")
+        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
+        FreeCAD.Console.PrintMessage("CalculiX read results...\n")
         self.results_present = False
         self.load_results_ccxfrd()
         self.load_results_ccxdat()

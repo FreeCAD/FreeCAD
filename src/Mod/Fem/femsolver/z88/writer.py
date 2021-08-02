@@ -71,7 +71,9 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         if not self.femelement_table:
             self.femelement_table = meshtools.get_femelement_table(self.femmesh)
             self.element_count = len(self.femelement_table)
-        self.set_z88_elparam()
+        control = self.set_z88_elparam()
+        if control is False:
+            return None
         self.write_z88_mesh()
         self.write_z88_constraints()
         self.write_z88_face_loads()
@@ -105,9 +107,12 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         if self.z88_element_type in param:
             self.z88_elparam = param[self.z88_element_type]
         else:
-            raise Exception("Element type not supported by Z88.")
+            FreeCAD.Console.PrintError(
+                "Element type not supported by Z88. Can not write Z88 solver input.\n")
+            return False
         FreeCAD.Console.PrintMessage(self.z88_elparam)
         FreeCAD.Console.PrintMessage("\n")
+        return True
 
     def write_z88_mesh(self):
         mesh_file_path = self.file_name + "i1.txt"
@@ -171,54 +176,59 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         f.close()
 
     def write_z88_materials(self):
-        if len(self.material_objects) == 1:
-            material_data_file_name = "51.txt"
-            materials_file_path = self.file_name + "mat.txt"
-            fms = open(materials_file_path, "w")
-            fms.write("1\n")
-            fms.write("1 " + str(self.element_count) + " " + material_data_file_name)
-            fms.write("\n")
-            fms.close()
-            material_data_file_path = self.dir_name + "/" + material_data_file_name
-            fmd = open(material_data_file_path, "w")
-            mat_obj = self.material_objects[0]["Object"]
-            YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
-            YM_in_MPa = YM.getValueAs("MPa")
-            PR = float(mat_obj.Material["PoissonRatio"])
-            fmd.write("{0} {1:.3f}".format(YM_in_MPa, PR))
-            fmd.write("\n")
-            fmd.close()
-        else:
-            FreeCAD.Console.PrintError("Multiple Materials for Z88 not yet supported!\n")
+        mat_obj = self.material_objects[0]["Object"]
+        material_data_file_name = "51.txt"
+        materials_file_path = self.file_name + "mat.txt"
+        fms = open(materials_file_path, "w")
+        fms.write("1\n")
+        fms.write("1 " + str(self.element_count) + " " + material_data_file_name)
+        fms.write("\n")
+        fms.close()
+        material_data_file_path = self.dir_name + "/" + material_data_file_name
+        fmd = open(material_data_file_path, "w")
+        YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
+        YM_in_MPa = YM.getValueAs("MPa")
+        PR = float(mat_obj.Material["PoissonRatio"])
+        fmd.write("{0} {1:.3f}".format(YM_in_MPa, PR))
+        fmd.write("\n")
+        fmd.close()
 
     def write_z88_elements_properties(self):
         element_properties_file_path = self.file_name + "elp.txt"
         elements_data = []
         if meshtools.is_edge_femmesh(self.femmesh):
-            if len(self.beamsection_objects) == 1:
-                beam_obj = self.beamsection_objects[0]["Object"]
-                width = beam_obj.RectWidth.getValueAs("mm")
-                height = beam_obj.RectHeight.getValueAs("mm")
-                area = str(width * height)
-                elements_data.append(
-                    "1 " + str(self.element_count) + " " + area + " 0 0 0 0 0 0 "
-                )
-                FreeCAD.Console.PrintMessage(
-                    "Be aware, only trusses are supported for edge meshes!\n"
-                )
-            else:
-                FreeCAD.Console.PrintError("Multiple beamsections for Z88 not yet supported!\n")
-        elif meshtools.is_face_femmesh(self.femmesh):
-            if len(self.shellthickness_objects) == 1:
-                thick_obj = self.shellthickness_objects[0]["Object"]
-                thickness = str(thick_obj.Thickness.getValueAs("mm"))
-                elements_data.append(
-                    "1 " + str(self.element_count) + " " + thickness + " 0 0 0 0 0 0 "
-                )
+            beam_obj = self.beamsection_objects[0]["Object"]
+            area = 0
+            if beam_obj.SectionType == "Rectangular":
+                width = beam_obj.RectWidth.getValueAs("mm").Value
+                height = beam_obj.RectHeight.getValueAs("mm").Value
+                area = width * height
+            elif beam_obj.SectionType == "Circular":
+                diameter = beam_obj.CircDiameter.getValueAs("mm").Value
+                from math import pi
+                area = 0.25 * pi * diameter * diameter
             else:
                 FreeCAD.Console.PrintError(
-                    "Multiple thicknesses for Z88 not yet supported!\n"
+                    "Cross section type {} not supported, "
+                    "cross section area will be 0 in solver input.\n"
+                    .format(beam_obj.SectionType)
                 )
+                # TODO make the check in prechecks and delete it here
+                # no extensive errorhandling in writer
+                # this way the solver will fail and an exeption is raised somehow
+            elements_data.append(
+                "1 {} {} 0 0 0 0 0 0 "
+                .format(self.element_count, area)
+            )
+            FreeCAD.Console.PrintWarning(
+                "Be aware, only trusses are supported for edge meshes!\n"
+            )
+        elif meshtools.is_face_femmesh(self.femmesh):
+            thick_obj = self.shellthickness_objects[0]["Object"]
+            thickness = str(thick_obj.Thickness.getValueAs("mm"))
+            elements_data.append(
+                "1 " + str(self.element_count) + " " + thickness + " 0 0 0 0 0 0 "
+            )
         elif meshtools.is_solid_femmesh(self.femmesh):
             elements_data.append("1 " + str(self.element_count) + " 0 0 0 0 0 0 0")
         else:

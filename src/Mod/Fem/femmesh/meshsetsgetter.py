@@ -60,6 +60,7 @@ class MeshSetsGetter():
         self.ccx_efaces = "Efaces"
         self.ccx_eedges = "Eedges"
         self.mat_geo_sets = []
+        self.theshape = None
         if self.mesh_object:
             if hasattr(self.mesh_object, "Shape"):
                 self.theshape = self.mesh_object.Shape
@@ -72,7 +73,21 @@ class MeshSetsGetter():
                     "Not all methods do work without this link.\n"
                 )
                 # ATM only used in meshtools.get_femelement_direction1D_set
-                # TODO somehow this is not smart, rare meshes might be used often
+                # TODO somehow this is not smart, pur mesh objects might be used often
+                if (
+                    self.member.geos_beamsection
+                    and (
+                        type_of_obj(self.solver_obj) == "Fem::SolverCcxTools"
+                        or type_of_obj(self.solver_obj) == "Fem::SolverCalculix"
+                    )
+                ):
+                    FreeCAD.Console.PrintError(
+                        "The mesh does not know the geometry it is made from. "
+                        "Beam rotations can not retrieved but they are needed "
+                        "for writing CalculiX solver input. "
+                        "There might be problems in retrieving mesh data.\n"
+                    )
+                    # Z88 will run but CalculiX not
             self.femmesh = self.mesh_object.FemMesh
         else:
             FreeCAD.Console.PrintWarning(
@@ -104,13 +119,16 @@ class MeshSetsGetter():
     # get all known sets
     def get_mesh_sets(self):
 
+        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
         FreeCAD.Console.PrintMessage(
+            "Get mesh data for constraints, materials and element geometry...\n"
+        )
+        FreeCAD.Console.PrintLog(
             "MeshSetsGetter: Get mesh data for "
             "node sets (groups), surface sets (groups) and element sets (groups)\n"
         )
 
         time_start = time.process_time()
-        FreeCAD.Console.PrintMessage("Get mesh sets.\n")
 
         # materials and element geometry element sets getter
         self.get_element_sets_material_and_femelement_geometry()
@@ -137,7 +155,7 @@ class MeshSetsGetter():
 
         setstime = round((time.process_time() - time_start), 3)
         FreeCAD.Console.PrintMessage(
-            "Getting mesh sets or groups time: {} seconds \n".format(setstime)
+            "Getting mesh data time: {} seconds.\n".format(setstime)
         )
 
     # ********************************************************************************************
@@ -570,6 +588,12 @@ class MeshSetsGetter():
     def get_element_rotation1D_elements(self):
         # get for each geometry edge direction the element ids and rotation norma
         FreeCAD.Console.PrintMessage("Beam rotations\n")
+        if self.theshape is None:
+            FreeCAD.Console.PrintError(
+                "Beam rotations set can not be retrieved, "
+                "because the mesh does not know the Geometry it is made from\n"
+            )
+            return
         if not self.femelement_edges_table:
             self.femelement_edges_table = meshtools.get_femelement_edges_table(
                 self.femmesh

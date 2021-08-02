@@ -61,6 +61,10 @@ def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
     elif solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         solver_obj.WorkingDir = u""
+    elif solvertype == "mystran":
+        solver_obj = ObjectsFem.makeSolverMystran(doc, "SolverMystran")
+    elif solvertype == "z88":
+        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "

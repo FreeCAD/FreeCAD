@@ -47,9 +47,9 @@ class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
-        if (self.checkMesh()):
+        if (self.check_mesh_exists()):
             self.checkMeshType()
-        self.checkMaterial()
+        self.check_material_exists()
         self.checkEquations()
 
     def checkMeshType(self):

@@ -2359,7 +2359,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
 //This function handles any type of tangent, perpendicular and angle
 // constraint that involves a point.
 // i.e. endpoint-to-curve, endpoint-to-endpoint and tangent-via-point
-//geoid1, geoid2 and geoid3 as in in the constraint object.
+//geoid1, geoid2 and geoid3 as in the constraint object.
 //For perp-ty and tangency, angle is used to lock the direction.
 //angle==0 - autodetect direction. +pi/2, -pi/2 - specific direction.
 int Sketch::addAngleAtPointConstraint(

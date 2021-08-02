@@ -64,6 +64,10 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
+        # FIXME The following two imports were added as part of PR4926
+        # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+        import FreeCADGui as Gui
+        from pivy import coin
         if Gui.ActiveDocument:
             v = Gui.ActiveDocument.ActiveView
             if "View3DInventor" in str(type(v)):

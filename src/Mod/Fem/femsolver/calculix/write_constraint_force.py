@@ -47,17 +47,20 @@ def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
 
     direction_vec = femobj["Object"].DirectionVector
+    dir_zero_tol = 1e-15  # TODO: should this be more generally for more values?
+    # be careful with raising the tolerance, a big load would have an impact
+    # but compared to the real direction the impact would be small again
     for ref_shape in femobj["NodeLoadTable"]:
         f.write("** {}\n".format(ref_shape[0]))
         for n in sorted(ref_shape[1]):
             node_load = ref_shape[1][n]
-            if (direction_vec.x != 0.0):
+            if abs(direction_vec.x) > dir_zero_tol:
                 v1 = "{:.13E}".format(direction_vec.x * node_load)
                 f.write("{},1,{}\n".format(n, v1))
-            if (direction_vec.y != 0.0):
+            if abs(direction_vec.y) > dir_zero_tol:
                 v2 = "{:.13E}".format(direction_vec.y * node_load)
                 f.write("{},2,{}\n".format(n, v2))
-            if (direction_vec.z != 0.0):
+            if abs(direction_vec.z) > dir_zero_tol:
                 v3 = "{:.13E}".format(direction_vec.z * node_load)
                 f.write("{},3,{}\n".format(n, v3))
         f.write("\n")

@@ -36,7 +36,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tetra4",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "elmer", "z88"],
+        "solvers": ["calculix", "elmer", "mystran", "z88"],
         "material": "solid",
         "equation": "mechanical"
     }
@@ -67,12 +67,19 @@ def setup(doc=None, solvertype="ccxtools"):
     # just keep the following line and change text string in get_explanation method
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
+    # delete explanation object wrongly added with setup faceload
+    if hasattr(doc, "Explanation_Report001"):
+        doc.removeObject("Explanation_Report001")
+    doc.recompute()
+
     # setup cantilever faceload and exchange the mesh
     doc = setup_with_faceload(doc, solvertype)
     femmesh_obj = doc.getObject(get_meshname())
+    geom_obj = doc.getObject("Box")
 
     # clear mesh and set meshing parameter
     femmesh_obj.FemMesh = Fem.FemMesh()
+    femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "3D"
     femmesh_obj.ElementOrder = "1st"
