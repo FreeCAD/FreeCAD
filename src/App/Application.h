@@ -120,6 +120,16 @@ public:
     App::Document* getActiveDocument(void) const;
     /// Retrieve a named document
     App::Document* getDocument(const char *Name) const;
+    /** Retrieve a document based on file path
+     *
+     * @param path: file path
+     * @param checkCanonical: if zero, only match absolute file path. If 1,
+     * then match by canonical file path, where any intermediate '.' and '..'
+     * and symlinks are resolved. If 2, then only print warning message if
+     * there is identical canonical file path found, but will not return the
+     * matched document.
+     */
+    App::Document* getDocumentByPath(const char *path, int checkCanonical=0) const;
     /// gets the (internal) name of the document
     const char * getDocumentName(const App::Document* ) const;
     /// get a list of all documents in the application
@@ -190,6 +200,8 @@ public:
     boost::signals2::signal<void (const Document&)> signalStartRestoreDocument;
     /// signal on restoring Document
     boost::signals2::signal<void (const Document&)> signalFinishRestoreDocument;
+    /// signal on pending reloading of a partial Document
+    boost::signals2::signal<void (const Document&)> signalPendingReloadDocument;
     /// signal on starting to save Document
     boost::signals2::signal<void (const Document&, const std::string&)> signalStartSaveDocument;
     /// signal on saved Document
@@ -441,7 +453,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, bool createView, const std::set<std::string> &objNames);
+            const char *label, bool isMainDoc, bool createView, std::vector<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
@@ -559,13 +571,19 @@ private:
     std::vector<FileTypeItem> _mImportTypes;
     std::vector<FileTypeItem> _mExportTypes;
     std::map<std::string,Document*> DocMap;
+    mutable std::map<std::string,Document*> DocFileMap;
     std::map<std::string,ParameterManager *> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc;
 
-    std::deque<const char *> _pendingDocs;
-    std::deque<const char *> _pendingDocsReopen;
-    std::map<std::string,std::set<std::string> > _pendingDocMap;
+    std::deque<std::string> _pendingDocs;
+    std::deque<std::string> _pendingDocsReopen;
+    std::map<std::string,std::vector<std::string> > _pendingDocMap;
+
+    // To prevent infinite recursion of reloading a partial document due a truely
+    // missing object
+    std::map<std::string,std::set<std::string> > _docReloadAttempts;
+
     bool _isRestoring;
     bool _allowPartial;
     bool _isClosingAll;
