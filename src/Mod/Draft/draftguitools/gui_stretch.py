@@ -101,6 +101,10 @@ class Stretch(gui_base_original.Modifier):
                         if base:
                             if utils.getType(base) in supported:
                                 self.sel.append([base, obj.Placement.multiply(obj.Base.Placement)])
+                    elif hasattr(obj.Base, "Base"):
+                        if obj.Base.Base:
+                            if utils.getType(obj.Base.Base) in supported:
+                                self.sel.append([obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)])
             elif utils.getType(obj) in ["Offset2D", "Array"]:
                 base = None
                 if hasattr(obj, "Source") and obj.Source:
