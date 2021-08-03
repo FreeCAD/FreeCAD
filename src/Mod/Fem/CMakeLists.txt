@@ -51,6 +51,9 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_base_edge.py
     femexamples/ccx_cantilever_base_face.py
     femexamples/ccx_cantilever_base_solid.py
+    femexamples/ccx_cantilever_beam_circle.py
+    femexamples/ccx_cantilever_beam_pipe.py
+    femexamples/ccx_cantilever_beam_rect.py
     femexamples/ccx_cantilever_ele_hexa20.py
     femexamples/ccx_cantilever_ele_quad4.py
     femexamples/ccx_cantilever_ele_quad8.py

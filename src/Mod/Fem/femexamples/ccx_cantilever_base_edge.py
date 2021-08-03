@@ -59,6 +59,7 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
     doc.recompute()
 
     if FreeCAD.GuiUp:
+        load_line.ViewObject.Visibility = False
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
 
