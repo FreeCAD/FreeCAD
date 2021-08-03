@@ -431,9 +431,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
-                if hasattr(child,"Area") and hasattr(child,"IfcType"):
-                    # only add arch objects that have an Area property
-                    # TODO only spaces? ATM only spaces and windows have an Area property
+                if (Draft.get_type(child) in ["Space","BuildingPart"]) and hasattr(child,"IfcType"):
                     area += child.Area.Value
         return area
 
@@ -443,8 +441,9 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         shapes = []
         for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape'):
-                shapes.extend(child.Shape.Faces)
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape'):
+                    shapes.extend(child.Shape.Faces)
         return shapes
 
     def getSpaces(self,obj):
