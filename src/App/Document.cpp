@@ -1724,10 +1724,10 @@ void Document::Save (Base::Writer &writer) const
     
     writer.incInd();
 
-    // NOTE: DO NOT save the main string hasher as separate file, because it is
-    // required by many objects, which assume the string hasher is fully
-    // restored.
-    d->Hasher->setPersistenceFileName(0);
+    if (writer.isForceXML())
+        d->Hasher->setPersistenceFileName(0);
+    else
+        d->Hasher->setPersistenceFileName("StringHasher.Table");
 
     for (auto o : d->objectArray)
         o->beforeSave();

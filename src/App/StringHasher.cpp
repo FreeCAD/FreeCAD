@@ -405,7 +405,7 @@ void StringHasher::Save(Base::Writer &writer) const {
 
 void StringHasher::SaveDocFile (Base::Writer &writer) const {
     std::size_t count = _hashes->SaveAll?this->size():this->count();
-    writer.Stream() << count << '\n';
+    writer.Stream() << "StringTableStart v1 " << count << '\n';
     saveStream(writer.Stream());
 }
 
@@ -515,7 +515,7 @@ void StringHasher::RestoreDocFile (Base::Reader &reader) {
         restoreStreamNew(reader, count);
         return;
     }
-    reader >> count;
+    count = atoi(marker.c_str());
     restoreStream(reader,count);
 }
 
