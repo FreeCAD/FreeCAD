@@ -69,8 +69,6 @@ def write_femelement_geometry(f, ccxwriter):
                         material,
                         section_type
                     )
-                # see forum topic for output formatting of rotation
-                # https://forum.freecadweb.org/viewtopic.php?f=18&t=46133&p=405142#p405142
                 section_nor = "{:.13G}, {:.13G}, {:.13G}\n".format(
                     normal[0],
                     normal[1],
