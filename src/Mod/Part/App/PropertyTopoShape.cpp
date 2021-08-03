@@ -317,14 +317,14 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
 
     if(_SaveHasher) {
-        if(!toXML && writer.getFileVersion()>1)
+        if(!toXML)
             _Shape.Hasher->setPersistenceFileName(getFileName(".Table").c_str());
         else
             _Shape.Hasher->setPersistenceFileName(0);
         _Shape.Hasher->Save(writer);
     }
     if(version.size()) {
-        if(!toXML && writer.getFileVersion()>1)
+        if(!toXML)
             _Shape.setPersistenceFileName(getFileName(".Map").c_str());
         else
             _Shape.setPersistenceFileName(0);
