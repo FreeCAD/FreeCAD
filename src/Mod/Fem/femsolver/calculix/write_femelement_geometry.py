@@ -40,6 +40,11 @@ def write_femelement_geometry(f, ccxwriter):
             if "beamsection_obj"in matgeoset:  # beam mesh
                 beamsec_obj = matgeoset["beamsection_obj"]
                 normal = matgeoset["beam_normal"]
+                section_nor = "{:.13G}, {:.13G}, {:.13G}\n".format(
+                    normal[0],
+                    normal[1],
+                    normal[2]
+                )
                 if beamsec_obj.SectionType == "Rectangular":
                     height = beamsec_obj.RectHeight.getValueAs("mm").Value
                     width = beamsec_obj.RectWidth.getValueAs("mm").Value
@@ -69,11 +74,6 @@ def write_femelement_geometry(f, ccxwriter):
                         material,
                         section_type
                     )
-                section_nor = "{:.13G}, {:.13G}, {:.13G}\n".format(
-                    normal[0],
-                    normal[1],
-                    normal[2]
-                )
                 f.write(section_def)
                 f.write(section_geo)
                 f.write(section_nor)
@@ -99,7 +99,7 @@ def write_femelement_geometry(f, ccxwriter):
                 """
                 f.write(section_def)
                 f.write(section_geo)
-            elif "shellthickness_obj"in matgeoset:  # shell mesh
+            elif "shellthickness_obj" in matgeoset:  # shell mesh
                 shellth_obj = matgeoset["shellthickness_obj"]
                 section_def = "*SHELL SECTION, {}{}\n".format(elsetdef, material)
                 thickness = shellth_obj.Thickness.getValueAs("mm").Value
