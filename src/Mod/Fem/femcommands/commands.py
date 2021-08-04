@@ -119,7 +119,7 @@ class _ClippingPlaneAdd(CommandManager):
 
 
 class _ClippingPlaneRemoveAll(CommandManager):
-    "The FEM_ClippingPlaneemoveAll command definition"
+    "The FEM_ClippingPlaneRemoveAll command definition"
 
     def __init__(self):
         super(_ClippingPlaneRemoveAll, self).__init__()

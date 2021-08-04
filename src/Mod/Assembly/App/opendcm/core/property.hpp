@@ -110,7 +110,7 @@ namespace dcm {
  * @{ */
 
 /**
- * @brief Exeption for property errors
+ * @brief Exception for property errors
  *
  * This exception is thrown when a property related error is detected, for example if a objects is ask for a
  * property which it does not own. This exceptions own the error-code range from 300-399.

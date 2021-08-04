@@ -91,7 +91,7 @@ def write(
     mesh_pynas_code += missing_code_pnynasmesh
 
     # pynas file
-    basefilename = filename[:len(filename) - 4]  # TODO basename is more failsave
+    basefilename = filename[:len(filename) - 4]  # TODO basename is more failsafe
     pynasf = open(basefilename + ".py", "w")
     pynasf.write("# written by FreeCAD\n\n\n")
     pynasf.write("from pyNastran.bdf.bdf import BDF\n")
