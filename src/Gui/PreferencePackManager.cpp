@@ -133,7 +133,7 @@ void PreferencePack::applyConfigChanges() const
         ParameterManager newParameters;
         newParameters.LoadDocument(configFile.string().c_str());
         auto baseAppGroup = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-        newParameters.GetGroup("BaseApp")->copyTo(baseAppGroup);
+        newParameters.GetGroup("BaseApp")->insertTo(baseAppGroup);
     }
 }
 
