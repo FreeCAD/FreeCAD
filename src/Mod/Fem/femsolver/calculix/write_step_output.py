@@ -58,6 +58,8 @@ def write_step_output(f, ccxwriter):
 
         # dat file
         # reaction forces: freecadweb.org/tracker/view.php?id=2934
+        # some hint can be found in this topic:
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=20664&start=10#p520642
         if ccxwriter.member.cons_fixed:
             f.write("** outputs --> dat file\n")
             # reaction forces for all Constraint fixed
