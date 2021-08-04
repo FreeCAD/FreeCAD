@@ -90,7 +90,10 @@ SET(FemExamples_SRCS
     femexamples/thermomech_bimetall.py
     femexamples/thermomech_flow1d.py
     femexamples/thermomech_spine.py
+    femexamples/truss_3d_cs_circle_ele_seg2.py
+    femexamples/truss_3d_cs_circle_ele_seg3.py
 )
+
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
@@ -128,6 +131,8 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_thermomech_spine_tetra10.py
     femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
     femexamples/meshes/mesh_transform_torque_tetra10.py
+    femexamples/meshes/mesh_truss_crane_seg2.py
+    femexamples/meshes/mesh_truss_crane_seg3.py
 )
 
 SET(FemInOut_SRCS
