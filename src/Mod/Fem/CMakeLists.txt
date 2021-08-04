@@ -322,7 +322,6 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/box.FCStd
     femtest/data/calculix/ccx_buckling_flexuralbuckling.dat
     femtest/data/calculix/ccx_buckling_flexuralbuckling.inp
-    femtest/data/calculix/ccx_cantilever_faceload.inp
     femtest/data/calculix/ccx_cantilever_ele_hexa20.inp
     femtest/data/calculix/ccx_cantilever_ele_quad4.inp
     femtest/data/calculix/ccx_cantilever_ele_quad8.inp
@@ -330,6 +329,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/ccx_cantilever_ele_seg3.inp
     femtest/data/calculix/ccx_cantilever_ele_tria3.inp
     femtest/data/calculix/ccx_cantilever_ele_tria6.inp
+    femtest/data/calculix/ccx_cantilever_faceload.inp
     femtest/data/calculix/ccx_cantilever_nodeload.inp
     femtest/data/calculix/ccx_cantilever_prescribeddisplacement.inp
     femtest/data/calculix/constraint_centrif.inp

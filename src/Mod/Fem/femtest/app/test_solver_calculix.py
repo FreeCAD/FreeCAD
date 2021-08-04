@@ -104,14 +104,6 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccx_cantilever_faceload(
-        self
-    ):
-        from femexamples.ccx_cantilever_faceload import setup
-        setup(self.document, "calculix")
-        self.input_file_writing_test(get_namefromdef("test_"))
-
-    # ********************************************************************************************
     def test_ccx_cantilever_ele_hexa20(
         self
     ):
@@ -164,6 +156,14 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.ccx_cantilever_ele_tria6 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_faceload(
+        self
+    ):
+        from femexamples.ccx_cantilever_faceload import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
