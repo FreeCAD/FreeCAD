@@ -49,7 +49,7 @@ class _Analysis(CommandManager):
 
     def __init__(self):
         super(_Analysis, self).__init__()
-        self.menuetext = "Analysis container"
+        self.menutext = "Analysis container"
         self.accel = "S, A"
         self.tooltip = "Creates an analysis container with standard solver CalculiX"
         self.is_active = "with_document"
@@ -74,7 +74,7 @@ class _ClippingPlaneAdd(CommandManager):
 
     def __init__(self):
         super(_ClippingPlaneAdd, self).__init__()
-        self.menuetext = "Clipping plane on face"
+        self.menutext = "Clipping plane on face"
         self.tooltip = "Add a clipping plane on a selected face"
         self.is_active = "with_document"
 
@@ -123,7 +123,7 @@ class _ClippingPlaneRemoveAll(CommandManager):
 
     def __init__(self):
         super(_ClippingPlaneRemoveAll, self).__init__()
-        self.menuetext = "Remove all clipping planes"
+        self.menutext = "Remove all clipping planes"
         self.tooltip = "Remove all clipping planes"
         self.is_active = "with_document"
 
@@ -143,7 +143,7 @@ class _ConstantVacuumPermittivity(CommandManager):
     def __init__(self):
         super(_ConstantVacuumPermittivity, self).__init__()
         self.pixmap = "fem-solver-analysis-thermomechanical.svg"
-        self.menuetext = "Constant vacuum permittivity"
+        self.menutext = "Constant vacuum permittivity"
         self.tooltip = "Creates a FEM constant vacuum permittivity to overwrite standard value"
         self.is_active = "with_document"
         self.is_active = "with_analysis"
@@ -156,7 +156,7 @@ class _ConstraintBodyHeatSource(CommandManager):
     def __init__(self):
         super(_ConstraintBodyHeatSource, self).__init__()
         self.pixmap = "FEM_ConstraintHeatflux"  # the heatflux icon is used
-        self.menuetext = "Constraint body heat source"
+        self.menutext = "Constraint body heat source"
         self.tooltip = "Creates a FEM constraint body heat source"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -167,7 +167,7 @@ class _ConstraintCentrif(CommandManager):
 
     def __init__(self):
         super(_ConstraintCentrif, self).__init__()
-        self.menuetext = "Constraint centrif"
+        self.menutext = "Constraint centrif"
         self.tooltip = "Creates a FEM constraint centrif"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -178,7 +178,7 @@ class _ConstraintElectrostaticPotential(CommandManager):
 
     def __init__(self):
         super(_ConstraintElectrostaticPotential, self).__init__()
-        self.menuetext = "Constraint electrostatic potential"
+        self.menutext = "Constraint electrostatic potential"
         self.tooltip = "Creates a FEM constraint electrostatic potential"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -189,7 +189,7 @@ class _ConstraintFlowVelocity(CommandManager):
 
     def __init__(self):
         super(_ConstraintFlowVelocity, self).__init__()
-        self.menuetext = "Constraint flow velocity"
+        self.menutext = "Constraint flow velocity"
         self.tooltip = "Creates a FEM constraint flow velocity"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -200,7 +200,7 @@ class _ConstraintInitialFlowVelocity(CommandManager):
 
     def __init__(self):
         super(_ConstraintInitialFlowVelocity, self).__init__()
-        self.menuetext = "Constraint initial flow velocity"
+        self.menutext = "Constraint initial flow velocity"
         self.tooltip = "Creates a FEM constraint initial flow velocity"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -211,7 +211,7 @@ class _ConstraintSectionPrint(CommandManager):
 
     def __init__(self):
         super(_ConstraintSectionPrint, self).__init__()
-        self.menuetext = "Constraint sectionprint"
+        self.menutext = "Constraint sectionprint"
         self.tooltip = "Creates a FEM constraint sectionprint"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -222,7 +222,7 @@ class _ConstraintSelfWeight(CommandManager):
 
     def __init__(self):
         super(_ConstraintSelfWeight, self).__init__()
-        self.menuetext = "Constraint self weight"
+        self.menutext = "Constraint self weight"
         self.tooltip = "Creates a FEM constraint self weight"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -233,7 +233,7 @@ class _ConstraintTie(CommandManager):
 
     def __init__(self):
         super(_ConstraintTie, self).__init__()
-        self.menuetext = "Constraint tie"
+        self.menutext = "Constraint tie"
         self.tooltip = "Creates a FEM constraint tie"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -244,7 +244,7 @@ class _ElementFluid1D(CommandManager):
 
     def __init__(self):
         super(_ElementFluid1D, self).__init__()
-        self.menuetext = "Fluid section for 1D flow"
+        self.menutext = "Fluid section for 1D flow"
         self.tooltip = "Creates a FEM fluid section for 1D flow"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -255,7 +255,7 @@ class _ElementGeometry1D(CommandManager):
 
     def __init__(self):
         super(_ElementGeometry1D, self).__init__()
-        self.menuetext = "Beam cross section"
+        self.menutext = "Beam cross section"
         self.tooltip = "Creates a FEM beam cross section"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -266,7 +266,7 @@ class _ElementGeometry2D(CommandManager):
 
     def __init__(self):
         super(_ElementGeometry2D, self).__init__()
-        self.menuetext = "Shell plate thickness"
+        self.menutext = "Shell plate thickness"
         self.tooltip = "Creates a FEM shell plate thickness"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -277,7 +277,7 @@ class _ElementRotation1D(CommandManager):
 
     def __init__(self):
         super(_ElementRotation1D, self).__init__()
-        self.menuetext = "Beam rotation"
+        self.menutext = "Beam rotation"
         self.tooltip = "Creates a FEM beam rotation"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -288,7 +288,7 @@ class _EquationElectrostatic(CommandManager):
 
     def __init__(self):
         super(_EquationElectrostatic, self).__init__()
-        self.menuetext = "Electrostatic equation"
+        self.menutext = "Electrostatic equation"
         self.tooltip = "Creates a FEM equation for electrostatic"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -299,7 +299,7 @@ class _EquationElasticity(CommandManager):
 
     def __init__(self):
         super(_EquationElasticity, self).__init__()
-        self.menuetext = "Elasticity equation"
+        self.menutext = "Elasticity equation"
         self.tooltip = "Creates a FEM equation for elasticity"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -310,7 +310,7 @@ class _EquationFlow(CommandManager):
 
     def __init__(self):
         super(_EquationFlow, self).__init__()
-        self.menuetext = "Flow equation"
+        self.menutext = "Flow equation"
         self.tooltip = "Creates a FEM equation for flow"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -321,7 +321,7 @@ class _EquationFlux(CommandManager):
 
     def __init__(self):
         super(_EquationFlux, self).__init__()
-        self.menuetext = "Flux equation"
+        self.menutext = "Flux equation"
         self.tooltip = "Creates a FEM equation for flux"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -332,7 +332,7 @@ class _EquationElectricforce(CommandManager):
 
     def __init__(self):
         super(_EquationElectricforce, self).__init__()
-        self.menuetext = "Electricforce equation"
+        self.menutext = "Electricforce equation"
         self.tooltip = "Creates a FEM equation for electric forces"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -343,7 +343,7 @@ class _EquationHeat(CommandManager):
 
     def __init__(self):
         super(_EquationHeat, self).__init__()
-        self.menuetext = "Heat equation"
+        self.menutext = "Heat equation"
         self.tooltip = "Creates a FEM equation for heat"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -355,7 +355,7 @@ class _Examples(CommandManager):
     def __init__(self):
         super(_Examples, self).__init__()
         self.pixmap = "FemWorkbench"
-        self.menuetext = "Open FEM examples"
+        self.menutext = "Open FEM examples"
         self.tooltip = "Open FEM examples"
         self.is_active = "always"
 
@@ -370,7 +370,7 @@ class _MaterialEditor(CommandManager):
     def __init__(self):
         super(_MaterialEditor, self).__init__()
         self.pixmap = "Arch_Material_Group"
-        self.menuetext = "Material editor"
+        self.menutext = "Material editor"
         self.tooltip = "Opens the FreeCAD material editor"
         self.is_active = "always"
 
@@ -384,7 +384,7 @@ class _MaterialFluid(CommandManager):
 
     def __init__(self):
         super(_MaterialFluid, self).__init__()
-        self.menuetext = "Material for fluid"
+        self.menutext = "Material for fluid"
         self.tooltip = "Creates a FEM material for fluid"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -395,7 +395,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
 
     def __init__(self):
         super(_MaterialMechanicalNonlinear, self).__init__()
-        self.menuetext = "Nonlinear mechanical material"
+        self.menutext = "Nonlinear mechanical material"
         self.tooltip = "Creates a nonlinear mechanical material"
         self.is_active = "with_material_solid"
 
@@ -459,7 +459,7 @@ class _MaterialReinforced(CommandManager):
 
     def __init__(self):
         super(_MaterialReinforced, self).__init__()
-        self.menuetext = "Reinforced material (concrete)"
+        self.menutext = "Reinforced material (concrete)"
         self.tooltip = "Creates a material for reinforced matrix material such as concrete"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -470,7 +470,7 @@ class _MaterialSolid(CommandManager):
 
     def __init__(self):
         super(_MaterialSolid, self).__init__()
-        self.menuetext = "Material for solid"
+        self.menutext = "Material for solid"
         self.accel = "M, S"
         self.tooltip = "Creates a FEM material for solid"
         self.is_active = "with_analysis"
@@ -482,7 +482,7 @@ class _FEMMesh2Mesh(CommandManager):
 
     def __init__(self):
         super(_FEMMesh2Mesh, self).__init__()
-        self.menuetext = "FEM mesh to mesh"
+        self.menutext = "FEM mesh to mesh"
         self.tooltip = "Convert the surface of a FEM mesh to a mesh"
         self.is_active = "with_femmesh_andor_res"
 
@@ -523,7 +523,7 @@ class _MeshBoundaryLayer(CommandManager):
 
     def __init__(self):
         super(_MeshBoundaryLayer, self).__init__()
-        self.menuetext = "FEM mesh boundary layer"
+        self.menutext = "FEM mesh boundary layer"
         self.tooltip = "Creates a FEM mesh boundary layer"
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -534,7 +534,7 @@ class _MeshClear(CommandManager):
 
     def __init__(self):
         super(_MeshClear, self).__init__()
-        self.menuetext = "Clear FEM mesh"
+        self.menutext = "Clear FEM mesh"
         self.tooltip = "Clear the Mesh of a FEM mesh object"
         self.is_active = "with_femmesh"
 
@@ -553,7 +553,7 @@ class _MeshDisplayInfo(CommandManager):
 
     def __init__(self):
         super(_MeshDisplayInfo, self).__init__()
-        self.menuetext = "Display FEM mesh info"
+        self.menutext = "Display FEM mesh info"
         self.tooltip = "Display FEM mesh info"
         self.is_active = "with_femmesh"
 
@@ -576,7 +576,7 @@ class _MeshGmshFromShape(CommandManager):
 
     def __init__(self):
         super(_MeshGmshFromShape, self).__init__()
-        self.menuetext = "FEM mesh from shape by Gmsh"
+        self.menutext = "FEM mesh from shape by Gmsh"
         self.tooltip = "Create a FEM mesh from a shape by Gmsh mesher"
         self.is_active = "with_part_feature"
 
@@ -615,7 +615,7 @@ class _MeshGroup(CommandManager):
 
     def __init__(self):
         super(_MeshGroup, self).__init__()
-        self.menuetext = "FEM mesh group"
+        self.menutext = "FEM mesh group"
         self.tooltip = "Creates a FEM mesh group"
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -626,7 +626,7 @@ class _MeshNetgenFromShape(CommandManager):
 
     def __init__(self):
         super(_MeshNetgenFromShape, self).__init__()
-        self.menuetext = "FEM mesh from shape by Netgen"
+        self.menutext = "FEM mesh from shape by Netgen"
         self.tooltip = "Create a FEM mesh from a solid or face shape by Netgen internal mesher"
         self.is_active = "with_part_feature"
 
@@ -665,7 +665,7 @@ class _MeshRegion(CommandManager):
 
     def __init__(self):
         super(_MeshRegion, self).__init__()
-        self.menuetext = "FEM mesh region"
+        self.menutext = "FEM mesh region"
         self.tooltip = "Creates a FEM mesh region"
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -676,7 +676,7 @@ class _ResultShow(CommandManager):
 
     def __init__(self):
         super(_ResultShow, self).__init__()
-        self.menuetext = "Show result"
+        self.menutext = "Show result"
         self.accel = "R, S"
         self.tooltip = "Shows and visualizes selected result data"
         self.is_active = "with_selresult"
@@ -690,7 +690,7 @@ class _ResultsPurge(CommandManager):
 
     def __init__(self):
         super(_ResultsPurge, self).__init__()
-        self.menuetext = "Purge results"
+        self.menutext = "Purge results"
         self.accel = "R, P"
         self.tooltip = "Purges all results from active analysis"
         self.is_active = "with_results"
@@ -706,7 +706,7 @@ class _SolverCxxtools(CommandManager):
     def __init__(self):
         super(_SolverCxxtools, self).__init__()
         self.pixmap = "FEM_SolverStandard"
-        self.menuetext = "Solver CalculiX Standard"
+        self.menutext = "Solver CalculiX Standard"
         self.accel = "S, X"
         self.tooltip = "Creates a standard FEM solver CalculiX with ccx tools"
         self.is_active = "with_analysis"
@@ -741,7 +741,7 @@ class _SolverCalculix(CommandManager):
     def __init__(self):
         super(_SolverCalculix, self).__init__()
         self.pixmap = "FEM_SolverStandard"
-        self.menuetext = "Solver CalculiX (new framework)"
+        self.menutext = "Solver CalculiX (new framework)"
         self.accel = "S, C"
         self.tooltip = "Creates a FEM solver CalculiX new framework (less result error handling)"
         self.is_active = "with_analysis"
@@ -754,7 +754,7 @@ class _SolverControl(CommandManager):
 
     def __init__(self):
         super(_SolverControl, self).__init__()
-        self.menuetext = "Solver job control"
+        self.menutext = "Solver job control"
         self.accel = "S, T"
         self.tooltip = "Changes solver attributes and runs the calculations for the selected solver"
         self.is_active = "with_solver"
@@ -768,7 +768,7 @@ class _SolverElmer(CommandManager):
 
     def __init__(self):
         super(_SolverElmer, self).__init__()
-        self.menuetext = "Solver Elmer"
+        self.menutext = "Solver Elmer"
         self.accel = "S, E"
         self.tooltip = "Creates a FEM solver Elmer"
         self.is_active = "with_analysis"
@@ -781,7 +781,7 @@ class _SolverMystran(CommandManager):
     def __init__(self):
         super(_SolverMystran, self).__init__()
         self.pixmap = "FEM_SolverStandard"
-        self.menuetext = "Solver Mystran"
+        self.menutext = "Solver Mystran"
         self.accel = "S, M"
         self.tooltip = "Creates a FEM solver Mystran"
         self.is_active = "with_analysis"
@@ -793,7 +793,7 @@ class _SolverRun(CommandManager):
 
     def __init__(self):
         super(_SolverRun, self).__init__()
-        self.menuetext = "Run solver calculations"
+        self.menutext = "Run solver calculations"
         self.accel = "S, R"
         self.tooltip = "Runs the calculations for the selected solver"
         self.is_active = "with_solver"
@@ -810,7 +810,7 @@ class _SolverZ88(CommandManager):
 
     def __init__(self):
         super(_SolverZ88, self).__init__()
-        self.menuetext = "Solver Z88"
+        self.menutext = "Solver Z88"
         self.accel = "S, Z"
         self.tooltip = "Creates a FEM solver Z88"
         self.is_active = "with_analysis"
