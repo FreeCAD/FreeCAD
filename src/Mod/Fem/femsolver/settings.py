@@ -34,6 +34,7 @@ are supported:
 
     - Calculix
     - ElmerSolver
+    - Mystran
     - Z88
 
 To query settings about those solver the solver name must be given exactly in
@@ -85,7 +86,7 @@ def get_binary(name):
 
     Return the specific path set by the user in FreeCADs settings/parameter
     system if set or the default binary name if no specific path is set. If no
-    path was found because the solver *name* isn't supported ``None`` is
+    path was found because the solver *name* is not supported ``None`` is
     returned. This method does not check whether the binary actually exists
     and is callable.
 
@@ -93,12 +94,15 @@ def get_binary(name):
     """
     if name in _SOLVER_PARAM:
         binary = _SOLVER_PARAM[name].get_binary()
-        FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
+        FreeCAD.Console.PrintMessage(
+            'Solver binary path (returned from binary getter): {} \n'
+            .format(binary)
+        )
         return binary
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            "Settings solver name: {} not found in "
+            "solver settings modules _SOLVER_PARAM dirctionary.\n"
             .format(name)
         )
         return None
@@ -108,8 +112,8 @@ def get_write_comments(name):
     """ Check whether "write_comments" is set for solver.
 
     Returns ``True`` if the "write_comments" setting/parameter is set for the
-    solver with the id *name*. Returns ``False`` otherwise. If the solver isn't
-    supported ``None`` is returned.
+    solver with the id *name*. Returns ``False`` otherwise. If the solver is
+    not supported ``None`` is returned.
 
     :param name: solver id as a ``str`` (see :mod:`femsolver.settings`)
     """
@@ -117,8 +121,8 @@ def get_write_comments(name):
         return _SOLVER_PARAM[name].get_write_comments()
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            "Settings solver name: {} not found in "
+            "solver settings modules _SOLVER_PARAM dirctionary.\n"
             .format(name)
         )
         return None
@@ -190,19 +194,31 @@ class _SolverDlg(object):
     def get_binary(self):
 
         # set the binary path to the FreeCAD defaults
-        # ATM pure unix shell commands without path names are used
+        # ATM pure unix shell commands without path names are used as standard
+        # TODO the binaries provieded with the FreeCAD distribution should be found
+        # without any additional user input
+        # see ccxttols, it works for Windows and Linux there
         binary = self.default
-        FreeCAD.Console.PrintLog("Solver binary path: {} \n".format(binary))
+        FreeCAD.Console.PrintLog("Solver binary path default: {} \n".format(binary))
 
         # check if use_default is set to True
         # if True the standard binary path will be overwritten with a user binary path
         if self.param_group.GetBool(self.use_default, True) is False:
             binary = self.param_group.GetString(self.custom_path)
-        FreeCAD.Console.PrintLog("Solver binary path: {} \n".format(binary))
+        FreeCAD.Console.PrintLog("Solver binary path user setting: {} \n".format(binary))
 
         # get the whole binary path name for the given command or binary path and return it
+        # None is returned if the binary has not been found
+        # The user does not know what exactly has going wrong.
         from distutils.spawn import find_executable as find_bin
-        return find_bin(binary)
+        the_found_binary = find_bin(binary)
+        if the_found_binary is None:
+            FreeCAD.Console.PrintError(
+                "The binary has not been found. Full binary search path: {}\n"
+                .format(binary)
+            )
+        FreeCAD.Console.PrintLog("Solver binary found path: {}\n".format(the_found_binary))
+        return the_found_binary
 
     def get_write_comments(self):
         return self.param_group.GetBool(self.WRITE_COMMENTS_PARAM, True)
@@ -224,6 +240,11 @@ _SOLVER_PARAM = {
         param_path=_PARAM_PATH + "Elmer",
         use_default="UseStandardGridLocation",
         custom_path="gridBinaryPath"),
+    "Mystran": _SolverDlg(
+        default="mystran",
+        param_path=_PARAM_PATH + "Mystran",
+        use_default="UseStandardMystranLocation",
+        custom_path="mystranBinaryPath"),
     "Z88": _SolverDlg(
         default="z88r",
         param_path=_PARAM_PATH + "Z88",

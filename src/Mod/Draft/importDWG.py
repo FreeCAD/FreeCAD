@@ -203,14 +203,15 @@ def convertToDxf(dwgfilename):
     """
     import os, tempfile, subprocess, sys
 
-    import shutil
-    if shutil.which("dwg2dxf"):
+    try:
         outdir = tempfile.mkdtemp()
         basename = os.path.basename(dwgfilename)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         proc = subprocess.Popen(("dwg2dxf", dwgfilename, "-o", result))
         proc.communicate()
         return result
+    except:
+        pass
 
     teigha = getTeighaConverter()
     if teigha:

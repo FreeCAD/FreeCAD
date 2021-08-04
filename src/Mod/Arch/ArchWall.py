@@ -57,7 +57,7 @@ __title__  = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name=None):
+def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -128,7 +128,10 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
         obj.Height = height
     else:
         obj.Height = p.GetFloat("WallHeight",3000)
-    obj.Align = align
+    if align:
+        obj.Align = align
+    else:
+        obj.Align = ["Center","Left","Right"][p.GetInt("WallAlignment",0)]
     if obj.Base and FreeCAD.GuiUp:
         if Draft.getType(obj.Base) != "Space":
             obj.Base.ViewObject.hide()

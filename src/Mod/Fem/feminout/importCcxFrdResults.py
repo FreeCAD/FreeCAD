@@ -397,7 +397,7 @@ def read_frd_result(
                 CalculiX uses a different node order in
                 input file *.inp and result file *.frd for hexa20 (C3D20)
                 according to Guido (the developer of ccx):
-                see note in in first line of cgx manuel part element types
+                see note in the first line of cgx manual part element types
                 ccx (and thus the *.inp) follows the ABAQUS convention
                 documented in the ccx-documentation
                 cgx (and thus the *.frd) follows the FAM2 convention

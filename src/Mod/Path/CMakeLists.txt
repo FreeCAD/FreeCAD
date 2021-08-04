@@ -164,6 +164,10 @@ SET(PathScripts_post_SRCS
     PathScripts/post/uccnc_post.py
 )
 
+SET(Tools_SRCS
+    Tools/README.md
+)
+
 SET(Tools_Bit_SRCS
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/5mm-thread-cutter.fctb
@@ -194,7 +198,14 @@ SET(Tools_Shape_SRCS
 
 SET(PathTests_SRCS
     PathTests/__init__.py
+    PathTests/boxtest.fcstd
     PathTests/PathTestUtils.py
+    PathTests/test_adaptive.fcstd
+    PathTests/test_centroid_00.ngc
+    PathTests/test_geomop.fcstd
+    PathTests/test_holes00.fcstd
+    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
     PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
@@ -220,11 +231,6 @@ SET(PathTests_SRCS
     PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
     PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
-    PathTests/boxtest.fcstd
-    PathTests/test_centroid_00.ngc
-    PathTests/test_geomop.fcstd
-    PathTests/test_holes00.fcstd
-    PathTests/test_linuxcnc_00.ngc
 )
 
 SET(PathImages_Ops
@@ -254,6 +260,7 @@ SET(Path_Data
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${Tools_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
@@ -304,6 +311,13 @@ INSTALL(
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${Tools_SRCS}
+    DESTINATION
+        Mod/Path/Tools
 )
 
 INSTALL(

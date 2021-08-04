@@ -356,6 +356,13 @@ class _TaskPanel:
                 FemGui.open(self.fea.inp_file_name)
 
     def runCalculix(self):
+        if self.fea.ccx_binary_present is False:
+            self.femConsoleMessage(
+                "CalculiX can not be started. No or wrong CalculiX binary: {}"
+                .format(self.fea.ccx_binary)
+            )
+            # TODO deactivate the run button
+            return
         # print("runCalculix")
         self.Start = time.time()
 

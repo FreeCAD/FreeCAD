@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -31,20 +31,35 @@ from .manager import get_meshname
 from .manager import init_doc
 
 
-def setup_cantileverbase(doc=None, solvertype="ccxtools"):
+def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
 
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometric object
-    # object name is important in this base setup method
-    # all module which use this base setup, use the object name to find the object
-    geom_obj = doc.addObject("Part::Box", "Box")
-    geom_obj.Height = geom_obj.Width = 1000
-    geom_obj.Length = 8000
+    # geometric objects
+    # load line
+    load_line = doc.addObject("Part::Line", "LoadLine")
+    load_line.X1 = 0
+    load_line.Y1 = 0
+    load_line.Z1 = 1000
+    load_line.X2 = 0
+    load_line.Y2 = 0
+    load_line.Z2 = 0
+
+    # cantilever line
+    geom_obj = doc.addObject("Part::Line", "CantileverLine")
+    geom_obj.X1 = 0
+    geom_obj.Y1 = 500
+    geom_obj.Z1 = 500
+    geom_obj.X2 = 8000
+    geom_obj.Y2 = 500
+    geom_obj.Z2 = 500
+
     doc.recompute()
+
     if FreeCAD.GuiUp:
+        load_line.ViewObject.Visibility = False
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
 
@@ -57,42 +72,56 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     elif solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         solver_obj.WorkingDir = u""
-    elif solvertype == "elmer":
-        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        ObjectsFem.makeEquationElasticity(doc, solver_obj)
-    elif solvertype == "z88":
-        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
+    elif solvertype == "mystran":
+        solver_obj = ObjectsFem.makeSolverMystran(doc, "SolverMystran")
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
         solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
     analysis.addObject(solver_obj)
 
+    # beam section
+    beamsection_obj = ObjectsFem.makeElementGeometry1D(
+        doc,
+        sectiontype="Rectangular",
+        width=1000.0,
+        height=1000.0,
+        name="BeamCrossSection"
+    )
+    analysis.addObject(beamsection_obj)
+
     # material
-    material_obj = ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
     mat = material_obj.Material
-    mat["Name"] = "CalculiX-Steel"
+    mat["Name"] = "Calculix-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [(geom_obj, "Face1")]
+    con_fixed.References = [(geom_obj, "Vertex1")]
     analysis.addObject(con_fixed)
 
+    # constraint force
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force.References = [(geom_obj, "Vertex2")]
+    con_force.Force = 9000000.0  # 9'000'000 N = 9 MN
+    con_force.Direction = (load_line, ["Edge1"])
+    con_force.Reversed = False
+    analysis.addObject(con_force)
+
     # mesh
-    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_canticcx_seg3 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -104,6 +133,9 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.ElementDimension = "1D"
+    femmesh_obj.CharacteristicLengthMax = "1750.0 mm"
+    femmesh_obj.CharacteristicLengthMin = "1750.0 mm"
 
     doc.recompute()
     return doc

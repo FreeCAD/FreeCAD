@@ -114,6 +114,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "PyGui._ViewProviderFemSolverCalculix":
             return self
+        if fullname == "PyGui._ViewProviderFemSolverZ88":
+            return self
 
         if fullname == "PyGui._ViewProviderFemBeamSection":
             return self
@@ -310,6 +312,9 @@ class FemMigrateGui(object):
             import femviewprovider.view_solver_ccxtools
             module._ViewProviderFemSolverCalculix = \
                 femviewprovider.view_solver_ccxtools.VPSolverCcxTools
+        if module.__name__ == "PyGui._ViewProviderFemSolverZ88":
+            import femsolver.z88.solver
+            module._ViewProviderFemSolverZ88 = femsolver.z88.solver.ViewProxy
 
         if module.__name__ == "PyGui._ViewProviderFemBeamSection":
             import femviewprovider.view_element_geometry1D
@@ -434,6 +439,7 @@ module="PyGui._ViewProviderFemMeshRegion"
 module="PyGui._ViewProviderFemMeshResult"
 module="PyGui._ViewProviderFemResultMechanical"
 module="PyGui._ViewProviderFemSolverCalculix"
+module="PyGui._ViewProviderFemSolverZ88"
 
 renamed between the second and third big moveings
 module="PyGui._ViewProviderFemBeamSection"

@@ -56,7 +56,7 @@ class FemInputWriter():
         self.document = self.analysis.Document
         # working dir
         self.dir_name = dir_name
-        # if dir_name was not given or if it exists but isn't empty: create a temporary dir
+        # if dir_name was not given or if it exists but is not empty: create a temporary dir
         # Purpose: makes sure the analysis can be run even on wired situation
         if not dir_name:
             FreeCAD.Console.PrintWarning(
@@ -78,18 +78,6 @@ class FemInputWriter():
         self.ccx_eedges = "Eedges"
         self.mat_geo_sets = mat_geo_sets
         if self.mesh_object:
-            if hasattr(self.mesh_object, "Shape"):
-                self.theshape = self.mesh_object.Shape
-            elif hasattr(self.mesh_object, "Part"):
-                self.theshape = self.mesh_object.Part
-            else:
-                FreeCAD.Console.PrintWarning(
-                    "A finite mesh without a link to a Shape was given. "
-                    "Happen on pure mesh objects. "
-                    "Not all methods do work without this link.\n"
-                )
-                # ATM only used in meshtools.get_femelement_direction1D_set
-                # TODO somehow this is not smart, rare meshes might be used often
             self.femmesh = self.mesh_object.FemMesh
         else:
             FreeCAD.Console.PrintWarning(

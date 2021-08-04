@@ -34,11 +34,11 @@ from .manager import init_doc
 
 def get_information():
     return {
-        "name": "CCX cantilever hexa20 face load",
+        "name": "CCX cantilever hexa20 solid elements",
         "meshtype": "solid",
         "meshelement": "Hexa20",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "z88", "elmer"],
+        "solvers": ["calculix", "elmer", "z88"],
         "material": "solid",
         "equation": "mechanical"
     }
@@ -48,11 +48,12 @@ def get_explanation(header=""):
     return header + """
 
 To run the example from Python console use:
-from femexamples.ccx_cantilever_hexa20faceload import setup
+from femexamples.ccx_cantilever_ele_hexa20 import setup
 setup()
 
 
 See forum topic post:
+hexa20 elements and face load
 ...
 
 """
@@ -68,9 +69,14 @@ def setup(doc=None, solvertype="ccxtools"):
     # just keep the following line and change text string in get_explanation method
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
-    # setup cantilever faceload and exchange the mesh
+    # setup cantilever faceload
     doc = setup_with_faceload(doc, solvertype)
     femmesh_obj = doc.getObject(get_meshname())
+
+    # delete explanation object wrongly added with setup faceload
+    if hasattr(doc, "Explanation_Report001"):
+        doc.removeObject("Explanation_Report001")
+    doc.recompute()
 
     # load the hexa20 mesh
     from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements

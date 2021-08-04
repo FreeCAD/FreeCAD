@@ -106,35 +106,18 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     (fzmin, fzmax) = self.getMinMaxOfFaces(Faces)
                     if obj.FinalDepth.Value < fzmin:
                         PathLog.warning(translate('PathPocket', 'Final depth set below ZMin of face(s) selected.'))
-                    '''
-                    if obj.OpFinalDepth == obj.FinalDepth:
-                        obj.FinalDepth.Value = fzmin
-                        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                        self.depthparams = PathUtils.depth_params(
-                            clearance_height=obj.ClearanceHeight.Value,
-                            safe_height=obj.SafeHeight.Value,
-                            start_depth=obj.StartDepth.Value,
-                            step_down=obj.StepDown.Value,
-                            z_finish_step=finish_step,
-                            final_depth=fzmin,
-                            user_depths=None)
-                        PathLog.info("Updated obj.FinalDepth.Value and self.depthparams to zmin: {}".format(fzmin))
-                    '''
 
                     if obj.AdaptivePocketStart is True or obj.AdaptivePocketFinish is True:
                         pocketTup = self.calculateAdaptivePocket(obj, base, subObjTups)
                         if pocketTup is not False:
-                            removalshapes.append(pocketTup)  # (shape, isHole, sub, angle, axis, strDep, finDep)
+                            obj.removalshape = pocketTup[0]
+                            removalshapes.append(pocketTup)  # (shape, isHole, detail)
                     else:
-                        strDep = obj.StartDepth.Value
-                        finDep = obj.FinalDepth.Value
-
                         shape = Part.makeCompound(Faces)
                         env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=self.depthparams)
                         obj.removalshape = env.cut(base[0].Shape)
-                        obj.removalshape.tessellate(0.1)
-                        # (shape, isHole, sub, angle, axis, strDep, finDep)
-                        removalshapes.append((obj.removalshape, False, '3DPocket', 0.0, 'X', strDep, finDep))
+                        # obj.removalshape.tessellate(0.1)
+                        removalshapes.append((obj.removalshape, False, '3DPocket'))  # (shape, isHole, detail)
                 else:
                     for sub in base[1]:
                         if "Face" in sub:
@@ -145,67 +128,25 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                         env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=self.depthparams)
                         obj.removalshape = env.cut(base[0].Shape)
-                        obj.removalshape.tessellate(0.1)
-
-                        removalshapes.append((obj.removalshape, False))
+                        # obj.removalshape.tessellate(0.1)
+                        removalshapes.append((obj.removalshape, False, '3DPocket'))
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
-            strDep = obj.StartDepth.Value
-            finDep = obj.FinalDepth.Value
-            # recomputeDepthparams = False
             for base in self.model:
-                '''
-                if obj.OpFinalDepth == obj.FinalDepth:
-                    if base.Shape.BoundBox.ZMin < obj.FinalDepth.Value:
-                        obj.FinalDepth.Value = base.Shape.BoundBox.ZMin
-                        finDep = base.Shape.BoundBox.ZMin
-                        recomputeDepthparams = True
-                        PathLog.info("Updated obj.FinalDepth.Value to {}".format(finDep))
-                if obj.OpStartDepth == obj.StartDepth:
-                    if base.Shape.BoundBox.ZMax > obj.StartDepth.Value:
-                        obj.StartDepth.Value = base.Shape.BoundBox.ZMax
-                        finDep = base.Shape.BoundBox.ZMax
-                        recomputeDepthparams = True
-                        PathLog.info("Updated obj.StartDepth.Value to {}".format(strDep))
-                if recomputeDepthparams is True:
-                    finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                    self.depthparams = PathUtils.depth_params(
-                        clearance_height=obj.ClearanceHeight.Value,
-                        safe_height=obj.SafeHeight.Value,
-                        start_depth=obj.StartDepth.Value,
-                        step_down=obj.StepDown.Value,
-                        z_finish_step=finish_step,
-                        final_depth=obj.FinalDepth.Value,
-                        user_depths=None)
-                    recomputeDepthparams = False
-                '''
-
                 if obj.ProcessStockArea is True:
                     job = PathUtils.findParentJob(obj)
 
-                    '''
-                    finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                    depthparams = PathUtils.depth_params(
-                        clearance_height=obj.ClearanceHeight.Value,
-                        safe_height=obj.SafeHeight.Value,
-                        start_depth=obj.StartDepth.Value,
-                        step_down=obj.StepDown.Value,
-                        z_finish_step=finish_step,
-                        final_depth=base.Shape.BoundBox.ZMin,
-                        user_depths=None)
-                    stockEnvShape = PathUtils.getEnvelope(job.Stock.Shape, subshape=None, depthparams=depthparams)
-                    '''
                     stockEnvShape = PathUtils.getEnvelope(job.Stock.Shape, subshape=None, depthparams=self.depthparams)
 
                     obj.removalshape = stockEnvShape.cut(base.Shape)
-                    obj.removalshape.tessellate(0.1)
+                    # obj.removalshape.tessellate(0.1)
                 else:
                     env = PathUtils.getEnvelope(base.Shape, subshape=None, depthparams=self.depthparams)
                     obj.removalshape = env.cut(base.Shape)
-                    obj.removalshape.tessellate(0.1)
+                    # obj.removalshape.tessellate(0.1)
 
-                removalshapes.append((obj.removalshape, False, '3DPocket', 0.0, 'X', strDep, finDep))
+                removalshapes.append((obj.removalshape, False, '3DPocket'))
 
         return removalshapes
 
@@ -394,7 +335,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         sdi = len(starts) - 1
         fdi = len(finals) - 1
         cbi = len(cuts) - 1
-        pocket = (cuts[cbi], False, '3DPocket', 0.0, 'X', starts[sdi], finals[fdi])
+        pocket = (cuts[cbi], False, '3DPocket')
         if FreeCAD.GuiUp:
             import FreeCADGui
             for rn in removeList:
