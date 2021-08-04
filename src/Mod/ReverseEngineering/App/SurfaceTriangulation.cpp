@@ -48,6 +48,7 @@
 #include <pcl/surface/marching_cubes_hoppe.h>
 #include <pcl/surface/ear_clipping.h>
 #include <pcl/common/common.h>
+#include <pcl/common/io.h>
 #include <boost/random.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
 
