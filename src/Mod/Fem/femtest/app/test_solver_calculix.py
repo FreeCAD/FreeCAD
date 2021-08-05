@@ -104,10 +104,26 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccx_cantilever_faceload(
+    def test_ccx_cantilever_beam_circle(
         self
     ):
-        from femexamples.ccx_cantilever_faceload import setup
+        from femexamples.ccx_cantilever_beam_circle import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_beam_pipe(
+        self
+    ):
+        from femexamples.ccx_cantilever_beam_pipe import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_beam_rect(
+        self
+    ):
+        from femexamples.ccx_cantilever_beam_rect import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
@@ -164,6 +180,14 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.ccx_cantilever_ele_tria6 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_faceload(
+        self
+    ):
+        from femexamples.ccx_cantilever_faceload import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
