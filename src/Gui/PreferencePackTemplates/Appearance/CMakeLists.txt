@@ -4,6 +4,7 @@ SET(PreferencePackTemplates_Files
     Console_Colors.cfg
     Draft_Colors.cfg
     Editor_Colors.cfg
+    Editor_Font.cfg
     Path_Colors.cfg
     Sketcher_Colors.cfg
     Start_Colors.cfg
