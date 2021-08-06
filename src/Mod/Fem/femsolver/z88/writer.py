@@ -142,8 +142,6 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         constraints_data = []  # will be a list of tuple for better sorting
 
         # fixed constraints
-        # get nodes
-        self.get_constraints_fixed_nodes()
         # write nodes to constraints_data (different from writing to file in ccxInpWriter
         for femobj in self.fixed_objects:
             for n in femobj["Nodes"]:
@@ -152,8 +150,6 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
                 constraints_data.append((n, "{}  3  2  0\n".format(n)))
 
         # forces constraints
-        # check shape type of reference shape and get node loads
-        self.get_constraints_force_nodeloads()
         # write node loads to constraints_data
         # a bit different from writing to file for ccxInpWriter
         for femobj in self.force_objects:

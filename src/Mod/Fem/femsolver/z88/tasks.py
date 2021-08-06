@@ -38,6 +38,7 @@ from . import writer
 from .. import run
 from .. import settings
 from feminout import importZ88O2Results
+from femmesh import meshsetsgetter
 from femtools import femutils
 from femtools import membertools
 
@@ -58,11 +59,24 @@ class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing solver input...\n")
+
+        # get mesh set data
+        # TODO see calculix tasks get mesh set data
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
+        meshdatagetter = meshsetsgetter.MeshSetsGetter(
+            self.analysis,
+            self.solver,
+            mesh_obj,
+            membertools.AnalysisMember(self.analysis),
+        )
+        meshdatagetter.get_mesh_sets()
+
+        # write solver input
         w = writer.FemInputWriterZ88(
             self.analysis,
             self.solver,
-            membertools.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
-            membertools.AnalysisMember(self.analysis),
+            mesh_obj,
+            meshdatagetter.member,
             self.directory
         )
         path = w.write_solver_input()
