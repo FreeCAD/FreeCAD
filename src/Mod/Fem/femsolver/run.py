@@ -450,7 +450,15 @@ class Check(BaseTask):
     def check_material_single(self):
         objs = self.get_several_member("App::MaterialObjectPython")
         if len(objs) > 1:
-            self.report.error("Only one Material allowed for this solver.")
+            self.report.error("Only one Material is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_no(self):
+        objs = self.get_several_member("Fem::ElementGeometry1D")
+        if len(objs) > 0:
+            self.report.error("Beamsections are not supported for this solver.")
             self.fail()
             return False
         return True
@@ -458,7 +466,15 @@ class Check(BaseTask):
     def check_geos_beamsection_single(self):
         objs = self.get_several_member("Fem::ElementGeometry1D")
         if len(objs) > 1:
-            self.report.error("Only one beamsection allowed for this solver.")
+            self.report.error("Only one beamsection is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_shellthickness_no(self):
+        objs = self.get_several_member("Fem::ElementGeometry2D")
+        if len(objs) > 0:
+            self.report.error("Shellsections are not supported for this solver.")
             self.fail()
             return False
         return True
@@ -466,7 +482,7 @@ class Check(BaseTask):
     def check_geos_shellthickness_single(self):
         objs = self.get_several_member("Fem::ElementGeometry2D")
         if len(objs) > 1:
-            self.report.error("Only one shellthickness allowed for this solver.")
+            self.report.error("Only one shellthickness is supported for this solver.")
             self.fail()
             return False
         return True
@@ -476,8 +492,8 @@ class Check(BaseTask):
         shellth_obj = self.get_several_member("Fem::ElementGeometry2D")
         if len(beamsec_obj) > 0 and len(shellth_obj) > 0:
             self.report.error(
-                "Either beamsection or shellthickness objects are allowed for this solver, "
-                "but not both in one analysis."
+                "Either beamsection or shellthickness objects are "
+                "supported for this solver, but not both in one analysis."
             )
             self.fail()
             return False
