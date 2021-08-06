@@ -142,47 +142,47 @@
       <translation>Hãy chọn 3 đối tượng trước</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Chức năng không được hỗ trợ</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Nhấn OK</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="347"/>
+      <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Thêm mới</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="348"/>
+      <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Xóa</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="349"/>
+      <location filename="OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>như lưới</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="350"/>
+      <location filename="OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>Thêm phần tử OpenSCAD</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="423"/>
+      <location filename="OpenSCADCommands.py" line="473"/>
       <source>Perform</source>
       <translation>Thực hiện</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="424"/>
+      <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
       <translation>Lưới Boolean</translation>
     </message>
     <message>
-      <location filename="OpenSCADUtils.py" line="623"/>
+      <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Lỗi tất cả các hình dạng phải là 2D hoặc cả hai phải là 3D</translation>
     </message>
@@ -191,16 +191,31 @@
       <source>Unable to explode %s</source>
       <translation>Không thể kéo dài thêm %s</translation>
     </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation type="unfinished">Load</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation type="unfinished">Save</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>Làm mới</translation>
+    </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="464"/>
+      <location filename="OpenSCADCommands.py" line="517"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Thêm phần tử OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="468"/>
+      <location filename="OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Thêm một phần tử OpenSCAD bằng cách nhập mã OpenSCAD và thực thi nhị phân OpenSCAD</translation>
     </message>
@@ -255,12 +270,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="497"/>
+      <location filename="OpenSCADCommands.py" line="552"/>
       <source>Hull</source>
       <translation>Vỏ bọc</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="500"/>
+      <location filename="OpenSCADCommands.py" line="555"/>
       <source>Perform Hull</source>
       <translation>Xây dựng Vỏ bọc</translation>
     </message>
@@ -281,12 +296,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="477"/>
+      <location filename="OpenSCADCommands.py" line="532"/>
       <source>Mesh Boolean...</source>
       <translation>Lưới Boolean...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="481"/>
+      <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Xuất các đối tượng dưới dạng lưới và sử dụng OpenSCAD để thực hiện thao tác boolean</translation>
     </message>
@@ -294,12 +309,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="516"/>
+      <location filename="OpenSCADCommands.py" line="571"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="519"/>
+      <location filename="OpenSCADCommands.py" line="574"/>
       <source>Perform Minkowski</source>
       <translation>Thực hiện Minkowski</translation>
     </message>
@@ -385,7 +400,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="83"/>
+      <location filename="InitGui.py" line="79"/>
       <source>OpenSCAD Part tools</source>
       <translation>Công cụ phần OpenSCAD</translation>
     </message>
@@ -393,7 +408,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="81"/>
+      <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>Công cụ OpenSCAD</translation>
     </message>

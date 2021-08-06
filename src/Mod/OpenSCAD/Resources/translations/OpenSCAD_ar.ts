@@ -142,47 +142,47 @@
       <translation>يرجي اختيار ثلاثة اعضاء اولا</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>وظيفة غير مدعومة</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>إضغط على 'موافق'</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="347"/>
+      <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>إضافة</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="348"/>
+      <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>مسح</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="349"/>
+      <location filename="OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>كmesh</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="350"/>
+      <location filename="OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>إضافة العنصر OpenSCAD</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="423"/>
+      <location filename="OpenSCADCommands.py" line="473"/>
       <source>Perform</source>
       <translation>اداء</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="424"/>
+      <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
       <translation>جمع الmesh</translation>
     </message>
     <message>
-      <location filename="OpenSCADUtils.py" line="623"/>
+      <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>خطأ يجب ان تكون جميع الاشكال ثنائية الابعاد او ثلاثية الابعاد</translation>
     </message>
@@ -191,16 +191,31 @@
       <source>Unable to explode %s</source>
       <translation>لا يمكن تفجير مقدار %s</translation>
     </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation type="unfinished">Load</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation type="unfinished">Save</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>تحديث</translation>
+    </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="464"/>
+      <location filename="OpenSCADCommands.py" line="517"/>
       <source>Add OpenSCAD Element...</source>
       <translation>إضافة العنصر OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="468"/>
+      <location filename="OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>اضافة عنصر OpenSCAD عن طريق ادخال رمز OpenSCAD و تنفيذ نظام OpenSCAD الثنائي</translation>
     </message>
@@ -255,12 +270,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="497"/>
+      <location filename="OpenSCADCommands.py" line="552"/>
       <source>Hull</source>
       <translation>هيكل السفينة</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="500"/>
+      <location filename="OpenSCADCommands.py" line="555"/>
       <source>Perform Hull</source>
       <translation>تنفيذ التقشير</translation>
     </message>
@@ -281,12 +296,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="477"/>
+      <location filename="OpenSCADCommands.py" line="532"/>
       <source>Mesh Boolean...</source>
       <translation>جمع الmesh...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="481"/>
+      <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>تصدير الاعضاء كmesh واستخدام OpenSCAD لتنفيذ عملية الدمج</translation>
     </message>
@@ -294,12 +309,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="516"/>
+      <location filename="OpenSCADCommands.py" line="571"/>
       <source>Minkowski</source>
       <translation>مينكوفسكي</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="519"/>
+      <location filename="OpenSCADCommands.py" line="574"/>
       <source>Perform Minkowski</source>
       <translation>تنفيذ مينكوفسكي</translation>
     </message>
@@ -385,7 +400,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="83"/>
+      <location filename="InitGui.py" line="79"/>
       <source>OpenSCAD Part tools</source>
       <translation>ادوات OpenSCAD الخاصة بالجزء</translation>
     </message>
@@ -393,7 +408,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="81"/>
+      <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCADTools</translation>
     </message>

@@ -24,12 +24,16 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
+#include "ViewProviderPage.h"
+
 #include <Gui/MDIView.h>
 #include <Gui/Selection.h>
 
 #include <QPrinter>
 #include <QGraphicsScene>
 #include <QPointF>
+
+#include <Mod/TechDraw/App/DrawPage.h>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -90,6 +94,7 @@ public:
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
     PyObject* getPyObject();
+    TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
     QGVPage* getQGVPage(void) {return m_view;};
 
@@ -128,9 +133,6 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
-#if QT_VERSION < 0x050300
-    QPrinter::PaperSize getPaperSize(int w, int h) const;
-#endif
 
     void setDimensionGroups(void);
     void setBalloonGroups(void);
@@ -162,13 +164,8 @@ private:
     QTimer *m_timer;
 
     QString m_currentPath;
-#if QT_VERSION >= 0x050300
     QPageLayout::Orientation m_orientation;
     QPageSize::PageSizeId m_paperSize;
-#else
-    QPrinter::Orientation m_orientation;
-    QPrinter::PaperSize m_paperSize;
-#endif
     qreal pagewidth, pageheight;
     ViewProviderPage *m_vpPage;
 

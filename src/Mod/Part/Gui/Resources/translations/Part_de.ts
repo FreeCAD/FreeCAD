@@ -322,6 +322,20 @@ klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen"
       <translation>Wählen Sie zuerst mindestens zwei Objekte oder eine oder mehrere Verbunde aus! Wenn nur ein Verbund ausgewählt wird, werden die zusammengesetzten Formen untereinander geschnitten (andernfalls wären Verbindungen mit Selbstschnittpunkten ungültig).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Ungültige Auswahl</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Wählen Sie zuerst mindestens zwei Objekte oder eine oder mehrere Verbindungen aus. Wenn nur eine Verbindung ausgewählt wird, werden die zusammengesetzten Formen untereinander geschnitten (andernfalls wären Verbindungen mit Selbstschnittpunkten ungültig).</translation>
@@ -330,16 +344,6 @@ klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen"
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Teilen zu einem Verbund</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolesche Fragmente</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -378,18 +382,14 @@ Das bedeutet, dass die sich überschneidenden Volumen der Formen entfernt werden
 Ein 'Compoundfilter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Ungültige Auswahl</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolesche Fragmente</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -1293,7 +1293,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Zweite leitgerade für Ellipse und Hyperbel.</translation>
+      <translation>Zweite Leitgerade für Ellipse und Hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
@@ -4162,7 +4162,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
       <location filename="../../DlgPrimitives.ui" line="1055"/>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
       <source>Polygon:</source>
-      <translation>Polygon:</translation>
+      <translation>Vieleck:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1075"/>

@@ -564,24 +564,64 @@ Spreadsheet.my_alias_name helyett Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Sorok beszúrása</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Sorok eltávolítása</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Oszlopok beszúrása</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Oszlopok eltávolítása</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Tulajdonságok...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>%n sor beszúrása alá</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at fölé</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>%n sor beszúrása alá</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at alá</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>%n nem összefüggő sorok beszúrása</numerusform>
+        <numerusform>%n nem összefüggő sorok beszúrása</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Sor(ok) eltávolítása</numerusform>
+        <numerusform>Sor(ok) eltávolítása</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>%n oszlop beszúrása balra</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at balra</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>%n oszlop beszúrása jobbra</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at jobbra</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>%n nem összefüggő oszlopok beszúrása</numerusform>
+        <numerusform>%n nem összefüggő oszlopok beszúrása</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Oszlop(ok) eltávolítása</numerusform>
+        <numerusform>Oszlop(ok) eltávolítása</numerusform>
+      </translation>
     </message>
   </context>
   <context>

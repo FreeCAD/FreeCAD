@@ -300,7 +300,7 @@ class Edit(gui_base_original.Modifier):
         if Gui.Selection.getSelection():
             self.proceed()
         else:
-            self.ui.selectUi()
+            self.ui.selectUi(on_close_call=self.finish)
             App.Console.PrintMessage(translate("draft", 
                                                "Select a Draft object to edit")
                                                + "\n")
@@ -362,7 +362,6 @@ class Edit(gui_base_original.Modifier):
             self.deformat_objects_after_editing(self.edited_objects)
         
         super(Edit, self).finish()
-        App.DraftWorkingPlane.restore()
         if Gui.Snapper.grid:
             Gui.Snapper.grid.set()
         self.running = False
@@ -457,7 +456,16 @@ class Edit(gui_base_original.Modifier):
             ):#left click
             if not event.wasAltDown():
                 if self.editing is None:
-                    self.startEditing(event)
+
+                    pos = event.getPosition()
+                    node = self.getEditNode(pos)
+                    node_idx = self.getEditNodeIndex(node)
+                    if node_idx is None:
+                        return
+                    doc = App.getDocument(str(node.documentName.getValue()))
+                    obj = doc.getObject(str(node.objectName.getValue()))
+
+                    self.startEditing(obj, node_idx)
                 else:
                     self.endEditing(self.obj, self.editing)
             elif event.wasAltDown():  # left click with ctrl down
@@ -486,32 +494,25 @@ class Edit(gui_base_original.Modifier):
                     self.overNode.setColor(COLORS["default"])
                     self.overNode = None
 
-    def startEditing(self, event):
+    def startEditing(self, obj, node_idx):
         """Start editing selected EditNode."""
-        pos = event.getPosition()
-        node = self.getEditNode(pos)
-        ep = self.getEditNodeIndex(node)
-        if ep is None:
+        self.obj = obj # this is still needed to handle preview
+        if obj is None:
             return
 
-        doc = App.getDocument(str(node.documentName.getValue()))
-        self.obj = doc.getObject(str(node.objectName.getValue()))
-        if self.obj is None:
-            return
-
-        App.Console.PrintMessage(self.obj.Name
+        App.Console.PrintMessage(obj.Name
                                  + ": editing node number "
-                                 + str(ep) + "\n")
+                                 + str(node_idx) + "\n")
 
         self.ui.lineUi()
         self.ui.isRelative.show()
-        self.editing = ep
-        self.trackers[self.obj.Name][self.editing].off()
+        self.editing = node_idx
+        self.trackers[obj.Name][node_idx].off()
 
         self.finalizeGhost()
-        self.initGhost(self.obj)
+        self.initGhost(obj)
 
-        self.node.append(self.trackers[self.obj.Name][self.editing].get())
+        self.node.append(self.trackers[obj.Name][node_idx].get())
         Gui.Snapper.setSelectMode(False)
         self.hideTrackers()
 
@@ -670,116 +671,12 @@ class Edit(gui_base_original.Modifier):
         except Exception:
             return
 
-    # -------------------------------------------------------------------------
-    # EDIT OBJECT TOOLS : Add/Delete Vertexes
-    # -------------------------------------------------------------------------
-
-    def addPoint(self, event):
-        """Add point to obj and reset trackers.
-        """
-        pos = event.getPosition()
-        # self.setSelectState(obj, True)
-        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
-        if not selobjs:
-            return
-        for info in selobjs:
-            if not info:
-                return
-            for o in self.edited_objects:
-                if o.Name != info["Object"]:
-                    continue
-                obj = o
-                break
-            if utils.get_type(obj) == "Wire" and 'Edge' in info["Component"]:
-                pt = App.Vector(info["x"], info["y"], info["z"])
-                self.addPointToWire(obj, pt, int(info["Component"][4:]))
-            elif utils.get_type(obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
-                # pt = self.point
-                if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
-                    pt = App.Vector(info["x"], info["y"], info["z"])
-                else:
-                    continue
-                self.addPointToCurve(pt, obj, info)
-        obj.recompute()
-        self.resetTrackers(obj)
-        return
-
-    def addPointToWire(self, obj, newPoint, edgeIndex):
-        newPoints = []
-        if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
-            if obj.ChamferSize > 0 and obj.FilletRadius > 0:
-                edgeIndex = (edgeIndex + 3) / 4
-            elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
-                edgeIndex = (edgeIndex + 1) / 2
-
-        for index, point in enumerate(obj.Points):
-            if index == edgeIndex:
-                newPoints.append(self.localize_vector(obj, newPoint))
-            newPoints.append(point)
-        if obj.Closed and edgeIndex == len(obj.Points):
-            # last segment when object is closed
-            newPoints.append(self.localize_vector(obj, newPoint))
-        obj.Points = newPoints
-
-    def addPointToCurve(self, point, obj, info=None):
-        import Part
-        if  utils.get_type(obj) not in ["BSpline", "BezCurve"]:
-            return
-        pts = obj.Points
-        if utils.get_type(obj) == "BezCurve":
-            if not info['Component'].startswith('Edge'):
-                return  # clicked control point
-            edgeindex = int(info['Component'].lstrip('Edge')) - 1
-            wire = obj.Shape.Wires[0]
-            bz = wire.Edges[edgeindex].Curve
-            param = bz.parameter(point)
-            seg1 = wire.Edges[edgeindex].copy().Curve
-            seg2 = wire.Edges[edgeindex].copy().Curve
-            seg1.segment(seg1.FirstParameter, param)
-            seg2.segment(param, seg2.LastParameter)
-            if edgeindex == len(wire.Edges):
-                # we hit the last segment, we need to fix the degree
-                degree=wire.Edges[0].Curve.Degree
-                seg1.increase(degree)
-                seg2.increase(degree)
-            edges = wire.Edges[0:edgeindex] + [Part.Edge(seg1),Part.Edge(seg2)] \
-                + wire.Edges[edgeindex + 1:]
-            pts = edges[0].Curve.getPoles()[0:1]
-            for edge in edges:
-                pts.extend(edge.Curve.getPoles()[1:])
-            if obj.Closed:
-                pts.pop()
-            c = obj.Continuity
-            # assume we have a tangent continuity for an arbitrarily split
-            # segment, unless it's linear
-            cont = 1 if (obj.Degree >= 2) else 0
-            obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
-        else:
-            if (utils.get_type(obj) in ["BSpline"]):
-                if (obj.Closed == True):
-                    curve = obj.Shape.Edges[0].Curve
-                else:
-                    curve = obj.Shape.Curve
-            uNewPoint = curve.parameter(point)
-            uPoints = []
-            for p in obj.Points:
-                uPoints.append(curve.parameter(p))
-            for i in range(len(uPoints) - 1):
-                if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
-                    pts.insert(i + 1, self.localize_vector(obj, point))
-                    break
-            # DNC: fix: add points to last segment if curve is closed
-            if obj.Closed and (uNewPoint > uPoints[-1]):
-                pts.append(self.localize_vector(obj, point))
-        obj.Points = pts
-
     # ------------------------------------------------------------------------
     # DRAFT EDIT Context menu
     # ------------------------------------------------------------------------
 
     def display_tracker_menu(self, event):
         self.tracker_menu = QtGui.QMenu()
-        self.event = event
         actions = None
 
         if self.overNode:
@@ -790,22 +687,27 @@ class Edit(gui_base_original.Modifier):
 
             obj_gui_tools = self.get_obj_gui_tools(obj)
             if obj_gui_tools:
-                actions = obj_gui_tools.get_edit_point_context_menu(obj, ep)
+                actions = obj_gui_tools.get_edit_point_context_menu(self, obj, ep)
 
         else:
             # try if user is over an edited object
-            pos = self.event.getPosition()
+            pos = event.getPosition()
             obj = self.get_selected_obj_at_position(pos)
-            if utils.get_type(obj) in ["Line", "Wire", "BSpline", "BezCurve"]:
-                actions = ["add point"]
-            elif utils.get_type(obj) in ["Circle"] and obj.FirstAngle != obj.LastAngle:
-                actions = ["invert arc"]
+
+            obj_gui_tools = self.get_obj_gui_tools(obj)
+            if obj_gui_tools:
+                actions = obj_gui_tools.get_edit_obj_context_menu(self, obj, pos)
 
         if actions is None:
             return
 
-        for a in actions:
-            self.tracker_menu.addAction(a)
+        for (label, callback) in actions:
+            def wrapper(callback=callback):
+                callback()
+                self.resetTrackers(obj)
+
+            action = self.tracker_menu.addAction(label)
+            action.setData(wrapper)
 
         self.tracker_menu.popup(Gui.getMainWindow().cursor().pos())
 
@@ -814,31 +716,9 @@ class Edit(gui_base_original.Modifier):
                                self.evaluate_menu_action)
 
 
-    def evaluate_menu_action(self, labelname):
-        action_label = str(labelname.text())
-
-        doc = None
-        obj = None
-        idx = None
-
-        if self.overNode:
-            doc = self.overNode.get_doc_name()
-            obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
-            idx = self.overNode.get_subelement_index()
-
-        obj_gui_tools = self.get_obj_gui_tools(obj)
-        if obj and obj_gui_tools:
-            actions = obj_gui_tools.evaluate_context_menu_action(self, obj, idx, action_label)
-
-        elif action_label == "add point":
-            self.addPoint(self.event)
-
-        elif action_label == "invert arc":
-            pos = self.event.getPosition()
-            obj = self.get_selected_obj_at_position(pos)
-            obj_gui_tools.arcInvert(obj)
-
-        del self.event
+    def evaluate_menu_action(self, action):
+        callback = action.data()
+        callback()
 
 
     # -------------------------------------------------------------------------
@@ -930,8 +810,8 @@ class Edit(gui_base_original.Modifier):
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
         if len(selection) > self.maxObjects:
-            _err = translate("draft", "Too many objects selected, max number set to: ")
-            App.Console.PrintMessage(_err + str(self.maxObjects) + "\n")
+            _err = translate("draft", "Too many objects selected, max number set to:")
+            App.Console.PrintMessage(_err + " " + str(self.maxObjects) + "\n")
             return None
 
         for obj in selection:
@@ -961,6 +841,20 @@ class Edit(gui_base_original.Modifier):
             if obj_gui_tools:
                 obj_gui_tools.restore_object_style(obj, self.objs_formats[obj.Name])
 
+
+    def get_specific_object_info(self, obj, pos):
+        """Return info of a specific object at a given position.
+        """
+        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs:
+            return
+        for info in selobjs:
+            if not info:
+                continue
+            if obj.Name == info["Object"] and "x" in info:
+                # prefer "real" 3D location over working-plane-driven one if possible
+                pt = App.Vector(info["x"], info["y"], info["z"])
+                return info, pt
 
     def get_selected_obj_at_position(self, pos):
         """Return object at given position.

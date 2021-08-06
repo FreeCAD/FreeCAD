@@ -856,7 +856,7 @@ case 8:
 YY_RULE_SETUP
 #line 41 "SelectionFilter.l"
 {
-       yylval.string = new std::string(SelectionFiltertext);
+       yylval.string = StringFactory::New(SelectionFiltertext);
        return TIDENTIFIER;
       }
 	YY_BREAK

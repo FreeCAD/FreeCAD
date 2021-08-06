@@ -1,0 +1,11 @@
+FROM manjarolinux/base
+
+COPY manjaro.sh /tmp
+
+RUN pacman --sync --refresh --sysupgrade --noconfirm && \
+    sh /tmp/manjaro.sh && \
+    mkdir /builds
+
+WORKDIR /builds
+
+VOLUME [ "/builds" ]

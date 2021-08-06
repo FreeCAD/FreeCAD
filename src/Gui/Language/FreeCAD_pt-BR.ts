@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Insira uma expressão...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expressão: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Tamanho da palavra</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Créditos</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD não chegaria em lugar nenhum sem os esforços deles:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licença</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Coleção</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Créditos</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>O FreeCAD não seria possível sem as contribuições de</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Indivíduos</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organizações</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
       <translation> </translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Linhas de código serão numeradas </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Pressionar &lt;Tab&gt; irá inserir quantidade de tamanho de recuo definido</translation>
     </message>
@@ -1401,6 +1419,10 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <source>Color:</source>
       <translation>Cor:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Linhas de código serão numeradas</translation>
     </message>
   </context>
   <context>
@@ -2531,10 +2553,6 @@ apenas realiza o cache no nó raiz do gráfico da cena. Isto oferece a maior vel
       <translation>Centralizado</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Que tipo de anti-aliasing de múltiplas amostras é usado </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Objetos transparentes:</translation>
     </message>
@@ -2557,14 +2575,6 @@ apenas realiza o cache no nó raiz do gráfico da cena. Isto oferece a maior vel
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distância entre olhos para modos estéreo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Distância entre olhos para modos estéreo.
-O valor especificado é um fator que será multiplicado com o
-tamanho da caixa delimitadora do objeto 3D que está sendo exibido. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2622,6 +2632,18 @@ Mudar esta opção requer uma reinicialização da aplicação.</translation>
     <message>
       <source>Use software OpenGL</source>
       <translation>Utilizar software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Que tipo de anti-aliasing de múltiplas amostras é usado</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Distância entre olhos para projeção estéreo.
+O valor especificado é um fator que será multiplicado com o
+tamanho da caixa delimitadora do objeto 3D que está sendo exibido.</translation>
     </message>
   </context>
   <context>
@@ -3236,10 +3258,6 @@ Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</trans
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (como é)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Buffer de píxeis</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3478,12 +3496,6 @@ O valor é o diâmetro de uma esfera que caberia na tela.</translation>
       <translation>Etapa de zoom</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>A força do zoom.
-Um valor de '1' significa um fator de 7,5 em cada etapa de zoom. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>A direção das operações de zoom será invertida</translation>
     </message>
@@ -3570,6 +3582,28 @@ A inclinação do mouse não está afetada por esta configuração.</translation
     <message>
       <source>Object center</source>
       <translation>Centro do objeto</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Rotaciona ao estado mais próximo possível ao clicar em uma face do cubo</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Girar para o mais próximo</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Tamanho do cubo</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Tamanho do cubo de navegação</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Quanto será ampliado.
+O intervalo de ampliação '1' significa um fator de 7,5 para cada intervalo.</translation>
     </message>
   </context>
   <context>
@@ -3882,12 +3916,12 @@ O sistema de preferências é aquele que está configurado nas preferências ger
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unidade desconhecida: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>incompatibilidade de unidade</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unidade desconhecida:</translation>
     </message>
   </context>
   <context>
@@ -6867,14 +6901,6 @@ Veja o painel de relatório para mais...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Caminho físico: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Documento: </translation>
@@ -6904,6 +6930,14 @@ Documento: </translation>
     <message>
       <source>Workbenches</source>
       <translation>Bancadas de trabalho</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Caminho físico: </translation>
     </message>
   </context>
   <context>

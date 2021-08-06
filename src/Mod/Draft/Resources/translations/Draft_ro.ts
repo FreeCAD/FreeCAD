@@ -350,55 +350,55 @@ Este o listă de șiruri de caractere; fiecare element din listă va fi afișat 
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Unghiul de final al arcului (pentru un cerc complet, 
+                 dați-i aceeaşi valoarea ca unghiului de început)</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Raza cercului</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Numărul de feţe</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Raza cercului de control</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Cum trebuie desenat poligonul pornind de la cercul de control</translation>
     </message>
     <message>
       <location filename="point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>Poziția pe X</translation>
     </message>
     <message>
       <location filename="point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Poziția pe Y</translation>
     </message>
     <message>
       <location filename="point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Poziția pe Z</translation>
     </message>
     <message>
       <location filename="layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>Obiectele care fac parte din acest strat</translation>
     </message>
     <message>
       <location filename="label.py" line="65"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>Poziția vârfului liniei de indicație.
+Acest punct poate fi decorat cu o săgeată sau alt simbol.</translation>
     </message>
     <message>
       <location filename="label.py" line="79"/>
@@ -406,10 +406,10 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
+      <translation>Obiectul și opțional subelementul ale cărui proprietăți vor fi afișate
+ca „Text”, în funcție de „Tipul etichetei”.
 
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+„Ținta” nu va fi folosită dacă „Tipul etichetei” este „Personalizat”.</translation>
     </message>
     <message>
       <location filename="label.py" line="109"/>
@@ -422,15 +422,14 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>Lista de puncte ce definesc linia de indicație; în mod obișnuit o listă de trei puncte.
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+Primul punct este poziția textului, adică „Poziționarea”,
+ultimul punct este vârful liniei, adică „Punctul țintă”.
+Punctul din mijloc este calculat automat în funcție de „Direcția dreptei” și de valoarea și semnul „Distanței pe dreaptă”.
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+Dacă „Direcția dreptei” este setată ca „Particularizat”, proprietatea „Puncte” 
+poate fi setată ca o listă de puncte arbitrare.</translation>
     </message>
     <message>
       <location filename="label.py" line="124"/>
@@ -438,10 +437,10 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>Direcția segmentului drept al liniei de indicație.
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+Dacă este ales „Particularizat”, punctele liniei de indicație pot fi specificate
+prin atribuirea unei liste particularizate atributului „Puncte”.</translation>
     </message>
     <message>
       <location filename="label.py" line="142"/>
@@ -450,21 +449,21 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>Lungimea segmentului drept al liniei de indicație.
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+Aceasta este o mărime cu sens; dacă este negativă, linia va fi trasată
+spre stânga sau sub „Text”, în caz contrat va fi trasată spre dreapta sau deasupra lui,
+în funcție de valoarea „Direcției dreptei”.</translation>
     </message>
     <message>
       <location filename="label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>Poziționarea elementului 'Text' în spațiul 3D</translation>
     </message>
     <message>
       <location filename="label.py" line="166"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>Textul de afișat atunci când „Tipul etichetei” este setat ca „Particularizat”</translation>
     </message>
     <message>
       <location filename="label.py" line="181"/>
@@ -473,11 +472,11 @@ depending on the value of 'Straight Direction'.</translation>
 This property is read-only, as the final text depends on 'Label Type',
 and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">The text displayed by this label.
+      <translation>Textul afişat de această etichetă.
 
-This property is read-only, as the final text depends on 'Label Type',
-and the object defined in 'Target'.
-The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
+Această proprietate este doar pentru citire, deoarece textul final depinde de „Tipul etichetei”,
+și obiectul definit în „Țintă”.
+„Textul personalizat” este afișat doar dacă „Tipul etichetei” este setat pe „Personalizat”.</translation>
     </message>
     <message>
       <location filename="label.py" line="216"/>
@@ -489,24 +488,24 @@ For other types, the string will be calculated automatically from the object def
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation type="unfinished">The type of information displayed by this label.
+      <translation>Tipul de informații afișate de această etichetă.
 
-If 'Custom' is chosen, the contents of 'Custom Text' will be used.
-For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like Arch objects.
+Dacă este ales „Personalizat”, va fi folosit conținutul „Text personalizat”.
+Pentru alte tipuri, șirul va fi calculat automat din obiectul definit în „Țintă”.
+„Etichetă” și „Material” funcționează doar pentru obiecte care au aceste proprietăți, cum ar fi obiecte Arch.
 
-For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
-or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
+Proprietățile „Poziţie”, „Lungime” şi „Zonă” vor fi extrase din obiectul principal din „Țintă”,
+sau din subelementul „VertexN”, „MuchieN”, respectiv „FațaN”, dacă este specificat.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="47"/>
       <source>Text string</source>
-      <translation type="unfinished">Text string</translation>
+      <translation>Text</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="50"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>Numele fișierului de fonturi</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="53"/>
@@ -516,31 +515,31 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="56"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Spațiul dintre caractere</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Arată elementele individuale din matrice</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>Obiectul de bază care va fi duplicat</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
       <source>Object containing points used to distribute the base object, for example, a sketch or a Part compound.
 The sketch or compound must contain at least one explicit point or vertex object.</source>
-      <translation type="unfinished">Object containing points used to distribute the base object, for example, a sketch or a Part compound.
-The sketch or compound must contain at least one explicit point or vertex object.</translation>
+      <translation>Obiectul conținând puncte folosite pentru a distribui obiectul de bază, de exemplu, o schiță sau Piesă compusă.
+Schița sau compusul trebuie să conțină cel puțin un punct explicit sau un obiect vârf.</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="95"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the points contained within 'Point Object'.</translation>
+      <translation>Numărul total de elemente din matrice.
+Această proprietate este doar pentru citire, deoarece numărul depinde de punctele cuprinse în „Obiectul Punct”.</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="139"/>
@@ -568,60 +567,39 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">Parameterization factor</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
       <translation type="unfinished">The base object this 2D view must represent</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
       <translation type="unfinished">The projection vector of this object</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
       <translation type="unfinished">The way the viewed object must be projected</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>Afișează liniile ascunse</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="79"/>
+      <location filename="shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                visible</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -944,48 +922,41 @@ Scrie '$dim' astfel încât să fie înlocuit de lungimea cotei.</translation>
       <translation>Arată sufixul unității folosite</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="215"/>
-      <source>A unit to express the measurement.
-Leave blank for system default</source>
-      <translation>O unitate pentru a exprima măsurătoarea.
-Lăsați necompletat pentru valoarea implicită a sistemului</translation>
-    </message>
-    <message>
-      <location filename="view_dimension.py" line="229"/>
+      <location filename="view_dimension.py" line="230"/>
       <source>Arrow size</source>
       <translation>Dimensiunea săgeții</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="238"/>
+      <location filename="view_dimension.py" line="239"/>
       <source>Arrow type</source>
       <translation>Tipul de săgeată</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="248"/>
+      <location filename="view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>Rotește săgețile cotei cu 180 de grade</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="259"/>
+      <location filename="view_dimension.py" line="260"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
       <translation>Distanța la care linia de cotă este prelungită
 dincolo de liniile ajutătoare</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="268"/>
+      <location filename="view_dimension.py" line="269"/>
       <source>Length of the extension lines</source>
       <translation>Lungimea liniilor ajutătoare</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="278"/>
+      <location filename="view_dimension.py" line="279"/>
       <source>Length of the extension line
 beyond the dimension line</source>
       <translation>Lungimea liniei ajutătoare
 dincolo de linia de cotă</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="287"/>
+      <location filename="view_dimension.py" line="288"/>
       <source>Shows the dimension line and arrows</source>
       <translation>Afișează linia de cotă și extremitățile</translation>
     </message>
@@ -1030,64 +1001,132 @@ dincolo de linia de cotă</translation>
       <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>Latimea liniei</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Culoarea liniei</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation type="unfinished">The size of the text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
       <translation type="unfinished">The font of the text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
       <translation type="unfinished">The vertical alignment of the text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation type="unfinished">Text color</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
       <translation type="unfinished">Line spacing (relative to font size)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
       <translation type="unfinished">The size of the arrow</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
       <translation type="unfinished">The type of arrow of this label</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
       <translation type="unfinished">The type of frame around the text of this object</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation type="unfinished">Display a leader line or not</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="86"/>
+      <source>The base object that will be duplicated.</source>
+      <translation type="unfinished">The base object that will be duplicated.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="100"/>
+      <source>Number of copies to create.</source>
+      <translation type="unfinished">Number of copies to create.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="107"/>
+      <source>Rotation factor of the twisted array.</source>
+      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+    </message>
+    <message>
+      <location filename="shapestring.py" line="59"/>
+      <source>Fill letters with faces</source>
+      <translation type="unfinished">Fill letters with faces</translation>
+    </message>
+    <message>
+      <location filename="view_dimension.py" line="216"/>
+      <source>A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</source>
+      <translation type="unfinished">A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="117"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation type="unfinished">For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1453,7 +1492,7 @@ from menu Tools -&gt; Addon Manager</source>
       <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="144"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation type="unfinished">Unable to insert new object into a scaled part</translation>
     </message>
@@ -1468,52 +1507,52 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Fals</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="130"/>
+      <location filename="task_scale.py" line="133"/>
       <source>Scale</source>
       <translation>Scalare</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="131"/>
+      <location filename="task_scale.py" line="134"/>
       <source>X factor</source>
       <translation type="unfinished">X factor</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="132"/>
+      <location filename="task_scale.py" line="135"/>
       <source>Y factor</source>
       <translation type="unfinished">Y factor</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="133"/>
+      <location filename="task_scale.py" line="136"/>
       <source>Z factor</source>
       <translation type="unfinished">Z factor</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="134"/>
+      <location filename="task_scale.py" line="137"/>
       <source>Uniform scaling</source>
       <translation type="unfinished">Uniform scaling</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="135"/>
+      <location filename="task_scale.py" line="138"/>
       <source>Working plane orientation</source>
       <translation type="unfinished">Working plane orientation</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="136"/>
+      <location filename="task_scale.py" line="139"/>
       <source>Copy</source>
       <translation>Copiere</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="137"/>
+      <location filename="task_scale.py" line="140"/>
       <source>Modify subelements</source>
       <translation>Modifică subelementele</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="138"/>
+      <location filename="task_scale.py" line="141"/>
       <source>Pick from/to points</source>
       <translation type="unfinished">Pick from/to points</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="139"/>
+      <location filename="task_scale.py" line="142"/>
       <source>Create a clone</source>
       <translation>Creaţi o clona</translation>
     </message>
@@ -1586,22 +1625,22 @@ meaning the copies follow the specified direction in the X, Y, Z axes.
 The array can be turned into a polar or a circular array by changing its type.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Rotunjire</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
       <translation type="unfinished">Delete original objects</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
       <translation type="unfinished">Create chamfer</translation>
     </message>
@@ -1609,6 +1648,31 @@ The array can be turned into a polar or a circular array by changing its type.</
       <location filename="gui_offset.py" line="326"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="273"/>
+      <source>Save style</source>
+      <translation type="unfinished">Save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="274"/>
+      <source>Name of this new style:</source>
+      <translation type="unfinished">Name of this new style:</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="282"/>
+      <source>Name exists. Overwrite?</source>
+      <translation type="unfinished">Name exists. Overwrite?</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="317"/>
+      <source>Error: json module not found. Unable to save style</source>
+      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="281"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
     </message>
   </context>
   <context>
@@ -2021,12 +2085,12 @@ Trebuie să fie cel puțin 2.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="342"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Add to Construction group</source>
       <translation type="unfinished">Add to Construction group</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="344"/>
+      <location filename="gui_groups.py" line="345"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2092,12 +2156,12 @@ Create a group first to use this tool.</translation>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="gui_arcs.py" line="66"/>
+      <location filename="gui_arcs.py" line="67"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="69"/>
+      <location filename="gui_arcs.py" line="70"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates a circular arc by a center point and a radius.
@@ -2107,12 +2171,12 @@ CTRL to snap, SHIFT to constrain.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="gui_arcs.py" line="598"/>
+      <location filename="gui_arcs.py" line="600"/>
       <source>Arc tools</source>
       <translation>Unelte pentru arcuri de cerc</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="601"/>
+      <location filename="gui_arcs.py" line="603"/>
       <source>Create various types of circular arcs.</source>
       <translation>Creează diverse tipuri de arcuri de cerc.</translation>
     </message>
@@ -2139,12 +2203,12 @@ Odată ce matricea este creat tipul său poate fi schimbat
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="238"/>
+      <location filename="gui_groups.py" line="239"/>
       <source>Autogroup</source>
       <translation>Autogrup</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="241"/>
+      <location filename="gui_groups.py" line="242"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
       <translation>Selectați un grup pentru a adăuga toate obiectele Schiță și Arhi.</translation>
     </message>
@@ -2193,12 +2257,12 @@ CTRL to snap, SHIFT to constrain.</translation>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="gui_circles.py" line="79"/>
+      <location filename="gui_circles.py" line="80"/>
       <source>Circle</source>
       <translation>Cerc</translation>
     </message>
     <message>
-      <location filename="gui_circles.py" line="83"/>
+      <location filename="gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
       <translation type="unfinished">Creates a circle (full circular arc).
@@ -2236,12 +2300,12 @@ The resulting clone can be scaled in each of its three directions.</translation>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="gui_beziers.py" line="243"/>
+      <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
       <translation type="unfinished">Cubic bezier curve</translation>
     </message>
     <message>
-      <location filename="gui_beziers.py" line="246"/>
+      <location filename="gui_beziers.py" line="245"/>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -2266,12 +2330,12 @@ CTRL to snap, SHIFT to constrain.</translation>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="gui_dimensions.py" line="83"/>
+      <location filename="gui_dimensions.py" line="84"/>
       <source>Dimension</source>
       <translation>Dimensiune</translation>
     </message>
     <message>
-      <location filename="gui_dimensions.py" line="86"/>
+      <location filename="gui_dimensions.py" line="87"/>
       <source>Creates a dimension.
 
 - Pick three points to create a simple linear dimension.
@@ -2352,12 +2416,12 @@ Use TechDraw Workbench instead for generating technical drawings.</translation>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="gui_edit.py" line="275"/>
+      <location filename="gui_edit.py" line="276"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="284"/>
+      <location filename="gui_edit.py" line="285"/>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
@@ -2676,12 +2740,12 @@ Select the base object, and then select the compound or the sketch to create the
   <context>
     <name>Draft_PointLinkArray</name>
     <message>
-      <location filename="gui_pointarray.py" line="142"/>
+      <location filename="gui_pointarray.py" line="141"/>
       <source>PointLinkArray</source>
       <translation type="unfinished">PointLinkArray</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="145"/>
+      <location filename="gui_pointarray.py" line="144"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
       <translation type="unfinished">Like the PointArray tool, but creates a 'Point link array' instead.
@@ -2755,6 +2819,17 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
       <source>Select group</source>
       <translation type="unfinished">Select group</translation>
     </message>
+    <message>
+      <location filename="gui_groups.py" line="168"/>
+      <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+
+If the selection is a simple object inside a group, it will select the "brother" objects, that is,
+those that are at the same level as this object, including the upper group that contains them all.</source>
+      <translation type="unfinished">If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+
+If the selection is a simple object inside a group, it will select the "brother" objects, that is,
+those that are at the same level as this object, including the upper group that contains them all.</translation>
+    </message>
   </context>
   <context>
     <name>Draft_SelectPlane</name>
@@ -2774,12 +2849,12 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
   <context>
     <name>Draft_SetStyle</name>
     <message>
-      <location filename="gui_setstyle.py" line="49"/>
+      <location filename="gui_setstyle.py" line="55"/>
       <source>Set style</source>
       <translation type="unfinished">Set style</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="51"/>
+      <location filename="gui_setstyle.py" line="57"/>
       <source>Sets default styles</source>
       <translation type="unfinished">Sets default styles</translation>
     </message>
@@ -2804,12 +2879,12 @@ Then you can use it to save a different camera position and objects' states any 
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="gui_shape2dview.py" line="61"/>
+      <location filename="gui_shape2dview.py" line="59"/>
       <source>Shape 2D view</source>
       <translation type="unfinished">Shape 2D view</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="64"/>
+      <location filename="gui_shape2dview.py" line="62"/>
       <source>Creates a 2D projection of the selected objects on the XY plane.
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
@@ -2823,12 +2898,12 @@ These projections can be used to create technical drawings with the TechDraw Wor
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="gui_shapestrings.py" line="70"/>
+      <location filename="gui_shapestrings.py" line="68"/>
       <source>Shape from text</source>
       <translation type="unfinished">Shape from text</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="72"/>
+      <location filename="gui_shapestrings.py" line="70"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
       <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
@@ -2838,12 +2913,12 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="573"/>
+      <location filename="gui_snaps.py" line="576"/>
       <source>Show snap toolbar</source>
       <translation type="unfinished">Show snap toolbar</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="579"/>
       <source>Show the snap toolbar if it is hidden.</source>
       <translation type="unfinished">Show the snap toolbar if it is hidden.</translation>
     </message>
@@ -2872,12 +2947,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1527"/>
+      <location filename="gui_snapper.py" line="1535"/>
       <source>Toggles Grid On/Off</source>
       <translation type="unfinished">Toggles Grid On/Off</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1528"/>
+      <location filename="gui_snapper.py" line="1536"/>
       <source>Toggle Draft Grid</source>
       <translation type="unfinished">Toggle Draft Grid</translation>
     </message>
@@ -2885,12 +2960,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="327"/>
+      <location filename="gui_snaps.py" line="331"/>
       <source>Angle</source>
       <translation>Unghi</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="330"/>
+      <location filename="gui_snaps.py" line="334"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
       <translation type="unfinished">Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</translation>
     </message>
@@ -2898,12 +2973,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="357"/>
+      <location filename="gui_snaps.py" line="361"/>
       <source>Center</source>
       <translation>Centru</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="360"/>
+      <location filename="gui_snaps.py" line="364"/>
       <source>Set snapping to the center of a circular arc.</source>
       <translation type="unfinished">Set snapping to the center of a circular arc.</translation>
     </message>
@@ -2911,12 +2986,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="509"/>
+      <location filename="gui_snaps.py" line="513"/>
       <source>Show dimensions</source>
       <translation type="unfinished">Show dimensions</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="512"/>
+      <location filename="gui_snaps.py" line="516"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
       <translation type="unfinished">Show temporary linear dimensions when editing an object and using other snapping methods.</translation>
     </message>
@@ -2924,12 +2999,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="296"/>
+      <location filename="gui_snaps.py" line="300"/>
       <source>Endpoint</source>
       <translation>Punct final</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="299"/>
+      <location filename="gui_snaps.py" line="303"/>
       <source>Set snapping to endpoints of an edge.</source>
       <translation type="unfinished">Set snapping to endpoints of an edge.</translation>
     </message>
@@ -2937,12 +3012,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="387"/>
+      <location filename="gui_snaps.py" line="391"/>
       <source>Extension</source>
       <translation>Extensie</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="390"/>
+      <location filename="gui_snaps.py" line="394"/>
       <source>Set snapping to the extension of an edge.</source>
       <translation type="unfinished">Set snapping to the extension of an edge.</translation>
     </message>
@@ -2950,12 +3025,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="206"/>
+      <location filename="gui_snaps.py" line="210"/>
       <source>Grid</source>
       <translation>Grilă</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="209"/>
+      <location filename="gui_snaps.py" line="213"/>
       <source>Set snapping to the intersection of grid lines.</source>
       <translation type="unfinished">Set snapping to the intersection of grid lines.</translation>
     </message>
@@ -2963,12 +3038,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="236"/>
+      <location filename="gui_snaps.py" line="240"/>
       <source>Intersection</source>
       <translation>Intersecţie</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="239"/>
+      <location filename="gui_snaps.py" line="243"/>
       <source>Set snapping to the intersection of edges.</source>
       <translation type="unfinished">Set snapping to the intersection of edges.</translation>
     </message>
@@ -2976,12 +3051,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="116"/>
+      <location filename="gui_snaps.py" line="120"/>
       <source>Main snapping toggle On/Off</source>
       <translation type="unfinished">Main snapping toggle On/Off</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="119"/>
+      <location filename="gui_snaps.py" line="123"/>
       <source>Activates or deactivates all snap methods at once.</source>
       <translation type="unfinished">Activates or deactivates all snap methods at once.</translation>
     </message>
@@ -2989,12 +3064,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="146"/>
+      <location filename="gui_snaps.py" line="150"/>
       <source>Midpoint</source>
       <translation type="unfinished">Midpoint</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="149"/>
+      <location filename="gui_snaps.py" line="153"/>
       <source>Set snapping to the midpoint of an edge.</source>
       <translation type="unfinished">Set snapping to the midpoint of an edge.</translation>
     </message>
@@ -3002,12 +3077,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="417"/>
+      <location filename="gui_snaps.py" line="421"/>
       <source>Nearest</source>
       <translation type="unfinished">Nearest</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="420"/>
+      <location filename="gui_snaps.py" line="424"/>
       <source>Set snapping to the nearest point of an edge.</source>
       <translation type="unfinished">Set snapping to the nearest point of an edge.</translation>
     </message>
@@ -3015,12 +3090,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="448"/>
+      <location filename="gui_snaps.py" line="452"/>
       <source>Orthogonal</source>
       <translation type="unfinished">Orthogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="451"/>
+      <location filename="gui_snaps.py" line="455"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
       <translation type="unfinished">Set snapping to a direction that is a multiple of 45 degrees from a point.</translation>
     </message>
@@ -3028,12 +3103,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="266"/>
+      <location filename="gui_snaps.py" line="270"/>
       <source>Parallel</source>
       <translation>Paralel</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="269"/>
+      <location filename="gui_snaps.py" line="273"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
       <translation type="unfinished">Set snapping to a direction that is parallel to an edge.</translation>
     </message>
@@ -3041,12 +3116,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="176"/>
+      <location filename="gui_snaps.py" line="180"/>
       <source>Perpendicular</source>
       <translation>Perpendicular</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="179"/>
+      <location filename="gui_snaps.py" line="183"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
       <translation type="unfinished">Set snapping to a direction that is perpendicular to an edge.</translation>
     </message>
@@ -3054,12 +3129,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="478"/>
+      <location filename="gui_snaps.py" line="482"/>
       <source>Special</source>
       <translation type="unfinished">Special</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="481"/>
+      <location filename="gui_snaps.py" line="485"/>
       <source>Set snapping to the special points defined inside an object.</source>
       <translation type="unfinished">Set snapping to the special points defined inside an object.</translation>
     </message>
@@ -3067,12 +3142,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="542"/>
+      <location filename="gui_snaps.py" line="546"/>
       <source>Working plane</source>
       <translation type="unfinished">Working plane</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="545"/>
+      <location filename="gui_snaps.py" line="549"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
@@ -3118,12 +3193,12 @@ then draw a line to specify the distance and direction of stretching.</translati
   <context>
     <name>Draft_SubelementHighlight</name>
     <message>
-      <location filename="gui_subelements.py" line="62"/>
+      <location filename="gui_subelements.py" line="61"/>
       <source>Subelement highlight</source>
       <translation type="unfinished">Subelement highlight</translation>
     </message>
     <message>
-      <location filename="gui_subelements.py" line="65"/>
+      <location filename="gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
       <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
     </message>
@@ -3253,12 +3328,12 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="gui_lines.py" line="312"/>
+      <location filename="gui_lines.py" line="310"/>
       <source>Polyline</source>
       <translation>Polyline</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="315"/>
+      <location filename="gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
     </message>
@@ -3266,12 +3341,12 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="gui_wire2spline.py" line="63"/>
+      <location filename="gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
       <translation type="unfinished">Wire to B-spline</translation>
     </message>
     <message>
-      <location filename="gui_wire2spline.py" line="66"/>
+      <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
     </message>
@@ -3463,219 +3538,264 @@ valoare și folosind tastele [ și ] în timp ce desenați</translation>
       <translation type="unfinished">Style settings</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="207"/>
+      <location filename="TaskPanel_SetStyle.ui" line="244"/>
       <source>Text color</source>
       <translation type="unfinished">Text color</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="132"/>
+      <location filename="TaskPanel_SetStyle.ui" line="169"/>
       <source>Shape color</source>
       <translation type="unfinished">Shape color</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="50"/>
+      <location filename="TaskPanel_SetStyle.ui" line="87"/>
       <source>Line width</source>
       <translation>Latimea liniei</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="29"/>
+      <location filename="TaskPanel_SetStyle.ui" line="66"/>
       <source>The color of faces</source>
       <translation type="unfinished">The color of faces</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="168"/>
+      <location filename="TaskPanel_SetStyle.ui" line="205"/>
       <source>The type of dimension arrows</source>
       <translation type="unfinished">The type of dimension arrows</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="172"/>
+      <location filename="TaskPanel_SetStyle.ui" line="209"/>
       <source>Dot</source>
       <translation>Punct</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="177"/>
+      <location filename="TaskPanel_SetStyle.ui" line="214"/>
       <source>Circle</source>
       <translation>Cerc</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="182"/>
+      <location filename="TaskPanel_SetStyle.ui" line="219"/>
       <source>Arrow</source>
       <translation>Săgeată</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="187"/>
+      <location filename="TaskPanel_SetStyle.ui" line="224"/>
       <source>Tick</source>
       <translation>Cocher</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="TaskPanel_SetStyle.ui" line="229"/>
       <source>Tick-2</source>
       <translation>Oblique 2</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="234"/>
+      <location filename="TaskPanel_SetStyle.ui" line="271"/>
       <source>The color of texts and dimension texts</source>
       <translation type="unfinished">The color of texts and dimension texts</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="241"/>
+      <location filename="TaskPanel_SetStyle.ui" line="278"/>
       <source>The size of texts and dimension texts</source>
       <translation type="unfinished">The size of texts and dimension texts</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="281"/>
+      <location filename="TaskPanel_SetStyle.ui" line="318"/>
       <source>Show unit</source>
       <translation>Arată unitatea</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="43"/>
+      <location filename="TaskPanel_SetStyle.ui" line="80"/>
       <source>Line color</source>
       <translation>Culoarea liniei</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="271"/>
+      <location filename="TaskPanel_SetStyle.ui" line="308"/>
       <source>The size of dimension arrows</source>
       <translation type="unfinished">The size of dimension arrows</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="220"/>
+      <location filename="TaskPanel_SetStyle.ui" line="257"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Fontul utilizat pentru texte și dimensiuni</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="64"/>
+      <location filename="TaskPanel_SetStyle.ui" line="101"/>
       <source>The line style</source>
       <translation type="unfinished">The line style</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="68"/>
+      <location filename="TaskPanel_SetStyle.ui" line="105"/>
       <source>Solid</source>
       <translation>Solid</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="73"/>
+      <location filename="TaskPanel_SetStyle.ui" line="110"/>
       <source>Dashed</source>
       <translation>Linie Intrerupta</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="78"/>
+      <location filename="TaskPanel_SetStyle.ui" line="115"/>
       <source>Dotted</source>
       <translation>Punctată</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="83"/>
+      <location filename="TaskPanel_SetStyle.ui" line="120"/>
       <source>DashDot</source>
       <translation>Linie punct</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="227"/>
+      <location filename="TaskPanel_SetStyle.ui" line="264"/>
       <source>Text size</source>
       <translation type="unfinished">Text size</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="295"/>
+      <location filename="TaskPanel_SetStyle.ui" line="332"/>
       <source>Unit override</source>
       <translation type="unfinished">Unit override</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="302"/>
+      <location filename="TaskPanel_SetStyle.ui" line="339"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
       <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="146"/>
+      <location filename="TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
       <translation type="unfinished">The transparency of faces</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="149"/>
+      <location filename="TaskPanel_SetStyle.ui" line="186"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="139"/>
+      <location filename="TaskPanel_SetStyle.ui" line="176"/>
       <source>Transparency</source>
       <translation>Transparenţă</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="98"/>
+      <location filename="TaskPanel_SetStyle.ui" line="135"/>
       <source>Display mode</source>
       <translation>Mod de afișare</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="200"/>
+      <location filename="TaskPanel_SetStyle.ui" line="237"/>
       <source>Text font</source>
       <translation type="unfinished">Text font</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="288"/>
+      <location filename="TaskPanel_SetStyle.ui" line="325"/>
       <source>Arrow size</source>
       <translation>Dimensiunea săgeții</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="105"/>
+      <location filename="TaskPanel_SetStyle.ui" line="142"/>
       <source>The display mode for faces</source>
       <translation type="unfinished">The display mode for faces</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="109"/>
+      <location filename="TaskPanel_SetStyle.ui" line="146"/>
       <source>Flat Lines</source>
       <translation type="unfinished">Flat Lines</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="114"/>
+      <location filename="TaskPanel_SetStyle.ui" line="151"/>
       <source>Wireframe</source>
       <translation>Wireframe</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="119"/>
+      <location filename="TaskPanel_SetStyle.ui" line="156"/>
       <source>Shaded</source>
       <translation>Umbrit</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="124"/>
+      <location filename="TaskPanel_SetStyle.ui" line="161"/>
       <source>Points</source>
       <translation>Puncte</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="36"/>
+      <location filename="TaskPanel_SetStyle.ui" line="73"/>
       <source>Draw style</source>
       <translation>Stil de desenare</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="57"/>
+      <location filename="TaskPanel_SetStyle.ui" line="94"/>
       <source>The color of lines</source>
       <translation type="unfinished">The color of lines</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="251"/>
+      <location filename="TaskPanel_SetStyle.ui" line="288"/>
       <source>Arrow style</source>
       <translation type="unfinished">Arrow style</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="91"/>
+      <location filename="TaskPanel_SetStyle.ui" line="128"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="312"/>
-      <source>Apply to selected objects</source>
-      <translation>Se aplică la obiectele selectate</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="20"/>
+      <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
       <translation type="unfinished">Lines and faces</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="162"/>
+      <location filename="TaskPanel_SetStyle.ui" line="199"/>
       <source>Annotations</source>
       <translation>Annotations (Automatic Copy)</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="258"/>
+      <location filename="TaskPanel_SetStyle.ui" line="295"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
       <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="22"/>
+      <source>Fills the values below with a stored style preset</source>
+      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="26"/>
+      <source>Load preset</source>
+      <translation type="unfinished">Load preset</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="40"/>
+      <source>Save current style as a preset...</source>
+      <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
+      <source>Selected</source>
+      <translation>Selectat</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Spațierea textului</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation type="unfinished">The space between the text and the dimension line</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Spațiere între linii</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation type="unfinished">The spacing between different lines of text</translation>
     </message>
   </context>
   <context>
@@ -3806,7 +3926,7 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Toleranţă</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>Reuneşte formele geometrice</translation>
     </message>
@@ -3901,12 +4021,12 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Dreapta</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation>Grupează straturile în blocuri</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Exporta obiectele 3D ca "polyface meshes"</translation>
     </message>
@@ -3936,17 +4056,17 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Daca este bifat, grila pentru Ciorna va fi vizibila continuu cat timp modulul Ciorna este activ. Altfel va fi vizibila doar cand o comanda este activa</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation>Utilizaţi dimensiunea standard a fontului pentru texte</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Importa marginile hasurii ca si linii</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation>Afiseaza grosimea poliliniei</translation>
     </message>
@@ -3991,32 +4111,32 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Culoare de geometrie constructii</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>texte și dimensiuni</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>puncte</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation>aspecte</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation>*blocuri</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation>Proiectul a exportat obiecte în direcția vederii curente</translation>
     </message>
@@ -4116,32 +4236,32 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Remplir des objets avec des faces si possible</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>Creează</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
       <translation>forme de piese simple</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation>Obiect ciornă</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
       <translation>Schițe</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation>Ia culorile originale din fișierul DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Tratează elipsele și curbele ca polilinii</translation>
     </message>
@@ -4156,7 +4276,7 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Arată sufixul unităților în dimensiuni</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Permite FreeCAD să descarce automat și să actualizeze bibliotecile DXF</translation>
     </message>
@@ -4306,7 +4426,7 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Importare opțiuni</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation>Utilizarea importatorului python moştenit</translation>
     </message>
@@ -4331,22 +4451,22 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Dezactivați scalarea de unităţi</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation>Exporta Drawing Views ca blocuri</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation>Notă: Nu toate opţiunile de mai jos sunt utilizate încă de către noul importator</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Arată acest dialog atunci când se importă şi exportă</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation>Actualizare automată ( numai pentru importatorul vechi)</translation>
     </message>
@@ -4356,7 +4476,7 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Prefixați etichetele de clone cu:</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Factor de scara se aplică fişierelor importate</translation>
     </message>
@@ -4476,12 +4596,12 @@ sau "mono", sau o familie cum ar fi "Arial,Helvetica,sans", sau un nume şi un s
       <translation>Calea către executabilul convertorului de fişiere ODA (fostă Teigha)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation>Lungime maxima a segmentului de polilinie:</translation>
     </message>
@@ -4498,7 +4618,7 @@ Values with differences below this value will be treated as same. This value wil
 Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation>Use legacy python exporter</translation>
     </message>
@@ -4773,32 +4893,32 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>Setările interfeței utilizatorului</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="884"/>
+      <location filename="preferences-draftinterface.ui" line="928"/>
       <source>Enable draft statusbar customization</source>
       <translation type="unfinished">Enable draft statusbar customization</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="887"/>
+      <location filename="preferences-draftinterface.ui" line="931"/>
       <source>Draft Statusbar</source>
       <translation>Linia de stare a Schițelor</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="907"/>
+      <location filename="preferences-draftinterface.ui" line="951"/>
       <source>Enable snap statusbar widget</source>
       <translation type="unfinished">Enable snap statusbar widget</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="910"/>
+      <location filename="preferences-draftinterface.ui" line="954"/>
       <source>Draft snap widget</source>
       <translation type="unfinished">Draft snap widget</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="926"/>
+      <location filename="preferences-draftinterface.ui" line="970"/>
       <source>Enable draft statusbar annotation scale widget</source>
       <translation type="unfinished">Enable draft statusbar annotation scale widget</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="929"/>
+      <location filename="preferences-draftinterface.ui" line="973"/>
       <source>Annotation scale widget</source>
       <translation type="unfinished">Annotation scale widget</translation>
     </message>
@@ -4838,28 +4958,19 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>Calea către convertorul de fișiere ODA</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Acest dialog de preferințe va fi afișat la importul/exportul de fișiere DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Importatorul Python este utilizat, altfel este folosit cel C++ mai nou.
 Notă: importatorul C++ este mai rapid, dar nu este atît de plin de opțiuni</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation>Exportatorul Python este utilizat, altfel este folosit cel C++ mai nou.
-Notă: exportatorul C++ este mai rapid, dar nu este atît de plin de opțiuni
-      </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4868,42 +4979,42 @@ Poți face acest lucru și manual prin instalarea atelierului "dxf_library"
 din Managerul de Suplimente.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Dacă nu este bifată, textele și mtextele nu vor fi importate</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Dacă nu este bifată, punctele nu vor fi importate</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Dacă este bifată, obiectele din spațiul hârtiei vor fi de asemenea importate</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Dacă doriți ca blocurile fără nume (începând cu un *) să fie importate de asemenea</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Numai obiectele Componente standard vor fi create (cel mai rapid)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Obiecte Schiță parametrice vor fi create ori de câte ori este posibil</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Schițele vor fi create ori de câte ori este posibil</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4914,76 +5025,76 @@ Exemplu: pentru fişierele în milimetri: 1, în centimetri 10,
                              în metri: 1000, în inci: 25.4 , în picioare: 304.8</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation>Culorile vor fi preluate din obiectele DXF ori de câte ori este posibil.
 În caz contrar, culorile implicite vor fi aplicate. </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD va încerca să alăture obiectele coincidente în fire.
 Rețineți că acest lucru poate dura ceva timp!</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
       <translation>Obiectele din aceleași straturi vor fi unite în Blocuri Schiță,
 îmbunătățind viteza de afișare, dar făcându-le mai puțin ușor de editat </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Textele importate vor primi dimensiunea standard a Textului de Schiță,
 în loc de dimensiunea pe care o au în documentul DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Dacă este bifată, straturile DXF vor fi importate ca Straturi de Schiță</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation>Folosește Straturi</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Hașurile vor fi transformate în linii simple</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Dacă poliliniile au definită o lăţime, vor fi randate
 ca o linie închisă cu lăţimea corectă</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Lungimea maximă a fiecărui segment de polilinie.
 Dacă este setată la '0' întreaga curbă este tratată ca un segment drept.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Toate obiectele care conțin fețe vor fi exportate ca polifețe 3D</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Vederile Desenelor vor fi exportate ca blocuri.
 Acest lucru ar putea eșua pentru șabloanele post DXF R12.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Obiectele exportate vor fi proiectate pentru a reflecta direcția vizualizării curente</translation>
     </message>
@@ -5078,29 +5189,46 @@ Această valoare este lungimea maximă a unui segment. </translation>
       <source>The overall transparency of the grid</source>
       <translation type="unfinished">The overall transparency of the grid</translation>
     </message>
+    <message>
+      <location filename="preferences-draftinterface.ui" line="873"/>
+      <source>Global</source>
+      <translation>Global</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftinterface.ui" line="895"/>
+      <source>G</source>
+      <translation type="unfinished">G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
+    </message>
   </context>
   <context>
     <name>ImportDWG</name>
-    <message>
-      <location filename="importDWG.py" line="276"/>
-      <source>Converting: </source>
-      <translation>Converteşte: </translation>
-    </message>
     <message>
       <location filename="importDWG.py" line="232"/>
       <source>Conversion successful</source>
       <translation>Conversie reușită</translation>
     </message>
+    <message>
+      <location filename="importDWG.py" line="276"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
+    </message>
   </context>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="importSVG.py" line="1808"/>
+      <location filename="importSVG.py" line="1809"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Stilul necunoscut de export SVG, comut la Tradus</translation>
     </message>
     <message>
-      <location filename="importSVG.py" line="1828"/>
+      <location filename="importSVG.py" line="1829"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
@@ -5108,7 +5236,7 @@ Această valoare este lungimea maximă a unui segment. </translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1468"/>
+      <location filename="gui_snapper.py" line="1476"/>
       <source>Draft Snap</source>
       <translation type="unfinished">Draft Snap</translation>
     </message>
@@ -5116,127 +5244,122 @@ Această valoare este lungimea maximă a unui segment. </translation>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="233"/>
+      <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
       <translation>Bara de Comandă Schiță</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="698"/>
+      <location filename="DraftGui.py" line="832"/>
       <source>Toggle construction mode</source>
       <translation>Activează/dezactivează Modul de Construcție</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1894"/>
+      <location filename="DraftGui.py" line="2054"/>
       <source>Autogroup off</source>
       <translation>Autogrup dezactivat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="610"/>
+      <location filename="DraftGui.py" line="722"/>
       <source>active command:</source>
       <translation>Comanda activă:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="276"/>
+      <location filename="gui_groups.py" line="277"/>
       <source>None</source>
       <translation>Niciunul</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="612"/>
+      <location filename="DraftGui.py" line="724"/>
       <source>Active Draft command</source>
       <translation>Comanda activă proiect</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="613"/>
+      <location filename="DraftGui.py" line="725"/>
       <source>X coordinate of next point</source>
       <translation>Coordonata X a punctului următor</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="930"/>
+      <location filename="DraftGui.py" line="1056"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="615"/>
+      <location filename="DraftGui.py" line="727"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="616"/>
+      <location filename="DraftGui.py" line="728"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="617"/>
+      <location filename="DraftGui.py" line="729"/>
       <source>Y coordinate of next point</source>
       <translation>Coordonata Y a punctului următor</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="618"/>
+      <location filename="DraftGui.py" line="730"/>
       <source>Z coordinate of next point</source>
       <translation>Coordonata Z a punctului următor</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="619"/>
+      <location filename="DraftGui.py" line="731"/>
       <source>Enter point</source>
       <translation>Introduceți punctul</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="620"/>
+      <location filename="DraftGui.py" line="733"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Introduceți un nou punct cu coordonatele date</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="621"/>
+      <location filename="DraftGui.py" line="734"/>
       <source>Length</source>
       <translation>Lungime</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="334"/>
+      <location filename="gui_trimex.py" line="332"/>
       <source>Angle</source>
       <translation>Unghi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="623"/>
+      <location filename="DraftGui.py" line="736"/>
       <source>Length of current segment</source>
       <translation>Lungimea segmentului curent</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="624"/>
+      <location filename="DraftGui.py" line="737"/>
       <source>Angle of current segment</source>
       <translation>Unghiul segmentului curent</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="980"/>
+      <location filename="DraftGui.py" line="1105"/>
       <source>Radius</source>
       <translation>Raza</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="981"/>
+      <location filename="DraftGui.py" line="1106"/>
       <source>Radius of Circle</source>
       <translation>Raza cercului</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="635"/>
+      <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Dacă bifaţi casuţa, comanda nu se va termina până când nu apăsaţi butonul de comandă din nou</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="637"/>
-      <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>Daca este bifat, o expandare tip OCC va fi folosita inlocul expandarii clasice</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="638"/>
+      <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
       <translation>Expandare tip &amp;OCC</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="658"/>
+      <location filename="DraftGui.py" line="792"/>
       <source>Sides</source>
       <translation>Părți</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="659"/>
+      <location filename="DraftGui.py" line="793"/>
       <source>Number of sides</source>
       <translation>Numărul de laturi</translation>
     </message>
@@ -5246,197 +5369,172 @@ Această valoare este lungimea maximă a unui segment. </translation>
       <translation>Compensare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="552"/>
+      <location filename="DraftGui.py" line="659"/>
       <source>Auto</source>
       <translation>Automat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="665"/>
+      <location filename="DraftGui.py" line="799"/>
       <source>Text string to draw</source>
       <translation>Șir text de desenat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="666"/>
+      <location filename="DraftGui.py" line="800"/>
       <source>String</source>
       <translation>Şir</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="667"/>
+      <location filename="DraftGui.py" line="801"/>
       <source>Height of text</source>
       <translation>Înălțimea textului</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="668"/>
+      <location filename="DraftGui.py" line="802"/>
       <source>Height</source>
       <translation>Înălţime</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="669"/>
+      <location filename="DraftGui.py" line="803"/>
       <source>Intercharacter spacing</source>
       <translation>Spațiul dintre caractere</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="670"/>
+      <location filename="DraftGui.py" line="804"/>
       <source>Tracking</source>
       <translation>Urmărire</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="671"/>
+      <location filename="DraftGui.py" line="805"/>
       <source>Full path to font file:</source>
       <translation>Calea întreagă la fișierul text:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="672"/>
+      <location filename="DraftGui.py" line="806"/>
       <source>Open a FileChooser for font file</source>
       <translation>Deschide un FileChooser pentru fişier de font</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="79"/>
+      <location filename="DraftGui.py" line="944"/>
       <source>Line</source>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="828"/>
+      <location filename="DraftGui.py" line="953"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="845"/>
+      <location filename="DraftGui.py" line="971"/>
       <source>Circle</source>
       <translation>Cerc</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="861"/>
-      <source>Center X</source>
-      <translation>Centrul X</translation>
-    </message>
-    <message>
-      <location filename="gui_arcs.py" line="72"/>
+      <location filename="DraftGui.py" line="980"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="gui_points.py" line="67"/>
+      <location filename="DraftGui.py" line="987"/>
       <source>Point</source>
       <translation>Punct</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="70"/>
+      <location filename="DraftGui.py" line="1015"/>
       <source>Label</source>
       <translation>Etichetă</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
+      <location filename="gui_trimex.py" line="316"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="969"/>
-      <source>Trim</source>
-      <translation>Taiere</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1067"/>
+      <location filename="DraftGui.py" line="1192"/>
       <source>Pick Object</source>
       <translation>Alege obiect</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1073"/>
+      <location filename="DraftGui.py" line="1198"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1124"/>
+      <location filename="DraftGui.py" line="1261"/>
       <source>Global X</source>
       <translation>Global X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1125"/>
+      <location filename="DraftGui.py" line="1262"/>
       <source>Global Y</source>
       <translation>Global Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1126"/>
+      <location filename="DraftGui.py" line="1263"/>
       <source>Global Z</source>
       <translation>Global Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1129"/>
+      <location filename="DraftGui.py" line="1253"/>
       <source>Local X</source>
       <translation>Local X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1130"/>
+      <location filename="DraftGui.py" line="1254"/>
       <source>Local Y</source>
       <translation>Local Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1131"/>
+      <location filename="DraftGui.py" line="1255"/>
       <source>Local Z</source>
       <translation>Local Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1360"/>
+      <location filename="DraftGui.py" line="1496"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Valoare dimensiune nevalidă. Utilizați 200.0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1368"/>
+      <location filename="DraftGui.py" line="1504"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Valoare dimensiune nevalidă. Utilizați 0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1382"/>
+      <location filename="DraftGui.py" line="1518"/>
       <source>Please enter a text string.</source>
       <translation>Introduceți un șir text.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1391"/>
+      <location filename="DraftGui.py" line="1527"/>
       <source>Select a Font file</source>
       <translation>Selectați un fișier font</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1421"/>
+      <location filename="DraftGui.py" line="1560"/>
       <source>Please enter a font file.</source>
       <translation>Introduceți un fișier font.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1887"/>
-      <source>Autogroup: </source>
-      <translation>AutoGroup: </translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="2188"/>
+      <location filename="DraftGui.py" line="2374"/>
       <source>Faces</source>
       <translation>Fete</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2189"/>
+      <location filename="DraftGui.py" line="2375"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2190"/>
+      <location filename="DraftGui.py" line="2376"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2191"/>
+      <location filename="DraftGui.py" line="2377"/>
       <source>Facebinder elements</source>
       <translation>Surfaces liées: éléments</translation>
     </message>
     <message>
-      <location filename="gui_splines.py" line="68"/>
-      <source>BSpline</source>
-      <translation>BSpline</translation>
-    </message>
-    <message>
-      <location filename="gui_beziers.py" line="72"/>
-      <source>BezCurve</source>
-      <translation>Curbă bezier</translation>
-    </message>
-    <message>
-      <location filename="gui_rotate.py" line="277"/>
+      <location filename="gui_rotate.py" line="276"/>
       <source>Copy</source>
       <translation>Copiere</translation>
     </message>
@@ -5453,204 +5551,184 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Les bibliothèques d'importation/exportation DXF nécessaires FreeCAD pour manipuler le format DXF ne se trouvaient pas sur ce système. Il vous faut soit activer FreeCAD télécharger ces bibliothèques: plan de travail de charge projet 1 - 2 - Menu Edition &gt; Préférences &gt; Import-Export &gt; DXF &gt; activer les téléchargements ou télécharger ces bibliothèques manuellement, comme expliqué sur https://github.com/yorikvanhavre/Draft-dxf-importer pour FreeCAD activé pour télécharger ces bibliothèques, répondre Oui.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="629"/>
+      <location filename="DraftGui.py" line="745"/>
       <source>Relative</source>
       <translation>Relativ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="636"/>
+      <location filename="DraftGui.py" line="768"/>
       <source>Continue</source>
       <translation>Continua</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="650"/>
+      <location filename="DraftGui.py" line="784"/>
       <source>Close</source>
       <translation>Închide</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="60"/>
+      <location filename="DraftGui.py" line="86"/>
       <source>Fill</source>
       <translation>Completare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="61"/>
+      <location filename="DraftGui.py" line="91"/>
       <source>Exit</source>
       <translation>Iesire</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="62"/>
+      <location filename="DraftGui.py" line="96"/>
       <source>Snap On/Off</source>
       <translation>Ancorare Activ/Inactiv</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="63"/>
+      <location filename="DraftGui.py" line="101"/>
       <source>Increase snap radius</source>
       <translation>Crește raza punctului de ancorare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="64"/>
+      <location filename="DraftGui.py" line="106"/>
       <source>Decrease snap radius</source>
       <translation>Descrește raza punctului de ancorare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="65"/>
+      <location filename="DraftGui.py" line="111"/>
       <source>Restrict X</source>
       <translation>Limita X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="66"/>
+      <location filename="DraftGui.py" line="116"/>
       <source>Restrict Y</source>
       <translation>Limita Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="67"/>
+      <location filename="DraftGui.py" line="121"/>
       <source>Restrict Z</source>
       <translation>Limita Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="656"/>
+      <location filename="DraftGui.py" line="790"/>
       <source>Select edge</source>
       <translation>Selectează marginea</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="69"/>
+      <location filename="DraftGui.py" line="131"/>
       <source>Add custom snap point</source>
       <translation>Adauga punct de ancorare personalizat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="70"/>
+      <location filename="DraftGui.py" line="136"/>
       <source>Length mode</source>
       <translation>Modul longitudinal</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="652"/>
+      <location filename="DraftGui.py" line="786"/>
       <source>Wipe</source>
       <translation>Șterge</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="72"/>
+      <location filename="DraftGui.py" line="146"/>
       <source>Set Working Plane</source>
       <translation>Setare Plan de lucru</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="73"/>
+      <location filename="DraftGui.py" line="151"/>
       <source>Cycle snap object</source>
       <translation>Trece prin obiectele pentru fixare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="626"/>
+      <location filename="DraftGui.py" line="741"/>
       <source>Check this to lock the current angle</source>
       <translation>Bifați asta pentru a bloca unghiul curent</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="630"/>
-      <source>Coordinates relative to last point or absolute</source>
-      <translation>Coordonate relative faţă de ultimul punct sau absolute</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="631"/>
+      <location filename="DraftGui.py" line="755"/>
       <source>Filled</source>
       <translation>Umplut</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="633"/>
+      <location filename="DraftGui.py" line="761"/>
       <source>Finish</source>
       <translation>Terminare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="634"/>
+      <location filename="DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Termina operatiunea curenta de editare sau desenare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="648"/>
+      <location filename="DraftGui.py" line="782"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation>&amp; Undo (CTRL + Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="649"/>
+      <location filename="DraftGui.py" line="783"/>
       <source>Undo the last segment</source>
       <translation>Anulare ultimul segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="651"/>
+      <location filename="DraftGui.py" line="785"/>
       <source>Finishes and closes the current line</source>
       <translation>Termină, şi închide linia curentă</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="653"/>
+      <location filename="DraftGui.py" line="787"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Şterge toate segmentele existente ale acestei linii şi reporneşte de la ultimul punct</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="654"/>
+      <location filename="DraftGui.py" line="788"/>
       <source>Set WP</source>
       <translation>Definește planul de lucru</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="655"/>
+      <location filename="DraftGui.py" line="789"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Reorientează plan de lucru pe ultimul segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="657"/>
+      <location filename="DraftGui.py" line="791"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Selectați o margine existentă pentru a fi măsurată de către această dimensiune</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="662"/>
+      <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation>Dacă este bifat, obiectele vor fi copiate în loc de a fi mutate. Preferences -&gt; Draft -&gt; Global copy mode pentru a menţine acest mod în următoarele comenzi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="59"/>
+      <location filename="DraftGui.py" line="81"/>
       <source>Subelement mode</source>
       <translation>Mod Subelement</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="663"/>
+      <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
       <translation>Modifică subelementele</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="664"/>
+      <location filename="DraftGui.py" line="798"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Dacă este bifată, subelementele vor fi modificate în locul obiectelor întregi</translation>
     </message>
     <message>
-      <location filename="gui_beziers.py" line="251"/>
-      <source>CubicBezCurve</source>
-      <translation>CubicBezCurve</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="363"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Partea de sus</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="375"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Din față</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="387"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Latura</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="530"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Planul curent de lucru</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="632"/>
-      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation>Bifează dacă obiectul ar trebui să apară ca umplut, altfel va apărea ca wireframe. Aceasta nu este posibil dacă este activată opțiunea Schiței „Utilizați Piese Primitive”</translation>
-    </message>
-    <message>
-      <location filename="gui_lines.py" line="364"/>
-      <source>Polyline</source>
-      <translation>Polyline</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5658,52 +5736,37 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Pescaj</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="74"/>
+      <location filename="DraftGui.py" line="156"/>
       <source>Toggle near snap on/off</source>
       <translation>Comută lipirea de proximitate pornit/oprit</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="673"/>
+      <location filename="DraftGui.py" line="807"/>
       <source>Create text</source>
       <translation>Crează text</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="674"/>
+      <location filename="DraftGui.py" line="808"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>Apăsați acest buton pentru a crea obiectul text sau pentru a finaliza textul cu două linii goale</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="862"/>
-      <source>Center Y</source>
-      <translation>Y centru</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="863"/>
-      <source>Center Z</source>
-      <translation>Z centru</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="914"/>
+      <location filename="DraftGui.py" line="1040"/>
       <source>Offset distance</source>
       <translation>Distanță de decalare</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="973"/>
+      <location filename="DraftGui.py" line="1098"/>
       <source>Trim distance</source>
       <translation>Distanță de tăiere</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="159"/>
-      <source>Wire</source>
-      <translation>Polilinie</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="697"/>
+      <location filename="DraftGui.py" line="831"/>
       <source>Change default style for new objects</source>
       <translation type="unfinished">Change default style for new objects</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
       <translation type="unfinished">No active document. Aborting.</translation>
     </message>
@@ -5813,11 +5876,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">The two points are coincident</translation>
     </message>
     <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation type="unfinished">mirrored)</translation>
-    </message>
-    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation type="unfinished">Found 1 block: exploding it</translation>
@@ -5863,7 +5921,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">No more downgrade possible</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
       <translation type="unfinished">Wrong input: object not in document.</translation>
     </message>
@@ -5873,24 +5931,14 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="130"/>
-      <source>Points: </source>
-      <translation type="unfinished">Points: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
       <translation type="unfinished">Wrong input: must be list or tuple of three points exactly.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="138"/>
-      <source>Placement: </source>
-      <translation type="unfinished">Placement: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="139"/>
@@ -5901,11 +5949,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation type="unfinished">Wrong input: incorrect type of points.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation type="unfinished">Cannot generate shape: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -5968,7 +6011,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Removed original objects.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation type="unfinished">Wrong input: must be a list of strings or a single string.</translation>
     </message>
@@ -5988,7 +6031,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Wrong input: must be an integer number.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
       <translation type="unfinished">Wrong input: must be a vector.</translation>
     </message>
@@ -5998,7 +6041,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Matrice polară</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
       <translation type="unfinished">Wrong input: must be a number.</translation>
     </message>
@@ -6013,7 +6056,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
       <translation type="unfinished">Wrong input: object must not be a list.</translation>
     </message>
@@ -6108,7 +6151,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
     </message>
@@ -6179,42 +6222,37 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Rectangular array 2D</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation type="unfinished">Wrong input: subelement not in object.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation type="unfinished">Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation type="unfinished">Wrong input: must be a string.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
       <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
       <translation type="unfinished">Wrong input: must be a list of at least two vectors.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
       <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
       <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
     </message>
     <message>
-      <location filename="shapestring.py" line="73"/>
+      <location filename="shapestring.py" line="76"/>
       <source>ShapeString: string has no wires</source>
       <translation type="unfinished">ShapeString: string has no wires</translation>
     </message>
@@ -6459,7 +6497,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Interval Z:</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="77"/>
+      <location filename="task_shapestring.py" line="58"/>
       <source>ShapeString</source>
       <translation>ShapeString</translation>
     </message>
@@ -6474,7 +6512,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Pick ShapeString location point:</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="143"/>
+      <location filename="gui_shapestrings.py" line="141"/>
       <source>Create ShapeString</source>
       <translation type="unfinished">Create ShapeString</translation>
     </message>
@@ -6489,42 +6527,32 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Select an object to upgrade</translation>
     </message>
     <message>
-      <location filename="gui_clone.py" line="75"/>
-      <source>Clone</source>
-      <translation>Clonă</translation>
-    </message>
-    <message>
       <location filename="gui_clone.py" line="79"/>
       <source>Select an object to clone</source>
       <translation type="unfinished">Select an object to clone</translation>
     </message>
     <message>
-      <location filename="gui_ellipses.py" line="65"/>
-      <source>Ellipse</source>
-      <translation>Elipsa</translation>
-    </message>
-    <message>
-      <location filename="gui_rectangles.py" line="70"/>
+      <location filename="gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
       <translation type="unfinished">Pick first point</translation>
     </message>
     <message>
-      <location filename="gui_ellipses.py" line="140"/>
+      <location filename="gui_ellipses.py" line="138"/>
       <source>Create Ellipse</source>
       <translation type="unfinished">Create Ellipse</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="203"/>
+      <location filename="gui_rectangles.py" line="202"/>
       <source>Pick opposite point</source>
       <translation type="unfinished">Pick opposite point</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="169"/>
+      <location filename="gui_lines.py" line="167"/>
       <source>Create Line</source>
       <translation type="unfinished">Create Line</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="191"/>
+      <location filename="gui_lines.py" line="189"/>
       <source>Create Wire</source>
       <translation type="unfinished">Create Wire</translation>
     </message>
@@ -6534,32 +6562,32 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Pick next point</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="336"/>
+      <location filename="gui_lines.py" line="334"/>
       <source>Unable to create a Wire from selected objects</source>
       <translation type="unfinished">Unable to create a Wire from selected objects</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="358"/>
+      <location filename="gui_lines.py" line="356"/>
       <source>Convert to Wire</source>
       <translation type="unfinished">Convert to Wire</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="507"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
       <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="557"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
       <translation type="unfinished">Active object must have more than two points/nodes</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="671"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
       <translation type="unfinished">Selection is not a Knot</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="698"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
     </message>
@@ -6567,11 +6595,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <location filename="gui_edit_sketcher_objects.py" line="60"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
       <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
-    </message>
-    <message>
-      <location filename="gui_facebinders.py" line="66"/>
-      <source>Facebinder</source>
-      <translation>Facebinder</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="71"/>
@@ -6584,19 +6607,9 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Change slope</translation>
     </message>
     <message>
-      <location filename="gui_subelements.py" line="70"/>
-      <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
-    </message>
-    <message>
-      <location filename="gui_subelements.py" line="109"/>
+      <location filename="gui_subelements.py" line="108"/>
       <source>Select an object to edit</source>
       <translation type="unfinished">Select an object to edit</translation>
-    </message>
-    <message>
-      <location filename="gui_dimensions.py" line="89"/>
-      <source>Dimension</source>
-      <translation>Dimensiune</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="294"/>
@@ -6614,17 +6627,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Edges don't intersect!</translation>
     </message>
     <message>
-      <location filename="gui_drawing.py" line="76"/>
-      <source>Drawing</source>
-      <translation>Desen</translation>
-    </message>
-    <message>
       <location filename="gui_drawing.py" line="77"/>
       <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
       <translation type="unfinished">The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="70"/>
+      <location filename="gui_shape2dview.py" line="68"/>
       <source>Select an object to project</source>
       <translation type="unfinished">Select an object to project</translation>
     </message>
@@ -6654,37 +6662,37 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Upgrade</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="205"/>
+      <location filename="gui_move.py" line="204"/>
       <source>Move</source>
       <translation>Mută</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="82"/>
+      <location filename="gui_move.py" line="81"/>
       <source>Select an object to move</source>
       <translation type="unfinished">Select an object to move</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="104"/>
+      <location filename="gui_move.py" line="103"/>
       <source>Pick start point</source>
       <translation type="unfinished">Pick start point</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="303"/>
+      <location filename="gui_move.py" line="302"/>
       <source>Pick end point</source>
       <translation type="unfinished">Pick end point</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="283"/>
+      <location filename="gui_rotate.py" line="282"/>
       <source>Some subelements could not be moved.</source>
       <translation type="unfinished">Some subelements could not be moved.</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="123"/>
+      <location filename="gui_pointarray.py" line="122"/>
       <source>Point array</source>
       <translation type="unfinished">Point array</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="105"/>
+      <location filename="gui_pointarray.py" line="104"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
       <translation type="unfinished">Please select exactly two objects, the base object and the point object, before calling this command.</translation>
     </message>
@@ -6709,87 +6717,82 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Toggle display mode</translation>
     </message>
     <message>
-      <location filename="gui_wire2spline.py" line="79"/>
-      <source>Convert polyline/B-spline</source>
-      <translation type="unfinished">Convert polyline/B-spline</translation>
-    </message>
-    <message>
-      <location filename="gui_snaps.py" line="109"/>
+      <location filename="gui_snaps.py" line="113"/>
       <source>Main toggle snap</source>
       <translation type="unfinished">Main toggle snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="140"/>
+      <location filename="gui_snaps.py" line="144"/>
       <source>Midpoint snap</source>
       <translation type="unfinished">Midpoint snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="170"/>
+      <location filename="gui_snaps.py" line="174"/>
       <source>Perpendicular snap</source>
       <translation type="unfinished">Perpendicular snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="200"/>
+      <location filename="gui_snaps.py" line="204"/>
       <source>Grid snap</source>
       <translation>Ancoră la grilă</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="230"/>
+      <location filename="gui_snaps.py" line="234"/>
       <source>Intersection snap</source>
       <translation type="unfinished">Intersection snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="260"/>
+      <location filename="gui_snaps.py" line="264"/>
       <source>Parallel snap</source>
       <translation type="unfinished">Parallel snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="290"/>
+      <location filename="gui_snaps.py" line="294"/>
       <source>Endpoint snap</source>
       <translation type="unfinished">Endpoint snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="321"/>
+      <location filename="gui_snaps.py" line="325"/>
       <source>Angle snap (30 and 45 degrees)</source>
       <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="351"/>
+      <location filename="gui_snaps.py" line="355"/>
       <source>Arc center snap</source>
       <translation type="unfinished">Arc center snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="381"/>
+      <location filename="gui_snaps.py" line="385"/>
       <source>Edge extension snap</source>
       <translation type="unfinished">Edge extension snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="411"/>
+      <location filename="gui_snaps.py" line="415"/>
       <source>Near snap</source>
       <translation type="unfinished">Near snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="442"/>
+      <location filename="gui_snaps.py" line="446"/>
       <source>Orthogonal snap</source>
       <translation type="unfinished">Orthogonal snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="472"/>
+      <location filename="gui_snaps.py" line="476"/>
       <source>Special point snap</source>
       <translation type="unfinished">Special point snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="503"/>
+      <location filename="gui_snaps.py" line="507"/>
       <source>Dimension display</source>
       <translation type="unfinished">Dimension display</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="536"/>
+      <location filename="gui_snaps.py" line="540"/>
       <source>Working plane snap</source>
       <translation type="unfinished">Working plane snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="566"/>
+      <location filename="gui_snaps.py" line="570"/>
       <source>Show snap toolbar</source>
       <translation type="unfinished">Show snap toolbar</translation>
     </message>
@@ -6804,52 +6807,42 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Select an object to array</translation>
     </message>
     <message>
-      <location filename="gui_array_simple.py" line="124"/>
-      <source>Link array</source>
-      <translation>Matrice înlănțuită</translation>
-    </message>
-    <message>
-      <location filename="gui_polygons.py" line="63"/>
-      <source>Polygon</source>
-      <translation>Poligon</translation>
-    </message>
-    <message>
-      <location filename="gui_arcs.py" line="88"/>
+      <location filename="gui_arcs.py" line="89"/>
       <source>Pick center point</source>
       <translation type="unfinished">Pick center point</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="410"/>
+      <location filename="gui_arcs.py" line="411"/>
       <source>Pick radius</source>
       <translation type="unfinished">Pick radius</translation>
     </message>
     <message>
-      <location filename="gui_polygons.py" line="224"/>
+      <location filename="gui_polygons.py" line="223"/>
       <source>Create Polygon (Part)</source>
       <translation type="unfinished">Create Polygon (Part)</translation>
     </message>
     <message>
-      <location filename="gui_polygons.py" line="243"/>
+      <location filename="gui_polygons.py" line="242"/>
       <source>Create Polygon</source>
       <translation type="unfinished">Create Polygon</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="124"/>
+      <location filename="gui_mirror.py" line="123"/>
       <source>Mirror</source>
       <translation type="unfinished">Mirror</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="74"/>
+      <location filename="gui_mirror.py" line="73"/>
       <source>Select an object to mirror</source>
       <translation type="unfinished">Select an object to mirror</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="94"/>
+      <location filename="gui_mirror.py" line="93"/>
       <source>Pick start point of mirror line</source>
       <translation type="unfinished">Pick start point of mirror line</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="205"/>
+      <location filename="gui_mirror.py" line="204"/>
       <source>Pick end point of mirror line</source>
       <translation type="unfinished">Pick end point of mirror line</translation>
     </message>
@@ -6859,57 +6852,42 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Create Point</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="352"/>
+      <location filename="gui_scale.py" line="353"/>
       <source>Scale</source>
       <translation>Scalare</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="88"/>
+      <location filename="gui_scale.py" line="87"/>
       <source>Select an object to scale</source>
       <translation type="unfinished">Select an object to scale</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="109"/>
+      <location filename="gui_scale.py" line="108"/>
       <source>Pick base point</source>
       <translation type="unfinished">Pick base point</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="131"/>
+      <location filename="gui_scale.py" line="130"/>
       <source>Pick reference distance from base point</source>
       <translation type="unfinished">Pick reference distance from base point</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="204"/>
+      <location filename="gui_scale.py" line="203"/>
       <source>Some subelements could not be scaled.</source>
       <translation type="unfinished">Some subelements could not be scaled.</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="334"/>
-      <source>Unable to scale object: </source>
-      <translation type="unfinished">Unable to scale object: </translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="337"/>
-      <source>Unable to scale objects: </source>
-      <translation type="unfinished">Unable to scale objects: </translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="339"/>
+      <location filename="gui_scale.py" line="340"/>
       <source>This object type cannot be scaled directly. Please use the clone method.</source>
       <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="400"/>
+      <location filename="gui_scale.py" line="401"/>
       <source>Pick new distance from base point</source>
       <translation type="unfinished">Pick new distance from base point</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="66"/>
-      <source>Project 2D view</source>
-      <translation type="unfinished">Project 2D view</translation>
-    </message>
-    <message>
-      <location filename="gui_shape2dview.py" line="111"/>
+      <location filename="gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
       <translation type="unfinished">Create 2D view</translation>
     </message>
@@ -6949,37 +6927,37 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Flip dimension</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="470"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="73"/>
+      <location filename="gui_stretch.py" line="75"/>
       <source>Select an object to stretch</source>
       <translation type="unfinished">Select an object to stretch</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="122"/>
+      <location filename="gui_stretch.py" line="124"/>
       <source>Pick first point of selection rectangle</source>
       <translation type="unfinished">Pick first point of selection rectangle</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="159"/>
+      <location filename="gui_stretch.py" line="161"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation type="unfinished">Pick opposite point of selection rectangle</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="168"/>
+      <location filename="gui_stretch.py" line="170"/>
       <source>Pick start point of displacement</source>
       <translation type="unfinished">Pick start point of displacement</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="231"/>
+      <location filename="gui_stretch.py" line="233"/>
       <source>Pick end point of displacement</source>
       <translation type="unfinished">Pick end point of displacement</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="443"/>
+      <location filename="gui_stretch.py" line="445"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation type="unfinished">Turning one Rectangle into a Wire</translation>
     </message>
@@ -6989,17 +6967,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Toggle grid</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="60"/>
-      <source>Rectangle</source>
-      <translation>Dreptunghi</translation>
-    </message>
-    <message>
-      <location filename="gui_rectangles.py" line="126"/>
+      <location filename="gui_rectangles.py" line="125"/>
       <source>Create Plane</source>
       <translation type="unfinished">Create Plane</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="143"/>
+      <location filename="gui_rectangles.py" line="142"/>
       <source>Create Rectangle</source>
       <translation type="unfinished">Create Rectangle</translation>
     </message>
@@ -7029,42 +7002,37 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Heal</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="81"/>
+      <location filename="gui_labels.py" line="80"/>
       <source>Pick target point</source>
       <translation type="unfinished">Pick target point</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="158"/>
+      <location filename="gui_labels.py" line="157"/>
       <source>Create Label</source>
       <translation type="unfinished">Create Label</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="219"/>
+      <location filename="gui_labels.py" line="218"/>
       <source>Pick endpoint of leader line</source>
       <translation type="unfinished">Pick endpoint of leader line</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="229"/>
+      <location filename="gui_labels.py" line="228"/>
       <source>Pick text position</source>
       <translation type="unfinished">Pick text position</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="305"/>
+      <location filename="gui_edit.py" line="306"/>
       <source>Select a Draft object to edit</source>
       <translation type="unfinished">Select a Draft object to edit</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="560"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
       <translation type="unfinished">No edit point found for selected object</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="933"/>
-      <source>Too many objects selected, max number set to: </source>
-      <translation type="unfinished">Too many objects selected, max number set to: </translation>
-    </message>
-    <message>
-      <location filename="gui_edit.py" line="941"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation type="unfinished">: this object is not editable</translation>
     </message>
@@ -7079,22 +7047,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Please select exactly two objects, the base object and the path object, before calling this command.</translation>
     </message>
     <message>
-      <location filename="gui_patharray.py" line="168"/>
-      <source>Path link array</source>
-      <translation type="unfinished">Path link array</translation>
-    </message>
-    <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
       <translation type="unfinished">Path twisted array</translation>
     </message>
     <message>
-      <location filename="gui_pathtwistedarray.py" line="127"/>
-      <source>Path twisted link array</source>
-      <translation type="unfinished">Path twisted link array</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="81"/>
+      <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
       <translation type="unfinished">Trimex</translation>
     </message>
@@ -7109,39 +7067,34 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Pick distance</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="320"/>
+      <location filename="gui_trimex.py" line="318"/>
       <source>The offset distance</source>
       <translation type="unfinished">The offset distance</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="336"/>
+      <location filename="gui_trimex.py" line="334"/>
       <source>The offset angle</source>
       <translation type="unfinished">The offset angle</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="474"/>
+      <location filename="gui_trimex.py" line="472"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="479"/>
+      <location filename="gui_trimex.py" line="477"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation type="unfinished">Unable to trim these objects, too many wires</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="496"/>
+      <location filename="gui_trimex.py" line="494"/>
       <source>These objects don't intersect.</source>
       <translation type="unfinished">These objects don't intersect.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="499"/>
+      <location filename="gui_trimex.py" line="497"/>
       <source>Too many intersection points.</source>
       <translation type="unfinished">Too many intersection points.</translation>
-    </message>
-    <message>
-      <location filename="gui_join.py" line="71"/>
-      <source>Join</source>
-      <translation>Join</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="76"/>
@@ -7169,22 +7122,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Creează o Bspline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="263"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
       <translation type="unfinished">Working plane aligned to global placement of</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="512"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
       <translation type="unfinished">Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="528"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Personalizat</translation>
     </message>
@@ -7209,11 +7162,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Undo line</translation>
     </message>
     <message>
-      <location filename="gui_split.py" line="61"/>
-      <source>Split</source>
-      <translation>Divizare</translation>
-    </message>
-    <message>
       <location filename="gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
       <translation type="unfinished">Click anywhere on a line to split it.</translation>
@@ -7224,64 +7172,59 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Split line</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation type="unfinished">Fillet radius</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
       <translation type="unfinished">Radius of fillet</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
       <translation type="unfinished">Enter radius.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
       <translation type="unfinished">Delete original objects:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
       <translation type="unfinished">Chamfer mode:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
       <translation type="unfinished">Two elements needed.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="160"/>
+      <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
       <translation type="unfinished">Test object</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="161"/>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
       <translation type="unfinished">Test object removed</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
       <translation type="unfinished">Fillet cannot be created</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>Crează panglică</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="102"/>
+      <location filename="gui_shapestrings.py" line="100"/>
       <source>Pick ShapeString location point</source>
       <translation type="unfinished">Pick ShapeString location point</translation>
-    </message>
-    <message>
-      <location filename="gui_styles.py" line="55"/>
-      <source>Apply style</source>
-      <translation type="unfinished">Apply style</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="75"/>
@@ -7299,17 +7242,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Select group</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="232"/>
+      <location filename="gui_groups.py" line="233"/>
       <source>Autogroup</source>
       <translation>Autogrup</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="282"/>
+      <location filename="gui_groups.py" line="283"/>
       <source>Add new Layer</source>
       <translation type="unfinished">Add new Layer</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="336"/>
+      <location filename="gui_groups.py" line="337"/>
       <source>Add to construction group</source>
       <translation type="unfinished">Add to construction group</translation>
     </message>
@@ -7334,62 +7277,57 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="447"/>
+      <location filename="gui_arcs.py" line="448"/>
       <source>Start angle</source>
       <translation type="unfinished">Start angle</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="452"/>
+      <location filename="gui_arcs.py" line="453"/>
       <source>Pick start angle</source>
       <translation type="unfinished">Pick start angle</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="455"/>
+      <location filename="gui_arcs.py" line="456"/>
       <source>Aperture angle</source>
       <translation type="unfinished">Aperture angle</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="291"/>
+      <location filename="gui_arcs.py" line="292"/>
       <source>Pick aperture</source>
       <translation type="unfinished">Pick aperture</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="316"/>
+      <location filename="gui_arcs.py" line="318"/>
       <source>Create Circle (Part)</source>
       <translation type="unfinished">Create Circle (Part)</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="335"/>
+      <location filename="gui_arcs.py" line="336"/>
       <source>Create Circle</source>
       <translation type="unfinished">Create Circle</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="369"/>
+      <location filename="gui_arcs.py" line="370"/>
       <source>Create Arc (Part)</source>
       <translation type="unfinished">Create Arc (Part)</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="389"/>
+      <location filename="gui_arcs.py" line="390"/>
       <source>Create Arc</source>
       <translation type="unfinished">Create Arc</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="466"/>
+      <location filename="gui_arcs.py" line="467"/>
       <source>Pick aperture angle</source>
       <translation type="unfinished">Pick aperture angle</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="481"/>
+      <location filename="gui_arcs.py" line="514"/>
       <source>Arc by 3 points</source>
       <translation type="unfinished">Arc by 3 points</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="66"/>
-      <source>Text</source>
-      <translation>Text</translation>
-    </message>
-    <message>
-      <location filename="gui_texts.py" line="76"/>
+      <location filename="gui_texts.py" line="75"/>
       <source>Pick location point</source>
       <translation type="unfinished">Pick location point</translation>
     </message>
@@ -7399,7 +7337,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Create Text</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="280"/>
+      <location filename="gui_rotate.py" line="279"/>
       <source>Rotate</source>
       <translation>Rotire</translation>
     </message>
@@ -7409,41 +7347,149 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation type="unfinished">Select an object to rotate</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="101"/>
+      <location filename="gui_rotate.py" line="100"/>
       <source>Pick rotation center</source>
       <translation type="unfinished">Pick rotation center</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="390"/>
+      <location filename="gui_rotate.py" line="389"/>
       <source>Base angle</source>
       <translation type="unfinished">Base angle</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="391"/>
+      <location filename="gui_rotate.py" line="390"/>
       <source>The base angle you wish to start the rotation from</source>
       <translation type="unfinished">The base angle you wish to start the rotation from</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="394"/>
+      <location filename="gui_rotate.py" line="393"/>
       <source>Pick base angle</source>
       <translation type="unfinished">Pick base angle</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="403"/>
+      <location filename="gui_rotate.py" line="402"/>
       <source>Rotation</source>
       <translation>Rotaţie</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="404"/>
+      <location filename="gui_rotate.py" line="403"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation type="unfinished">The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="412"/>
+      <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation type="unfinished">Pick rotation angle</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="750"/>
+      <source>Global</source>
+      <translation>Global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="748"/>
+      <source>Coordinates relative to last point or to coordinate system origin
+if is the first point to set</source>
+      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
+if is the first point to set</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="753"/>
+      <source>Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</source>
+      <translation type="unfinished">Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="759"/>
+      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</source>
+      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="771"/>
+      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
+      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1249"/>
+      <source>Local u0394X</source>
+      <translation type="unfinished">Local u0394X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1250"/>
+      <source>Local u0394Y</source>
+      <translation type="unfinished">Local u0394Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1251"/>
+      <source>Local u0394Z</source>
+      <translation type="unfinished">Local u0394Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1257"/>
+      <source>Global u0394X</source>
+      <translation type="unfinished">Global u0394X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1258"/>
+      <source>Global u0394Y</source>
+      <translation type="unfinished">Global u0394Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1259"/>
+      <source>Global u0394Z</source>
+      <translation type="unfinished">Global u0394Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="2047"/>
+      <source>Autogroup:</source>
+      <translation type="unfinished">Autogroup:</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="130"/>
+      <source>Points:</source>
+      <translation type="unfinished">Points:</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="138"/>
+      <source>Placement:</source>
+      <translation type="unfinished">Placement:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="333"/>
+      <source>Unable to scale object:</source>
+      <translation type="unfinished">Unable to scale object:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="337"/>
+      <source>Unable to scale objects:</source>
+      <translation type="unfinished">Unable to scale objects:</translation>
+    </message>
+    <message>
+      <location filename="gui_edit.py" line="814"/>
+      <source>Too many objects selected, max number set to:</source>
+      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>
@@ -7460,8 +7506,8 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="importOCA.py" line="492"/>
-      <source>successfully exported </source>
-      <translation>exportat cu succes </translation>
+      <source>successfully exported</source>
+      <translation type="unfinished">successfully exported</translation>
     </message>
   </context>
 </TS>

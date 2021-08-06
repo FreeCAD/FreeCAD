@@ -114,6 +114,7 @@
 #define CC_NS_URI "http://creativecommons.org/ns#"
 #define DC_NS_URI "http://purl.org/dc/elements/1.1/"
 #define RDF_NS_URI "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+#define INKSCAPE_NS_URI "http://www.inkscape.org/namespaces/inkscape"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -171,7 +172,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonCursor = new QLabel(this);
-    balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")));
+    balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")));
     balloonCursor->hide();
 
     resetCachedContent();
@@ -746,7 +747,7 @@ void QGVPage::setRenderer(RendererType type)
 void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 {
 #ifndef QT_NO_OPENGL
-    setRenderHint(QPainter::HighQualityAntialiasing, highQualityAntialiasing);
+    setRenderHint(QPainter::Antialiasing, highQualityAntialiasing);
 #else
     Q_UNUSED(highQualityAntialiasing);
 #endif
@@ -899,10 +900,16 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
         QString::fromUtf8(DC_NS_URI));
     exportDocElem.setAttribute(QString::fromUtf8("xmlns:rdf"),
         QString::fromUtf8(RDF_NS_URI));
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:inkscape"),
+        QString::fromUtf8(INKSCAPE_NS_URI));
 
     // Create the root group which will host the drawing group and the template group
     QDomElement rootGroup = exportDoc.createElement(QString::fromUtf8("g"));
     rootGroup.setAttribute(QString::fromUtf8("id"), pageName);
+    rootGroup.setAttribute(QString::fromUtf8("inkscape:groupmode"),
+        QString::fromUtf8("layer"));
+    rootGroup.setAttribute(QString::fromUtf8("inkscape:label"),
+        QString::fromUtf8("TechDraw"));
 
     // Now insert our template
     QGISVGTemplate *svgTemplate = dynamic_cast<QGISVGTemplate *>(pageTemplate);
@@ -1027,11 +1034,7 @@ void QGVPage::wheelEvent(QWheelEvent *event)
     }
 
     QPointF center = mapToScene(viewport()->rect().center());
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     int delta = event->angleDelta().y();
-#else
-    int delta = event->delta();
-#endif
     qreal factor = std::pow(mouseBase, delta / mouseAdjust);
     scale(factor, factor);
 
@@ -1118,7 +1121,7 @@ void QGVPage::enterEvent(QEvent *event)
     QGraphicsView::enterEvent(event);
     if(getDrawPage()->balloonPlacing) {
         balloonCursor->hide();
-        QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
+        QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")),0,32));
       } else {
         QApplication::restoreOverrideCursor();
         viewport()->setCursor(Qt::ArrowCursor);

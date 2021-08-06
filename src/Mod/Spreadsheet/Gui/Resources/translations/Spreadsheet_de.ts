@@ -564,24 +564,64 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Zeilen einfügen</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Zeilen entfernen</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Spalten einfügen</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Spalten entfernen</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Eigenschaften...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>%n Zeile darüber einfügen</numerusform>
+        <numerusform>%n Zeilen darüber einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>%n Zeile darunter einfügen</numerusform>
+        <numerusform>%n Zeilen darunter einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>%n nicht verbundene Zeile einfügen</numerusform>
+        <numerusform>%n nicht verbundene Zeilen einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Zeile entfernen</numerusform>
+        <numerusform>Zeilen entfernen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>%n Spalte links einfügen</numerusform>
+        <numerusform>%n Spalten links einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>%n Spalte rechts einfügen</numerusform>
+        <numerusform>%n Spalten rechts einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>%n nicht verbundene Spalte einfügen</numerusform>
+        <numerusform>%n nicht verbundene Spalten einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Spalte entfernen</numerusform>
+        <numerusform>Spalten entfernen</numerusform>
+      </translation>
     </message>
   </context>
   <context>

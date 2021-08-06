@@ -35,9 +35,8 @@
 # include <QTimer>
 #endif
 
-#if QT_VERSION >= 0x050000
-# include <QWindow>
-#endif
+#include <QWindow>
+
 
 #include "ProgressBar.h"
 #include "ProgressDialog.h"
@@ -68,13 +67,11 @@ struct ProgressBarPrivate
     bool isModalDialog(QObject* o) const
     {
         QWidget* parent = qobject_cast<QWidget*>(o);
-#if QT_VERSION >= 0x050000
         if (!parent) {
             QWindow* window = qobject_cast<QWindow*>(o);
             if (window)
                 parent = QWidget::find(window->winId());
         }
-#endif
         while (parent) {
             QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
             if (dlg && dlg->isModal())
@@ -229,7 +226,15 @@ void SequencerBar::nextStep(bool canAbort)
 
 void SequencerBar::setProgress(size_t step)
 {
-    d->bar->show();
+    QThread* currentThread = QThread::currentThread();
+    QThread* thr = d->bar->thread(); // this is the main thread
+    if (thr != currentThread) {
+        QMetaObject::invokeMethod(d->bar, "show", Qt::QueuedConnection);
+    }
+    else {
+        d->bar->show();
+    }
+
     setValue((int)step);
 }
 

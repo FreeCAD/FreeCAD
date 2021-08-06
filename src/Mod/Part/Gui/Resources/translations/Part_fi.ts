@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Liitos...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Muokkaa valitun objektin liitosta.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
@@ -21,62 +21,62 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>Linkin tulkitseminen epäonnistui (useampi kuin yksi kaksoispiste havaittu)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {name} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>Objekti {name} ei ole siirrettävissä eikä liitettävissä, joten liitosta ei voi muokata</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{obj} ei ole liitettävissä. Voit silti käyttää liitosmuokkaimen valintaikkunaa objektin kohdistamiseen, mutta liitos ei tule olemaan parametrisoitu.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Jatka</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Liite</translation>
+      <translation>Liitos</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
       <source>Edit attachment of {feat}</source>
-      <translation type="unfinished">Edit attachment of {feat}</translation>
+      <translation>Muokkaa objektin {feat} liitosta</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>Liitos jätetty huomiotta. Ei ole mahdollista liittää objektia itseensä!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
+      <translation>{obj1} on riippuvainen liitettävänä olevasta objektista, joten sitä ei voida käyttää liitoksessa</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
       <source>{mode} (add {morerefs})</source>
-      <translation type="unfinished">{mode} (add {morerefs})</translation>
+      <translation>{mode} (lisää {morerefs})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
       <source>{mode} (add more references)</source>
-      <translation type="unfinished">{mode} (add more references)</translation>
+      <translation>{mode} (lisää viittauksia)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Viittausten yhdistelmät:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation type="unfinished">Reference{i}</translation>
+      <translation>Viittaus{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
@@ -86,37 +86,37 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation type="unfinished">Failed to resolve links. {err}</translation>
+      <translation>Linkkiä ei voitu avata. {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Ei liitetty</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation type="unfinished">Attached with mode {mode}</translation>
+      <translation>Liitetty moodilla {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
-      <translation type="unfinished">Error: {err}</translation>
+      <translation>Virhe: {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Liitoksen siirros:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Liitoksen siirros (passiivinen - ei liitetty):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Liitoksen siirros (paikallisissa koordinaateissa):</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>Yhdistelmämuotojen suodatin</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
@@ -132,25 +132,25 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Suodata yhdistelmämuodosta kohteet haluttujen ominaisuuksien kuten
+tilavuuden, pinta-alan, tai pituuden mukaan, tai valitsemalla kohteet.
+Jos toinenkin objekti on valittuna, sitä käytetään referenssinä esimerkiksi
+päällekkäisyyksien ja etäisyyksien suodatuksissa.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation type="unfinished">Compound Filter: remove some childs from a compound</translation>
+      <translation>Yhdistelmämuotojen suodatin: poista joitakin alimuotoja yhdistelmämuodosta</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
-      <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
+      <translation>Valitse ensin muoto, joka on yhdistelmämuoto! Toista (mahdollisesti) valittua kohdetta käytetään mallineena.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Valitse ensin muoto, joka on yhdistelmämuoto. Jos valitaan toinenkin kohde (ei pakollista), niin sitä käytetään mallineena.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -159,11 +159,11 @@ for collision or distance filtering.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Laskenta ei johtanut oikeaan tulokseen johtuen virheestä: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Napsauta 'Jatka' luodaksesi piirteen joka tapauksessa, tai 'Keskeytä' peruuttaaksesi.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
@@ -177,11 +177,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Laskenta ei johtanut oikeaan tulokseen johtuen virheestä: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Napsauta 'Jatka' luodaksesi piirteen joka tapauksessa, tai 'Keskeytä' peruuttaaksesi.</translation>
     </message>
   </context>
   <context>
@@ -189,29 +189,29 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Pura yhdistelmämuoto osiinsa</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Jaa yhdistelmämuoto osiinsa erillisiksi objekteiksi.
+Jokaiselle muodolle luodaan myös 'Yhdistelmäobjektin suodatin'.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
-      <translation type="unfinished">Explode compound: split up a list of shapes into separate objects</translation>
+      <translation>Pura yhdistelmämuoto osiin: jaa muotojen kokoelma erillisiksi objekteiksi</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
-      <translation type="unfinished">Select a shape that is a compound, first!</translation>
+      <translation>Valitse ensin muoto, joka on yhdistelmämuoto!</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Valitse aluksi muoto, joka on yhdistelmämuoto.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -224,12 +224,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Liitä objektit</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Sulauttaa objektit yhteen varmistaen että aukot säilyvät.</translation>
     </message>
   </context>
   <context>
@@ -237,12 +237,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>Leikkaus objektille</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>Tekee leikkauksen yhteen objektiin, jotta se sopii toiseen kohteeseen.</translation>
     </message>
   </context>
   <context>
@@ -250,12 +250,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Sisällytä objekti</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Sulauttaa objektin toiseen huolehtien aukkojen säilyttämisestä.</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Boolen operaation sirpaleet</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
@@ -272,31 +272,31 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Luo 'Boolen sirpaleet' -objekti kahdesta tai useammasta valitusta objektista,
+tai yhdistelmämuodon sisällä olevista muodoista.
+Luotava objekti on Boolen unioni, joka on vielä viipaloitu
+alkuperäisten muotojen leikkauskohdista.
+Käyttämällä 'Yhdistelmämuotojen suodatinta' voidaan valita yksittäisiä siivuja.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation type="unfinished">Split object by intersections with other objects, and pack the pieces into a compound.</translation>
+      <translation>Jaa objekti osiin leikkaamalla sitä muiden objektien reunoilla, ja liitä palaset yhdistelmämuodoksi.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
       <source>Split object by intersections with other objects.</source>
-      <translation type="unfinished">Split object by intersections with other objects.</translation>
+      <translation>Jaa objekti osiin leikkaamalla se paloiksi muiden objektien reunoilla.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Valitse aluksi vähintään kaksi objektia! Ensimmäinen on viipaloitava kohde; loput ovat objekteja joilla viipaloidaan.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Valitse aluksi vähintään kaksi objektia. Ensimmäinen on viipaloitava kohde; loput ovat objekteja joilla viipaloidaan.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -305,78 +305,21 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Laskenta ei johtanut oikeaan tulokseen johtuen virheestä: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Napsauta 'Jatka' luodaksesi piirteen joka tapauksessa, tai 'Keskeytä' peruuttaaksesi.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
-      <translation type="unfinished">Remove intersection fragments</translation>
+      <translation>Poista leikkauksien sirpaleet</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
-      <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Valitse ensin vähintään kaksi objektia tai vähintään yksi yhdistelmämuoto! Jos vain yksi yhdistelmämuoto on valittuna, yhdistelmämuodon risteävät muodot leikkautuvat toisiinsa (muussa tapauksessa yhdistelmämuodot, joissa on toistensa kanssa risteäviä muotoja, ovat virheellisiä tähän toimintoon).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
@@ -390,11 +333,68 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>Tuloksen laskeminen epäonnistui virheellä: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Napsauta 'Jatka' luodaksesi ominaisuuden joka tapauksessa, tai 'Keskeytä' peruuttaaksesi.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Valitse ensin vähintään kaksi objektia tai vähintään yksi yhdistelmämuoto. Jos vain yksi yhdistelmämuoto on valittuna, yhdistelmämuodon risteävät muodot leikkautuvat toisiinsa (muussa tapauksessa yhdistelmämuodot, joissa on toistensa kanssa risteäviä muotoja, ovat virheellisiä tähän toimintoon).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Siivuta yhdistelmämuodoksi</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Viipaloi valittu objekti käyttämällä muita objekteja leikkaustyökaluina.
+Tuloksena olevat viipaleet tallennetaan yhdistelmämuotoon.
+'Yhdistelmämuodon suodatinta' voidaan käyttää yksittäisten viipaleiden poiminnassa.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Viipaloi erilleen</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Viipaloi valittu objekti muilla kohteilla, ja jaa se osiin.
+Jokaiselle viipaleelle luodaan 'Yhdistelmämuodon suodatin'.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>Boolen XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>Suorita 'poissulkeva TAI' eli Boolen XOR-operaatio kahdella tai useammalla
+valitulla kohteella, tai muodoilla yhdistelmämuodon sisällä.
+Tämä tarkoittaa, että muotojen päällekkäiset tilavuudet poistetaan.
+'Yhdistelmämuodon suodatinta' voidaan käyttää jäljelle jääneiden palojen poimintaan.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolen operaation sirpaleet</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Jaa objektit paloihin leikkauskohdista</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -452,20 +452,20 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../Command.cpp" line="953"/>
       <location filename="../../Command.cpp" line="2074"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="285"/>
       <location filename="../../Command.cpp" line="954"/>
       <source>Select two shapes please.</source>
-      <translation>Valitse kaksi muotoa kiitos.</translation>
+      <translation>Valitse kaksi muotoa.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="295"/>
       <location filename="../../Command.cpp" line="397"/>
       <location filename="../../Command.cpp" line="499"/>
       <source>Non-solids selected</source>
-      <translation>Ei-kiinteät valittu</translation>
+      <translation>Muut kuin kiintomuodot valittu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="296"/>
@@ -473,28 +473,28 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../Command.cpp" line="500"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Ei-kiinteiden kohteiden käyttö voi Boolean laskutoimituksilla aiheuttaa odottamattomia tuloksia. 
+      <translation>Muiden kuin kiintomuotojen käyttö voi aiheuttaa odottamattomia tuloksia Boolen operaatioita käytettäessä. 
 Haluatko jatkaa?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+      <translation>Valitse vähintään kaksi muotoa. Tai valitse yksi yhdistelmämuoto, joka sisältää vähintään kaksi muotoa, jotta voidaan laskea niiden välinen leikkaus.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Valitse vähintään kaksi muotoa. Tai valitse yksi yhdistelmämuoto, joka sisältää vähintään kaksi muotoa, jotta voidaan liittää ne yhteen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="903"/>
       <source>Select one shape or more, please.</source>
-      <translation type="unfinished">Select one shape or more, please.</translation>
+      <translation>Valitse yksi tai useampia muotoja.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
       <source>All CAD Files</source>
-      <translation>Kaikki CAD tiedostot</translation>
+      <translation>Kaikki CAD-tiedostot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1112"/>
@@ -504,7 +504,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
       <source>You have to select either two edges or two wires.</source>
-      <translation>Voit valita kaksi reunaa tai kaksi lankaa.</translation>
+      <translation>Voit valita vain kaksi reunaa tai kaksi lankaa.</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
@@ -543,22 +543,22 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
-      <translation>Monitahokas</translation>
+      <translation>Yhdistelmämuoto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound Solid</source>
-      <translation>Yhdistemonitahokas</translation>
+      <translation>Yhdistelmäkiintomuoto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
-      <translation>Monitahokas</translation>
+      <translation>Kiintomuoto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Shell</source>
-      <translation>Komentorivi</translation>
+      <translation>Kuori</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
@@ -583,7 +583,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid Point On Curve On Surface</source>
-      <translation>Virheellinen piste pinnan käyrällä</translation>
+      <translation>Virheellinen piste pinnalla olevalla käyrällä</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
@@ -648,7 +648,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid Range</source>
-      <translation>Virheellinen alue</translation>
+      <translation>Virheellinen arvoväli</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
@@ -678,7 +678,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Redundant Wire</source>
-      <translation>Ylimääräinen lanka</translation>
+      <translation>Tarpeeton lanka</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
@@ -688,17 +688,17 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation>Langat ovat väärin päällekäin</translation>
+      <translation>Virheellisesti limittyneitä lankoja</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Empty Shell</source>
-      <translation>Tyhkä kuori</translation>
+      <translation>Tyhjä kuori</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Redundant Face</source>
-      <translation>Ylimääräinen tahko</translation>
+      <translation>Ylimääräinen pintatahko</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
@@ -728,7 +728,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Bad Orientation Of Sub Shape</source>
-      <translation>Alimuodolla on huono suunta</translation>
+      <translation>Alimuodon orientaatio on virheellinen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
@@ -743,12 +743,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="144"/>
       <source>No Result</source>
-      <translation>Ei tulosta</translation>
+      <translation>Ei tuloksia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>Out Of Enum Range: </source>
-      <translation>Enum-alueen ulkopuolella: </translation>
+      <translation>Numeroidun alueen ulkopuolella: </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
@@ -803,7 +803,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>BopAlgo_InvalidiCurveOnSurface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="171"/>
@@ -831,7 +831,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1340"/>
       <source>Reset Dialog</source>
-      <translation>Palauta valintaikkuna</translation>
+      <translation>Palauta oletusarvot valintaikkunaan</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1344"/>
@@ -871,7 +871,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="520"/>
       <source>Edit offset</source>
-      <translation>Muokkaa siirtymää</translation>
+      <translation>Muokkaa siirrosta</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="606"/>
@@ -881,7 +881,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
-      <translation type="unfinished">Show control points</translation>
+      <translation>Näytä ohjauspisteet</translation>
     </message>
   </context>
   <context>
@@ -893,11 +893,11 @@ Haluatko jatkaa?</translation>
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Tuloksen laskenta epäonnistui virheellä: 
 
 {err}
 
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Napsauta 'Jatka' luodaksesi ominaisuuden joka tapauksessa, tai 'Keskeytä' peruuttaaksesi.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
@@ -906,11 +906,11 @@ Haluatko jatkaa?</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>Tuloksen laskeminen epäonnistui virheellä: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Napsauta 'Jatka' luodaksesi ominaisuuden joka tapauksessa, tai 'Keskeytä' peruuttaaksesi.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -920,27 +920,27 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds, first!</translation>
+      <translation>Valitse ensin vähintään kaksi objektia, tai vähintään yksi yhdistelmämuoto!</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>Valitse ensin vähintään kaksi objektia, tai vähintään yksi yhdistelmämuoto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
       <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and invoke this tool.</translation>
+      <translation>Valitse perusobjekti, sitten upotettava objekti ja käytä tätä työkalua.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>Valitse perusobjekti, sitten upotettava objekti ja käytä tätä työkalua.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
+      <translation>Valitse leikattava objekti tehdäksesi sisäänvedon, sitten objekti, jonka pitäisi mahtua leikkaukseen ja käytä tätä työkalua.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
@@ -950,7 +950,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Valitse objekti tehdäksesi leikkauksen, sitten objektin, jonka pitäisi mahtua leikkaukseen, ja sitten käytä tätä työkalua.</translation>
     </message>
   </context>
   <context>
@@ -972,7 +972,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="312"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Any</translation>
+      <translation>Mikä tahansa</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="313"/>
@@ -1002,7 +1002,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="318"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Curve</translation>
+      <translation>Käyrä</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="319"/>
@@ -1014,7 +1014,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="320"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Conic</translation>
+      <translation>Kartio</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="321"/>
@@ -1044,7 +1044,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="327"/>
@@ -1056,7 +1056,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="329"/>
@@ -1074,13 +1074,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="332"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Object</translation>
+      <translation>Kohde</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="333"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Monitahokas</translation>
+      <translation>Kiintomuoto</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="334"/>
@@ -1095,97 +1095,97 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivoitu</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Point can be moved by editing Placement property.</translation>
+      <translation>Liite on poistettu käytöstä. Pistettä voidaan siirtää muokkaamalla sijoittamisominaisuutta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Object's origin</translation>
+      <translation>Objektin alkuperä</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="273"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Piste laitetaan objektin SijoitusKohtaan. Toimii objekteissa, joissa on sijoituksia ja ellipsin/parabolin/hyperbolin reunat.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="275"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus1</translation>
+      <translation>Polttopiste1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="276"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Focus of ellipse, parabola, hyperbola.</translation>
+      <translation>Ellipsin, paraabelin tai hyperbelin polttopiste.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="278"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus2</translation>
+      <translation>Polttopiste2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="279"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Second focus of ellipse and hyperbola.</translation>
+      <translation>Ellipsin ja hyperbelin toinen polttopiste.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">On edge</translation>
+      <translation>Reunalla</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="282"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Piste laitetaan reunalle, MapPathParameter ohjaa paikoitusta. Lisäksi kärkipiste voidaan linkittää projektion tekemistä varten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of curvature</translation>
+      <translation>Kaarevuuskeskipiste</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="285"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Reunaa oskuloivan ympyrän keskipiste. Mahdollinen kärkipiste-linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of mass</translation>
+      <translation>Massakeskipiste</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="288"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+      <translation>Kaikkien viitattujen massakeskipiste (olettaen samat tiheydet).</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Risteys</translation>
+      <translation>Leikkaus</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="291"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Not implemented</translation>
+      <translation>Ei toteutettu</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="293"/>
@@ -1197,31 +1197,31 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="294"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+      <translation>Aseta apupiste yhteneväksi toisen pisteen kanssa.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 1</translation>
+      <translation>Läheisyyskohta 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
+      <translation>Kohta ensimmäisestä viittauksesta, joka on lähimpänä toista viittausta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="299"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 2</translation>
+      <translation>Läheisyyskohta 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="300"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
+      <translation>Toinen viitekohta, joka on lähimpänä ensimmäistä viittausta.</translation>
     </message>
   </context>
   <context>
@@ -1230,243 +1230,243 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivoitu</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
+      <translation>Liite on poistettu käytöstä. Pistettä voidaan siirtää muokkaamalla sijoittamisominaisuutta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's X</translation>
+      <translation>Objektin X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="204"/>
       <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Viiva on linjattu kohteen paikallisen X-akselin mukaan. Toimii esineiden sijoittelussa, ja ellipsin/parabolin/hyperbolin reunoilla.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Y</translation>
+      <translation>Objektin Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="207"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Viiva on linjattu kohteen paikallisen Y-akselin mukaan. Toimii esineiden sijoittelussa ja ellipsin/parabolin/hyperbolin reunoilla.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Z</translation>
+      <translation>Objektin Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="212"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Axis of curvature</translation>
+      <translation>Kaarevuusakseli</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="213"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>Viiva, joka on kaarevaa reunaa oskuloivan ympyrän akseli. Mahdollinen kärkipiste määrittelee oskuloivan ympyrän sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix1</translation>
+      <translation>Johtolinja1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="216"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+      <translation>Johtolinja ellipsille, parabolille, hyperbolille.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix2</translation>
+      <translation>Johtolinja2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
+      <translation>Toinen johtolinja ellipsille ja hyperbolille.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote1</translation>
+      <translation>Asymptootti1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="222"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Asymptote of a hyperbola.</translation>
+      <translation>Hyperbelin asymptootti.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="224"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote2</translation>
+      <translation>Asymptootti2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="225"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second asymptote of hyperbola.</translation>
+      <translation>Hyperbelin toinen asymptootti.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="227"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Tangentti</translation>
+      <translation>Tangenttina</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="228"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+      <translation>Viiva reunan tangenttina. Mahdollinen kärkipiste määrittää sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Reunan normaalina</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Kohdista kaarevan reunan Frenet-Serret -koordinaattijärjestelmän N-vektoriin. Mahdollinen kärkipisteen linkitys määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Binormaali</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="234"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Kohdista kaarevan reunan Frenet-Serret -koordinaattijärjestelmän B-vektoriin. Mahdollinen kärkipisteen linkitys määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (U)</translation>
+      <translation>Pinnan tangenttina (U)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="237"/>
       <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
+      <translation>Pinnan tangenttina pitkin U-parametria. Kärkipisteen linkitys määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (V)</translation>
+      <translation>Pinnan tangenttina (V)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="242"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Through two points</translation>
+      <translation>Kahden pisteen kautta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="243"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that passes through two vertices.</translation>
+      <translation>Viiva joka kulkee kahden kärkipisteen kautta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="245"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Risteys</translation>
+      <translation>Leikkaus</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="246"/>
       <source>Not implemented.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Not implemented.</translation>
+      <translation>Ei toteutettu.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Proximity line</translation>
+      <translation>Lähietäisyysviiva</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+      <translation>Viiva joka kulkee muotojen välisen lyhimmän etäisyyden kautta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">1st principal axis</translation>
+      <translation>1. pääakseli</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="252"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows first principal axis of inertia.</translation>
+      <translation>Viiva kulkee pitkin inertian ensimmäistä pääakselia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">2nd principal axis</translation>
+      <translation>2. pääakseli</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="255"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows second principal axis of inertia.</translation>
+      <translation>Viiva kulkee pitkin inertian toista pääakselia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">3rd principal axis</translation>
+      <translation>3. pääakseli</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="258"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows third principal axis of inertia.</translation>
+      <translation>Viiva kulkee pitkin inertian kolmatta pääakselia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Pinnan normaalina</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Pintaa vasten kohtisuora viiva alkaen pisteestä, joka asetetaan kärkipisteellä.</translation>
     </message>
   </context>
   <context>
@@ -1475,103 +1475,103 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="125"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivoitu</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="126"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Liitos on poistettu käytöstä. Objektia voidaan siirtää muokkaamalla paikoitus-ominaisuutta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Siirrä origoa</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="129"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Origo on liitetty kärkipisteeseen. Orientaatiota ohjataan paikoitus-ominaisuudella.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XY</translation>
+      <translation>Kohteen XY</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="132"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>Taso on liitetty linkitetyn kohteen paikalliseen XY-tasoon.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="134"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XZ</translation>
+      <translation>Kohteen XZ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="135"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>Taso on liitetty linkitetyn kohteen paikalliseen XZ-tasoon.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
       <source>Object's  YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's  YZ</translation>
+      <translation>Kohteen YZ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="138"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>Taso on tasattu linkitetyn kohteen paikalliseen tasoon YZ.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane face</translation>
+      <translation>Tasomainen pintatahko</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+      <translation>Taso on liitetty yhteen tasomaisen pintatahkon kanssa.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>Pinnan tangenttina</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="144"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+      <translation>Taso on liitetty pinnan tangentiksi, pinnassa olevan kärkipisteen kohdalle.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Reunan normaalina</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="147"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Taso on tehty reunan tangenttina. Valinnainen huippupisteen linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet NB</translation>
+      <translation>Frenet NB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="150"/>
@@ -1579,91 +1579,91 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="156"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Kohdista kaarevan reunan Frenet-Serret koordinaattijärjestelmään. Valinnainen huippupisteen linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="152"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TN</translation>
+      <translation>Frenet TN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TB</translation>
+      <translation>Frenet TB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Samankeskinen</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>Liitä taso reunaa oskuloivaan ympyrään. Origo liitetään kaarevuuskeskipisteeseen. Mahdollinen kärkipiste-linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Pyörähdyspoikkileikkaus</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="162"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>Taso on kohtisuorassa reunaan, ja Y-akseli on sovitettu reunaa oskuloivan ympyrän normaaliakseliin. Mahdollinen kärkipiste-linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane by 3 points</translation>
+      <translation>Taso 3:lla pisteellä</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="165"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>Liitä taso kulkemaan kolmen kärkipisteen kautta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to 3 points</translation>
+      <translation>Normaali 3:lle pisteelle</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="168"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>Taso kulkee kahden ensimmäisen kärkipisteen kautta ja kohtisuorassa tasoon, joka kulkee kaikkien kolmen kärkipisteen kautta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Taitettava</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="171"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>Erityistila polyhedrin taittamiseen. Valitse 4 reunaa järjestyksessä: kokoontaitettava reuna, taittoviiva, toinen taittoviiva, muu taitettava reuna. Taso on linjassa ensimmäinen reunan taittoon.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Inertia 2-3</translation>
+      <translation>Inertia 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="174"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+      <translation>Taso, joka on liitetty inertian toiseen ja kolmanteen pääakseliin (kulkee massakeskipisteen kautta).</translation>
     </message>
   </context>
   <context>
@@ -1672,103 +1672,103 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="50"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivoitu</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="51"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Liitos on poistettu käytöstä. Objektia voidaan siirtää muokkaamalla paikoitus-ominaisuutta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Siirrä origoa</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="54"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Origo on liitetty kärkipisteeseen. Orientaatiota ohjataan paikoitus-ominaisuudella.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
       <source>Object's  X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  X Y Z</translation>
+      <translation>Objektin X Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+      <translation>Paikoitus tehdään samaksi kuin linkitetyn objektin paikoitus.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Object's  X Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  X Z-Y</translation>
+      <translation>Objektin X Z-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="60"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
+      <translation>X', Y', Z' -akselit laitetaan vastaamaan objektin paikallisia X, Z, -Y -akseleita.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
       <source>Object's  Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  Y Z X</translation>
+      <translation>Objektin Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="63"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
+      <translation>X', Y', Z' -akselit laitetaan vastaamaan objektin paikallisia Y, Z, X -akseleita.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY on plane</translation>
+      <translation>XY liitettynä tasoon</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="66"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is aligned to coincide planar face.</translation>
+      <translation>X' Y' -taso on liitetty yhteen tasomaisen pintatahkon kanssa.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY tangent to surface</translation>
+      <translation>XY pinnan tangenttina</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="69"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
+      <translation>X' Y' -taso on liitetty pinnan tangentiksi, pinnassa olevan kärkipisteen kohdalle.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z tangenttina reunalle</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="72"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Z'-akseli on liitetty reunan tangentiksi. Mahdollinen kärkipiste-linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Frenet NBT</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="75"/>
@@ -1776,225 +1776,225 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="81"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Kohdista kaarevan reunan Frenet-Serret koordinaattijärjestelmään. Valinnainen huippupisteen linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="77"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Frenet TNB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="80"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Frenet TBN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Samankeskinen</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Liitä XY-taso reunaa oskuloivaan ympyrään. Mahdollinen kärkipiste-linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Pyörähdyspoikkileikkaus</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="87"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Liitä Y'-akseli reunaa oskuloivan ympyrän akseliin. Mahdollinen kärkipiste-linkki määrittelee sijainnin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY plane by 3 points</translation>
+      <translation>XY-taso 3:lla pisteellä</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="90"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
+      <translation>Liitä XY-taso kulkemaan kolmen kärkipisteen läpi.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ plane by 3 points</translation>
+      <translation>XZ-taso 3 pisteellä</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="93"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
+      <translation>Kohdista XZ-taso kolmen pisteen läpi; X-akseli kulkee kahden ensimmäisen pisteen läpi.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="95"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Taitettava</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="96"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+      <translation>Erityistila polyhedrin taittamiseen. Valitse 4 reunaa järjestyksessä: kokoontaitettava reuna, taittoviiva, toinen taittoviiva, muu taitettava reuna. XY taso on linjassa ensimmäinen reunan taittoon.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Inertial CS</translation>
+      <translation>Inertia CS</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="99"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
+      <translation>Inertiakoordinaattijärjestelmä, joka on rakennettu inertian ja massan keskipisteen pääakseleille.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Tasaa O-Z-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa Z' ja X' akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>Tasaa O-Z-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="105"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa Z' ja Y' akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="107"/>
       <location filename="../../AttacherTexts.cpp" line="182"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Tasaa O-X-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="108"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa X' ja Y' akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="110"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Tasaa O-X-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa X' ja Z' akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Tasaa O-Y-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="114"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa Y' ja Z' akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="116"/>
       <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Tasaa O-Y-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="117"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa Y' ja X' akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="176"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Tasaa O-N-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="177"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa normaalitason ja vaakatason akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Tasaa O-N-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa normaalitason ja pystytason akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="183"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa vaaka- ja pystytason akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Tasaa O-X-N</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="186"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa vaakatason ja normaalitason akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Tasaa O-Y-N</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa pystytason ja normaalitason akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="192"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Sovita ensimmäisen kärkipisteen alkuperä. Tasaa pysty- ja vaakatason akselit kohti kärkipistettä/linjaa pitkin.</translation>
     </message>
   </context>
   <context>
@@ -2037,25 +2037,25 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgBlock.ui" line="70"/>
       <location filename="../../DlgBlock.ui" line="234"/>
       <source>Up to next</source>
-      <translation>Ylös seuraavaan</translation>
+      <translation>Seuraavaan asti</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="75"/>
       <location filename="../../DlgBlock.ui" line="239"/>
       <source>Up to last</source>
-      <translation>Ylös viimeiseen</translation>
+      <translation>Viimeiseen asti</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="80"/>
       <location filename="../../DlgBlock.ui" line="244"/>
       <source>Up to plane</source>
-      <translation>Ylös tasoon</translation>
+      <translation>Tasoon asti</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="85"/>
       <location filename="../../DlgBlock.ui" line="249"/>
       <source>Up to face</source>
-      <translation>Ylös pintaan</translation>
+      <translation>Pintatasoon asti</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="93"/>
@@ -2160,7 +2160,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2140"/>
       <source>Set color per face</source>
-      <translation>Aseta väri pintaa kohden</translation>
+      <translation>Aseta väri pintatahkoa kohden</translation>
     </message>
   </context>
   <context>
@@ -2257,12 +2257,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1275"/>
       <source>Boolean...</source>
-      <translation>Boolean...</translation>
+      <translation>Boolen operaatio...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1276"/>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Suorita boolean toiminto kahdella valitulla muodolla</translation>
+      <translation>Suorita Boolen operaatio kahdella valitulla muodolla</translation>
     </message>
   </context>
   <context>
@@ -2282,7 +2282,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="89"/>
       <source>Create a cube solid</source>
-      <translation>Luo kiinteä kuutio</translation>
+      <translation>Luo kiintomuoto-kuutio</translation>
     </message>
   </context>
   <context>
@@ -2300,7 +2300,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="137"/>
       <source>Create a box solid without dialog</source>
-      <translation>Luo laatikkomonitahokas ilman dialogia</translation>
+      <translation>Luo suorakulmainen kiintomuoto-särmiö ilman valintaikkunaa</translation>
     </message>
   </context>
   <context>
@@ -2318,7 +2318,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Create a box solid without dialog</source>
-      <translation>Luo laatikkomonitahokas ilman dialogia</translation>
+      <translation>Luo suorakulmainen kiintomuoto-särmiö ilman valintaikkunaa</translation>
     </message>
   </context>
   <context>
@@ -2367,7 +2367,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="350"/>
       <source>Intersection</source>
-      <translation>Risteys</translation>
+      <translation>Leikkaus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -2385,12 +2385,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
+      <translation>Yhdistelmämuotojen työkalut</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>Yhdistelmämuotojen työkalut: muotolistojen käsitteleminen.</translation>
     </message>
   </context>
   <context>
@@ -2408,7 +2408,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="556"/>
       <source>Join walled objects</source>
-      <translation type="unfinished">Join walled objects</translation>
+      <translation>Liitä seinäkohteisiin</translation>
     </message>
   </context>
   <context>
@@ -2426,7 +2426,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
+      <translation>Työkalut kompensoimaan muotoja (rakenna rinnakkaisia muotoja)</translation>
     </message>
   </context>
   <context>
@@ -2439,12 +2439,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="661"/>
       <source>Split objects...</source>
-      <translation type="unfinished">Split objects...</translation>
+      <translation>Jaa objektit...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
+      <translation>Työkaluja muotojen ositukseen. Yhdistelmäkiintomuotojen luomistyökalut. OCC 6.9.0 tai uudempi tarvitaan.</translation>
     </message>
   </context>
   <context>
@@ -2457,12 +2457,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="890"/>
       <source>Make compound</source>
-      <translation>Tee yhdistelmäkuvio</translation>
+      <translation>Tee yhdistelmämuoto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation>Tehdä yhdistelmäkuvio useasta muodosta</translation>
+      <translation>Tee yhdistelmämuoto useasta muodosta</translation>
     </message>
   </context>
   <context>
@@ -2482,7 +2482,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Create a cone solid</source>
-      <translation>Luo kiinteä kartio</translation>
+      <translation>Luo kiintomuoto-kartio</translation>
     </message>
   </context>
   <context>
@@ -2518,7 +2518,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Make a cut of two shapes</source>
-      <translation>Tee leikkaus kahdesta muodosta</translation>
+      <translation>Tee kahden muodon leikkaus</translation>
     </message>
   </context>
   <context>
@@ -2533,12 +2533,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../CommandParametric.cpp" line="58"/>
       <location filename="../../CommandParametric.cpp" line="63"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="48"/>
       <source>Create a Cylinder</source>
-      <translation>Luo Sylinteri</translation>
+      <translation>Luo lieriö</translation>
     </message>
   </context>
   <context>
@@ -2551,12 +2551,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
+      <translation>Piirteiden poisto</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
+      <translation>Poista piirre muodosta</translation>
     </message>
   </context>
   <context>
@@ -2623,12 +2623,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Union</source>
-      <translation>Yhdiste</translation>
+      <translation>Unioni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Make a union of several shapes</source>
-      <translation>Tee liitos useista muodoista</translation>
+      <translation>Tee unioni (yhdiste) useista muodoista</translation>
     </message>
   </context>
   <context>
@@ -2641,12 +2641,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="988"/>
       <source>Import CAD...</source>
-      <translation>Tuo CAD ...</translation>
+      <translation>Tuo CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="989"/>
       <source>Imports a CAD file</source>
-      <translation>Tuo CAD tiedoston</translation>
+      <translation>Tuo CAD-tiedoston</translation>
     </message>
   </context>
   <context>
@@ -2677,12 +2677,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Loft...</source>
-      <translation>Heitä ilmaan...</translation>
+      <translation>Profiilivenytys...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation>Ullakkoapuohjelma</translation>
+      <translation>Apuohjelma profiilivenytykseen</translation>
     </message>
   </context>
   <context>
@@ -2695,12 +2695,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Make face from wires</source>
-      <translation type="unfinished">Make face from wires</translation>
+      <translation>Tee pintatahko langoista</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <translation>Tee pintatahko lankojen kokoelmasta (esim. luonnoksesta)</translation>
     </message>
   </context>
   <context>
@@ -2713,12 +2713,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1143"/>
       <source>Convert to solid</source>
-      <translation>Muunnta kiinteäksi</translation>
+      <translation>Muunna kiintomuodoksi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1144"/>
       <source>Create solid from a shell or compound</source>
-      <translation>Luo kiinteä kuoresta tai yhdisteestä</translation>
+      <translation>Luo kiintomuoto kuoresta tai yhdistelmämuodosta</translation>
     </message>
   </context>
   <context>
@@ -2749,12 +2749,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1623"/>
       <source>3D Offset...</source>
-      <translation type="unfinished">3D Offset...</translation>
+      <translation>3D siirtymä...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>Apuohjelma 3D-siirtymän määrittämiseen</translation>
     </message>
   </context>
   <context>
@@ -2767,12 +2767,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation type="unfinished">2D Offset...</translation>
+      <translation>2D siirtymä...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Työkalu tasomuotojen siirtymään</translation>
     </message>
   </context>
   <context>
@@ -2875,12 +2875,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1989"/>
       <source>Create ruled surface</source>
-      <translation>Luo suljettu pinta</translation>
+      <translation>Luo pyyhkäisypinta (viivotinpinta)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Luoda  ohjattu pinta joko kahdesta reunasta tai kahdesta linjasta</translation>
+      <translation>Luo pyyhkäisypinta (viivotinpinta) joko kahdesta reunasta tai kahdesta langasta</translation>
     </message>
   </context>
   <context>
@@ -2911,12 +2911,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="109"/>
       <source>Create shape from mesh...</source>
-      <translation>luo muoto verkosta...</translation>
+      <translation>Luo muoto verkosta...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="110"/>
       <source>Create shape from selected mesh object</source>
-      <translation>luo muoto valituista verkko kohteista</translation>
+      <translation>Luo muoto valituista verkko-objekteista</translation>
     </message>
   </context>
   <context>
@@ -2947,12 +2947,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="58"/>
       <source>Create Cylinder...</source>
-      <translation>Luo sylinteri...</translation>
+      <translation>Luo lieriö...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="59"/>
       <source>Create a Cylinder</source>
-      <translation>Luo Sylinteri</translation>
+      <translation>Luo lieriö</translation>
     </message>
   </context>
   <context>
@@ -2967,12 +2967,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../CommandParametric.cpp" line="140"/>
       <location filename="../../CommandParametric.cpp" line="145"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="130"/>
       <source>Create a sphere solid</source>
-      <translation>Luo kiinteä  pallo</translation>
+      <translation>Luo kiintomuoto-pallo</translation>
     </message>
   </context>
   <context>
@@ -3014,17 +3014,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../Command.cpp" line="1827"/>
       <location filename="../../Command.cpp" line="1847"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1828"/>
       <source>Selected one or more faces of a shape</source>
-      <translation>Valitse yksi tai useampi muodon tahkoista</translation>
+      <translation>Valitse yksi tai useampi muodon pintatahkoista</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Selected shape is not a solid</source>
-      <translation>Valittu muoto ei ole yhtenäinen</translation>
+      <translation>Valittu muoto ei ole kiintomuoto</translation>
     </message>
   </context>
   <context>
@@ -3044,7 +3044,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
-      <translation>Luo kiinteä rinkilä</translation>
+      <translation>Luo kiintomuoto-torus</translation>
     </message>
   </context>
   <context>
@@ -3062,42 +3062,42 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Viite 1</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="52"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Viite 2</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="69"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Viite 3</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="86"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Viite 4</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Liittämisen tila:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+      <translation>LiitettävyysOffset ominaisuus. Sijoitus ilmaistaan liitetyssä kohteen paikallisessa tilassa.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Liitoksen siirros:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>X:</source>
-      <translation>x:</translation>
+      <translation>X:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="152"/>
@@ -3127,7 +3127,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Käännä puolet</translation>
+      <translation>Vaihda puolet</translation>
     </message>
   </context>
   <context>
@@ -3175,7 +3175,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Määrä</translation>
+      <translation>Lukumäärä</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
@@ -3208,12 +3208,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="46"/>
       <source>Union</source>
-      <translation>Yhdiste</translation>
+      <translation>Unioni</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Intersection</source>
-      <translation>Risteys</translation>
+      <translation>Leikkaus</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -3224,7 +3224,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgBooleanOperation.ui" line="81"/>
       <location filename="../../DlgBooleanOperation.ui" line="119"/>
       <source>Solids</source>
-      <translation>Kiinteät</translation>
+      <translation>Kiintomuodot</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
@@ -3236,13 +3236,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
       <location filename="../../DlgBooleanOperation.ui" line="129"/>
       <source>Compounds</source>
-      <translation>Yhdisteet</translation>
+      <translation>Yhdistelmämuodot</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
       <location filename="../../DlgBooleanOperation.ui" line="134"/>
       <source>Faces</source>
-      <translation>Pinnat</translation>
+      <translation>Pintatahkot</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="114"/>
@@ -3257,17 +3257,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="378"/>
       <source>Select a shape on the left side, first</source>
-      <translation>Valitse vasemmanpuolinen muoto</translation>
+      <translation>Valitse ensin vasemmanpuoleinen muoto</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="383"/>
       <source>Select a shape on the right side, first</source>
-      <translation>Valitse oikeanpuolinen muoto</translation>
+      <translation>Valitse ensin oikeanpuoleinen muoto</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="388"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Ei voi suorittaa boolean toimintoa saman muodon kanssa</translation>
+      <translation>Boolen operaatiota ei voi suorittaa yhdellä ja samalla muodolla</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="398"/>
@@ -3277,22 +3277,22 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="408"/>
       <source>One of the selected objects doesn't exist anymore</source>
-      <translation>Yhtä valittua kohdetta ei ole enää</translation>
+      <translation>Yksi valituista kohteista ei ole enää olemassa</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="415"/>
       <source>Performing union on non-solids is not possible</source>
-      <translation>virtuaalisten kappaleiden yhdistäminen ei ole mahdollista</translation>
+      <translation>Yhdiste-operaatio eli unioni on mahdollinen vain kiintomuotojen välillä</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="424"/>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation>virtuaalisten kappaleiden risteys ei ole mahdollinen</translation>
+      <translation>Leikkaus-operaatio on mahdollinen vain kiintomuotojen välillä</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="433"/>
       <source>Performing difference on non-solids is not possible</source>
-      <translation>virtuaalisten kappaleiden erottaminen ei ole mahdollista</translation>
+      <translation>Erotus-operaatio on mahdollinen vain kiintomuotojen välillä</translation>
     </message>
   </context>
   <context>
@@ -3318,7 +3318,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="32"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation type="unfinished">If checked, direction of extrusion is reversed.</translation>
+      <translation>Jos valittuna, suulakepuristuksen suunta käännetään.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
@@ -3328,27 +3328,27 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="42"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+      <translation>Määritä suunta manuaalisesti käyttäen X,Y,Z-arvoja.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Custom direction:</source>
-      <translation type="unfinished">Custom direction:</translation>
+      <translation>Mukautettu suunta:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
       <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
+      <translation>Pursota kohtisuorassa syöttötason muotoon.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
       <source>Along normal</source>
-      <translation>Normaali pitkin</translation>
+      <translation>Normaalia pitkin</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="65"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+      <translation>Napsauta aloittaaksesi reunan valinta 3d-näkymässä.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -3359,12 +3359,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+      <translation>Aseta suunta, joka vastaa suoran reunan suuntaa. Vihje: ottaaksesi huomioon reunan pituudet, aseta molemmat pituudet nollaksi.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Along edge:</source>
-      <translation type="unfinished">Along edge:</translation>
+      <translation>Reunaa pitkin:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -3389,27 +3389,27 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
       <source>Along:</source>
-      <translation type="unfinished">Along:</translation>
+      <translation>Pitkin:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>Pursotuksen pituus kyseiseen suuntaan (voi olla negatiivinen). Jos molemmat pituudet ovat nolla, käytetään suunnan suuruutta.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
       <source>Against:</source>
-      <translation type="unfinished">Against:</translation>
+      <translation>Vastaan:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+      <translation>Pursotuksen pituus suuntaa vastaan (voi olla negatiivinen).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="261"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
+      <translation>Jaa pursotuspituus tasaisesti molemmille puolille.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
@@ -3425,17 +3425,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
+      <translation>Käytä kaltevuutta (hellityskulma) pursotuksen sivupinnoille.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
+      <translation>Jos valittu, niin suljetun lankakuvion pursotus tuottaa kiintomuotoja, ei kuoria.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
       <source>Create solid</source>
-      <translation>Luo kiinteä</translation>
+      <translation>Luo Kiintomuoto</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="368"/>
@@ -3458,52 +3458,52 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
+      <translation>Pursotuksen luonti epäonnistui.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Kohdetta ei löydy: %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="604"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
+      <translation>Pursotukseen ei ole valittu muotoja. Valitse joitakin, ensin.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="625"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
+      <translation>Pursotussuunnan linkki on virheellinen.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+      <translation>Suuntaohjauksen tilassa käyttää reunaa, mutta reunaa ei ole liitetty.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation>Ei voida määrittää pursotettavan muodon normaalia vektoria. Ole hyvä ja käytä muuta tilaa. 
 
 (%1)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
+      <translation>Pursotussuunta on nolla-pituinen. Sen on oltava muu kuin nolla.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
+      <translation>Pursotuksen kokonaispituus on nolla (pituus1 == -pituus2). Sen on oltava muu kuin nolla.</translation>
     </message>
   </context>
   <context>
@@ -3546,12 +3546,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
       <source>Select faces</source>
-      <translation>Valitse pinnat</translation>
+      <translation>Valitse pintatahkot</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
       <source>All</source>
-      <translation>kaikki</translation>
+      <translation>Kaikki</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="87"/>
@@ -3612,7 +3612,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
       <source>Edges to fillet</source>
-      <translation>pyöristettävät reunat</translation>
+      <translation>Pyöristettävät reunat</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
@@ -3701,17 +3701,17 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation type="unfinished">Write solids and shells as</translation>
+      <translation>Tallenna kiintomuodot ja kuoret</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
+      <translation>Viritettyjen pintatahkojen ryhmät (tyyppi 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
+      <translation>Kiintomuodot (tyyppi 186) ja Kuoret (tyyppi 514) / B-REP-moodi</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="94"/>
@@ -3749,7 +3749,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="14"/>
       <source>STEP</source>
-      <translation>ASKEL</translation>
+      <translation>STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="20"/>
@@ -3794,7 +3794,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="97"/>
       <source>Units for export of STEP</source>
-      <translation>Yksiköt ASKEL-vientiin</translation>
+      <translation>Yksiköt STEP-vientiin</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="104"/>
@@ -3804,7 +3804,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation type="unfinished">Write out curves in parametric space of surface</translation>
+      <translation>Muodosta käyrät pinnan parametriavaruudessa</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3814,12 +3814,12 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+      <translation>Jos tämä on valittuna, yhdistelmämuotojen yhdistämistä ei tehdä tiedostojen lukemisen aikana (hitaampaa, mutta enemmän yksityiskohtia).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation type="unfinished">Enable STEP Compound merge</translation>
+      <translation>Ota STEP-yhdistelmämuotojen yhteenliittäminen käyttöön</translation>
     </message>
   </context>
   <context>
@@ -3880,7 +3880,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="14"/>
       <source>Cylinder definition</source>
-      <translation>Sylinterin määritelmä</translation>
+      <translation>Lieriön määrittäminen</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
@@ -3959,7 +3959,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>Step input file</source>
-      <translation>STEP syöttötiedosto</translation>
+      <translation>Step-syöttötiedosto</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -3977,7 +3977,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="70"/>
       <source>STEP</source>
-      <translation>ASKEL</translation>
+      <translation>STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="71"/>
@@ -4008,7 +4008,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <location filename="../../DlgPrimitives.ui" line="51"/>
       <location filename="../../DlgPrimitives.cpp" line="417"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
@@ -4020,7 +4020,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <location filename="../../DlgPrimitives.ui" line="69"/>
       <location filename="../../DlgPrimitives.cpp" line="453"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
@@ -4056,7 +4056,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <location filename="../../DlgPrimitives.ui" line="123"/>
       <location filename="../../DlgPrimitives.cpp" line="578"/>
       <source>Spiral</source>
-      <translation>Kierre</translation>
+      <translation>Spiraali</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
@@ -4163,7 +4163,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <location filename="../../DlgPrimitives.ui" line="838"/>
       <location filename="../../DlgPrimitives.ui" line="928"/>
       <source>V parameter:</source>
-      <translation>V  muuttuja:</translation>
+      <translation>V-parametri:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="905"/>
@@ -4328,12 +4328,12 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
+      <translation>Jos valittuna, lankakuvion pyöräytys tuottaa kiintomuotoja. Jos ei, niin lankakuvion pyöräytys tuottaa kuoren.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
       <source>Create Solid</source>
-      <translation>Luo kiinteä</translation>
+      <translation>Luo Kiintomuoto</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="52"/>
@@ -4348,64 +4348,64 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="111"/>
       <source>Revolution axis</source>
-      <translation type="unfinished">Revolution axis</translation>
+      <translation>Pyörintä akseli</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
       <source>Center X:</source>
-      <translation type="unfinished">Center X:</translation>
+      <translation>Keskitä X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="139"/>
       <source>Center Y:</source>
-      <translation type="unfinished">Center Y:</translation>
+      <translation>Keskitä Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="159"/>
       <source>Center Z:</source>
-      <translation type="unfinished">Center Z:</translation>
+      <translation>Keskitä Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>Napsauta asettaaksesi tämän akseliksi</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
       <source>Dir. X:</source>
-      <translation type="unfinished">Dir. X:</translation>
+      <translation>Dir. X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="245"/>
       <source>Dir. Y:</source>
-      <translation type="unfinished">Dir. Y:</translation>
+      <translation>Dir. Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="283"/>
       <source>Dir. Z:</source>
-      <translation type="unfinished">Dir. Z:</translation>
+      <translation>Dir. Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
       <location filename="../../DlgRevolution.cpp" line="448"/>
       <source>Select reference</source>
-      <translation type="unfinished">Select reference</translation>
+      <translation>Valitse viite</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
+      <translation>Jos valittuna, pyörähdyss ulottuu puolikkaann kulman eteenpäin ja taaksepäin.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
       <source>Symmetric angle</source>
-      <translation type="unfinished">Symmetric angle</translation>
+      <translation>Symmetrinen kulma</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Kohdetta ei löydy: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="254"/>
@@ -4419,19 +4419,19 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>Pyörähdysakseli -linkki on virheellinen.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+      <translation>Pyörähdysakselin suunta on nolla-pituus. Sen pitää olla muuta kuin nolla.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+      <translation>Pyörähdysakselin kulmajakso on nolla. Sen pitää olla muuta kuin nolla.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -4439,14 +4439,14 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation type="unfinished">Creating Revolve failed.
+      <translation>Pyörähdyksen luonti epäonnistui.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
       <source>Selecting... (line or arc)</source>
-      <translation type="unfinished">Selecting... (line or arc)</translation>
+      <translation>Valitse... (rivi tai kaari)</translation>
     </message>
   </context>
   <context>
@@ -4459,7 +4459,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="39"/>
       <source>Tessellation</source>
-      <translation>Geometrian pilkkominen</translation>
+      <translation>Tesselointi</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="59"/>
@@ -4469,7 +4469,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Mosaiikin poikkeama määritellään todelliseen pintaan</translation>
+      <translation>Määrittelee tesselaatio-pinnan poikkeaman todellisesta pinnasta</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
@@ -4484,7 +4484,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="100"/>
       <source>Maximum angular deflection</source>
-      <translation type="unfinished">Maximum angular deflection</translation>
+      <translation>Suurin kulmapoikkeama</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
@@ -4517,12 +4517,12 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation>Tarkista malli automaattisesti loogisen operaation jälkeen</translation>
+      <translation>Tarkista malli automaattisesti Boolen operaatioiden jälkeen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="39"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Tarkenna mallia automaattisesti loogisen operaation jälkeen</translation>
+      <translation>Jalosta mallia automaattisesti Boolen operaation jälkeen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
@@ -4545,17 +4545,17 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Part colors</source>
-      <translation>Osan värit</translation>
+      <translation>Osien värit</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Part colors</source>
-      <translation>Osan oletusvärit</translation>
+      <translation>Osien oletusvärit</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Default vertex color</source>
-      <translation>Päätepisteen oletusväri</translation>
+      <translation>Kärkipisteiden oletusväri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
@@ -4565,13 +4565,13 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
       <source>Default shape color</source>
-      <translation>Muodon oletusväri</translation>
+      <translation>Muotojen oletusväri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
       <source>The default line color for new shapes</source>
-      <translation>Uusien muotojen viivojen oletusväri</translation>
+      <translation>Uusien muotojen reunaviivojen oletusväri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="87"/>
@@ -4582,7 +4582,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <location filename="../../DlgSettingsObjectColor.ui" line="107"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="129"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Uusien muotojen viivojen oletuspaksuus</translation>
+      <translation>Uusien muotojen reunaviivojen oletuspaksuus</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
@@ -4598,12 +4598,12 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
       <source>Default vertex size</source>
-      <translation>Päätepisteen oletuskoko</translation>
+      <translation>Kärkipisteiden oletuskoko</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="190"/>
       <source>Default line width</source>
-      <translation>Oletusarvo viivan leveydelle</translation>
+      <translation>Viivan leveyden oletusarvo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
@@ -4613,7 +4613,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Satunnainen muodon väri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4623,7 +4623,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
       <source>Default text color</source>
-      <translation type="unfinished">Default text color</translation>
+      <translation>Tekstin oletusväri</translation>
     </message>
   </context>
   <context>
@@ -4631,7 +4631,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="416"/>
       <source>Face colors</source>
-      <translation>Tahkojen värit</translation>
+      <translation>Pintatahkojen värit</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="416"/>
@@ -4662,7 +4662,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="80"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Käytettävissä olevat profiilit</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
@@ -4677,7 +4677,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>On oltava vähintään kaksi pistettä, reunaa, linjaa tai näyttöpintaa.</translation>
+      <translation>Tarvitaan vähintään kaksi pistettä, reunaa, lankaa tai pintatahkoa.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4687,12 +4687,12 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Loppupiste/reuna/linja/näyttöpinta</translation>
+      <translation>Kärkipiste/reuna/lanka/pintatahko</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation>Heitä ilmaan</translation>
+      <translation>Profiilivenytys</translation>
     </message>
   </context>
   <context>
@@ -4720,17 +4720,17 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../Mirroring.ui" line="54"/>
       <source>XZ plane</source>
-      <translation>XZ taso</translation>
+      <translation>XZ-taso</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="59"/>
       <source>YZ plane</source>
-      <translation>YZ taso</translation>
+      <translation>YZ-taso</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="67"/>
       <source>Base point</source>
-      <translation type="unfinished">Base point</translation>
+      <translation>Peruspiste</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="73"/>
@@ -4740,7 +4740,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../Mirroring.ui" line="96"/>
       <source>y</source>
-      <translation>Y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="119"/>
@@ -4750,12 +4750,12 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../Mirroring.cpp" line="124"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation>Valitse muoto peilausta varten, ensimmäinen.</translation>
+      <translation>Valitse ensin peilattava muoto.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="131"/>
       <source>No such document '%1'.</source>
-      <translation>Ei tällainen asiakirja '%1'.</translation>
+      <translation>Asiakirjaa '%1' ei ole olemassa.</translation>
     </message>
   </context>
   <context>
@@ -4795,7 +4795,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="400"/>
       <location filename="../../TaskShapeBuilder.cpp" line="463"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="208"/>
@@ -4807,7 +4807,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="255"/>
       <location filename="../../TaskShapeBuilder.cpp" line="348"/>
       <source>Select one or more edges</source>
-      <translation>Valitse yksi tai useampi reunaa</translation>
+      <translation>Valitse yksi tai useampi reuna</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="296"/>
@@ -4817,7 +4817,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="400"/>
       <source>Select two or more faces</source>
-      <translation>Valitse vähintään kaksi pintaa</translation>
+      <translation>Valitse vähintään kaksi pintatahkoa</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="463"/>
@@ -4832,7 +4832,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>Valitse viereiset reunat</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
@@ -4847,7 +4847,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent faces</source>
-      <translation>Valitse vierekkäiset pinnat</translation>
+      <translation>Valitse vierekkäisiä pintatahkoja</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="550"/>
@@ -4860,7 +4860,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Käytettävissä olevat profiilit</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
@@ -4887,17 +4887,17 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
       <source>At least one edge or wire is required.</source>
-      <translation>Vähintään yksi reuna tai lanka vaaditaan.</translation>
+      <translation>Tarvitaan vähintään yksi reuna tai lanka.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>'%1' ei voi käyttää profiilina ja kansiona.</translation>
+      <translation>Objektia '%1' ei voi käyttää sekä profiilina että reittinä.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="355"/>
@@ -4912,13 +4912,13 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Valitse yhdistettyjä reunoja vähintään yksi  3d -näkymässä ja paina 'Valmis'</translation>
+      <translation>Valitse vähintään yksi kytketty reuna 3d-näkymässä ja paina 'Valmis'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Valittu pyyhkäisykansio ei kelpaa.</translation>
+      <translation>Valittu pyyhkäisyreitti on virheellinen.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="434"/>
@@ -4946,38 +4946,38 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Viite 1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="52"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Viite 2</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="69"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Viite 3</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="86"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Viite 4</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Liittämisen tila:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+      <translation>LiitettävyysOffset ominaisuus. Sijoitus ilmaistaan liitetyssä kohteen paikallisessa tilassa.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Liitoksen siirros:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5012,12 +5012,12 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Käännä puolet</translation>
+      <translation>Vaihda puolet</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>OCC error: %1</source>
-      <translation type="unfinished">OCC error: %1</translation>
+      <translation>OCC-virhe: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="304"/>
@@ -5027,22 +5027,22 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>Liitosmoodi epäonnistui: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="311"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Ei liitetty</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="315"/>
       <source>Attached with mode %1</source>
-      <translation type="unfinished">Attached with mode %1</translation>
+      <translation>Liitetty moodilla %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Liitoksen siirros (passiivinen - ei liitetty):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
@@ -5067,27 +5067,27 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="694"/>
       <source>Reference%1</source>
-      <translation type="unfinished">Reference%1</translation>
+      <translation>Viittaus%1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="740"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation part of AttachmentOffset is bound by expressions.</translation>
+      <translation>Ei ole muokattavissa, koska kierrettävä LiitoksenSiirroksen osa on sidottu lausekkeilla.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="804"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Viittausten yhdistelmät:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
       <source>%1 (add %2)</source>
-      <translation type="unfinished">%1 (add %2)</translation>
+      <translation>%1 (lisää %2)</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="826"/>
       <source>%1 (add more references)</source>
-      <translation type="unfinished">%1 (add more references)</translation>
+      <translation>%1 (lisää viitteitä)</translation>
     </message>
   </context>
   <context>
@@ -5095,7 +5095,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="942"/>
       <source>Shape Content</source>
-      <translation>Muoto sisältö</translation>
+      <translation>Muodon sisältö</translation>
     </message>
   </context>
   <context>
@@ -5108,7 +5108,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>Tarkista geometria</translation>
     </message>
   </context>
   <context>
@@ -5116,7 +5116,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1057"/>
       <source>Datum dialog: Input error</source>
-      <translation type="unfinished">Datum dialog: Input error</translation>
+      <translation>Päivämäärä ikkuna: Syöttövirhe</translation>
     </message>
   </context>
   <context>
@@ -5124,22 +5124,22 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="14"/>
       <source>Set color per face</source>
-      <translation>Aseta väri pintaa kohden</translation>
+      <translation>Aseta väri pintatahkoa kohden</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Klikkaa pinnat 3D näkymässä valitaksesi niitä.</translation>
+      <translation>Klikkaa pintatahkoja 3D-näkymässä valitaksesi niitä.</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
       <source>Faces:</source>
-      <translation>Pinnat:</translation>
+      <translation>Pintatahkot:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="59"/>
       <source>Set to default</source>
-      <translation>Aseta oletusarvo</translation>
+      <translation>Aseta oletusarvoon</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="66"/>
@@ -5152,17 +5152,17 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Heitä ilmaan</translation>
+      <translation>Profiilivenytys</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
       <source>Create solid</source>
-      <translation>Luo kiinteä</translation>
+      <translation>Luo Kiintomuoto</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
       <source>Ruled surface</source>
-      <translation>Suljettu pinta</translation>
+      <translation>Pyyhkäisypinta (viivoitinpinta)</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="50"/>
@@ -5211,13 +5211,13 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="73"/>
       <source>Tangent</source>
-      <translation>Tangentti</translation>
+      <translation>Tangenttina</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="78"/>
       <location filename="../../TaskOffset.ui" line="86"/>
       <source>Intersection</source>
-      <translation>Risteys</translation>
+      <translation>Leikkaus</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
@@ -5232,7 +5232,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation>Pinnat</translation>
+      <translation>Pintatahkot</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="141"/>
@@ -5251,27 +5251,27 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
       <source>Face from vertices</source>
-      <translation>Näkymäpinta kärkipisteistä</translation>
+      <translation>Pintatahko kärkipisteistä</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Shell from faces</source>
-      <translation>Pinnat kuoresta</translation>
+      <translation>Kuori pintatahkoista</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Edge from vertices</source>
-      <translation>Kärkipisteen reuna</translation>
+      <translation>Reuna kärkipisteistä</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
       <source>Face from edges</source>
-      <translation>Reunojen pinnat</translation>
+      <translation>Pintatahko reunoista</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Solid from shell</source>
-      <translation>Kiinteä kuoresta</translation>
+      <translation>Kiintomuoto kuoresta</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="68"/>
@@ -5286,7 +5286,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="85"/>
       <source>All faces</source>
-      <translation>Kaikki pinnat</translation>
+      <translation>Kaikki pintatahkot</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="107"/>
@@ -5296,7 +5296,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Lanka reunoista</translation>
     </message>
   </context>
   <context>
@@ -5314,18 +5314,19 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="50"/>
       <source>Create solid</source>
-      <translation>Luo kiinteä</translation>
+      <translation>Luo Kiintomuoto</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="57"/>
       <source>Frenet</source>
-      <translation>Kohdista tasoon</translation>
+      <translation>Frenet</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="464"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Valitse yksi tai useampi profiili ja valitse reuna tai lanka 3D näkymästä jota pitkin pyyhkäisy tehdään.</translation>
+      <translation>Valitse vähintään yksi profiili, ja valitse 3D näkymästä
+reuna tai lanka, jota pitkin reitin pyyhkäisy tehdään.</translation>
     </message>
   </context>
   <context>
@@ -5340,7 +5341,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="159"/>
       <source>Select faces of the source object and press 'Done'</source>
-      <translation>Valitse lähdeobjektin tahkot ja pana "Valmis"</translation>
+      <translation>Valitse lähdeobjektin pintatahkoja ja paina 'Valmis'</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="162"/>
@@ -5363,37 +5364,37 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+      <translation>Tekee tasomaisen pintatahkon jokaisesta langasta erikseen. Ei tukea rei'ille; langat voivat olla eri tasoilla.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="69"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>Napakymppi-pintatahkontekijä</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
+      <translation>Tukee sellaisten tasomaisten pintatahkojen tekemistä, missä on reikiä ja niiden saarekkeita.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="248"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Rei'itys-pintatahkontekijä</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="253"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+      <translation>Tukee sellaisten tasomaisten pintatahkojen tekemistä, missä on reikiä, mutta ei niiden saarekkeita.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Osanpursotus-pintatahkontekijä</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+      <translation>Tukee reiällisten pintatahkojen tekemistä, ei tue verkoittumista (nesting).</translation>
     </message>
   </context>
   <context>
@@ -5416,7 +5417,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Solids</source>
-      <translation>Kiinteät</translation>
+      <translation>Kiintomuodot</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5426,7 +5427,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Boolean</source>
-      <translation>Boolean</translation>
+      <translation>Boolen operaatio</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -5436,7 +5437,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>Liitä</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -5446,7 +5447,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Compound</source>
-      <translation>Monitahokas</translation>
+      <translation>Yhdistelmämuoto</translation>
     </message>
   </context>
 </TS>

@@ -164,6 +164,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Constraint_Length","Length Constraint","Sketcher_ConstrainDistance",doLengthConstraint,true)
     CONTEXT_ITEM("Constraint_Radius","Radius Constraint","Sketcher_ConstrainRadius",doRadiusConstraint,true)
     CONTEXT_ITEM("Constraint_Diameter","Diameter Constraint","Sketcher_ConstrainDiameter",doDiameterConstraint,true)
+    CONTEXT_ITEM("Constraint_Radiam","Radiam Constraint","Sketcher_ConstrainRadiam",doRadiamConstraint,true)
     CONTEXT_ITEM("Constraint_InternalAngle","Angle Constraint","Sketcher_ConstrainAngle",doAngleConstraint,true)
 
     menu.addSeparator();
@@ -207,6 +208,7 @@ CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY",doVerticalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistance",doLengthConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadius",doRadiusConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDiameter",doDiameterConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadiam",doRadiamConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle",doAngleConstraint)
 
 CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)

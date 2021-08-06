@@ -66,10 +66,12 @@ class Stretch(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Stretch, self).Activated(name=translate("draft","Stretch"))
+        super(Stretch, self).Activated(name="Stretch")
+        self.rectracker = None
+        self.nodetracker = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to stretch"))
                 self.call = \
                     self.view.addEventCallback("SoEvent",
@@ -99,6 +101,10 @@ class Stretch(gui_base_original.Modifier):
                         if base:
                             if utils.getType(base) in supported:
                                 self.sel.append([base, obj.Placement.multiply(obj.Base.Placement)])
+                    elif hasattr(obj.Base, "Base"):
+                        if obj.Base.Base:
+                            if utils.getType(obj.Base.Base) in supported:
+                                self.sel.append([obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)])
             elif utils.getType(obj) in ["Offset2D", "Array"]:
                 base = None
                 if hasattr(obj, "Source") and obj.Source:
@@ -111,7 +117,7 @@ class Stretch(gui_base_original.Modifier):
         if self.ui and self.sel:
             self.step = 1
             self.refpoint = None
-            self.ui.pointUi("Stretch")
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Stretch")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rectracker = trackers.rectangleTracker(dotted=True,
@@ -251,9 +257,9 @@ class Stretch(gui_base_original.Modifier):
 
     def finish(self, closed=False):
         """Terminate the operation of the command. and clean up."""
-        if hasattr(self, "rectracker") and self.rectracker:
+        if self.rectracker:
             self.rectracker.finalize()
-        if hasattr(self, "nodetracker") and self.nodetracker:
+        if self.nodetracker:
             for n in self.nodetracker:
                 n.finalize()
         super(Stretch, self).finish()
@@ -449,8 +455,10 @@ class Stretch(gui_base_original.Modifier):
                                 else:
                                     pts.append(vts[i].Point.add(self.displacement))
                             pts = str(pts).replace("Vector ", "FreeCAD.Vector")
-                            _cmd = "Draft.makeWire"
-                            _cmd += "(" + pts + ", closed=True)"
+                            _cmd = "Draft.make_wire"
+                            _cmd += "(" + pts + ", closed=True, "
+                            _cmd += "face=" + str(ops[0].MakeFace)
+                            _cmd += ")"
                             _format = "Draft.formatObject"
                             _format += "(w, "
                             _format += _doc + ops[0].Name

@@ -383,13 +383,19 @@ class ViewProviderDraft(object):
 
         Returns
         -------
-        bool
+        bool or None
             It is `True` if `mode` is 0, and `Draft_Edit` ran successfully.
+            None if mode is not zero.
             It is `False` otherwise.
         """
         if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
             Gui.runCommand("Draft_Edit")
             return True
+        elif mode != 0:
+            # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
+            # case of an unrecognized context menu action)
+            return None 
+
         return False
 
     def unsetEdit(self, vobj, mode=0):
@@ -459,6 +465,9 @@ class ViewProviderDraft(object):
                 return ":/icons/Draft_N-Curve.svg"
             elif tp in ("ShapeString"):
                 return ":/icons/Draft_ShapeString_tree.svg"
+        if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
+            import TechDrawGui
+            return ":/icons/TechDraw_TreePageUnsync.svg"
         return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):

@@ -54,7 +54,7 @@ To polecenie działa tylko z obiektem typu 'mesh'.</translation>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation>Tesselacja obwiedni</translation>
+      <translation>Rozdrobnienie kształtu</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Linia</translation>
+      <translation>Polilinia</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -275,7 +275,7 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Tesselacja</translation>
+      <translation>Rozdrobnienie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -413,7 +413,7 @@ Najmniejszą wartością jest 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
       <source>Very fine</source>
-      <translation>Bardzo dokładna</translation>
+      <translation>Bardzo dokładnie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="259"/>
@@ -483,7 +483,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation>Pozostaw otwarty panel</translation>
+      <translation>Pozostaw panel otwarty</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
@@ -491,13 +491,13 @@ Wartość w zakresie 0,2–10.</translation>
       <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Najpierw wybierz kształt do utworzenia siatki.</translation>
     </message>

@@ -211,7 +211,7 @@
     </message>
     <message>
       <source>Enable Translations</source>
-      <translation>Verschiebung aktivieren</translation>
+      <translation>Verschiebungen zulassen</translation>
     </message>
     <message>
       <source>Enable Rotations</source>
@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Ausdruck eingeben...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Ausdruck: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -318,7 +329,7 @@
     </message>
     <message>
       <source>Fixed object</source>
-      <translation>Festes Objekt</translation>
+      <translation>fixiertes Objekt</translation>
     </message>
   </context>
   <context>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Wortgröße</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Danksagungen</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD wäre nirgends ohne ihre Anstrengungen:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Lizenz</translation>
     </message>
@@ -485,7 +488,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Diese Software verwendet Open-Source-Komponenten, deren Urheberrechte und andere Eigentumsrechte ihren jeweiligen Eigentümern gehören:</translation>
+      <translation>Dieses Programm verwendet Open-Source-Komponenten, deren Urheberrechte und andere Eigentumsrechte ihren jeweiligen Eigentümern gehören:</translation>
     </message>
     <message>
       <source>License</source>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Sammlung</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Danksagungen</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD wäre nicht möglich ohne die Beiträge von</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Personen</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organisationen</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
       <translation>Text source</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Codezeilen werden nummeriert </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Durch Drücken von &lt;Tab&gt; wird die unter Einrückbreite definierte Anzahl von Leerzeichen eingefügt</translation>
     </message>
@@ -1401,6 +1419,10 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <source>Color:</source>
       <translation>Farbe:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Code-Zeilen werden nummeriert</translation>
     </message>
   </context>
   <context>
@@ -1483,7 +1505,7 @@ entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation>Baum-Ansichtsmodus:</translation>
+      <translation>Baumstruktur-Ansichtsmodus:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1611,7 +1633,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation>Speicher-Ort der Benutzer-Makros:</translation>
+      <translation>Speicherort der Benutzermakros:</translation>
     </message>
     <message>
       <source>Rename</source>
@@ -1623,7 +1645,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>Addons...</source>
-      <translation>Add-ons...</translation>
+      <translation>Addons...</translation>
     </message>
     <message>
       <source>Toolbar</source>
@@ -2304,7 +2326,7 @@ on-screen while displaying the log message</source>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>Schriftfarbe für Protokoll Nachrichten in der Berichtsansicht</translation>
+      <translation>Schriftfarbe für normale Nachrichten in der Berichtsansicht</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
@@ -2525,10 +2547,6 @@ aber langsamere Reaktion auf Szenenänderungen.</translation>
       <translation>Zentralisiert</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Welche Art von Multisample Anti-Aliasing wird verwendet </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Transparente Objekte:</translation>
     </message>
@@ -2551,14 +2569,6 @@ aber langsamere Reaktion auf Szenenänderungen.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Augenabstand für Stereo-Modi</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Augenabstand für Stereo-Projektionen.
-Der angegebene Wert ist ein Faktor, der mit der Bounding-Box-Größe des gerade angezeigten 3D-Objekts
-multipliziert wird. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2616,6 +2626,17 @@ Das Ändern dieser Option erfordert einen Neustart der Anwendung.</translation>
     <message>
       <source>Use software OpenGL</source>
       <translation>Software OpenGL verwenden</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Welche Art von Multisample Anti-Aliasing wird verwendet</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Augenabstand für Stereo-Projektionen.
+Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des gerade angezeigten 3D-Objekts multipliziert wird.</translation>
     </message>
   </context>
   <context>
@@ -3231,10 +3252,6 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
       <source>Framebuffer (as is)</source>
       <translation>Bildpuffer (wie bestehend)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Pixelpuffer</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3473,12 +3490,6 @@ Der Wert ist der Durchmesser der Kugel, der auf den Bildschirm passt.</translati
       <translation>Zoom-Schritt</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Wie stark gezoomt wird.
-Ein Zoom-Schritt von '1' bedeutet einen Faktor von 7,5 für jeden Zoom-Schritt. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Richtung der Zoom-Operationen wird umgekehrt</translation>
     </message>
@@ -3565,6 +3576,28 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     <message>
       <source>Object center</source>
       <translation>Um das Objektzentrum</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Dreht zum nächstmöglichen Zustand beim Klicken auf eine Würfel Seite</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Drehen zum nächstgelegenen</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Würfelgröße</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Größe des Navigationswürfels</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Wie stark vergrößert werden soll.
+Zoom-Schritt von '1' bedeutet für jeden Zoom-Schritt einen Faktor von 7,5.</translation>
     </message>
   </context>
   <context>
@@ -3877,12 +3910,12 @@ Das Präferenzsystem ist das in den allgemeinen Einstellungen festgelegte System
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unbekannte Einheit: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>Einheit stimmt nicht überein</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unbekannte Einheit:</translation>
     </message>
   </context>
   <context>
@@ -4380,7 +4413,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation>Verwende das Zentrum der Masse</translation>
+      <translation>Verwende den Schwerpunkt</translation>
     </message>
     <message>
       <source>Axial:</source>
@@ -4428,7 +4461,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Rotation around the z-axis</source>
-      <translation>Drehen um die z-Achse</translation>
+      <translation>Drehung um die z-Achse</translation>
     </message>
     <message>
       <source>Euler angles (xy'z'')</source>
@@ -4669,7 +4702,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation>Arten der Bildschirm-Meldungen</translation>
+      <translation>Nachrichtenarten anzeigen</translation>
     </message>
     <message>
       <source>Normal messages</source>
@@ -6763,7 +6796,7 @@ Bitte überprüfen Sie die Berichtsansicht für weitere Details.</translation>
     </message>
     <message>
       <source>Unlink failed</source>
-      <translation>Entkopplung fehlgeschlagen</translation>
+      <translation>Verknüpfung aufheben fehlgeschlagen</translation>
     </message>
     <message>
       <source>Replace link failed</source>
@@ -6771,11 +6804,11 @@ Bitte überprüfen Sie die Berichtsansicht für weitere Details.</translation>
     </message>
     <message>
       <source>Failed to import links</source>
-      <translation>Fehler beim Importieren der Verbindungen</translation>
+      <translation>Fehler beim Importieren der Verknüpfungen</translation>
     </message>
     <message>
       <source>Failed to import all links</source>
-      <translation>Fehler beim Importieren aller Verbindungen</translation>
+      <translation>Fehler beim Importieren aller Verknüpfungen</translation>
     </message>
     <message>
       <source>Invalid name</source>
@@ -6873,14 +6906,6 @@ Bitte überprüfen Sie die Berichtsansicht für mehr...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Physischer Pfad: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Dokument: </translation>
@@ -6910,6 +6935,14 @@ Dokument: </translation>
     <message>
       <source>Workbenches</source>
       <translation>Arbeitsbereiche</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Physischer Pfad: </translation>
     </message>
   </context>
   <context>
@@ -7283,7 +7316,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>List of available dock panels</source>
-      <translation>Liste der vorhandenen Dock-Panele</translation>
+      <translation>Liste der vorhandenen Dock-Panels</translation>
     </message>
   </context>
   <context>
@@ -7396,7 +7429,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation>Spende, um Entwicklung zu unterstützen</translation>
+      <translation>Spende, um die FreeCAD-Entwicklung zu unterstützen</translation>
     </message>
   </context>
   <context>
@@ -7468,7 +7501,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation>Benutzer Dokumentation auf der FreeCAD Website</translation>
+      <translation>Benutzerdokumentation auf der FreeCAD-Website</translation>
     </message>
   </context>
   <context>
@@ -7738,7 +7771,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation>Entkoppeln</translation>
+      <translation>Verknüpfung auflösen</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -7753,7 +7786,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation>An Remote-Debugger angehangen...</translation>
+      <translation>An Remote-Debugger anhängen...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
@@ -7783,7 +7816,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Step into</source>
-      <translation>Treten Sie ein</translation>
+      <translation>Einzelschritt</translation>
     </message>
   </context>
   <context>
@@ -9021,7 +9054,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Rotate Left</source>
-      <translation>Linksherum rotieren</translation>
+      <translation>Nach links drehen</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>

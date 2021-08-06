@@ -96,6 +96,7 @@ def findToolBit(name, path=None):
     return _findToolFile("{}.fctb".format(name), path, 'Bit')
 
 
+# Only used in ToolBit unit test module: TestPathToolBit.py
 def findToolLibrary(name, path=None):
     '''findToolLibrary(name, path) ... search for name, if relative path look in path'''
     PathLog.track(name, path)
@@ -117,12 +118,15 @@ def _findRelativePath(path, typ):
     return relative
 
 
+# Unused due to bug fix related to relative paths
+"""
 def findRelativePathShape(path):
     return _findRelativePath(path, 'Shape')
 
 
 def findRelativePathTool(path):
     return _findRelativePath(path, 'Bit')
+"""
 
 
 def findRelativePathLibrary(path):
@@ -380,7 +384,10 @@ class ToolBit(object):
         if PathPreferences.toolsStoreAbsolutePaths():
             attrs['shape'] = obj.BitShape
         else:
-            attrs['shape'] = findRelativePathShape(obj.BitShape)
+            # attrs['shape'] = findRelativePathShape(obj.BitShape)
+            # Extract the name of the shape file
+            __, filShp = os.path.split(obj.BitShape)  #  __ is an ignored placeholder acknowledged by LGTM
+            attrs['shape'] = str(filShp)
         params = {}
         for name in obj.BitPropertyNames:
             params[name] = PathUtil.getPropertyValueString(obj, name)

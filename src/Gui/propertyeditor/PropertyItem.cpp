@@ -537,7 +537,7 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
+        if (role == Qt::BackgroundRole || role == Qt::ForegroundRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
                 && propertyItems.front()->testStatus(App::Property::PropDynamic)
@@ -587,7 +587,7 @@ QVariant PropertyItem::data(int column, int role) const
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
             } 
-            else if (role == Qt::TextColorRole) {
+            else if (role == Qt::ForegroundRole) {
                 if (hasExpression())
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
                 return QVariant();
@@ -607,7 +607,7 @@ QVariant PropertyItem::data(int column, int role) const
         else if (role == Qt::ToolTipRole) {
             return toolTip(propertyItems[0]);
         }
-        else if( role == Qt::TextColorRole) {
+        else if( role == Qt::ForegroundRole) {
             if (hasExpression())
                 return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
@@ -1051,7 +1051,8 @@ void PropertyUnitItem::setValue(const QVariant& value)
             return;
         const Base::Quantity& val = value.value<Base::Quantity>();
 
-        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString()); 
+        Base::QuantityFormat format(Base::QuantityFormat::Default, decimals());
+        QString unit = Base::UnitsApi::toString(val, format);
         setPropertyValue(unit);
     }
 }
@@ -1642,10 +1643,12 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity x = Base::Quantity(value.x, Base::Unit::Length);
     Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
+
+    Base::QuantityFormat format(Base::QuantityFormat::Default, decimals());
     QString data = QString::fromLatin1("(%1, %2, %3)")
-                    .arg(x.getValue())
-                    .arg(y.getValue())
-                    .arg(z.getValue());
+                    .arg(Base::UnitsApi::toNumber(x, format))
+                    .arg(Base::UnitsApi::toNumber(y, format))
+                    .arg(Base::UnitsApi::toNumber(z, format));
     setPropertyValue(data);
 }
 
@@ -2367,16 +2370,17 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     const Base::Placement& val = value.value<Base::Placement>();
     Base::Vector3d pos = val.getPosition();
 
+    Base::QuantityFormat format(Base::QuantityFormat::Default, decimals());
     QString data = QString::fromLatin1("App.Placement("
                                       "App.Vector(%1,%2,%3),"
                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                    .arg(pos.x)
-                    .arg(pos.y)
-                    .arg(pos.z)
-                    .arg(rot_axis.x)
-                    .arg(rot_axis.y)
-                    .arg(rot_axis.z)
-                    .arg(rot_angle,0);
+                    .arg(Base::UnitsApi::toNumber(pos.x, format))
+                    .arg(Base::UnitsApi::toNumber(pos.y, format))
+                    .arg(Base::UnitsApi::toNumber(pos.z, format))
+                    .arg(Base::UnitsApi::toNumber(rot_axis.x, format))
+                    .arg(Base::UnitsApi::toNumber(rot_axis.y, format))
+                    .arg(Base::UnitsApi::toNumber(rot_axis.z, format))
+                    .arg(Base::UnitsApi::toNumber(rot_angle, format));
     setPropertyValue(data);
 }
 
@@ -3907,11 +3911,11 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 
 QVariant PropertyLinkItem::data(int column, int role) const {
     if(propertyItems.size() && column == 1 
-            && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
+            && (role == Qt::ForegroundRole || role == Qt::ToolTipRole))
     {
         auto propLink = Base::freecad_dynamic_cast<const App::PropertyLinkBase>(propertyItems[0]);
         if(propLink) {
-            if(role==Qt::TextColorRole && propLink->checkRestore()>1)
+            if(role==Qt::ForegroundRole && propLink->checkRestore()>1)
                 return QVariant::fromValue(QColor(0xff,0,0));
             else if(role == Qt::ToolTipRole) {
                 auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
@@ -3987,7 +3991,6 @@ PropertyItemEditorFactory::~PropertyItemEditorFactory()
 {
 }
 
-#if (QT_VERSION >= 0x050300)
 QWidget * PropertyItemEditorFactory::createEditor (int /*type*/, QWidget * /*parent*/) const
 {
     // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
@@ -3999,19 +4002,6 @@ QByteArray PropertyItemEditorFactory::valuePropertyName (int /*type*/) const
     // do not allow to set properties because we do that in subclasses of PropertyItem
     return "";
 }
-#else
-QWidget * PropertyItemEditorFactory::createEditor (QVariant::Type /*type*/, QWidget * /*parent*/) const
-{
-    // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
-    return 0;
-}
-
-QByteArray PropertyItemEditorFactory::valuePropertyName (QVariant::Type /*type*/) const
-{
-    // do not allow to set properties because we do that in subclasses of PropertyItem
-    return "";
-}
-#endif
 
 #include "moc_PropertyItem.cpp"
 

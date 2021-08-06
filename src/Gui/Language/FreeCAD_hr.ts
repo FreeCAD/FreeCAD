@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Unesite izraz...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Izraz:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Veličina riječi</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Krediti</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD bi propao bez svojih nastojanja:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licenca</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Zbirka</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Krediti</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Ako se to ne označi, osobina mora biti jedinstveno imenovana i njoj se pristupa
       <translation> </translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Redovi kodova bit će numerirani </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Pritiskom na &lt;Tab&gt; umetnite količinu definirane veličine uvlačenja</translation>
     </message>
@@ -1401,6 +1419,10 @@ Ako se to ne označi, osobina mora biti jedinstveno imenovana i njoj se pristupa
     <message>
       <source>Color:</source>
       <translation>Boja:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2558,10 +2580,6 @@ ali sporiji odgovor na bilo kakve promjene scena.</translation>
       <translation>Centralizirano</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Kakva se vrsta višestrukih uzoraka koristi za izglađivanje</translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Prozirni objekti:</translation>
     </message>
@@ -2584,15 +2602,6 @@ ali sporiji odgovor na bilo kakve promjene scena.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Udaljenost od oka do oka za stereo mode</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Udaljenost od oka do oka koja se koristi za stereo projekcije.
-Navedena vrijednost je faktor koji će se pomnožiti s
-veličinom graničnog okvira 3D objekta koji se trenutno prikazuje.
-</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2656,6 +2665,18 @@ Za promjenu ove opcije potrebno je ponovno pokretanje aplikacije.
     <message>
       <source>Use software OpenGL</source>
       <translation>koristi program OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3275,10 +3296,6 @@ Možete koristiti i obrazac: John Doe &lt;john@doe.com&gt;
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (kakav je)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Pixel buffer (međuspremnik)</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3527,13 +3544,6 @@ Vrijednost je promjer sfere koja će stati na zaslon.
       <translation>Korak prilikom približavanja</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Koliko će biti zumirano.
-Korak zumiranja od '1' znači faktor 7,5 za svaki korak zumiranja.
-</translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Smjer operacija zumiranja će se obrnuti</translation>
     </message>
@@ -3622,6 +3632,28 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
     <message>
       <source>Object center</source>
       <translation>Središte objekta</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
   </context>
   <context>
@@ -3938,12 +3970,12 @@ Sustav preferencija je onaj skup postavki  koji se nalazi u općim preferencijam
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>nepoznata mjerna jedinica:</translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>mjerne jedinice se ne podudaraju</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>nepoznata mjerna jedinica:</translation>
     </message>
   </context>
   <context>
@@ -5427,7 +5459,7 @@ Kako želite nastaviti?</translation>
     </message>
     <message>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Automatski proširi</translation>
     </message>
   </context>
   <context>
@@ -6941,12 +6973,6 @@ Please check report view for more...</source>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>Fizički put:</translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>Dokument: </translation>
     </message>
@@ -6976,6 +7002,14 @@ Document: </source>
     <message>
       <source>Workbenches</source>
       <translation>Radne površine</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>

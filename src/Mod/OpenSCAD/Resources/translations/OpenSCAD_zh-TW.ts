@@ -121,12 +121,12 @@
     <message>
       <location filename="openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>片段的最小角度</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>片段的最小大小</translation>
     </message>
   </context>
   <context>
@@ -142,47 +142,47 @@
       <translation>請先選擇3個物件</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>此功能未支援</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>按確定</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="347"/>
+      <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>新增</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="348"/>
+      <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="349"/>
+      <location filename="OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>當作網格</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="350"/>
+      <location filename="OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>加入OpenSCAD元素</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="423"/>
+      <location filename="OpenSCADCommands.py" line="473"/>
       <source>Perform</source>
       <translation>執行</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="424"/>
+      <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
       <translation>網格布林運算</translation>
     </message>
     <message>
-      <location filename="OpenSCADUtils.py" line="623"/>
+      <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>錯誤，所有造型必須是2D或都是3D</translation>
     </message>
@@ -191,16 +191,31 @@
       <source>Unable to explode %s</source>
       <translation>無法拆解 %s</translation>
     </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation type="unfinished">Load</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation type="unfinished">Save</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>重新整理</translation>
+    </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="464"/>
+      <location filename="OpenSCADCommands.py" line="517"/>
       <source>Add OpenSCAD Element...</source>
       <translation>加入OpenSCAD元素...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="468"/>
+      <location filename="OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>藉由輸入OpenSCAD語言並執行OpenSCAD程式加入OpenSCAD元素</translation>
     </message>
@@ -255,12 +270,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="497"/>
+      <location filename="OpenSCADCommands.py" line="552"/>
       <source>Hull</source>
       <translation>殼體</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="500"/>
+      <location filename="OpenSCADCommands.py" line="555"/>
       <source>Perform Hull</source>
       <translation>執行殼體</translation>
     </message>
@@ -281,12 +296,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="477"/>
+      <location filename="OpenSCADCommands.py" line="532"/>
       <source>Mesh Boolean...</source>
       <translation>網格布林運算...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="481"/>
+      <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
     </message>
@@ -294,12 +309,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="516"/>
+      <location filename="OpenSCADCommands.py" line="571"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="519"/>
+      <location filename="OpenSCADCommands.py" line="574"/>
       <source>Perform Minkowski</source>
       <translation>執行 Minkowski</translation>
     </message>
@@ -385,7 +400,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="83"/>
+      <location filename="InitGui.py" line="79"/>
       <source>OpenSCAD Part tools</source>
       <translation>OpenSCAD 零件工具</translation>
     </message>
@@ -393,7 +408,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="81"/>
+      <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCAD工具</translation>
     </message>

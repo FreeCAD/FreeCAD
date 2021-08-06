@@ -27,7 +27,6 @@ containers for Arch objects, and also define a terrain surface.
 import FreeCAD,Draft,ArchCommands,math,re,datetime,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -131,7 +130,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
             else:
                 oldversion = True
         if tz:
-            tz = datetime.timezone(datetime.timedelta(hours=-3))
+            tz = datetime.timezone(datetime.timedelta(hours=tz))
         else:
             tz = datetime.timezone.utc
     else:
@@ -995,7 +994,7 @@ class _ViewProviderSite:
             The name of the property that has changed.
         """
 
-        if prop in ["Longitude","Latitude"]:
+        if prop in ["Longitude","Latitude","TimeZone"]:
             self.onChanged(obj.ViewObject,"SolarDiagram")
         elif prop == "Declination":
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")

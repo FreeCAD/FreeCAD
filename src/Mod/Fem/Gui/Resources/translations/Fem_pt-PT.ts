@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>Para acrescentar referências, selecione-as na vista 3D e clique "Adicionar".</translation>
+      <translation>Para acrescentar referências: selecione-as na vista 3D e clique "Adicionar".</translation>
     </message>
   </context>
   <context>
@@ -70,6 +70,11 @@
   <context>
     <name>GeometryElementsSelection</name>
     <message>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation>Seletor de referência de geometria para um</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
       <source>Geometry reference selector for a </source>
       <translation>Seletor de geometria de referência para um </translation>
@@ -82,7 +87,42 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>Clique em "Adicionar" e selecionar elementos geométricos para adicioná-los à lista. Se não adicionar geometria à lista, todos os restantes elementos serão usados. É permitido selecionar os seguinte elementos de geometria: </translation>
+      <translation>Clique em "Adicionar" e selecione elementos geométricos para adicioná-los à lista. Se nenhuma geometria for adicionada à lista, todos os restantes elementos serão usados. É permitido selecionar os seguinte elementos de geometria: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation>Clique em "Adicionar" e selecione os elementos geométricos para adicionar à lista.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>Os seguintes elementos de geometria podem ser selecionados: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>Se nenhuma geometria for adicionada à lista, todas as restantes serão usadas.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Clique em "Adicionar" e selecione os elementos geométricos para adicionar à lista.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation>Clique em "Adicionar" e selecione os elementos geométricos para adicionar à lista.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -399,7 +439,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation>Material FEM para sólidos</translation>
+      <translation>Material FEM para sólido</translation>
     </message>
   </context>
   <context>
@@ -1366,7 +1406,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="362"/>
       <source>Use built-in materials</source>
-      <translation>Utilizar materiais incorporados</translation>
+      <translation>Utilizar materiais pré-definidos</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
@@ -1484,7 +1524,7 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation>Falha na geração de malhas</translation>
+      <translation>Falha na geração de malha</translation>
     </message>
   </context>
   <context>
@@ -1713,7 +1753,7 @@
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
       <source>Torque [Nm]</source>
-      <translation>Torque [Nm]</translation>
+      <translation>Momento de Torção [Nm]</translation>
     </message>
   </context>
   <context>
@@ -1745,7 +1785,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation>Falha na geração de malhas</translation>
+      <translation>Falha na geração de malha</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
@@ -2349,7 +2389,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation>Deslocamento x</translation>
+      <translation>Deslocamento em x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2374,12 +2414,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation>Deslocamento y</translation>
+      <translation>Deslocamento em y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation>Deslocamento z</translation>
+      <translation>Deslocamento em z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>

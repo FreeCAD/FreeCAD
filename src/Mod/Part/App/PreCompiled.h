@@ -53,7 +53,6 @@
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
-#include <io.h>
 #include <fcntl.h>
 #include <assert.h>
 
@@ -101,7 +100,8 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
-#include <windows.h>
+#include <Windows.h>
+#include <io.h>
 #endif //_PreComp_
 
 #ifndef _Standard_Version_HeaderFile

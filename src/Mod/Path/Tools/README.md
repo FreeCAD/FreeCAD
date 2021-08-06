@@ -65,7 +65,7 @@ TechDraw's templates.
 ## How to create a new tool bit Shape
 
 The shape file for a tool bit is expected to contain a PD body which represents the tool as a 3d solid. The PD body
-should be parametric based on a a PropertyBag object so that, when the properties of the PropertyBag are changed the
+should be parametric based on a PropertyBag object so that, when the properties of the PropertyBag are changed the
 solid is updated to the correct representation.
 
 1. Create a new FreeCAD document

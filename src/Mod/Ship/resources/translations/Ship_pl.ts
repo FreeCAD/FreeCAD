@@ -16,7 +16,7 @@
     <message>
       <location filename="Instance.py" line="47"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation>Prawdziwe jeśli instancja statku jest obowiązująca, Nieprawdziwe w innym wypadku</translation>
+      <translation>Prawda, jeśli jest to ważny przykład statku, Fałsz w przeciwnym razie</translation>
     </message>
     <message>
       <location filename="Instance.py" line="56"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="ShipGui.py" line="100"/>
       <source>Plot the transversal areas curve</source>
-      <translation>Drukuje krzywą poprzecznego obszaru</translation>
+      <translation>Rysuj krzywą obszarów poprzecznych</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,7 @@
     <message>
       <location filename="ShipGui.py" line="117"/>
       <source>Plot the ship hydrostatics</source>
-      <translation>Drukuje hydrostatykę statku</translation>
+      <translation>Rysuj hydrostatyki statku</translation>
     </message>
   </context>
   <context>
@@ -116,7 +116,7 @@
     <message>
       <location filename="ShipGui.py" line="83"/>
       <source>Plots the ship hull outline draw</source>
-      <translation>Drukuje zarys kadłuba statku</translation>
+      <translation>Rysuje obrys kadłuba statku</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="TaskPanel.py" line="228"/>
       <source>Draft</source>
-      <translation>Szkic</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="323"/>
@@ -195,7 +195,7 @@
     <message>
       <location filename="TaskPanel.py" line="156"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation>Obiekty statku mogą być utworzone tylko na górze geometrii kadłuba (brak odnalezionych stałych spośród wybranych obiektów)</translation>
+      <translation>Obiekty statku mogą być utworzone tylko na górze geometrii kadłuba (żadna bryła nie została zaznaczona)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="98"/>
@@ -205,12 +205,12 @@
     <message>
       <location filename="TaskPanel.py" line="490"/>
       <source>Computing external faces</source>
-      <translation>Obliczanie obszarów zewnętrznych</translation>
+      <translation>Obliczanie ścian zewnętrznych</translation>
     </message>
     <message>
       <location filename="Preview.py" line="58"/>
       <source>Computing sections</source>
-      <translation>Przetwarzanie sekcji</translation>
+      <translation>Obliczanie sekcji</translation>
     </message>
     <message>
       <location filename="Preview.py" line="131"/>
@@ -225,37 +225,37 @@
     <message>
       <location filename="TaskPanel.py" line="202"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation>Instancja statku musi być zaznaczona zanim użyje się tego narzędzia (żaden obiekt nie został wybrany)</translation>
+      <translation>Wzorzec statku musi być zaznaczony zanim użyje się tego narzędzia (żaden obiekt nie został wybrany)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="218"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation>Więcej jak jeden statek został zaznaczony (dodatkowy statek zostanie zignorowany)</translation>
+      <translation>Wybrano więcej niż jeden statek (dodatkowe statki będą pominiete)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="228"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation>Instancja statku musi być zaznaczona zanim użyje się tego narzędzia (brak obowiązującego statku wśród zaznaczonych obiektów)</translation>
+      <translation>Wzożec statku musi być zaznaczony zanim użyje się tego narzędzia (brak prawidłowego statku wśród zaznaczonych obiektów)</translation>
     </message>
     <message>
       <location filename="PlotAux.py" line="61"/>
       <source>Plot module is disabled, so I cannot perform the plot</source>
-      <translation>Moduł wydruku jest wyłączony, nie można wykonać wydruku</translation>
+      <translation>Moduł wykresów jest wyłączony, nie można wykonać wydruku</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="197"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation>Instancja statku musi być zaznaczona zanim użyje się tego narzędzia (żaden obiekt nie został wybrany)</translation>
+      <translation>Wzorzec statku musi być zaznaczona zanim użyje się tego narzędzia (żaden obiekt nie został wybrany)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="215"/>
       <source>More than one ship has been selected (just the first one will be used)</source>
-      <translation>Więcej niż jeden statek został wybrany (tylko pierwszy zostanie użyty)</translation>
+      <translation>Wybrano więcej niż jeden statek (tylko pierwszy zostanie użyty)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="225"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation>Instancja statku musi być zaznaczona zanim użyje się tego narzędzia (nie obowiązujący statek znaleziony wśród zaznaczonych obiektów)</translation>
+      <translation>Wzorzec statku musi być zaznaczony zanim użyje się tego narzędzia (brak prawidłowego statku wśród zaznaczonych obiektów)</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="45"/>
@@ -325,7 +325,7 @@
     <message>
       <location filename="Tools.py" line="242"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation>Niejednoznaczna etykieta Wagi! (znaleziono przypadki {} oznaczone jako "{}")</translation>
+      <translation>Niejednoznaczna etykieta wagi! (znaleziono {} wystąpień oznaczonych jako '{}')</translation>
     </message>
     <message>
       <location filename="Tools.py" line="254"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Draft</source>
-      <translation>Szkic</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
   </context>
   <context>
@@ -446,7 +446,7 @@
     <message>
       <location filename="TaskPanel.py" line="242"/>
       <source>Plot the GZ curve</source>
-      <translation>Drukuj krzywą GZ</translation>
+      <translation>Rysuj krzywą GZ</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="247"/>
@@ -489,7 +489,7 @@
     <message>
       <location filename="TaskPanel.py" line="277"/>
       <source>Plot hydrostatics</source>
-      <translation>Wydruk hydrostatyki</translation>
+      <translation>Wykres hydrostatyki</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="282"/>
@@ -514,17 +514,17 @@
     <message>
       <location filename="TaskPanel.py" line="413"/>
       <source>Hydrostatics tool trim selected</source>
-      <translation>Wybrano narzędzie wykończenia hydrostatyki</translation>
+      <translation>Wybrano narzędzie przycinania hydrostatyki</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="426"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation>Wybrano narzędzie minimalnego kreślenia hydrostatyki w [m]</translation>
+      <translation>Wybrano narzędzie kreślenia minimalnej hydrostatyki w [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="439"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation>Wybrano narzędzie maksymalnego kreślenia hydrostatyki w [m]</translation>
+      <translation>Wybrano narzędzie kreślenia maksymalnej hydrostatyki w [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="452"/>
@@ -550,12 +550,12 @@
     <message>
       <location filename="ShipGui.py" line="182"/>
       <source>Create a new loading condition</source>
-      <translation>Utwórz nowy warunek załadunku</translation>
+      <translation>Utwórz nowy warunek obciążenia</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="185"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation>Utwórz nowy arkusz stanu obciążenia</translation>
+      <translation>Utwórz nowy arkusz kalkulacyjny stanu obciążenia</translation>
     </message>
   </context>
   <context>
@@ -568,7 +568,7 @@
     <message>
       <location filename="TaskPanel.py" line="241"/>
       <source>Auto create</source>
-      <translation>Automatyczne tworzenie</translation>
+      <translation>Utwórz automatycznie</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="246"/>
@@ -616,7 +616,7 @@
     <message>
       <location filename="TankInstance.py" line="53"/>
       <source>True if it is a valid tank instance, False otherwise</source>
-      <translation>Prawdziwe jeśli wzorzec statku jest obowiązujący, Nieprawdziwe w innym wypadku</translation>
+      <translation>Prawda, jeśli jest to prawidłowy wzorzec zbiornika, Fałsz w przeciwnym razie</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="163"/>
@@ -654,7 +654,7 @@
     <message>
       <location filename="WeightInstance.py" line="49"/>
       <source>True if it is a valid weight instance, False otherwise</source>
-      <translation>Prawdziwe jeśli wzorzec statku jest obowiązujący, Nieprawdziwe w innym wypadku</translation>
+      <translation>Prawda, jeśli jest to prawidłowy przykład wagi, Fałsz w przeciwnym razie</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="58"/>
@@ -674,7 +674,7 @@
     <message>
       <location filename="TaskPanel.py" line="118"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
-      <translation>Masa posiadające masę mogą być tworzone tylko na jego geometrii (brak wybranych obiektów)</translation>
+      <translation>Waga obiektów może być tworzona tylko na jej geometrii (nie wybrano obiektów)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="130"/>
@@ -689,7 +689,7 @@
     <message>
       <location filename="TaskPanel.py" line="216"/>
       <source>Create a new weight</source>
-      <translation>Tworzenie nowej wagi</translation>
+      <translation>Utwórz nową wagę</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="221"/>
@@ -709,7 +709,7 @@
     <message>
       <location filename="TaskPanel.py" line="239"/>
       <source>Area density</source>
-      <translation>Gęstość obszarowa</translation>
+      <translation>Gęstość powierzchni</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="245"/>
@@ -719,7 +719,7 @@
     <message>
       <location filename="WeightInstance.py" line="76"/>
       <source>Area density [kg / m^2]</source>
-      <translation>Gęstość obszarowa [kg / m^2]</translation>
+      <translation>Gęstość powierzchni [kg / m^2]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="166"/>

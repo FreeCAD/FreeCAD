@@ -34,15 +34,15 @@
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>作成する整列のタイプ。
+- Ortho: コピーをグローバルなX、Y、Zの軸方向に配置
+- Polar: 指定された角度まで、中心と軸によって定義された方向に、円弧に沿ってコピーを配置
+- Circular: ベースオブジェクトを囲む同心球上にコピーを配置</translation>
     </message>
     <message>
       <location filename="array.py" line="109"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
+      <translation>互いに接触した場合にコピーを結合するかどうかを指定 (処理が遅くなります)</translation>
     </message>
     <message>
       <location filename="array.py" line="122"/>
@@ -62,90 +62,90 @@
     <message>
       <location filename="array.py" line="150"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>X方向の区間の距離と向き</translation>
     </message>
     <message>
       <location filename="array.py" line="160"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>Y方向の区間の距離と向き</translation>
     </message>
     <message>
       <location filename="array.py" line="170"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>Z方向の区間の距離と向き</translation>
     </message>
     <message>
       <location filename="array.py" line="185"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation type="unfinished">The axis direction around which the elements in a polar or a circular array will be created</translation>
+      <translation>軸周整列または円形整列の要素が作成される軸方向</translation>
     </message>
     <message>
       <location filename="array.py" line="196"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation type="unfinished">Center point for polar and circular arrays.
-The 'Axis' passes through this point.</translation>
+      <translation>軸周整列、円形配列の中心点。
+軸がこの点を通ります。</translation>
     </message>
     <message>
       <location filename="array.py" line="215"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation type="unfinished">The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
+      <translation>「Axis」「Center」の値を上書きする、データム線などの軸オブジェクト。
+その配置、位置、回転量が軸周配列、円形配列の作成時に使用されます。
+「Axis」「Center」を手作業で設定できるようにするにはこのプロパティーを空欄のままにしてください。</translation>
     </message>
     <message>
       <location filename="array.py" line="228"/>
       <source>Number of copies in the polar direction</source>
-      <translation type="unfinished">Number of copies in the polar direction</translation>
+      <translation>軸周方向のコピー数</translation>
     </message>
     <message>
       <location filename="array.py" line="238"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
+      <translation>「軸」方向の区間の距離と向き</translation>
     </message>
     <message>
       <location filename="array.py" line="247"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>コピーを敷きつめる角度</translation>
     </message>
     <message>
       <location filename="array.py" line="260"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>円形レイヤー間の距離</translation>
     </message>
     <message>
       <location filename="array.py" line="270"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation type="unfinished">Distance between copies in the same circular layer</translation>
+      <translation>同じ円形レイヤー内のコピー間の距離</translation>
     </message>
     <message>
       <location filename="array.py" line="280"/>
       <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation type="unfinished">Number of circular layers. The 'Base' object counts as one layer.</translation>
+      <translation>円形レイヤー数。「Base」オブジェクトは1つのレイヤーとしてカウントされます。</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes  the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes  the circular array will have.</translation>
+      <translation>円形整列の対称面の数を決定するパラメーター</translation>
     </message>
     <message>
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>整列内の要素の合計数。
+整列のパラメーターに依存するためこのプロパティは読み取り専用です。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>個々の整列要素を表示 (リンク整列のみ)</translation>
     </message>
     <message>
       <location filename="block.py" line="43"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>このブロックのコンポーネント</translation>
     </message>
     <message>
       <location filename="wpproxy.py" line="42"/>
@@ -155,52 +155,52 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>四角形の長さ</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>四角形の高さ</translation>
     </message>
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>角のフィレットで使用する半径</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>角の面取りのサイズ</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="58"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>面を作成</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>この四角形の水平方向の細分割数</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>この四角形の垂直方向の細分割数</translation>
     </message>
     <message>
       <location filename="wire.py" line="93"/>
       <source>The area of this object</source>
-      <translation type="unfinished">The area of this object</translation>
+      <translation>このオブジェクトの面積</translation>
     </message>
     <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation type="unfinished">The normal direction of the text of the dimension</translation>
+      <translation>この寸法のテキストの法線方向</translation>
     </message>
     <message>
       <location filename="dimension.py" line="150"/>
       <source>The object measured by this dimension object</source>
-      <translation type="unfinished">The object measured by this dimension object</translation>
+      <translation>この寸法オブジェクトで測定するオブジェクト</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -212,13 +212,12 @@ There are various possibilities:
 - An object, and two of its vertices.
 - An arc object, and its edge.
 </source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>この寸法オブジェクトで計測するオブジェクトとその固有サブ要素。
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.
+さまざまな指定方法があります。
+- オブジェクトとそのエッジの1つ
+- オブジェクトとその頂点の2つ
+- 円弧オブジェクトとそのエッジ
 </translation>
     </message>
     <message>
@@ -231,14 +230,11 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>寸法線、またはその延長線が通過する点。
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- 直線寸法の場合、このプロパティーは寸法線が計測オブジェクトにどれだけ近づくかを制御します。
+- 半径寸法の場合、計測半径、計測直径を表示する寸法線の方向を制御します。
+- 角度寸法の場合、計測角度を表示する寸法円弧の半径を制御します。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="233"/>
@@ -246,10 +242,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>寸法線の始点。
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+半径寸法の場合、円弧の中心点になります。
+直径寸法の場合、円弧上の1点になります。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -257,17 +253,16 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>寸法線の終点。
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+半径寸法、直径寸法の場合、円弧上の1点になります。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>寸法線の方向。
+(0,0,0) のままにした場合、方向は自動計算されます。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -278,34 +273,31 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>計測値。
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+この値は「Start」「End」プロパティーから計算されるため、このプロパティーは読み取り専用です。
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+「Linked Geometry」が円弧や円の場合、「Diameter」プロパティーに依存して「Distance」は半径または直径になります。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>円弧を計測する際に、半径、直径のどちらを表示するかを決定します。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>寸法線の開始角度 (円弧)。
+円弧は反時計回りに描画されます。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>寸法線の終了角度 (円弧)。
+円弧は反時計回りに描画されます。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -313,10 +305,9 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>円弧の寸法線の中心点。
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+通常、2つの線分、またはそれらの延長線が交差する点で、その間の測定角度が計測結果となります。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -324,22 +315,21 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>計測値。
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+値は「First Angle」と「Last Angle」プロパティーから計算されるため、このプロパティーは読み取り専用です。</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>最初の線の基点の位置</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>このオブジェクトによって表示されるテキスト。
+文字列のリストで、リスト内の各要素がそれぞれの行に表示されます。</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
@@ -350,55 +340,54 @@ It is a list of strings; each element in the list will be displayed in its own l
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>円弧の終了角度（完全な円の場合、最初の角度と同じ値を設定）</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>円の半径</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>面の数</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>制御円の半径</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>制御円から多角形を描く方法</translation>
     </message>
     <message>
       <location filename="point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>X位置</translation>
     </message>
     <message>
       <location filename="point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Y位置</translation>
     </message>
     <message>
       <location filename="point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Z位置</translation>
     </message>
     <message>
       <location filename="layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>このレイヤーの一部であるオブジェクト</translation>
     </message>
     <message>
       <location filename="label.py" line="65"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>引き出し線の先端の位置。
+この点は矢印または別の記号で装飾できます。</translation>
     </message>
     <message>
       <location filename="label.py" line="79"/>
@@ -406,10 +395,9 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
+      <translation>「Label Type」に従って「Text」として表示されるプロパティーを持つオブジェクトやオプションのサブ要素。
 
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+「Label Type」が「Custom」に設定されている場合は「Target」は使用されません。</translation>
     </message>
     <message>
       <location filename="label.py" line="109"/>
@@ -422,15 +410,15 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>引き出し線を定義する点のリスト。通常は3点のリストです。
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+最初の点はテキスト位置、つまり「Placement」、
+最後の点は線の先端、つまり「Target Point」になります。
+中間の点は「Straight Direction」と「Straight Distance」の値の
+選択・設定に従って自動で計算されます。
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+「Straight Direction」が「Custom」に設定されている場合は
+「Points」プロパティーには任意の点のリストを設定できます。</translation>
     </message>
     <message>
       <location filename="label.py" line="124"/>
@@ -438,10 +426,10 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>引き出し線の直線部分の方向。
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+「Custom」 が選択されている場合、「Points」属性にカスタムリストを
+設定することで引き出し線の点を指定できます。</translation>
     </message>
     <message>
       <location filename="label.py" line="142"/>
@@ -450,21 +438,21 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>引き出し線の直線部分の長さ。
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+方向を持つ距離です。「Straight Direction」の値に従って、
+マイナスの場合は線がテキストの左または下に描かれ、
+それ以外の場合は右または上に描かれます。</translation>
     </message>
     <message>
       <location filename="label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>3D空間での「テキスト」要素の配置</translation>
     </message>
     <message>
       <location filename="label.py" line="166"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>「Label Type」が「Custom」に設定されている場合に表示するテキスト</translation>
     </message>
     <message>
       <location filename="label.py" line="181"/>
@@ -473,11 +461,11 @@ depending on the value of 'Straight Direction'.</translation>
 This property is read-only, as the final text depends on 'Label Type',
 and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">The text displayed by this label.
+      <translation>このラベルによって表示されるテキスト
 
-This property is read-only, as the final text depends on 'Label Type',
-and the object defined in 'Target'.
-The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
+このプロパティーは読み取り専用で、「Label Type」、
+「Target」に定義されたオブジェクトによって最終的なテキストが決まります。
+「Label Type」が「Custom」に設定されている場合のみ「Custom Text」が表示されます。</translation>
     </message>
     <message>
       <location filename="label.py" line="216"/>
@@ -489,14 +477,14 @@ For other types, the string will be calculated automatically from the object def
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation type="unfinished">The type of information displayed by this label.
+      <translation>このラベルによって表示される情報の種類
 
-If 'Custom' is chosen, the contents of 'Custom Text' will be used.
-For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like Arch objects.
+「Custom」が選択されている場合、「Custom Text」の内容が使用されます。
+他の種類では「Target」で定義されるオブジェクトから自動計算される文字列になります。
+「Tag」や「Material」は Arch オブジェクトなど、そのプロパティーを持つオブジェクトでのみ動作します。
 
-For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
-or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
+「位置」「長さ」「面積」のプロパティーは「Target」のメイン・オブジェクト、または
+指定された場合はサブ要素「VertexN」「EdgeN」「FaceN」からそれぞれ抽出されます。</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="47"/>
@@ -516,36 +504,36 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="56"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>文字間隔</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>個々の整列要素を表示</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>ベースオブジェクトが重複しています。</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
       <source>Object containing points used to distribute the base object, for example, a sketch or a Part compound.
 The sketch or compound must contain at least one explicit point or vertex object.</source>
-      <translation type="unfinished">Object containing points used to distribute the base object, for example, a sketch or a Part compound.
-The sketch or compound must contain at least one explicit point or vertex object.</translation>
+      <translation>スケッチやパート・コンパウドなど、ベース・オブジェクトを配置するために使用される点を含むオブジェクト。
+スケッチまたはコンパウンドは、明示的な点・頂点オブジェクトを少なくとも1つ含んでいる必要があります。</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="95"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the points contained within 'Point Object'.</translation>
+      <translation>整列内の要素の合計数。
+「Point Object」に含まれる点に依存する数値であるためこのプロパティーは読み取り専用です。</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="139"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation type="unfinished">Additional placement, shift and rotation, that will be applied to each copy</translation>
+      <translation>各コピーに適用される追加の配置、平行移動、回転。</translation>
     </message>
     <message>
       <location filename="bspline.py" line="46"/>
@@ -560,107 +548,84 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>このスプラインが閉じている場合、面を作成</translation>
     </message>
     <message>
       <location filename="bspline.py" line="67"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>パラメーター化係数</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>この2Dビューが表現する必要のあるベースオブジェクト</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>このオブジェクトの投影ベクトル</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>表示オブジェクトの投影方向</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>個別面モードで投影される面のインデックス</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>隠線を表示</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="79"/>
-      <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</translation>
+      <translation>壁と構造物を同じ種類と材質に融合</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                visible</translation>
+      <source>Tessellate Ellipses and B-splines into line segments</source>
+      <translation>楕円、B-スプラインを線分に分割</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
-      <translation type="unfinished">Start angle of the elliptical arc</translation>
+      <translation>楕円弧の開始角度</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="49"/>
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>楕円弧の終了角度（完全な円の場合、最初の角度と同じ値を設定）</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>楕円の短半径</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>楕円の長半径</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="61"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>このオブジェクトの面積</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>ベジエ曲線の点</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>ベジエ関数の次数</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -670,58 +635,58 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>ベジエ曲線を閉じるかどうか</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>この曲線が閉じている場合、面を作成</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>このオブジェクトの長さ</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>コピーがそれに沿って配置されるオブジェクト。「エッジ」を含んでいる必要があります。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="192"/>
       <source>List of connected edges in the 'Path Object'.
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
-      <translation type="unfinished">List of connected edges in the 'Path Object'.
-If these are present, the copies will be created along these subelements only.
-Leave this property empty to create copies along the entire 'Path Object'.</translation>
+      <translation>「Path Object」の繋がったエッジのリスト。
+設定されている場合はそれらサブ要素のみに沿ってコピーが作成されます。
+「Path Object」全体に沿ってコピーを作成する場合はこのプロパティーを空欄のままにしてください。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="200"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>作成するコピーの数:</translation>
     </message>
     <message>
       <location filename="patharray.py" line="219"/>
       <source>Additional translation that will be applied to each copy.
 This is useful to adjust for the difference between shape centre and shape reference point.</source>
-      <translation type="unfinished">Additional translation that will be applied to each copy.
-This is useful to adjust for the difference between shape centre and shape reference point.</translation>
+      <translation>各コピーに適用される追加の移動。
+シェイプの中心と基準点の差を調整するのに便利です。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="227"/>
       <source>Alignment vector for 'Tangent' mode</source>
-      <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
+      <translation>「Tangent」モードでの配置ベクトル</translation>
     </message>
     <message>
       <location filename="patharray.py" line="235"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>「Original」または「Tangent」配置モードを使用する際に「Vertical Vector」をローカルZ方向として強制的に使用</translation>
     </message>
     <message>
       <location filename="patharray.py" line="243"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation type="unfinished">Direction of the local Z axis when 'Force Vertical' is true</translation>
+      <translation>「Force Vertical」がTrueの場合のローカルZ軸方向</translation>
     </message>
     <message>
       <location filename="patharray.py" line="251"/>
@@ -731,19 +696,19 @@ This is useful to adjust for the difference between shape centre and shape refer
 - Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
 
 To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation type="unfinished">Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
+      <translation>パスに沿ったコピーの向き指定方法
+- Original: Xは曲線接線、Yは法線、Zは外積の方向。
+- Frenet: パスに沿ったローカル座標系に追従するようオブジェクトを配置。
+- Tangent: 「Original」と同様ですがローカルX軸が「Tangent Vector」に前もって合わせられます。
 
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</translation>
+「Original」「Tangent」でより適切な結果を得るには「Force Vertical」をTrueに設定しておくと良いかもしれません。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="262"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>コピーを「Align Mode」に応じた向きでパスに沿って配置します。
+設定されていない場合、コピーは元のベース・オブジェクトと同じ方向になります。</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="66"/>
@@ -753,12 +718,12 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="73"/>
       <source>Projection direction</source>
-      <translation type="unfinished">Projection direction</translation>
+      <translation>投影方向</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="80"/>
       <source>The width of the lines inside this object</source>
-      <translation type="unfinished">The width of the lines inside this object</translation>
+      <translation>このオブジェクト内部の線の幅</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="88"/>
@@ -768,22 +733,22 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="96"/>
       <source>The spacing between lines of text</source>
-      <translation type="unfinished">The spacing between lines of text</translation>
+      <translation>テキストの行間隔</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="103"/>
       <source>The color of the projected objects</source>
-      <translation type="unfinished">The color of the projected objects</translation>
+      <translation>投影オブジェクトの色</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="110"/>
       <source>Shape Fill Style</source>
-      <translation type="unfinished">Shape Fill Style</translation>
+      <translation>シェイプの塗りつぶしのスタイル</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="118"/>
       <source>Line Style</source>
-      <translation type="unfinished">Line Style</translation>
+      <translation>線のスタイル</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="127"/>
@@ -793,112 +758,111 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="43"/>
       <source>Linked faces</source>
-      <translation type="unfinished">Linked faces</translation>
+      <translation>リンクされた面</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="46"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>分割線を削除する必要があるかどうかを指定</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="49"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>すべての面に適用するオプションの押し出し値</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>すべての面に適用するオプションのオフセット値</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="55"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>シェイプの縫い合わせを行うかどうかを指定</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="58"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation type="unfinished">The area of the faces of this Facebinder</translation>
+      <translation>このフェイスバインダーの面積</translation>
     </message>
     <message>
       <location filename="clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>このクローンに含まれるオブジェクト</translation>
     </message>
     <message>
       <location filename="clone.py" line="51"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>このクローンの拡大縮小率</translation>
     </message>
     <message>
       <location filename="clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>クローンに複数のオブジェクトが含まれている場合、
+Trueに設定すると結合、Falseに設定するとコンパウドを作成。</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="82"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
-      <translation type="unfinished">General scaling factor that affects the annotation consistently
-because it scales the text, and the line decorations, if any,
-in the same proportion.</translation>
+      <translation>注釈に一貫した効果を及ぼす全般的な拡大縮小率であり、
+同じ比率でテキストや線の装飾を拡大縮小します。</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="100"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation type="unfinished">Annotation style to apply to this object.
-When using a saved style some of the view properties will become read-only;
-they will only be editable by changing the style through the 'Annotation style editor' tool.</translation>
+      <translation>このオブジェクトに提要する注釈スタイル。
+保存されたスタイルを使用するとビュープロパティーの一部が読み取り専用になります。
+「注釈スタイルエディター」ツールからスタイルを変更すると編集できるようになります。</translation>
     </message>
     <message>
       <location filename="wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>ワイヤーの頂点</translation>
     </message>
     <message>
       <location filename="wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>ワイヤーが閉じているかどうか</translation>
     </message>
     <message>
       <location filename="wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>ベースオブジェクトは2つのオブジェクトから形成されたワイヤーです。</translation>
     </message>
     <message>
       <location filename="wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>ツールオブジェクトは2つのオブジェクトから形成されたワイヤーです。</translation>
     </message>
     <message>
       <location filename="wire.py" line="65"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>この線の始点</translation>
     </message>
     <message>
       <location filename="wire.py" line="69"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>この線の終点</translation>
     </message>
     <message>
       <location filename="wire.py" line="73"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>この線の長さ</translation>
     </message>
     <message>
       <location filename="wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>このオブジェクトが閉じている場合、面を作成</translation>
     </message>
     <message>
       <location filename="wire.py" line="89"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>各エッジの再分割数</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="137"/>
@@ -913,31 +877,31 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="view_dimension.py" line="155"/>
       <source>Spacing between text and dimension line</source>
-      <translation type="unfinished">Spacing between text and dimension line</translation>
+      <translation>テキストと寸法線との間隔</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="164"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>寸法テキストを180度回転</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="174"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
-      <translation type="unfinished">Text Position.
-Leave '(0,0,0)' for automatic position</translation>
+      <translation>テキスト位置。
+自動位置の場合は「(0,0,0)」のままにします。</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="185"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
-      <translation type="unfinished">Text override.
-Write '$dim' so that it is replaced by the dimension length.</translation>
+      <translation>上書きテキス。
+「$dim」と書き込むと、寸法長さで置き換えられます。</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="196"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>表示する小数点以下の桁数</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="205"/>
@@ -945,150 +909,209 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
       <translation>単位表記を表示</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="215"/>
-      <source>A unit to express the measurement.
-Leave blank for system default</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default</translation>
-    </message>
-    <message>
-      <location filename="view_dimension.py" line="229"/>
+      <location filename="view_dimension.py" line="230"/>
       <source>Arrow size</source>
       <translation>矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="238"/>
+      <location filename="view_dimension.py" line="239"/>
       <source>Arrow type</source>
       <translation>矢印のタイプ</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="248"/>
+      <location filename="view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>寸法矢印を180度回転</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="259"/>
+      <location filename="view_dimension.py" line="260"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>寸法線が寸法補助線を超えて伸びる距離</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="268"/>
+      <location filename="view_dimension.py" line="269"/>
       <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <translation>寸法補助線の長さ</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="278"/>
+      <location filename="view_dimension.py" line="279"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension line
-beyond the dimension line</translation>
+      <translation>寸法線を越える寸法補助線の長さ</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="287"/>
+      <location filename="view_dimension.py" line="288"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>寸法線と矢印を表示</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Trueの場合、このレイヤーに含まれるオブジェクトにはレイヤーの線の色が適用されます。</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>True の場合、このレイヤー内のオブジェクトが TechDraw ページに配置された場合に印刷色が使用されます。</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="102"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>このレイヤーに含まれるオブジェクトの線の色</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="116"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>このレイヤーに含まれるオブジェクトのシェイプの色</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="130"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>このレイヤーに含まれるオブジェクトの線の幅</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="142"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>このレイヤーに含まれるオブジェクトの描画スタイル</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="153"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>このレイヤーに含まれるオブジェクトの透明度</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="164"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>TechDraw ページで使用する場合の、このレイヤーに含まれるオブジェクトの線の色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>ライン幅</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>線の色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
+      <translation>テキストのサイズ</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
+      <translation>テキストのフォント</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>テキストの垂直方向の位置</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
       <translation>テキストの色</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>行間隔(フォント サイズに対する相対値)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>テキストボックスの各行の最大文字数</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
-      <translation type="unfinished">The size of the arrow</translation>
+      <translation>矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <translation>このラベルの矢印の種類</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>このオブジェクトのテキストを囲む枠の種類</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
-      <translation type="unfinished">Display a leader line or not</translation>
+      <translation>引き出し線を表示するかどうか</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="86"/>
+      <source>The base object that will be duplicated.</source>
+      <translation type="unfinished">The base object that will be duplicated.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="100"/>
+      <source>Number of copies to create.</source>
+      <translation type="unfinished">Number of copies to create.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="107"/>
+      <source>Rotation factor of the twisted array.</source>
+      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+    </message>
+    <message>
+      <location filename="shapestring.py" line="59"/>
+      <source>Fill letters with faces</source>
+      <translation type="unfinished">Fill letters with faces</translation>
+    </message>
+    <message>
+      <location filename="view_dimension.py" line="216"/>
+      <source>A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</source>
+      <translation type="unfinished">A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="117"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation type="unfinished">For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1402,12 +1425,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="pointarray.py" line="305"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>点オブジェクトに離散点がありません。整列には使用できません。</translation>
     </message>
     <message>
       <location filename="bspline.py" line="106"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry：最初/最後の点を一致させて曲線を閉じてください。ジオメトリーは更新されていません。</translation>
     </message>
     <message>
       <location filename="view_wpproxy.py" line="102"/>
@@ -1417,47 +1440,47 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>オブジェクトの表示/非表示の状態を書き込み</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="402"/>
       <source>Merge layer duplicates</source>
-      <translation type="unfinished">Merge layer duplicates</translation>
+      <translation>レイヤーの重複を結合</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="407"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>新しいレイヤーの追加</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="244"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>グリッドのオン/オフを切り替え</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
       <source>Object snapping</source>
-      <translation type="unfinished">Object snapping</translation>
+      <translation>オブジェクトスナップ</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
+      <translation>表示補助寸法のオン/オフを切り替え</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="314"/>
       <source>Toggles Ortho On/Off</source>
-      <translation type="unfinished">Toggles Ortho On/Off</translation>
+      <translation>矩形のオン/オフを切り替え</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="332"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
+      <translation>作業平面への拘束のオン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="144"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>拡大縮小したパートに新しいオブジェクトを挿入できません。</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="157"/>
@@ -1470,52 +1493,52 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>False</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="130"/>
+      <location filename="task_scale.py" line="133"/>
       <source>Scale</source>
       <translation>尺度</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="131"/>
-      <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
-    </message>
-    <message>
-      <location filename="task_scale.py" line="132"/>
-      <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
-    </message>
-    <message>
-      <location filename="task_scale.py" line="133"/>
-      <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
-    </message>
-    <message>
       <location filename="task_scale.py" line="134"/>
-      <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <source>X factor</source>
+      <translation>X係数</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="135"/>
-      <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <source>Y factor</source>
+      <translation>Y係数</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="136"/>
+      <source>Z factor</source>
+      <translation>Z係数</translation>
+    </message>
+    <message>
+      <location filename="task_scale.py" line="137"/>
+      <source>Uniform scaling</source>
+      <translation>均一な拡大縮小</translation>
+    </message>
+    <message>
+      <location filename="task_scale.py" line="138"/>
+      <source>Working plane orientation</source>
+      <translation>作業平面の向き</translation>
+    </message>
+    <message>
+      <location filename="task_scale.py" line="139"/>
       <source>Copy</source>
       <translation>コピー</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="137"/>
+      <location filename="task_scale.py" line="140"/>
       <source>Modify subelements</source>
       <translation>サブ要素を変更</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="138"/>
+      <location filename="task_scale.py" line="141"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>点から選択</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="139"/>
+      <location filename="task_scale.py" line="142"/>
       <source>Create a clone</source>
       <translation>クローンを作成</translation>
     </message>
@@ -1527,12 +1550,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_lineslope.py" line="91"/>
       <source>Slope</source>
-      <translation type="unfinished">Slope</translation>
+      <translation>傾斜</translation>
     </message>
     <message>
       <location filename="gui_circulararray.py" line="66"/>
       <source>Circular array</source>
-      <translation>環状配列</translation>
+      <translation>円形整列</translation>
     </message>
     <message>
       <location filename="gui_circulararray.py" line="68"/>
@@ -1540,15 +1563,14 @@ from menu Tools -&gt; Addon Manager</source>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>選択したオブジェクトのコピーを作成し、さまざまな円形レイヤーを作る放射パターンにそれらコピーを配置します。
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+タイプを変更すると整列を矩形整列、軸周整列へ変えることができます。</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="66"/>
       <source>Polar array</source>
-      <translation>円形整列</translation>
+      <translation>軸周整列</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="68"/>
@@ -1556,20 +1578,19 @@ The array can be turned into an orthogonal or a polar array by changing its type
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
+      <translation>選択したオブジェクトのコピーを作成し、回転中心と角度で定義された軸周パターンにそれらを配置します。
 
-The array can be turned into an orthogonal or a circular array by changing its type.</translation>
+タイプを変更すると整列を格子整列、円形整列へ変えることができます。</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation type="unfinished">Array tools</translation>
+      <translation>整列ツール</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>格子、軸周、円形、経路、点など、さまざまな種類の整列を作成</translation>
     </message>
     <message>
       <location filename="gui_orthoarray.py" line="66"/>
@@ -1582,35 +1603,60 @@ The array can be turned into an orthogonal or a circular array by changing its t
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>選択したオブジェクトのコピーを作成し、矩形パターンそれらを配置することで
+X、Y、Zの軸の指定方向にコピーを並べます。
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+タイプを変更すると整列を軸周整列、円形整列へ変えることができます。</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>フィレット</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
+      <translation>2 つの選択したワイヤまたはエッジの間にフィレットを作成</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>元のオブジェクトを削除</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>面取りを作成</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="326"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>オフセット方向が定義されていません。最初にオブジェクトのどちらか一方にマウスを動かして方向を指定してください。</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="273"/>
+      <source>Save style</source>
+      <translation type="unfinished">Save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="274"/>
+      <source>Name of this new style:</source>
+      <translation type="unfinished">Name of this new style:</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="282"/>
+      <source>Name exists. Overwrite?</source>
+      <translation type="unfinished">Name exists. Overwrite?</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="317"/>
+      <source>Error: json module not found. Unable to save style</source>
+      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="281"/>
+      <source>Warning</source>
+      <translation>警告</translation>
     </message>
   </context>
   <context>
@@ -1618,7 +1664,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular array</source>
-      <translation>環状配列</translation>
+      <translation>円形整列</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="57"/>
@@ -1679,13 +1725,13 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="161"/>
       <source>Link array</source>
-      <translation>リンク配列</translation>
+      <translation>リンク整列</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="186"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation>円形整列の要素から同じ円内の次の要素までの距離。
+      <translation>整列円の要素から同じ円内の次の要素までの距離。
 ゼロにはできません。</translation>
     </message>
     <message>
@@ -1799,7 +1845,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="152"/>
       <source>Link array</source>
-      <translation>リンク配列</translation>
+      <translation>リンク整列</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="177"/>
@@ -1862,7 +1908,7 @@ The number must be at least 1 in each direction.</source>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation>円形整列</translation>
+      <translation>軸周整列</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="57"/>
@@ -1923,21 +1969,21 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="161"/>
       <source>Link array</source>
-      <translation>リンク配列</translation>
+      <translation>リンク整列</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="187"/>
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation>円形整列のスイープ角度。
-マイナスの角度では反対方向に円形パターンが生成されます。
+      <translation>軸周配置のスイープ角度。
+マイナスの角度では反対方向に軸周パターンが生成されます。
 絶対最大値は360度です。</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="180"/>
       <source>Polar angle</source>
-      <translation>円角度</translation>
+      <translation>軸周角度</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="219"/>
@@ -2023,18 +2069,18 @@ It must be at least 2.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="342"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>構築グループに追加</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="344"/>
+      <location filename="gui_groups.py" line="345"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-It creates a construction group if it doesn't exist.</translation>
+      <translation>選択したオブジェクトを構築グループに追加し、
+その外観を構築スタイルに変更します。
+存在しない場合は構築グループを作成します。</translation>
     </message>
   </context>
   <context>
@@ -2042,12 +2088,12 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>点を追加</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation type="unfinished">Adds a point to an existing Wire or B-spline.</translation>
+      <translation>既存のワイヤーまたはB-スプラインに点を追加。</translation>
     </message>
   </context>
   <context>
@@ -2055,19 +2101,19 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_groups.py" line="67"/>
       <source>Ungroup</source>
-      <translation type="unfinished">Ungroup</translation>
+      <translation>グループ解除</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="72"/>
       <source>Move to group</source>
-      <translation type="unfinished">Move to group</translation>
+      <translation>グループに移動</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="74"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>選択したオブジェクトを既存のグループに移動するか、グループから削除します。
+このツールを使用するにはまずグループを作成してください。</translation>
     </message>
   </context>
   <context>
@@ -2075,7 +2121,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="80"/>
       <source>Annotation styles...</source>
-      <translation type="unfinished">Annotation styles...</translation>
+      <translation>注釈スタイル...</translation>
     </message>
   </context>
   <context>
@@ -2083,40 +2129,40 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>現在のスタイルを適用</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>ツール バーで定義した現在のスタイル（線の幅と色）を、選択したオブジェクトとグループに適用</translation>
     </message>
   </context>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="gui_arcs.py" line="66"/>
+      <location filename="gui_arcs.py" line="67"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="69"/>
+      <location filename="gui_arcs.py" line="70"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>中心点と半径を指定して円弧を作成します。 
+CTRLでスナップ、SHIFTで拘束。</translation>
     </message>
   </context>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="gui_arcs.py" line="598"/>
+      <location filename="gui_arcs.py" line="600"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>円弧ツール</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="601"/>
+      <location filename="gui_arcs.py" line="603"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>様々な種類の円弧を作成</translation>
     </message>
   </context>
   <context>
@@ -2132,23 +2178,23 @@ CTRL to snap, SHIFT to constrain.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>選択したオブジェクトから整列を作成します。
+デフォルトでは2×2の矩形整列です。
+整列を作成した後、タイプを軸周または円形に変更したり、
+プロパティーを変更したりすることができます。</translation>
     </message>
   </context>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="238"/>
+      <location filename="gui_groups.py" line="239"/>
       <source>Autogroup</source>
       <translation>オートグループ</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="241"/>
+      <location filename="gui_groups.py" line="242"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <translation>全てのDraft、Archオブジェクトを追加するグループを選択</translation>
     </message>
   </context>
   <context>
@@ -2161,7 +2207,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>複数点からなるB-スプラインを作成します。CTRLでスナップ、SHIFTで拘束。</translation>
     </message>
   </context>
   <context>
@@ -2169,14 +2215,14 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
-      <translation type="unfinished">Bezier curve</translation>
+      <translation>ベジェ曲線</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>N次のベジェ曲線を作成します。選択する点が多いほど、次数が高くなります。
+CTRLでスナップ、SHIFTで拘束します。</translation>
     </message>
   </context>
   <context>
@@ -2184,27 +2230,26 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
-      <translation type="unfinished">Bezier tools</translation>
+      <translation>ベジェツール</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of Bezier curves.</source>
-      <translation type="unfinished">Create various types of Bezier curves.</translation>
+      <translation>様々な種類のベジェ曲線を作成</translation>
     </message>
   </context>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="gui_circles.py" line="79"/>
+      <location filename="gui_circles.py" line="80"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="gui_circles.py" line="83"/>
+      <location filename="gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
-      <translation type="unfinished">Creates a circle (full circular arc).
-CTRL to snap, ALT to select tangent objects.</translation>
+      <translation>円（完全円形弧）を作成します。CTRLでスナップ、ALTで接するオブジェクトを選択.</translation>
     </message>
   </context>
   <context>
@@ -2218,8 +2263,8 @@ CTRL to snap, ALT to select tangent objects.</translation>
       <location filename="gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>選択したオブジェクトのクローンを作成します。
+結果のクローンは、各3方向に拡大縮小できます。</translation>
     </message>
   </context>
   <context>
@@ -2227,29 +2272,29 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_lineops.py" line="124"/>
       <source>Close Line</source>
-      <translation type="unfinished">Close Line</translation>
+      <translation>線を閉じる</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="125"/>
       <source>Closes the line being drawn, and finishes the operation.</source>
-      <translation type="unfinished">Closes the line being drawn, and finishes the operation.</translation>
+      <translation>描いている線を閉じ、操作を終了</translation>
     </message>
   </context>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="gui_beziers.py" line="243"/>
+      <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
-      <translation type="unfinished">Cubic bezier curve</translation>
+      <translation>3次ベジェ曲線</translation>
     </message>
     <message>
-      <location filename="gui_beziers.py" line="246"/>
+      <location filename="gui_beziers.py" line="245"/>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>2次（平方）、3次（立方）の分線からなるベジェ曲線を作成します。クリックとドラッグで各分線を定義します。
+曲線を作成した後、各制御点の編集や各ノットのプロパティーの設定に戻ることができます。
+CTRLでスナップ、SHIFTで拘束します。</translation>
     </message>
   </context>
   <context>
@@ -2257,23 +2302,23 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="89"/>
       <source>Remove point</source>
-      <translation type="unfinished">Remove point</translation>
+      <translation>点を削除</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation type="unfinished">Removes a point from an existing Wire or B-spline.</translation>
+      <translation>既存のワイヤーまたはB-スプラインから点を削除</translation>
     </message>
   </context>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="gui_dimensions.py" line="83"/>
+      <location filename="gui_dimensions.py" line="84"/>
       <source>Dimension</source>
       <translation>寸法</translation>
     </message>
     <message>
-      <location filename="gui_dimensions.py" line="86"/>
+      <location filename="gui_dimensions.py" line="87"/>
       <source>Creates a dimension.
 
 - Pick three points to create a simple linear dimension.
@@ -2286,18 +2331,15 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>寸法を作成します。
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- 3点をピックするとシンプルな長さ寸法を作成します。
+- 直線を選択すると直線にリンクした長さ寸法を作成します。
+- 円弧、円を選択すると円弧にリンクした半径、直径寸法を作成します。
+- 2直線を選択すると直線間の角度寸法を作成します。
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+このコマンドを起動する前に1つの直線、または1つの円弧を選択すると対応するリンクされた寸法を作成します。
+またこのコマンドを起動する前に「App::MeasureDistance」オブジェクトを選択するとそれを「Draft Dimension」オブジェクトに変換します。</translation>
     </message>
   </context>
   <context>
@@ -2305,16 +2347,16 @@ to turn it into a 'Draft Dimension' object.</translation>
     <message>
       <location filename="gui_downgrade.py" line="58"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>ダウングレード</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>選択したオブジェクトをより単純なシェイプへダウングレード。
+操作結果はオブジェクトの種類によって代わり、続けて複数回ダウングレードを行えます。
+例えば、選択したポリラインを単純な面、ワイヤー、さらにはエッジへ分解できます。また面同士の減算も可能です。</translation>
     </message>
   </context>
   <context>
@@ -2322,16 +2364,16 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>ドラフトからスケッチへ</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>ドラフト・オブジェクトとスケッチを相互に変換。
+ドラフト・オブジェクトの多くは1つの拘束されていないスケッチに変換されます。
+一方で繋がっていない1つのスケッチは複数の別れたドラフト・オブジェクトに変換されます。</translation>
     </message>
   </context>
   <context>
@@ -2346,26 +2388,25 @@ However, a single sketch with disconnected traces will be converted into several
       <source>Creates a 2D projection on a Drawing Workbench page from the selected objects.
 This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
 Use TechDraw Workbench instead for generating technical drawings.</source>
-      <translation type="unfinished">Creates a 2D projection on a Drawing Workbench page from the selected objects.
-This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
-Use TechDraw Workbench instead for generating technical drawings.</translation>
+      <translation>Drawingワークベンチのページ上に、選択したオブジェクトから2D投影を作成します。
+Drawingワークベンチは 0.17 で廃止されたのでこのコマンドは廃止されました。
+製図図面を作成するには代わりにTechDrawワークベンチを使用してください。</translation>
     </message>
   </context>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="gui_edit.py" line="275"/>
+      <location filename="gui_edit.py" line="276"/>
       <source>Edit</source>
       <translation>編集</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="284"/>
+      <location filename="gui_edit.py" line="285"/>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>アクティブなオブジェクトを編集します。
+E キーまたは Alt+左クリックを押すと、サポートされている節点、オブジェクト上でコンテキストメニューを表示します。</translation>
     </message>
   </context>
   <context>
@@ -2378,7 +2419,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap.</translation>
+      <translation>楕円を作成します。CTRLでスナップ。</translation>
     </message>
   </context>
   <context>
@@ -2391,7 +2432,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation type="unfinished">Creates a facebinder object from selected faces.</translation>
+      <translation>選択した面からフェイスバインダー・オブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -2399,12 +2440,12 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_lineops.py" line="98"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>線を終了</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="99"/>
       <source>Finishes a line without closing it.</source>
-      <translation type="unfinished">Finishes a line without closing it.</translation>
+      <translation>線を閉じずに終了します.</translation>
     </message>
   </context>
   <context>
@@ -2412,14 +2453,14 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>寸法を反転</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>選択した寸法（長さ、半径、角度）の法線方向を反転させます。
+他のオブジェクトが選択されている場合は無視されます。</translation>
     </message>
   </context>
   <context>
@@ -2427,16 +2468,16 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="gui_heal.py" line="58"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>修復</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="61"/>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>以前のバージョンのプログラムで保存された不完全なDraftオブジェクトを修復。
+オブジェクトが選択されている場合、そのオブジェクトだけ修復を試みます。
+それ以外の場合はアクティブなドキュメント内の全てのオブジェクトの修復を試みます。</translation>
     </message>
   </context>
   <context>
@@ -2450,8 +2491,8 @@ otherwise it will try to heal all objects in the active document.</translation>
       <location filename="gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>選択した線またはポリラインを1つのオブジェクトに結合します。
+操作を成功させるには、線が始点または終点で点を共有している必要があります。</translation>
     </message>
   </context>
   <context>
@@ -2472,15 +2513,13 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement.
+      <translation>ラベルを作成し、オプションで選択したオブジェクトやサブ要素に設定します。
 
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
+まず頂点やエッジ、オブジェクトの面を選択し、このコマンドを実行します。
+その後、引き出し線とテキストラベルの位置を設定してください。
+ラベルにはオブジェクトや選択したサブ要素などの情報を表示することができます。
 
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</translation>
+複数のオブジェクトやサブ要素が選択されている場合、ラベルでの情報表示に使われるのそれぞれ最初のものだけです。</translation>
     </message>
   </context>
   <context>
@@ -2488,14 +2527,14 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="gui_layers.py" line="52"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>レイヤー</translation>
     </message>
     <message>
       <location filename="gui_layers.py" line="55"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</translation>
+      <translation>レイヤーをドキュメントに追加します。
+このレイヤーに追加されたオブジェクトは、線の色、線の幅、形状の色など、同じ表示プロパティーを共有できます。</translation>
     </message>
   </context>
   <context>
@@ -2508,7 +2547,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>2点を指定して線を作成します。CTRLでスナップ、SHIFTで拘束。</translation>
     </message>
   </context>
   <context>
@@ -2516,14 +2555,14 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_array_simple.py" line="119"/>
       <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
+      <translation>リンク整列</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="122"/>
       <source>Like the Array tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>整列ツールと同様ですが「リンク整列」を作成します。
+「リンク整列」では多数のコピーをより効率的に制御できますが、「Fuse」オプションは使用できません。</translation>
     </message>
   </context>
   <context>
@@ -2531,12 +2570,12 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_mirror.py" line="63"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>鏡像コピー</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="66"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>2点で定義された線に沿って選択したオブジェクトを鏡像コピー。</translation>
     </message>
   </context>
   <context>
@@ -2551,9 +2590,9 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Moves the selected objects from one base point to another point.
-If the "copy" option is active, it will create displaced copies.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>選択したオブジェクトを、ある基準点から別の点へ移動します。
+「コピー」オプションが有効な場合、移動したコピーを作成します。
+CTRLでスナップ、SHIFTで拘束。</translation>
     </message>
   </context>
   <context>
@@ -2568,9 +2607,9 @@ CTRL to snap, SHIFT to constrain.</translation>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>選択したオブジェクトのオフセット。
+元のオブジェクトのオフセットコピーを作成することもできます。 
+CTRLでスナップ、SHIFTで拘束します。ALTキーを押しながらクリックするごとにコピーを作成します。</translation>
     </message>
   </context>
   <context>
@@ -2578,16 +2617,16 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
     <message>
       <location filename="gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>パス整列</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>選択したパスに沿って選択したオブジェクトのコピーを作成します。
+まずオブジェクトを選択し、次にパスを選択してください。
+パスにはポリライン、B-スプライン、ベジェ曲線、または別のオブジェクトのエッジを使用できます。</translation>
     </message>
   </context>
   <context>
@@ -2595,14 +2634,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_patharray.py" line="163"/>
       <source>Path Link array</source>
-      <translation type="unfinished">Path Link array</translation>
+      <translation>パスリンク整列</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="166"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>パス整列ツールと同様ですが「リンク整列」を作成します。
+「リンク整列」では多数のコピーをより効率的に制御できますが、「Fuse」オプションは使用できません。</translation>
     </message>
   </context>
   <context>
@@ -2610,16 +2649,16 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pathtwistedarray.py" line="66"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>パスツイスト整列</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="69"/>
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path, and twists the copies.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>選択したパスに沿って選択したオブジェクトのコピーを作成し、さらにコピーを回転させます。
+まずオブジェクトを選択し、次にパスを選択してください。
+パスにはポリライン、B-スプライン、ベジェ曲線、または別のオブジェクトのエッジを使用できます。</translation>
     </message>
   </context>
   <context>
@@ -2627,14 +2666,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted Link array</source>
-      <translation type="unfinished">Path twisted Link array</translation>
+      <translation>パスツイストリンク整列</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>パスツイスト整列ツールと同様ですが「リンク整列」を作成します。
+「リンク整列」では多数のコピーをより効率的に制御できますが、「Fuse」オプションは使用できません。</translation>
     </message>
   </context>
   <context>
@@ -2647,7 +2686,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>点オブジェクトを作成します。3Dビューの任意の場所をクリックしてください。</translation>
     </message>
   </context>
   <context>
@@ -2655,7 +2694,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>点整列</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -2666,28 +2705,28 @@ To create this compound, select various points and then use the Part Compound to
 or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
 
 Select the base object, and then select the compound or the sketch to create the point array.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies at the position of various points.
+      <translation>選択したオブジェクトのコピーを作成し、さまざまな点の位置にそれを配置します。
 
-The points need to be grouped under a compound of points before using this tool.
-To create this compound, select various points and then use the Part Compound tool,
-or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
+このツールを使用する前に点コンパウンドの下に点をまとめておく必要があります。
+このコンパウンドを作成するためには、点群を選択した後でパート・コンパウンドツールを使用するか、
+またはドラフト・アップグレードツールで「ブロック」を作成するか、またはスケッチを作成してそこに点を追加してください。
 
-Select the base object, and then select the compound or the sketch to create the point array.</translation>
+ベース・オブジェクトを選択した後、コンパウンドまたはスケッチを選択して点整列を作成します。</translation>
     </message>
   </context>
   <context>
     <name>Draft_PointLinkArray</name>
     <message>
-      <location filename="gui_pointarray.py" line="142"/>
+      <location filename="gui_pointarray.py" line="141"/>
       <source>PointLinkArray</source>
-      <translation type="unfinished">PointLinkArray</translation>
+      <translation>点リンク整列</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="145"/>
+      <location filename="gui_pointarray.py" line="144"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
-      <translation type="unfinished">Like the PointArray tool, but creates a 'Point link array' instead.
-A 'Point link array' is more efficient when handling many copies.</translation>
+      <translation>点整列ツールと同様ですが「点リンク整列」を作成します。
+「点リンク整列」では多数のコピーをより効率的に制御できます。</translation>
     </message>
   </context>
   <context>
@@ -2701,8 +2740,8 @@ A 'Point link array' is more efficient when handling many copies.</translation>
       <location filename="gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
-CTRL to snap, SHIFT to constrain</translation>
+      <translation>辺の数と外接半径を定義して、正多角形（三角形、正方形、五角形...）を作成します。
+CTRLでスナップ、SHIFTで拘束。</translation>
     </message>
   </context>
   <context>
@@ -2715,7 +2754,7 @@ CTRL to snap, SHIFT to constrain</translation>
     <message>
       <location filename="gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle. CTRL to snap.</source>
-      <translation type="unfinished">Creates a 2-point rectangle. CTRL to snap.</translation>
+      <translation>2点を指定して四角形を作成します。CTRLでスナップ。</translation>
     </message>
   </context>
   <context>
@@ -2730,9 +2769,9 @@ CTRL to snap, SHIFT to constrain</translation>
       <source>Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
 If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
-If the "copy" option is active, it will create rotated copies.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>選択したオブジェクトを回転させます。回転の中心、初期角度、最終角度を選択してください。
+「コピー」オプションが有効な場合、回転したコピーが作成されます。 
+CTRLでスナップ、SHIFTで拘束します。ALTキーを押しながらクリックするごとにコピーを作成します。</translation>
     </message>
   </context>
   <context>
@@ -2746,8 +2785,8 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
       <location filename="gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
-      <translation type="unfinished">Scales the selected objects from a base point.
-CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
+      <translation>選択したオブジェクトを基準点を中心に拡大します。
+CTRLでスナップ、SHIFTで拘束、ALTでコピー。</translation>
     </message>
   </context>
   <context>
@@ -2755,7 +2794,18 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="gui_groups.py" line="165"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>グループを選択</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="168"/>
+      <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+
+If the selection is a simple object inside a group, it will select the "brother" objects, that is,
+those that are at the same level as this object, including the upper group that contains them all.</source>
+      <translation type="unfinished">If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+
+If the selection is a simple object inside a group, it will select the "brother" objects, that is,
+those that are at the same level as this object, including the upper group that contains them all.</translation>
     </message>
   </context>
   <context>
@@ -2763,27 +2813,27 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="gui_selectplane.py" line="65"/>
       <source>SelectPlane</source>
-      <translation type="unfinished">SelectPlane</translation>
+      <translation>面を選択</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="67"/>
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
-      <translation type="unfinished">Select the face of solid body to create a working plane on which to sketch Draft objects.
-You may also select a three vertices or a Working Plane Proxy.</translation>
+      <translation>ドラフトオブジェクトをスケッチする作業平面を作成する、ソリッドボディーの面を選択します。
+3 つの頂点または作業平面プロキシを選択することもできます。</translation>
     </message>
   </context>
   <context>
     <name>Draft_SetStyle</name>
     <message>
-      <location filename="gui_setstyle.py" line="49"/>
+      <location filename="gui_setstyle.py" line="55"/>
       <source>Set style</source>
-      <translation type="unfinished">Set style</translation>
+      <translation>スタイルを設定</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="51"/>
+      <location filename="gui_setstyle.py" line="57"/>
       <source>Sets default styles</source>
-      <translation type="unfinished">Sets default styles</translation>
+      <translation>デフォルトのスタイルを設定</translation>
     </message>
   </context>
   <context>
@@ -2791,63 +2841,63 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_planeproxy.py" line="50"/>
       <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
+      <translation>作業平面プロキシを作成</translation>
     </message>
     <message>
       <location filename="gui_planeproxy.py" line="52"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
+      <translation>現在の作業平面からプロキシ・オブジェクトを作成します。
+オブジェクトを作成した後、ツリービュー上でダブルクリックするとカメラ位置とオブジェクトの表示状態が復元されます。
+これによって異なったカメラ位置とオブジェクトの状態を必要な時にいつでも保存することができます。</translation>
     </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="gui_shape2dview.py" line="61"/>
+      <location filename="gui_shape2dview.py" line="59"/>
       <source>Shape 2D view</source>
-      <translation type="unfinished">Shape 2D view</translation>
+      <translation>2Dビュー形状</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="64"/>
+      <location filename="gui_shape2dview.py" line="62"/>
       <source>Creates a 2D projection of the selected objects on the XY plane.
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY plane.
-The initial projection direction is the negative of the current active view direction.
-You can select individual faces to project, or the entire solid, and also include hidden lines.
-These projections can be used to create technical drawings with the TechDraw Workbench.</translation>
+      <translation>選択したオブジェクトのXY平面上への2D投影を作成。
+初期の投影方向は現在のアクティブビュー方向の逆方向です。
+個々の面を投影するか、ソリッド全体を投影するか、また隠線を含めるかどうかを選択できます。
+こうした投影はTechDrawワークベンチでの製図を作成するために使用できます。</translation>
     </message>
   </context>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="gui_shapestrings.py" line="70"/>
+      <location filename="gui_shapestrings.py" line="68"/>
       <source>Shape from text</source>
-      <translation type="unfinished">Shape from text</translation>
+      <translation>テキストからシェイプへ</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="72"/>
+      <location filename="gui_shapestrings.py" line="70"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
-      <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
-The closed shapes can be used for extrusions and boolean operations.</translation>
+      <translation>特定のフォントと配置を選択して、テキスト文字列からシェイプを作成します。
+閉じたシェイプは、押し出しやブール演算に使用できます。</translation>
     </message>
   </context>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="573"/>
+      <location filename="gui_snaps.py" line="576"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>スナップ用ツールバーを表示</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="579"/>
       <source>Show the snap toolbar if it is hidden.</source>
-      <translation type="unfinished">Show the snap toolbar if it is hidden.</translation>
+      <translation>非表示の場合はスナップ用ツールバーを表示します。</translation>
     </message>
   </context>
   <context>
@@ -2855,7 +2905,7 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
     <message>
       <location filename="gui_lineslope.py" line="70"/>
       <source>Set slope</source>
-      <translation type="unfinished">Set slope</translation>
+      <translation>傾斜を設定</translation>
     </message>
     <message>
       <location filename="gui_lineslope.py" line="73"/>
@@ -2864,223 +2914,221 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>点のZ値を変更することで選択した線に傾斜を設定します。
+ポリラインを選択した場合は各線分に対して傾斜変形を適用します。
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</translation>
+傾斜では常にZ値を変更するので、このコマンドはXY平面に描かれた直線のドラフト線のみで正しく動作します。線以外の選択オブジェクトは無視されます。</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1527"/>
+      <location filename="gui_snapper.py" line="1535"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>グリッドのオン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1528"/>
+      <location filename="gui_snapper.py" line="1536"/>
       <source>Toggle Draft Grid</source>
-      <translation type="unfinished">Toggle Draft Grid</translation>
+      <translation>ドラフトグリッドの切り替え</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="327"/>
+      <location filename="gui_snaps.py" line="331"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="330"/>
+      <location filename="gui_snaps.py" line="334"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
-      <translation type="unfinished">Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</translation>
+      <translation>30度と45度の角度の倍数に位置する円弧上の点にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="357"/>
+      <location filename="gui_snaps.py" line="361"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="360"/>
+      <location filename="gui_snaps.py" line="364"/>
       <source>Set snapping to the center of a circular arc.</source>
-      <translation type="unfinished">Set snapping to the center of a circular arc.</translation>
+      <translation>円弧の中心にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="509"/>
+      <location filename="gui_snaps.py" line="513"/>
       <source>Show dimensions</source>
-      <translation type="unfinished">Show dimensions</translation>
+      <translation>寸法を表示</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="512"/>
+      <location filename="gui_snaps.py" line="516"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
-      <translation type="unfinished">Show temporary linear dimensions when editing an object and using other snapping methods.</translation>
+      <translation>オブジェクトを編集する時や他のスナップ方法を使用する時に、一時的な長さ寸法を表示</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="296"/>
+      <location filename="gui_snaps.py" line="300"/>
       <source>Endpoint</source>
-      <translation type="unfinished">Endpoint</translation>
+      <translation>端点</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="299"/>
+      <location filename="gui_snaps.py" line="303"/>
       <source>Set snapping to endpoints of an edge.</source>
-      <translation type="unfinished">Set snapping to endpoints of an edge.</translation>
+      <translation>エッジの端点にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="387"/>
+      <location filename="gui_snaps.py" line="391"/>
       <source>Extension</source>
-      <translation type="unfinished">Extension</translation>
+      <translation>拡張</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="390"/>
+      <location filename="gui_snaps.py" line="394"/>
       <source>Set snapping to the extension of an edge.</source>
-      <translation type="unfinished">Set snapping to the extension of an edge.</translation>
+      <translation>エッジの延長にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="206"/>
+      <location filename="gui_snaps.py" line="210"/>
       <source>Grid</source>
       <translation>グリッド</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="209"/>
+      <location filename="gui_snaps.py" line="213"/>
       <source>Set snapping to the intersection of grid lines.</source>
-      <translation type="unfinished">Set snapping to the intersection of grid lines.</translation>
+      <translation>グリッド線の交点にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="236"/>
+      <location filename="gui_snaps.py" line="240"/>
       <source>Intersection</source>
       <translation>共通集合</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="239"/>
+      <location filename="gui_snaps.py" line="243"/>
       <source>Set snapping to the intersection of edges.</source>
-      <translation type="unfinished">Set snapping to the intersection of edges.</translation>
+      <translation>エッジの交点にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="116"/>
+      <location filename="gui_snaps.py" line="120"/>
       <source>Main snapping toggle On/Off</source>
-      <translation type="unfinished">Main snapping toggle On/Off</translation>
+      <translation>メインスナップのオン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="119"/>
+      <location filename="gui_snaps.py" line="123"/>
       <source>Activates or deactivates all snap methods at once.</source>
-      <translation type="unfinished">Activates or deactivates all snap methods at once.</translation>
+      <translation>全てのスナップ方法を同時に有効または無効にします。</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="146"/>
+      <location filename="gui_snaps.py" line="150"/>
       <source>Midpoint</source>
-      <translation type="unfinished">Midpoint</translation>
+      <translation>中点</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="149"/>
+      <location filename="gui_snaps.py" line="153"/>
       <source>Set snapping to the midpoint of an edge.</source>
-      <translation type="unfinished">Set snapping to the midpoint of an edge.</translation>
+      <translation>エッジの中点にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="417"/>
+      <location filename="gui_snaps.py" line="421"/>
       <source>Nearest</source>
-      <translation type="unfinished">Nearest</translation>
+      <translation>最近接</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="420"/>
+      <location filename="gui_snaps.py" line="424"/>
       <source>Set snapping to the nearest point of an edge.</source>
-      <translation type="unfinished">Set snapping to the nearest point of an edge.</translation>
+      <translation>エッジの最近接点にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="448"/>
+      <location filename="gui_snaps.py" line="452"/>
       <source>Orthogonal</source>
-      <translation type="unfinished">Orthogonal</translation>
+      <translation>矩形</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="451"/>
+      <location filename="gui_snaps.py" line="455"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
-      <translation type="unfinished">Set snapping to a direction that is a multiple of 45 degrees from a point.</translation>
+      <translation>点から45度の倍数の方向にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="266"/>
+      <location filename="gui_snaps.py" line="270"/>
       <source>Parallel</source>
       <translation>平行</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="269"/>
+      <location filename="gui_snaps.py" line="273"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is parallel to an edge.</translation>
+      <translation>エッジに平行な方向にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="176"/>
+      <location filename="gui_snaps.py" line="180"/>
       <source>Perpendicular</source>
       <translation>直交する|鉛直な</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="179"/>
+      <location filename="gui_snaps.py" line="183"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is perpendicular to an edge.</translation>
+      <translation>エッジに垂直な方向にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="478"/>
+      <location filename="gui_snaps.py" line="482"/>
       <source>Special</source>
-      <translation type="unfinished">Special</translation>
+      <translation>特殊</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="481"/>
+      <location filename="gui_snaps.py" line="485"/>
       <source>Set snapping to the special points defined inside an object.</source>
-      <translation type="unfinished">Set snapping to the special points defined inside an object.</translation>
+      <translation>オブジェクト内で定義されている特殊点にスナップを設定</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="542"/>
+      <location filename="gui_snaps.py" line="546"/>
       <source>Working plane</source>
-      <translation type="unfinished">Working plane</translation>
+      <translation>作業平面</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="545"/>
+      <location filename="gui_snaps.py" line="549"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
-      <translation type="unfinished">Restricts snapping to a point in the current working plane.
-If you select a point outside the working plane, for example, by using other snapping methods,
-it will snap to that point's projection in the current working plane.</translation>
+      <translation>現在の作業平面の点にスナップを制限します。
+例えば他のスナップ方法を使用して作業平面外の点を選択した場合、その点を現在の作業平面内に投影した結果にスナップします。</translation>
     </message>
   </context>
   <context>
@@ -3095,9 +3143,8 @@ it will snap to that point's projection in the current working plane.</translati
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
-      <translation type="unfinished">Splits the selected line or polyline into two independent lines
-or polylines by clicking anywhere along the original object.
-It works best when choosing a point on a straight segment and not a corner vertex.</translation>
+      <translation>選択した直線またはポリラインを、元のオブジェクトに沿った任意の位置をクリックすることで2つの独立した直線、またはポリラインに分割します。
+曲がり部の頂点ではなく直線線分上の点を選択した時に最良の結果が得られます。</translation>
     </message>
   </context>
   <context>
@@ -3105,29 +3152,29 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="gui_stretch.py" line="64"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>伸縮</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="67"/>
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
-      <translation type="unfinished">Stretches the selected objects.
-Select an object, then draw a rectangle to pick the vertices that will be stretched,
-then draw a line to specify the distance and direction of stretching.</translation>
+      <translation>選択したオブジェクトを伸縮。
+オブジェクトを選択してから、長方形を描いて伸縮させる頂点を選択してください。
+その後、伸縮の距離と方向を指定する直線を描いてください。</translation>
     </message>
   </context>
   <context>
     <name>Draft_SubelementHighlight</name>
     <message>
-      <location filename="gui_subelements.py" line="62"/>
+      <location filename="gui_subelements.py" line="61"/>
       <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
+      <translation>サブ要素のハイライト</translation>
     </message>
     <message>
-      <location filename="gui_subelements.py" line="65"/>
+      <location filename="gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
+      <translation>選択したオブジェクトのサブ要素をハイライト表示して、移動、回転、拡大縮小ツールで編集できるようにします。</translation>
     </message>
   </context>
   <context>
@@ -3140,7 +3187,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>複数行の注釈を作成します。CTRLでスナップ。</translation>
     </message>
   </context>
   <context>
@@ -3148,14 +3195,14 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_togglemodes.py" line="99"/>
       <source>Toggle construction mode</source>
-      <translation>補助モードの切り替え</translation>
+      <translation>構築モードの切り替え</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>構築モードの切り替え。
+有効な場合、以降の作成オブジェクトが構築グループに含まれるようになり、指定した色とプロパティで描画されます。</translation>
     </message>
   </context>
   <context>
@@ -3163,16 +3210,16 @@ When this is active, the following objects created will be included in the const
     <message>
       <location filename="gui_togglemodes.py" line="131"/>
       <source>Toggle continue mode</source>
-      <translation type="unfinished">Toggle continue mode</translation>
+      <translation>継続モードを切り替え</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="133"/>
       <source>Toggles the Continue mode.
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
-      <translation type="unfinished">Toggles the Continue mode.
-When this is active, any drawing tool that is terminated will automatically start again.
-This can be used to draw several objects one after the other in succession.</translation>
+      <translation>継続モードを切り替え。
+有効な場合には完了した全ての描画ツールが自動的に再度開始されます。
+複数のオブジェクトを連続的に描画するために使用できます。</translation>
     </message>
   </context>
   <context>
@@ -3180,16 +3227,16 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>ノーマル表示/ワイヤーフレーム表示を切り替え</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>選択したオブジェクトの表示モードをフラットラインからワイヤーフレームへ相互に切り替え。
+他のオブジェクトに隠れたオブジェクトをすばやく表示するのに便利です。
+閉じたシェイプやソリッドに対して使用するためのもので、開いたワイヤーには効果を持ちません。</translation>
     </message>
   </context>
   <context>
@@ -3197,12 +3244,12 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_grid.py" line="58"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>グリッドを切り替え</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>ドラフトグリッドのオン/オフを切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -3210,14 +3257,13 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>トリメックス</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="79"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces.
-CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</translation>
+      <translation>選択したオブジェクトをトリムまたは延長するか、もしくは単一の面を押し出します。CTRLでスナップ、SHIFTで現在のセグメントまたは垂直方向に拘束、ALTで反転。</translation>
     </message>
   </context>
   <context>
@@ -3225,12 +3271,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_lineops.py" line="151"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>最後のセグメントを元に戻す</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="152"/>
       <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation type="unfinished">Undoes the last drawn segment of the line being drawn.</translation>
+      <translation>描画中の線で最後に描いたセグメントを元に戻す</translation>
     </message>
   </context>
   <context>
@@ -3238,7 +3284,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>アップグレード</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="61"/>
@@ -3246,36 +3292,35 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>選択したオブジェクトをより複雑なシェイプへアップグレード。
+操作結果はオブジェクトの種類によって代わり、続けて複数回アップグレードを行えます。
+例えば、選択したオブジェクトを1つに結合したり、単純なエッジをパラメトリックなポリラインに変換したり、閉じたエッジを面やパラメトリックなポリゴンへ変換したり、複数の面を1つの面に統合したりすることが可能です。</translation>
     </message>
   </context>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="gui_lines.py" line="312"/>
+      <location filename="gui_lines.py" line="310"/>
       <source>Polyline</source>
       <translation>ポリライン</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="315"/>
+      <location filename="gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>複数点からなる線（ポリライン）を作成します。CTRLでスナップ、SHIFTで拘束。</translation>
     </message>
   </context>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="gui_wire2spline.py" line="63"/>
+      <location filename="gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>ワイヤーからB-スプラインへ</translation>
     </message>
     <message>
-      <location filename="gui_wire2spline.py" line="66"/>
+      <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>選択したポリラインをB-スプラインに、またはB-スプラインをポリラインに変換します。</translation>
     </message>
   </context>
   <context>
@@ -3459,219 +3504,264 @@ value by using the [ and ] keys while drawing</source>
       <translation>スタイル設定</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="207"/>
+      <location filename="TaskPanel_SetStyle.ui" line="244"/>
       <source>Text color</source>
       <translation>テキストの色</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="132"/>
+      <location filename="TaskPanel_SetStyle.ui" line="169"/>
       <source>Shape color</source>
       <translation>シェイプの色</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="50"/>
+      <location filename="TaskPanel_SetStyle.ui" line="87"/>
       <source>Line width</source>
       <translation>ライン幅</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="29"/>
+      <location filename="TaskPanel_SetStyle.ui" line="66"/>
       <source>The color of faces</source>
       <translation>面の色</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="168"/>
+      <location filename="TaskPanel_SetStyle.ui" line="205"/>
       <source>The type of dimension arrows</source>
       <translation>寸法矢印の種類</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="172"/>
+      <location filename="TaskPanel_SetStyle.ui" line="209"/>
       <source>Dot</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="177"/>
+      <location filename="TaskPanel_SetStyle.ui" line="214"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="182"/>
+      <location filename="TaskPanel_SetStyle.ui" line="219"/>
       <source>Arrow</source>
       <translation>矢印</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="187"/>
+      <location filename="TaskPanel_SetStyle.ui" line="224"/>
       <source>Tick</source>
       <translation>目盛</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="TaskPanel_SetStyle.ui" line="229"/>
       <source>Tick-2</source>
       <translation>目盛り-2</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="234"/>
+      <location filename="TaskPanel_SetStyle.ui" line="271"/>
       <source>The color of texts and dimension texts</source>
       <translation>テキストと寸法テキストの色</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="241"/>
+      <location filename="TaskPanel_SetStyle.ui" line="278"/>
       <source>The size of texts and dimension texts</source>
       <translation>テキストと寸法テキストのサイズ</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="281"/>
+      <location filename="TaskPanel_SetStyle.ui" line="318"/>
       <source>Show unit</source>
       <translation>単位を表示</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="43"/>
+      <location filename="TaskPanel_SetStyle.ui" line="80"/>
       <source>Line color</source>
       <translation>線の色</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="271"/>
+      <location filename="TaskPanel_SetStyle.ui" line="308"/>
       <source>The size of dimension arrows</source>
       <translation>寸法矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="220"/>
+      <location filename="TaskPanel_SetStyle.ui" line="257"/>
       <source>The font to use for texts and dimensions</source>
       <translation>テキストと寸法に用いられるフォント</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="64"/>
+      <location filename="TaskPanel_SetStyle.ui" line="101"/>
       <source>The line style</source>
       <translation>線のスタイル</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="68"/>
+      <location filename="TaskPanel_SetStyle.ui" line="105"/>
       <source>Solid</source>
       <translation>ソリッド</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="73"/>
+      <location filename="TaskPanel_SetStyle.ui" line="110"/>
       <source>Dashed</source>
       <translation>破線</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="78"/>
+      <location filename="TaskPanel_SetStyle.ui" line="115"/>
       <source>Dotted</source>
       <translation>点線</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="83"/>
+      <location filename="TaskPanel_SetStyle.ui" line="120"/>
       <source>DashDot</source>
       <translation>一点鎖線</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="227"/>
+      <location filename="TaskPanel_SetStyle.ui" line="264"/>
       <source>Text size</source>
       <translation>文字サイズ</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="295"/>
+      <location filename="TaskPanel_SetStyle.ui" line="332"/>
       <source>Unit override</source>
       <translation>単位の上書き</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="302"/>
+      <location filename="TaskPanel_SetStyle.ui" line="339"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
       <translation>寸法に使用する単位。現在のFreeCAD単位を使用する場合は空白のままにします。</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="146"/>
+      <location filename="TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
       <translation>面の透明度</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="149"/>
+      <location filename="TaskPanel_SetStyle.ui" line="186"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="139"/>
+      <location filename="TaskPanel_SetStyle.ui" line="176"/>
       <source>Transparency</source>
       <translation>透明度</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="98"/>
+      <location filename="TaskPanel_SetStyle.ui" line="135"/>
       <source>Display mode</source>
       <translation>表示モード</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="200"/>
+      <location filename="TaskPanel_SetStyle.ui" line="237"/>
       <source>Text font</source>
       <translation>文字の書体</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="288"/>
+      <location filename="TaskPanel_SetStyle.ui" line="325"/>
       <source>Arrow size</source>
       <translation>矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="105"/>
+      <location filename="TaskPanel_SetStyle.ui" line="142"/>
       <source>The display mode for faces</source>
       <translation>面の表示モード</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="109"/>
+      <location filename="TaskPanel_SetStyle.ui" line="146"/>
       <source>Flat Lines</source>
       <translation>平坦な線</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="114"/>
+      <location filename="TaskPanel_SetStyle.ui" line="151"/>
       <source>Wireframe</source>
       <translation>ワイヤ フレーム</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="119"/>
+      <location filename="TaskPanel_SetStyle.ui" line="156"/>
       <source>Shaded</source>
       <translation>シェーディング</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="124"/>
+      <location filename="TaskPanel_SetStyle.ui" line="161"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="36"/>
+      <location filename="TaskPanel_SetStyle.ui" line="73"/>
       <source>Draw style</source>
       <translation>描画スタイル</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="57"/>
+      <location filename="TaskPanel_SetStyle.ui" line="94"/>
       <source>The color of lines</source>
       <translation>線の色</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="251"/>
+      <location filename="TaskPanel_SetStyle.ui" line="288"/>
       <source>Arrow style</source>
       <translation>矢印の形状</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="91"/>
+      <location filename="TaskPanel_SetStyle.ui" line="128"/>
       <source> px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="312"/>
-      <source>Apply to selected objects</source>
-      <translation>選択したオブジェクトに適用します。</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="20"/>
+      <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
       <translation>線と面</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="162"/>
+      <location filename="TaskPanel_SetStyle.ui" line="199"/>
       <source>Annotations</source>
       <translation>注釈</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="258"/>
+      <location filename="TaskPanel_SetStyle.ui" line="295"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
       <translation>接尾の単位が寸法テキストに表示されているかどうか</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="22"/>
+      <source>Fills the values below with a stored style preset</source>
+      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="26"/>
+      <source>Load preset</source>
+      <translation type="unfinished">Load preset</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="40"/>
+      <source>Save current style as a preset...</source>
+      <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
+      <source>Selected</source>
+      <translation>選択</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>テキストの間隔</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation type="unfinished">The space between the text and the dimension line</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>行間</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation type="unfinished">The spacing between different lines of text</translation>
     </message>
   </context>
   <context>
@@ -3684,17 +3774,17 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="preferences-draft.ui" line="427"/>
       <source>This is the default color for objects being drawn while in construction mode.</source>
-      <translation>補助モード中に描画されるオブジェクトのデフォルトの色</translation>
+      <translation>構築モード中に描画されるオブジェクトのデフォルトの色</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="387"/>
       <source>This is the default group name for construction geometry</source>
-      <translation>補助ジオメトリーのデフォルトグループ名です。</translation>
+      <translation>構築ジオメトリーのデフォルトグループ名です。</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="390"/>
       <source>Construction</source>
-      <translation>コンストラクション</translation>
+      <translation>構築</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="114"/>
@@ -3792,7 +3882,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draft.ui" line="380"/>
       <source>Construction group name</source>
-      <translation>補助グループ名</translation>
+      <translation>構築グループ名</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="143"/>
@@ -3800,7 +3890,7 @@ such as "Arial:Bold"</source>
       <translation>公差</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>ジオメトリーを結合</translation>
     </message>
@@ -3895,12 +3985,12 @@ such as "Arial:Bold"</source>
       <translation>右面図</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation>グループレイヤーをブロックへ</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>3D オブジェクトをポリフェイスメッシュとしてエクスポート</translation>
     </message>
@@ -3930,17 +4020,17 @@ such as "Arial:Bold"</source>
       <translation>チェックされている場合、ドラフトワークベンチのアクティブ状態中に常にドラフトグリッドが表示されます。それ以外の場合はコマンド使用時のみです。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation>標準フォントサイズを使用</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation>ハッチング境界をワイヤーとしてインポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation>幅のあるポリラインをレンダリング</translation>
     </message>
@@ -3982,35 +4072,35 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draft.ui" line="407"/>
       <source>Construction geometry color</source>
-      <translation>補助ジオメトリーの色</translation>
+      <translation>構築ジオメトリーの色</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>インポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>テキストと寸法線</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>ポイント</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation>レイアウト</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation>*blocks</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation>エクスポートされるオブジェクトを現在のビュー方向と平行に投影</translation>
     </message>
@@ -4110,32 +4200,32 @@ such as "Arial:Bold"</source>
       <translation>できるだけオブジェクトの面を塗りつぶす</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>作成</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
       <translation>パート形状を単純化</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation>ドラフトオブジェクト</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
       <translation>スケッチ</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation>DXFファイルからオリジナルの色を取得</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>楕円およびスプラインをポリラインとして扱う</translation>
     </message>
@@ -4150,7 +4240,7 @@ such as "Arial:Bold"</source>
       <translation>寸法の単位サフィックスを表示</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>DXF ライブラリの自動的なダウンロードと更新を FreeCAD に許可</translation>
     </message>
@@ -4300,7 +4390,7 @@ such as "Arial:Bold"</source>
       <translation>インポート・オプション</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation>従来型の Python インポーターを使用</translation>
     </message>
@@ -4325,22 +4415,22 @@ such as "Arial:Bold"</source>
       <translation>単位のスケーリングを無効</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation>ドローイングビューをブロックとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation>注: 以下のオプションには新しいインポート機能ではまだ使用できないものがあります</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>インポート、エクスポートするときにこのダイアログボックスを表示</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation>自動更新 (旧インポート機能のみ)</translation>
     </message>
@@ -4350,7 +4440,7 @@ such as "Arial:Bold"</source>
       <translation>クローンの接頭ラベル：</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation>インポートされたファイルに適用する尺度の係数</translation>
     </message>
@@ -4470,12 +4560,12 @@ such as "Arial:Bold"</source>
       <translation>ODA（旧 Teigha）ファイルコンバーター実行可能ファイルのパス</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>楕円のエクスポートは十分にサポートされていません。代わりにこれを使用してポリラインとしてエクスポートしてください。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation>スプラインの最大セグメント数:</translation>
     </message>
@@ -4492,7 +4582,7 @@ Values with differences below this value will be treated as same. This value wil
 この値よりも小さい差しかない値は同じものとして扱われます。上記の精度レベルが両方を制御するようになるとこの値は使用されなくなります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation>従来型の Python エクスポーターを使用</translation>
     </message>
@@ -4764,32 +4854,32 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>ユーザーインターフェイス設定</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="884"/>
+      <location filename="preferences-draftinterface.ui" line="928"/>
       <source>Enable draft statusbar customization</source>
       <translation>ドラフト・ステータスバーのカスタマイズを有効にする</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="887"/>
+      <location filename="preferences-draftinterface.ui" line="931"/>
       <source>Draft Statusbar</source>
       <translation>ドラフトのステータス・バー</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="907"/>
+      <location filename="preferences-draftinterface.ui" line="951"/>
       <source>Enable snap statusbar widget</source>
       <translation>ステータスバー・ウィンジェットのスナップを有効にする</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="910"/>
+      <location filename="preferences-draftinterface.ui" line="954"/>
       <source>Draft snap widget</source>
       <translation>ドラフトをウィンジェットにスナップさせる</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="926"/>
+      <location filename="preferences-draftinterface.ui" line="970"/>
       <source>Enable draft statusbar annotation scale widget</source>
       <translation>ドラフトのステータスバーで尺度の注釈ウィンジェットを有効にする</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="929"/>
+      <location filename="preferences-draftinterface.ui" line="973"/>
       <source>Annotation scale widget</source>
       <translation>尺度の注釈ウィンジェット</translation>
     </message>
@@ -4829,27 +4919,19 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>ODAファイルコンバータへのパス</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>この設定ダイアログは、DXFファイルのインポート／エクスポート時に表示されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Pythonのimporterが使用されます。そうでなければ、新しいC++が使用されます。
 注意: C++のimporterは速いですが、機能的ではありません。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation>Pythonのexporterが使用されます。そうでなければ、新しいC++が使用されます。
-注意: C++のexporterは速いですが、機能的ではありません。</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4858,42 +4940,42 @@ from the Addon Manager.</source>
 をインストールして手動で行うこともできます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>ここにチェックが入っていない場合、テキストとmtextはインポートされません</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation>ここにチェックが入っていない場合、ポイントはインポートされません</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>チェックが入っている場合、ペーパースペースオブジェクトもインポートされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>（*で始まる）名称のないブロックも一緒にインポートしたい場合は、ここにチェックを入れて下さい</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>標準のPartオブジェクトだけが作成されます(最も高速)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>できる限りパラメトリックなドラフト・オブジェクトが作成されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
       <translation>できる限りスケッチが作成します</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4904,71 +4986,71 @@ Example: for files in millimeters: 1, in centimeters: 10,
 メートルならば 1000 、インチならば 2.54、フィートならば 304.8 となります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation>色は可能な限りDXFオブジェクトから読み出されます。それ以外の場合、デフォルトの色が適用されます。 </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCADは一致するオブジェクトをワイヤーに結合しようとします。これには時間がかかる場合があります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
       <translation>同じレイヤーのオブジェクトがドラフトブロックとして連結されて表示が高速になりますが、編集は難しくなります。 </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>インポートされたテキストは、DXF 文書内にあるサイズからドラフトで定義された標準のテキストサイズへ変換されます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>ここがチェックされている場合、DXFレイヤーはドラフトレイヤーとしてインポートされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation>レイヤーを使用</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>ハッチングは単純なワイヤーに変換されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>ポリラインに幅が定義されている場合、正適切な幅の閉じたワイヤーとしてレンダリングされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>各ポリラインセグメントの最大長さ。
 '0' に設定すると、スプライン全体が直線セグメントとして扱われます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>面を含むすべてのオブジェクトは 3D ポリフェースとしてエクスポートされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>ドローイング・ビューはブロックとしてエクスポートされます。
 DXF R12 後のテンプレートでは失敗する可能性があります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>エクスポートされたオブジェクトは現在のビュー方向を反映するように投影されます</translation>
     </message>
@@ -5021,7 +5103,8 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="preferences-drafttexts.ui" line="495"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+      <translation>この入力欄を空白のままにすると、FreeCADで定義されている現在の単位で寸法測定値が表示されます。
+ここでmやcmなどの単位を指定すると、その単位で新しい寸法が表示されるようにできます。</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="257"/>
@@ -5031,7 +5114,7 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="preferences-draftvisual.ui" line="280"/>
       <source>Hatch Pattern default size</source>
-      <translation type="unfinished">Hatch Pattern default size</translation>
+      <translation>ハッチングパターンのデフォルトサイズ</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="300"/>
@@ -5063,165 +5146,177 @@ This value is the maximum segment length. </source>
       <source>The overall transparency of the grid</source>
       <translation>グリッドの全体的な透明度</translation>
     </message>
+    <message>
+      <location filename="preferences-draftinterface.ui" line="873"/>
+      <source>Global</source>
+      <translation>全体</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftinterface.ui" line="895"/>
+      <source>G</source>
+      <translation type="unfinished">G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
+    </message>
   </context>
   <context>
     <name>ImportDWG</name>
-    <message>
-      <location filename="importDWG.py" line="276"/>
-      <source>Converting: </source>
-      <translation>変換中: </translation>
-    </message>
     <message>
       <location filename="importDWG.py" line="232"/>
       <source>Conversion successful</source>
       <translation>変換に成功しました</translation>
     </message>
+    <message>
+      <location filename="importDWG.py" line="276"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
+    </message>
   </context>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="importSVG.py" line="1808"/>
+      <location filename="importSVG.py" line="1809"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>未知の SVG エクスポートスタイルです。変換モードに切り替えます。</translation>
     </message>
     <message>
-      <location filename="importSVG.py" line="1828"/>
+      <location filename="importSVG.py" line="1829"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>エクスポート対象リストに有効なバウンディングボックスを持つオブジェクトが含まれていません。</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1468"/>
+      <location filename="gui_snapper.py" line="1476"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>ドラフトスナップ</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="233"/>
+      <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
       <translation>ドラフトコマンドバー</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="698"/>
+      <location filename="DraftGui.py" line="832"/>
       <source>Toggle construction mode</source>
-      <translation>補助モードの切り替え</translation>
+      <translation>構築モードの切り替え</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1894"/>
+      <location filename="DraftGui.py" line="2054"/>
       <source>Autogroup off</source>
       <translation>オートグループ無効</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="610"/>
+      <location filename="DraftGui.py" line="722"/>
       <source>active command:</source>
       <translation>アクティブコマンド:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="276"/>
+      <location filename="gui_groups.py" line="277"/>
       <source>None</source>
       <translation>なし</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="612"/>
+      <location filename="DraftGui.py" line="724"/>
       <source>Active Draft command</source>
       <translation>アクティブドラフトコマンド</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="613"/>
+      <location filename="DraftGui.py" line="725"/>
       <source>X coordinate of next point</source>
       <translation>次の点の X 座標</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="930"/>
+      <location filename="DraftGui.py" line="1056"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="615"/>
+      <location filename="DraftGui.py" line="727"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="616"/>
+      <location filename="DraftGui.py" line="728"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="617"/>
+      <location filename="DraftGui.py" line="729"/>
       <source>Y coordinate of next point</source>
       <translation>次の点の Y 座標</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="618"/>
+      <location filename="DraftGui.py" line="730"/>
       <source>Z coordinate of next point</source>
       <translation>次の点の Z 座標</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="619"/>
+      <location filename="DraftGui.py" line="731"/>
       <source>Enter point</source>
       <translation>点の入力</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="620"/>
+      <location filename="DraftGui.py" line="733"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>指定された座標に新しい点を入力</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="621"/>
+      <location filename="DraftGui.py" line="734"/>
       <source>Length</source>
       <translation>長さ</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="334"/>
+      <location filename="gui_trimex.py" line="332"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="623"/>
+      <location filename="DraftGui.py" line="736"/>
       <source>Length of current segment</source>
       <translation>現在のセグメントの長さ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="624"/>
+      <location filename="DraftGui.py" line="737"/>
       <source>Angle of current segment</source>
       <translation>現在のセグメントの角度</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="980"/>
+      <location filename="DraftGui.py" line="1105"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="981"/>
+      <location filename="DraftGui.py" line="1106"/>
       <source>Radius of Circle</source>
       <translation>円の半径</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="635"/>
+      <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>チェックされている場合、再びコマンドボタンを押すまでコマンドが終了しなくなります</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="637"/>
-      <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>チェックされている場合、従来のオフセットの代わりにくOCC-スタイルのオフセットが行われます</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="638"/>
+      <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
       <translation>OCC スタイル オフセット (&amp;O)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="658"/>
+      <location filename="DraftGui.py" line="792"/>
       <source>Sides</source>
       <translation>側面</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="659"/>
+      <location filename="DraftGui.py" line="793"/>
       <source>Number of sides</source>
       <translation>辺の数</translation>
     </message>
@@ -5231,197 +5326,172 @@ This value is the maximum segment length. </source>
       <translation>オフセット</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="552"/>
+      <location filename="DraftGui.py" line="659"/>
       <source>Auto</source>
       <translation>自動</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="665"/>
+      <location filename="DraftGui.py" line="799"/>
       <source>Text string to draw</source>
       <translation>描画するテキスト文字列</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="666"/>
+      <location filename="DraftGui.py" line="800"/>
       <source>String</source>
       <translation>文字列</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="667"/>
+      <location filename="DraftGui.py" line="801"/>
       <source>Height of text</source>
       <translation>テキストの高さ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="668"/>
+      <location filename="DraftGui.py" line="802"/>
       <source>Height</source>
       <translation>高さ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="669"/>
+      <location filename="DraftGui.py" line="803"/>
       <source>Intercharacter spacing</source>
       <translation>文字間隔</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="670"/>
+      <location filename="DraftGui.py" line="804"/>
       <source>Tracking</source>
       <translation>トラッキング</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="671"/>
+      <location filename="DraftGui.py" line="805"/>
       <source>Full path to font file:</source>
       <translation>フォントファイルのフルパス:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="672"/>
+      <location filename="DraftGui.py" line="806"/>
       <source>Open a FileChooser for font file</source>
       <translation>ファイル選択ダイアログを開いてフォントファイルを選択</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="79"/>
+      <location filename="DraftGui.py" line="944"/>
       <source>Line</source>
       <translation>直線</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="828"/>
+      <location filename="DraftGui.py" line="953"/>
       <source>DWire</source>
       <translation>Dワイヤー</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="845"/>
+      <location filename="DraftGui.py" line="971"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="861"/>
-      <source>Center X</source>
-      <translation>中心X</translation>
-    </message>
-    <message>
-      <location filename="gui_arcs.py" line="72"/>
+      <location filename="DraftGui.py" line="980"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="gui_points.py" line="67"/>
+      <location filename="DraftGui.py" line="987"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="70"/>
+      <location filename="DraftGui.py" line="1015"/>
       <source>Label</source>
       <translation>ラベル</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
+      <location filename="gui_trimex.py" line="316"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="969"/>
-      <source>Trim</source>
-      <translation>トリム</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1067"/>
+      <location filename="DraftGui.py" line="1192"/>
       <source>Pick Object</source>
       <translation>オブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1073"/>
+      <location filename="DraftGui.py" line="1198"/>
       <source>Edit</source>
       <translation>編集</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1124"/>
+      <location filename="DraftGui.py" line="1261"/>
       <source>Global X</source>
       <translation>グローバル座標 X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1125"/>
+      <location filename="DraftGui.py" line="1262"/>
       <source>Global Y</source>
       <translation>グローバル座標 Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1126"/>
+      <location filename="DraftGui.py" line="1263"/>
       <source>Global Z</source>
       <translation>グローバル座標 Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1129"/>
+      <location filename="DraftGui.py" line="1253"/>
       <source>Local X</source>
       <translation>ローカル座標 X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1130"/>
+      <location filename="DraftGui.py" line="1254"/>
       <source>Local Y</source>
       <translation>ローカル座標 Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1131"/>
+      <location filename="DraftGui.py" line="1255"/>
       <source>Local Z</source>
       <translation>ローカル座標 Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1360"/>
+      <location filename="DraftGui.py" line="1496"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>サイズの値が無効です。　200.0 を使ってください。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1368"/>
+      <location filename="DraftGui.py" line="1504"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>トラッキングの値が無効です。　0 を使ってください。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1382"/>
+      <location filename="DraftGui.py" line="1518"/>
       <source>Please enter a text string.</source>
       <translation>文字を入力してください。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1391"/>
+      <location filename="DraftGui.py" line="1527"/>
       <source>Select a Font file</source>
       <translation>フォントファイルを選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1421"/>
+      <location filename="DraftGui.py" line="1560"/>
       <source>Please enter a font file.</source>
       <translation>フォントファイルを入力してください。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1887"/>
-      <source>Autogroup: </source>
-      <translation>オートグループ: </translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="2188"/>
+      <location filename="DraftGui.py" line="2374"/>
       <source>Faces</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2189"/>
+      <location filename="DraftGui.py" line="2375"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2190"/>
+      <location filename="DraftGui.py" line="2376"/>
       <source>Add</source>
       <translation>追加</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2191"/>
+      <location filename="DraftGui.py" line="2377"/>
       <source>Facebinder elements</source>
       <translation>フェイスバインダー要素</translation>
     </message>
     <message>
-      <location filename="gui_splines.py" line="68"/>
-      <source>BSpline</source>
-      <translation>B-スプライン</translation>
-    </message>
-    <message>
-      <location filename="gui_beziers.py" line="72"/>
-      <source>BezCurve</source>
-      <translation>ベジェ曲線</translation>
-    </message>
-    <message>
-      <location filename="gui_rotate.py" line="277"/>
+      <location filename="gui_rotate.py" line="276"/>
       <source>Copy</source>
       <translation>コピー</translation>
     </message>
@@ -5445,204 +5515,184 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 FreeCADでこれらライブラリーのダウンロードを有効にするためにYesを選択します。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="629"/>
+      <location filename="DraftGui.py" line="745"/>
       <source>Relative</source>
       <translation>相対</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="636"/>
+      <location filename="DraftGui.py" line="768"/>
       <source>Continue</source>
       <translation>続行</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="650"/>
+      <location filename="DraftGui.py" line="784"/>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="60"/>
+      <location filename="DraftGui.py" line="86"/>
       <source>Fill</source>
       <translation>塗りつぶし</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="61"/>
+      <location filename="DraftGui.py" line="91"/>
       <source>Exit</source>
       <translation>終了</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="62"/>
+      <location filename="DraftGui.py" line="96"/>
       <source>Snap On/Off</source>
       <translation>スナップのオン/オフ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="63"/>
+      <location filename="DraftGui.py" line="101"/>
       <source>Increase snap radius</source>
       <translation>スナップ半径を増やす</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="64"/>
+      <location filename="DraftGui.py" line="106"/>
       <source>Decrease snap radius</source>
       <translation>スナップ半径を減らす</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="65"/>
+      <location filename="DraftGui.py" line="111"/>
       <source>Restrict X</source>
       <translation>X 制限</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="66"/>
+      <location filename="DraftGui.py" line="116"/>
       <source>Restrict Y</source>
       <translation>Y 制限</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="67"/>
+      <location filename="DraftGui.py" line="121"/>
       <source>Restrict Z</source>
       <translation>Z 制限</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="656"/>
+      <location filename="DraftGui.py" line="790"/>
       <source>Select edge</source>
       <translation>エッジを選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="69"/>
+      <location filename="DraftGui.py" line="131"/>
       <source>Add custom snap point</source>
       <translation>カスタムスナップポイントを追加</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="70"/>
+      <location filename="DraftGui.py" line="136"/>
       <source>Length mode</source>
       <translation>長さモード</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="652"/>
+      <location filename="DraftGui.py" line="786"/>
       <source>Wipe</source>
       <translation>ワイプ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="72"/>
+      <location filename="DraftGui.py" line="146"/>
       <source>Set Working Plane</source>
       <translation>作業平面を設定</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="73"/>
+      <location filename="DraftGui.py" line="151"/>
       <source>Cycle snap object</source>
       <translation>循環的にオブジェクトにスナップ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="626"/>
+      <location filename="DraftGui.py" line="741"/>
       <source>Check this to lock the current angle</source>
       <translation>ここにチェックを入れると、現在の角度を拘束</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="630"/>
-      <source>Coordinates relative to last point or absolute</source>
-      <translation>最後の点からの相対座標、または絶対座標</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="631"/>
+      <location filename="DraftGui.py" line="755"/>
       <source>Filled</source>
       <translation>塗りつぶし</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="633"/>
+      <location filename="DraftGui.py" line="761"/>
       <source>Finish</source>
       <translation>完了</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="634"/>
+      <location filename="DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>現在の製図、または編集操作を終了</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="648"/>
+      <location filename="DraftGui.py" line="782"/>
       <source>&amp;Undo (CTRL+Z)</source>
-      <translation>取り消し(Ctrl+Z) (&amp;U)</translation>
+      <translation>取り消し(CTRL+Z) (&amp;U)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="649"/>
+      <location filename="DraftGui.py" line="783"/>
       <source>Undo the last segment</source>
       <translation>最後のセグメントを元に戻す</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="651"/>
+      <location filename="DraftGui.py" line="785"/>
       <source>Finishes and closes the current line</source>
       <translation>現在の線を閉じて終了</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="653"/>
+      <location filename="DraftGui.py" line="787"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>直線の既存のセグメントを消去して最後の点から再開</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="654"/>
+      <location filename="DraftGui.py" line="788"/>
       <source>Set WP</source>
       <translation>WPを設定</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="655"/>
+      <location filename="DraftGui.py" line="789"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>最後のセグメントで作業平面を再設定</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="657"/>
+      <location filename="DraftGui.py" line="791"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>寸法を計測したいところの既存エッジを選択して下さい</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="662"/>
+      <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation>チェックされている場合、オブジェクトは移動の代わりにコピーされます。設定 → Draft → グローバルコピーモード で次回以降のコマンドに対してこのモードを維持します。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="59"/>
+      <location filename="DraftGui.py" line="81"/>
       <source>Subelement mode</source>
       <translation>サブ要素モード</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="663"/>
+      <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
       <translation>サブ要素を変更</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="664"/>
+      <location filename="DraftGui.py" line="798"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>チェックされている場合、オブジェクト全体ではなくサブ要素が変更されます。</translation>
     </message>
     <message>
-      <location filename="gui_beziers.py" line="251"/>
-      <source>CubicBezCurve</source>
-      <translation>3次ベジェ曲線</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="363"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>上面図</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="375"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>正面図</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="387"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>サイド</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="530"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>現在の作業平面</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="632"/>
-      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation>オブジェクトを塗りつぶして表示する場合にはチェックしてください。チェックしない場合はワイヤーフレーム表示になります。ドラフトのユーザー設定で「プリミティブ部品を使用」が有効になっている場合には利用できません。</translation>
-    </message>
-    <message>
-      <location filename="gui_lines.py" line="364"/>
-      <source>Polyline</source>
-      <translation>ポリライン</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5650,254 +5700,219 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>喫水</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="74"/>
+      <location filename="DraftGui.py" line="156"/>
       <source>Toggle near snap on/off</source>
       <translation>近くでスナップさせる／させないの切り替え</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="673"/>
+      <location filename="DraftGui.py" line="807"/>
       <source>Create text</source>
       <translation>テキストを作成</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="674"/>
+      <location filename="DraftGui.py" line="808"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>このボタンを押して、テキストオブジェクト作成するか、２行の空白行でテキストを終了します。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="862"/>
-      <source>Center Y</source>
-      <translation>中心Y</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="863"/>
-      <source>Center Z</source>
-      <translation>中心Z</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="914"/>
+      <location filename="DraftGui.py" line="1040"/>
       <source>Offset distance</source>
       <translation>オフセットの距離</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="973"/>
+      <location filename="DraftGui.py" line="1098"/>
       <source>Trim distance</source>
       <translation>トリム距離</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="159"/>
-      <source>Wire</source>
-      <translation>ワイヤー</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="697"/>
+      <location filename="DraftGui.py" line="831"/>
       <source>Change default style for new objects</source>
       <translation>新しいオブジェクトの既定のスタイルを変更する</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>アクティブなドキュメントがありません。中止しています。</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="151"/>
       <source>Object must be a closed shape</source>
-      <translation type="unfinished">Object must be a closed shape</translation>
+      <translation>オブジェクトは閉じた形状でなければなりません。</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>ソリッドオブジェクトが作成されていません。</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="276"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation type="unfinished">Faces must be coplanar to be refined</translation>
+      <translation>高精度化するには面が同一平面上になければなりません。</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="230"/>
       <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
+      <translation>アップグレード: 不明なメソッドを強制:</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="450"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>グループが見つかりました：内部の開いているオブジェクトを閉じます</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="456"/>
       <source>Found meshes: turning into Part shapes</source>
-      <translation type="unfinished">Found meshes: turning into Part shapes</translation>
+      <translation>メッシュが見つかりました：パート形状へ変換します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="464"/>
       <source>Found 1 solidifiable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
+      <translation>ソリッド化可能なオブジェクトが1つ見つかりました：ソリッド化します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="469"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>オブジェクトが2つ見つかりました：結合します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="480"/>
       <source>Found object with several coplanar faces: refine them</source>
-      <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
+      <translation>同一平面上にある複数の面を持つオブジェクト見つかりました：高精度化します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="486"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
+      <translation>非パラメトリックなオブジェクトが1つ見つかりました：ドラフト化します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="497"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
+      <translation>閉じたスケッチオブジェクトが1つ見つかりました：面を作成します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="502"/>
       <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
+      <translation>閉じたワイヤーが見つかりました： 面を作成します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="507"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation type="unfinished">Found several wires or edges: wiring them</translation>
+      <translation>複数のワイヤー、エッジが見つかりました：ワイヤー化します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
-      <translation type="unfinished">trying: closing it</translation>
+      <translation>試行中：閉じています</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="514"/>
       <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
+      <translation>開いたワイヤーが1つ見つかりました：閉じます</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="531"/>
       <source>Found 1 object: draftifying it</source>
-      <translation type="unfinished">Found 1 object: draftifying it</translation>
+      <translation>オブジェクトが1つ見つかりました：ドラフト化します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
-      <translation type="unfinished">Found points: creating compound</translation>
+      <translation>点が見つかりました：コンパウドを作成します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="541"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+      <translation>複数の修復不能なオブジェクトが見つかりました：コンパウンドを作成します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
       <source>Unable to upgrade these objects.</source>
-      <translation type="unfinished">Unable to upgrade these objects.</translation>
+      <translation>これらのオブジェクトはアップグレードできません。</translation>
     </message>
     <message>
       <location filename="mirror.py" line="90"/>
       <source>No object given</source>
-      <translation type="unfinished">No object given</translation>
+      <translation>オブジェクトが指定されていません</translation>
     </message>
     <message>
       <location filename="mirror.py" line="94"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
-    </message>
-    <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation type="unfinished">mirrored)</translation>
+      <translation>2点が一致しています</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>ブロックが1つ見つかりました：分解します</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="246"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>コンパウンドが1つ見つかりました：分解します</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="253"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>パラメトリックなオブジェクトが1つ見つかりました：依存関係を破棄します</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="261"/>
       <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
+      <translation>オブジェクトが2つ見つかりました：減算を行います</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="268"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>複数の面が見つかりました：分割します</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="273"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>複数のオブジェクトが見つかりました：最初の1つから残りを減算します</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="278"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>面が1つ見つかりました：ワイヤーを抽出します</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="284"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>ワイヤーのみ見つかりました：エッジを抽出します</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="288"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>これ以上のダウングレードはできません</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
-      <translation type="unfinished">Wrong input: object not in document.</translation>
+      <translation>間違った入力：オブジェクトがドキュメント内にありません。</translation>
     </message>
     <message>
       <location filename="make_pointarray.py" line="135"/>
       <source>Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</source>
-      <translation type="unfinished">Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</translation>
+      <translation>誤った入力: 点オブジェクトには「ジオメトリー」「リンク」「コンポーネント」がありません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="130"/>
-      <source>Points: </source>
-      <translation type="unfinished">Points: </translation>
+      <translation>誤った入力: 位置、ベクトル、または回転でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
-      <translation type="unfinished">Wrong input: must be list or tuple of three points exactly.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="138"/>
-      <source>Placement: </source>
-      <translation type="unfinished">Placement: </translation>
+      <translation>誤った入力: 3点のリストまたはタプルでなければなりません。</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="139"/>
       <source>Wrong input: incorrect type of placement.</source>
-      <translation type="unfinished">Wrong input: incorrect type of placement.</translation>
+      <translation>誤った入力: 配置タイプが正しくありません。</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
-      <translation type="unfinished">Wrong input: incorrect type of points.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation type="unfinished">Cannot generate shape: </translation>
+      <translation>誤った入力: 点タイプが正しくありません。</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -5912,243 +5927,243 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="make_arc_3points.py" line="170"/>
       <source>Create primitive object</source>
-      <translation type="unfinished">Create primitive object</translation>
+      <translation>プリミティブオブジェクトを作成</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="204"/>
       <source>Final placement:</source>
-      <translation type="unfinished">Final placement:</translation>
+      <translation>最終配置:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="195"/>
       <source>Face: True</source>
-      <translation type="unfinished">Face: True</translation>
+      <translation>面: True</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="197"/>
       <source>Support:</source>
-      <translation type="unfinished">Support:</translation>
+      <translation>サポート:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation type="unfinished">Map mode:</translation>
+      <translation>マップモード:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>長さ:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="132"/>
       <source>Two elements are needed.</source>
-      <translation type="unfinished">Two elements are needed.</translation>
+      <translation>2つの要素が必要です。</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="139"/>
       <source>Radius is too large</source>
-      <translation type="unfinished">Radius is too large</translation>
+      <translation>半径が大きすぎます</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>セグメント</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
-      <translation type="unfinished">Removed original objects.</translation>
+      <translation>削除された元のオブジェクト。</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list of strings or a single string.</translation>
+      <translation>誤った入力: 文字列リストまたは文字列でなければなりません。</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="491"/>
       <source>Circular array</source>
-      <translation>環状配列</translation>
+      <translation>円形整列</translation>
     </message>
     <message>
       <location filename="make_circulararray.py" line="144"/>
       <source>Wrong input: must be a number or quantity.</source>
-      <translation type="unfinished">Wrong input: must be a number or quantity.</translation>
+      <translation>誤った入力: 数字または数量でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="119"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation type="unfinished">Wrong input: must be an integer number.</translation>
+      <translation>誤った入力: 整数でなければなりません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
-      <translation type="unfinished">Wrong input: must be a vector.</translation>
+      <translation>誤った入力: ベクトルでなければなりません。</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="438"/>
       <source>Polar array</source>
-      <translation>円形整列</translation>
+      <translation>軸周整列</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
-      <translation type="unfinished">Wrong input: must be a number.</translation>
+      <translation>誤った入力: 数値でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="173"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation type="unfinished">This function is deprecated. Do not use this function directly.</translation>
+      <translation>この機能は非推奨です。この機能を直接使用しないでください。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="174"/>
       <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation type="unfinished">Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</translation>
+      <translation>「make_linear_dimension」または「make_linear_dimension_obj」のいずれかを使用してください。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
-      <translation type="unfinished">Wrong input: object must not be a list.</translation>
+      <translation>誤った入力: オブジェクトはリストであってはなりません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="452"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation type="unfinished">Wrong input: object doesn't have a 'Shape' to measure.</translation>
+      <translation>誤った入力: オブジェクトには測定する「シェイプ」がありません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="331"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>誤った入力: オブジェクトには測定に使用する「頂点」の要素が1つもありません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="463"/>
       <source>Wrong input: must be an integer.</source>
-      <translation type="unfinished">Wrong input: must be an integer.</translation>
+      <translation>誤った入力: 整数でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="343"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">i1: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>i1: 1より小さい値は許可されていません。1に設定されます。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="363"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation type="unfinished">Wrong input: vertex not in object.</translation>
+      <translation>誤った入力: オブジェクトに頂点がありません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="359"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation type="unfinished">i2: values below 1 are not allowed; will be set to the last vertex in the object.</translation>
+      <translation>i2: 1より小さい値は許可されていません。オブジェクトの最後の頂点に設定されます。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="456"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</translation>
+      <translation>誤った入力: オブジェクトには測定に使用する「エッジ」の要素が1つもありません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="468"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">index: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>インデックス: 1より小さい値は許可されていません。1に設定されます。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="472"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to an edge in the object.</translation>
+      <translation>誤った入力: インデックスがオブジェクトのエッジに対応していません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="476"/>
       <source>Wrong input: index doesn't correspond to a circular edge.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to a circular edge.</translation>
+      <translation>誤った入力: インデックスが円のエッジに対応していません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="487"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'radius' or 'diameter'.</translation>
+      <translation>誤った入力: 「radius」または「diameter」の文字列でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="582"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation type="unfinished">Wrong input: must be a list with two angles.</translation>
+      <translation>誤った入力: 2つの角度を持つリストでなければなりません。</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="69"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>レイヤー</translation>
     </message>
     <message>
       <location filename="gui_layers.py" line="47"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>レイヤー</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="157"/>
       <source>Wrong input: it must be a string.</source>
-      <translation type="unfinished">Wrong input: it must be a string.</translation>
+      <translation>誤った入力: 文字列でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="188"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation type="unfinished">Wrong input: must be a tuple of three floats 0.0 to 1.0.</translation>
+      <translation>誤った入力: 0.0から1.0の範囲の3つの浮動小数点数のタプルでなければなりません。</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="212"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation type="unfinished">Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</translation>
+      <translation>誤った入力: 「Solid」「Dashed」「Dotted」または「Dashdot」でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="220"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>誤った入力: 0から100の範囲の数値でなければなりません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>誤った入力: 文字列リスト、文字列タプルまたは文字列でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_patharray.py" line="246"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
+      <translation>誤った入力: 「Original」「Frenet」「Tangent」でなければなりません。</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="103"/>
       <source>No shape found
 </source>
-      <translation type="unfinished">No shape found
+      <translation>シェイプが見つかりません
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
       <source>All Shapes must be planar
 </source>
-      <translation type="unfinished">All Shapes must be planar
+      <translation>シェイプは全て平面である必要があります。
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
       <source>All Shapes must be coplanar
 </source>
-      <translation type="unfinished">All Shapes must be coplanar
+      <translation>シェイプは全て同一平面上にある必要があります。
 </translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="60"/>
       <source>Internal orthogonal array</source>
-      <translation type="unfinished">Internal orthogonal array</translation>
+      <translation>内部矩形配列</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="87"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation type="unfinished">Wrong input: must be a number or vector.</translation>
+      <translation>誤った入力: 数値またはベクトルでなければなりません。</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="98"/>
       <source>Input: single value expanded to vector.</source>
-      <translation type="unfinished">Input: single value expanded to vector.</translation>
+      <translation>入力: ベクトルに展開される1つの値。</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="129"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>入力: 要素の数は少なくとも1でなければなりません。1に設定されます。</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
@@ -6158,7 +6173,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation type="unfinished">Orthogonal array 2D</translation>
+      <translation>矩形整列2D</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="424"/>
@@ -6168,107 +6183,102 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="make_orthoarray.py" line="501"/>
       <source>Rectangular array 2D</source>
-      <translation type="unfinished">Rectangular array 2D</translation>
+      <translation>格子状配列2D</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
-      <translation type="unfinished">Wrong input: subelement not in object.</translation>
+      <translation>誤った入力: オブジェクトにサブ要素がありません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</translation>
+      <translation>誤った入力: 「Custom」「Name」「Label」「Position」「Length」「Area」「Volume」「Tag」「Material」のいずれかの文字列でなければなりません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation type="unfinished">Wrong input: must be a string.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
+      <translation>誤った入力: 「Horizontal」「Vertical」「Custom」のいずれかの文字列でなければなりません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: must be a list of at least two vectors.</translation>
+      <translation>誤った入力: 少なくとも2つのベクトルのリストでなければなりません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
+      <translation>方向が「Custom」ではありません。点は使用されません。</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
+      <translation>誤った入力: 2つの要素のリストでなければなりません。例. [object, 'Edge1']。</translation>
     </message>
     <message>
-      <location filename="shapestring.py" line="73"/>
+      <location filename="shapestring.py" line="76"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>シェイプストリング：文字列にワイヤーがありません</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="160"/>
       <source>added property 'ExtraPlacement'</source>
-      <translation type="unfinished">added property 'ExtraPlacement'</translation>
+      <translation>追加されたプロパティー「ExtraPlacement」</translation>
     </message>
     <message>
       <location filename="patharray.py" line="284"/>
       <source>, path object doesn't have 'Edges'.</source>
-      <translation type="unfinished">, path object doesn't have 'Edges'.</translation>
+      <translation>パスオブジェクトには「エッジ」がありません。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="407"/>
       <source>'PathObj' property will be migrated to 'PathObject'</source>
-      <translation type="unfinished">'PathObj' property will be migrated to 'PathObject'</translation>
+      <translation>「PathObj」プロパティは「PathObject」に変更されます。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="525"/>
       <source>Cannot calculate path tangent. Copy not aligned.</source>
-      <translation type="unfinished">Cannot calculate path tangent. Copy not aligned.</translation>
+      <translation>パスの接線を計算できません。コピーは整列されません。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="541"/>
       <source>Tangent and normal are parallel. Copy not aligned.</source>
-      <translation type="unfinished">Tangent and normal are parallel. Copy not aligned.</translation>
+      <translation>接線と法線が平行です。コピーは整列されません。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="558"/>
       <source>Cannot calculate path normal, using default.</source>
-      <translation type="unfinished">Cannot calculate path normal, using default.</translation>
+      <translation>デフォルトではパスの法線を計算できません。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="565"/>
       <source>Cannot calculate path binormal. Copy not aligned.</source>
-      <translation type="unfinished">Cannot calculate path binormal. Copy not aligned.</translation>
+      <translation>パスの従法線を計算できません。コピーは整列されません。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="571"/>
       <source>AlignMode {} is not implemented</source>
-      <translation type="unfinished">AlignMode {} is not implemented</translation>
+      <translation>AlignMode {} は実装されていません。</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="105"/>
       <source>added view property 'ScaleMultiplier'</source>
-      <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
+      <translation>追加されたビュープロパティー「ScaleMultiplier」</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
-      <translation type="unfinished">migrated 'DraftText' type to 'Text'</translation>
+      <translation>「DraftText」タイプを「Text」へ変更</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="358"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>このレイヤーをアクティブにする</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="364"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>レイヤーの内容を選択</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="147"/>
@@ -6278,180 +6288,180 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="init_draft_statusbar.py" line="133"/>
       <source>Unable to convert input into a scale factor</source>
-      <translation type="unfinished">Unable to convert input into a scale factor</translation>
+      <translation>入力値を拡大縮小率に変換できません</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="151"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
+      <translation>x:x、x=x形式でカスタム注釈拡大縮小率を設定</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
       <source>Task panel:</source>
-      <translation type="unfinished">Task panel:</translation>
+      <translation>タスクパネル:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="205"/>
       <source>At least one element must be selected.</source>
-      <translation type="unfinished">At least one element must be selected.</translation>
+      <translation>少なくとも1つの要素を選択する必要があります。</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="216"/>
       <source>Selection is not suitable for array.</source>
-      <translation type="unfinished">Selection is not suitable for array.</translation>
+      <translation>選択したものは整列に適していません。</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="379"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>オブジェクト:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="203"/>
       <source>Number of elements must be at least 2.</source>
-      <translation type="unfinished">Number of elements must be at least 2.</translation>
+      <translation>要素の数は少なくとも2でなければなりません。</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="207"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is above 360 degrees. It is set to this value to proceed.</translation>
+      <translation>角度が360度を超えています。続行するとこの値に設定されます。</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="210"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is below -360 degrees. It is set to this value to proceed.</translation>
+      <translation>角度が-360度を下回っています。続行するとこの値に設定されます。</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="341"/>
       <source>Center reset:</source>
-      <translation type="unfinished">Center reset:</translation>
+      <translation>中心リセット:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="348"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>結合:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="362"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>リンク整列を作成:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="332"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>要素の数:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="333"/>
       <source>Polar angle:</source>
-      <translation type="unfinished">Polar angle:</translation>
+      <translation>軸周角度:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="388"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>回転中心:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>中断:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="222"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>レイヤーの数は少なくとも2でなければなりません。</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="234"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation type="unfinished">Radial distance is zero. Resulting array may not look correct.</translation>
+      <translation>周方向距離がゼロです。整列結果が正しく見えない可能性があります。</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="236"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Radial distance is negative. It is made positive to proceed.</translation>
+      <translation>半径方向距離がマイナスです。処理を続けるためプラスにします。</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="240"/>
       <source>Tangential distance cannot be zero.</source>
-      <translation type="unfinished">Tangential distance cannot be zero.</translation>
+      <translation>接線方向距離はゼロにはできません。</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="243"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Tangential distance is negative. It is made positive to proceed.</translation>
+      <translation>接線方向距離がマイナスです。処理を続けるためプラスにします。</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="383"/>
       <source>Radial distance:</source>
-      <translation type="unfinished">Radial distance:</translation>
+      <translation>半径距離:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="384"/>
       <source>Tangential distance:</source>
-      <translation type="unfinished">Tangential distance:</translation>
+      <translation>接線距離:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="385"/>
       <source>Number of circular layers:</source>
-      <translation type="unfinished">Number of circular layers:</translation>
+      <translation>円形レイヤーの数:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="386"/>
       <source>Symmetry parameter:</source>
-      <translation type="unfinished">Symmetry parameter:</translation>
+      <translation>対称パラメーター:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="209"/>
       <source>Number of elements must be at least 1.</source>
-      <translation type="unfinished">Number of elements must be at least 1.</translation>
+      <translation>要素の数は少なくとも1でなければなりません。</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="320"/>
       <source>Interval X reset:</source>
-      <translation type="unfinished">Interval X reset:</translation>
+      <translation>間隔 X リセット:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="329"/>
       <source>Interval Y reset:</source>
-      <translation type="unfinished">Interval Y reset:</translation>
+      <translation>間隔 Y リセット:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="338"/>
       <source>Interval Z reset:</source>
-      <translation type="unfinished">Interval Z reset:</translation>
+      <translation>間隔 Z リセット:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="380"/>
       <source>Number of X elements:</source>
-      <translation type="unfinished">Number of X elements:</translation>
+      <translation>X 要素の数:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="382"/>
       <source>Interval X:</source>
-      <translation type="unfinished">Interval X:</translation>
+      <translation>間隔 X:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="385"/>
       <source>Number of Y elements:</source>
-      <translation type="unfinished">Number of Y elements:</translation>
+      <translation>Y 要素の数:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="387"/>
       <source>Interval Y:</source>
-      <translation type="unfinished">Interval Y:</translation>
+      <translation>間隔 Y:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="390"/>
       <source>Number of Z elements:</source>
-      <translation type="unfinished">Number of Z elements:</translation>
+      <translation>Z 要素の数:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="392"/>
       <source>Interval Z:</source>
-      <translation type="unfinished">Interval Z:</translation>
+      <translation>間隔 Z:</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="77"/>
+      <location filename="task_shapestring.py" line="58"/>
       <source>ShapeString</source>
       <translation>シェイプストリング</translation>
     </message>
@@ -6463,327 +6473,292 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="task_shapestring.py" line="88"/>
       <source>Pick ShapeString location point:</source>
-      <translation type="unfinished">Pick ShapeString location point:</translation>
+      <translation>シェイプストリングの配置点を選択:</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="143"/>
+      <location filename="gui_shapestrings.py" line="141"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>シェイプストリングを作成</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="85"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>ダウングレード</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
-      <translation type="unfinished">Select an object to upgrade</translation>
-    </message>
-    <message>
-      <location filename="gui_clone.py" line="75"/>
-      <source>Clone</source>
-      <translation>クローン</translation>
+      <translation>アップグレードするオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="79"/>
       <source>Select an object to clone</source>
-      <translation type="unfinished">Select an object to clone</translation>
+      <translation>クローンするオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_ellipses.py" line="65"/>
-      <source>Ellipse</source>
-      <translation>楕円</translation>
-    </message>
-    <message>
-      <location filename="gui_rectangles.py" line="70"/>
+      <location filename="gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
-      <translation type="unfinished">Pick first point</translation>
+      <translation>最初の点を選択</translation>
     </message>
     <message>
-      <location filename="gui_ellipses.py" line="140"/>
+      <location filename="gui_ellipses.py" line="138"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>楕円を作成</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="203"/>
+      <location filename="gui_rectangles.py" line="202"/>
       <source>Pick opposite point</source>
-      <translation type="unfinished">Pick opposite point</translation>
+      <translation>反対側の点を選択</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="169"/>
+      <location filename="gui_lines.py" line="167"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>直線を作成</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="191"/>
+      <location filename="gui_lines.py" line="189"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>ワイヤーを作成</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="140"/>
       <source>Pick next point</source>
-      <translation type="unfinished">Pick next point</translation>
+      <translation>次の点を選択</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="336"/>
+      <location filename="gui_lines.py" line="334"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects</translation>
+      <translation>選択したオブジェクトからワイヤーを作成できません。</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="358"/>
+      <location filename="gui_lines.py" line="356"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>ワイヤーに変換</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="507"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
-      <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
+      <translation>このオブジェクトは一致点をサポートしていません。もう一度やり直してください。</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="557"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>アクティブなオブジェクトには２つ以上の点/節点が必要です。</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="671"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
+      <translation>ノットが選択されていません。</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="698"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
+      <translation>ベジエ曲線の端点はスムージングできません。</translation>
     </message>
     <message>
       <location filename="gui_edit_sketcher_objects.py" line="60"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
-    </message>
-    <message>
-      <location filename="gui_facebinders.py" line="66"/>
-      <source>Facebinder</source>
-      <translation>フェイスバインダー</translation>
+      <translation>スケッチが複雑すぎて編集できません: スケッチャーのデフォルトエディターを使用することをお勧めします。</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="71"/>
       <source>Select faces from existing objects</source>
-      <translation type="unfinished">Select faces from existing objects</translation>
+      <translation>既存のオブジェクトの面を選択</translation>
     </message>
     <message>
       <location filename="gui_lineslope.py" line="64"/>
       <source>Change slope</source>
-      <translation type="unfinished">Change slope</translation>
+      <translation>傾斜を変更</translation>
     </message>
     <message>
-      <location filename="gui_subelements.py" line="70"/>
-      <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
-    </message>
-    <message>
-      <location filename="gui_subelements.py" line="109"/>
+      <location filename="gui_subelements.py" line="108"/>
       <source>Select an object to edit</source>
-      <translation type="unfinished">Select an object to edit</translation>
-    </message>
-    <message>
-      <location filename="gui_dimensions.py" line="89"/>
-      <source>Dimension</source>
-      <translation>寸法</translation>
+      <translation>編集するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="294"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>寸法を作成</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="309"/>
       <source>Create Dimension (radial)</source>
-      <translation type="unfinished">Create Dimension (radial)</translation>
+      <translation>寸法（半径）を作成</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
-    </message>
-    <message>
-      <location filename="gui_drawing.py" line="76"/>
-      <source>Drawing</source>
-      <translation>図面</translation>
+      <translation>エッジが交差していません！</translation>
     </message>
     <message>
       <location filename="gui_drawing.py" line="77"/>
       <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
-      <translation type="unfinished">The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</translation>
+      <translation>Drawingワークベンチは0.17以降廃止されています。代わりにTechDrawワークベンチを使用することを検討してください。</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="70"/>
+      <location filename="gui_shape2dview.py" line="68"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>投影するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="68"/>
       <source>Annotation style editor</source>
-      <translation type="unfinished">Annotation style editor</translation>
+      <translation>注釈スタイルエディター</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="292"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>スタイルファイルを開く</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>JSONファイル (*.json)</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>スタイルファイルを保存</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>アップグレード</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="205"/>
+      <location filename="gui_move.py" line="204"/>
       <source>Move</source>
       <translation>移動</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="82"/>
+      <location filename="gui_move.py" line="81"/>
       <source>Select an object to move</source>
-      <translation type="unfinished">Select an object to move</translation>
+      <translation>移動するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="104"/>
+      <location filename="gui_move.py" line="103"/>
       <source>Pick start point</source>
-      <translation type="unfinished">Pick start point</translation>
+      <translation>始点を選択</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="303"/>
+      <location filename="gui_move.py" line="302"/>
       <source>Pick end point</source>
-      <translation type="unfinished">Pick end point</translation>
+      <translation>終点を選択</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="283"/>
+      <location filename="gui_rotate.py" line="282"/>
       <source>Some subelements could not be moved.</source>
-      <translation type="unfinished">Some subelements could not be moved.</translation>
+      <translation>一部のサブ要素を移動できませんでした。</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="123"/>
+      <location filename="gui_pointarray.py" line="122"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>点整列</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="105"/>
+      <location filename="gui_pointarray.py" line="104"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the point object, before calling this command.</translation>
+      <translation>このコマンドを呼び出す前に、ベース・オブジェクトとポイント・オブジェクトの2つのオブジェクトを選択してください。</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation type="unfinished">No active Draft Toolbar.</translation>
+      <translation>アクティブなドラフト・ツールバーがありません。</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="93"/>
       <source>Construction mode</source>
-      <translation type="unfinished">Construction mode</translation>
+      <translation>構築モード</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="125"/>
       <source>Continue mode</source>
-      <translation type="unfinished">Continue mode</translation>
+      <translation>継続モード</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="159"/>
       <source>Toggle display mode</source>
-      <translation type="unfinished">Toggle display mode</translation>
+      <translation>表示モードを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_wire2spline.py" line="79"/>
-      <source>Convert polyline/B-spline</source>
-      <translation type="unfinished">Convert polyline/B-spline</translation>
-    </message>
-    <message>
-      <location filename="gui_snaps.py" line="109"/>
+      <location filename="gui_snaps.py" line="113"/>
       <source>Main toggle snap</source>
-      <translation type="unfinished">Main toggle snap</translation>
+      <translation>メイン切り替えスナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="140"/>
+      <location filename="gui_snaps.py" line="144"/>
       <source>Midpoint snap</source>
-      <translation type="unfinished">Midpoint snap</translation>
+      <translation>中点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="170"/>
+      <location filename="gui_snaps.py" line="174"/>
       <source>Perpendicular snap</source>
-      <translation type="unfinished">Perpendicular snap</translation>
+      <translation>垂直スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="200"/>
+      <location filename="gui_snaps.py" line="204"/>
       <source>Grid snap</source>
       <translation>グリッドにスナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="230"/>
+      <location filename="gui_snaps.py" line="234"/>
       <source>Intersection snap</source>
-      <translation type="unfinished">Intersection snap</translation>
+      <translation>交点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="260"/>
+      <location filename="gui_snaps.py" line="264"/>
       <source>Parallel snap</source>
-      <translation type="unfinished">Parallel snap</translation>
+      <translation>平行スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="290"/>
+      <location filename="gui_snaps.py" line="294"/>
       <source>Endpoint snap</source>
-      <translation type="unfinished">Endpoint snap</translation>
+      <translation>端点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="321"/>
+      <location filename="gui_snaps.py" line="325"/>
       <source>Angle snap (30 and 45 degrees)</source>
-      <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
+      <translation>角度スナップ (30度、45度)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="351"/>
+      <location filename="gui_snaps.py" line="355"/>
       <source>Arc center snap</source>
-      <translation type="unfinished">Arc center snap</translation>
+      <translation>円弧中心スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="381"/>
+      <location filename="gui_snaps.py" line="385"/>
       <source>Edge extension snap</source>
-      <translation type="unfinished">Edge extension snap</translation>
+      <translation>エッジ延長スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="411"/>
+      <location filename="gui_snaps.py" line="415"/>
       <source>Near snap</source>
-      <translation type="unfinished">Near snap</translation>
+      <translation>近接スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="442"/>
+      <location filename="gui_snaps.py" line="446"/>
       <source>Orthogonal snap</source>
-      <translation type="unfinished">Orthogonal snap</translation>
+      <translation>直交スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="472"/>
+      <location filename="gui_snaps.py" line="476"/>
       <source>Special point snap</source>
-      <translation type="unfinished">Special point snap</translation>
+      <translation>特殊点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="503"/>
+      <location filename="gui_snaps.py" line="507"/>
       <source>Dimension display</source>
-      <translation type="unfinished">Dimension display</translation>
+      <translation>寸法表示</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="536"/>
+      <location filename="gui_snaps.py" line="540"/>
       <source>Working plane snap</source>
-      <translation type="unfinished">Working plane snap</translation>
+      <translation>作業平面スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="566"/>
+      <location filename="gui_snaps.py" line="570"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>スナップ用ツールバーを表示</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="101"/>
@@ -6793,357 +6768,307 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
-      <translation type="unfinished">Select an object to array</translation>
+      <translation>整列させるオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_array_simple.py" line="124"/>
-      <source>Link array</source>
-      <translation>リンク配列</translation>
-    </message>
-    <message>
-      <location filename="gui_polygons.py" line="63"/>
-      <source>Polygon</source>
-      <translation>多角形</translation>
-    </message>
-    <message>
-      <location filename="gui_arcs.py" line="88"/>
+      <location filename="gui_arcs.py" line="89"/>
       <source>Pick center point</source>
-      <translation type="unfinished">Pick center point</translation>
+      <translation>中心点を選択</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="410"/>
+      <location filename="gui_arcs.py" line="411"/>
       <source>Pick radius</source>
-      <translation type="unfinished">Pick radius</translation>
+      <translation>半径を選択</translation>
     </message>
     <message>
-      <location filename="gui_polygons.py" line="224"/>
+      <location filename="gui_polygons.py" line="223"/>
       <source>Create Polygon (Part)</source>
-      <translation type="unfinished">Create Polygon (Part)</translation>
+      <translation>多角形を作成 (パート)</translation>
     </message>
     <message>
-      <location filename="gui_polygons.py" line="243"/>
+      <location filename="gui_polygons.py" line="242"/>
       <source>Create Polygon</source>
-      <translation type="unfinished">Create Polygon</translation>
+      <translation>多角形を作成</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="124"/>
+      <location filename="gui_mirror.py" line="123"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>鏡像コピー</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="74"/>
+      <location filename="gui_mirror.py" line="73"/>
       <source>Select an object to mirror</source>
-      <translation type="unfinished">Select an object to mirror</translation>
+      <translation>鏡像コピーするオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="94"/>
+      <location filename="gui_mirror.py" line="93"/>
       <source>Pick start point of mirror line</source>
-      <translation type="unfinished">Pick start point of mirror line</translation>
+      <translation>対称線の始点を選択</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="205"/>
+      <location filename="gui_mirror.py" line="204"/>
       <source>Pick end point of mirror line</source>
-      <translation type="unfinished">Pick end point of mirror line</translation>
+      <translation>対称線の終点を選択</translation>
     </message>
     <message>
       <location filename="gui_points.py" line="146"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>点を作成</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="352"/>
+      <location filename="gui_scale.py" line="353"/>
       <source>Scale</source>
       <translation>尺度</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="88"/>
+      <location filename="gui_scale.py" line="87"/>
       <source>Select an object to scale</source>
-      <translation type="unfinished">Select an object to scale</translation>
+      <translation>拡大縮小するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="109"/>
+      <location filename="gui_scale.py" line="108"/>
       <source>Pick base point</source>
-      <translation type="unfinished">Pick base point</translation>
+      <translation>基準点を選択</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="131"/>
+      <location filename="gui_scale.py" line="130"/>
       <source>Pick reference distance from base point</source>
-      <translation type="unfinished">Pick reference distance from base point</translation>
+      <translation>基準点からの参照距離を選択</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="204"/>
+      <location filename="gui_scale.py" line="203"/>
       <source>Some subelements could not be scaled.</source>
-      <translation type="unfinished">Some subelements could not be scaled.</translation>
+      <translation>一部のサブ要素が拡大縮小できませんでした。</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="334"/>
-      <source>Unable to scale object: </source>
-      <translation type="unfinished">Unable to scale object: </translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="337"/>
-      <source>Unable to scale objects: </source>
-      <translation type="unfinished">Unable to scale objects: </translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="339"/>
+      <location filename="gui_scale.py" line="340"/>
       <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
+      <translation>このオブジェクトタイプは直接は拡大縮小できません。クローンメソッドを使用してください。</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="400"/>
+      <location filename="gui_scale.py" line="401"/>
       <source>Pick new distance from base point</source>
-      <translation type="unfinished">Pick new distance from base point</translation>
+      <translation>基準点からの新しい距離を選択</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="66"/>
-      <source>Project 2D view</source>
-      <translation type="unfinished">Project 2D view</translation>
-    </message>
-    <message>
-      <location filename="gui_shape2dview.py" line="111"/>
+      <location filename="gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>2Dビューを作成</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>Bezier curve has been closed</source>
-      <translation type="unfinished">Bezier curve has been closed</translation>
+      <translation>ベジェ曲線は閉じています。</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>最後の点が取り除かれました。</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="147"/>
       <source>Pick next point, or finish (A) or close (O)</source>
-      <translation type="unfinished">Pick next point, or finish (A) or close (O)</translation>
+      <translation>次の点を選択、または終了 (A)、閉じる (O)</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="451"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Create BezCurve</translation>
+      <translation>ベジェ曲線を作成</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="376"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>次のノットを定義するためにクリックしてドラッグ</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
       <source>Click and drag to define next knot, or finish (A) or close (O)</source>
-      <translation type="unfinished">Click and drag to define next knot, or finish (A) or close (O)</translation>
+      <translation>次のノットを定義するためにクリックしてドラッグ、または終了(A) 、閉じる(O)</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>寸法を反転</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="470"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>伸縮</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="73"/>
+      <location filename="gui_stretch.py" line="75"/>
       <source>Select an object to stretch</source>
-      <translation type="unfinished">Select an object to stretch</translation>
+      <translation>伸縮するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="122"/>
+      <location filename="gui_stretch.py" line="124"/>
       <source>Pick first point of selection rectangle</source>
-      <translation type="unfinished">Pick first point of selection rectangle</translation>
+      <translation>選択四角形の最初の点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="159"/>
+      <location filename="gui_stretch.py" line="161"/>
       <source>Pick opposite point of selection rectangle</source>
-      <translation type="unfinished">Pick opposite point of selection rectangle</translation>
+      <translation>選択四角形の対角点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="168"/>
+      <location filename="gui_stretch.py" line="170"/>
       <source>Pick start point of displacement</source>
-      <translation type="unfinished">Pick start point of displacement</translation>
+      <translation>移動の始点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="231"/>
+      <location filename="gui_stretch.py" line="233"/>
       <source>Pick end point of displacement</source>
-      <translation type="unfinished">Pick end point of displacement</translation>
+      <translation>移動の終点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="443"/>
+      <location filename="gui_stretch.py" line="445"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation type="unfinished">Turning one Rectangle into a Wire</translation>
+      <translation>1つの四角形をワイヤーへ変換</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="51"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>グリッドを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="60"/>
-      <source>Rectangle</source>
-      <translation>四角形</translation>
-    </message>
-    <message>
-      <location filename="gui_rectangles.py" line="126"/>
+      <location filename="gui_rectangles.py" line="125"/>
       <source>Create Plane</source>
-      <translation type="unfinished">Create Plane</translation>
+      <translation>平面を作成</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="143"/>
+      <location filename="gui_rectangles.py" line="142"/>
       <source>Create Rectangle</source>
-      <translation type="unfinished">Create Rectangle</translation>
+      <translation>長方形を作成</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="143"/>
       <source>Convert Draft/Sketch</source>
-      <translation type="unfinished">Convert Draft/Sketch</translation>
+      <translation>ドラフト/スケッチを変換</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="66"/>
       <source>Select an object to convert.</source>
-      <translation type="unfinished">Select an object to convert.</translation>
+      <translation>変換するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="99"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convert to Sketch</translation>
+      <translation>スケッチに変換</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="114"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Convert to Draft</translation>
+      <translation>ドラフトに変換</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="51"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>修復</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="81"/>
+      <location filename="gui_labels.py" line="80"/>
       <source>Pick target point</source>
-      <translation type="unfinished">Pick target point</translation>
+      <translation>対象点を選択</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="158"/>
+      <location filename="gui_labels.py" line="157"/>
       <source>Create Label</source>
-      <translation type="unfinished">Create Label</translation>
+      <translation>ラベルを作成</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="219"/>
+      <location filename="gui_labels.py" line="218"/>
       <source>Pick endpoint of leader line</source>
-      <translation type="unfinished">Pick endpoint of leader line</translation>
+      <translation>引き出し線の終点を選択</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="229"/>
+      <location filename="gui_labels.py" line="228"/>
       <source>Pick text position</source>
-      <translation type="unfinished">Pick text position</translation>
+      <translation>テキスト位置を選択</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="305"/>
+      <location filename="gui_edit.py" line="306"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>編集するDraftオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="560"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
-      <translation type="unfinished">No edit point found for selected object</translation>
+      <translation>選択オブジェクトの中に編集点がありません。</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="933"/>
-      <source>Too many objects selected, max number set to: </source>
-      <translation type="unfinished">Too many objects selected, max number set to: </translation>
-    </message>
-    <message>
-      <location filename="gui_edit.py" line="941"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: このオブジェクトは編集できません</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="143"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>パス整列</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="79"/>
       <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the path object, before calling this command.</translation>
-    </message>
-    <message>
-      <location filename="gui_patharray.py" line="168"/>
-      <source>Path link array</source>
-      <translation type="unfinished">Path link array</translation>
+      <translation>このコマンドを呼び出す前に、ベース・オブジェクトとパス・オブジェクトの2つのオブジェクトを選択してください。</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>パスツイスト整列</translation>
     </message>
     <message>
-      <location filename="gui_pathtwistedarray.py" line="127"/>
-      <source>Path twisted link array</source>
-      <translation type="unfinished">Path twisted link array</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="81"/>
+      <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>トリメックス</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="91"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>トリムまたは伸縮するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="140"/>
       <source>Pick distance</source>
-      <translation type="unfinished">Pick distance</translation>
+      <translation>距離を選択</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="320"/>
+      <location filename="gui_trimex.py" line="318"/>
       <source>The offset distance</source>
-      <translation type="unfinished">The offset distance</translation>
+      <translation>オフセット距離</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="336"/>
+      <location filename="gui_trimex.py" line="334"/>
       <source>The offset angle</source>
-      <translation type="unfinished">The offset angle</translation>
+      <translation>オフセット角度</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="474"/>
+      <location filename="gui_trimex.py" line="472"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
+      <translation>これらのオブジェクトをトリムすることはできません。サポートされているのはドラフトのワイヤーと円弧のみです。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="479"/>
+      <location filename="gui_trimex.py" line="477"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>これらのオブジェクトはワイヤーが多すぎてトリムすることができません。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="496"/>
+      <location filename="gui_trimex.py" line="494"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>これらのオブジェクトは交差してません。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="499"/>
+      <location filename="gui_trimex.py" line="497"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
-    </message>
-    <message>
-      <location filename="gui_join.py" line="71"/>
-      <source>Join</source>
-      <translation>接合</translation>
+      <translation>交点が多すぎます。</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="76"/>
       <source>Select an object to join</source>
-      <translation type="unfinished">Select an object to join</translation>
+      <translation>結合するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="99"/>
       <source>Join lines</source>
-      <translation type="unfinished">Join lines</translation>
+      <translation>線の結合</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="110"/>
@@ -7153,7 +7078,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="gui_splines.py" line="120"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>スプラインが閉じられました。</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="183"/>
@@ -7161,281 +7086,374 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>B-スプラインを作成</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
+      <translation>描画平面を定義する面、3つの頂点、またはWPプロキシを選択</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="263"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
-      <translation type="unfinished">Working plane aligned to global placement of</translation>
+      <translation>作業平面は以下のグローバル位置に配置されました：</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="512"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
-      <translation type="unfinished">Dir</translation>
+      <translation>Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="528"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
-      <translation>色の編集</translation>
+      <translation>カスタム設定</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>
       <source>No active command.</source>
-      <translation type="unfinished">No active command.</translation>
+      <translation>アクティブなコマンドがありません。</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="92"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>線を終了</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="118"/>
       <source>Close line</source>
-      <translation type="unfinished">Close line</translation>
+      <translation>線を閉じる</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="144"/>
       <source>Undo line</source>
-      <translation type="unfinished">Undo line</translation>
-    </message>
-    <message>
-      <location filename="gui_split.py" line="61"/>
-      <source>Split</source>
-      <translation>スプリット</translation>
+      <translation>線を元に戻す</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>分割するために線上の任意の場所をクリック</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="106"/>
       <source>Split line</source>
-      <translation type="unfinished">Split line</translation>
+      <translation>線を分割</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>フィレット半径</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>フィレットの半径</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>半径を入力してください。</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>元のオブジェクトを削除:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
-      <translation type="unfinished">Chamfer mode:</translation>
+      <translation>面取りモード:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
-      <translation type="unfinished">Two elements needed.</translation>
-    </message>
-    <message>
-      <location filename="gui_fillets.py" line="160"/>
-      <source>Test object</source>
-      <translation type="unfinished">Test object</translation>
+      <translation>2つの要素が必要です。</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="161"/>
+      <source>Test object</source>
+      <translation>テスト・オブジェクト</translation>
+    </message>
+    <message>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
+      <translation>テスト・オブジェクトが削除されました。</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>フィレットを作成することができません</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
       <translation>フィレットを作成</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="102"/>
+      <location filename="gui_shapestrings.py" line="100"/>
       <source>Pick ShapeString location point</source>
-      <translation type="unfinished">Pick ShapeString location point</translation>
-    </message>
-    <message>
-      <location filename="gui_styles.py" line="55"/>
-      <source>Apply style</source>
-      <translation type="unfinished">Apply style</translation>
+      <translation>シェイプストリングの配置点を選択</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="75"/>
       <source>Change Style</source>
-      <translation type="unfinished">Change Style</translation>
+      <translation>スタイルを変更</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="64"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>グループに追加</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="159"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>グループを選択</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="232"/>
+      <location filename="gui_groups.py" line="233"/>
       <source>Autogroup</source>
       <translation>オートグループ</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="282"/>
+      <location filename="gui_groups.py" line="283"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>新しいレイヤーを追加</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="336"/>
+      <location filename="gui_groups.py" line="337"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>構築グループに追加</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>オフセットするオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>一度にオフセットできるのは1つのオブジェクトだけです。</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>この種類のオブジェクトはオフセットできません。</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="120"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>ベジェ曲線のオフセットは現在サポートされていません</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="447"/>
+      <location filename="gui_arcs.py" line="448"/>
       <source>Start angle</source>
-      <translation type="unfinished">Start angle</translation>
+      <translation>開始角度</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="452"/>
+      <location filename="gui_arcs.py" line="453"/>
       <source>Pick start angle</source>
-      <translation type="unfinished">Pick start angle</translation>
+      <translation>開始角度を選択</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="455"/>
+      <location filename="gui_arcs.py" line="456"/>
       <source>Aperture angle</source>
-      <translation type="unfinished">Aperture angle</translation>
+      <translation>開口角</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="291"/>
+      <location filename="gui_arcs.py" line="292"/>
       <source>Pick aperture</source>
-      <translation type="unfinished">Pick aperture</translation>
+      <translation>開口を選択</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="316"/>
+      <location filename="gui_arcs.py" line="318"/>
       <source>Create Circle (Part)</source>
-      <translation type="unfinished">Create Circle (Part)</translation>
+      <translation>円を作成 (パート)</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="335"/>
+      <location filename="gui_arcs.py" line="336"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Create Circle</translation>
+      <translation>円を作成</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="369"/>
+      <location filename="gui_arcs.py" line="370"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>円弧を作成 (パート)</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="389"/>
+      <location filename="gui_arcs.py" line="390"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>円弧を作成</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="466"/>
+      <location filename="gui_arcs.py" line="467"/>
       <source>Pick aperture angle</source>
-      <translation type="unfinished">Pick aperture angle</translation>
+      <translation>開口角を選択</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="481"/>
+      <location filename="gui_arcs.py" line="514"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>3点から決まる円弧</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="66"/>
-      <source>Text</source>
-      <translation>テキスト</translation>
-    </message>
-    <message>
-      <location filename="gui_texts.py" line="76"/>
+      <location filename="gui_texts.py" line="75"/>
       <source>Pick location point</source>
-      <translation type="unfinished">Pick location point</translation>
+      <translation>配置点を選択</translation>
     </message>
     <message>
       <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>テキストを作成</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="280"/>
+      <location filename="gui_rotate.py" line="279"/>
       <source>Rotate</source>
       <translation>回転</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>回転するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="101"/>
+      <location filename="gui_rotate.py" line="100"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>回転中心を選択</translation>
+    </message>
+    <message>
+      <location filename="gui_rotate.py" line="389"/>
+      <source>Base angle</source>
+      <translation>ベース角度</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="390"/>
-      <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
-    </message>
-    <message>
-      <location filename="gui_rotate.py" line="391"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>回転を開始するベース角度</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="394"/>
+      <location filename="gui_rotate.py" line="393"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>ベース角度を選択</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="403"/>
+      <location filename="gui_rotate.py" line="402"/>
       <source>Rotation</source>
       <translation>回転</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="404"/>
+      <location filename="gui_rotate.py" line="403"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>実行したい回転の量。
+最終角度はベース角度とこの量の合計になります。</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="412"/>
+      <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
-      <translation type="unfinished">Pick rotation angle</translation>
+      <translation>回転角度を選択</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="750"/>
+      <source>Global</source>
+      <translation>全体</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="748"/>
+      <source>Coordinates relative to last point or to coordinate system origin
+if is the first point to set</source>
+      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
+if is the first point to set</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="753"/>
+      <source>Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</source>
+      <translation type="unfinished">Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="759"/>
+      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</source>
+      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="771"/>
+      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
+      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1249"/>
+      <source>Local u0394X</source>
+      <translation type="unfinished">Local u0394X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1250"/>
+      <source>Local u0394Y</source>
+      <translation type="unfinished">Local u0394Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1251"/>
+      <source>Local u0394Z</source>
+      <translation type="unfinished">Local u0394Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1257"/>
+      <source>Global u0394X</source>
+      <translation type="unfinished">Global u0394X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1258"/>
+      <source>Global u0394Y</source>
+      <translation type="unfinished">Global u0394Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1259"/>
+      <source>Global u0394Z</source>
+      <translation type="unfinished">Global u0394Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="2047"/>
+      <source>Autogroup:</source>
+      <translation type="unfinished">Autogroup:</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="130"/>
+      <source>Points:</source>
+      <translation type="unfinished">Points:</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="138"/>
+      <source>Placement:</source>
+      <translation type="unfinished">Placement:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="333"/>
+      <source>Unable to scale object:</source>
+      <translation type="unfinished">Unable to scale object:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="337"/>
+      <source>Unable to scale objects:</source>
+      <translation type="unfinished">Unable to scale objects:</translation>
+    </message>
+    <message>
+      <location filename="gui_edit.py" line="814"/>
+      <source>Too many objects selected, max number set to:</source>
+      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>
@@ -7452,8 +7470,8 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="importOCA.py" line="492"/>
-      <source>successfully exported </source>
-      <translation>エクスポートに成功しました </translation>
+      <source>successfully exported</source>
+      <translation type="unfinished">successfully exported</translation>
     </message>
   </context>
 </TS>

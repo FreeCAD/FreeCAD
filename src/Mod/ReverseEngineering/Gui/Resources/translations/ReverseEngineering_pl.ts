@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria wsteczna</translation>
+      <translation>Inżynieria Wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="213"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Przybliżona powierzchnia B-splajnu...</translation>
+      <translation>Przybliżona powierzchnia krzywej złożonej ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Przybliżenie powierzchni B-splajnu</translation>
+      <translation>Przybliżona powierzchnia krzywej złożonej</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <translation>Rozkład Poissona ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="381"/>
       <source>Create mesh segments</source>
-      <translation>Utwórz segmenty siatki</translation>
+      <translation>Tworzy segmenty siatki</translation>
     </message>
   </context>
   <context>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation>Dopasuj cylinder</translation>
+      <translation>Dopasuj walec</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-Spline</source>
-      <translation>Dopasuj B-Spline</translation>
+      <translation>Dopasuj krzywą złożoną</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
@@ -253,12 +253,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>Dopasuj powierzchnie B-spline</translation>
+      <translation>Dopasuj powierzchnie krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>u-Direction</source>
-      <translation>u-Direction</translation>
+      <translation>Kierunek - U</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
@@ -275,7 +275,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>v-Direction</source>
-      <translation>kierunek - v</translation>
+      <translation>Kierunek - V</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -320,12 +320,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
-      <translation>Użytkownik zdefiniował kierunki u/v</translation>
+      <translation>Kierunki U / V zdefiniowane przez użytkownika</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation>Utwórz umieszczenie</translation>
+      <translation>Utwórz umiejscowienie</translation>
     </message>
   </context>
   <context>
@@ -352,7 +352,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation>Poisson</translation>
+      <translation>Rozkład Poissona</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -367,7 +367,7 @@
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation>Podział solvera</translation>
+      <translation>Podział solwera</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
@@ -485,7 +485,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="82"/>
       <source>&lt; faces than</source>
-      <translation>&lt;powierzchnie niż</translation>
+      <translation>&lt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="89"/>
@@ -526,7 +526,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>

@@ -147,7 +147,7 @@ public:
     /** deletes a group of constraints at once, if norecomputes is active, the default behaviour is that
      * it will solve the sketch.
      *
-     * If updating the Geometry property as a consequence of a (sucessful) solve() is not wanted, updategeometry=false,
+     * If updating the Geometry property as a consequence of a (successful) solve() is not wanted, updategeometry=false,
      * prevents the update. This allows to update the solve status (e.g. dof), without updating the geometry (i.e. make it
      * move to fulfil the constraints).
      */
@@ -157,7 +157,9 @@ public:
     /// Deletes all constraints referencing an external geometry
     int delConstraintsToExternal();
     /// transfers all constraints of a point to a new point
-    int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
+    int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId,
+                            bool doNotTransformTangencies = false);
+
     /// Carbon copy another sketch geometry and constraints
     int carbonCopy(App::DocumentObject * pObj, bool construction = true);
     /// add an external geometry reference
@@ -282,6 +284,8 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
     int extend(int geoId, double increment, int endPoint);
+    /// split a curve
+    int split(int geoId, const Base::Vector3d &point);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
@@ -289,6 +293,8 @@ public:
     /// It creates an array of csize elements in the direction of the displacement vector by rsize elements in the
     /// direction perpendicular to the displacement vector, wherein the modulus of this perpendicular vector is scaled by perpscale.
     int addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, bool moveonly = false, bool clone=false, int csize=2, int rsize=1, bool constraindisplacement = false, double perpscale = 1.0);
+
+    int removeAxesAlignment(const std::vector<int> &geoIdList);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
@@ -357,6 +363,9 @@ public:
                              std::vector<PointPos> &PosIdList);
     void getDirectlyCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
+    /// returns a list of indices of all constraints involving given GeoId
+    void getConstraintIndices(int GeoId, std::vector<int> &constraintList);
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);

@@ -70,6 +70,11 @@
   <context>
     <name>GeometryElementsSelection</name>
     <message>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation type="unfinished">Geometry reference selector for a</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
       <source>Geometry reference selector for a </source>
       <translation>Geometrinen viitevalitsin kohteelle </translation>
@@ -85,6 +90,41 @@
       <translation>Klikkaa "Lisää" ja valitse geometriset elementit lisätäksesi ne luetteloon. Jos luetteloon ei lisätä geometriaa, käytetään kaikkia jäljellä olevia geometriaelementtejä. Seuraavat geometriaelementit ovat sallittuja: </translation>
     </message>
     <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
       <source>Selection mode</source>
       <translation>Valintatila</translation>
@@ -92,7 +132,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
-      <translation>Monitahokas</translation>
+      <translation>Kiintomuoto</translation>
     </message>
   </context>
   <context>
@@ -1238,7 +1278,7 @@
     <message>
       <location filename="../../Command.cpp" line="749"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="750"/>
@@ -1954,7 +1994,7 @@
       <location filename="../../Command.cpp" line="184"/>
       <location filename="../../Command.cpp" line="239"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>

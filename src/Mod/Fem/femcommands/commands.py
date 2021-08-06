@@ -162,6 +162,17 @@ class _ConstraintBodyHeatSource(CommandManager):
         self.do_activated = "add_obj_on_gui_noset_edit"
 
 
+class _ConstraintCentrif(CommandManager):
+    "The FEM_ConstraintCentrif command definition"
+
+    def __init__(self):
+        super(_ConstraintCentrif, self).__init__()
+        self.menuetext = "Constraint centrif"
+        self.tooltip = "Creates a FEM constraint centrif"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
 class _ConstraintElectrostaticPotential(CommandManager):
     "The FEM_ConstraintElectrostaticPotential command definition"
 
@@ -343,7 +354,7 @@ class _Examples(CommandManager):
 
     def __init__(self):
         super(_Examples, self).__init__()
-        self.pixmap = "preferences-fem"
+        self.pixmap = "FemWorkbench"
         self.menuetext = "Open FEM examples"
         self.tooltip = "Open FEM examples"
         self.is_active = "always"
@@ -730,9 +741,9 @@ class _SolverCalculix(CommandManager):
     def __init__(self):
         super(_SolverCalculix, self).__init__()
         self.pixmap = "FEM_SolverStandard"
-        self.menuetext = "Solver CalculiX (experimental)"
+        self.menuetext = "Solver CalculiX (new framework)"
         self.accel = "S, C"
-        self.tooltip = "Creates a FEM solver CalculiX (experimental)"
+        self.tooltip = "Creates a FEM solver CalculiX new framework (less result error handling)"
         self.is_active = "with_analysis"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -764,6 +775,19 @@ class _SolverElmer(CommandManager):
         self.do_activated = "add_obj_on_gui_noset_edit"
 
 
+class _SolverMystran(CommandManager):
+    "The FEM_SolverMystran command definition"
+
+    def __init__(self):
+        super(_SolverMystran, self).__init__()
+        self.pixmap = "FEM_SolverStandard"
+        self.menuetext = "Solver Mystran"
+        self.accel = "S, M"
+        self.tooltip = "Creates a FEM solver Mystran"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
+
+
 class _SolverRun(CommandManager):
     "The FEM_SolverRun command definition"
 
@@ -786,7 +810,6 @@ class _SolverZ88(CommandManager):
 
     def __init__(self):
         super(_SolverZ88, self).__init__()
-        self.pixmap = "FEM_SolverZ88.svg"
         self.menuetext = "Solver Z88"
         self.accel = "S, Z"
         self.tooltip = "Creates a FEM solver Z88"
@@ -814,6 +837,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintBodyHeatSource",
     _ConstraintBodyHeatSource()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintCentrif",
+    _ConstraintCentrif()
 )
 FreeCADGui.addCommand(
     "FEM_ConstraintElectrostaticPotential",
@@ -958,6 +985,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_SolverElmer",
     _SolverElmer()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverMystran",
+    _SolverMystran()
 )
 FreeCADGui.addCommand(
     "FEM_SolverRun",

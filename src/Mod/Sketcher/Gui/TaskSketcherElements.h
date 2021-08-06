@@ -75,6 +75,7 @@ protected Q_SLOTS:
     void doLengthConstraint();
     void doRadiusConstraint();
     void doDiameterConstraint();
+    void doRadiamConstraint();
     void doAngleConstraint();
 
     // Other Commands

@@ -20,13 +20,11 @@
 #***************************************************************************
 
 import FreeCAD
-import WorkingPlane
 import math
 import Draft
 import ArchCommands
 import DraftVecUtils
 import ArchComponent
-import os
 import re
 import tempfile
 import uuid
@@ -377,9 +375,12 @@ def getSVG(source,
                 drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
+        elif o.isDerivedFrom("App::DocumentObjectGroup"):
+            # These will have been expanded by getSectionData already
+            pass
         elif looksLikeDraft(o):
             drafts.append(o)
-        elif not o.isDerivedFrom("App::DocumentObjectGroup"):
+        else:
             nonspaces.append(o)
         if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)
             windows.append(o)
@@ -928,6 +929,8 @@ class _SectionPlane:
         if not "UseMaterialColorForFill" in pl:
             obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
             obj.UseMaterialColorForFill = False
+        if not "Depth" in pl:
+            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."))
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):

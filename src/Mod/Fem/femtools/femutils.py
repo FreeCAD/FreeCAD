@@ -285,7 +285,6 @@ def getBoundBoxOfAllDocumentShapes(doc):
             FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
         except Exception:
             FreeCAD.Console.PrintMessage("exception \n")  # debug only
-            pass
 
         if bb is None:
             try:
@@ -294,7 +293,6 @@ def getBoundBoxOfAllDocumentShapes(doc):
                 FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
             except Exception:
                 FreeCAD.Console.PrintMessage("exception \n")  # debug only
-                pass
 
         if bb:
             if bb.isValid():
@@ -365,13 +363,15 @@ def get_refshape_type(fem_doc_object):
         first_ref_obj = fem_doc_object.References[0]
         first_ref_shape = get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
-        FreeCAD.Console.PrintMessage(
-            "References: {} in {}, {}\n". format(st, fem_doc_object.Name, fem_doc_object.Label)
+        FreeCAD.Console.PrintLog(
+            "References: {} in {}, {}\n"
+            . format(st, fem_doc_object.Name, fem_doc_object.Label)
         )
         return st
     else:
-        FreeCAD.Console.PrintMessage(
-            "References: empty in {}, {}\n". format(fem_doc_object.Name, fem_doc_object.Label)
+        FreeCAD.Console.PrintLog(
+            "References: empty in {}, {}\n"
+            . format(fem_doc_object.Name, fem_doc_object.Label)
         )
         return ""
 

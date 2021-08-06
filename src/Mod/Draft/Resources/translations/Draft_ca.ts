@@ -21,7 +21,7 @@
     <message>
       <location filename="fillet.py" line="71"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation>Radi a utilitzar per filetejar la cantonada.</translation>
+      <translation>Radi a utilitzar per arrodonir la cantonada.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="169"/>
@@ -165,7 +165,7 @@ Aquesta propietat és de només lectura, ja que el nombre depèn dels paràmetre
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation>Radi a utilitzar per filetejar les cantonades</translation>
+      <translation>Radi a utilitzar per arrodonir les cantonades</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
@@ -245,10 +245,10 @@ el radi o diàmetre mesurats.
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Punt d'inici d'una línia de cota.
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Si mesura un radi, serà el centre de l'arc.
+Si mesura un diàmetre, serà el punt que descansa a l'arc.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -256,17 +256,16 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>Punt final d'una línia de cota.
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+Si es mesura un radi o un diàmetre, aquest punt és sobre l'arc.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>Direcció de la línia de cota.
+Si es manté en '(0,0,0)', la direcció es calcularà automàticament.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -277,34 +276,34 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Valor de la mesura.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+Aquesta propietat és només de lectura, ja que el valor és calculat
+des de 'Inici' fins a 'Final'.
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+Si la 'Geometria enllaçada' és un arc o un cercle, aquesta 'Distància'
+és el radi o el diàmetre, segons quina sigui la propietat 'Diàmetre'.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>Quan es mesuren arcs cirulars, determina si es mostra el valor
+del radi o el diàmetre</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Angle d'inici de la línia de cota (arc circular).
+L'arc es dibuixa en sentit contrari a les busques del rellotge.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Angle final de la línia de cota (arc circular).
+L'arc es dibuixa en sentit contrari a les busques del rellotge.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -312,10 +311,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>Centre de la línia de cota, que és un arc circular.
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+Normalment aquest és el punt on intersequen dos segments de línia o
+les seves extensions, resultant en l'angle mesurat entre ambdues.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -323,15 +322,15 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Valor de la mesura.
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+Aquesta propietat és només de lectura, ja que es calcula a partir
+de les propietats 'Primer angle' i 'Últim angle'.</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>Posició del punt base de la primera línia</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
@@ -490,7 +489,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
 Si es tria 'Personalitzat', es mostrarà el contingut de 'Text personalitzat'.
 Per altres tipus, el text es calcularà automàticament a partir de l'objecte definit a 'Destí'.
 'Etiqueta' i 'Material' només funcionen amb objectes que tinguin aquestes propietats, com
-ara els objectes Arch.
+ara els objectes Arquitectura.
 
 Les propietats 'Posició', 'Longitud' i 'Àrea' s'extrauran de l'objecte definit a 'Destí', o del
 subelement 'VertexN', 'ArestaN' o 'CaraN' respectivament, si s'especifiquen.</translation>
@@ -513,151 +512,128 @@ subelement 'VertexN', 'ArestaN' o 'CaraN' respectivament, si s'especifiquen.</tr
     <message>
       <location filename="shapestring.py" line="56"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Espaiat entre caracters</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Mostra els elements individuals de la matriu</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>Objecte de base que serà duplicat</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
       <source>Object containing points used to distribute the base object, for example, a sketch or a Part compound.
 The sketch or compound must contain at least one explicit point or vertex object.</source>
-      <translation type="unfinished">Object containing points used to distribute the base object, for example, a sketch or a Part compound.
-The sketch or compound must contain at least one explicit point or vertex object.</translation>
+      <translation>L'objecte que conté els punts que s'usaran per distribuir l'objecte de base, per exemple, un esbós o una composició de peces.
+L'esbós o la composició han de contenir com a mínim un punt explícit o un objecte vèrtex.</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="95"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the points contained within 'Point Object'.</translation>
+      <translation>Nombre total d'elements a la matriu.
+Aquesta propietat és només de lectura, jau que el nombre depèn dels punts continguts dins l''Objecte Punt'.</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="139"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation type="unfinished">Additional placement, shift and rotation, that will be applied to each copy</translation>
+      <translation>Posicionament, desplaçament o rotació addiciionals que s'aplicarà a cada còpia</translation>
     </message>
     <message>
       <location filename="bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation type="unfinished">The points of the B-spline</translation>
+      <translation>Punts de la B-spline</translation>
     </message>
     <message>
       <location filename="bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
-      <translation type="unfinished">If the B-spline is closed or not</translation>
+      <translation>Indica si la B-spline és tancada o no</translation>
     </message>
     <message>
       <location filename="bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>Crea una cara si la spline és tancada</translation>
     </message>
     <message>
       <location filename="bspline.py" line="67"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Factor de parametrització</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="49"/>
+      <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>L'objecte de base que és representat per aquesta visualització 2D</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="54"/>
+      <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>El vector de projecció d'aquest objecte</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="59"/>
+      <location filename="shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Manera en què l'objecte mostrat ha de ser projectat</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="64"/>
+      <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Els índexs de les cares que seran projectades en el mode Cares Individuals</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="69"/>
+      <location filename="shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
       <translation>Mostra les línies amagades</translation>
     </message>
     <message>
-      <location filename="shape2dview.py" line="74"/>
+      <location filename="shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="79"/>
-      <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="85"/>
-      <source>For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                this leaves the faces at the cut location</translation>
+      <translation>Fusiona la paret i els objectes estructurals del mateix tipus i material</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="91"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="97"/>
-      <source>If this is True, this object will be recomputed only if it is 
-                visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                visible</translation>
+      <source>Tessellate Ellipses and B-splines into line segments</source>
+      <translation>Fragmenta el·lipses i B-splines en segments de línia</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
-      <translation type="unfinished">Start angle of the elliptical arc</translation>
+      <translation>Angle d'inici de l'arc el·líptic</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="49"/>
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>Angle de final de l'arc el·líptic (per fer la circumferència sencera, introduiu el valor de Angle Inicial)</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>Radi menor de l'el·lipse</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>Radi major de l'el·lipse</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="61"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>Àrea d'aquest objecte</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Punts de la corba Bezier</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Grau de la funció Bezier</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -667,31 +643,30 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Si la corba de Bézier ha de ser tancada o no</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>Crea una cara si aquesta corba és tancada</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>Longitud d'aquest objecte</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>Objecte al llarg del qual es distribuiran les còpies. Ha de contenir 'Arestes'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="192"/>
       <source>List of connected edges in the 'Path Object'.
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
-      <translation type="unfinished">List of connected edges in the 'Path Object'.
-If these are present, the copies will be created along these subelements only.
-Leave this property empty to create copies along the entire 'Path Object'.</translation>
+      <translation>Llista d'arestes connectades en un 'Objecte de Camí'.
+Si són presents, les còpies seran creades tansols al llarg d'aquests subelements. Deixeu la propietat en blanc per crear còpies al llarg de tot l''Objecte de Camí'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="200"/>
@@ -820,82 +795,78 @@ Altrament, les còpies tindran la mateixa orientació que l'objecte base origina
     <message>
       <location filename="clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>Els objectes inclosos en aquest clon</translation>
     </message>
     <message>
       <location filename="clone.py" line="51"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>El factor d'escala d'aquest clon</translation>
     </message>
     <message>
       <location filename="clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>Si Clons inclou diversos objectes, marqueu com a Cert per a fusionar o Fals per compondre</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="82"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
-      <translation type="unfinished">General scaling factor that affects the annotation consistently
-because it scales the text, and the line decorations, if any,
-in the same proportion.</translation>
+      <translation>Factor d'escala genèric que afecta a les anotacions de manera consistent, ja que escala el text i les decoracions de línia, si n'hi ha, en la mateixa proporció.</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="100"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation type="unfinished">Annotation style to apply to this object.
-When using a saved style some of the view properties will become read-only;
-they will only be editable by changing the style through the 'Annotation style editor' tool.</translation>
+      <translation>Tipus d'anotació que s'aplicarà a aquest objecte.
+Quan s'utilitzi un estil gravat algunes de les propietats de la vista es tornaràn només de lectura; només podran fer-se editables canviant l'estil a través de l'eina 'Editor d'estils d'anotació'.</translation>
     </message>
     <message>
       <location filename="wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>Els vèrtexs del filferro</translation>
     </message>
     <message>
       <location filename="wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>Si el filferro és tancat o no</translation>
     </message>
     <message>
       <location filename="wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>L'objecte de base es el filferro, està format per 2 objectes</translation>
     </message>
     <message>
       <location filename="wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>L'objecte eina és el filferro, està format per 2 objectes</translation>
     </message>
     <message>
       <location filename="wire.py" line="65"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>Punt d'inici d'aquesta línia</translation>
     </message>
     <message>
       <location filename="wire.py" line="69"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>Punt de final d'aquesta línia</translation>
     </message>
     <message>
       <location filename="wire.py" line="73"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>Longitud d'aquesta línia</translation>
     </message>
     <message>
       <location filename="wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>Crea una cara si aquest objecte és tancat</translation>
     </message>
     <message>
       <location filename="wire.py" line="89"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>Nombre de subdivisions de cada aresta</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="137"/>
@@ -910,31 +881,31 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="view_dimension.py" line="155"/>
       <source>Spacing between text and dimension line</source>
-      <translation type="unfinished">Spacing between text and dimension line</translation>
+      <translation>Espaiat entre el text i la línia de cota</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="164"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>Gira el text de la cota 180 graus</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="174"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
-      <translation type="unfinished">Text Position.
-Leave '(0,0,0)' for automatic position</translation>
+      <translation>Posició del text.
+Deixeu-lo a '(0,0,0)' per a posicionament automàtic</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="185"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
-      <translation type="unfinished">Text override.
-Write '$dim' so that it is replaced by the dimension length.</translation>
+      <translation>Text per sobreescriure.
+Entreu '$dim' per reemplaçar-lo per la longitud de la cota.</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="196"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>Nombre de decimals per mostrar</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="205"/>
@@ -942,150 +913,209 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
       <translation>Mostra el sufix de la unitat</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="215"/>
-      <source>A unit to express the measurement.
-Leave blank for system default</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default</translation>
-    </message>
-    <message>
-      <location filename="view_dimension.py" line="229"/>
+      <location filename="view_dimension.py" line="230"/>
       <source>Arrow size</source>
       <translation>Mida de la fletxa</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="238"/>
+      <location filename="view_dimension.py" line="239"/>
       <source>Arrow type</source>
       <translation>Tipus de fletxa</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="248"/>
+      <location filename="view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Gira les fletes d'acotació 180 graus</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="259"/>
+      <location filename="view_dimension.py" line="260"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>Distància en què les línies de cota s'extendran més enllà de les línies d'extensió</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="268"/>
+      <location filename="view_dimension.py" line="269"/>
       <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <translation>Longitud de les línies d'extensió</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="278"/>
+      <location filename="view_dimension.py" line="279"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension line
-beyond the dimension line</translation>
+      <translation>La longitud de la línia d'extensió sobrepassa la línia de cota</translation>
     </message>
     <message>
-      <location filename="view_dimension.py" line="287"/>
+      <location filename="view_dimension.py" line="288"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>Mostra la cota i les fletxes</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Si és cert, els objectes continguts a aquesta capa adoptarà el color de la línia de la capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>Si és cert, el color d'impressió serà utilitzat quan els objectes d'aquesta capa siguin posicionats a la pàgina de TechDraw</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="102"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>El color de línia dels objectes continguts dins d'aquesta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="116"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>El color de la forma dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="130"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>El gruix de línia dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="142"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>L'estil de dibuix dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="153"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>La transparència dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="164"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>El color de línia dels objectes continguts en aquesta capa, quan son utilitzats a una pàgina TechDraw</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="177"/>
+      <location filename="view_label.py" line="176"/>
       <source>Line width</source>
       <translation>Amplada de línia</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="186"/>
+      <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Color de línia</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="74"/>
+      <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
+      <translation>Mida del text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="83"/>
+      <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
+      <translation>Tipus de lletra del text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="119"/>
+      <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>Aliniació vertical del text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="102"/>
+      <location filename="view_label.py" line="101"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Color del text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="128"/>
+      <location filename="view_label.py" line="127"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>Interliniat (relatiu a la mida de la lletra)</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="111"/>
+      <location filename="view_label.py" line="110"/>
       <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>Nombre màxim de caracters a cada línia d'una caixa de text</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="139"/>
+      <location filename="view_label.py" line="138"/>
       <source>The size of the arrow</source>
-      <translation type="unfinished">The size of the arrow</translation>
+      <translation>Mida de la fletxa</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="148"/>
+      <location filename="view_label.py" line="147"/>
       <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <translation>Tipus de fletxa d'aquesta etiqueta</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="159"/>
+      <location filename="view_label.py" line="158"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>Tipus de marc al voltant del text d'aquest objecte</translation>
     </message>
     <message>
-      <location filename="view_label.py" line="168"/>
+      <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
       <translation>Mostra o amaga la línia guia</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="86"/>
+      <source>The base object that will be duplicated.</source>
+      <translation>L'objecte base que es duplicarà.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="100"/>
+      <source>Number of copies to create.</source>
+      <translation>Nombre de còpies a crear.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="107"/>
+      <source>Rotation factor of the twisted array.</source>
+      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+    </message>
+    <message>
+      <location filename="shapestring.py" line="59"/>
+      <source>Fill letters with faces</source>
+      <translation type="unfinished">Fill letters with faces</translation>
+    </message>
+    <message>
+      <location filename="view_dimension.py" line="216"/>
+      <source>A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</source>
+      <translation type="unfinished">A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="117"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation type="unfinished">For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
   </context>
   <context>
@@ -1278,42 +1308,42 @@ beyond the dimension line</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="298"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Especifiqueu una unitat de longitud vàlida com ara mm, m, in, ft, per forçar que es mostri el valor de l'acotació en aquesta unitat</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="315"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>Si està marcada l'opció, mostrarà la unitat al costat del valor de la cota</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="534"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Distància a la qual les línies d'extensió s'allarguen més enllà de la línia de cota</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="504"/>
       <source>The size of the dimension arrows or markers in system units</source>
-      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+      <translation>Mida de les fletxes de la cota o marcadors en unitats del sistema</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="417"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>Si està marcada l'opció, es mostrarà la línia de cota</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="514"/>
       <source>The distance that the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+      <translation>Distància addicional que s'extendrà la línia de cota</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="524"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>Longitud de les línies d'extensió</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="472"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>Tius de fletxa o marcador que s'emprarà al final de les línies de cota</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="481"/>
@@ -1328,12 +1358,12 @@ beyond the dimension line</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation type="unfinished">Import styles from json file</translation>
+      <translation>Importa els estils d'un fitxer JSON</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation type="unfinished">Export styles to json file</translation>
+      <translation>Exporta els estils a un fitxer JSON</translation>
     </message>
   </context>
   <context>
@@ -1350,17 +1380,17 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
     <message>
       <location filename="init_tools.py" line="145"/>
       <source>Draft creation tools</source>
-      <translation>Eines de creació d'esborrany</translation>
+      <translation>Eines de creació d'Esbós</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="148"/>
       <source>Draft annotation tools</source>
-      <translation>Eines d'anotació d'esborrany</translation>
+      <translation>Eines d'anotació d'Esbós</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="151"/>
       <source>Draft modification tools</source>
-      <translation>Eines de modificació de l'esborrany</translation>
+      <translation>Eines de modificació d'Esbós</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>
@@ -1400,12 +1430,12 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
     <message>
       <location filename="pointarray.py" line="305"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>L'objecte de punt no té un punt discret, no es pot usar per a una matriu.</translation>
     </message>
     <message>
       <location filename="bspline.py" line="106"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry: Tancada amb el mateix punt d'inici/final. No es pot actualitzar la geometria.</translation>
     </message>
     <message>
       <location filename="view_wpproxy.py" line="102"/>
@@ -1415,47 +1445,47 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
     <message>
       <location filename="view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Escrivint l'estat visible/ocult dels objectes</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="402"/>
       <source>Merge layer duplicates</source>
-      <translation type="unfinished">Merge layer duplicates</translation>
+      <translation>Fusiona duplicats de capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="407"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Afegeix una capa</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="244"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Conmuta la quadrícula activa/inactiva</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
       <source>Object snapping</source>
-      <translation type="unfinished">Object snapping</translation>
+      <translation>Ajustament d'objectes</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
+      <translation>Activa o desactiva les cotes d'ajut visual</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="314"/>
       <source>Toggles Ortho On/Off</source>
-      <translation type="unfinished">Toggles Ortho On/Off</translation>
+      <translation>Activa o desactiva l'Ortho</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="332"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
+      <translation>Activa o desactiva la restricció al pla de treball</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="144"/>
+      <location filename="gui_utils.py" line="150"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>No es pot inserir un nou objecte a una part escalada</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="157"/>
@@ -1468,52 +1498,52 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <translation>Fals</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="130"/>
+      <location filename="task_scale.py" line="133"/>
       <source>Scale</source>
       <translation>Escala</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="131"/>
-      <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
-    </message>
-    <message>
-      <location filename="task_scale.py" line="132"/>
-      <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
-    </message>
-    <message>
-      <location filename="task_scale.py" line="133"/>
-      <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
-    </message>
-    <message>
       <location filename="task_scale.py" line="134"/>
-      <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <source>X factor</source>
+      <translation>Factor X</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="135"/>
-      <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <source>Y factor</source>
+      <translation>Factor Y</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="136"/>
+      <source>Z factor</source>
+      <translation>Factor Z</translation>
+    </message>
+    <message>
+      <location filename="task_scale.py" line="137"/>
+      <source>Uniform scaling</source>
+      <translation>Escalat uniforme</translation>
+    </message>
+    <message>
+      <location filename="task_scale.py" line="138"/>
+      <source>Working plane orientation</source>
+      <translation>Orientació del pla de treball</translation>
+    </message>
+    <message>
+      <location filename="task_scale.py" line="139"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="137"/>
+      <location filename="task_scale.py" line="140"/>
       <source>Modify subelements</source>
       <translation>Modifica els sub-elements</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="138"/>
+      <location filename="task_scale.py" line="141"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Triar des/fins als punts</translation>
     </message>
     <message>
-      <location filename="task_scale.py" line="139"/>
+      <location filename="task_scale.py" line="142"/>
       <source>Create a clone</source>
       <translation>Crear un clon</translation>
     </message>
@@ -1525,7 +1555,7 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
     <message>
       <location filename="gui_lineslope.py" line="91"/>
       <source>Slope</source>
-      <translation type="unfinished">Slope</translation>
+      <translation>Pendent</translation>
     </message>
     <message>
       <location filename="gui_circulararray.py" line="66"/>
@@ -1538,10 +1568,9 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Crea còpies de l'objecte seleccionat i els disposa radialment, creand diverses capes circulars.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+La matriu es pot transformar en ortogonal o polar canviant-ne el tipus.</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="66"/>
@@ -1554,20 +1583,19 @@ The array can be turned into an orthogonal or a polar array by changing its type
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
+      <translation>Crea còpies de l'objecte seleccionat, i disposa les còpies en un patró polar definit per n centre i una rotació del seu angle.
 
-The array can be turned into an orthogonal or a circular array by changing its type.</translation>
+La matriu es pot convertir en ortogonal o circular canviant-ne el tipus.</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation type="unfinished">Array tools</translation>
+      <translation>Eines de taules</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Crea diversos tipus de matriu, incloent rectangular, polar, circular, camí i punt</translation>
     </message>
     <message>
       <location filename="gui_orthoarray.py" line="66"/>
@@ -1580,35 +1608,59 @@ The array can be turned into an orthogonal or a circular array by changing its t
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Crea còpies de l'objecte seleccionat i les disposa en un patró ortogonal, fent que les còpies segueixin la direcció definida en els eixos X, Y i Z.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+La matriu es pot convertir en polar o circular canviant-ne el tipus.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="65"/>
       <source>Fillet</source>
       <translation>Arrodoniment</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="67"/>
+      <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
+      <translation>Crea un cantell entre dos filferros o arestes seleccionades.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="89"/>
+      <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>Esborra els objectes originals</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="95"/>
+      <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Crea un xamfrà</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="326"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>No s'ha definit la direcció de desplaçament. Si us plau, moveu el ratolí a un o altre costat de l'objecte abans per indicar-ne la direcció</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="273"/>
+      <source>Save style</source>
+      <translation>Desa l'estil</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="274"/>
+      <source>Name of this new style:</source>
+      <translation>Nom d'aquest nou estil:</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="282"/>
+      <source>Name exists. Overwrite?</source>
+      <translation>Aquest nom ja existeix. El vols sobreescriure?</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="317"/>
+      <source>Error: json module not found. Unable to save style</source>
+      <translation>Error: no s'ha trobat el mòdul json. Impossible salvar l'estil</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="281"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
     </message>
   </context>
   <context>
@@ -2020,18 +2072,17 @@ It must be at least 2.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="342"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>Afegir al grup de construcció</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="344"/>
+      <location filename="gui_groups.py" line="345"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-It creates a construction group if it doesn't exist.</translation>
+      <translation>Afegeix els objectes seleccionats al grup de construcció, i canvia la seva aparença a l'estil de construcció.
+Crea un grup de construcció si aquest no existeix.</translation>
     </message>
   </context>
   <context>
@@ -2039,12 +2090,12 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Afegir un punt</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation type="unfinished">Adds a point to an existing Wire or B-spline.</translation>
+      <translation>Afegeix un punt a un filferro a B-spline existent.</translation>
     </message>
   </context>
   <context>
@@ -2052,19 +2103,19 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_groups.py" line="67"/>
       <source>Ungroup</source>
-      <translation type="unfinished">Ungroup</translation>
+      <translation>Desagrupa</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="72"/>
       <source>Move to group</source>
-      <translation type="unfinished">Move to group</translation>
+      <translation>Mou al grup</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="74"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>Mou els objectes seleccionats a un grup existent, o els elimina de qualsevol grup.
+El primer cop que s'utilitza crea un grup.</translation>
     </message>
   </context>
   <context>
@@ -2072,7 +2123,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="80"/>
       <source>Annotation styles...</source>
-      <translation type="unfinished">Annotation styles...</translation>
+      <translation>Estils de les anotacions...</translation>
     </message>
   </context>
   <context>
@@ -2080,40 +2131,40 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Aplica l'estil actual</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>Aplica l'estil definit actualment a la barra d'eines (ample de línia i colors) als objectes i grups seleccionats.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="gui_arcs.py" line="66"/>
+      <location filename="gui_arcs.py" line="67"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="69"/>
+      <location filename="gui_arcs.py" line="70"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea un arc de circumferència a partir del seu centre i un radi.
+CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="gui_arcs.py" line="598"/>
+      <location filename="gui_arcs.py" line="600"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Eines d'arc</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="601"/>
+      <location filename="gui_arcs.py" line="603"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>Crea diversos tipus d'arcs de circumferència.</translation>
     </message>
   </context>
   <context>
@@ -2129,23 +2180,23 @@ CTRL to snap, SHIFT to constrain.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>Crea una matriu a partir de l'objecte seleccionat.
+Per defecte crea una matriu ortogonal de 2x2.
+Un cop s'ha creat la matriu, se'n pot canviar el tipus a
+polar o circular, i se'n poden modificar les propietats.</translation>
     </message>
   </context>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="238"/>
+      <location filename="gui_groups.py" line="239"/>
       <source>Autogroup</source>
       <translation>Agrupament automàtic</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="241"/>
+      <location filename="gui_groups.py" line="242"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <translation>Selecciona un grup on s'afegiran tots els objectes Esbós i Arquitectura.</translation>
     </message>
   </context>
   <context>
@@ -2158,7 +2209,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una B-spline de múltiples punts. CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -2166,14 +2217,14 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
-      <translation type="unfinished">Bezier curve</translation>
+      <translation>Corba Bézier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una corba de Bézier de grau N. Quants més punts trieu, més alt serà el grau.
+CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -2181,27 +2232,27 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
-      <translation type="unfinished">Bezier tools</translation>
+      <translation>Eines Bézier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of Bezier curves.</source>
-      <translation type="unfinished">Create various types of Bezier curves.</translation>
+      <translation>Crea diversos tipus de corbes Bézier.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="gui_circles.py" line="79"/>
+      <location filename="gui_circles.py" line="80"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="gui_circles.py" line="83"/>
+      <location filename="gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
-      <translation type="unfinished">Creates a circle (full circular arc).
-CTRL to snap, ALT to select tangent objects.</translation>
+      <translation>Crea una circumferència (arc circular sencer).
+CTRL per ajustar, ALT per seleccionar objectes tangents.</translation>
     </message>
   </context>
   <context>
@@ -2215,8 +2266,8 @@ CTRL to snap, ALT to select tangent objects.</translation>
       <location filename="gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>Crea un clon dels objectes selecctionats.
+El clon resultant pot ésser escalat en qualsevol de les seves tres direccions.</translation>
     </message>
   </context>
   <context>
@@ -2224,29 +2275,29 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_lineops.py" line="124"/>
       <source>Close Line</source>
-      <translation type="unfinished">Close Line</translation>
+      <translation>Tanca la línia</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="125"/>
       <source>Closes the line being drawn, and finishes the operation.</source>
-      <translation type="unfinished">Closes the line being drawn, and finishes the operation.</translation>
+      <translation>Tanca la línia que s'esta dibuixant, i finalitza l'operació.</translation>
     </message>
   </context>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="gui_beziers.py" line="243"/>
+      <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
-      <translation type="unfinished">Cubic bezier curve</translation>
+      <translation>Corba Bézier cúbica</translation>
     </message>
     <message>
-      <location filename="gui_beziers.py" line="246"/>
+      <location filename="gui_beziers.py" line="245"/>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una corba Bézier feta de segments de 2n grau (quadràtics) o 3r grau (cúbics). Clica i arrossega per definir cada segment.
+Un cop la corba és creada, podeu tornar enrere per editar cada punt de control i establir les propietas de cada punt.
+CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -2254,23 +2305,23 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="89"/>
       <source>Remove point</source>
-      <translation type="unfinished">Remove point</translation>
+      <translation>Eliminar punt</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation type="unfinished">Removes a point from an existing Wire or B-spline.</translation>
+      <translation>Elimina un punt d'un filferrro o B-spline existent.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="gui_dimensions.py" line="83"/>
+      <location filename="gui_dimensions.py" line="84"/>
       <source>Dimension</source>
-      <translation>Dimensió</translation>
+      <translation>Cota</translation>
     </message>
     <message>
-      <location filename="gui_dimensions.py" line="86"/>
+      <location filename="gui_dimensions.py" line="87"/>
       <source>Creates a dimension.
 
 - Pick three points to create a simple linear dimension.
@@ -2283,18 +2334,15 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>Crea una acotació.
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- Trieu tres punts per crear una acotació linial simple.
+- Trieu una línia recta per crear una acotació linial lligada a la recta.
+- Trieu un arc o una circumferència per crear una acotació de radi o diàmetre associada a aquest arc.
+- Seleccioneu dues línies rectes per crear una acotació angular entre elles.
+CTRL per ajustar, MAJÚS per restringir, ALT per tiar una aresta o un arc.
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+Podeu seleccionar una sola linia o un sol arc circular abans d'invocar aquesta ordre per convertir-lo en un objecte 'Esbós d'acotació'.</translation>
     </message>
   </context>
   <context>
@@ -2302,16 +2350,16 @@ to turn it into a 'Draft Dimension' object.</translation>
     <message>
       <location filename="gui_downgrade.py" line="58"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Baixar de categoria</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>Degrada els objectes seleccionats a les seves formes més simples.
+El resultat de l'operació depèn dels tipus d'objectes, que poden ésser degradats diverses vegades.
+Per exemple, explota les polilínies seleccionades e cares més simples, filferros i després arestes. També pot restar cares.</translation>
     </message>
   </context>
   <context>
@@ -2319,16 +2367,15 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Converteix un Esbós en Croquis</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>Conversió bidireccional entre objectes Esbós i Croquis.
+Diversos objectes Esbós es convertiran en un sol Croquis sense restriccions, mentre que un sol Croquis amb traços no continus es convertirà en diversos objectes Esbós individuals.</translation>
     </message>
   </context>
   <context>
@@ -2343,26 +2390,24 @@ However, a single sketch with disconnected traces will be converted into several
       <source>Creates a 2D projection on a Drawing Workbench page from the selected objects.
 This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
 Use TechDraw Workbench instead for generating technical drawings.</source>
-      <translation type="unfinished">Creates a 2D projection on a Drawing Workbench page from the selected objects.
-This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
-Use TechDraw Workbench instead for generating technical drawings.</translation>
+      <translation>Crea una projecció 2D en una pàgina del banc de treball de dibuix a partur dels objectes seleccionats.
+Aquesta ordre és OBSOLETA, ja que el banc de treball de Dibuix es va convertir en obsolet a la versió 0.17. Useu el banc de treball Dibuix Tècnic per a fer dibuixos tècnics.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="gui_edit.py" line="275"/>
+      <location filename="gui_edit.py" line="276"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="284"/>
+      <location filename="gui_edit.py" line="285"/>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Edita l'objecte actiu.
+Premeu E o bé ALT+botó dret per mostrar un menú contextual en els nodes suportats i en els objectes suportats.</translation>
     </message>
   </context>
   <context>
@@ -2375,7 +2420,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap.</translation>
+      <translation>Crea una el·lipse. CTRL per ajustar.</translation>
     </message>
   </context>
   <context>
@@ -2383,7 +2428,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_facebinders.py" line="60"/>
       <source>Facebinder</source>
-      <translation type="unfinished">Facebinder</translation>
+      <translation>Ajunta-cares</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="62"/>
@@ -2396,12 +2441,12 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_lineops.py" line="98"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>Acaba la línia</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="99"/>
       <source>Finishes a line without closing it.</source>
-      <translation type="unfinished">Finishes a line without closing it.</translation>
+      <translation>Finalitza una línia sense tancar-la.</translation>
     </message>
   </context>
   <context>
@@ -2409,14 +2454,14 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Inverteix l'acotació</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Inverteix la direcció normal de l'acotació seleccionada (linial, radial, angular).
+Si hi ha altres objectes seleccionats seran ignorats.</translation>
     </message>
   </context>
   <context>
@@ -2424,16 +2469,15 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="gui_heal.py" line="58"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>Reparar</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="61"/>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>Repara objectes Esbós malmesos desats amb una versió anterior del programa.
+Si hi ha un objecte seleccionat, intentarà reparar l'objecte en qüestió, altrament intentarà reparar tots els objectes del document actiu.</translation>
     </message>
   </context>
   <context>
@@ -2447,8 +2491,8 @@ otherwise it will try to heal all objects in the active document.</translation>
       <location filename="gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Uneix les línies o polilínies seleccionades en un sol objecte.
+Les línies han de compartir un punt al principi o al final perquè l'operació tingui èxit.</translation>
     </message>
   </context>
   <context>
@@ -2482,14 +2526,14 @@ Si hi ha molts objectes o subelement seleccionats, només es mostrarà informaci
     <message>
       <location filename="gui_layers.py" line="52"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Capa</translation>
     </message>
     <message>
       <location filename="gui_layers.py" line="55"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</translation>
+      <translation>Afegeix una capa al document.
+Els objectes afegits a aquesta capa poden compartir les mateixes propietats com ara color de línia, ample de línia i color de la forma.</translation>
     </message>
   </context>
   <context>
@@ -2502,7 +2546,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una línia de 2 punts. CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -2510,14 +2554,14 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_array_simple.py" line="119"/>
       <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
+      <translation>Matriu d'enllaç</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="122"/>
       <source>Like the Array tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Igual que l'eina de Matriu, però en aquest cas crea una Matriu d'enllaç.
+Una 'Matriu d'enllaç' és més eficient quan s'empren moltes còpies, però l'opció 'Fusiona' no es pot utilitzar.</translation>
     </message>
   </context>
   <context>
@@ -2525,12 +2569,12 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_mirror.py" line="63"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Reflexa</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="66"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>Reflexa els objectes seleccionats a partir d'una línia definida per dos punts.</translation>
     </message>
   </context>
   <context>
@@ -2545,9 +2589,9 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Moves the selected objects from one base point to another point.
-If the "copy" option is active, it will create displaced copies.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Mou els objectes seleccionats d'un punt base a un altre punt.
+Si l'opció "copia" està activada, crearà còpies desplaçades.
+CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -2562,9 +2606,9 @@ CTRL to snap, SHIFT to constrain.</translation>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Desplaçaments de l'objecte seleccionat.
+També pit crear una còpia desplaçada de l'objecte original.
+CTRL per ajustar, MAJÚS per restringir. Manteniu ALT i feu clic per crear una còpia per cada clic.</translation>
     </message>
   </context>
   <context>
@@ -2572,16 +2616,16 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
     <message>
       <location filename="gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Matriu de camí</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Crea còpies de l'objecte seleccionat al llarg d'un camí determinat.
+Primer trieu l'objecte, i després trieu el camí.
+El camí pot ser una polilínia, B-spline, corba Bézier, o fins i tot, arestes d'altres objectes.</translation>
     </message>
   </context>
   <context>
@@ -2589,14 +2633,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_patharray.py" line="163"/>
       <source>Path Link array</source>
-      <translation type="unfinished">Path Link array</translation>
+      <translation>Matriu enllaçada de camí</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="166"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Igual que l'eina Matriu de camí, però crea una matriu d'enllaços.
+Una Matriu d'enllaços és més eficient gestionant moltes còpies, però l'opció 'fusiona' no es pot emprar.</translation>
     </message>
   </context>
   <context>
@@ -2604,16 +2648,16 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pathtwistedarray.py" line="66"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Matriu de camí retorçat</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="69"/>
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path, and twists the copies.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Crea còpies de l'objecte seleccionat al llarg d'un camí determinat, i en gira les còpies.
+Primer trieu l'objecte, i després trieu el camí.
+El camí pot ser una polilínia, B-spline, corba Bézier, o fins i tot, arestes d'altres objectes.</translation>
     </message>
   </context>
   <context>
@@ -2621,14 +2665,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted Link array</source>
-      <translation type="unfinished">Path twisted Link array</translation>
+      <translation>Matriu d'enllaços de camí retorçat</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Igual que l'eina Matriu de camí retorçat, però crea una matriu d'enllaços.
+Una Matriu d'enllaços és més eficient gestionant moltes còpies, però l'opció 'fusiona' no es pot emprar.</translation>
     </message>
   </context>
   <context>
@@ -2641,7 +2685,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>Crea un objecte de punt. Cliqueu en qualsevol punt de la vista 3D.</translation>
     </message>
   </context>
   <context>
@@ -2649,7 +2693,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Matriu de punts</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -2660,28 +2704,26 @@ To create this compound, select various points and then use the Part Compound to
 or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
 
 Select the base object, and then select the compound or the sketch to create the point array.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies at the position of various points.
+      <translation>Crea còpies de l'objecte seleccionat i en situa les còpies a la posició de diversos punts.
 
-The points need to be grouped under a compound of points before using this tool.
-To create this compound, select various points and then use the Part Compound tool,
-or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
-
-Select the base object, and then select the compound or the sketch to create the point array.</translation>
+Els punts han d'estar agrupats en una composició de punts abans d'usar aquesta eina.
+Per crear aquesta composició, trieu diversos punts i utilitzeu l'eina Composició de peces, o bé useu l'eina Promoció d'esbós per crear un «Bloc», o creeu un croquis i afegiu-hi punts simples.
+Seleccioneu l'objecte de base i després la composició o croquis per crear la matriu de punts.</translation>
     </message>
   </context>
   <context>
     <name>Draft_PointLinkArray</name>
     <message>
-      <location filename="gui_pointarray.py" line="142"/>
+      <location filename="gui_pointarray.py" line="141"/>
       <source>PointLinkArray</source>
-      <translation type="unfinished">PointLinkArray</translation>
+      <translation>Matriu d'enllaços de punts</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="145"/>
+      <location filename="gui_pointarray.py" line="144"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
-      <translation type="unfinished">Like the PointArray tool, but creates a 'Point link array' instead.
-A 'Point link array' is more efficient when handling many copies.</translation>
+      <translation>Com l'eina Matriu de punts, però crea una 'Matriu d'enllaços de punts'.
+Una 'Matriu d'enllaços de punts' és més eficient quan s'empren moltes còpies.</translation>
     </message>
   </context>
   <context>
@@ -2695,8 +2737,8 @@ A 'Point link array' is more efficient when handling many copies.</translation>
       <location filename="gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
-CTRL to snap, SHIFT to constrain</translation>
+      <translation>Crea un polígon regular (triangle, quadrat, pentàgon,...), definit pel nombre de cares i el radi circumscrit.
+CTRL per ajustar, MAJÚS per restringir</translation>
     </message>
   </context>
   <context>
@@ -2709,7 +2751,7 @@ CTRL to snap, SHIFT to constrain</translation>
     <message>
       <location filename="gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle. CTRL to snap.</source>
-      <translation type="unfinished">Creates a 2-point rectangle. CTRL to snap.</translation>
+      <translation>Crea un rectangle amb 2 punts. CTRL per ajustar.</translation>
     </message>
   </context>
   <context>
@@ -2724,9 +2766,9 @@ CTRL to snap, SHIFT to constrain</translation>
       <source>Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
 If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
-If the "copy" option is active, it will create rotated copies.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Fa rotar els objectes seleccionats. Trieu el centre de rotació, l'angle inicial i l'angle final.
+Si s'ha activat l'opció "còpia", crearà còpies rotades.
+CTRL per ajustar, MAJÚS per restringir. Mantingueu premut ALT i cliqueu per crear una còpia a cada clic.</translation>
     </message>
   </context>
   <context>
@@ -2740,8 +2782,8 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
       <location filename="gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
-      <translation type="unfinished">Scales the selected objects from a base point.
-CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
+      <translation>Escala els objectes seleccionats a partir d'un punt base.
+CTRL per ajustar, MAJÚS per restringir, ALT per a copiar.</translation>
     </message>
   </context>
   <context>
@@ -2749,7 +2791,18 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="gui_groups.py" line="165"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Selecciona grup</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="168"/>
+      <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+
+If the selection is a simple object inside a group, it will select the "brother" objects, that is,
+those that are at the same level as this object, including the upper group that contains them all.</source>
+      <translation type="unfinished">If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+
+If the selection is a simple object inside a group, it will select the "brother" objects, that is,
+those that are at the same level as this object, including the upper group that contains them all.</translation>
     </message>
   </context>
   <context>
@@ -2757,27 +2810,27 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="gui_selectplane.py" line="65"/>
       <source>SelectPlane</source>
-      <translation type="unfinished">SelectPlane</translation>
+      <translation>Selecciona pla</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="67"/>
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
-      <translation type="unfinished">Select the face of solid body to create a working plane on which to sketch Draft objects.
-You may also select a three vertices or a Working Plane Proxy.</translation>
+      <translation>Selecciona una cara d'un cos sòlid per crear un pla de treball sobre el qual dibuixar objectes esbós.
+Podeu seleccionar també tres vèrtexs o un «proxy» de pla de preball.</translation>
     </message>
   </context>
   <context>
     <name>Draft_SetStyle</name>
     <message>
-      <location filename="gui_setstyle.py" line="49"/>
+      <location filename="gui_setstyle.py" line="55"/>
       <source>Set style</source>
-      <translation type="unfinished">Set style</translation>
+      <translation>Defineix estil</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="51"/>
+      <location filename="gui_setstyle.py" line="57"/>
       <source>Sets default styles</source>
-      <translation type="unfinished">Sets default styles</translation>
+      <translation>Defineix estils per defecte</translation>
     </message>
   </context>
   <context>
@@ -2785,63 +2838,63 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_planeproxy.py" line="50"/>
       <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
+      <translation>Crea un proxy de pla de treball</translation>
     </message>
     <message>
       <location filename="gui_planeproxy.py" line="52"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
+      <translation>Crea un objecte proxy del pla de treball actual.
+Un cop l'objecte és creat, feu doble clic a la vista d'arbre per a restaurar la posició de càmera les visibilitats de l'objecte.
+Aleshores, podeu usar-lo per desar posicions de càmera i estats d'objectes sempre que sigui necessari.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="gui_shape2dview.py" line="61"/>
+      <location filename="gui_shape2dview.py" line="59"/>
       <source>Shape 2D view</source>
-      <translation type="unfinished">Shape 2D view</translation>
+      <translation>Vista 2D de la forma</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="64"/>
+      <location filename="gui_shape2dview.py" line="62"/>
       <source>Creates a 2D projection of the selected objects on the XY plane.
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY plane.
-The initial projection direction is the negative of the current active view direction.
-You can select individual faces to project, or the entire solid, and also include hidden lines.
-These projections can be used to create technical drawings with the TechDraw Workbench.</translation>
+      <translation>Crea una projecció 2D dels objectes seleccionats sobre el pla XY.
+La direcció de projecció inicial és la negativa de la direcció de la vista actual.
+Podeu triar cares individuals per ser projectades, o bé tot el sòlid, i incloure també línies ocultes.
+Aquestes projeccions poden usar-se per crear dibuixos tècnics amb el banc de treball Dibuix Tècnic.</translation>
     </message>
   </context>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="gui_shapestrings.py" line="70"/>
+      <location filename="gui_shapestrings.py" line="68"/>
       <source>Shape from text</source>
-      <translation type="unfinished">Shape from text</translation>
+      <translation>Forma a partir de text</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="72"/>
+      <location filename="gui_shapestrings.py" line="70"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
-      <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
-The closed shapes can be used for extrusions and boolean operations.</translation>
+      <translation>Crea una forma a partir d'una cadena de text triant una tipografia i una situació.
+Les formes tancades es poden emprar per a extrusions i per a operacions booleanes.</translation>
     </message>
   </context>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="573"/>
+      <location filename="gui_snaps.py" line="576"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>Mostra la barra d'eines d'ajustar</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="579"/>
       <source>Show the snap toolbar if it is hidden.</source>
-      <translation type="unfinished">Show the snap toolbar if it is hidden.</translation>
+      <translation>Mostra la barra d'eines d'ajustar is aquesta es troba oculta.</translation>
     </message>
   </context>
   <context>
@@ -2849,7 +2902,7 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
     <message>
       <location filename="gui_lineslope.py" line="70"/>
       <source>Set slope</source>
-      <translation type="unfinished">Set slope</translation>
+      <translation>Estableix la pendent</translation>
     </message>
     <message>
       <location filename="gui_lineslope.py" line="73"/>
@@ -2858,223 +2911,221 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>Estableix la pendent de la línia seleccionada canviant el valor de Z d'un dels seus punts.
+Si es tria una polilínia, s'aplicarà la transformació de pendent a cada un dels seus segments.
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</translation>
+Pendent sempre canviarà el valor de Z, així que aquesta ordre només funciona bé per línies rectes dibuixades sobre el pla XY. Els objectes seleccionats que no són simples línies seran ignorats.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1527"/>
+      <location filename="gui_snapper.py" line="1535"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Conmuta la quadrícula activa/inactiva</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1528"/>
+      <location filename="gui_snapper.py" line="1536"/>
       <source>Toggle Draft Grid</source>
-      <translation type="unfinished">Toggle Draft Grid</translation>
+      <translation>Commuta la graella d'Esbós</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="327"/>
+      <location filename="gui_snaps.py" line="331"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="330"/>
+      <location filename="gui_snaps.py" line="334"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
-      <translation type="unfinished">Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</translation>
+      <translation>Ajusta a punts d'un arc circular situats a angles múltiples de 30 i 45 graus.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="357"/>
+      <location filename="gui_snaps.py" line="361"/>
       <source>Center</source>
       <translation>Centre</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="360"/>
+      <location filename="gui_snaps.py" line="364"/>
       <source>Set snapping to the center of a circular arc.</source>
-      <translation type="unfinished">Set snapping to the center of a circular arc.</translation>
+      <translation>Ajusta al centre d'un arc circular.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="509"/>
+      <location filename="gui_snaps.py" line="513"/>
       <source>Show dimensions</source>
-      <translation type="unfinished">Show dimensions</translation>
+      <translation>Mostra les acotacions</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="512"/>
+      <location filename="gui_snaps.py" line="516"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
-      <translation type="unfinished">Show temporary linear dimensions when editing an object and using other snapping methods.</translation>
+      <translation>Mostra les cotes linials temporals quan s'edita un objecte usant altres mètodes d'ajustament.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="296"/>
+      <location filename="gui_snaps.py" line="300"/>
       <source>Endpoint</source>
       <translation>Punt final</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="299"/>
+      <location filename="gui_snaps.py" line="303"/>
       <source>Set snapping to endpoints of an edge.</source>
-      <translation type="unfinished">Set snapping to endpoints of an edge.</translation>
+      <translation>Ajusta als extrems d'una aresta.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="387"/>
+      <location filename="gui_snaps.py" line="391"/>
       <source>Extension</source>
       <translation>Extensió</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="390"/>
+      <location filename="gui_snaps.py" line="394"/>
       <source>Set snapping to the extension of an edge.</source>
-      <translation type="unfinished">Set snapping to the extension of an edge.</translation>
+      <translation>Ajusta a l'extensió d'una aresta.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="206"/>
+      <location filename="gui_snaps.py" line="210"/>
       <source>Grid</source>
       <translation>Quadrícula</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="209"/>
+      <location filename="gui_snaps.py" line="213"/>
       <source>Set snapping to the intersection of grid lines.</source>
-      <translation type="unfinished">Set snapping to the intersection of grid lines.</translation>
+      <translation>Ajusta a la intersecció de les línies de la graella.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="236"/>
+      <location filename="gui_snaps.py" line="240"/>
       <source>Intersection</source>
       <translation>Intersecció</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="239"/>
+      <location filename="gui_snaps.py" line="243"/>
       <source>Set snapping to the intersection of edges.</source>
-      <translation type="unfinished">Set snapping to the intersection of edges.</translation>
+      <translation>Ajusta a la intersecció d'arestes.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="116"/>
+      <location filename="gui_snaps.py" line="120"/>
       <source>Main snapping toggle On/Off</source>
-      <translation type="unfinished">Main snapping toggle On/Off</translation>
+      <translation>Activa/Desactiva l'ajustament global</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="119"/>
+      <location filename="gui_snaps.py" line="123"/>
       <source>Activates or deactivates all snap methods at once.</source>
-      <translation type="unfinished">Activates or deactivates all snap methods at once.</translation>
+      <translation>Activa o desactiva tots els mètodes d'ajustament d'un sol cop.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="146"/>
+      <location filename="gui_snaps.py" line="150"/>
       <source>Midpoint</source>
-      <translation type="unfinished">Midpoint</translation>
+      <translation>Punt mig</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="149"/>
+      <location filename="gui_snaps.py" line="153"/>
       <source>Set snapping to the midpoint of an edge.</source>
-      <translation type="unfinished">Set snapping to the midpoint of an edge.</translation>
+      <translation>Ajusta al punt mig d'una aresta.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="417"/>
+      <location filename="gui_snaps.py" line="421"/>
       <source>Nearest</source>
-      <translation type="unfinished">Nearest</translation>
+      <translation>El més proper</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="420"/>
+      <location filename="gui_snaps.py" line="424"/>
       <source>Set snapping to the nearest point of an edge.</source>
-      <translation type="unfinished">Set snapping to the nearest point of an edge.</translation>
+      <translation>Ajusta al punt més proper d'una aresta.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="448"/>
+      <location filename="gui_snaps.py" line="452"/>
       <source>Orthogonal</source>
-      <translation type="unfinished">Orthogonal</translation>
+      <translation>Ortogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="451"/>
+      <location filename="gui_snaps.py" line="455"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
-      <translation type="unfinished">Set snapping to a direction that is a multiple of 45 degrees from a point.</translation>
+      <translation>Ajusta a una direcció que és múltiple de 45 graus des d'un punt.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="266"/>
+      <location filename="gui_snaps.py" line="270"/>
       <source>Parallel</source>
       <translation>Paral·lel</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="269"/>
+      <location filename="gui_snaps.py" line="273"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is parallel to an edge.</translation>
+      <translation>Ajusta a una direcció paral·lela a una aresta.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="176"/>
+      <location filename="gui_snaps.py" line="180"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Perpendicular</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="179"/>
+      <location filename="gui_snaps.py" line="183"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is perpendicular to an edge.</translation>
+      <translation>Ajusta a una direcció perpendicular a una aresta.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="478"/>
+      <location filename="gui_snaps.py" line="482"/>
       <source>Special</source>
-      <translation type="unfinished">Special</translation>
+      <translation>Especial</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="481"/>
+      <location filename="gui_snaps.py" line="485"/>
       <source>Set snapping to the special points defined inside an object.</source>
-      <translation type="unfinished">Set snapping to the special points defined inside an object.</translation>
+      <translation>Ajusta als punts especials definits dins d'un objecte.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="542"/>
+      <location filename="gui_snaps.py" line="546"/>
       <source>Working plane</source>
-      <translation type="unfinished">Working plane</translation>
+      <translation>Pla de treball</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="545"/>
+      <location filename="gui_snaps.py" line="549"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
-      <translation type="unfinished">Restricts snapping to a point in the current working plane.
-If you select a point outside the working plane, for example, by using other snapping methods,
-it will snap to that point's projection in the current working plane.</translation>
+      <translation>Restringeix l'ajustament a un punt dins del pla de treball actual.
+Si trieu un punt fora del pla de treball, per exemple, emprant altres mètodes d'ajustament, s'ajustarà a la projecció del punt en el pla de treball actual.</translation>
     </message>
   </context>
   <context>
@@ -3089,9 +3140,8 @@ it will snap to that point's projection in the current working plane.</translati
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
-      <translation type="unfinished">Splits the selected line or polyline into two independent lines
-or polylines by clicking anywhere along the original object.
-It works best when choosing a point on a straight segment and not a corner vertex.</translation>
+      <translation>Divideix la línia o polilínia seleccionada en dos línies independents o polilínies, fent clic a qualsevol lloc al llarg de l'objecte original.
+Funciona millor quan es tria un punt d'un segment recte i no en un vèrtex a la cantonada.</translation>
     </message>
   </context>
   <context>
@@ -3099,29 +3149,28 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="gui_stretch.py" line="64"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Estira</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="67"/>
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
-      <translation type="unfinished">Stretches the selected objects.
-Select an object, then draw a rectangle to pick the vertices that will be stretched,
-then draw a line to specify the distance and direction of stretching.</translation>
+      <translation>Estira els objectes seleccionats.
+Seleccioneu un objecte, dibuixeu un rectangle per triar els vèrtexs que seran estirats, i finalment dibuixeu una línia per definir la distància i direcció d'estirament.</translation>
     </message>
   </context>
   <context>
     <name>Draft_SubelementHighlight</name>
     <message>
-      <location filename="gui_subelements.py" line="62"/>
+      <location filename="gui_subelements.py" line="61"/>
       <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
+      <translation>Ressaltat de subelement</translation>
     </message>
     <message>
-      <location filename="gui_subelements.py" line="65"/>
+      <location filename="gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
+      <translation>Ressalta els subelements dels objectes seleccionats, i axió puguin ser editats amb les eines moure, rotar i escalar.</translation>
     </message>
   </context>
   <context>
@@ -3134,7 +3183,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>Crea una anotació multilínia. CTRL per ajustar.</translation>
     </message>
   </context>
   <context>
@@ -3148,8 +3197,8 @@ then draw a line to specify the distance and direction of stretching.</translati
       <location filename="gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>Commuta el mode de Construcció.
+Quan s'activa, els objectes creats a continuació seran inclosos en el grup de construcció, i seran dibuixats amb el color i les propietats especificades.</translation>
     </message>
   </context>
   <context>
@@ -3157,16 +3206,16 @@ When this is active, the following objects created will be included in the const
     <message>
       <location filename="gui_togglemodes.py" line="131"/>
       <source>Toggle continue mode</source>
-      <translation type="unfinished">Toggle continue mode</translation>
+      <translation>Commuta el mode continuar</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="133"/>
       <source>Toggles the Continue mode.
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
-      <translation type="unfinished">Toggles the Continue mode.
-When this is active, any drawing tool that is terminated will automatically start again.
-This can be used to draw several objects one after the other in succession.</translation>
+      <translation>Commuta el mode Continuar.
+Quan està actiu, qualsevol eina de dibuix es torna a iniciar automàticament quan acaba.
+Això es pot emprar per a dibuixar diversos objectes un rere l'altre en successió.</translation>
     </message>
   </context>
   <context>
@@ -3174,16 +3223,16 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Commuta la vista normal/filferro</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>Canvia el mode de visualització dels objectes seleccionats de línies planes a model de filferro i viceversa.
+És útil per visualitzar ràpidament objectes ocults rere d'altres objectes.
+Està pensat per a usar-se amb formes tancades i sòlids, i no afecta a filferros oberts.</translation>
     </message>
   </context>
   <context>
@@ -3191,12 +3240,12 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_grid.py" line="58"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Commuta la graella</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>Commuta la graella d'Esbós.</translation>
     </message>
   </context>
   <context>
@@ -3204,14 +3253,14 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="79"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces.
-CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</translation>
+      <translation>Retalla o allarga l'objecte seleccionat, o extrueix cares individuals.
+CTRL per ajustar, MAJÚS per restringir al segment actual o a la normal, ALT per invertir.</translation>
     </message>
   </context>
   <context>
@@ -3219,12 +3268,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_lineops.py" line="151"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>Desfés l'últim segment</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="152"/>
       <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation type="unfinished">Undoes the last drawn segment of the line being drawn.</translation>
+      <translation>Desfà l'últim segment dibuixat de la línia que s'està dibuixant.</translation>
     </message>
   </context>
   <context>
@@ -3232,7 +3281,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Promociona</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="61"/>
@@ -3240,36 +3289,35 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>Promociona els objectes seleccionats a formes més complexes.
+El. resultat de l'operació depèn del tipus dels objectes, que poden ser promocionats diverses vegades seguides.
+Per exemple, pot unir objectes seleccionats en un de sol, convertir simples arestes en polilínies paramètriques, convertir arestes tancades en cares amb ompliment i polígons paramètrics, i combinar cares en una sola cara.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="gui_lines.py" line="312"/>
+      <location filename="gui_lines.py" line="310"/>
       <source>Polyline</source>
       <translation>Polilínia</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="315"/>
+      <location filename="gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una línia de múltiples punts (polilínia). CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="gui_wire2spline.py" line="63"/>
+      <location filename="gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>Filferro a B-spline</translation>
     </message>
     <message>
-      <location filename="gui_wire2spline.py" line="66"/>
+      <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>Converteix una polilínia seleccionada a B-spline, o una B-spline a polilínia.</translation>
     </message>
   </context>
   <context>
@@ -3436,7 +3484,7 @@ valor mitjançant les tecles [ i ] mentre es dibuixa</translation>
     <message>
       <location filename="TaskSelectPlane.ui" line="219"/>
       <source>Grid extension</source>
-      <translation type="unfinished">Grid extension</translation>
+      <translation>Extensió de la graella</translation>
     </message>
     <message>
       <location filename="TaskSelectPlane.ui" line="226"/>
@@ -3446,222 +3494,267 @@ valor mitjançant les tecles [ i ] mentre es dibuixa</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="14"/>
       <source>Style settings</source>
-      <translation type="unfinished">Style settings</translation>
+      <translation>Ajustaments d'estil</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="207"/>
+      <location filename="TaskPanel_SetStyle.ui" line="244"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Color del text</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="132"/>
+      <location filename="TaskPanel_SetStyle.ui" line="169"/>
       <source>Shape color</source>
-      <translation type="unfinished">Shape color</translation>
+      <translation>Color de la forma</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="50"/>
+      <location filename="TaskPanel_SetStyle.ui" line="87"/>
       <source>Line width</source>
       <translation>Amplada de línia</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="29"/>
+      <location filename="TaskPanel_SetStyle.ui" line="66"/>
       <source>The color of faces</source>
-      <translation type="unfinished">The color of faces</translation>
+      <translation>El color de les cares</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="168"/>
+      <location filename="TaskPanel_SetStyle.ui" line="205"/>
       <source>The type of dimension arrows</source>
-      <translation type="unfinished">The type of dimension arrows</translation>
+      <translation>El tipus de les fletxes de les cotes</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="172"/>
+      <location filename="TaskPanel_SetStyle.ui" line="209"/>
       <source>Dot</source>
       <translation>Punt</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="177"/>
+      <location filename="TaskPanel_SetStyle.ui" line="214"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="182"/>
+      <location filename="TaskPanel_SetStyle.ui" line="219"/>
       <source>Arrow</source>
       <translation>Fletxa</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="187"/>
+      <location filename="TaskPanel_SetStyle.ui" line="224"/>
       <source>Tick</source>
       <translation>Tick</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="TaskPanel_SetStyle.ui" line="229"/>
       <source>Tick-2</source>
       <translation>Tick-2</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="234"/>
+      <location filename="TaskPanel_SetStyle.ui" line="271"/>
       <source>The color of texts and dimension texts</source>
-      <translation type="unfinished">The color of texts and dimension texts</translation>
+      <translation>El color dels textos i dels textos de les cotes</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="241"/>
+      <location filename="TaskPanel_SetStyle.ui" line="278"/>
       <source>The size of texts and dimension texts</source>
-      <translation type="unfinished">The size of texts and dimension texts</translation>
+      <translation>Mida dels textos i del textos de les cotes</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="281"/>
+      <location filename="TaskPanel_SetStyle.ui" line="318"/>
       <source>Show unit</source>
       <translation>Mostra les unitats</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="43"/>
+      <location filename="TaskPanel_SetStyle.ui" line="80"/>
       <source>Line color</source>
       <translation>Color de línia</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="271"/>
+      <location filename="TaskPanel_SetStyle.ui" line="308"/>
       <source>The size of dimension arrows</source>
-      <translation type="unfinished">The size of dimension arrows</translation>
+      <translation>Mida de les fletxes de les cotes</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="220"/>
+      <location filename="TaskPanel_SetStyle.ui" line="257"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Font a emprar per a textos i dimensions</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="64"/>
+      <location filename="TaskPanel_SetStyle.ui" line="101"/>
       <source>The line style</source>
-      <translation type="unfinished">The line style</translation>
+      <translation>L'estil de la línia</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="68"/>
+      <location filename="TaskPanel_SetStyle.ui" line="105"/>
       <source>Solid</source>
       <translation>Sòlid</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="73"/>
+      <location filename="TaskPanel_SetStyle.ui" line="110"/>
       <source>Dashed</source>
       <translation>Discontínua</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="78"/>
+      <location filename="TaskPanel_SetStyle.ui" line="115"/>
       <source>Dotted</source>
       <translation>Puntejada</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="83"/>
+      <location filename="TaskPanel_SetStyle.ui" line="120"/>
       <source>DashDot</source>
       <translation>Guió punt</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="227"/>
+      <location filename="TaskPanel_SetStyle.ui" line="264"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Mida del text</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="295"/>
+      <location filename="TaskPanel_SetStyle.ui" line="332"/>
       <source>Unit override</source>
       <translation>Substitució d'unitat</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="302"/>
+      <location filename="TaskPanel_SetStyle.ui" line="339"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
-      <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
+      <translation>Unitat que s'utilitzarà per les cotes. Deixeu-la en blanc per usar l'unitat actual del FreeCAD</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="146"/>
+      <location filename="TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
-      <translation type="unfinished">The transparency of faces</translation>
+      <translation>La transparència de les cares</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="149"/>
+      <location filename="TaskPanel_SetStyle.ui" line="186"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="139"/>
+      <location filename="TaskPanel_SetStyle.ui" line="176"/>
       <source>Transparency</source>
       <translation>Transparència</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="98"/>
+      <location filename="TaskPanel_SetStyle.ui" line="135"/>
       <source>Display mode</source>
       <translation>Mode de visualització</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="200"/>
+      <location filename="TaskPanel_SetStyle.ui" line="237"/>
       <source>Text font</source>
-      <translation type="unfinished">Text font</translation>
+      <translation>Tius de lletra</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="288"/>
+      <location filename="TaskPanel_SetStyle.ui" line="325"/>
       <source>Arrow size</source>
       <translation>Mida de la fletxa</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="105"/>
+      <location filename="TaskPanel_SetStyle.ui" line="142"/>
       <source>The display mode for faces</source>
-      <translation type="unfinished">The display mode for faces</translation>
+      <translation>El tipus de visualització per les cares</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="109"/>
+      <location filename="TaskPanel_SetStyle.ui" line="146"/>
       <source>Flat Lines</source>
-      <translation type="unfinished">Flat Lines</translation>
+      <translation>Linies planes</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="114"/>
+      <location filename="TaskPanel_SetStyle.ui" line="151"/>
       <source>Wireframe</source>
-      <translation>Filferro</translation>
+      <translation>Model de filferro</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="119"/>
+      <location filename="TaskPanel_SetStyle.ui" line="156"/>
       <source>Shaded</source>
       <translation>Ombrejat</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="124"/>
+      <location filename="TaskPanel_SetStyle.ui" line="161"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="36"/>
+      <location filename="TaskPanel_SetStyle.ui" line="73"/>
       <source>Draw style</source>
       <translation>Estil de dibuix</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="57"/>
+      <location filename="TaskPanel_SetStyle.ui" line="94"/>
       <source>The color of lines</source>
-      <translation type="unfinished">The color of lines</translation>
+      <translation>El color de les línies</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="251"/>
+      <location filename="TaskPanel_SetStyle.ui" line="288"/>
       <source>Arrow style</source>
-      <translation type="unfinished">Arrow style</translation>
+      <translation>Estil de la fletxa</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="91"/>
+      <location filename="TaskPanel_SetStyle.ui" line="128"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="312"/>
-      <source>Apply to selected objects</source>
-      <translation>S'apliquen a objectes seleccionats</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="20"/>
+      <location filename="TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
-      <translation type="unfinished">Lines and faces</translation>
+      <translation>Línies i cares</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="162"/>
+      <location filename="TaskPanel_SetStyle.ui" line="199"/>
       <source>Annotations</source>
       <translation>Anotacions</translation>
     </message>
     <message>
-      <location filename="TaskPanel_SetStyle.ui" line="258"/>
+      <location filename="TaskPanel_SetStyle.ui" line="295"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+      <translation>Si es mostra o no el sufix d'unitat als textos de les cotes</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="22"/>
+      <source>Fills the values below with a stored style preset</source>
+      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="26"/>
+      <source>Load preset</source>
+      <translation type="unfinished">Load preset</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="40"/>
+      <source>Save current style as a preset...</source>
+      <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="382"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="385"/>
+      <source>Selected</source>
+      <translation>Seleccionat</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="397"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Espaiat de text</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation type="unfinished">The space between the text and the dimension line</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Interlineat</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation type="unfinished">The spacing between different lines of text</translation>
     </message>
   </context>
   <context>
@@ -3732,7 +3825,7 @@ valor mitjançant les tecles [ i ] mentre es dibuixa</translation>
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
 such as "Arial:Bold"</source>
-      <translation>Aquest és el nom de tipus de lletra per defecte per a tots els textos d'esborrany i dimensions. Pot ser un nom de lletra com "Arial", un estil per defecte com "sans", "serif" o "mono" o una família com «Arial, Helvètica, una tipografia sans "o un nom amb un estil com «Arial: negreta"</translation>
+      <translation>Aquest és el nom de tipus de lletra per defecte per a tots els textos d'Esbós i les cotes. Pot ser un nom de lletra com "Arial", un estil per defecte com "sans", "serif" o "mono" o una família com "Arial, Helvètica", una tipografia sans o un nom amb un estil com «Arial: negreta"</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="151"/>
@@ -3790,7 +3883,7 @@ such as "Arial:Bold"</source>
       <translation>Tolerància</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
       <translation>Uneix-te a geometria</translation>
     </message>
@@ -3807,12 +3900,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="57"/>
       <source>Constrain mod</source>
-      <translation>Restricció de mod</translation>
+      <translation>Mode de restricció</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="77"/>
       <source>The Constraining modifier key</source>
-      <translation>La tecla modificadora Restricció</translation>
+      <translation>La tecla modificadora de Restricció</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="109"/>
@@ -3885,12 +3978,12 @@ such as "Arial:Bold"</source>
       <translation>Dreta</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="367"/>
+      <location filename="preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
       <translation>Grup de capes en blocs</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="553"/>
+      <location filename="preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Exportar objectes 3D com polyface malles</translation>
     </message>
@@ -3902,7 +3995,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="222"/>
       <source>Show Draft Snap toolbar</source>
-      <translation>Mostra Draft Snap toolbar</translation>
+      <translation>Mostra la varra d'eines d'Ajust de l'Esbós</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="242"/>
@@ -3917,27 +4010,27 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="291"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Si està marcada, la cuadricula projecte sempre serà visible quan workbench esborrany és actiu. En cas contrari només quan mitjançant una ordre</translation>
+      <translation>Si està marcada, la cuadricula d'esbós sempre serà visible quan Esbós estigui actiu. En cas contrari només quan s'usi una ordre</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="388"/>
+      <location filename="preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
       <translation>Utilitza la mida de font estàndard per a textos</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="431"/>
+      <location filename="preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Importar ombrejats frontera com filferros</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="452"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
       <translation>Representar Polilínies amb amplada</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="141"/>
       <source>Translated (for print &amp; display)</source>
-      <translation>Traduit (per imprimir &amp; pantalla)</translation>
+      <translation>Traduit (per impressió i pantalla)</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="146"/>
@@ -3952,7 +4045,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draft.ui" line="324"/>
       <source>Use Part Primitives when available</source>
-      <translation>Utilitzar Part Primitives quan estigui disponible</translation>
+      <translation>Utilitza Primitives de peça quan sigui possible</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="26"/>
@@ -3975,32 +4068,32 @@ such as "Arial:Bold"</source>
       <translation>Color de geometria de construcció</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="132"/>
+      <location filename="preferences-dxf.ui" line="149"/>
       <source>Import</source>
       <translation>Importa</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="142"/>
+      <location filename="preferences-dxf.ui" line="159"/>
       <source>texts and dimensions</source>
       <translation>textos i dimensions</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="158"/>
+      <location filename="preferences-dxf.ui" line="175"/>
       <source>points</source>
       <translation>punts</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="191"/>
       <source>layouts</source>
       <translation>disposicions</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="207"/>
       <source>*blocks</source>
       <translation>* blocs</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="597"/>
+      <location filename="preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
       <translation>Projecte exportar objectes al llarg de la direcció de visualització</translation>
     </message>
@@ -4100,32 +4193,32 @@ such as "Arial:Bold"</source>
       <translation>Omplir els objectes amb cares sempre que sigui possible</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="207"/>
+      <location filename="preferences-dxf.ui" line="224"/>
       <source>Create</source>
       <translation>Crea</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
-      <translation>formes simples de Part</translation>
+      <translation>formes simples de Peça</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="236"/>
+      <location filename="preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
       <translation>Projecte objectes</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="252"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Sketches</source>
-      <translation>Esbossos</translation>
+      <translation>Croquis</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="325"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file</source>
       <translation>Obtenir colors originals de l'arxiu DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="472"/>
+      <location filename="preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Tractar d'el·lipses i splines com Polilínies</translation>
     </message>
@@ -4140,7 +4233,7 @@ such as "Arial:Bold"</source>
       <translation>Mostrar el sufix d'unitat en dimensions</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="93"/>
+      <location filename="preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Permeten a FreeCAD automàticament descarregar i actualitzar les biblioteques DXF</translation>
     </message>
@@ -4290,7 +4383,7 @@ such as "Arial:Bold"</source>
       <translation>Opcions d'importació</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="46"/>
+      <location filename="preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
       <translation>Importador de Python llegat d'ús</translation>
     </message>
@@ -4315,22 +4408,22 @@ such as "Arial:Bold"</source>
       <translation>Deshabilitar el escalat de unitats</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="574"/>
+      <location filename="preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
       <translation>Exportar el dibuix vistes com a blocs</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="123"/>
+      <location filename="preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
       <translation>Nota: No totes les opcions següents són utilitzats per l'importador nou encara</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="29"/>
+      <location filename="preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Mostra aquest diàleg durant la importació i l'exportació</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="80"/>
+      <location filename="preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
       <translation>Actualització automàtica (llegat importador només)</translation>
     </message>
@@ -4340,7 +4433,7 @@ such as "Arial:Bold"</source>
       <translation>Etiquetes dels clons del prefix:</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="272"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Factor d'escala per aplicar a fitxers importats</translation>
     </message>
@@ -4460,12 +4553,12 @@ such as "Arial:Bold"</source>
       <translation>El camí a l'executable del convertidor de fitxers ODA ( anteriorment Teigha)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Exportació d'el·lipses poc compatible. En el seu lloc, utilitzeu això per a exportar-les com a polilínies.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="501"/>
+      <location filename="preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
       <translation>Segment de Spline Màxim:</translation>
     </message>
@@ -4482,14 +4575,14 @@ Values with differences below this value will be treated as same. This value wil
 Els valors amb diferències per sota d'aquest valor es tractaran com a iguals. Aquest valor aviat serà obsolet, així que el nivell de precisió superior controla tots dós.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="67"/>
+      <location filename="preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
       <translation>Utilitza l'exportador python llegat</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="247"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation>Si s'ha establit aquesta opció, en crear objectes d'esborrany en la part superior d'una cara existent d'altre objecte, la propietat «Suport» de l'objecte Esborrany s'establirà en l'objecte base. Aquest era el comportament estàndard abans de FreeCAD 0.19</translation>
+      <translation>Si s'ha establert aquesta opció, en crear objectes Esbós a la part superior d'una cara existent d'altre objecte, la propietat «Suport» de l'objecte Esbós s'establirà en l'objecte base. Aquest era el comportament estàndard abans de FreeCAD 0.19</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="372"/>
@@ -4704,7 +4797,7 @@ Els valors amb diferències per sota d'aquest valor es tractaran com a iguals. A
     <message>
       <location filename="preferences-draft.ui" line="216"/>
       <source>Draft tools options</source>
-      <translation>Opcions d'eines d'esborrany</translation>
+      <translation>Opcions d'eines d'Esbós</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="230"/>
@@ -4727,7 +4820,7 @@ Això permet assenyalar la direcció i introduir la distància.</translation>
       <location filename="preferences-draft.ui" line="263"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation>Si està marcada, els objectes apareixeran plens per defecte. En cas contrari, apareixeran com a filferro</translation>
+      <translation>Si està marcada, els objectes apareixeran plens per defecte. En cas contrari, apareixeran com a model de filferro</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="283"/>
@@ -4745,8 +4838,8 @@ otherwise commands will always start in no-copy mode</source>
       <location filename="preferences-draft.ui" line="320"/>
       <source>Force Draft Tools to create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation>Força les eines d'esborrany a crear primitives de peces en lloc d'objectes esborrany.
-Tingueu en compte que això no és totalment compatible i que molts objectes no es poden editar amb els modificadors d'esborrany.</translation>
+      <translation>Força les eines d'esbós a crear primitives de peça enlloc d'objectes esbós.
+Tingueu en compte que això no és totalment compatible i que molts objectes no es poden editar amb els modificadors d'esbós.</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="14"/>
@@ -4754,39 +4847,39 @@ Tingueu en compte que això no és totalment compatible i que molts objectes no 
       <translation>Configuració de la interfície d'usuari</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="884"/>
+      <location filename="preferences-draftinterface.ui" line="928"/>
       <source>Enable draft statusbar customization</source>
-      <translation>Activa la personalització de la barra d'estat d'esborrany</translation>
+      <translation>Activa la personalització de la barra d'estat d'esbós</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="887"/>
+      <location filename="preferences-draftinterface.ui" line="931"/>
       <source>Draft Statusbar</source>
-      <translation>Barra d'estat d'esborrany</translation>
+      <translation>Barra d'estat d'esbós</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="907"/>
+      <location filename="preferences-draftinterface.ui" line="951"/>
       <source>Enable snap statusbar widget</source>
       <translation>Activa el giny d'ajust de la barra d'estat</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="910"/>
+      <location filename="preferences-draftinterface.ui" line="954"/>
       <source>Draft snap widget</source>
-      <translation>Giny d'ajust d'esborrany</translation>
+      <translation>Giny d'ajust d'esbós</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="926"/>
+      <location filename="preferences-draftinterface.ui" line="970"/>
       <source>Enable draft statusbar annotation scale widget</source>
-      <translation>Activa el giny de l'escala d'anotació de la barra d'estat d'esborrany</translation>
+      <translation>Activa el giny de l'anotació d'escala de la barra d'estat d'esbós</translation>
     </message>
     <message>
-      <location filename="preferences-draftinterface.ui" line="929"/>
+      <location filename="preferences-draftinterface.ui" line="973"/>
       <source>Annotation scale widget</source>
       <translation>Giny d'escala d'anotació</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="567"/>
       <source>Draft Edit preferences</source>
-      <translation>Preferències d'edició d'esborrany</translation>
+      <translation>Preferències d'edició d'esbós</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="570"/>
@@ -4801,12 +4894,12 @@ Tingueu en compte que això no és totalment compatible i que molts objectes no 
     <message>
       <location filename="preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Estableix el nombre màxim d'objectes que Edició d'esborrany&lt;/p&gt;&lt;p&gt;pot processar al mateix temps&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Estableix el nombre màxim d'objectes que Edició d'Esbós&lt;/p&gt;&lt;p&gt;pot processar al mateix temps&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="645"/>
       <source>Draft edit pick radius</source>
-      <translation>Radi de selecció de l'edició d'esborranys</translation>
+      <translation>Radi de selecció de l'edició d'Esbós</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="668"/>
@@ -4819,27 +4912,19 @@ Tingueu en compte que això no és totalment compatible i que molts objectes no 
       <translation>Camí al convertidor de fitxers ODA</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
+      <location filename="preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Aquest diàleg de preferències es mostrarà quan importeu/exporteu fitxers DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="42"/>
+      <location filename="preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>S'utilitza importador de Python, en cas contrari s'utilitza el C ++ més recent.
 Nota: l’importador C ++ és més ràpid, però encara no té tantes funcionalitats</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="62"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </source>
-      <translation>S'utilitza l'exportador de Python, en cas contrari s'utilitza el C ++ més recent.
-Nota: l’importador C ++ és més ràpid, però encara no té tantes funcionalitats      </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
+      <location filename="preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -4848,42 +4933,42 @@ També podeu fer-ho manualment instal·lant el banc de treball «dxf_library»
 del gestor de complements.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="139"/>
+      <location filename="preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Si està desactivada, no importa textos ni mtextos</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="155"/>
+      <location filename="preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Si està desactivada, no s'importen els punts</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Si està activada, els objectes de l'espai paper també s'importaran</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="187"/>
+      <location filename="preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Si voleu que els blocs sense nom (que comencen amb un *) també s'importen</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Només es crearan objectes peça estàndard (més ràpid)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="233"/>
+      <location filename="preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation>Els objectes esborrany paramètrics es crearan quan siga possible</translation>
+      <translation>Els objectes Esbós paramètrics es crearan quan sigui possible</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
-      <translation>Es crearan esbossos quan siga possible</translation>
+      <translation>Es crearan croquis quan sigui possible</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="292"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -4891,69 +4976,69 @@ Example: for files in millimeters: 1, in centimeters: 10,
       <translation>Factor d'escala a aplicar als arxius DXF durant la importació. El factor és la conversió entre la unitat del seu fitxer DXF i mil·límetres. Ex: per a fitxers en mil·límetres: 1, en centímetres: 10, en metres: 1000, en polzades: 25.4, en peus: 304.8</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="321"/>
+      <location filename="preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
       <translation>Es recuperen els colors dels objectes DXF sempre que siga possible. En cas contrari s'aplica el colors per defecte. </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="342"/>
+      <location filename="preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD intentarà unir objectes coincidents en filferros. Pot ser un procés lent!</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="363"/>
+      <location filename="preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation>Els objectes de les mateixes capes s'uniran en Blocs d'esborrany, la visualització serà més ràpida, però l'edició serà més difícil </translation>
+      <translation>Els objectes de les mateixes capes s'uniran en Blocs d'Esbós, la visualització serà més ràpida, però l'edició serà més difícil </translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="384"/>
+      <location filename="preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation>Els textos importats tindran la mida estàndard de l'esborrany, en lloc de la mida que tenen en el document DXF</translation>
+      <translation>Els textos importats tindran la mida estàndard d'Esborrany, en lloc de la mida que tenen en el document DXF</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="405"/>
+      <location filename="preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Si està marcada, s'importaran capes DXF com a capes d'esborrany</translation>
+      <translation>Si està marcada, s'importaran capes DXF com a capes d'Esbós</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="408"/>
+      <location filename="preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
       <translation>Utilitza les capes</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Les trames es convertiran en filferros simples</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="448"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Si les polilínies tenen una amplària definida, es renderitzaran com a filferros tancats amb l'amplària correcta</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="511"/>
+      <location filename="preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Longitud màxima de cadascun dels segments de la polilínia. Si s'estableix en «0», l'spline sencer es tracta com un segment recte.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="550"/>
+      <location filename="preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Tots els objectes que continguen cares s'exportaran com a multifacetes 3D</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="570"/>
+      <location filename="preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Les vistes de dibuix s’exportaran com a blocs. Això pot fallar per a les plantilles post DXF R12.</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="594"/>
+      <location filename="preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Els objectes exportats es projectaran per a reflectir la direcció actual de la vista</translation>
     </message>
@@ -4971,7 +5056,7 @@ One unit in the SVG file will translate as one millimeter. </source>
     <message>
       <location filename="preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation>Estil de fitxer SVG per a escriure quan s'exporta un esbós</translation>
+      <translation>Estil que s'usarà per escriure el fitxer SVG quan s'exporti un croquis</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="158"/>
@@ -4988,42 +5073,42 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="preferences-draftsnap.ui" line="310"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>Si es marca, es mostra una vora addicional al voltant de la graella, mostrant la mida del quadre principal a la vora inferior esquerra</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>Mostra la vora de la graella</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="475"/>
       <source>Override unit</source>
-      <translation type="unfinished">Override unit</translation>
+      <translation>Sobreescriu la unitat</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="495"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+      <translation>Si el camp es deixa en blanc, les mesures de les cotes es mostraran en l'unitat actual definida a FreeCAD. Si s'indica una unitat aqui, com ara m o cm, podeu forçar a que es mostrin les cotes en aquesta unitat.</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="257"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+      <translation>Resolució a la qual es dibuixaran els patrons. El valor per defecte és 128. Valors més alts donen resolucions millors, valors més baixos fan el dibuix més ràpid</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="280"/>
       <source>Hatch Pattern default size</source>
-      <translation type="unfinished">Hatch Pattern default size</translation>
+      <translation>Mida per defecte de la trama</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="300"/>
       <source>The default size of hatch patterns</source>
-      <translation type="unfinished">The default size of hatch patterns</translation>
+      <translation>Mida per defecte dels. patrons de trama</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="329"/>
       <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
-      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+      <translation>Si es marca, la graella tindrà els seus dos eixos principals de color verd, vermell o blau quan coincideixin amb els eixos globals</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="332"/>
@@ -5038,172 +5123,184 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="preferences-draftsnap.ui" line="526"/>
       <source>The color of the grid</source>
-      <translation type="unfinished">The color of the grid</translation>
+      <translation>El color de la graella</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="546"/>
       <source>The overall transparency of the grid</source>
-      <translation type="unfinished">The overall transparency of the grid</translation>
+      <translation>Transparència global de la graella</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftinterface.ui" line="873"/>
+      <source>Global</source>
+      <translation>Global</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftinterface.ui" line="895"/>
+      <source>G</source>
+      <translation>G</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
     </message>
   </context>
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="276"/>
-      <source>Converting: </source>
-      <translation>S'està convertint: </translation>
-    </message>
-    <message>
       <location filename="importDWG.py" line="232"/>
       <source>Conversion successful</source>
       <translation>Conversió correcta</translation>
+    </message>
+    <message>
+      <location filename="importDWG.py" line="276"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
     </message>
   </context>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="importSVG.py" line="1808"/>
+      <location filename="importSVG.py" line="1809"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Estil d'exportació SVG desconegut, s'està canviant a Traduït</translation>
     </message>
     <message>
-      <location filename="importSVG.py" line="1828"/>
+      <location filename="importSVG.py" line="1829"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>La llista d'exportació no conté cap objecte amb una caixa contenidora vàlida</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1468"/>
+      <location filename="gui_snapper.py" line="1476"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Ajust de l'Esbós</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="233"/>
+      <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
-      <translation>Draft Command Bar</translation>
+      <translation>Barra d'ordres d'Esbós</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="698"/>
+      <location filename="DraftGui.py" line="832"/>
       <source>Toggle construction mode</source>
       <translation>Activar/desactivar el mode de construcció</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1894"/>
+      <location filename="DraftGui.py" line="2054"/>
       <source>Autogroup off</source>
       <translation>Desactivar Auto-agrupar</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="610"/>
+      <location filename="DraftGui.py" line="722"/>
       <source>active command:</source>
       <translation>ordre actiu:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="276"/>
+      <location filename="gui_groups.py" line="277"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="612"/>
+      <location filename="DraftGui.py" line="724"/>
       <source>Active Draft command</source>
-      <translation>Comandament actiu d'esborrany</translation>
+      <translation>Comanda activa d'esbós</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="613"/>
+      <location filename="DraftGui.py" line="725"/>
       <source>X coordinate of next point</source>
       <translation>X coordenada del punt següent</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="930"/>
+      <location filename="DraftGui.py" line="1056"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="615"/>
+      <location filename="DraftGui.py" line="727"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="616"/>
+      <location filename="DraftGui.py" line="728"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="617"/>
+      <location filename="DraftGui.py" line="729"/>
       <source>Y coordinate of next point</source>
       <translation>Coordenada Y del punt següent</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="618"/>
+      <location filename="DraftGui.py" line="730"/>
       <source>Z coordinate of next point</source>
       <translation>Coordenada Z del punt següent</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="619"/>
+      <location filename="DraftGui.py" line="731"/>
       <source>Enter point</source>
       <translation>Entri el punt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="620"/>
+      <location filename="DraftGui.py" line="733"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Subministri un nou punt amb les coordenades donades</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="621"/>
+      <location filename="DraftGui.py" line="734"/>
       <source>Length</source>
       <translation>Longitud</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="334"/>
+      <location filename="gui_trimex.py" line="332"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="623"/>
+      <location filename="DraftGui.py" line="736"/>
       <source>Length of current segment</source>
       <translation>Longitud del segment actual</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="624"/>
+      <location filename="DraftGui.py" line="737"/>
       <source>Angle of current segment</source>
       <translation>Angle del segment actual</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="980"/>
+      <location filename="DraftGui.py" line="1105"/>
       <source>Radius</source>
       <translation>Radi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="981"/>
+      <location filename="DraftGui.py" line="1106"/>
       <source>Radius of Circle</source>
       <translation>Radi del cercle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="635"/>
+      <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Si està marcada, comanda no acabarà fins que es premi el botó de comanda una altra vegada</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="637"/>
-      <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>Si està marcada, es realitzarà una compensació OCC estil en lloc de la compensació clàssic</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="638"/>
+      <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
-      <translation>&amp;OCC estil compensar (ofset)</translation>
+      <translation>Desplaçament de l'estil &amp;OCC</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="658"/>
+      <location filename="DraftGui.py" line="792"/>
       <source>Sides</source>
       <translation>Costats</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="659"/>
+      <location filename="DraftGui.py" line="793"/>
       <source>Number of sides</source>
       <translation>Nombre de costats</translation>
     </message>
@@ -5213,197 +5310,172 @@ This value is the maximum segment length. </source>
       <translation>Equidistancia (ofset)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="552"/>
+      <location filename="DraftGui.py" line="659"/>
       <source>Auto</source>
       <translation>Auto</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="665"/>
+      <location filename="DraftGui.py" line="799"/>
       <source>Text string to draw</source>
       <translation>Cadena de text a dibuixar</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="666"/>
+      <location filename="DraftGui.py" line="800"/>
       <source>String</source>
       <translation>Cadena</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="667"/>
+      <location filename="DraftGui.py" line="801"/>
       <source>Height of text</source>
       <translation>Alçada del text</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="668"/>
+      <location filename="DraftGui.py" line="802"/>
       <source>Height</source>
       <translation>Alçària</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="669"/>
+      <location filename="DraftGui.py" line="803"/>
       <source>Intercharacter spacing</source>
       <translation>Espaiat de Inter-caràcter</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="670"/>
+      <location filename="DraftGui.py" line="804"/>
       <source>Tracking</source>
       <translation>Seguiment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="671"/>
+      <location filename="DraftGui.py" line="805"/>
       <source>Full path to font file:</source>
       <translation>Ruta d'acces completa al arxiu font:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="672"/>
+      <location filename="DraftGui.py" line="806"/>
       <source>Open a FileChooser for font file</source>
       <translation>Obrir un selector de fitxers per a arxiu de font</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="79"/>
+      <location filename="DraftGui.py" line="944"/>
       <source>Line</source>
       <translation>Línia</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="828"/>
+      <location filename="DraftGui.py" line="953"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="845"/>
+      <location filename="DraftGui.py" line="971"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="861"/>
-      <source>Center X</source>
-      <translation>Centre X</translation>
-    </message>
-    <message>
-      <location filename="gui_arcs.py" line="72"/>
+      <location filename="DraftGui.py" line="980"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="gui_points.py" line="67"/>
+      <location filename="DraftGui.py" line="987"/>
       <source>Point</source>
       <translation>Punt</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="70"/>
+      <location filename="DraftGui.py" line="1015"/>
       <source>Label</source>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
+      <location filename="gui_trimex.py" line="316"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="969"/>
-      <source>Trim</source>
-      <translation>Retallar</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1067"/>
+      <location filename="DraftGui.py" line="1192"/>
       <source>Pick Object</source>
       <translation>Designar objecte</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1073"/>
+      <location filename="DraftGui.py" line="1198"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1124"/>
+      <location filename="DraftGui.py" line="1261"/>
       <source>Global X</source>
       <translation>Global X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1125"/>
+      <location filename="DraftGui.py" line="1262"/>
       <source>Global Y</source>
       <translation>Global Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1126"/>
+      <location filename="DraftGui.py" line="1263"/>
       <source>Global Z</source>
       <translation>Global Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1129"/>
+      <location filename="DraftGui.py" line="1253"/>
       <source>Local X</source>
       <translation>Local X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1130"/>
+      <location filename="DraftGui.py" line="1254"/>
       <source>Local Y</source>
       <translation>Local Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1131"/>
+      <location filename="DraftGui.py" line="1255"/>
       <source>Local Z</source>
       <translation>Local Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1360"/>
+      <location filename="DraftGui.py" line="1496"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Valor de mida no vàlid. Utilitzant 200.0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1368"/>
+      <location filename="DraftGui.py" line="1504"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Valor de seguiment no és vàlid. Utilitzant 0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1382"/>
+      <location filename="DraftGui.py" line="1518"/>
       <source>Please enter a text string.</source>
       <translation>Si us plau, introduïu una cadena de text.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1391"/>
+      <location filename="DraftGui.py" line="1527"/>
       <source>Select a Font file</source>
       <translation>Seleccioneu un fitxer de tipus de lletra</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1421"/>
+      <location filename="DraftGui.py" line="1560"/>
       <source>Please enter a font file.</source>
       <translation>Si us plau, introduïu un fitxer de tipus de lletra.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1887"/>
-      <source>Autogroup: </source>
-      <translation>Auto-agrupar: </translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="2188"/>
+      <location filename="DraftGui.py" line="2374"/>
       <source>Faces</source>
       <translation>Cares</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2189"/>
+      <location filename="DraftGui.py" line="2375"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2190"/>
+      <location filename="DraftGui.py" line="2376"/>
       <source>Add</source>
-      <translation>Afig</translation>
+      <translation>Afegeix</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2191"/>
+      <location filename="DraftGui.py" line="2377"/>
       <source>Facebinder elements</source>
       <translation>Elements del Lligacares</translation>
     </message>
     <message>
-      <location filename="gui_splines.py" line="68"/>
-      <source>BSpline</source>
-      <translation>BSpline</translation>
-    </message>
-    <message>
-      <location filename="gui_beziers.py" line="72"/>
-      <source>BezCurve</source>
-      <translation>Corba de Bézier</translation>
-    </message>
-    <message>
-      <location filename="gui_rotate.py" line="277"/>
+      <location filename="gui_rotate.py" line="276"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
@@ -5419,211 +5491,191 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>No s'han trobat en el sistema les llibreries d'importació/exportació DXF necessàries perquè FreeCAD pugui manegar el format DXF
 Per permetre que FreeCAD descarregui aquestes llibreries:
- 1 - Carregui el banc de treball Esborrany
- 2 - Menú Editar &gt; Preferències &gt; Importar-Exportar &gt; DXF &gt; Activar descàrregues
-O descarregui aquestes llibreries manualment com s'explica en
+ 1 - Carregui el banc de treball Esbós
+ 2 - Menú Editar &gt; Preferències &gt; Importa-Exporta &gt; DXF &gt; Activa descàrregues
+O descarregueu aquestes llibreries manualment tal com s'explica a
 https://github.com/yorikvanhavre/Draft-dxf-importer
-Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</translation>
+Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="629"/>
+      <location filename="DraftGui.py" line="745"/>
       <source>Relative</source>
       <translation>Relatiu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="636"/>
+      <location filename="DraftGui.py" line="768"/>
       <source>Continue</source>
       <translation>Continua</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="650"/>
+      <location filename="DraftGui.py" line="784"/>
       <source>Close</source>
       <translation>Tanca</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="60"/>
+      <location filename="DraftGui.py" line="86"/>
       <source>Fill</source>
       <translation>Ompli</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="61"/>
+      <location filename="DraftGui.py" line="91"/>
       <source>Exit</source>
       <translation>Surt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="62"/>
+      <location filename="DraftGui.py" line="96"/>
       <source>Snap On/Off</source>
       <translation>Ajusta/desajusta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="63"/>
+      <location filename="DraftGui.py" line="101"/>
       <source>Increase snap radius</source>
       <translation>Augmenta el radi d'ajust</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="64"/>
+      <location filename="DraftGui.py" line="106"/>
       <source>Decrease snap radius</source>
       <translation>Disminueix el radi d'ajust</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="65"/>
+      <location filename="DraftGui.py" line="111"/>
       <source>Restrict X</source>
       <translation>Restringeix X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="66"/>
+      <location filename="DraftGui.py" line="116"/>
       <source>Restrict Y</source>
       <translation>Restringeix Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="67"/>
+      <location filename="DraftGui.py" line="121"/>
       <source>Restrict Z</source>
       <translation>Restricciò Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="656"/>
+      <location filename="DraftGui.py" line="790"/>
       <source>Select edge</source>
       <translation>Selecciona l'aresta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="69"/>
+      <location filename="DraftGui.py" line="131"/>
       <source>Add custom snap point</source>
-      <translation>Afig un punt d'ajust personalitzat</translation>
+      <translation>Afegeix un punt d'ajust personalitzat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="70"/>
+      <location filename="DraftGui.py" line="136"/>
       <source>Length mode</source>
       <translation>Mode de Llargària</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="652"/>
+      <location filename="DraftGui.py" line="786"/>
       <source>Wipe</source>
       <translation>Neteja</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="72"/>
+      <location filename="DraftGui.py" line="146"/>
       <source>Set Working Plane</source>
       <translation>Estableix el pla de treball</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="73"/>
+      <location filename="DraftGui.py" line="151"/>
       <source>Cycle snap object</source>
       <translation>Canvia cíclicament l'ajust d'un objecte</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="626"/>
+      <location filename="DraftGui.py" line="741"/>
       <source>Check this to lock the current angle</source>
       <translation>Marqueu aquesta casella per a blocar l'angle actual</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="630"/>
-      <source>Coordinates relative to last point or absolute</source>
-      <translation>Coordenades relatives a l'últim punt o absolutes</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="631"/>
+      <location filename="DraftGui.py" line="755"/>
       <source>Filled</source>
       <translation>Emplenat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="633"/>
+      <location filename="DraftGui.py" line="761"/>
       <source>Finish</source>
       <translation>Finalitza</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="634"/>
+      <location filename="DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Acaba el dibuix actual o l'operació d'edició</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="648"/>
+      <location filename="DraftGui.py" line="782"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation>&amp;Desfés (CTRL+Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="649"/>
+      <location filename="DraftGui.py" line="783"/>
       <source>Undo the last segment</source>
       <translation>Desfés l'últim segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="651"/>
+      <location filename="DraftGui.py" line="785"/>
       <source>Finishes and closes the current line</source>
       <translation>Finalitza i tanca la línia actual</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="653"/>
+      <location filename="DraftGui.py" line="787"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Esborra els segments existents d'aquesta línia i comença de nou desde l'últim punt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="654"/>
+      <location filename="DraftGui.py" line="788"/>
       <source>Set WP</source>
       <translation>Definir el pla de treball</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="655"/>
+      <location filename="DraftGui.py" line="789"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Reorienta el pla de treball de l'últim segment</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="657"/>
+      <location filename="DraftGui.py" line="791"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Selecciona una aresta existent per a mesurar-la amb aquesta dimensió</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="662"/>
+      <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation>Si està activada, els objectes es copiaran en lloc de moure's. Preferències-&gt;Esborrany-&gt;Mode de còpia global per a mantenir aquest mode en les ordres següents</translation>
+      <translation>Si està activada, els objectes es copiaran en lloc de moure's. Preferències -&gt; Esbós -&gt; Mode de còpia global per a mantenir aquest mode en les ordres següents</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="59"/>
+      <location filename="DraftGui.py" line="81"/>
       <source>Subelement mode</source>
       <translation>Mode sub-element</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="663"/>
+      <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
       <translation>Modifica els sub-elements</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="664"/>
+      <location filename="DraftGui.py" line="798"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Si està marcat, els sub-elements es modificaran en lloc dels objectes sencers</translation>
     </message>
     <message>
-      <location filename="gui_beziers.py" line="251"/>
-      <source>CubicBezCurve</source>
-      <translation>CorbaBézierCúbica</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="363"/>
+      <location filename="gui_selectplane.py" line="367"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="375"/>
+      <location filename="gui_selectplane.py" line="379"/>
       <source>Front</source>
       <translation>Alçat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="387"/>
+      <location filename="gui_selectplane.py" line="391"/>
       <source>Side</source>
       <translation>Costat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="530"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Current working plane</source>
       <translation>Pla de treball actual</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="632"/>
-      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation>Marqui això si l'objecte te d'aparèixer com ple, cas contrari apareixerà com estructura filferro. No està disponible si l'opció de preferència de Draft 'Usar primitives de peça' està habilitada</translation>
-    </message>
-    <message>
-      <location filename="gui_lines.py" line="364"/>
-      <source>Polyline</source>
-      <translation>Polilínia</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5631,254 +5683,219 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
       <translation>Calat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="74"/>
+      <location filename="DraftGui.py" line="156"/>
       <source>Toggle near snap on/off</source>
       <translation>Activa/desactiva el proper ajust</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="673"/>
+      <location filename="DraftGui.py" line="807"/>
       <source>Create text</source>
       <translation>Crear text</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="674"/>
+      <location filename="DraftGui.py" line="808"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>Premeu aquest botó per a crear l’objecte de text o finalitzeu el vostre text amb dues línies en blanc</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="862"/>
-      <source>Center Y</source>
-      <translation>Centra Y</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="863"/>
-      <source>Center Z</source>
-      <translation>Centra Z</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="914"/>
+      <location filename="DraftGui.py" line="1040"/>
       <source>Offset distance</source>
       <translation>Distància de separació</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="973"/>
+      <location filename="DraftGui.py" line="1098"/>
       <source>Trim distance</source>
       <translation>Distància de retall</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="159"/>
-      <source>Wire</source>
-      <translation>Cable</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="697"/>
+      <location filename="DraftGui.py" line="831"/>
       <source>Change default style for new objects</source>
-      <translation type="unfinished">Change default style for new objects</translation>
+      <translation>Canvia l'estil per defecte dels objectes nous</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="194"/>
+      <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>Cap document actiu. S'està interrompent.</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="151"/>
       <source>Object must be a closed shape</source>
-      <translation type="unfinished">Object must be a closed shape</translation>
+      <translation>L'objecte ha de ser una forma tancada</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>No s'ha creat cap objecte sòlid</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="276"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation type="unfinished">Faces must be coplanar to be refined</translation>
+      <translation>Les cares han de ser coplanars per poder refinar-les</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="230"/>
       <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
+      <translation>Actualització: Mètode de força desconegut:</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="450"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>S'han trobat grups: s'esta tancant cada objecte de dins</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="456"/>
       <source>Found meshes: turning into Part shapes</source>
-      <translation type="unfinished">Found meshes: turning into Part shapes</translation>
+      <translation>S'han trobat malles: s'estan convertint en formes de Peça</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="464"/>
       <source>Found 1 solidifiable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
+      <translation>S'ha trobat un objecte solidificable: s'està solidificant</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="469"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>S'han trobat 2 objectes: s'estan fusionant</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="480"/>
       <source>Found object with several coplanar faces: refine them</source>
-      <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
+      <translation>S'ha trobat un objecte amb diverses cares coplanars: refineu-les</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="486"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
+      <translation>S'ha trobat 1 objecte no paramètric: s'està esbossant</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="497"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
+      <translation>S'ha trobat 1 objecte croquis tancat: es crearà una cara</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="502"/>
       <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
+      <translation>S'han trobat fils tancats: se'n creen cares</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="507"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation type="unfinished">Found several wires or edges: wiring them</translation>
+      <translation>S'han trobat diversos filferros o arestes: s'uniran</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
-      <translation type="unfinished">trying: closing it</translation>
+      <translation>provant: s'està tancant</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="514"/>
       <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
+      <translation>S'ha trobat un filferro obert: es tancarà</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="531"/>
       <source>Found 1 object: draftifying it</source>
-      <translation type="unfinished">Found 1 object: draftifying it</translation>
+      <translation>Trobat un objecte: esbossant-lo</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
-      <translation type="unfinished">Found points: creating compound</translation>
+      <translation>S'han trobat punts: s'està creant un compost</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="541"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+      <translation>S'han trobat diversos objectes intractables: s'està creant un compost</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
       <source>Unable to upgrade these objects.</source>
-      <translation type="unfinished">Unable to upgrade these objects.</translation>
+      <translation>No es poden actualitzar aquests objectes.</translation>
     </message>
     <message>
       <location filename="mirror.py" line="90"/>
       <source>No object given</source>
-      <translation type="unfinished">No object given</translation>
+      <translation>No s'ha proporcionat cap objecte</translation>
     </message>
     <message>
       <location filename="mirror.py" line="94"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
-    </message>
-    <message>
-      <location filename="mirror.py" line="114"/>
-      <source>mirrored)</source>
-      <translation type="unfinished">mirrored)</translation>
+      <translation>Els dos punts coincideixen</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>S'ha trobat 1 bloc: s'està explotant</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="246"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>S'ha trobat 1 compost multi-sòlids: s'està explotant</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="253"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>S'ha trobat 1 objecte paramètric: s'estan trencant les seves dependències</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="261"/>
       <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
+      <translation>S'han trobat 2 objectes: s'estan restant</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="268"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>S'han trobat diverses cares: s'estan dividint</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="273"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>S'han trobat diversos objectes: s'estan restant del primer</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="278"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>S'ha trobat 1 cara: se n'extreuen els filferros</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="284"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>Tansols s'han trobat filferros: se n'extreuen les arestes</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="288"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>No es pot degradar més</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="235"/>
+      <location filename="make_label.py" line="237"/>
       <source>Wrong input: object not in document.</source>
-      <translation type="unfinished">Wrong input: object not in document.</translation>
+      <translation>Entrada incorrecta: l'objecte no és al document.</translation>
     </message>
     <message>
       <location filename="make_pointarray.py" line="135"/>
       <source>Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</source>
-      <translation type="unfinished">Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</translation>
+      <translation>Entrada incorrecta: l'objecte punt no té 'Geometria', 'Enllaços', o 'Components'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="214"/>
+      <location filename="make_label.py" line="216"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="130"/>
-      <source>Points: </source>
-      <translation type="unfinished">Points: </translation>
+      <translation>Entrada incorrecta: ha de ser un posicionament, un vector o una rotació.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
-      <translation type="unfinished">Wrong input: must be list or tuple of three points exactly.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="138"/>
-      <source>Placement: </source>
-      <translation type="unfinished">Placement: </translation>
+      <translation>Entrada incorrecta: ha de ser una llista o una tupla de tres punts exactament.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="139"/>
       <source>Wrong input: incorrect type of placement.</source>
-      <translation type="unfinished">Wrong input: incorrect type of placement.</translation>
+      <translation>Entrada incorrecta: tipus de posicionament incorrecte.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
-      <translation type="unfinished">Wrong input: incorrect type of points.</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape: </source>
-      <translation type="unfinished">Cannot generate shape: </translation>
+      <translation>Entrada incorrecta: tipus de punts incorrectes.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -5893,57 +5910,57 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
     <message>
       <location filename="make_arc_3points.py" line="170"/>
       <source>Create primitive object</source>
-      <translation type="unfinished">Create primitive object</translation>
+      <translation>Crea un objecte primitiva</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="204"/>
       <source>Final placement:</source>
-      <translation type="unfinished">Final placement:</translation>
+      <translation>Posicionament final:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="195"/>
       <source>Face: True</source>
-      <translation type="unfinished">Face: True</translation>
+      <translation>Cara: Cert</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="197"/>
       <source>Support:</source>
-      <translation type="unfinished">Support:</translation>
+      <translation>Suport:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation type="unfinished">Map mode:</translation>
+      <translation>Mode de mapat:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>longitud:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="132"/>
       <source>Two elements are needed.</source>
-      <translation type="unfinished">Two elements are needed.</translation>
+      <translation>Calen dos elements.</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="139"/>
       <source>Radius is too large</source>
-      <translation type="unfinished">Radius is too large</translation>
+      <translation>Radi massa gran</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Segment</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
-      <translation type="unfinished">Removed original objects.</translation>
+      <translation>Els objectes d'origen s'han eliminat.</translation>
     </message>
     <message>
-      <location filename="make_text.py" line="101"/>
+      <location filename="make_label.py" line="292"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list of strings or a single string.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista de cadenes o una sola cadena.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="491"/>
@@ -5953,17 +5970,17 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
     <message>
       <location filename="make_circulararray.py" line="144"/>
       <source>Wrong input: must be a number or quantity.</source>
-      <translation type="unfinished">Wrong input: must be a number or quantity.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre o una quantitat.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="119"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation type="unfinished">Wrong input: must be an integer number.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre enter.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="203"/>
+      <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
-      <translation type="unfinished">Wrong input: must be a vector.</translation>
+      <translation>Entrada incorrecta: ha de ser un vector.</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="438"/>
@@ -5971,165 +5988,165 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
       <translation>Matriu polar</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="307"/>
+      <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
-      <translation type="unfinished">Wrong input: must be a number.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="173"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation type="unfinished">This function is deprecated. Do not use this function directly.</translation>
+      <translation>Aquesta funció és obsoleta. No la useu directament.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="174"/>
       <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation type="unfinished">Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</translation>
+      <translation>Useu 'make_linear_dimension' o bé 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="229"/>
+      <location filename="make_label.py" line="231"/>
       <source>Wrong input: object must not be a list.</source>
-      <translation type="unfinished">Wrong input: object must not be a list.</translation>
+      <translation>Entrada incorrecta: l'objecte no ha de ser una llista.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="452"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation type="unfinished">Wrong input: object doesn't have a 'Shape' to measure.</translation>
+      <translation>Entrada incorrecta: no hi ha cap 'Forma' per mesurar.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="331"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>Entrada incorrecta: l'objecte no té com a mínim un element a 'Vèrtexs' útil per mesurar.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="463"/>
       <source>Wrong input: must be an integer.</source>
-      <translation type="unfinished">Wrong input: must be an integer.</translation>
+      <translation>Entrada incorrecta: ha de ser un enter.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="343"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">i1: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>i1: no es permetenn els valors inferiors a 1; s'estableix el valor a 1.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="363"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation type="unfinished">Wrong input: vertex not in object.</translation>
+      <translation>Entrada incorrecta: el vèrtex no és a l'objecte.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="359"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation type="unfinished">i2: values below 1 are not allowed; will be set to the last vertex in the object.</translation>
+      <translation>i2: no es permeten valors inferiors a 1; s'entrarà l'últim vèrtex de l'objecte.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="456"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</translation>
+      <translation>Entrada incorrecta: l'objecte no té com a mínim un element a 'Arestes' útil per mesurar.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="468"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">index: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>índex: no es permetenn els valors inferiors a 1; s'estableix el valor a 1.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="472"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to an edge in the object.</translation>
+      <translation>Entrada incorrecta: l'índex no correspon a una aresta de l'objecte.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="476"/>
       <source>Wrong input: index doesn't correspond to a circular edge.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to a circular edge.</translation>
+      <translation>Entrada incorrecta: l'índex no correspon a una aresta circular.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="487"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'radius' or 'diameter'.</translation>
+      <translation>Entrada incorrecta: ha de ser una cadena, 'radi' o 'diàmetre'.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="582"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation type="unfinished">Wrong input: must be a list with two angles.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista de dos angles.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="69"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>Capes</translation>
     </message>
     <message>
       <location filename="gui_layers.py" line="47"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Capa</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="157"/>
       <source>Wrong input: it must be a string.</source>
-      <translation type="unfinished">Wrong input: it must be a string.</translation>
+      <translation>Entrada incorrecta: ha de ser una cadena.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="188"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation type="unfinished">Wrong input: must be a tuple of three floats 0.0 to 1.0.</translation>
+      <translation>Entrada incorrecta: ha de ser una tupla de tres nombres decimals entre 0.0 i 1.0.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="212"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation type="unfinished">Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</translation>
+      <translation>Entrada incorrecta: ha de ser 'Solid', 'Dashed', 'Dotted', o 'Dashdot'.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="220"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre entre 0 i 100.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="250"/>
+      <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista o tupla de cadenes, o una sola cadena.</translation>
     </message>
     <message>
       <location filename="make_patharray.py" line="246"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
+      <translation>Entrada incorrecta: ha de ser 'Original', 'Frenet', o 'Tangent'.</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="103"/>
       <source>No shape found
 </source>
-      <translation type="unfinished">No shape found
+      <translation>No s'ha trobat cap forma
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
       <source>All Shapes must be planar
 </source>
-      <translation type="unfinished">All Shapes must be planar
+      <translation>Totes les formes han de ser planes
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
       <source>All Shapes must be coplanar
 </source>
-      <translation type="unfinished">All Shapes must be coplanar
+      <translation>Totes les formes han de ser co-planars
 </translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="60"/>
       <source>Internal orthogonal array</source>
-      <translation type="unfinished">Internal orthogonal array</translation>
+      <translation>Matriu ortogonal interna</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="87"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation type="unfinished">Wrong input: must be a number or vector.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre o un vector.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="98"/>
       <source>Input: single value expanded to vector.</source>
-      <translation type="unfinished">Input: single value expanded to vector.</translation>
+      <translation>Entrada: un valor únic s'ha convertit en vector.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="129"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>Entrada: el nombre d'elements ha de ser com a mínim 1. S'estableix a 1.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
@@ -6139,300 +6156,295 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
     <message>
       <location filename="make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation type="unfinished">Orthogonal array 2D</translation>
+      <translation>Matriu ortogonal 2D</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="424"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>Matriu rectangular</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="501"/>
       <source>Rectangular array 2D</source>
-      <translation type="unfinished">Rectangular array 2D</translation>
+      <translation>Matriu rectangular 2D</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="262"/>
+      <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
-      <translation type="unfinished">Wrong input: subelement not in object.</translation>
+      <translation>Entrada incorrecta: el subelement no és a l'objecte.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="276"/>
+      <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</translation>
+      <translation>Entrada incoreecta: ha de ser una cadena, 'Personalitzat', 'Nom', 'Etiqueta', 'Posició', 'Longitud', 'Àrea', 'Volum', 'Tag', o 'Material'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="285"/>
-      <source>Wrong input: must be a string.</source>
-      <translation type="unfinished">Wrong input: must be a string.</translation>
-    </message>
-    <message>
-      <location filename="make_label.py" line="298"/>
+      <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
+      <translation>Entrada incorrecta: ha de ser una cadena, 'Horitzontal', 'Vertical' o 'Personalitzat'.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="314"/>
+      <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: must be a list of at least two vectors.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista de dos vectors com a mínim.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="347"/>
+      <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
+      <translation>La direcció no és 'Personalitzada'; no s'usaran els punts.</translation>
     </message>
     <message>
-      <location filename="make_label.py" line="374"/>
+      <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
+      <translation>Entrada incorrecta: ha de ser una llista de dos elements. Per exemple, [objecte, 'Aresta1'].</translation>
     </message>
     <message>
-      <location filename="shapestring.py" line="73"/>
+      <location filename="shapestring.py" line="76"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>Text-forma: la cadena no té filferros</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="160"/>
       <source>added property 'ExtraPlacement'</source>
-      <translation type="unfinished">added property 'ExtraPlacement'</translation>
+      <translation>s'ha afegit la propietat 'ExtraPlacement'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="284"/>
       <source>, path object doesn't have 'Edges'.</source>
-      <translation type="unfinished">, path object doesn't have 'Edges'.</translation>
+      <translation>, l'objecte camí no té 'Arestes'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="407"/>
       <source>'PathObj' property will be migrated to 'PathObject'</source>
-      <translation type="unfinished">'PathObj' property will be migrated to 'PathObject'</translation>
+      <translation>la propietat 'PathObj' es canviarà per 'PathObject'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="525"/>
       <source>Cannot calculate path tangent. Copy not aligned.</source>
-      <translation type="unfinished">Cannot calculate path tangent. Copy not aligned.</translation>
+      <translation>No es pot calcular la tangent del camí. La còpia no està alineada.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="541"/>
       <source>Tangent and normal are parallel. Copy not aligned.</source>
-      <translation type="unfinished">Tangent and normal are parallel. Copy not aligned.</translation>
+      <translation>La tangent i la normal són paral·leles. La còpia no està alineada.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="558"/>
       <source>Cannot calculate path normal, using default.</source>
-      <translation type="unfinished">Cannot calculate path normal, using default.</translation>
+      <translation>No es pot calcular la normal del camí, s'utilitzarà el valor per defecte.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="565"/>
       <source>Cannot calculate path binormal. Copy not aligned.</source>
-      <translation type="unfinished">Cannot calculate path binormal. Copy not aligned.</translation>
+      <translation>No es pot calcular la binormal del camí. La còpia no està alineada.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="571"/>
       <source>AlignMode {} is not implemented</source>
-      <translation type="unfinished">AlignMode {} is not implemented</translation>
+      <translation>AlignMode{} no està implementat</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="105"/>
       <source>added view property 'ScaleMultiplier'</source>
-      <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
+      <translation>s'ha afegit la propietat de vista 'ScaleMultiplier'</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
-      <translation type="unfinished">migrated 'DraftText' type to 'Text'</translation>
+      <translation>s'ha canviat el tipus 'Text d'Esbós' a 'Text'</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="358"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Activa aquesta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="364"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>Seleccioneu el contingut de la capa</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="147"/>
       <source>custom</source>
-      <translation type="unfinished">custom</translation>
+      <translation>personalitzat</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="133"/>
       <source>Unable to convert input into a scale factor</source>
-      <translation type="unfinished">Unable to convert input into a scale factor</translation>
+      <translation>No es pot convertir l'entrada a un factor d'escala</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="151"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
+      <translation>Estableix l'escala personalitzada de l'anotació amb el format x:x, x=x</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
       <source>Task panel:</source>
-      <translation type="unfinished">Task panel:</translation>
+      <translation>Tauler de tasques:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="205"/>
       <source>At least one element must be selected.</source>
-      <translation type="unfinished">At least one element must be selected.</translation>
+      <translation>Cal seleccionar com a mínim un element.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="216"/>
       <source>Selection is not suitable for array.</source>
-      <translation type="unfinished">Selection is not suitable for array.</translation>
+      <translation>La selecció no és adequada per a una matriu.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="379"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>Objecte:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="203"/>
       <source>Number of elements must be at least 2.</source>
-      <translation type="unfinished">Number of elements must be at least 2.</translation>
+      <translation>El nombre d'elements ha de ser 2 com a mínim.</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="207"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is above 360 degrees. It is set to this value to proceed.</translation>
+      <translation>L'angle és major de 360 graus. S'estableix a aquest valor per continuar.</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="210"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is below -360 degrees. It is set to this value to proceed.</translation>
+      <translation>L'angle és menor a -360 graus. S'estableix a aquest valor per continuar.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="341"/>
       <source>Center reset:</source>
-      <translation type="unfinished">Center reset:</translation>
+      <translation>Reinicia el centre:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="348"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Combina:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="362"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Crea matriu d'enllaços:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="332"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Nombre d'elements:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="333"/>
       <source>Polar angle:</source>
-      <translation type="unfinished">Polar angle:</translation>
+      <translation>Angle polar:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="388"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Centre de rotació:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>Interromput:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="222"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>El nombre de capes ha de ser 2 com a mínim.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="234"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation type="unfinished">Radial distance is zero. Resulting array may not look correct.</translation>
+      <translation>La distància radial és zero. La matriu resultant pot no semblar correcta.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="236"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Radial distance is negative. It is made positive to proceed.</translation>
+      <translation>La distància radial és negativa. Es fa positiva per a continuar.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="240"/>
       <source>Tangential distance cannot be zero.</source>
-      <translation type="unfinished">Tangential distance cannot be zero.</translation>
+      <translation>La distància tangencial no pot ser zero.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="243"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Tangential distance is negative. It is made positive to proceed.</translation>
+      <translation>La distància tangencial és negativa. Es torna positiva per continuar.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="383"/>
       <source>Radial distance:</source>
-      <translation type="unfinished">Radial distance:</translation>
+      <translation>Distància radial:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="384"/>
       <source>Tangential distance:</source>
-      <translation type="unfinished">Tangential distance:</translation>
+      <translation>Distància tangencial:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="385"/>
       <source>Number of circular layers:</source>
-      <translation type="unfinished">Number of circular layers:</translation>
+      <translation>Nombre de capes circulars:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="386"/>
       <source>Symmetry parameter:</source>
-      <translation type="unfinished">Symmetry parameter:</translation>
+      <translation>Paràmetre de simetria:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="209"/>
       <source>Number of elements must be at least 1.</source>
-      <translation type="unfinished">Number of elements must be at least 1.</translation>
+      <translation>El nombre d'elements ha de ser com a mínim 1.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="320"/>
       <source>Interval X reset:</source>
-      <translation type="unfinished">Interval X reset:</translation>
+      <translation>Reinicia l'intèrval X:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="329"/>
       <source>Interval Y reset:</source>
-      <translation type="unfinished">Interval Y reset:</translation>
+      <translation>Reinicia l'intèrval Y:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="338"/>
       <source>Interval Z reset:</source>
-      <translation type="unfinished">Interval Z reset:</translation>
+      <translation>Reinicia l'intèrval Z:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="380"/>
       <source>Number of X elements:</source>
-      <translation type="unfinished">Number of X elements:</translation>
+      <translation>Nombre d'elements X:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="382"/>
       <source>Interval X:</source>
-      <translation type="unfinished">Interval X:</translation>
+      <translation>Intèrval X:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="385"/>
       <source>Number of Y elements:</source>
-      <translation type="unfinished">Number of Y elements:</translation>
+      <translation>Nombre d'elements Y:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="387"/>
       <source>Interval Y:</source>
-      <translation type="unfinished">Interval Y:</translation>
+      <translation>Intèrval Y:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="390"/>
       <source>Number of Z elements:</source>
-      <translation type="unfinished">Number of Z elements:</translation>
+      <translation>Nombre d'elements Z:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="392"/>
       <source>Interval Z:</source>
-      <translation type="unfinished">Interval Z:</translation>
+      <translation>Intèrval Z:</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="77"/>
+      <location filename="task_shapestring.py" line="58"/>
       <source>ShapeString</source>
       <translation>Forma d'Etiqueta</translation>
     </message>
@@ -6444,107 +6456,92 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
     <message>
       <location filename="task_shapestring.py" line="88"/>
       <source>Pick ShapeString location point:</source>
-      <translation type="unfinished">Pick ShapeString location point:</translation>
+      <translation>Tria el punt d'ubicació del ShapeString:</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="143"/>
+      <location filename="gui_shapestrings.py" line="141"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>Crea ShapeString</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="85"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Baixar de categoria</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
-      <translation type="unfinished">Select an object to upgrade</translation>
-    </message>
-    <message>
-      <location filename="gui_clone.py" line="75"/>
-      <source>Clone</source>
-      <translation>Clona</translation>
+      <translation>Seleccioneu un objecte per a actualitzar</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="79"/>
       <source>Select an object to clone</source>
-      <translation type="unfinished">Select an object to clone</translation>
+      <translation>Seleccioneu un objecte per a clonar</translation>
     </message>
     <message>
-      <location filename="gui_ellipses.py" line="65"/>
-      <source>Ellipse</source>
-      <translation>El·lipse</translation>
-    </message>
-    <message>
-      <location filename="gui_rectangles.py" line="70"/>
+      <location filename="gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
-      <translation type="unfinished">Pick first point</translation>
+      <translation>Trieu el primer punt</translation>
     </message>
     <message>
-      <location filename="gui_ellipses.py" line="140"/>
+      <location filename="gui_ellipses.py" line="138"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>Crea una El·lipse</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="203"/>
+      <location filename="gui_rectangles.py" line="202"/>
       <source>Pick opposite point</source>
-      <translation type="unfinished">Pick opposite point</translation>
+      <translation>Trieu el punt oposat</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="169"/>
+      <location filename="gui_lines.py" line="167"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>Crea Línia</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="191"/>
+      <location filename="gui_lines.py" line="189"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>Crea filferro</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="140"/>
       <source>Pick next point</source>
-      <translation type="unfinished">Pick next point</translation>
+      <translation>Trieu el següent punt</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="336"/>
+      <location filename="gui_lines.py" line="334"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects</translation>
+      <translation>No es pot crear un filferro a partir dels objectes seleccionats</translation>
     </message>
     <message>
-      <location filename="gui_lines.py" line="358"/>
+      <location filename="gui_lines.py" line="356"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Converteix en filferro</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="507"/>
+      <location filename="gui_edit_draft_objects.py" line="569"/>
       <source>This object does not support possible coincident points, please try again.</source>
-      <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
+      <translation>Aquest objecte no suporta possibles punts coincidents, si us plau, torneu a provar-ho.</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="557"/>
+      <location filename="gui_edit_draft_objects.py" line="608"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>L'objecte actiu ha de tenir més de dos punts/nodes</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="671"/>
+      <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
+      <translation>La selecció no és un nus</translation>
     </message>
     <message>
-      <location filename="gui_edit_draft_objects.py" line="698"/>
+      <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
+      <translation>El punt final d'una corba Bézier no es pot suavitzar</translation>
     </message>
     <message>
       <location filename="gui_edit_sketcher_objects.py" line="60"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
-    </message>
-    <message>
-      <location filename="gui_facebinders.py" line="66"/>
-      <source>Facebinder</source>
-      <translation type="unfinished">Facebinder</translation>
+      <translation>El croquis és massa complex per editar-lo: es suggereix usar l'editor per defecte de croquis</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="71"/>
@@ -6554,217 +6551,197 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
     <message>
       <location filename="gui_lineslope.py" line="64"/>
       <source>Change slope</source>
-      <translation type="unfinished">Change slope</translation>
+      <translation>Canvia el pendent</translation>
     </message>
     <message>
-      <location filename="gui_subelements.py" line="70"/>
-      <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
-    </message>
-    <message>
-      <location filename="gui_subelements.py" line="109"/>
+      <location filename="gui_subelements.py" line="108"/>
       <source>Select an object to edit</source>
-      <translation type="unfinished">Select an object to edit</translation>
-    </message>
-    <message>
-      <location filename="gui_dimensions.py" line="89"/>
-      <source>Dimension</source>
-      <translation>Dimensió</translation>
+      <translation>Selecciona un objecte per a editar</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="294"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Crear dimensió</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="309"/>
       <source>Create Dimension (radial)</source>
-      <translation type="unfinished">Create Dimension (radial)</translation>
+      <translation>Crea Cota (radial)</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
-    </message>
-    <message>
-      <location filename="gui_drawing.py" line="76"/>
-      <source>Drawing</source>
-      <translation>Dibuixant</translation>
+      <translation>Les arestes no es creuen!</translation>
     </message>
     <message>
       <location filename="gui_drawing.py" line="77"/>
       <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
-      <translation type="unfinished">The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</translation>
+      <translation>El banc de treball de Dibuix és obsolet des de 0.17, valoreu usar el banc de treball TechDraw en lloc seu.</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="70"/>
+      <location filename="gui_shape2dview.py" line="68"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Seleccioneu un objecte a projectar</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="68"/>
       <source>Annotation style editor</source>
-      <translation type="unfinished">Annotation style editor</translation>
+      <translation>Editor d'estils d'anotació</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="292"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>Obre el fitxer d'estils</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>Fitxer JSON (*.json)</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>Desa el fitxer d'estils</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Promociona</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="205"/>
+      <location filename="gui_move.py" line="204"/>
       <source>Move</source>
       <translation>Mou</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="82"/>
+      <location filename="gui_move.py" line="81"/>
       <source>Select an object to move</source>
-      <translation type="unfinished">Select an object to move</translation>
+      <translation>Seleccioneu un objecte per moure</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="104"/>
+      <location filename="gui_move.py" line="103"/>
       <source>Pick start point</source>
-      <translation type="unfinished">Pick start point</translation>
+      <translation>Trieu el punt d'inici</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="303"/>
+      <location filename="gui_move.py" line="302"/>
       <source>Pick end point</source>
-      <translation type="unfinished">Pick end point</translation>
+      <translation>Trieu el punt final</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="283"/>
+      <location filename="gui_rotate.py" line="282"/>
       <source>Some subelements could not be moved.</source>
-      <translation type="unfinished">Some subelements could not be moved.</translation>
+      <translation>Alguns subelements no s'han pogut moure.</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="123"/>
+      <location filename="gui_pointarray.py" line="122"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Matriu de punts</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="105"/>
+      <location filename="gui_pointarray.py" line="104"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the point object, before calling this command.</translation>
+      <translation>Si us plau, seleccioneu exactament dos objectes, l'objecte base i l'objecte punt, abans d'invocar aquesta ordre.</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation type="unfinished">No active Draft Toolbar.</translation>
+      <translation>La. barra d'eines Esbós no està activa.</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="93"/>
       <source>Construction mode</source>
-      <translation type="unfinished">Construction mode</translation>
+      <translation>Mode de construcció</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="125"/>
       <source>Continue mode</source>
-      <translation type="unfinished">Continue mode</translation>
+      <translation>Mode continuar</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="159"/>
       <source>Toggle display mode</source>
-      <translation type="unfinished">Toggle display mode</translation>
+      <translation>Commuta el mode de visualització</translation>
     </message>
     <message>
-      <location filename="gui_wire2spline.py" line="79"/>
-      <source>Convert polyline/B-spline</source>
-      <translation type="unfinished">Convert polyline/B-spline</translation>
-    </message>
-    <message>
-      <location filename="gui_snaps.py" line="109"/>
+      <location filename="gui_snaps.py" line="113"/>
       <source>Main toggle snap</source>
-      <translation type="unfinished">Main toggle snap</translation>
+      <translation>Commuta l'ajust principal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="140"/>
+      <location filename="gui_snaps.py" line="144"/>
       <source>Midpoint snap</source>
-      <translation type="unfinished">Midpoint snap</translation>
+      <translation>Ajust al punt central</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="170"/>
+      <location filename="gui_snaps.py" line="174"/>
       <source>Perpendicular snap</source>
-      <translation type="unfinished">Perpendicular snap</translation>
+      <translation>Ajust perpendicular</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="200"/>
+      <location filename="gui_snaps.py" line="204"/>
       <source>Grid snap</source>
       <translation>Ajust de la quadrícula</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="230"/>
+      <location filename="gui_snaps.py" line="234"/>
       <source>Intersection snap</source>
-      <translation type="unfinished">Intersection snap</translation>
+      <translation>Ajust a la intersecció</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="260"/>
+      <location filename="gui_snaps.py" line="264"/>
       <source>Parallel snap</source>
-      <translation type="unfinished">Parallel snap</translation>
+      <translation>Ajust paral·lel</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="290"/>
+      <location filename="gui_snaps.py" line="294"/>
       <source>Endpoint snap</source>
-      <translation type="unfinished">Endpoint snap</translation>
+      <translation>Ajust al punt final</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="321"/>
+      <location filename="gui_snaps.py" line="325"/>
       <source>Angle snap (30 and 45 degrees)</source>
-      <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
+      <translation>Ajust angular (30 i 45 graus)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="351"/>
+      <location filename="gui_snaps.py" line="355"/>
       <source>Arc center snap</source>
-      <translation type="unfinished">Arc center snap</translation>
+      <translation>Ajust al centre de l'arc</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="381"/>
+      <location filename="gui_snaps.py" line="385"/>
       <source>Edge extension snap</source>
-      <translation type="unfinished">Edge extension snap</translation>
+      <translation>Ajust a l'extensió de l'aresta</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="411"/>
+      <location filename="gui_snaps.py" line="415"/>
       <source>Near snap</source>
-      <translation type="unfinished">Near snap</translation>
+      <translation>Ajust proper</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="442"/>
+      <location filename="gui_snaps.py" line="446"/>
       <source>Orthogonal snap</source>
-      <translation type="unfinished">Orthogonal snap</translation>
+      <translation>Ajust ortogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="472"/>
+      <location filename="gui_snaps.py" line="476"/>
       <source>Special point snap</source>
-      <translation type="unfinished">Special point snap</translation>
+      <translation>Ajust al punt especial</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="503"/>
+      <location filename="gui_snaps.py" line="507"/>
       <source>Dimension display</source>
-      <translation type="unfinished">Dimension display</translation>
+      <translation>Mostra la cota</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="536"/>
+      <location filename="gui_snaps.py" line="540"/>
       <source>Working plane snap</source>
-      <translation type="unfinished">Working plane snap</translation>
+      <translation>Ajust al pla de treball</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="566"/>
+      <location filename="gui_snaps.py" line="570"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>Mostra la barra d'eines d'ajustar</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="101"/>
@@ -6774,357 +6751,307 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
     <message>
       <location filename="gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
-      <translation type="unfinished">Select an object to array</translation>
+      <translation>Seleccioneu un objecte per la matriu</translation>
     </message>
     <message>
-      <location filename="gui_array_simple.py" line="124"/>
-      <source>Link array</source>
-      <translation>Matriu d'enllaç</translation>
-    </message>
-    <message>
-      <location filename="gui_polygons.py" line="63"/>
-      <source>Polygon</source>
-      <translation>Polígon</translation>
-    </message>
-    <message>
-      <location filename="gui_arcs.py" line="88"/>
+      <location filename="gui_arcs.py" line="89"/>
       <source>Pick center point</source>
-      <translation type="unfinished">Pick center point</translation>
+      <translation>Trieu el punt central</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="410"/>
+      <location filename="gui_arcs.py" line="411"/>
       <source>Pick radius</source>
-      <translation type="unfinished">Pick radius</translation>
+      <translation>Trieu el radi</translation>
     </message>
     <message>
-      <location filename="gui_polygons.py" line="224"/>
+      <location filename="gui_polygons.py" line="223"/>
       <source>Create Polygon (Part)</source>
-      <translation type="unfinished">Create Polygon (Part)</translation>
+      <translation>Crea Polígon (Peça)</translation>
     </message>
     <message>
-      <location filename="gui_polygons.py" line="243"/>
+      <location filename="gui_polygons.py" line="242"/>
       <source>Create Polygon</source>
-      <translation type="unfinished">Create Polygon</translation>
+      <translation>Crea Polígon</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="124"/>
+      <location filename="gui_mirror.py" line="123"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Reflexa</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="74"/>
+      <location filename="gui_mirror.py" line="73"/>
       <source>Select an object to mirror</source>
-      <translation type="unfinished">Select an object to mirror</translation>
+      <translation>Seleccioneu un objecte per a reflectir</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="94"/>
+      <location filename="gui_mirror.py" line="93"/>
       <source>Pick start point of mirror line</source>
-      <translation type="unfinished">Pick start point of mirror line</translation>
+      <translation>Trieu el punt de partida de la línia de reflexió</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="205"/>
+      <location filename="gui_mirror.py" line="204"/>
       <source>Pick end point of mirror line</source>
-      <translation type="unfinished">Pick end point of mirror line</translation>
+      <translation>Trieu el punt final de la línia de reflexió</translation>
     </message>
     <message>
       <location filename="gui_points.py" line="146"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Crea un punt</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="352"/>
+      <location filename="gui_scale.py" line="353"/>
       <source>Scale</source>
       <translation>Escala</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="88"/>
+      <location filename="gui_scale.py" line="87"/>
       <source>Select an object to scale</source>
-      <translation type="unfinished">Select an object to scale</translation>
+      <translation>Seleccioneu un objecte per escalar</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="109"/>
+      <location filename="gui_scale.py" line="108"/>
       <source>Pick base point</source>
-      <translation type="unfinished">Pick base point</translation>
+      <translation>Tria el punt de base</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="131"/>
+      <location filename="gui_scale.py" line="130"/>
       <source>Pick reference distance from base point</source>
-      <translation type="unfinished">Pick reference distance from base point</translation>
+      <translation>Trieu una distància de referència des del punt de base</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="204"/>
+      <location filename="gui_scale.py" line="203"/>
       <source>Some subelements could not be scaled.</source>
-      <translation type="unfinished">Some subelements could not be scaled.</translation>
+      <translation>Alguns subelements no s'han pogut escalar.</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="334"/>
-      <source>Unable to scale object: </source>
-      <translation type="unfinished">Unable to scale object: </translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="337"/>
-      <source>Unable to scale objects: </source>
-      <translation type="unfinished">Unable to scale objects: </translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="339"/>
+      <location filename="gui_scale.py" line="340"/>
       <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
+      <translation>Aquest tipus d'objecte no es pot escalar directament. Si us plau, useu el mètode de clonació.</translation>
     </message>
     <message>
-      <location filename="gui_scale.py" line="400"/>
+      <location filename="gui_scale.py" line="401"/>
       <source>Pick new distance from base point</source>
-      <translation type="unfinished">Pick new distance from base point</translation>
+      <translation>Trieu una nova distància des del punt de base</translation>
     </message>
     <message>
-      <location filename="gui_shape2dview.py" line="66"/>
-      <source>Project 2D view</source>
-      <translation type="unfinished">Project 2D view</translation>
-    </message>
-    <message>
-      <location filename="gui_shape2dview.py" line="111"/>
+      <location filename="gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>Crea vista 2D</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>Bezier curve has been closed</source>
-      <translation type="unfinished">Bezier curve has been closed</translation>
+      <translation>La corba Bézier s'ha tancat</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>S'ha esborrat l'últim punt</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="147"/>
       <source>Pick next point, or finish (A) or close (O)</source>
-      <translation type="unfinished">Pick next point, or finish (A) or close (O)</translation>
+      <translation>Trieu el següent punt, acabeu (A) o tanqueu (O)</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="451"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Create BezCurve</translation>
+      <translation>Crea corba de Bézier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="376"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>Feu clic i arrossegueu per definir el següent nus</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
       <source>Click and drag to define next knot, or finish (A) or close (O)</source>
-      <translation type="unfinished">Click and drag to define next knot, or finish (A) or close (O)</translation>
+      <translation>Feu clic i arrossegueu per definir el següent nus, o acabeu (A) o tanqueu (O)</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Inverteix l'acotació</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="470"/>
+      <location filename="gui_stretch.py" line="474"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Estira</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="73"/>
+      <location filename="gui_stretch.py" line="75"/>
       <source>Select an object to stretch</source>
-      <translation type="unfinished">Select an object to stretch</translation>
+      <translation>Seleccioneu un objecte per estirar</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="122"/>
+      <location filename="gui_stretch.py" line="124"/>
       <source>Pick first point of selection rectangle</source>
-      <translation type="unfinished">Pick first point of selection rectangle</translation>
+      <translation>Trieu el primer punt del rectangle de selecció</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="159"/>
+      <location filename="gui_stretch.py" line="161"/>
       <source>Pick opposite point of selection rectangle</source>
-      <translation type="unfinished">Pick opposite point of selection rectangle</translation>
+      <translation>Trieu el punt oposat del rectangle de selecció</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="168"/>
+      <location filename="gui_stretch.py" line="170"/>
       <source>Pick start point of displacement</source>
-      <translation type="unfinished">Pick start point of displacement</translation>
+      <translation>Seleccioni el punt inicial del desplaçament</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="231"/>
+      <location filename="gui_stretch.py" line="233"/>
       <source>Pick end point of displacement</source>
-      <translation type="unfinished">Pick end point of displacement</translation>
+      <translation>Seleccioni el punt final del desplaçament</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="443"/>
+      <location filename="gui_stretch.py" line="445"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation type="unfinished">Turning one Rectangle into a Wire</translation>
+      <translation>Transformant un rectangle en un filferro</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="51"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Commuta la graella</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="60"/>
-      <source>Rectangle</source>
-      <translation>Rectangle</translation>
-    </message>
-    <message>
-      <location filename="gui_rectangles.py" line="126"/>
+      <location filename="gui_rectangles.py" line="125"/>
       <source>Create Plane</source>
-      <translation type="unfinished">Create Plane</translation>
+      <translation>Crea un pla</translation>
     </message>
     <message>
-      <location filename="gui_rectangles.py" line="143"/>
+      <location filename="gui_rectangles.py" line="142"/>
       <source>Create Rectangle</source>
-      <translation type="unfinished">Create Rectangle</translation>
+      <translation>Crea un rectangle</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="143"/>
       <source>Convert Draft/Sketch</source>
-      <translation type="unfinished">Convert Draft/Sketch</translation>
+      <translation>Converteix Esbós/Croquis</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="66"/>
       <source>Select an object to convert.</source>
-      <translation type="unfinished">Select an object to convert.</translation>
+      <translation>Seleccioneu un objecte per convertir.</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="99"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convert to Sketch</translation>
+      <translation>Converteix en Croquis</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="114"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Convert to Draft</translation>
+      <translation>Converteix a esbós</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="51"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>Reparar</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="81"/>
+      <location filename="gui_labels.py" line="80"/>
       <source>Pick target point</source>
-      <translation type="unfinished">Pick target point</translation>
+      <translation>Seleccioni el punt destí</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="158"/>
+      <location filename="gui_labels.py" line="157"/>
       <source>Create Label</source>
-      <translation type="unfinished">Create Label</translation>
+      <translation>Crea etiqueta</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="219"/>
+      <location filename="gui_labels.py" line="218"/>
       <source>Pick endpoint of leader line</source>
       <translation>Trieu el punt final de la línia guia</translation>
     </message>
     <message>
-      <location filename="gui_labels.py" line="229"/>
+      <location filename="gui_labels.py" line="228"/>
       <source>Pick text position</source>
-      <translation type="unfinished">Pick text position</translation>
+      <translation>Seleccioni la posició del text</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="305"/>
+      <location filename="gui_edit.py" line="306"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>Seleccioneu un objecte Esbós per editar</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="560"/>
+      <location filename="gui_edit.py" line="562"/>
       <source>No edit point found for selected object</source>
-      <translation type="unfinished">No edit point found for selected object</translation>
+      <translation>No s`ha trobat cap punt d'edició per l'objecte seleccionat</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="933"/>
-      <source>Too many objects selected, max number set to: </source>
-      <translation type="unfinished">Too many objects selected, max number set to: </translation>
-    </message>
-    <message>
-      <location filename="gui_edit.py" line="941"/>
+      <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: aquest objete no es editable</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="143"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Matriu de camí</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="79"/>
       <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the path object, before calling this command.</translation>
-    </message>
-    <message>
-      <location filename="gui_patharray.py" line="168"/>
-      <source>Path link array</source>
-      <translation type="unfinished">Path link array</translation>
+      <translation>Si us plau, seleccioneu exactament dos objectes, l'objecte base i l'objecte camí abans d'invocar aquesta ordre.</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Matriu de camí retorçat</translation>
     </message>
     <message>
-      <location filename="gui_pathtwistedarray.py" line="127"/>
-      <source>Path twisted link array</source>
-      <translation type="unfinished">Path twisted link array</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="81"/>
+      <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="91"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>Seleccioneu objectes per a retallar o allargar</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="140"/>
       <source>Pick distance</source>
-      <translation type="unfinished">Pick distance</translation>
+      <translation>Trieu la distància</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="320"/>
+      <location filename="gui_trimex.py" line="318"/>
       <source>The offset distance</source>
-      <translation type="unfinished">The offset distance</translation>
+      <translation>Distància de desplaçament</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="336"/>
+      <location filename="gui_trimex.py" line="334"/>
       <source>The offset angle</source>
-      <translation type="unfinished">The offset angle</translation>
+      <translation>L'angle de desplaçament</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="474"/>
+      <location filename="gui_trimex.py" line="472"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
+      <translation>No es poden retallar aquests objectes, només es permeten filferros i arcs d'Esbós.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="479"/>
+      <location filename="gui_trimex.py" line="477"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>No es poden retallar aquests objectes, massa filferros</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="496"/>
+      <location filename="gui_trimex.py" line="494"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Aquest objectes no es creuen.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="499"/>
+      <location filename="gui_trimex.py" line="497"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
-    </message>
-    <message>
-      <location filename="gui_join.py" line="71"/>
-      <source>Join</source>
-      <translation>Unió</translation>
+      <translation>Massa punts d'intersecció.</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="76"/>
       <source>Select an object to join</source>
-      <translation type="unfinished">Select an object to join</translation>
+      <translation>Seleccioneu un objecte per a unir</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="99"/>
       <source>Join lines</source>
-      <translation type="unfinished">Join lines</translation>
+      <translation>Uneix línies</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="110"/>
@@ -7134,7 +7061,7 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
     <message>
       <location filename="gui_splines.py" line="120"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>S'ha tancat l'spline</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="183"/>
@@ -7142,281 +7069,374 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
       <translation>Crea un B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="89"/>
+      <location filename="gui_selectplane.py" line="144"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
+      <translation>Trieu una cara, 3 vèrtexs o un Proxi de PT per definir el pla del dibuix</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="263"/>
+      <location filename="gui_selectplane.py" line="267"/>
       <source>Working plane aligned to global placement of</source>
-      <translation type="unfinished">Working plane aligned to global placement of</translation>
+      <translation>El pla de treball s'ha alineat al posicionament global de</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="512"/>
+      <location filename="gui_selectplane.py" line="516"/>
       <source>Dir</source>
-      <translation type="unfinished">Dir</translation>
+      <translation>Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="528"/>
+      <location filename="gui_selectplane.py" line="532"/>
       <source>Custom</source>
       <translation>Personalitzat</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>
       <source>No active command.</source>
-      <translation type="unfinished">No active command.</translation>
+      <translation>Cap ordre activa.</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="92"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>Acaba la línia</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="118"/>
       <source>Close line</source>
-      <translation type="unfinished">Close line</translation>
+      <translation>Tanca la línia</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="144"/>
       <source>Undo line</source>
-      <translation type="unfinished">Undo line</translation>
-    </message>
-    <message>
-      <location filename="gui_split.py" line="61"/>
-      <source>Split</source>
-      <translation>Dividir</translation>
+      <translation>Desfés la línia</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Cliqueu a aqualsevol punt d'una línia per a dividir-la.</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="106"/>
       <source>Split line</source>
-      <translation type="unfinished">Split line</translation>
+      <translation>Separa la línia</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="76"/>
+      <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>Radi del cantell</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="79"/>
+      <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Radi del cantell</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="112"/>
+      <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Entreu un radi.</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="131"/>
+      <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>Esborra els objectes d'origen:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="136"/>
+      <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
-      <translation type="unfinished">Chamfer mode:</translation>
+      <translation>Mode de xamfrà:</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="153"/>
+      <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
-      <translation type="unfinished">Two elements needed.</translation>
-    </message>
-    <message>
-      <location filename="gui_fillets.py" line="160"/>
-      <source>Test object</source>
-      <translation type="unfinished">Test object</translation>
+      <translation>Calen dos elements.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="161"/>
+      <source>Test object</source>
+      <translation>Objecte de prova</translation>
+    </message>
+    <message>
+      <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
+      <translation>S'ha esborrat l'objecte de prova</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="163"/>
+      <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>No es pot crear el cantell</translation>
     </message>
     <message>
-      <location filename="gui_fillets.py" line="193"/>
+      <location filename="gui_fillets.py" line="194"/>
       <source>Create fillet</source>
-      <translation>Crear Filet</translation>
+      <translation>Crea un cantell</translation>
     </message>
     <message>
-      <location filename="gui_shapestrings.py" line="102"/>
+      <location filename="gui_shapestrings.py" line="100"/>
       <source>Pick ShapeString location point</source>
-      <translation type="unfinished">Pick ShapeString location point</translation>
-    </message>
-    <message>
-      <location filename="gui_styles.py" line="55"/>
-      <source>Apply style</source>
-      <translation type="unfinished">Apply style</translation>
+      <translation>Trieu el punt d'ubicació del ShapeString</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="75"/>
       <source>Change Style</source>
-      <translation type="unfinished">Change Style</translation>
+      <translation>Canvia l'estil</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="64"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>Afegeix al grup</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="159"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Selecciona grup</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="232"/>
+      <location filename="gui_groups.py" line="233"/>
       <source>Autogroup</source>
       <translation>Agrupament automàtic</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="282"/>
+      <location filename="gui_groups.py" line="283"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Afegeix una capa nova</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="336"/>
+      <location filename="gui_groups.py" line="337"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Afegeix al grup de construcció</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>Trieu un objecte per a desplaçar</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>El desplaçament només funcina amb un objecte cada cop.</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>No es pot desplaçar aquest tipus d'objecte</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="120"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>El desplaçament de corbes Bézier no és suportat actualment</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="447"/>
+      <location filename="gui_arcs.py" line="448"/>
       <source>Start angle</source>
-      <translation type="unfinished">Start angle</translation>
+      <translation>Angle inicial</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="452"/>
+      <location filename="gui_arcs.py" line="453"/>
       <source>Pick start angle</source>
-      <translation type="unfinished">Pick start angle</translation>
+      <translation>Trieu l'angle d'inici</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="455"/>
+      <location filename="gui_arcs.py" line="456"/>
       <source>Aperture angle</source>
-      <translation type="unfinished">Aperture angle</translation>
+      <translation>Angle d'obertura</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="291"/>
+      <location filename="gui_arcs.py" line="292"/>
       <source>Pick aperture</source>
-      <translation type="unfinished">Pick aperture</translation>
+      <translation>Trieu obertura</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="316"/>
+      <location filename="gui_arcs.py" line="318"/>
       <source>Create Circle (Part)</source>
-      <translation type="unfinished">Create Circle (Part)</translation>
+      <translation>Crea Cercle (Peça)</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="335"/>
+      <location filename="gui_arcs.py" line="336"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Create Circle</translation>
+      <translation>Crea una circumferència</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="369"/>
+      <location filename="gui_arcs.py" line="370"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>Crea Arc (Peça)</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="389"/>
+      <location filename="gui_arcs.py" line="390"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>Crea un arc</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="466"/>
+      <location filename="gui_arcs.py" line="467"/>
       <source>Pick aperture angle</source>
-      <translation type="unfinished">Pick aperture angle</translation>
+      <translation>Trieu l'angle d'obertura</translation>
     </message>
     <message>
-      <location filename="gui_arcs.py" line="481"/>
+      <location filename="gui_arcs.py" line="514"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>Arc per 3 punts</translation>
     </message>
     <message>
-      <location filename="gui_texts.py" line="66"/>
-      <source>Text</source>
-      <translation>Text</translation>
-    </message>
-    <message>
-      <location filename="gui_texts.py" line="76"/>
+      <location filename="gui_texts.py" line="75"/>
       <source>Pick location point</source>
-      <translation type="unfinished">Pick location point</translation>
+      <translation>Trieu punt d'ubicació</translation>
     </message>
     <message>
       <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>Crea un text</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="280"/>
+      <location filename="gui_rotate.py" line="279"/>
       <source>Rotate</source>
       <translation>Rotació</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Seleccioneu un objecte per girar</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="101"/>
+      <location filename="gui_rotate.py" line="100"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Trieu el centre de rotació</translation>
+    </message>
+    <message>
+      <location filename="gui_rotate.py" line="389"/>
+      <source>Base angle</source>
+      <translation>Angle de base</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="390"/>
-      <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
-    </message>
-    <message>
-      <location filename="gui_rotate.py" line="391"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>L'angle de base d'on voleu iniciar la rotació</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="394"/>
+      <location filename="gui_rotate.py" line="393"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Trieu angle de base</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="403"/>
+      <location filename="gui_rotate.py" line="402"/>
       <source>Rotation</source>
       <translation>Rotació</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="404"/>
+      <location filename="gui_rotate.py" line="403"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>La quantitat de rotació que voleu.
+L'angle final serà l'angle de base més aquesta quantitat.</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="412"/>
+      <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
-      <translation type="unfinished">Pick rotation angle</translation>
+      <translation>Trieu angle de rotació</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="750"/>
+      <source>Global</source>
+      <translation>Global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="748"/>
+      <source>Coordinates relative to last point or to coordinate system origin
+if is the first point to set</source>
+      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
+if is the first point to set</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="753"/>
+      <source>Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</source>
+      <translation type="unfinished">Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="759"/>
+      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</source>
+      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="771"/>
+      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
+      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1249"/>
+      <source>Local u0394X</source>
+      <translation>u0394X local</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1250"/>
+      <source>Local u0394Y</source>
+      <translation>u0394Y local</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1251"/>
+      <source>Local u0394Z</source>
+      <translation>u0394Z local</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1257"/>
+      <source>Global u0394X</source>
+      <translation>u0394X global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1258"/>
+      <source>Global u0394Y</source>
+      <translation>u0394Y global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1259"/>
+      <source>Global u0394Z</source>
+      <translation>u0394Z global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="2047"/>
+      <source>Autogroup:</source>
+      <translation>Agrupament automàtic:</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="130"/>
+      <source>Points:</source>
+      <translation>Punts:</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="138"/>
+      <source>Placement:</source>
+      <translation>Ubicació:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="333"/>
+      <source>Unable to scale object:</source>
+      <translation>No es pot escalar l'objecte:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="337"/>
+      <source>Unable to scale objects:</source>
+      <translation>No es poden escalar els objectes:</translation>
+    </message>
+    <message>
+      <location filename="gui_edit.py" line="814"/>
+      <source>Too many objects selected, max number set to:</source>
+      <translation>S'han seleccionat massa objectes, el màxim està establert en:</translation>
+    </message>
+    <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
+    </message>
+    <message>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
   </context>
   <context>
@@ -7433,8 +7453,8 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="importOCA.py" line="492"/>
-      <source>successfully exported </source>
-      <translation>s'ha exportat correctament </translation>
+      <source>successfully exported</source>
+      <translation>s'ha exportat amb èxit</translation>
     </message>
   </context>
 </TS>

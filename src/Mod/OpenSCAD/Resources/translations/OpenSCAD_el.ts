@@ -142,47 +142,47 @@
       <translation>Παρακαλώ επιλέξτε πρώτα 3 αντικείμενα</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Μη υποστηριζόμενη Λειτουργία</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Πιέστε το OK</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="347"/>
+      <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="348"/>
+      <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="349"/>
+      <location filename="OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>ως Πλέγμα</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="350"/>
+      <location filename="OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>Προσθήκη Στοιχείου OpenSCAD</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="423"/>
+      <location filename="OpenSCADCommands.py" line="473"/>
       <source>Perform</source>
       <translation>Εκτέλεση</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="424"/>
+      <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
       <translation>Δημιουργία Πλέγματος με τη χρήση Λειτουργιών Boole</translation>
     </message>
     <message>
-      <location filename="OpenSCADUtils.py" line="623"/>
+      <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Σφάλμα πρέπει είτε να είναι όλα τα σχήματα δισδιάστατα είτε να είναι όλα τρισδιάστατα</translation>
     </message>
@@ -191,16 +191,31 @@
       <source>Unable to explode %s</source>
       <translation>Αδυναμία κατακερματισμού του %s</translation>
     </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation type="unfinished">Load</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation type="unfinished">Save</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>Ανανέωση</translation>
+    </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="464"/>
+      <location filename="OpenSCADCommands.py" line="517"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Προσθήκη στοιχείου OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="468"/>
+      <location filename="OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Προσθέστε ένα στοιχείο OpenSCAD εισάγοντας κώδικα OpenSCAD και εκτελώντας το δυαδικό OpenSCAD</translation>
     </message>
@@ -255,12 +270,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="497"/>
+      <location filename="OpenSCADCommands.py" line="552"/>
       <source>Hull</source>
       <translation>Κέλυφος</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="500"/>
+      <location filename="OpenSCADCommands.py" line="555"/>
       <source>Perform Hull</source>
       <translation>Εκτέλεση Υπολογισμών Κελύφους</translation>
     </message>
@@ -281,12 +296,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="477"/>
+      <location filename="OpenSCADCommands.py" line="532"/>
       <source>Mesh Boolean...</source>
       <translation>Δημιουργία Πλέγματος με τη χρήση Λειτουργιών Boole...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="481"/>
+      <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Εξαγάγετε αντικείμενα ως πλέγματα και χρησιμοποιήστε το OpenSCAD για να εκτελέσετε μια λειτουργία Boole</translation>
     </message>
@@ -294,12 +309,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="516"/>
+      <location filename="OpenSCADCommands.py" line="571"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="519"/>
+      <location filename="OpenSCADCommands.py" line="574"/>
       <source>Perform Minkowski</source>
       <translation>Εκτέλεση Υπολογισμών Αθροίσματος Minkowski</translation>
     </message>
@@ -385,7 +400,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="83"/>
+      <location filename="InitGui.py" line="79"/>
       <source>OpenSCAD Part tools</source>
       <translation>Εργαλεία Εξαρτημάτων OpenSCAD</translation>
     </message>
@@ -393,7 +408,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="81"/>
+      <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>Εργαλεία OpenSCAD</translation>
     </message>

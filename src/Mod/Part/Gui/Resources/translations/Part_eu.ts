@@ -308,7 +308,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 {err}
 
-Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translation>
+Sakatu 'Jarraitu' ezaugarria sortzeko, edo 'Abortatu' eragiketa uzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
@@ -321,6 +321,24 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <translation>Lehenengo, hautatu bi objektu edo konposatu bat edo gehiago! Konposatu bakar bat hautatzen baduzu, konposatutako formak elkarrekin ebakiko dira (bestela, autoebakidurak dituzten konposatuak baliogabeak dira).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Errorea gertatu da emaitza kalkulatzean:
+
+{err}
+
+Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Hautatu gutxienez bi objektu edo konposatu bat edo gehiago. Konposatu bakar bat hautatzen baduzu, konposatutako formak elkarrekin ebakiko dira (bestela, autoebakidurak dituzten konposatuak baliogabeak dira).</translation>
@@ -329,16 +347,6 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Xerratu konposatua</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Zati boolearrak</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Zatitu objektuak haiek ebakitzen diren gunean</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -378,22 +386,14 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
 'Konposatu-iragazki' bat erabili daiteke gainerako piezak erauzteko.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Hautapen okerra</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Zati boolearrak</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Errorea gertatu da emaitza kalkulatzean:
-
-{err}
-
-Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Zatitu objektuak haiek ebakitzen diren gunean</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -2554,7 +2554,7 @@ Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela 
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation>Kendu elementua forma batetik</translation>
+      <translation>Kendu ezaugarria forma batetik</translation>
     </message>
   </context>
   <context>

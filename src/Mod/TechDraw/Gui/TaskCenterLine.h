@@ -94,24 +94,16 @@ public:
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
-    void setFlipped(bool b);
 
 protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-
-    void blockButtons(bool b);
+    void setUiConnect(void);
     void setUiPrimary(void);
     void setUiEdit(void);
-
     void createCenterLine(void);
-    void create2Lines(void);
-    void create2Points(void);
-
-    void updateCenterLine(void);
-    void update2Lines(void);
-    void update2Points(void);
+    void updateOrientation(void);
 
     double getCenterWidth();
     QColor getCenterColor();
@@ -127,7 +119,6 @@ private Q_SLOTS:
     void onColorChanged();
     void onWeightChanged();
     void onStyleChanged();
-    void onFlipChanged();
 
 private:
     std::unique_ptr<Ui_TaskCenterLine> ui;
@@ -141,10 +132,9 @@ private:
 
     std::vector<std::string> m_subNames;
     std::string m_edgeName;
-    double m_extendBy;
     int m_geomIndex;
     TechDraw::CenterLine* m_cl;
-    int m_clIdx;
+    TechDraw::CenterLine orig_cl;
     int m_type;
     int m_mode;
     bool m_editMode;

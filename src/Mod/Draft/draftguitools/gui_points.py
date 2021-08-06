@@ -64,7 +64,7 @@ class Point(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Point, self).Activated(name=translate("draft","Point"))
+        super(Point, self).Activated(name="Point")
         self.view = gui_utils.get3DView()
         self.stack = []
         rot = self.view.getCameraNode().getField("orientation").getValue()
@@ -74,7 +74,7 @@ class Point(gui_base_original.Creator):
                                     upv)
         self.point = None
         if self.ui:
-            self.ui.pointUi()
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Point")
             self.ui.continueCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
@@ -119,6 +119,7 @@ class Point(gui_base_original.Creator):
                 # The command to run is built as a series of text strings
                 # to be committed through the `draftutils.todo.ToDo` class.
                 commitlist = []
+                Gui.addModule("Draft")
                 if utils.getParam("UsePartPrimitives", False):
                     # Insert a Part::Primitive object
                     _cmd = 'FreeCAD.ActiveDocument.'
@@ -133,7 +134,6 @@ class Point(gui_base_original.Creator):
                                        _cmd_list))
                 else:
                     # Insert a Draft point
-                    Gui.addModule("Draft")
                     _cmd = 'Draft.makePoint'
                     _cmd += '('
                     _cmd += str(self.stack[0][0]) + ', '

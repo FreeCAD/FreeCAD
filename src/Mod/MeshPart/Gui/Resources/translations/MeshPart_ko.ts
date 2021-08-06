@@ -122,17 +122,17 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
       <source>XY</source>
-      <translation type="unfinished">XY</translation>
+      <translation>XY</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="36"/>
       <source>XZ</source>
-      <translation type="unfinished">XZ</translation>
+      <translation>XZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="43"/>
       <source>YZ</source>
-      <translation type="unfinished">YZ</translation>
+      <translation>YZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
@@ -491,13 +491,13 @@ A value in the range of 0.2-10.</translation>
       <translation type="unfinished">gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>활성 문서가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>메쉬 생성을 위해 쉐이프를 먼저 선택하세요.</translation>
     </message>

@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Voer een expressie in...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expressie: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Woordlengte</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Credits</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD zou nergens zonder de inspanning van:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licentie</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Collectie</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Credits</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Individuen</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organisaties</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>''</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Code-regels worden genummerd </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Op &lt;Tab&gt; klikken zal de grootte van de gedefinieerde inspringen invoegen</translation>
     </message>
@@ -1401,6 +1419,10 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     <message>
       <source>Color:</source>
       <translation>Kleur:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -1491,11 +1513,11 @@ dit aanpassen aan uw schermgrootte of persoonlijke smaak</translation>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Pas aan hoe de boomstructuurweergave wordt weergegeven in het paneel (herstart vereist).
+      <translation>Pas aan hoe de Structuurweergave wordt weergegeven in het paneel (herstart vereist).
 
-'ComboView': combineer de boomstructuurweergave en eigenschap in een paneel.
-'TreeView and PropertyView': splits de boomstructuur- en eigenschapsweergave in aparte panelen.
-'Both': houd alle drie de panelen bij, en u kunt twee sets boomstructuur- en eigenschapsweergave hebben.</translation>
+'ComboView': combineer de SructuurWeergave en eigenschap in een paneel.
+'TreeView and PropertyView': splits de Structuur- en eigenschapsweergave in aparte panelen.
+'Both': houd alle drie de panelen bij, en u kunt twee sets Structuur- en eigenschapsweergave hebben.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
@@ -1550,7 +1572,7 @@ horizontale ruimte in de Python-console overschrijden</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation>Boomstructuur- en Eigenschapsweergave</translation>
+      <translation>Structuur- en Eigenschapsweergave</translation>
     </message>
     <message>
       <source>Both</source>
@@ -2539,10 +2561,6 @@ maar een tragere reactie op eventuele scèneveranderingen.</translation>
       <translation>Gecentraliseerd</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Wat voor soort multisample anti-aliasing wordt gebruikt </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Transparante objecten:</translation>
     </message>
@@ -2565,14 +2583,6 @@ maar een tragere reactie op eventuele scèneveranderingen.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Oog-naar-oog-afstand voor stereomodi</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Oog-naar-oog afstand wordt gebruikt voor stereo projecties.
-De opgegeven waarde is een factor die zal worden vermenigvuldigd met
-de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2630,6 +2640,18 @@ Het wijzigen van deze optie vereist een herstart van de toepassing.</translation
     <message>
       <source>Use software OpenGL</source>
       <translation>Gebruik software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3244,10 +3266,6 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (als is)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Pixelbuffer</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3486,12 +3504,6 @@ De waarde is de diameter van de bol die op het scherm past.</translation>
       <translation>Zoom stap</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Hoeveel zal er worden ingezoomd.
-Zoomstap van '1' betekent een factor 7,5 voor elke zoomstap. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Richting van zoombewerkingen zullen omgedraaid worden</translation>
     </message>
@@ -3578,6 +3590,28 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     <message>
       <source>Object center</source>
       <translation>Object midden</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Draai naar dichtstbijzijnde</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
   </context>
   <context>
@@ -3890,12 +3924,12 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>onbekende eenheid: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>wanverhouding van eenheid</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>onbekende eenheid:</translation>
     </message>
   </context>
   <context>
@@ -6879,14 +6913,6 @@ Controleer de rapportweergave voor meer...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Fysiek pad: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Document: </translation>
@@ -6916,6 +6942,14 @@ Document: </translation>
     <message>
       <source>Workbenches</source>
       <translation>Werkbanken</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Fysiek pad: </translation>
     </message>
   </context>
   <context>
@@ -8652,11 +8686,11 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation>Boomstructuuracties</translation>
+      <translation>StructuurWeergave acties</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation>Gedragsopties en -acties van de boomstructuur</translation>
+      <translation>Gedragsopties en -acties van de StructuurWeergave</translation>
     </message>
   </context>
   <context>
@@ -9188,11 +9222,11 @@ Document: </translation>
     </message>
     <message>
       <source>Orthographic view</source>
-      <translation>Orthogonale projectie</translation>
+      <translation>Orthogonale weergave</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Schakelt naar orthogonale projectie</translation>
+      <translation>Schakelt naar orthogonale weergave</translation>
     </message>
   </context>
   <context>
@@ -9203,7 +9237,7 @@ Document: </translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>Perspectiefweergave</translation>
+      <translation>Perspectief weergave</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
@@ -9222,14 +9256,14 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
@@ -9248,7 +9282,7 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Multi document</source>
@@ -9259,7 +9293,7 @@ Document: </translation>
     <name>StdTreePreSelection</name>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Pre-selection</source>
@@ -9274,7 +9308,7 @@ Document: </translation>
     <name>StdTreeRecordSelection</name>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Record selection</source>
@@ -9289,7 +9323,7 @@ Document: </translation>
     <name>StdTreeSelection</name>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -9308,7 +9342,7 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Single document</source>
@@ -9319,7 +9353,7 @@ Document: </translation>
     <name>StdTreeSyncPlacement</name>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Sync placement</source>
@@ -9334,7 +9368,7 @@ Document: </translation>
     <name>StdTreeSyncSelection</name>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Sync selection</source>
@@ -9349,7 +9383,7 @@ Document: </translation>
     <name>StdTreeSyncView</name>
     <message>
       <source>TreeView</source>
-      <translation>Boomstructuurweergave</translation>
+      <translation>StructuurWeergave</translation>
     </message>
     <message>
       <source>Sync view</source>

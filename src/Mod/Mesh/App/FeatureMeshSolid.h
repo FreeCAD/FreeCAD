@@ -26,7 +26,7 @@
 
 #include "MeshFeature.h"
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 
 namespace Mesh
@@ -42,7 +42,7 @@ class Sphere : public Mesh::Feature
 public:
   Sphere();
 
-  App::PropertyFloatConstraint Radius;
+  App::PropertyLength Radius;
   App::PropertyIntegerConstraint Sampling;
 
   /** @name methods override Feature */
@@ -50,6 +50,7 @@ public:
   /// recalculate the Feature
   App::DocumentObjectExecReturn *execute(void);
   short mustExecute() const;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
 };
 
@@ -62,8 +63,8 @@ class Ellipsoid : public Mesh::Feature
 public:
   Ellipsoid();
 
-  App::PropertyFloatConstraint Radius1;
-  App::PropertyFloatConstraint Radius2;
+  App::PropertyLength Radius1;
+  App::PropertyLength Radius2;
   App::PropertyIntegerConstraint Sampling;
 
   /** @name methods override Feature */
@@ -71,6 +72,7 @@ public:
   /// recalculate the Feature
   App::DocumentObjectExecReturn *execute(void);
   short mustExecute() const;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
 };
 
@@ -83,9 +85,9 @@ class Cylinder : public Mesh::Feature
 public:
   Cylinder();
 
-  App::PropertyFloatConstraint Radius;
-  App::PropertyFloatConstraint Length;
-  App::PropertyFloatConstraint EdgeLength;
+  App::PropertyLength Radius;
+  App::PropertyLength Length;
+  App::PropertyLength EdgeLength;
   App::PropertyBool Closed;
   App::PropertyIntegerConstraint Sampling;
 
@@ -94,6 +96,7 @@ public:
   /// recalculate the Feature
   App::DocumentObjectExecReturn *execute(void);
   short mustExecute() const;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
 };
 
@@ -106,10 +109,10 @@ class Cone : public Mesh::Feature
 public:
   Cone();
 
-  App::PropertyFloatConstraint Radius1;
-  App::PropertyFloatConstraint Radius2;
-  App::PropertyFloatConstraint Length;
-  App::PropertyFloatConstraint EdgeLength;
+  App::PropertyLength Radius1;
+  App::PropertyLength Radius2;
+  App::PropertyLength Length;
+  App::PropertyLength EdgeLength;
   App::PropertyBool Closed;
   App::PropertyIntegerConstraint Sampling;
 
@@ -118,6 +121,7 @@ public:
   /// recalculate the Feature
   App::DocumentObjectExecReturn *execute(void);
   short mustExecute() const;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
 };
 
@@ -130,8 +134,8 @@ class Torus : public Mesh::Feature
 public:
   Torus();
 
-  App::PropertyFloatConstraint Radius1;
-  App::PropertyFloatConstraint Radius2;
+  App::PropertyLength Radius1;
+  App::PropertyLength Radius2;
   App::PropertyIntegerConstraint Sampling;
 
   /** @name methods override Feature */
@@ -139,6 +143,7 @@ public:
   /// recalculate the Feature
   App::DocumentObjectExecReturn *execute(void);
   short mustExecute() const;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
 };
 
@@ -151,15 +156,16 @@ class Cube : public Mesh::Feature
 public:
   Cube();
 
-  App::PropertyFloatConstraint Length;
-  App::PropertyFloatConstraint Width;
-  App::PropertyFloatConstraint Height;
+  App::PropertyLength Length;
+  App::PropertyLength Width;
+  App::PropertyLength Height;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
   App::DocumentObjectExecReturn *execute(void);
   short mustExecute() const;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
 };
 

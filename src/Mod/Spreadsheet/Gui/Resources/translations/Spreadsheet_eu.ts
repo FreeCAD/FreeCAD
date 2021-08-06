@@ -564,24 +564,64 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Txertatu errenkadak</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Kendu errenkadak</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Txertatu zutabeak</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Kendu zutabeak</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propietateak...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Txertatu errenkada %n goian</numerusform>
+        <numerusform>Txertatu %n errenkada goian</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Txertatu errenkada %n behean</numerusform>
+        <numerusform>Txertatu %n errenkada behean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Txertatu elkarren ondoan ez dagoen errenkada %n</numerusform>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n errenkada</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Kendu errenkada</numerusform>
+        <numerusform>Kendu errenkadak</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Txertatu zutabe %n ezkerrean</numerusform>
+        <numerusform>Txertatu %n zutabe ezkerrean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Kendu zutabea(k)</numerusform>
+        <numerusform>Kendu zutabeak</numerusform>
+      </translation>
     </message>
   </context>
   <context>

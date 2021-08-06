@@ -81,7 +81,7 @@ void Workbench::activated()
                 foregroundColor = new QtColorPicker();
                 foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
-                foregroundColor->setCurrentColor(palette.color(QPalette::Foreground));
+                foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
                 QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
             }
             foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));

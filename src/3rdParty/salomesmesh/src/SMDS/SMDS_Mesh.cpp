@@ -4768,7 +4768,11 @@ void SMDS_Mesh::dumpGrid(string ficdump)
         ficcon << endl;
   }
   ficcon << "-------------------------------- connectivity " <<  nbPoints << endl;
-        vtkCellLinks *links = myGrid->GetCellLinks();
+#ifdef VTK_CELL_ARRAY_V2
+  vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetCellLinks());
+#else
+  vtkCellLinks *links = myGrid->GetCellLinks();
+#endif
   for (int i=0; i<nbPoints; i++)
   {
         int ncells = links->GetNcells(i);

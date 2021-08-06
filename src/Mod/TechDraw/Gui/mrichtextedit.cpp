@@ -102,7 +102,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
                         << tr("Heading 3")
                         << tr("Heading 4")
                         << tr("Monospace")
-                        << tr(" ");
+                        << QString::fromUtf8(" ");
     f_paragraph->addItems(m_paragraphItems);
 
     connect(f_paragraph, SIGNAL(activated(int)),

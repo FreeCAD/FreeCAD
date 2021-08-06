@@ -351,7 +351,7 @@ gainazal-desbideratzea bidez uneko amaraun-segmentuaren (ertzaren) luzera.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>Amaraun-segmentuak objektu-aurpegien kolorearen arabera taldekatuko dira.
-Talde horiek eginbide hau onartzen duten irteera-formatuetara esportatuko dira
+Talde horiek ezaugarri hau onartzen duten irteera-formatuetara esportatuko dira
 (adibidez, OBJ formatua).</translation>
     </message>
     <message>
@@ -492,13 +492,13 @@ A value in the range of 0.2-10.</source>
       <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Ez dago dokumentu aktiborik</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Hasteko, hautatu forma bat amarauna sortzeko.</translation>
     </message>

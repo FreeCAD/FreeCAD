@@ -162,7 +162,7 @@ def read(
             or fileExtension.lower() == ".yml"
     ) and has_yaml:
         fp = pyopen(fileString, "rt")
-        raw_mesh_data = yaml.load(fp)
+        raw_mesh_data = yaml.load(fp, Loader=yaml.SafeLoader)
         fp.close()
     else:
         Console.PrintError(

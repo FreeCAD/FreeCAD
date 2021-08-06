@@ -30,6 +30,7 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepPrimAPI_MakeSphere.hxx>
+# include <BRepPrim_Cylinder.hxx>
 # include <BRepPrim_Wedge.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -527,8 +528,10 @@ Cylinder::Cylinder(void)
 {
     ADD_PROPERTY_TYPE(Radius,(2.0),"Cylinder",App::Prop_None,"The radius of the cylinder");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
-    ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The angle of the cylinder");
+    ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The rotation angle of the cylinder");
     Angle.setConstraints(&angleRangeU);
+
+    PrismExtension::initExtension(this);
 }
 
 short Cylinder::mustExecute() const
@@ -549,11 +552,15 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
         return new App::DocumentObjectExecReturn("Radius of cylinder too small");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cylinder too small");
+    if (Angle.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Rotation angle of cylinder too small");
     try {
         BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
                                         Height.getValue(),
-                                        Angle.getValue()/180.0f*M_PI);
-        TopoDS_Shape ResultShape = mkCylr.Shape();
+                                        Base::toRadians<double>(Angle.getValue()));
+        // the direction vector for the prism is the height for z and the given angle
+        BRepPrim_Cylinder prim = mkCylr.Cylinder();
+        TopoDS_Shape ResultShape = makePrism(Height.getValue(), prim.BottomFace());
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure& e) {
@@ -573,12 +580,9 @@ Prism::Prism(void)
     ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
     ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
     ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
-    ADD_PROPERTY_TYPE(FirstAngle, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
-    ADD_PROPERTY_TYPE(SecondAngle, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
     Polygon.setConstraints(&polygonRange);
-    static const App::PropertyQuantityConstraint::Constraints angleConstraint = { -89.99999, 89.99999, 1.0 };
-    FirstAngle.setConstraints(&angleConstraint);
-    SecondAngle.setConstraints(&angleConstraint);
+
+    PrismExtension::initExtension(this);
 }
 
 short Prism::mustExecute() const
@@ -588,10 +592,6 @@ short Prism::mustExecute() const
     if (Circumradius.isTouched())
         return 1;
     if (Height.isTouched())
-        return 1;
-    if (FirstAngle.isTouched())
-        return 1;
-    if (SecondAngle.isTouched())
         return 1;
     return Primitive::mustExecute();
 }
@@ -621,11 +621,7 @@ App::DocumentObjectExecReturn *Prism::execute(void)
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
         // the direction vector for the prism is the height for z and the given angle
-        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(),
-            gp_Vec(Height.getValue() * tan(Base::toRadians<double>(FirstAngle.getValue())),
-                   Height.getValue() * tan(Base::toRadians<double>(SecondAngle.getValue())),
-                   Height.getValue()));
-        this->Shape.setValue(mkPrism.Shape());
+        this->Shape.setValue(makePrism(Height.getValue(), mkFace.Face()));
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

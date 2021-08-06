@@ -124,7 +124,7 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation>Filtre compost</translation>
+      <translation>Filtre de Compost</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
@@ -132,10 +132,8 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Filtra objectes d'un compost seleccionat per característiques com volum, àrea, longitud o bé triant ítems específics.
+Si es selecciona un segon objecte, s'utilitzarà com a referència, per exemple, per filtrar per distància o per col·lisió.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
@@ -150,7 +148,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Seleccioneu primer una forma que sigui un compost. Si es selecciona un segon objecte (opcional) serà tractat com una plantilla.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -195,8 +193,8 @@ Feu clic en «Continua» per a crear la propietat de totes formes, o en «Interr
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Dividiu un compost de formes en objectes separats.
+Es crearà un 'Filtre de Compost' per a cada forma.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
@@ -211,7 +209,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Primer trieiu una forma que sigui un compost.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -263,7 +261,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Fragments booleans</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
@@ -272,11 +270,9 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Crea un objecte 'Fragments Booleans', a partir de dos o més objectes seleccionats, o de formes dins un compost.
+Aquesta és una unió booleana que és després tallada a les interseccions de les formes originals.
+Es pot emprar un 'Filtre de Compost' per extreure els talls individuals.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
@@ -296,7 +292,7 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Seleccioneu com a mínim dos objectes. El primer és l'objecte per a ser retallat; la resta són objectes amb els quals es tallarà.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -322,9 +318,27 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>En primer lloc, seleccioneu com a mínim dos objectes, o un o més de compostos! Si sols se selecciona un compost, les formes compostes s'intersectaran les unes amb les altres (en cas contrari, els compostos amb auto-interseccions no són vàlids.).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Selecció no vàlida</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Càlcul del resultat ha fallat amb un error:
+
+{err}
+
+Feu clic a 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Seleccioneu com a mínim dos objectes, o un o més compostos. Si només es selecciona un compost, les formes compostes s'intersecaran entre elles (altrament, compostos amb auto-interseccions són invàlids).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
@@ -332,23 +346,13 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>Llesca a la composició</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragments booleans</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Divideix els objectes on s'interseccionen</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Talla un objecte seleccionat usant altres objectes com a eina de tall.
+Les peces resultants es desaran en un compost.
+Es pot usar un 'Filtre de Compost' per extreure'n els talls individuals.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
@@ -359,8 +363,8 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Talla un objecte seleccionat amb altres objectes, i el separa en parts.
+Crearà un 'Filtre de Compost' per cada tall.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
@@ -373,28 +377,19 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Executa l'operació booleana 'O exclusiu' amb dos o més objectes seleccionats, o amb les formes dins un compost.
+Això significa que els volums superposats de les formes seran eliminats.
+Es pot usar un 'Filtre de Compost' per extreure'n les peces restants.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Selecció no vàlida</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragments booleans</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Divideix els objectes on s'interseccionen</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -906,11 +901,11 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>Càlcul del resultat ha fallat amb un error:
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Feu clic a 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -925,7 +920,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>Seleccioneu com a mínim dos objectes, o un o més compostos</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
@@ -935,7 +930,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>Seleccioneu un objecte base, després l'objecte que cal incrustar i invoqueu aquesta eina.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
@@ -950,7 +945,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Seleccioneu l'objecte on fer el retallat, després l'objecte que ha d'encaixar en el tall, i invoqueu aquesta eina.</translation>
     </message>
   </context>
   <context>
@@ -1068,7 +1063,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="330"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
-      <translation>Cónus</translation>
+      <translation>Con</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="332"/>
@@ -2031,7 +2026,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgBlock.ui" line="65"/>
       <location filename="../../DlgBlock.ui" line="229"/>
       <source>Dimension</source>
-      <translation>Dimensió</translation>
+      <translation>Cota</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="70"/>
@@ -2477,7 +2472,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../CommandParametric.cpp" line="181"/>
       <location filename="../../CommandParametric.cpp" line="186"/>
       <source>Cone</source>
-      <translation>Cónus</translation>
+      <translation>Con</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="171"/>
@@ -2592,7 +2587,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Extrude a selected sketch</source>
-      <translation>Extruïr esbós sel</translation>
+      <translation>Extrudeix el croquis seleccionat</translation>
     </message>
   </context>
   <context>
@@ -3425,7 +3420,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation>Aplicar pendent (draft) a cares laterals de d'extrusió.</translation>
+      <translation>Aplica el pendent (esbós) a les cares laterals de l'extrusió.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
@@ -4008,7 +4003,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgPrimitives.ui" line="60"/>
       <location filename="../../DlgPrimitives.cpp" line="435"/>
       <source>Cone</source>
-      <translation>Cónus</translation>
+      <translation>Con</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>

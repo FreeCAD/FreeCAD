@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
       <source>Scale image plane</source>
-      <translation>Skala płaszczyzny obrazu</translation>
+      <translation>Skaluj płaszczyznę obrazu</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>Skala płaszczyzny obrazu</translation>
+      <translation>Skaluj płaszczyznę obrazu</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Utwórz płaski obraz w przestrzeni 3D</translation>
+      <translation>Tworzy płaski obraz w przestrzeni 3D</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
-      <translation>Skaluj...</translation>
+      <translation>Skaluj ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
@@ -112,13 +112,13 @@
       <location filename="../../GLImageBox.cpp" line="332"/>
       <location filename="../../OpenGLImageBox.cpp" line="384"/>
       <source>Image pixel format</source>
-      <translation>Format piksela obrazu</translation>
+      <translation>Format pikseli w obrazie</translation>
     </message>
     <message>
       <location filename="../../GLImageBox.cpp" line="333"/>
       <location filename="../../OpenGLImageBox.cpp" line="385"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Niezdefiniowana przestrzeń kolorów do podglądu obrazu</translation>
+      <translation>Nieokreślony typ przestrzeni kolorów dla wyświetlenia obrazu</translation>
     </message>
   </context>
   <context>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
-      <translation>&amp; skala 1: 1</translation>
+      <translation>&amp;Skala 1: 1</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="119"/>

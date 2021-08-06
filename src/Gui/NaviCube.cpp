@@ -196,14 +196,15 @@ private:
 	void setHilite(int);
 
 	void initNaviCube(QtGLWidget*);
-	void addFace(const Vector3f&, const Vector3f&, int, int, int, int,bool flag=false);
+	void addFace(const Vector3f&, const Vector3f&, int, int, int, bool flag=false);
 
-	GLuint createCubeFaceTex(QtGLWidget*, float, float, const char*);
+	GLuint createCubeFaceTex(QtGLWidget* gl, float gap, const char* text, int shape);
 	GLuint createButtonTex(QtGLWidget*, int);
 	GLuint createMenuTex(QtGLWidget*, bool);
 
-	void setView(float ,float );
-	void rotateView(int ,float );
+	SbRotation setView(float ,float) const;
+	SbRotation rotateView(SbRotation, int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
+	void rotateView(const SbRotation&);
 
 	QString str(char* str);
 	char* enum2str(int);
@@ -216,9 +217,21 @@ public:
 		TEX_BOTTOM,
 		TEX_LEFT,
 		TEX_RIGHT,
-		TEX_BACK_FACE,
 		TEX_FRONT_FACE,
 		TEX_CORNER_FACE,
+		TEX_EDGE_FACE,
+		TEX_FRONT_TOP,
+		TEX_FRONT_BOTTOM,
+		TEX_FRONT_LEFT,
+		TEX_FRONT_RIGHT, 
+		TEX_REAR_TOP,
+		TEX_REAR_BOTTOM,
+		TEX_REAR_LEFT,
+		TEX_REAR_RIGHT,
+		TEX_TOP_LEFT,
+		TEX_TOP_RIGHT,
+		TEX_BOTTOM_LEFT,
+		TEX_BOTTOM_RIGHT,
 		TEX_BOTTOM_RIGHT_REAR,
 		TEX_BOTTOM_FRONT_RIGHT,
 		TEX_BOTTOM_LEFT_FRONT,
@@ -233,11 +246,15 @@ public:
 		TEX_ARROW_WEST,
 		TEX_ARROW_RIGHT,
 		TEX_ARROW_LEFT,
+		TEX_DOT_BACKSIDE,
 		TEX_VIEW_MENU_ICON,
 		TEX_VIEW_MENU_FACE
 	};
 	enum {
 		DIR_UP,DIR_RIGHT,DIR_OUT
+	};
+	enum {
+		SHAPE_SQUARE, SHAPE_EDGE, SHAPE_CORNER
 	};
 	Gui::View3DInventorViewer* m_View3DInventorViewer;
 	void drawNaviCube(bool picking);
@@ -252,7 +269,6 @@ public:
 	QColor m_HiliteColor;
 	QColor m_ButtonColor;
 	QColor m_FrontFaceColor;
-	QColor m_BackFaceColor;
 	int m_HiliteId = 0;
 	bool m_MouseDown = false;
 	bool m_Dragging = false;
@@ -317,7 +333,6 @@ NaviCubeImplementation::NaviCubeImplementation(
 
 	OnChange(*hGrp, "TextColor");
 	OnChange(*hGrp, "FrontColor");
-	OnChange(*hGrp, "BackColor");
 	OnChange(*hGrp, "HiliteColor");
 	OnChange(*hGrp, "ButtonColor");
 	OnChange(*hGrp, "CubeSize");
@@ -346,15 +361,13 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType &rCaller, Parame
 	const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
 
 	if (strcmp(reason,"TextColor") == 0) {
-		m_TextColor.setRgba(rGrp.GetUnsigned(reason, QColor(0,0,0,255).rgba()));
+		m_TextColor.setRgba(rGrp.GetUnsigned(reason, QColor(0, 0, 0, 255).rgba()));
 	} else if (strcmp(reason,"FrontColor") == 0) {
-		m_FrontFaceColor.setRgba(rGrp.GetUnsigned(reason, QColor(255,255,255,128).rgba()));
-	} else if (strcmp(reason,"BackColor") == 0) {
-		m_BackFaceColor.setRgba(rGrp.GetUnsigned(reason, QColor(226,233,239,128).rgba()));
+		m_FrontFaceColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 192).rgba()));
 	} else if (strcmp(reason,"HiliteColor") == 0) {
-		m_HiliteColor.setRgba(rGrp.GetUnsigned(reason, QColor(170,226,255).rgba()));
+		m_HiliteColor.setRgba(rGrp.GetUnsigned(reason, QColor(170, 226, 255, 255).rgba()));
 	} else if (strcmp(reason,"ButtonColor") == 0) {
-		m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226,233,239,128).rgba()));
+		m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 128).rgba()));
 	} else if (strcmp(reason,"CubeSize") == 0) {
 		m_CubeWidgetSize = (rGrp.GetInt(reason, 132));
 	}
@@ -369,9 +382,17 @@ char* NaviCubeImplementation::enum2str(int e) {
 	case TEX_BOTTOM: return "TEX_BOTTOM";
 	case TEX_RIGHT : return "TEX_RIGHT";
 	case TEX_LEFT: return "TEX_LEFT";
-	case TEX_BACK_FACE: return "TEX_BACK_FACE";
 	case TEX_FRONT_FACE: return "TEX_FRONT_FACE";
 	case TEX_CORNER_FACE: return "TEX_CORNER_FACE";
+	case TEX_EDGE_FACE: return "TEX_EDGE_FACE";
+	case TEX_FRONT_TOP: return "TEX_FRONT_TOP";
+	case TEX_FRONT_BOTTOM: return "TEX_FRONT_BOTTOM";
+	case TEX_FRONT_LEFT: return "TEX_FRONT_LEFT";
+	case TEX_FRONT_RIGHT: return "TEX_FRONT_RIGHT";
+	case TEX_REAR_TOP: return "TEX_REAR_TOP";
+	case TEX_REAR_BOTTOM: return "TEX_REAR_BOTTOM";
+	case TEX_REAR_LEFT: return "TEX_REAR_LEFT";
+	case TEX_REAR_RIGHT: return "TEX_REAR_RIGHT";
 	case TEX_BOTTOM_RIGHT_REAR: return "TEX_BOTTOM_RIGHT_REAR";
 	case TEX_BOTTOM_FRONT_RIGHT: return "TEX_BOTTOM_FRONT_RIGHT";
 	case TEX_BOTTOM_LEFT_FRONT: return "TEX_BOTTOM_LEFT_FRONT";
@@ -386,18 +407,19 @@ char* NaviCubeImplementation::enum2str(int e) {
 	case TEX_ARROW_WEST: return "TEX_ARROW_WEST";
 	case TEX_ARROW_RIGHT: return "TEX_ARROW_RIGHT";
 	case TEX_ARROW_LEFT: return "TEX_ARROW_LEFT";
+	case TEX_DOT_BACKSIDE: return "TEX_DOT_BACKSIDE";
 	case TEX_VIEW_MENU_ICON : return "TEX_VIEW_MENU_ICON";
 	case TEX_VIEW_MENU_FACE: return "TEX_VIEW_MENU";
 	}
 }
 
-GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, float radius, const char* text) {
+GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, const char* text, int shape) {
 	int texSize = m_CubeWidgetSize * m_OverSample;
-	int gapi = texSize * gap;
-	int radiusi = texSize * radius;
+	float gapi = texSize * gap;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(255, 255, 255, 0));
 	QPainter paint;
+	QPen pen(Qt::black, 10);
 	paint.begin(&image);
 
 	if (text) {
@@ -423,10 +445,31 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, floa
 		paint.setFont(sansFont);
 		paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter,qApp->translate("Gui::NaviCube",text));
 	}
-	else {
-		QPainterPath path;
-		path.addRoundedRect(QRectF(gapi, gapi, texSize - 2 * gapi, texSize - 2 * gapi), radiusi, radiusi);
-		paint.fillPath(path, Qt::white);
+	else if (shape == SHAPE_SQUARE) {
+		QPainterPath pathSquare;
+		pathSquare.addRect(QRectF(gapi, gapi, (qreal)texSize - 2.0 * gapi, (qreal)texSize - 2.0 * gapi));
+		paint.fillPath(pathSquare, Qt::white);
+		paint.setPen(pen);
+		paint.drawPath(pathSquare);
+	}
+	else if (shape == SHAPE_CORNER) {
+		QPainterPath pathCorner;
+		QRectF rectCorner = QRectF(3.46 * gapi, 3.31 * gapi, sqrt(2) * gapi, 1.3 * gapi);
+		pathCorner.moveTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
+		pathCorner.lineTo(rectCorner.bottomLeft());
+		pathCorner.lineTo(rectCorner.bottomRight());
+		pathCorner.lineTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
+		paint.fillPath(pathCorner, Qt::white);
+		paint.setPen(pen);
+		paint.drawPath(pathCorner);
+	}
+	else if (shape == SHAPE_EDGE) {
+		QPainterPath pathEdge;
+		// sice the gap is 0.12, the rect must be geometriclly shifted up with a factor
+		pathEdge.addRect(QRectF(gapi, 3.46 * gapi, (qreal)texSize - 2.0 * gapi, sqrt(2) * gapi));
+		paint.fillPath(pathEdge, Qt::white);
+		paint.setPen(pen);
+		paint.drawPath(pathEdge);
 	}
 
 	paint.end();
@@ -527,6 +570,10 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 		path.lineTo(-as1,-1 + as1);
 		break;
 	}
+	case TEX_DOT_BACKSIDE: {
+		path.arcTo(QRectF(1 - as1, -1, as1, as1), 0, 360);
+		break;
+	}					
 	}
 
 	painter.fillPath(path, Qt::white);
@@ -621,9 +668,7 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 #endif
 }
 
-
-
-void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int frontTex, int backTex, int pickTex, int pickId,bool text) {
+void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int frontTex, int pickTex, int pickId, bool text) {
 	Vector3f y = x.cross(-z);
 	y = y / y.norm() * x.norm();
 
@@ -638,12 +683,11 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 	m_VertexArray.push_back(z - x + y);
 	m_TextureCoordArray.emplace_back(0, 1);
 
-	// TEX_TOP, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_TOP
+	// TEX_TOP, TEX_FRONT_FACE, TEX_TOP
 	// TEX_TOP 			frontTex,
-	// TEX_BACK_FACE 	backTex
 	// TEX_FRONT_FACE	pickTex,
 	// TEX_TOP 			pickId
-	Face* ff = new Face(
+	Face* FaceFront = new Face(
 		m_IndexArray.size(),
 		4,
 		m_Textures[pickTex],
@@ -651,10 +695,10 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 		m_Textures[pickTex],
 		m_FrontFaceColor,
 		1);
-	m_Faces.push_back(ff);
+	m_Faces.push_back(FaceFront);
 
 	if (text) {
-		Face* ft = new Face(
+		Face* FaceText = new Face(
 			m_IndexArray.size(),
 			4,
 			m_Textures[frontTex],
@@ -662,27 +706,12 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 			m_Textures[pickTex],
 			m_TextColor,
 			2);
-		m_Faces.push_back(ft);
+		m_Faces.push_back(FaceText);
 
 	}
 
 	for (int i = 0; i < 4; i++)
 		m_IndexArray.push_back(t + i);
-
-	Face* bf = new Face(
-		m_IndexArray.size(),
-		4,
-		m_Textures[backTex],
-		pickId,
-		m_Textures[backTex],
-		m_BackFaceColor,
-		0
-		);
-
-	m_Faces.push_back(bf);
-
-	for (int i = 0; i < 4; i++)
-		m_IndexArray.push_back(t + 4 - 1 - i);
 }
 
 void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
@@ -698,6 +727,11 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 			0, cs, -sn,
 			0, sn, cs;
 
+	Matrix3f r90y;
+	r90y << cs, 0, sn,
+		     0, 1, 0,
+		   -sn, 0, cs;
+
 	Matrix3f r90z;
 	r90z << cs, sn, 0,
 			-sn, cs, 0,
@@ -705,20 +739,19 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
 	cs = cos(45 * M_PI / 180);
 	sn = sin(45 * M_PI / 180);
+	Matrix3f r45x;
+	r45x << 1, 0, 0,
+		    0, cs, -sn,
+		    0, sn, cs;
+
 	Matrix3f r45z;
 	r45z << cs, sn, 0,
 			-sn, cs, 0,
 			0, 0, 1;
 
-	cs = cos(atan(sqrt(2.0)));
-	sn = sin(atan(sqrt(2.0)));
-	Matrix3f r45x;
-	r45x << 1, 0, 0,
-			0, cs, -sn,
-			0, sn, cs;
-
-	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, 0, 0.5f, NULL);
-	m_Textures[TEX_BACK_FACE] = createCubeFaceTex(gl, 0.02f, 0.3f, NULL);
+	// first create front and backside of faces
+	float gap = 0.12f;
+	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_SQUARE);
 
     vector<string> labels = NaviCubeImplementation::m_labels;
 
@@ -732,81 +765,123 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
         labels.push_back(hGrp->GetASCII("TextRight", "RIGHT"));
         labels.push_back(hGrp->GetASCII("TextLeft", "LEFT"));
     }
+	// create the main faces
+	m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, labels[0].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_REAR] = createCubeFaceTex(gl, gap, labels[1].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_TOP] = createCubeFaceTex(gl, gap, labels[2].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gl, gap, labels[3].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_RIGHT] = createCubeFaceTex(gl, gap, labels[4].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_LEFT] = createCubeFaceTex(gl, gap, labels[5].c_str(), SHAPE_SQUARE);
 
-	float gap = 0.12f;
-	float radius = 0.12f;
-
-	m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, radius, labels[0].c_str());
-	m_Textures[TEX_REAR] = createCubeFaceTex(gl, gap, radius, labels[1].c_str());
-	m_Textures[TEX_TOP] = createCubeFaceTex(gl, gap, radius, labels[2].c_str());
-	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gl, gap, radius, labels[3].c_str());
-	m_Textures[TEX_RIGHT] = createCubeFaceTex(gl, gap, radius, labels[4].c_str());
-	m_Textures[TEX_LEFT] = createCubeFaceTex(gl, gap, radius, labels[5].c_str());
-
-	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gl, gap, radius, NULL);
-
+	// create the arrows
 	m_Textures[TEX_ARROW_NORTH] = createButtonTex(gl, TEX_ARROW_NORTH);
 	m_Textures[TEX_ARROW_SOUTH] = createButtonTex(gl, TEX_ARROW_SOUTH);
 	m_Textures[TEX_ARROW_EAST] = createButtonTex(gl, TEX_ARROW_EAST);
 	m_Textures[TEX_ARROW_WEST] = createButtonTex(gl, TEX_ARROW_WEST);
 	m_Textures[TEX_ARROW_LEFT] = createButtonTex(gl, TEX_ARROW_LEFT);
 	m_Textures[TEX_ARROW_RIGHT] = createButtonTex(gl, TEX_ARROW_RIGHT);
+	m_Textures[TEX_DOT_BACKSIDE] = createButtonTex(gl, TEX_DOT_BACKSIDE);
 	m_Textures[TEX_VIEW_MENU_ICON] = createMenuTex(gl, false);
 	m_Textures[TEX_VIEW_MENU_FACE] = createMenuTex(gl, true);
 
 			// front,back,pick,pickid
-	addFace(x, z, TEX_TOP, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_TOP,true);
+	addFace(x, z, TEX_TOP, TEX_FRONT_FACE, TEX_TOP, true);
 	x = r90x * x;
 	z = r90x * z;
-	addFace(x, z, TEX_FRONT, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_FRONT,true);
+	addFace(x, z, TEX_FRONT, TEX_FRONT_FACE, TEX_FRONT, true);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_LEFT, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_LEFT,true);
+	addFace(x, z, TEX_LEFT, TEX_FRONT_FACE, TEX_LEFT, true);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_REAR, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_REAR,true);
+	addFace(x, z, TEX_REAR, TEX_FRONT_FACE, TEX_REAR, true);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_RIGHT, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_RIGHT,true);
+	addFace(x, z, TEX_RIGHT, TEX_FRONT_FACE, TEX_RIGHT, true);
 	x = r90x * r90z * x;
 	z = r90x * r90z * z;
-	addFace(x, z, TEX_BOTTOM, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_BOTTOM,true);
+	addFace(x, z, TEX_BOTTOM, TEX_FRONT_FACE, TEX_BOTTOM, true);
 
-	z = r45z * r45x * z;
-	x = r45z * r45x * x;
+	// add corner faces
+	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_CORNER);
+	// we need to rotate to the edge, thus matrix for rotation angle of 54.7 deg
+	cs = cos(atan(sqrt(2.0)));
+	sn = sin(atan(sqrt(2.0)));
+	Matrix3f r54x;
+	r54x << 1, 0, 0,
+		     0, cs, -sn,
+		     0, sn, cs;
 
-	x *= 0.23f; // corner face size
-	z *= 1.43f; // corner face position
+	z = r45z * r54x * z;
+	x = r45z * r54x * x;
+	z *= 1.46f; // corner face position
 
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
-
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_FRONT_RIGHT);
-
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_FRONT_RIGHT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_LEFT_FRONT);
-
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_LEFT_FRONT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_REAR_LEFT);
-
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_REAR_LEFT);
 	x = r90x * r90x * r90z * x;
 	z = r90x * r90x * r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_RIGHT_FRONT);
-
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_RIGHT_FRONT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_FRONT_LEFT);
-
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_FRONT_LEFT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_LEFT_REAR);
-
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_LEFT_REAR);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_REAR_RIGHT);
+	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_REAR_RIGHT);
+
+	// add edge faces
+	m_Textures[TEX_EDGE_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_EDGE);
+	// first back to top side
+	x[0] = 1; x[1] = 0; x[2] = 0;
+	z[0] = 0; z[1] = 0; z[2] = 1;
+	// rotate 45 degrees up
+	z = r45x * z;
+	x = r45x * x;
+	z *= 1.25f; // edge face position
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_TOP);
+	x = r90x * x;
+	z = r90x * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_BOTTOM);
+	x = r90x * x;
+	z = r90x * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_BOTTOM);
+	x = r90x * x;
+	z = r90x * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_TOP);
+	x = r90y * x;
+	z = r90y * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_RIGHT);
+	x = r90z * x;
+	z = r90z * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_RIGHT);
+	x = r90z * x;
+	z = r90z * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_LEFT);
+	x = r90z * x;
+	z = r90z * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_LEFT);
+	x = r90x * x;
+	z = r90x * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_TOP_LEFT);
+	x = r90y * x;
+	z = r90y * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_TOP_RIGHT);
+	x = r90y * x;
+	z = r90y * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_BOTTOM_RIGHT);
+	x = r90y * x;
+	z = r90y * z;
+	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_BOTTOM_LEFT);
 
 	m_Buttons.push_back(TEX_ARROW_NORTH);
 	m_Buttons.push_back(TEX_ARROW_SOUTH);
@@ -814,6 +889,7 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	m_Buttons.push_back(TEX_ARROW_WEST);
 	m_Buttons.push_back(TEX_ARROW_LEFT);
 	m_Buttons.push_back(TEX_ARROW_RIGHT);
+	m_Buttons.push_back(TEX_DOT_BACKSIDE);
 
 	m_PickingFramebuffer = new QtGLFramebufferObject(2*m_CubeWidgetSize,2* m_CubeWidgetSize, QtGLFramebufferObject::CombinedDepthStencil);
 }
@@ -870,9 +946,7 @@ void NaviCubeImplementation::handleResize() {
 		m_PrevWidth = view[0];
 		m_PrevHeight = view[1];
 		m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
-
 	}
-
 }
 
 void NaviCubeImplementation::drawNaviCube(bool pickMode) {
@@ -980,32 +1054,26 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			glDisable(GL_TEXTURE_2D);
 			float a=1.1f;
 
-			static GLubyte xbmp[] = { 0x11,0x11,0x0a,0x04,0x0a,0x11,0x11 };
 			glColor3f(1, 0, 0);
 			glBegin(GL_LINES);
 			glVertex3f(-1.1f, -1.1f, -1.1f);
 			glVertex3f(+0.5f, -1.1f, -1.1f);
 			glEnd();
 			glRasterPos3d(a, -a, -a);
-			glBitmap(8, 7, 0, 0, 0, 0, xbmp);
 
-			static GLubyte ybmp[] = { 0x04,0x04,0x04,0x04,0x0a,0x11,0x11 };
 			glColor3f(0, 1, 0);
 			glBegin(GL_LINES);
 			glVertex3f(-1.1f, -1.1f, -1.1f);
 			glVertex3f(-1.1f, +0.5f, -1.1f);
 			glEnd();
 			glRasterPos3d( -a, a, -a);
-			glBitmap(8, 7, 0, 0, 0, 0, ybmp);
 
-			static GLubyte zbmp[] = { 0x1f,0x10,0x08,0x04,0x02,0x01,0x1f };
 			glColor3f(0, 0, 1);
 			glBegin(GL_LINES);
 			glVertex3f(-1.1f, -1.1f, -1.1f);
 			glVertex3f(-1.1f, -1.1f, +0.5f);
 			glEnd();
 			glRasterPos3d( -a, -a, a);
-			glBitmap(8, 7, 0, 0, 0, 0, zbmp);
 
 			glEnable(GL_TEXTURE_2D);
 		}
@@ -1158,30 +1226,27 @@ bool NaviCubeImplementation::mousePressed(short x, short y) {
 	return pick != 0;
 }
 
-void NaviCubeImplementation::setView(float rotZ,float rotX) {
+SbRotation NaviCubeImplementation::setView(float rotZ, float rotX) const {
 	SbRotation rz, rx, t;
 	rz.setValue(SbVec3f(0, 0, 1), rotZ * M_PI / 180);
 	rx.setValue(SbVec3f(1, 0, 0), rotX * M_PI / 180);
-	m_View3DInventorViewer->setCameraOrientation(rx * rz);
+	return rx * rz;
 }
 
-void NaviCubeImplementation::rotateView(int axis,float rotAngle) {
-	SbRotation viewRot = m_View3DInventorViewer->getCameraOrientation();
-
+SbRotation NaviCubeImplementation::rotateView(SbRotation viewRot, int axis, float rotAngle, SbVec3f customAxis) const {
 	SbVec3f up;
-	viewRot.multVec(SbVec3f(0,1,0),up);
+	viewRot.multVec(SbVec3f(0, 1, 0), up);
 
 	SbVec3f out;
-	viewRot.multVec(SbVec3f(0,0,1),out);
+	viewRot.multVec(SbVec3f(0, 0, 1), out);
 
-	SbVec3f& u = up;
-	SbVec3f& o = out;
-	SbVec3f right  (u[1]*o[2]-u[2]*o[1], u[2]*o[0]-u[0]*o[2], u[0]*o[1]-u[1]*o[0]);
+	SbVec3f right;
+	viewRot.multVec(SbVec3f(1, 0, 0), right);
 
 	SbVec3f direction;
 	switch (axis) {
 	default :
-		return;
+		return viewRot;
 	case DIR_UP :
 		direction = up;
 		break;
@@ -1193,10 +1258,16 @@ void NaviCubeImplementation::rotateView(int axis,float rotAngle) {
 		break;
 	}
 
-	SbRotation rot(direction, -rotAngle*M_PI/180.0);
-	SbRotation newViewRot = viewRot * rot;
-	m_View3DInventorViewer->setCameraOrientation(newViewRot);
+	if (customAxis != SbVec3f(0, 0, 0))
+		direction = customAxis;
 
+	SbRotation rot(direction, -rotAngle * M_PI / 180.0);
+	SbRotation newViewRot = viewRot * rot;
+	return newViewRot;
+}
+
+void NaviCubeImplementation::rotateView(const SbRotation& rot) {
+	m_View3DInventorViewer->setCameraOrientation(rot);
 }
 
 void NaviCubeImplementation::handleMenu() {
@@ -1206,83 +1277,357 @@ void NaviCubeImplementation::handleMenu() {
 bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	setHilite(0);
 	m_MouseDown = false;
+
+	// get the curent view
+	SbMatrix ViewRotMatrix;
+	SbRotation CurrentViewRot = m_View3DInventorViewer->getCameraOrientation();
+	CurrentViewRot.getValue(ViewRotMatrix);
+
 	if (!m_Dragging) {
-		float rot = 45 ; //30;
-		float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
+		float rot = 45;
+		float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
 		int pick = pickFace(x, y);
 
 		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-		long step = Base::clamp(hGrp->GetInt("NaviStepByTurn",8), 4L, 36L);
-		float rotStepAngle = 360.0f/step;
+		long step = Base::clamp(hGrp->GetInt("NaviStepByTurn", 8), 4L, 36L);
+		float rotStepAngle = 360.0f / step;
+		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
+
+		SbRotation viewRot = CurrentViewRot;
 
 		switch (pick) {
 		default:
 			return false;
 			break;
 		case TEX_FRONT:
-			setView(0, 90);
+			viewRot = setView(0, 90);
+			// we don't want to dumb rotate to the same view since depending on from where the user clicked on FRONT
+			// we have one of four suitable end positions.
+			// we use here the same rotation logic used by other programs using OCC like "CAD Assistant"
+			// when current matrix's 0,0 entry is larger than its |1,0| entry, we already have the final result
+			// otherwise rotate around y
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
 			break;
 		case TEX_REAR:
-			setView(180, 90);
+			viewRot = setView(180, 90);
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
 			break;
 		case TEX_LEFT:
-			setView(270,90);
+			viewRot = setView(270, 90);
+			if (toNearest) {
+				if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
 			break;
 		case TEX_RIGHT:
-			setView(90,90);
+			viewRot = setView(90, 90);
+			if (toNearest) {
+				if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
 			break;
 		case TEX_TOP:
-			setView(0,0);
+			viewRot = setView(0, 0);
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
 			break;
 		case TEX_BOTTOM:
-			setView(0,180);
+			viewRot = setView(0, 180);
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
+			break;
+		case TEX_FRONT_TOP:
+			// set to FRONT then rotate
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 1, 45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
+			break;
+		case TEX_FRONT_BOTTOM:
+			// set to FRONT then rotate
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 1, -45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
+			break;
+		case TEX_REAR_BOTTOM:
+			// set to REAR then rotate
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 1, -45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
+			break;
+		case TEX_REAR_TOP:
+			// set to REAR then rotate
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 1, 45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
+			break;
+		case TEX_FRONT_LEFT:
+			// set to FRONT then rotate
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 0, 45);
+			if (toNearest) {
+				if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
+			break;
+		case TEX_FRONT_RIGHT:
+			// set to FRONT then rotate
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 0, -45);
+			if (toNearest) {
+				if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
+			break;
+		case TEX_REAR_RIGHT:
+			// set to REAR then rotate
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 0, 45);
+			if (toNearest) {
+				if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
+			break;
+		case TEX_REAR_LEFT:
+			// set to REAR then rotate
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 0, -45);
+			if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
+				viewRot = rotateView(viewRot, 2, 180);
+			else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+				viewRot = rotateView(viewRot, 2, -90);
+			else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
+				viewRot = rotateView(viewRot, 2, 90);
+			break;
+		case TEX_TOP_LEFT:
+			// set to LEFT then rotate
+			viewRot = setView(270, 90);
+			viewRot = rotateView(viewRot, 1, 45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
+			break;
+		case TEX_TOP_RIGHT:
+			// set to RIGHT then rotate
+			viewRot = setView(90, 90);
+			viewRot = rotateView(viewRot, 1, 45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
+			break;
+		case TEX_BOTTOM_RIGHT:
+			// set to RIGHT then rotate
+			viewRot = setView(90, 90);
+			viewRot = rotateView(viewRot, 1, -45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, 90);
+				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, -90);
+			}
+			break;
+		case TEX_BOTTOM_LEFT:
+			// set to LEFT then rotate
+			viewRot = setView(270, 90);
+			viewRot = rotateView(viewRot, 1, -45);
+			if (toNearest) {
+				if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
+					viewRot = rotateView(viewRot, 2, 180);
+				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, -90);
+				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
+					viewRot = rotateView(viewRot, 2, 90);
+			}
 			break;
 		case TEX_BOTTOM_LEFT_FRONT:
-			setView(rot - 90, 90 + tilt);
+			viewRot = setView(rot - 90, 90 + tilt);
+			// we have 3 possible end states:
+			// - z-axis is not rotated larger than 120 ° from (0, 1, 0) -> we are already there
+			// - y-axis is not rotated larger than 120 ° from (0, 1, 0)
+			// - x-axis is not rotated larger than 120 ° from (0, 1, 0)
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] > 0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, 1));
+				else if (ViewRotMatrix[1][1] > 0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, 1, 1));
+			}
 			break;
 		case TEX_BOTTOM_FRONT_RIGHT:
-			setView(90 + rot - 90, 90 + tilt);
+			viewRot = setView(90 + rot - 90, 90 + tilt);
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] < -0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, 1, 1));
+				else if (ViewRotMatrix[1][1] > 0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, 1, 1));
+			}
 			break;
 		case TEX_BOTTOM_RIGHT_REAR:
-			setView(180 + rot - 90, 90 + tilt);
+			viewRot = setView(180 + rot - 90, 90 + tilt);
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] < -0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, -1, 1));
+				else if (ViewRotMatrix[1][1] < -0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, -1, 1));
+			}
 			break;
 		case TEX_BOTTOM_REAR_LEFT:
-			setView(270 + rot - 90, 90 + tilt);
+			viewRot = setView(270 + rot - 90, 90 + tilt);
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] > 0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, 1));
+				else if (ViewRotMatrix[1][1] < -0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, -1, 1));
+			}
 			break;
 		case TEX_TOP_RIGHT_FRONT:
-			setView(rot, 90 - tilt);
+			viewRot = setView(rot, 90 - tilt);
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] > 0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, 1, -1));
+				else if (ViewRotMatrix[1][1] < -0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, 1, -1));
+			}
 			break;
 		case TEX_TOP_FRONT_LEFT:
-			setView(rot - 90, 90 - tilt);
+			viewRot = setView(rot - 90, 90 - tilt);
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] < -0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, 1, -1));
+				else if (ViewRotMatrix[1][1] < -0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, -1));
+			}
 			break;
 		case TEX_TOP_LEFT_REAR:
-			setView(rot - 180, 90 - tilt);
+			viewRot = setView(rot - 180, 90 - tilt);
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] < -0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, -1, -1));
+				else if (ViewRotMatrix[1][1] > 0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, -1));
+			}
 			break;
 		case TEX_TOP_REAR_RIGHT:
-			setView(rot - 270, 90 - tilt);
+			viewRot = setView(rot - 270, 90 - tilt);
+			if (toNearest) {
+				if (ViewRotMatrix[1][0] > 0.4823)
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, -1, -1));
+				else if (ViewRotMatrix[1][1] > 0.4823)
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, -1, -1));
+			}
 			break;
 		case TEX_ARROW_LEFT :
-			rotateView(DIR_OUT,rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_OUT,rotStepAngle);
 			break;
 		case TEX_ARROW_RIGHT :
-			rotateView(DIR_OUT,-rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_OUT,-rotStepAngle);
 			break;
 		case TEX_ARROW_WEST :
-			rotateView(DIR_UP,-rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_UP,-rotStepAngle);
 			break;
 		case TEX_ARROW_EAST :
-			rotateView(DIR_UP,rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_UP,rotStepAngle);
 			break;
 		case TEX_ARROW_NORTH :
-			rotateView(DIR_RIGHT,-rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_RIGHT,-rotStepAngle);
 			break;
 		case TEX_ARROW_SOUTH :
-			rotateView(DIR_RIGHT,rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_RIGHT,rotStepAngle);
+			break;
+		case TEX_DOT_BACKSIDE:
+			viewRot = rotateView(viewRot, 0, 180);
 			break;
 		case TEX_VIEW_MENU_FACE :
 			handleMenu();
 			break;
 		}
+
+		rotateView(viewRot);
 	}
 	return true;
 }

@@ -211,7 +211,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "UnitOverride" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "A unit to express the measurement.\n"
-                                     "Leave blank for system default")
+                                     "Leave blank for system default.\n"
+                                     "Use 'arch' to force US arch notation")
             vobj.addProperty("App::PropertyString",
                              "UnitOverride",
                              "Units",

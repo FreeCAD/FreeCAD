@@ -6,27 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>602</width>
-    <height>608</height>
+    <width>500</width>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Display</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="2" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -65,7 +52,7 @@
          <string>Current constraint creation tool will remain active after creation</string>
         </property>
         <property name="text">
-         <string>Constraint creation "Continue Mode"</string>
+         <string>Constraint creation &quot;Continue Mode&quot;</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -228,6 +215,46 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
           </widget>
          </item>
          <item>
+          <widget class="Gui::PrefCheckBox" name="checkBoxTVForceOrtho">
+           <property name="toolTip">
+            <string>When entering edit mode, force orthographic view of camera.
+Works only when &quot;Restore camera position after editing&quot; is enabled.</string>
+           </property>
+           <property name="text">
+            <string>Force orthographic camera when entering edit</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>ForceOrtho</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Gui::PrefCheckBox" name="checkBoxTVSectionView">
+           <property name="toolTip">
+            <string>Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</string>
+           </property>
+           <property name="text">
+            <string>Open sketch in Section View mode</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>SectionView</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="label_9">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -296,7 +323,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
          <string>Current sketcher creation tool will remain active after creation</string>
         </property>
         <property name="text">
-         <string>Geometry creation "Continue Mode"</string>
+         <string>Geometry creation &quot;Continue Mode&quot;</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -382,6 +409,19 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
      </layout>
     </widget>
    </item>
+   <item row="2" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -410,8 +450,27 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
   <tabstop>checkBoxTVShowLinks</tabstop>
   <tabstop>checkBoxTVShowSupport</tabstop>
   <tabstop>checkBoxTVRestoreCamera</tabstop>
+  <tabstop>checkBoxTVForceOrtho</tabstop>
+  <tabstop>checkBoxTVSectionView</tabstop>
   <tabstop>btnTVApply</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBoxTVRestoreCamera</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBoxTVForceOrtho</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

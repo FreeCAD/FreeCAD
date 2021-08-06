@@ -73,8 +73,7 @@ class Scale(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        self.name = translate("draft", "Scale")
-        super(Scale, self).Activated(name=self.name)
+        super(Scale, self).Activated(name="Scale")
         if not self.ui:
             return
         self.ghosts = []
@@ -84,7 +83,7 @@ class Scale(gui_base_original.Modifier):
         """Get object selection and proceed if successful."""
         if Gui.Selection.getSelection():
             return self.proceed()
-        self.ui.selectUi()
+        self.ui.selectUi(on_close_call=self.finish)
         _msg(translate("draft", "Select an object to scale"))
         self.call = self.view.addEventCallback("SoEvent",
                                                gui_tool_utils.selectObject)
@@ -99,7 +98,7 @@ class Scale(gui_base_original.Modifier):
             groups.get_group_contents(self.selected_objects)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.refs = []
-        self.ui.pointUi(self.name)
+        self.ui.pointUi(title=translate("draft",self.featureName), icon="Draft_Scale")
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
@@ -330,10 +329,12 @@ class Scale(gui_base_original.Modifier):
                 bads.append(obj)
         if bads:
             if len(bads) == 1:
-                m = translate("draft", "Unable to scale object: ")
+                m = translate("draft", "Unable to scale object:")
+                m += " "
                 m += bads[0].Label
             else:
-                m = translate("draft", "Unable to scale objects: ")
+                m = translate("draft", "Unable to scale objects:")
+                m += " "
                 m += ", ".join([o.Label for o in bads])
             m += " - " + translate("draft","This object type cannot be scaled directly. Please use the clone method.")
             _err(m)

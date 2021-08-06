@@ -66,13 +66,13 @@ class Offset(gui_base_original.Modifier):
     def Activated(self):
         """Execute when the command is called."""
         self.running = False
-        super(Offset, self).Activated(name=translate("draft","Offset"))
+        super(Offset, self).Activated(name="Offset")
         self.ghost = None
         self.linetrack = None
         self.arctrack = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to offset"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",
@@ -110,7 +110,10 @@ class Offset(gui_base_original.Modifier):
                 self.mode = "Circle"
                 self.center = self.shape.Edges[0].Curve.Center
                 self.ghost.setCenter(self.center)
-                self.ghost.setStartAngle(math.radians(self.sel.FirstAngle))
+                if self.sel.FirstAngle <= self.sel.LastAngle:
+                    self.ghost.setStartAngle(math.radians(self.sel.FirstAngle))
+                else:
+                    self.ghost.setStartAngle(math.radians(self.sel.FirstAngle) - 2 * math.pi)
                 self.ghost.setEndAngle(math.radians(self.sel.LastAngle))
             elif utils.getType(self.sel) == "BSpline":
                 self.ghost = trackers.bsplineTracker(points=self.sel.Points)

@@ -256,10 +256,10 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
 
     try {
         Handle(Geom_BSplineCurve) geom;
-        if (sd.fit_points > 0)
-            geom = getInterpolationSpline(sd);
-        else
+        if (sd.control_points > 0)
             geom = getSplineFromPolesAndKnots(sd);
+        else if (sd.fit_points > 0)
+            geom = getInterpolationSpline(sd);
 
         if (geom.IsNull())
             throw Standard_Failure();

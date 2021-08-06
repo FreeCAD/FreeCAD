@@ -33,6 +33,9 @@ namespace App {
 class Expression;
 }
 
+class ExpressionLabel;
+class QLineEdit;
+
 namespace Gui {
 
 class GuiExport ExpressionBinding
@@ -66,12 +69,14 @@ protected:
     //gets called when the bound expression is changed, either by this binding or any external action
     virtual void onChange() {}
 
+    void makeLabel(QLineEdit* parent);
+
 private:
     App::ObjectIdentifier path;
     std::shared_ptr<App::Expression> lastExpression;
 
 protected:
-    QLabel* iconLabel;
+    ExpressionLabel* iconLabel;
     QPalette defaultPalette;
     int iconHeight;
 

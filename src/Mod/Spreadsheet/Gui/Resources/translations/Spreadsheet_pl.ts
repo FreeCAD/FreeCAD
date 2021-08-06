@@ -39,7 +39,7 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Wyrównaj do środka</translation>
+      <translation>Wyśrodkuj w poziomie</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
@@ -277,7 +277,7 @@
     </message>
     <message>
       <source>Set underline text</source>
-      <translation>Ustaw tekst podkreślony</translation>
+      <translation>Ustaw podkreślony tekst</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
@@ -462,11 +462,11 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <name>QtColorPicker</name>
     <message>
       <source>Black</source>
-      <translation>Czarne</translation>
+      <translation>Czarny</translation>
     </message>
     <message>
       <source>White</source>
-      <translation>Białe</translation>
+      <translation>Biały</translation>
     </message>
     <message>
       <source>Red</source>
@@ -564,24 +564,80 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Wstaw wiersze</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Usuń wiersze</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Wstaw kolumny</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Usuwanie kolumn</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Właściwości...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz powyżej</numerusform>
+        <numerusform>Wstaw %n wiersze powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) powyżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz poniżej</numerusform>
+        <numerusform>Wstaw %n wiersze poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) poniżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz, który nie jest sąsiadujący</numerusform>
+        <numerusform>Wstaw %n wiersze, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Usuń wiersz</numerusform>
+        <numerusform>Usuń wiersze</numerusform>
+        <numerusform>Usuń wierszy</numerusform>
+        <numerusform>Usuń wiersz(e)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę, która nie jest sąsiadująca</numerusform>
+        <numerusform>Wstaw %n kolumny, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Usuń kolumnę</numerusform>
+        <numerusform>Usuń kolumny</numerusform>
+        <numerusform>Usuń kolumn</numerusform>
+        <numerusform>Usuń kolumn(y)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

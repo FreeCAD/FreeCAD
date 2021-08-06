@@ -449,11 +449,7 @@ PyObject* Application::sGetConfig(PyObject * /*self*/, PyObject *args)
     }
     else {
         // do not set an error because this may break existing python code
-#if PY_MAJOR_VERSION >= 3
         return PyUnicode_FromString("");
-#else
-        return PyString_FromString("");
-#endif
     }
 }
 
@@ -465,11 +461,7 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
     PyObject *dict = PyDict_New();
     for (std::map<std::string,std::string>::iterator It= GetApplication()._mConfig.begin();
          It!=GetApplication()._mConfig.end();++It) {
-#if PY_MAJOR_VERSION >= 3
         PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
-#else
-        PyDict_SetItemString(dict,It->first.c_str(), PyString_FromString(It->second.c_str()));
-#endif
     }
     return dict;
 }
@@ -718,11 +710,7 @@ PyObject* Application::sListDocuments(PyObject * /*self*/, PyObject *args)
             docs = Document::getDependentDocuments(docs,true);
 
         for (auto doc : docs) {
-#if PY_MAJOR_VERSION >= 3
             pKey   = PyUnicode_FromString(doc->getName());
-#else
-            pKey   = PyString_FromString(doc->getName());
-#endif
             // GetPyObject() increments
             pValue = static_cast<Base::PyObjectBase*>(doc->getPyObject());
             PyDict_SetItem(pDict, pKey, pValue);
@@ -764,13 +752,8 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
         return NULL;
     PY_TRY{
         int l;
-#if PY_MAJOR_VERSION < 3
-        if (PyString_Check(pcObj)) {
-            const char *pstr = PyString_AsString(pcObj);
-#else
         if (PyUnicode_Check(pcObj)) {
             const char *pstr = PyUnicode_AsUTF8(pcObj);
-#endif
             if(strcmp(pstr,"Log") == 0)
                 l = FC_LOGLEVEL_LOG;
             else if(strcmp(pstr,"Warning") == 0)

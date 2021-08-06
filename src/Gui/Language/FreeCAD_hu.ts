@@ -136,7 +136,7 @@
     </message>
     <message>
       <source>Paste expressions</source>
-      <translation type="unfinished">Paste expressions</translation>
+      <translation>Kifejezések beszúrása</translation>
     </message>
     <message>
       <source>Make link group</source>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Alhivatkozás létrehozása</translation>
     </message>
     <message>
       <source>Import links</source>
@@ -160,15 +160,15 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Méret beszúrása</translation>
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Szöveges dokumentum beszúrása</translation>
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>Alkatrész hozzáadása</translation>
     </message>
     <message>
       <source>Add a group</source>
@@ -274,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Fájlnév</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Írj be egy kifejezést...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Kifejezés: </translation>
     </message>
   </context>
   <context>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Szó méret</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Készítők listája</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD sehol nem lenne az erőfeszítéseik nélkül:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licenc</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Gyűjtemény</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Készítők listája</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>A FreeCAD nem jöhetett volna létre az alábbi együttműködők nélkül</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Személyek</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Szervezetek</translation>
     </message>
   </context>
   <context>
@@ -751,7 +773,7 @@ Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úg
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>Szövegcímke</translation>
+      <translation>Szövegfelirat</translation>
     </message>
     <message>
       <source>CheckBox</source>
@@ -1363,10 +1385,6 @@ Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úg
       <translation>Program infó</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>A kód sorok sorszámozva lesznek </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>A &lt;Tab&gt; beszúrja a megadott behúzási méretet</translation>
     </message>
@@ -1401,6 +1419,10 @@ Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úg
     <message>
       <source>Color:</source>
       <translation>Szín:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>A kódsorok sorszámozva lesznek</translation>
     </message>
   </context>
   <context>
@@ -2225,7 +2247,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Normal messages:</source>
-      <translation>Normal üzenetek:</translation>
+      <translation>Aktuális üzenetek:</translation>
     </message>
     <message>
       <source>Log messages:</source>
@@ -2290,12 +2312,12 @@ a képernyőn, miközben megjeleníti a figyelmeztető</translation>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Normál üzenet bekövetkezése esetén a Jelentésnézet párbeszédpanel láthatóvá válik
+      <translation>Aktuális üzenet bekövetkezése esetén a Jelentésnézet párbeszédpanel láthatóvá válik
 a képernyőn az üzenet megjelenítése közben</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation>Jelentésnézet megjelenítése normál üzenetben</translation>
+      <translation>Jelentésnézet megjelenítése aktuális üzenetben</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
@@ -2309,7 +2331,7 @@ a képernyőn a naplóüzenet megjelenítése közben</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>A normál üzenetek betűszíne a Jelentés nézet panelen</translation>
+      <translation>Aktuális üzenetek betűszíne a Jelentés nézet panelen</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
@@ -2345,11 +2367,11 @@ a Python konzolról a Jelentés nézet panelre</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation>Normál üzenetek rögzítésre kerülnek</translation>
+      <translation>Alapértelmezett üzenetek rögzítésre kerülnek</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation>Normál üzenetek rögzítése</translation>
+      <translation>Aktuális üzenetek rögzítése</translation>
     </message>
   </context>
   <context>
@@ -2360,7 +2382,7 @@ a Python konzolról a Jelentés nézet panelre</translation>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>Szövegcímke</translation>
+      <translation>Szövegfelirat</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
@@ -2488,9 +2510,9 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation>Ha bejelölt, akkor a csúcspontpuffer objektumok (VBO) lesznek használva.
+      <translation>Ha bejelölt, akkor a csúcspontpuffer objektumokat (VBO) használja.
 A VBO egy OpenGL funkció, amely módszereket biztosítják a
-csúcspont adatok (pozíció, normál vektor, szín stb.) a grafikus kártyára töltését.
+csúcspont adatok (pozíció, aktuális vektor, szín stb.) a grafikus kártyára töltését.
 A VBOs jelentős teljesítménynövekedést kínál, mivel az adatok
 a grafikus memóriában, nem pedig a rendszermemóriában, és így
 közvetlenül a GPU-val renderelhetők. 
@@ -2534,10 +2556,6 @@ Ennek elérésére 3 lehetőség áll rendelkezésre:
       <translation>Központosított</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Milyen több mintavételes élsimítást használ </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Átlátszó tárgyak:</translation>
     </message>
@@ -2560,14 +2578,6 @@ Ennek elérésére 3 lehetőség áll rendelkezésre:
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Szemtől szembeni távolság a sztereó módban</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Szemtől-szembeni távolság sztereó kivetítésekhez.
-A megadott érték olyan tényező, amelyet megszoroz
-az aktuálisan megjelenített 3D objektum határolókeret mérettel. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2619,13 +2629,25 @@ Nagyobb érték megkönnyíti a kiválasztást, de lehetetlenné teheti a kis tu
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+      <translation>Ez a beállítás a grafikus kártya és az illesztőprogram problémáinak elhárításához hasznos.
 
-Changing this option requires a restart of the application.</translation>
+A beállítás módosításához újra kell indítani az alkalmazást.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>Szoftveres OpenGL használata</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Milyen több mintavételes élsimítást használ</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Szemtől-szembeni távolság sztereó kivetítésekhez.
+A megadott érték olyan tényező, amelyet megszoroz
+az aktuálisan megjelenített 3D tárgy határolókeret méretével.</translation>
     </message>
   </context>
   <context>
@@ -3241,10 +3263,6 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation>Keretpuffer (ahogy van)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Pixelpuffer</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3365,7 +3383,7 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Billentyűzet módosítók, alapértelmezett = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3376,15 +3394,15 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Navigációs kocka</translation>
     </message>
     <message>
       <source>Steps by turn</source>
-      <translation type="unfinished">Steps by turn</translation>
+      <translation>A teljes elforgatás lépésszáma</translation>
     </message>
     <message>
       <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
+      <translation>Lépések száma elfordulás szerint nyíl használatakor (alapértelmezett = 8 : lépésszög = 360/8 = 45 fok)</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -3392,7 +3410,7 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
       <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <translation>Sarok, ahol a navigációs kocka látható</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -3417,8 +3435,8 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     <message>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
+      <translation>Felsorolja az egérgomb konfigurációját az egyes kijelölt navigációs beállításokhoz.
+Jelöljön ki egy beállítást, majd nyomja meg a gombot a beállítások megtekintéséhez.</translation>
     </message>
     <message>
       <source>Mouse...</source>
@@ -3426,7 +3444,7 @@ Select a set and then press the button to view said configurations.</translation
     </message>
     <message>
       <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
+      <translation>A navigációs sáv beállításai mentésre kerültek</translation>
     </message>
     <message>
       <source>Orbit style</source>
@@ -3436,9 +3454,9 @@ Select a set and then press the button to view said configurations.</translation
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</translation>
+      <translation>Rotációs elforgatási stílus.
+Hanyattegér: Ha vízszintesen mozgatja az egeret, az alkatrész az y tengely körül forog
+Forgóasztal: az alkatrész a tengely körül forog.</translation>
     </message>
     <message>
       <source>Turntable</source>
@@ -3450,13 +3468,13 @@ Turntable: the part will be rotated around the z-axis.</translation>
     </message>
     <message>
       <source>New document scale</source>
-      <translation type="unfinished">New document scale</translation>
+      <translation>Új dokumentumméret</translation>
     </message>
     <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
-      <translation type="unfinished">Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</translation>
+      <translation>Beállítja az új dokumentumok kameranagyítását.
+Az érték a képernyőn elférő gömb átmérője.</translation>
     </message>
     <message>
       <source>mm</source>
@@ -3464,7 +3482,7 @@ The value is the diameter of the sphere to fit on the screen.</translation>
     </message>
     <message>
       <source>Enable animated rotations</source>
-      <translation type="unfinished">Enable animated rotations</translation>
+      <translation>Animált forgatások aktiválása</translation>
     </message>
     <message>
       <source>Enable animation</source>
@@ -3472,7 +3490,7 @@ The value is the diameter of the sphere to fit on the screen.</translation>
     </message>
     <message>
       <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
+      <translation>A nagyítási műveleteket az egérmutató helyén hajtják végre</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
@@ -3483,14 +3501,8 @@ The value is the diameter of the sphere to fit on the screen.</translation>
       <translation>Zoomolási lépték</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
-      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
+      <translation>A nagyítási műveletek iránya megfordul</translation>
     </message>
     <message>
       <source>Invert zoom</source>
@@ -3500,9 +3512,9 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Megakadályozza, hogy a nézet két ujjal nagyításkor vagy kicsinyítéskor megbillentsen.
+Csak a kézmozdulat-navigációs stílusra vonatkozik.
+Ez a beállítás nem tiltja le az egér megdöntése beállítást.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
@@ -3510,7 +3522,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
+      <translation>A 3D-ben való elforgatás az aktuális kurzorpozíciót fogja használni forgatási központként</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3554,27 +3566,49 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
+      <translation>Szabványos kamerabeállítás</translation>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+      <translation>Az új dokumentumok szabványos kamera tájolása vagy az otthoni nézet kiválasztásakor</translation>
     </message>
     <message>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>Elforgatási mód</translation>
     </message>
     <message>
       <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
+      <translation>Az ablak közepére</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>Húzás a kurzornál</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>A tárgy központba</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Kocka felületére kattintva a lehető legközelebbi állapotba forog</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Forgatás a legközelebbire</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Kocka méret</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Navigációs kocka mérete</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Mennyire nagyítson.
+Az '1' nagyítási lépés minden nagyítási lépésnél 7,5-ös tényezőt jelent.</translation>
     </message>
   </context>
   <context>
@@ -3585,19 +3619,19 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+      <translation>Automatikus váltás 3D nézetre a kijelölt elemmel</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+      <translation>A fa automatikus kibontása, ha a társított tárgy 3D nézetben van kijelölve</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+      <translation>A tárgy előre kijelölése 3D nézetben, amikor az egér a faelem felett mozog</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+      <translation>Kijelölés rögzítése a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
@@ -3708,7 +3742,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>FEM (mm, N, mp)</translation>
     </message>
   </context>
   <context>
@@ -3763,11 +3797,11 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Háttérszín modellnézethez</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>A háttér lesz a kiválasztott szín</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
@@ -3775,15 +3809,15 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Alsó szín</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>A háttér a kijelölt színátmenettel</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Felső szín</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -3887,12 +3921,12 @@ Az előnyben részesített rendszer az általános beállításokban beállítot
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation type="unfinished">unknown unit: </translation>
+      <source>unit mismatch</source>
+      <translation>mértékegység eltérés</translation>
     </message>
     <message>
-      <source>unit mismatch</source>
-      <translation type="unfinished">unit mismatch</translation>
+      <source>unknown unit:</source>
+      <translation>ismeretlen mértékegység:</translation>
     </message>
   </context>
   <context>
@@ -3955,7 +3989,7 @@ Az előnyben részesített rendszer az általános beállításokban beállítot
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Megjegyzés:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; A változások az alkalmazás következő indításánál válnak aktívvá&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4274,7 +4308,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Do you really want to remove this parameter group?</source>
-      <translation type="unfinished">Do you really want to remove this parameter group?</translation>
+      <translation>Tényleg eltávolítja ezt a paramétercsoportot?</translation>
     </message>
   </context>
   <context>
@@ -4301,7 +4335,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>New float item</source>
-      <translation>Új tizedesjegy elem</translation>
+      <translation>Új lebegőpontos elem</translation>
     </message>
     <message>
       <source>New integer item</source>
@@ -4416,31 +4450,31 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Kérjük, válasszon 1, 2 vagy 3 pontot ennek a gombnak a megnyomása előtt.  Egy pont lehet a végponton, felületen vagy élen.  Ha egy felületre vagy élre használja a pontot az egér helyzetének pontja lesz a felület vagy él mentén.  Ha 1 pontot választ ki akkor az az elforgatás középpontját határozza meg.  2 pont kijelölésekor a két pont közti lesz az elforgatás középpontja, és egy új egyéni tengely jön létre, ha szükséges.  Ha 3 pontot jelöltünk az első pont lesz az elforgatás középpontja, és azon a vektoron fekszik, mely síkot a 3 pont  normákkal meghatározza. Néhány távolság és szög információt a jelentésben tekinthet meg, ami hasznos lehet az objektumok igazításához. Az Ön kényelme érdekében Shift + kattintás használata esetén a megfelelő távolság vagy szög másolódik a vágólapra.</translation>
+      <translation>Kérjük, válasszon 1, 2 vagy 3 pontot ennek a gombnak a megnyomása előtt.  Egy pont lehet a végponton, felületen vagy élen.  Ha egy felületre vagy élre használja a pontot az egér helyzetének pontja lesz a felület vagy él mentén.  Ha 1 pontot választ ki akkor az az elforgatás középpontját határozza meg.  2 pont kijelölésekor a két pont közti lesz az elforgatás középpontja, és egy új egyéni tengely jön létre, ha szükséges.  Ha 3 pontot jelöltünk az első pont lesz az elforgatás középpontja, és azon a vektoron fekszik, mely síkot a 3 pont  alapértelmezés meghatározza. Néhány távolság és szög információt a jelentésben tekinthet meg, ami hasznos lehet az tárgyak igazításához. Az Ön kényelme érdekében Shift + kattintás használata esetén a megfelelő távolság vagy szög másolódik a vágólapra.</translation>
     </message>
     <message>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Az y tengely körül:</translation>
     </message>
     <message>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Az z tengely körül:</translation>
     </message>
     <message>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Az x tengely körül:</translation>
     </message>
     <message>
       <source>Rotation around the x-axis</source>
-      <translation type="unfinished">Rotation around the x-axis</translation>
+      <translation>Forgatás az x tengely körül</translation>
     </message>
     <message>
       <source>Rotation around the y-axis</source>
-      <translation type="unfinished">Rotation around the y-axis</translation>
+      <translation>Forgatás az y tengely körül</translation>
     </message>
     <message>
       <source>Rotation around the z-axis</source>
-      <translation type="unfinished">Rotation around the z-axis</translation>
+      <translation>Forgatás az z tengely körül</translation>
     </message>
     <message>
       <source>Euler angles (xy'z'')</source>
@@ -4577,11 +4611,11 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
+      <translation>A kijelölt tárgyak más függőségeket is tartalmaznak. Adja meg, hogy mely tárgyakat exportálja. Alapértelmezés szerint minden függőség automatikusan kijelölt.</translation>
     </message>
     <message>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Függőség</translation>
     </message>
     <message>
       <source>Document</source>
@@ -4593,11 +4627,11 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>State</source>
-      <translation type="unfinished">State</translation>
+      <translation>Állapot</translation>
     </message>
     <message>
       <source>Hierarchy</source>
-      <translation type="unfinished">Hierarchy</translation>
+      <translation>Hierarchia</translation>
     </message>
     <message>
       <source>Selected</source>
@@ -4605,7 +4639,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Partial</source>
-      <translation type="unfinished">Partial</translation>
+      <translation>Részleges</translation>
     </message>
   </context>
   <context>
@@ -4681,27 +4715,27 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Üzenettípusok megjelenítése</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Aktuális üzenetek</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Naplóüzenetek</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Riasztások</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Hibaüzenetek</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Jelentés nézet megtekintése</translation>
     </message>
   </context>
   <context>
@@ -4795,7 +4829,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Kijelölt tárgyak listája</translation>
     </message>
   </context>
   <context>
@@ -4870,14 +4904,14 @@ El akarja menteni a változásokat?</translation>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Pontos egyezés</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Pontos egyezés</translation>
     </message>
   </context>
   <context>
@@ -5140,13 +5174,13 @@ El akarja menteni a változásokat?</translation>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>Az exportált tárgy külső hivatkozást tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
     </message>
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
+      <translation>Külső tárgyakra hivatkozáshoz a dokumentumot legalább egyszer menteni kell.
+Menti most a dokumentumot?</translation>
     </message>
   </context>
   <context>
@@ -5356,11 +5390,11 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     </message>
     <message>
       <source>property</source>
-      <translation type="unfinished">property</translation>
+      <translation>tulajdonság</translation>
     </message>
     <message>
       <source>Show all</source>
-      <translation type="unfinished">Show all</translation>
+      <translation>Mindent mutat</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -5368,15 +5402,15 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     </message>
     <message>
       <source>Remove property</source>
-      <translation type="unfinished">Remove property</translation>
+      <translation>Tulajdonság eltávolítása</translation>
     </message>
     <message>
       <source>Expression...</source>
-      <translation type="unfinished">Expression...</translation>
+      <translation>Kifejezés...</translation>
     </message>
     <message>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Automatikus kibontás</translation>
     </message>
   </context>
   <context>
@@ -5491,7 +5525,7 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
-      <translation type="unfinished">Saves Python history across %1 sessions</translation>
+      <translation>Python-előzmények mentése %1 munkamenetben</translation>
     </message>
   </context>
   <context>
@@ -5524,7 +5558,7 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>A(z) %1 makró futtatása (Shift+kattintás szerkesztéshez) parancsikon: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5673,15 +5707,15 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <name>Gui::TaskElementColors</name>
     <message>
       <source>Set element color</source>
-      <translation type="unfinished">Set element color</translation>
+      <translation>Elemszín beállítása</translation>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>Szövegcímke</translation>
+      <translation>Szövegfelirat</translation>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>Visszaszámítás véglegesítés után</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -5693,19 +5727,19 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Remove all</source>
-      <translation type="unfinished">Remove all</translation>
+      <translation>Összes eltávolítása</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Elrejtés</translation>
     </message>
     <message>
       <source>Box select</source>
-      <translation type="unfinished">Box select</translation>
+      <translation>Téglalap kijelölése</translation>
     </message>
     <message>
       <source>On-top when selected</source>
-      <translation type="unfinished">On-top when selected</translation>
+      <translation>Felül, ha be van jelölve</translation>
     </message>
   </context>
   <context>
@@ -6091,30 +6125,30 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation type="unfinished">Enable or disable recomputating editing object when 'skip recomputation' is enabled</translation>
+      <translation>Szerkesztési tárgy újraszámításának engedélyezése vagy letiltása, ha a 'újraszámítás kihagyása' engedélyezve van</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Tárgy újraszámítás</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>A kijelölt tárgy újraszámítása</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (de végre kell hajtanom)</translation>
     </message>
   </context>
   <context>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vektorok</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Táblázat</translation>
     </message>
     <message>
       <source>...</source>
@@ -6456,7 +6490,7 @@ Folytatni kívánja?</translation>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Új tizedesjegy elem</translation>
+      <translation>Új lebegőpontos elem</translation>
     </message>
     <message>
       <source>New Boolean item</source>
@@ -6709,7 +6743,7 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>Az exportált tárgy külső hivatkozást tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
     </message>
     <message>
       <source>Delete failed</source>
@@ -6742,12 +6776,12 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
-      <translation type="unfinished">Failed to parse some of the expressions.
-Please check the Report View for more details.</translation>
+      <translation>Nem sikerült elemezni néhány kifejezést.
+További részletekért tekintse meg a Jelentés nézetet.</translation>
     </message>
     <message>
       <source>Failed to paste expressions</source>
-      <translation type="unfinished">Failed to paste expressions</translation>
+      <translation>Nem sikerült beilleszteni a kifejezéseket</translation>
     </message>
     <message>
       <source>Simple group</source>
@@ -6767,15 +6801,15 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Create link failed</source>
-      <translation type="unfinished">Create link failed</translation>
+      <translation>Hivatkozás létrehozása nem sikerült</translation>
     </message>
     <message>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>Nem sikerült relatív hivatkozást létrehozni</translation>
     </message>
     <message>
       <source>Unlink failed</source>
-      <translation type="unfinished">Unlink failed</translation>
+      <translation>Hivatkozás leválasztása nem sikerült</translation>
     </message>
     <message>
       <source>Replace link failed</source>
@@ -6783,11 +6817,11 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Failed to import links</source>
-      <translation type="unfinished">Failed to import links</translation>
+      <translation>Hivatkozások importálása sikertelen</translation>
     </message>
     <message>
       <source>Failed to import all links</source>
-      <translation type="unfinished">Failed to import all links</translation>
+      <translation>Összes hivatkozás importálása sikertelen</translation>
     </message>
     <message>
       <source>Invalid name</source>
@@ -6796,12 +6830,12 @@ Please check the Report View for more details.</translation>
     <message>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name or group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>A tulajdonságnév vagy csoportnév csak alfa-numerikus adatokat, aláhúzást tartalmazhat,
+és nem kezdődhet számjegyekkel.</translation>
     </message>
     <message>
       <source>The property '%1' already exists in '%2'</source>
-      <translation type="unfinished">The property '%1' already exists in '%2'</translation>
+      <translation>A(z) '%1' tulajdonság már létezik a következőben: '%2'</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -6809,23 +6843,23 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
-      <translation type="unfinished">Failed to add property to '%1': %2</translation>
+      <translation>Nem sikerült tulajdonságot hozzáadni a következőhöz: '%1': %2</translation>
     </message>
     <message>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>Függő fájlok mentése</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation type="unfinished">The file contains external dependencies. Do you want to save the dependent files, too?</translation>
+      <translation>A fájl külső függőségeket tartalmaz. Menti a függő fájlokat is?</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Nem sikerült menteni a dokumentumot</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>A dokumentumok ciklikus függőségeket tartalmaznak. Még mindig menteni szeretné?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6837,75 +6871,67 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation type="unfinished">There are grouped transactions in the following documents with other preceding transactions</translation>
+      <translation>A következő dokumentumokban csoportosított tranzakciók vannak más korábbi tranzakciókkal</translation>
     </message>
     <message>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
-      <translation type="unfinished">Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</translation>
+      <translation>Válassza az 'Igen' lehetőséget az összes megelőző tranzakció visszaállítása érdekében.
+A 'Nem' lehetőséggel az aktív dokumentumot állítja vissza.
+A 'Megszakítás' választásával megszakít</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>Menti a dokumentum módosításait bezárás előtt?</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
-      <translation type="unfinished">Apply answer to all</translation>
+      <translation>Válasz alkalmazása az összesre</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>A fogd &amp; vidd sikertelen</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>Színek felülbírálása...</translation>
     </message>
     <message>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+      <translation>Azonos fizikai elérési utat észleltek. Ez okozhatja a meglévő dokumentumok nem kívánt felülírását!
 
 </translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Biztosan folytatja?</translation>
     </message>
     <message>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>
-
-Pyhsical path: </source>
-      <translation type="unfinished">
-
-Pyhsical path: </translation>
+Kérjük, ellenőrizze a jelentés nézetet továbbiakért...</translation>
     </message>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>
+Dokumentum: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+Útvonal: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Azonos fizikai elérési út</translation>
     </message>
     <message>
       <source>Error</source>
@@ -6922,6 +6948,14 @@ Document: </translation>
     <message>
       <source>Workbenches</source>
       <translation>Munkafelületek</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Fizikai útvonal: </translation>
     </message>
   </context>
   <context>
@@ -6943,7 +6977,7 @@ Document: </translation>
     </message>
     <message>
       <source>Box element selection</source>
-      <translation type="unfinished">Box element selection</translation>
+      <translation>Téglatest kijelölése</translation>
     </message>
   </context>
   <context>
@@ -7310,7 +7344,7 @@ Document: </translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>A tárgy rajzstílusának módosítása</translation>
     </message>
   </context>
   <context>
@@ -7378,7 +7412,7 @@ Document: </translation>
     </message>
     <message>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>Kifejezési műveletek</translation>
     </message>
   </context>
   <context>
@@ -7660,11 +7694,11 @@ Document: </translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Alhivatkozás létrehozása</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
-      <translation type="unfinished">Create a sub-object or sub-element link</translation>
+      <translation>Alárendelt- tárgy vagy elem hivatkozás létrehozása</translation>
     </message>
   </context>
   <context>
@@ -7690,11 +7724,11 @@ Document: </translation>
     </message>
     <message>
       <source>Link navigation</source>
-      <translation type="unfinished">Link navigation</translation>
+      <translation>Hivatkozás navigálás</translation>
     </message>
     <message>
       <source>Link navigation actions</source>
-      <translation type="unfinished">Link navigation actions</translation>
+      <translation>Hivatkozás navigálás műveletek</translation>
     </message>
   </context>
   <context>
@@ -7724,7 +7758,7 @@ Document: </translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the linked object and switch to its owner document</translation>
+      <translation>A csatolt tárgy kijelölése és váltás a tulajdonosi dokumentumra</translation>
     </message>
   </context>
   <context>
@@ -7739,7 +7773,7 @@ Document: </translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the deepest linked object and switch to its owner document</translation>
+      <translation>Jelölje ki a legalacsonyabban csatolt tárgyat, és váltson a tulajdonosi dokumentumra</translation>
     </message>
   </context>
   <context>
@@ -7754,7 +7788,7 @@ Document: </translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
+      <translation>Vágás a csatlakozás szintjén</translation>
     </message>
   </context>
   <context>
@@ -7765,11 +7799,11 @@ Document: </translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation type="unfinished">Attach to remote debugger...</translation>
+      <translation>Egy távoli hibakeresőhöz csatolás...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation type="unfinished">Attach to a remotely running debugger</translation>
+      <translation>Csatolás távolról futó hibakeresőhöz</translation>
     </message>
   </context>
   <context>
@@ -8152,11 +8186,11 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Legutóbbi makrók</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Legutóbbi makrók listája</translation>
     </message>
   </context>
   <context>
@@ -8227,11 +8261,11 @@ Document: </translation>
     </message>
     <message>
       <source>Save All</source>
-      <translation type="unfinished">Save All</translation>
+      <translation>Mindet menti</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation type="unfinished">Save all opened document</translation>
+      <translation>Az összes megnyitott dokumentum mentése</translation>
     </message>
   </context>
   <context>
@@ -8287,11 +8321,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>&amp;Vissza</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
-      <translation type="unfinished">Go back to previous selection</translation>
+      <translation>Ugrás az előző kijelölésre</translation>
     </message>
   </context>
   <context>
@@ -8302,11 +8336,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>&amp;Határolókeret</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>Kijelölési határolókeret megjelenése</translation>
     </message>
   </context>
   <context>
@@ -8317,11 +8351,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation type="unfinished">&amp;Forward</translation>
+      <translation>&amp;Előre</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
-      <translation type="unfinished">Repeat the backed selection</translation>
+      <translation>Biztonságos kijelölés ismétlése</translation>
     </message>
   </context>
   <context>
@@ -8362,11 +8396,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Send to Python Console</source>
-      <translation type="unfinished">&amp;Send to Python Console</translation>
+      <translation>&amp;Küldés Python konzolra</translation>
     </message>
     <message>
       <source>Sends the selected object to the Python console</source>
-      <translation type="unfinished">Sends the selected object to the Python console</translation>
+      <translation>A kijelölt tárgy elküldése a Python konzolra</translation>
     </message>
   </context>
   <context>
@@ -8437,11 +8471,11 @@ Document: </translation>
     </message>
     <message>
       <source>Add text document</source>
-      <translation type="unfinished">Add text document</translation>
+      <translation>Szöveges dokumentum hozzáadása</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation type="unfinished">Add text document to active document</translation>
+      <translation>Szöveges dokumentum hozzáadása az aktív dokumentumhoz</translation>
     </message>
   </context>
   <context>
@@ -8613,11 +8647,11 @@ Document: </translation>
     </message>
     <message>
       <source>Collapse selected item</source>
-      <translation type="unfinished">Collapse selected item</translation>
+      <translation>Kijelölt elem összecsukása</translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
-      <translation type="unfinished">Collapse currently selected tree items</translation>
+      <translation>Jelenleg kijelölt faelemek összecsukása</translation>
     </message>
   </context>
   <context>
@@ -8628,11 +8662,11 @@ Document: </translation>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>Kijelölt elem kibontása</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>Jelenleg kijelölt faelemek kibontása</translation>
     </message>
   </context>
   <context>
@@ -8643,11 +8677,11 @@ Document: </translation>
     </message>
     <message>
       <source>Select all instances</source>
-      <translation type="unfinished">Select all instances</translation>
+      <translation>Az összes példány kijelölése</translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>Az aktuális kijelölt tárgy összes példányának kijelölése</translation>
     </message>
   </context>
   <context>
@@ -8853,11 +8887,11 @@ Document: </translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>Kezdőoldal</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Beállítás alapértelmezett kezdőoldal nézetként</translation>
     </message>
   </context>
   <context>
@@ -9003,11 +9037,11 @@ Document: </translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Mentett kamera visszaállítása</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Mentett kamerabeállítások visszaállítása</translation>
     </message>
   </context>
   <context>
@@ -9037,7 +9071,7 @@ Document: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° counter-clockwise</translation>
+      <translation>Nézet forgatása 90°-al az óramutató járásával ellentétesen</translation>
     </message>
   </context>
   <context>
@@ -9052,7 +9086,7 @@ Document: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>A nézetet forgassa 90° óramutató járásával egyezően</translation>
     </message>
   </context>
   <context>
@@ -9063,11 +9097,11 @@ Document: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Aktuális kamera mentése</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Aktuális kamerabeállítások mentése</translation>
     </message>
   </context>
   <context>
@@ -9239,11 +9273,11 @@ Document: </translation>
     </message>
     <message>
       <source>Initiate dragging</source>
-      <translation type="unfinished">Initiate dragging</translation>
+      <translation>Húzás kezdeményezése</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation type="unfinished">Initiate dragging of current selected tree items</translation>
+      <translation>Az aktuálisan kijelölt faelemek húzásának kezdeményezése</translation>
     </message>
   </context>
   <context>
@@ -9258,7 +9292,7 @@ Document: </translation>
     </message>
     <message>
       <source>Multi document</source>
-      <translation type="unfinished">Multi document</translation>
+      <translation>Több dokumentum</translation>
     </message>
   </context>
   <context>
@@ -9269,11 +9303,11 @@ Document: </translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>Előválogatás</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+      <translation>A tárgy előre kijelölése 3D nézetben, amikor az egér a faelem felett mozog</translation>
     </message>
   </context>
   <context>
@@ -9284,11 +9318,11 @@ Document: </translation>
     </message>
     <message>
       <source>Record selection</source>
-      <translation type="unfinished">Record selection</translation>
+      <translation>Rekordkijelölés</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+      <translation>Kijelölés rögzítése a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
     </message>
   </context>
   <context>
@@ -9318,7 +9352,7 @@ Document: </translation>
     </message>
     <message>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Egyetlen dokumentum</translation>
     </message>
   </context>
   <context>
@@ -9329,11 +9363,11 @@ Document: </translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>Elhelyezés szinkronizálása</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation type="unfinished">Auto adjust placement on drag and drop objects across coordinate systems</translation>
+      <translation>Tárgyak automatikus beállítása a koordináta-rendszerek között húzni kívánt tárgyakon</translation>
     </message>
   </context>
   <context>
@@ -9344,11 +9378,11 @@ Document: </translation>
     </message>
     <message>
       <source>Sync selection</source>
-      <translation type="unfinished">Sync selection</translation>
+      <translation>Kijelölés szinkronizálása</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+      <translation>A fa automatikus kibontása, ha a társított tárgy 3D nézetben van kijelölve</translation>
     </message>
   </context>
   <context>
@@ -9359,11 +9393,11 @@ Document: </translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>Nézet szinkronizálása</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+      <translation>Automatikus váltás 3D nézetre a kijelölt elemmel</translation>
     </message>
   </context>
   <context>
@@ -9481,9 +9515,9 @@ Document: </translation>
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
+      <translation>A következő hivatkozó tárgyak elszakadhatnak.
 
-Are you sure you want to continue?
+Biztosan folytatja?
 </translation>
     </message>
     <message>
@@ -9492,7 +9526,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Ezek az elemek törlésre vannak kijelölve, de nem az aktív dokumentumban.</translation>
     </message>
   </context>
   <context>
@@ -9510,7 +9544,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normál mód</translation>
+      <translation>Aktuális mód</translation>
     </message>
     <message>
       <source>Wireframe</source>
@@ -9570,8 +9604,8 @@ Are you sure you want to continue?
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
+      <translation>Külső tárgyakra hivatkozáshoz a dokumentumot legalább egyszer menteni kell.
+Menti most a dokumentumot?</translation>
     </message>
   </context>
   <context>
@@ -9588,10 +9622,10 @@ Do you want to save the document now?</translation>
 Please check the Report View for more details.
 
 Do you still want to proceed?</source>
-      <translation type="unfinished">The document contains dependency cycles.
-Please check the Report View for more details.
+      <translation>A dokumentum függőségi ciklusokat tartalmaz.
+További részletekért tekintse meg a jelentés nézetet.
 
-Do you still want to proceed?</translation>
+Még mindig fojtatni szeretné?</translation>
     </message>
   </context>
   <context>

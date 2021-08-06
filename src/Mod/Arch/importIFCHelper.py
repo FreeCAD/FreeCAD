@@ -241,15 +241,18 @@ def buildRelMattable(ifcfile):
     mattable = {}  # { objid:matid }
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
-        for o in r.RelatedObjects:
-            if r.RelatingMaterial.is_a("IfcMaterial"):
-                mattable[o.id()] = r.RelatingMaterial.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
-                mattable[o.id()] = r.RelatingMaterial.Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
-                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
-                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+        # the related object might not exist
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=58607
+        if r.RelatedObjects:
+            for o in r.RelatedObjects:
+                if r.RelatingMaterial.is_a("IfcMaterial"):
+                    mattable[o.id()] = r.RelatingMaterial.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
+                    mattable[o.id()] = r.RelatingMaterial.Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
+                    mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
+                    mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
 
     return mattable
 
@@ -605,7 +608,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
     return d
 
 
-def getIfcPsetPoperties(ifcfile, pid):
+def getIfcPsetProperties(ifcfile, pid):
     """ directly build the property table from pid and ifcfile for FreeCAD"""
 
     return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})

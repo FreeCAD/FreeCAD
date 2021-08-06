@@ -258,7 +258,7 @@ def geomType(edge):
             return "Ellipse"
         else:
             return "Unknown"
-    except TypeError:
+    except: # catch all errors, no only TypeError
         return "Unknown"
 
 

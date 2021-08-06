@@ -322,6 +322,24 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
       <translation>Selectați cel puțin două obiecte, una sau mai multe compuse, mai întâi! Dacă este selectat un singur obeict compus, formele compuse vor fi intersectate între ele (în caz contrar, compușii cu auto-intersecții nu sunt valabili).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Selecţia Incorectă</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Calculul rezultatului a eşuat cu o eroare: 
+
+{err}
+
+Faceţi clic pe "Continuaţi" pentru a crea forma oricum sau pe 'Abandonați' pentru a anula.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Selectaţi cel puţin două obiecte sau unul sau mai mulţi compuşi. În cazul în care un singur compus este selectat, formele din acel compus vor fi intersectate între ele (în caz contrar, compușii cu auto-intersecții sunt invalizi).</translation>
@@ -330,16 +348,6 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Slice to compound</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmente booleene</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Separă obiectele acolo unde se intersectează</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -379,22 +387,14 @@ Acest lucru înseamnă că volumele de forme care se suprapun vor fi șterse.
 Un "Filtru combinat" poate fi folosit pentru a extrage secțiunile rămase.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Selecţia Incorectă</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmente booleene</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Calculul rezultatului a eşuat cu o eroare: 
-
-{err}
-
-Faceţi clic pe "Continuaţi" pentru a crea forma oricum sau pe 'Abandonați' pentru a anula.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Separă obiectele acolo unde se intersectează</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

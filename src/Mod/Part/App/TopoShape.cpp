@@ -592,6 +592,7 @@ PyObject * TopoShape::getPyObject()
         }
     }
 
+    prop->setNotTracking();
     return prop;
 }
 

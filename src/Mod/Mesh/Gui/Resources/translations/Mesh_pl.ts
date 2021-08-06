@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="849"/>
       <location filename="../../Command.cpp" line="851"/>
       <source>Add triangle manually to a mesh</source>
-      <translation>Dodaj trójkąt do siatki</translation>
+      <translation>Dodaje trójkąt do siatki manualnie</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="1606"/>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Builds a regular solid</source>
-      <translation>Zbuduje bryłę podstawową</translation>
+      <translation>Zbuduj bryłę podstawową</translation>
     </message>
   </context>
   <context>
@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation>Decydująca...</translation>
+      <translation>Decymacja ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
@@ -196,7 +196,7 @@
       <location filename="../../Command.cpp" line="493"/>
       <location filename="../../Command.cpp" line="495"/>
       <source>Exports a mesh to file</source>
-      <translation>Eksport siatki do pliku</translation>
+      <translation>Eksportuj siatkę do pliku</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
       <location filename="../../Command.cpp" line="1675"/>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Close holes interactively</source>
-      <translation>Zamknij otwory interaktywnie</translation>
+      <translation>Zamyka otwory interaktywnie</translation>
     </message>
   </context>
   <context>
@@ -234,7 +234,7 @@
       <location filename="../../Command.cpp" line="1637"/>
       <location filename="../../Command.cpp" line="1639"/>
       <source>Fill holes of the mesh</source>
-      <translation>Zamknij otwory w siatce</translation>
+      <translation>Wypełnia otwory siatki</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
       <location filename="../../Command.cpp" line="1530"/>
       <location filename="../../Command.cpp" line="1532"/>
       <source>Flips the normals of the mesh</source>
-      <translation>Odwróć wektory normalne siatki</translation>
+      <translation>Odwraca wektory normalne siatki</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Tessellate shape</source>
-      <translation>Tesselacja obwiedni</translation>
+      <translation>Rozdrobnij kształt</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../Command.cpp" line="1789"/>
       <source>Merges selected meshes into one</source>
-      <translation>Połącz wybrane siatki</translation>
+      <translation>Łączy wybrane siatki</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@
       <location filename="../../Command.cpp" line="1287"/>
       <location filename="../../Command.cpp" line="1288"/>
       <source>Refine existing mesh</source>
-      <translation>Ulepsz istniejącą siatkę</translation>
+      <translation>Ulepsza istniejącą siatkę</translation>
     </message>
   </context>
   <context>
@@ -511,7 +511,7 @@
       <location filename="../../Command.cpp" line="1242"/>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Usuń topologię niezależną od siatki</translation>
+      <translation>Usuwa topologiczne, niezależne elementy z siatki</translation>
     </message>
   </context>
   <context>
@@ -524,12 +524,12 @@
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
-      <translation>Skaluj...</translation>
+      <translation>Skaluj ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
-      <translation>Skaluj zaznaczone siatki</translation>
+      <translation>Skaluje zaznaczone siatki</translation>
     </message>
   </context>
   <context>
@@ -567,7 +567,7 @@
       <location filename="../../Command.cpp" line="1717"/>
       <location filename="../../Command.cpp" line="1719"/>
       <source>Create mesh segments</source>
-      <translation>Utwórz segmenty siatki</translation>
+      <translation>Tworzy segmenty siatki</translation>
     </message>
   </context>
   <context>
@@ -586,7 +586,7 @@
       <location filename="../../Command.cpp" line="1753"/>
       <location filename="../../Command.cpp" line="1755"/>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Utwórz segmenty siatki z najlepiej dopasowanych powierzchni</translation>
+      <translation>Tworzy segmenty siatki z najlepiej dopasowanych powierzchni</translation>
     </message>
   </context>
   <context>
@@ -599,13 +599,13 @@
     <message>
       <location filename="../../Command.cpp" line="1401"/>
       <source>Smooth...</source>
-      <translation>Wygładź...</translation>
+      <translation>Wygładź ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
-      <translation>Wygładź zaznaczone siatki</translation>
+      <translation>Wygładza zaznaczone siatki</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation>Rozdziela wybrane siatki na niezależne składniki</translation>
+      <translation>Rozdziela wybrane siatki na niezależne komponenty</translation>
     </message>
   </context>
   <context>
@@ -642,7 +642,7 @@
       <location filename="../../Command.cpp" line="174"/>
       <location filename="../../Command.cpp" line="176"/>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Tworzy segment z siatki danego narzędzia</translation>
+      <translation>Tworzy segment z danej siatki narzędzia</translation>
     </message>
   </context>
   <context>
@@ -655,7 +655,7 @@
     <message>
       <location filename="../../Command.cpp" line="95"/>
       <source>Transform mesh</source>
-      <translation>Przekształć siatkę</translation>
+      <translation>Przemieszczenie siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="96"/>
@@ -739,7 +739,7 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
-      <source>Mesh Mesh Create</source>
+      <source>Mesh Create</source>
       <translation>Tworzenie siatki</translation>
     </message>
     <message>
@@ -786,7 +786,7 @@
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation>Odwróć wektory normalne siatki</translation>
+      <translation>Odwraca wektory normalne siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
@@ -811,7 +811,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
       <source>Mesh Decimating</source>
-      <translation>Decymacja siatki</translation>
+      <translation>Dziesiątkowanie siatki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
@@ -831,7 +831,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
       <source>Remove degenerated faces</source>
-      <translation>Usuń zepsute ściany</translation>
+      <translation>Usuń zniekształcone ściany</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Decymacja</translation>
+      <translation>Dziesiątkowanie</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
@@ -970,7 +970,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="60"/>
       <source>Number of faces:</source>
-      <translation>Ilość płaszczyzn:</translation>
+      <translation>Liczba ścian:</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="77"/>
@@ -1031,7 +1031,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="507"/>
       <source>Degenerated faces</source>
-      <translation>Powierzchnie zniekształcone</translation>
+      <translation>Ściany zniekształcone</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
@@ -1174,7 +1174,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="733"/>
       <source>%1 degenerated faces</source>
-      <translation>%1 zniekształconych powierzchni</translation>
+      <translation>%1 zniekształconych ścian</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="758"/>
@@ -1184,7 +1184,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="793"/>
       <source>No duplicated faces</source>
-      <translation>Brak zduplikowanych powierzchni</translation>
+      <translation>Brak zduplikowanych ścian</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="799"/>
@@ -1221,7 +1221,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1019"/>
       <source>No folds on surface</source>
-      <translation>Brak zagięć na płaszczyźnie</translation>
+      <translation>Brak zagięć na powierzchni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1035"/>
@@ -1303,12 +1303,12 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="97"/>
       <source>Cube</source>
-      <translation>Kostka</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="106"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="115"/>
@@ -1409,7 +1409,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="14"/>
       <source>Mesh Formats</source>
-      <translation>Formaty siatek</translation>
+      <translation>Formaty siatki</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
@@ -1429,7 +1429,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="53"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tesselacja&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Określa maksymalne odchylenie mozaikowych oczek od powierzchni. Im mniejsza wartość, tym wolniejsza jest prędkość renderowania, co skutkuje zwiększeniem szczegółowości/rozdzielczości.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselacja&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Określa maksymalne odchylenie teselowanej siatki od powierzchni. Im mniejsza wartość, tym wolniejsza jest prędkość renderowania, co skutkuje zwiększeniem szczegółowości/rozdzielczości.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="56"/>
@@ -1551,7 +1551,7 @@ lub czarny.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="292"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jest to najmniejszy kąt między dwiema powierzchniami, pod którym oblicza się wartości wektorów normalnych w celu uzyskania płaskiego zacienienia.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jeśli kąt między wektorami normalnych dwóch sąsiednich powierzchni jest mniejszy niż kąt fałdowania, powierzchnie te zostaną wygładzone wokół ich wspólnej krawędzi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jest to najmniejszy kąt między dwiema powierzchniami, pod którym oblicza się wartości wektorów normalnych w celu uzyskania cieniowania płaskiego.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jeśli kąt między wektorami normalnych dwóch sąsiednich powierzchni jest mniejszy niż kąt załamania, powierzchnie te zostaną wygładzone wokół ich wspólnej krawędzi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="295"/>
@@ -1586,10 +1586,10 @@ do gładszego wyglądu.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Kąt narastania to kąt progowy pomiędzy dwoma powierzchniami.
+      <translation>Kąt załamania to kąt progowy pomiędzy dwoma powierzchniami.
 
- Jeśli kąt natarcia ≥ kąta załamania, stosuje się zacienianie fasetowe
- Jeśli kąt natarcia &lt; kąta marszczenia, stosuje się płynne zacienianie</translation>
+ Jeśli kąt ściany ≥ kąta załamania, stosuje się cieniowanie ściany
+ Jeśli kąt ściany &lt; kąta załamania, stosuje się cieniowanie gładkie</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="346"/>
@@ -1653,48 +1653,48 @@ do gładszego wyglądu.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>Automatyczna</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation>Adaptacyjny</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation>Przedni</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation>Przedni czworobok</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation>Równoległoboki</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Czas:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation>Uruchamianie Gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation>Nie udało się uruchomić</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
@@ -1770,7 +1770,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
@@ -1862,7 +1862,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="49"/>
       <source>&lt; faces than</source>
-      <translation>&lt;powierzchnie niż</translation>
+      <translation>&lt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="56"/>
@@ -1895,7 +1895,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="135"/>
       <source>&gt; faces than</source>
-      <translation>&gt; powierzchnie niż</translation>
+      <translation>&gt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
@@ -1949,7 +1949,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="92"/>
@@ -1980,12 +1980,12 @@ do gładszego wyglądu.
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation>Max. krzywizny</translation>
+      <translation>Maksymalna krzywizna</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation>Min. krzywizny</translation>
+      <translation>Minimalna krzywizna</translation>
     </message>
   </context>
   <context>
@@ -2029,7 +2029,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="337"/>
@@ -2267,7 +2267,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation>Format Asymptote</translation>
+      <translation>Format Asymptoty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>

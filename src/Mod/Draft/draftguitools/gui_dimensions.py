@@ -86,19 +86,18 @@ class Dimension(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Dimension")
         if self.cont:
             self.finish()
         elif self.selected_app_measure():
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             self.dimtrack = trackers.dimTracker()
             self.arctrack = trackers.arcTracker()
             self.create_with_app_measure()
             self.finish()
         else:
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             if self.ui:
-                self.ui.pointUi(name)
+                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False
@@ -412,7 +411,7 @@ class Dimension(gui_base_original.Creator):
                     self.ui.switchUi(False)
                     if hasattr(Gui, "Snapper"):
                         Gui.Snapper.setSelectMode(False)
-                if self.dir:
+                if self.dir and ( (len(self.node) < 2) or self.ui.continueMode):
                     _p = DraftVecUtils.project(self.point.sub(self.node[0]),
                                                self.dir)
                     self.point = self.node[0].add(_p)

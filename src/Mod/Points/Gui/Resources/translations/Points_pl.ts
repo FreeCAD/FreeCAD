@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Export points...</source>
-      <translation>Eksport punktów...</translation>
+      <translation>Eksport punktów ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <location filename="../../Command.cpp" line="116"/>
       <source>Exports a point cloud</source>
-      <translation>Eksportuje chmury punktów</translation>
+      <translation>Eksportuje chmurę punktów</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="69"/>
       <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
-      <translation>Importuje chmury punktów</translation>
+      <translation>Importuje chmurę punktów</translation>
     </message>
   </context>
   <context>
@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="321"/>
       <source>Merge point clouds</source>
-      <translation>Łącz punkty chmury</translation>
+      <translation>Scalanie chmur punktów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="322"/>
       <location filename="../../Command.cpp" line="324"/>
       <source>Merge several point clouds into one</source>
-      <translation>Łącz poszczególne punkty chmury w jeden</translation>
+      <translation>Scal kilka chmur punktów w jedną</translation>
     </message>
   </context>
   <context>
@@ -93,7 +93,7 @@
       <location filename="../../Command.cpp" line="277"/>
       <location filename="../../Command.cpp" line="279"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Wycina punkt chmury z wybranego wielokąta</translation>
+      <translation>Tnie chmurę punktów za pomocą wskazanego wielokąta</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation>Uporządkowany punkt chmury</translation>
+      <translation>Uporządkowana chmura punktów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
@@ -125,7 +125,7 @@
     <message>
       <location filename="../../Command.cpp" line="153"/>
       <source>Transform Points</source>
-      <translation>Przekształcenie punktów</translation>
+      <translation>Przekształć Punkty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="154"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special lines</source>
-      <translation>Linie specjalne</translation>
+      <translation>Wiersze specjalne</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="72"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="79"/>
       <source>Cluster by lines starting with:</source>
-      <translation>Klaster o wierszach zaczynających się od:</translation>
+      <translation>Grupuj według wierszy zaczynających się od:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="88"/>
@@ -238,7 +238,7 @@
       <location filename="../../DlgPointsRead.ui" line="196"/>
       <location filename="../../DlgPointsRead.ui" line="253"/>
       <source>I (Gray value)</source>
-      <translation>I (wartość szarości)</translation>
+      <translation>I (wartość w skali szarości)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="204"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="302"/>
       <source>Points format:</source>
-      <translation>Styl Punktów:</translation>
+      <translation>Format punktów:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>

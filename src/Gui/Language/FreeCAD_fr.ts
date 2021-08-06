@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Entrer une expression…</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expression : </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Taille de mot</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Remerciements</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD n'existerait pas sans leurs efforts :</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licence</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Collection</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Remerciements</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD ne serait pas possible sans les contributions de</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Particuliers</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organisations</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
       <translation>Texte source</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Les lignes de code doivent être numérotées </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Appuyer sur &lt;Tab&gt; insérera une quantité de taille d'indentation définie</translation>
     </message>
@@ -1401,6 +1419,10 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     <message>
       <source>Color:</source>
       <translation>Couleur :</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Les lignes de code seront numérotées</translation>
     </message>
   </context>
   <context>
@@ -2537,10 +2559,6 @@ mais une réponse plus lente à tout changement de scène.</translation>
       <translation>Centralisé</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Quel type d'anticrénelage multiéchantillon est utilisé </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Objets transparents :</translation>
     </message>
@@ -2563,14 +2581,6 @@ mais une réponse plus lente à tout changement de scène.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distance entre les yeux pour les modes stéréo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Ecart pupillaire utilisée pour les projections stéréo.
-La valeur spécifiée est un facteur qui sera multiplié avec la
-taille de la boîte englobante de l'objet 3D qui est actuellement affichée. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2628,6 +2638,18 @@ La modification de cette option nécessite un redémarrage de l'application.</tr
     <message>
       <source>Use software OpenGL</source>
       <translation>Utiliser OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Quel type d'anticrénelage multi-échantillon est utilisé</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Ecart pupillaire utilisée pour les projections stéréo.
+La valeur spécifiée est un facteur qui sera multiplié avec la
+taille de la boîte englobante de l'objet 3D qui est actuellement affichée.</translation>
     </message>
   </context>
   <context>
@@ -3243,10 +3265,6 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
       <source>Framebuffer (as is)</source>
       <translation>Tampon de trame (en l'état)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Mémoire tampon de pixels</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3485,12 +3503,6 @@ La valeur est le diamètre de la sphère qui rentre à l'écran.</translation>
       <translation>Étape de zoom</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Quel sera le zoom.
-Le zoom au pas de '1' signifie un facteur de 7.5 pour chaque pas de zoom. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Le sens du zoom sera inversé</translation>
     </message>
@@ -3575,6 +3587,28 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Object center</source>
       <translation>Centre de l'objet</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Tourner vers l'état le plus proche lorsque vous cliquez sur une face du cube</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Tourner au plus près</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Taille du cube</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Taille du cube de navigation</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Quel sera le zoom.
+Le zoom au pas de '1' signifie un facteur de 7.5 pour chaque pas de zoom.</translation>
     </message>
   </context>
   <context>
@@ -3887,12 +3921,12 @@ Le système par défaut est celui défini dans les préférences générales.</t
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unité inconnue : </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>unité incompatible</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unité inconnue :</translation>
     </message>
   </context>
   <context>
@@ -4127,7 +4161,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>0 Items</source>
-      <translation>0 Article</translation>
+      <translation>0 élément</translation>
     </message>
     <message>
       <source>Download Manager</source>
@@ -4689,7 +4723,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>Log messages</source>
-      <translation>Message du journal</translation>
+      <translation>Journal des messages</translation>
     </message>
     <message>
       <source>Warnings</source>
@@ -6878,14 +6912,6 @@ Veuillez consulter la vue rapport pour plus d'informations...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Chemin physique : </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Document : </translation>
@@ -6915,6 +6941,14 @@ Document : </translation>
     <message>
       <source>Workbenches</source>
       <translation>Ateliers</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Chemin physique : </translation>
     </message>
   </context>
   <context>

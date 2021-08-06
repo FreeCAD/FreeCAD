@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Introduzca una expresión...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expresión: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -466,14 +477,6 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
       <translation>Tamaño de la palabra</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Créditos</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD no estaría en ninguna parte sin tus esfuerzos:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licencia</translation>
     </message>
@@ -495,6 +498,25 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     <message>
       <source>Collection</source>
       <translation>Colección</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Créditos</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD no sería posible sin las contribuciones de</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Individuos</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organizaciones</translation>
     </message>
   </context>
   <context>
@@ -1329,7 +1351,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Indentation</source>
-      <translation>Sangrado</translation>
+      <translation>Sangría</translation>
     </message>
     <message>
       <source>Insert spaces</source>
@@ -1362,10 +1384,6 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     <message>
       <source/>
       <translation>(Vacio)</translation>
-    </message>
-    <message>
-      <source>Code lines will be numbered </source>
-      <translation>Las líneas de código serán numeradas </translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
@@ -1402,6 +1420,10 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     <message>
       <source>Color:</source>
       <translation>Color:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Las líneas de código serán numeradas</translation>
     </message>
   </context>
   <context>
@@ -1494,9 +1516,9 @@ esto de acuerdo con el tamaño de la pantalla o el gusto personal</translation>
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
       <translation>Personalizar cómo se muestra la vista de árbol en el panel (se requiere reiniciar).
 
-'ComboView': combinar vista de árbol y vista de propiedad en un panel.
-'TreeView and PropertyView': dividir vista de árbol y vista de propiedad en un panel separado.
-'Both': mantén los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
+'Vista Combinada': combinar vista de árbol y vista de propiedad en un panel.
+'Vista de Árbol y Vista de Propiedades': dividir vista de árbol y vista de propiedad en un panel separado.
+'Ambos': mantén los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
@@ -2441,11 +2463,11 @@ desde la consola de Python al panel de la vista de informe</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>Renderizado ortográfico</translation>
+      <translation>Renderizado ortogonal</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation>Renderizado&amp;g en perspectiva</translation>
+      <translation>Renderizado en perspectiva</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2538,10 +2560,6 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
       <translation>Centralizado</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Qué tipo de antialiasing multimuestra se utiliza </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Objetos transparentes:</translation>
     </message>
@@ -2564,14 +2582,6 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distancia de ojo a ojo para modos estéreo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Distancia de ojos a ojos usada para proyecciones estéreo.
-El valor especificado es un factor que se multiplicará con el tamaño del recuadro
-del objeto 3D que se muestra actualmente. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2628,6 +2638,18 @@ Cambiar esta opción requiere reiniciar la aplicación.</translation>
     <message>
       <source>Use software OpenGL</source>
       <translation>Usar software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Qué tipo de antialiasing multimuestra se utiliza</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Distancia de ojos a ojos usada para proyecciones estéreo.
+El valor especificado es un factor que se multiplicará con el tamaño del recuadro
+del objeto 3D que se muestra actualmente.</translation>
     </message>
   </context>
   <context>
@@ -3242,10 +3264,6 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (tal cual)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Búfer de píxels</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3484,12 +3502,6 @@ El valor es el diámetro de la esfera que cabe en la pantalla.</translation>
       <translation>Paso de zoom</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Cuánto se ampliará.
-El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>La dirección de las operaciones de zoom se invertirá</translation>
     </message>
@@ -3513,7 +3525,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Isometric</source>
-      <translation>Isométrico</translation>
+      <translation>Isométrica</translation>
     </message>
     <message>
       <source>Dimetric</source>
@@ -3574,6 +3586,28 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Object center</source>
       <translation>Centro del objeto</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Girar al estado posible más cercano al hacer clic en una cara del cubo</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Girar al más cercano</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Tamaño del cubo</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Tamaño del cubo de navegación</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Cuánto se ampliará.
+El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento.</translation>
     </message>
   </context>
   <context>
@@ -3886,27 +3920,27 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unidad desconocida: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>unidad incompatible</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unidad desconocida:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation>Espacios de trabajo</translation>
+      <translation>Escenarios</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation>Espacios de trabajo habilitados</translation>
+      <translation>Escenario habilitados</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
-      <translation>Espacios de trabajo des-habilitados</translation>
+      <translation>Escenario des-habilitados</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -3922,7 +3956,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Retire la mesa de trabajo seleccionada de los bancos habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Retire el banco de trabajo seleccionado de los bancos de trabajo habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -3930,11 +3964,11 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Retire la mesa de trabajo seleccionada a los bancos habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mover el banco de trabajo seleccionado a los bancos de trabajo habilitados.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Clasificar espacios de trabajo habilitados</translation>
+      <translation>Clasificar escenarios habilitados</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -3946,7 +3980,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Agregar todos a espacios de trabajo habilitados</translation>
+      <translation>Agregar todos a escenarios habilitados</translation>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
@@ -6879,14 +6913,6 @@ Por favor, compruebe la vista del informe para más...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Ruta física: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Documento: </translation>
@@ -6915,7 +6941,15 @@ Documento: </translation>
     </message>
     <message>
       <source>Workbenches</source>
-      <translation>Espacios de trabajo</translation>
+      <translation>Escenarios</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Trayectoria física: </translation>
     </message>
   </context>
   <context>
@@ -8862,7 +8896,7 @@ Documento: </translation>
     </message>
     <message>
       <source>Isometric</source>
-      <translation>Isométrico</translation>
+      <translation>Isométrica</translation>
     </message>
     <message>
       <source>Set to isometric view</source>
@@ -9607,11 +9641,11 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <name>ViewIsometricCmd</name>
     <message>
       <source>Isometric</source>
-      <translation>Isométrico</translation>
+      <translation>Isométrica</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Configurar NaviCube al modo isométrico</translation>
+      <translation>Configurar NaviCube al modo Isométrico</translation>
     </message>
   </context>
   <context>
