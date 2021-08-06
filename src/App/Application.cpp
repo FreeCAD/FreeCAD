@@ -629,7 +629,7 @@ Document* Application::openDocument(const char * FileName, bool createView) {
     return 0;
 }
 
-Document *Application::getDocumentByPath(const char *path, int checkCanonical) const {
+Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCanonical) const {
     if(!path || !path[0])
         return nullptr;
     if(DocFileMap.empty()) {
@@ -643,7 +643,7 @@ Document *Application::getDocumentByPath(const char *path, int checkCanonical) c
     if(it != DocFileMap.end())
         return it->second;
 
-    if (!checkCanonical)
+    if (checkCanonical == MatchAbsolute)
         return nullptr;
 
     std::string filepath = FileInfo(path).filePath();
@@ -651,7 +651,7 @@ Document *Application::getDocumentByPath(const char *path, int checkCanonical) c
     for (auto &v : DocMap) {
         QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
         if (canonicalPath == fi.canonicalFilePath()) {
-            if (checkCanonical == 1)
+            if (checkCanonical == MatchCanonical)
                 return v.second;
             bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
             FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
@@ -883,7 +883,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
 
     // Before creating a new document we check whether the document is already open
-    auto doc = getDocumentByPath(File.filePath().c_str(), 2);
+    auto doc = getDocumentByPath(File.filePath().c_str(), MatchCanonicalWarning);
     if(doc) {
         if(doc->testStatus(App::Document::PartialDoc)
                 || doc->testStatus(App::Document::PartialRestore)) {

@@ -120,16 +120,33 @@ public:
     App::Document* getActiveDocument(void) const;
     /// Retrieve a named document
     App::Document* getDocument(const char *Name) const;
+
+    /// Path matching mode for getDocumentByPath()
+    enum PathMatchMode {
+        /// Match by resolving to absolute file path
+        MatchAbsolute = 0,
+        /** Match by absolute path first. If not found then match by resolving
+         * to canonical file path where any intermediate '.' '..' and symlinks
+         * are resolved.
+         */
+        MatchCanonical = 1,
+        /** Same as MatchCanonical, but if a document is found by canonical
+         * path match, which means the document can be resolved using two
+         * different absolute path, a warning is printed and the found document
+         * is not returned. This is to allow the caller to intentionally load
+         * the same physical file as separate documents.
+         */
+        MatchCanonicalWarning = 2,
+    };
     /** Retrieve a document based on file path
      *
      * @param path: file path
-     * @param checkCanonical: if zero, only match absolute file path. If 1,
-     * then match by canonical file path, where any intermediate '.' and '..'
-     * and symlinks are resolved. If 2, then only print warning message if
-     * there is identical canonical file path found, but will not return the
-     * matched document.
+     * @param checkCanonical: file path matching mode, @sa PathMatchMode.
+     * @return Return the document found by matching with the given path
      */
-    App::Document* getDocumentByPath(const char *path, int checkCanonical=0) const;
+    App::Document* getDocumentByPath(const char *path,
+                                     PathMatchMode checkCanonical = MatchAbsolute) const;
+
     /// gets the (internal) name of the document
     const char * getDocumentName(const App::Document* ) const;
     /// get a list of all documents in the application
