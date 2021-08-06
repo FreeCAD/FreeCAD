@@ -35,7 +35,7 @@ def add_con_fixed(f, model, mystran_writer):
     # spc1 card
     spc_ids = []
     fixed_code = "# spc1 card, Defines a set of single-point constraints\n"
-    for i, femobj in enumerate(mystran_writer.fixed_objects):
+    for i, femobj in enumerate(mystran_writer.member.cons_fixed):
 
         conid = i + 2  # 1 will be the conid of the spcadd card
         spc_ids.append(conid)
