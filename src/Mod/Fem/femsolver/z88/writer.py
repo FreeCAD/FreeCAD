@@ -143,7 +143,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
 
         # fixed constraints
         # write nodes to constraints_data (different from writing to file in ccxInpWriter
-        for femobj in self.fixed_objects:
+        for femobj in self.member.cons_fixed:
             for n in femobj["Nodes"]:
                 constraints_data.append((n, "{}  1  2  0\n".format(n)))
                 constraints_data.append((n, "{}  2  2  0\n".format(n)))
@@ -152,7 +152,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         # forces constraints
         # write node loads to constraints_data
         # a bit different from writing to file for ccxInpWriter
-        for femobj in self.force_objects:
+        for femobj in self.member.cons_force:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             direction_vec = femobj["Object"].DirectionVector
             for ref_shape in femobj["NodeLoadTable"]:
@@ -187,7 +187,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     def write_z88_materials(self):
-        mat_obj = self.material_objects[0]["Object"]
+        mat_obj = self.member.mats_linear[0]["Object"]
         material_data_file_name = "51.txt"
         materials_file_path = self.file_name + "mat.txt"
         fms = open(materials_file_path, "w")
@@ -209,7 +209,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         element_properties_file_path = self.file_name + "elp.txt"
         elements_data = []
         if meshtools.is_edge_femmesh(self.femmesh):
-            beam_obj = self.beamsection_objects[0]["Object"]
+            beam_obj = self.member.geos_beamsection[0]["Object"]
             area = 0
             if beam_obj.SectionType == "Rectangular":
                 width = beam_obj.RectWidth.getValueAs("mm").Value
@@ -236,7 +236,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
                 "Be aware, only trusses are supported for edge meshes!\n"
             )
         elif meshtools.is_face_femmesh(self.femmesh):
-            thick_obj = self.shellthickness_objects[0]["Object"]
+            thick_obj = self.member.geos_shellthickness[0]["Object"]
             thickness = thick_obj.Thickness.getValueAs("mm").Value
             elements_data.append(
                 "1 {} {} 0 0 0 0 0 0 "
