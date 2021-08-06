@@ -241,6 +241,9 @@ public:
     static void initOpenInventor(void);
     static void runInitGuiScript(void);
     static void runApplication(void);
+    static void restart(bool reset = false);
+    static bool isRestarting();
+    static bool checkRestart();
     void tryClose( QCloseEvent * e );
     //@}
 

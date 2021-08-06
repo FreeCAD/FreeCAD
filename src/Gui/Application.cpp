@@ -44,6 +44,7 @@
 # include <QStatusBar>
 # include <QTextStream>
 # include <QTimer>
+# include <QProcess>
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>
@@ -2459,6 +2460,46 @@ void postMainWindowSetup(MainWindow &mw)
 }
 
 } // namespace Gui
+
+namespace {
+enum RestartMode {
+    RestartNone = 0,
+    RestartNormal = 1,
+    RestartReset = 2,
+};
+RestartMode _RestartMode = RestartNone;
+QString _AppPath;
+QStringList _AppArgs;
+std::string _AppConf;
+}
+
+bool Application::isRestarting()
+{
+    return _RestartMode != RestartNone;
+}
+
+void Application::restart(bool reset)
+{
+    if (_RestartMode != RestartNone)
+        return;
+    _AppPath = QApplication::applicationFilePath();
+    if (_AppPath.isEmpty())
+        return;
+    _AppArgs = QApplication::arguments().mid(1);
+    _AppConf = App::GetApplication().Config()["UserParameter"];
+    if (getMainWindow()->close())
+        _RestartMode = reset ? RestartReset : RestartNormal;
+}
+
+bool Application::checkRestart() {
+    if (Instance || _AppPath.isEmpty())
+        return false;
+    if (_RestartMode == RestartReset)
+        Base::FileInfo(_AppConf).deleteFile();
+    QProcess::startDetached(_AppPath, _AppArgs);
+    _AppPath.clear();
+    return true;
+}
 
 void Application::runApplication(void)
 {

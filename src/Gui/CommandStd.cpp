@@ -31,6 +31,8 @@
 # include <QDesktopServices>
 # include <QUrl>
 #endif
+# include <QTimer>
+# include <QProcess>
 #endif
 
 #include <boost/scoped_ptr.hpp>
@@ -467,6 +469,50 @@ void StdCmdCommandLine::activated(int iMsg)
     // pop up the main window
     show ? getMainWindow()->showMaximized () : getMainWindow()->showNormal () ;
     qApp->processEvents();
+}
+
+//===========================================================================
+// Std_Restart
+//===========================================================================
+DEF_STD_CMD(StdCmdRestart)
+
+StdCmdRestart::StdCmdRestart()
+  :Command("Std_Restart")
+{
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("Restart");
+    sToolTipText  = QT_TR_NOOP("Restart the application");
+    sWhatsThis    = "Std_Restart";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
+}
+
+void StdCmdRestart::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    QTimer::singleShot(100, [](){Application::Instance->restart();});
+}
+
+//===========================================================================
+// Std_ResetAndRestart
+//===========================================================================
+DEF_STD_CMD(StdCmdResetAndRestart)
+
+StdCmdResetAndRestart::StdCmdResetAndRestart()
+  :Command("Std_ResetAndRestart")
+{
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("Restart with reset");
+    sToolTipText  = QT_TR_NOOP("Reset the application configuration and restart");
+    sWhatsThis    = "Std_ResetAndRestart";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
+}
+
+void StdCmdResetAndRestart::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    QTimer::singleShot(100, [](){Application::Instance->restart(true);});
 }
 
 //===========================================================================
@@ -933,6 +979,8 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdHistory());
     rcCmdMgr.addCommand(new StdCmdToolbarMenus());
+    rcCmdMgr.addCommand(new StdCmdRestart());
+    rcCmdMgr.addCommand(new StdCmdResetAndRestart());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());

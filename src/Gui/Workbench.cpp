@@ -685,6 +685,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #ifdef BUILD_ADDONMGR
     *tool << "Std_AddonMgr";
 #endif
+    *tool << "Separator"
+          << "Std_Restart";
 
     // Macro
     MenuItem* macro = new MenuItem( menuBar );

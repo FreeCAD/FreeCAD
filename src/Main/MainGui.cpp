@@ -335,6 +335,9 @@ int main( int argc, char ** argv )
 
     Base::Console().Log("%s completely terminated\n",App::Application::Config()["ExeName"].c_str());
 
+    if (Gui::Application::checkRestart())
+        Base::Console().Log("%s restarting...\n",App::Application::Config()["ExeName"].c_str());
+
     return 0;
 }
 
