@@ -51,7 +51,7 @@ _inputFileName = None
 class Check(run.Check):
 
     def run(self):
-        self.pushStatus("Checking analysis...\n")
+        self.pushStatus("Checking analysis member...\n")
         self.check_mesh_exists()
 
         # workaround use Calculix ccxtools pre checks
@@ -73,13 +73,12 @@ class Prepare(run.Prepare):
 
     def run(self):
         global _inputFileName
-        self.pushStatus("Preparing input files...\n")
-
-        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
+        self.pushStatus("Preparing input...\n")
 
         # get mesh set data
         # TODO evaluate if it makes sense to add new task
         # between check and prepare to the solver frame work
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
         meshdatagetter = meshsetsgetter.MeshSetsGetter(
             self.analysis,
             self.solver,
@@ -88,7 +87,7 @@ class Prepare(run.Prepare):
         )
         meshdatagetter.get_mesh_sets()
 
-        # write input file
+        # write solver input
         w = writer.FemInputWriterCcx(
             self.analysis,
             self.solver,
@@ -100,9 +99,9 @@ class Prepare(run.Prepare):
         path = w.write_solver_input()
         # report to user if task succeeded
         if path != "" and os.path.isfile(path):
-            self.pushStatus("Write completed.")
+            self.pushStatus("Writing solver input completed.")
         else:
-            self.pushStatus("Writing CalculiX solver input file failed,")
+            self.pushStatus("Writing solver input failed.")
             self.fail()
         _inputFileName = os.path.splitext(os.path.basename(path))[0]
 
@@ -112,7 +111,13 @@ class Solve(run.Solve):
     def run(self):
         self.pushStatus("Executing solver...\n")
 
+        # get solver binary
+        self.pushStatus("Get solver binary...\n")
         binary = settings.get_binary("Calculix")
+        if binary is None:
+            self.fail()  # a print has been made in settings module
+
+        # run solver
         self._process = subprocess.Popen(
             [binary, "-i", _inputFileName],
             cwd=self.directory,
@@ -131,10 +136,6 @@ class Solve(run.Solve):
 class Results(run.Results):
 
     def run(self):
-        if not _inputFileName:
-            # TODO do not run solver
-            # do not try to read results in a smarter way than an Exception
-            raise Exception("Error on writing CalculiX input file.\n")
         prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
@@ -142,10 +143,12 @@ class Results(run.Results):
         self.load_results()
 
     def purge_results(self):
-
-        # dat file will not be removed
-        # results from other solvers will be removed too
-        # the user should decide if purge should only delete the solver results or all results
+        self.pushStatus("Purge existing results...\n")
+        # TODO dat file will not be removed
+        # TODO implement a generic purge method
+        # TODO results from other solvers will be removed too
+        # the user should decide if purge should only
+        # delete this solver results or results from all solvers
         for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
             if m.Mesh and femutils.is_of_type(m.Mesh, "Fem::MeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
@@ -153,10 +156,11 @@ class Results(run.Results):
         self.analysis.Document.recompute()
 
     def load_results(self):
-        self.load_results_ccxfrd()
-        self.load_results_ccxdat()
+        self.pushStatus("Import new results...\n")
+        self.load_ccxfrd_results()
+        self.load_ccxdat_results()
 
-    def load_results_ccxfrd(self):
+    def load_ccxfrd_results(self):
         frd_result_file = os.path.join(
             self.directory, _inputFileName + ".frd")
         if os.path.isfile(frd_result_file):
@@ -164,18 +168,26 @@ class Results(run.Results):
             importCcxFrdResults.importFrd(
                 frd_result_file, self.analysis, result_name_prefix)
         else:
-            raise Exception(
-                "FEM: No results found at {}!".format(frd_result_file))
+            # TODO: use solver framework status message system
+            FreeCAD.Console.PrintError(
+                "FEM: No results found at {}!\n"
+                .format(frd_result_file)
+            )
+            self.fail()
 
-    def load_results_ccxdat(self):
+    def load_ccxdat_results(self):
         dat_result_file = os.path.join(
             self.directory, _inputFileName + ".dat")
         if os.path.isfile(dat_result_file):
             mode_frequencies = importCcxDatResults.import_dat(
                 dat_result_file, self.analysis)
         else:
-            raise Exception(
-                "FEM: No .dat results found at {}!".format(dat_result_file))
+            # TODO: use solver framework status message system
+            FreeCAD.Console.PrintError(
+                "FEM: No results found at {}!\n"
+                .format(dat_result_file)
+            )
+            self.fail()
         if mode_frequencies:
             for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
