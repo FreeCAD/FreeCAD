@@ -59,6 +59,7 @@
 
 #include <map>
 #include <vector>
+#include <boost_signals2.hpp>
 #include <xercesc/util/XercesDefs.hpp>
 
 // Std. configurations
@@ -226,6 +227,11 @@ public:
     std::vector<std::string> GetASCIIs(const char * sFilter = NULL) const;
     /// Same as GetASCIIs() but with key,value map
     std::vector<std::pair<std::string,std::string> > GetASCIIMap(const char * sFilter = NULL) const;
+    /** Return the type and name of all parameters with optional filter
+     *  @param sFilter only strings which name includes sFilter are put in the vector
+     *  @return std::vector of string pair(type, name)
+     */
+    std::vector<std::pair<std::string,std::string> > GetParameterNames(const char * sFilter = NULL) const;
     //@}
 
     friend class ParameterManager;
@@ -235,18 +241,30 @@ public:
         return _cName.c_str();
     }
 
+    /// return the full path of this group
+    std::string GetPath() const;
+    void GetPath(std::string &) const;
+
     /** Notifies all observers for all entries except of sub-groups.
      */
     void NotifyAll();
 
+    ParameterGrp *Parent() const {return _Parent;}
+    ParameterManager *Manager() const {return _Manager;}
+
 protected:
     /// constructor is protected (handle concept)
-    ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode=0L,const char* sName=0L);
+    ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode=0L,
+                 const char* sName=0L,
+                 ParameterGrp *Parant=nullptr);
     /// destructor is protected (handle concept)
     ~ParameterGrp();
     /// helper function for GetGroup
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
     bool ShouldRemove() const;
+
+    void _SetAttribute(const char *Type, const char *Name, const char *Value);
+    void _Notify(const char *Type, const char *Name, const char *Value);
 
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
 
@@ -272,7 +290,8 @@ protected:
     std::string _cName;
     /// map of already exported groups
     std::map <std::string ,Base::Reference<ParameterGrp> > _GroupMap;
-
+    ParameterGrp * _Parent = nullptr;
+    ParameterManager *_Manager = nullptr;
 };
 
 /** The parameter serializer class
@@ -291,6 +310,7 @@ public:
     virtual void SaveDocument(const ParameterManager&);
     virtual int LoadDocument(ParameterManager&);
     virtual bool LoadOrCreateDocument(ParameterManager&);
+    const std::string &GetFileName() const {return filename;}
 
 protected:
     std::string filename;
@@ -309,6 +329,9 @@ public:
     static void Init(void);
     static void Terminate(void);
 
+    boost::signals2::signal<void (ParameterGrp *, const char *, const char *, const char *)>
+        signalParamChanged;
+
     int   LoadDocument(const char* sFileName);
     int   LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
     bool  LoadOrCreateDocument(const char* sFileName);
@@ -323,6 +346,8 @@ public:
     void  SetSerializer(ParameterSerializer*);
     /// Returns true if a serializer is set, otherwise false is returned.
     bool  HasSerializer() const;
+    /// Returns the filename of the serialize.
+    const std::string & GetSerializeFileName() const;
     /// Loads an XML document by calling the serializer's load method.
     int   LoadDocument();
     /// Loads or creates an XML document by calling the serializer's load method.
