@@ -3984,7 +3984,7 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
     SoSkipBoundingBoxElement::set(action.getState(), SoSkipBoundingGroup::EXCLUDE_BBOX);
 
     auto manager = selectionRoot->getRenderManager();
-    if (manager) {
+    if (manager && guiDocument && guiDocument->getDocument()->getObjects().size()>1) {
         SbBox3f bbox;
         manager->getBoundingBox(bbox);
         if (!bbox.isEmpty()) {
