@@ -519,6 +519,27 @@ protected:
     std::unique_ptr<Private> _pimpl;
 };
 
+/**
+ * Special action for Std_CmdPresets command.
+ */
+class GuiExport PresetsAction : public Action
+{
+    Q_OBJECT
+
+public:
+    PresetsAction (Command* pcCmd, QObject * parent = 0);
+    virtual ~PresetsAction();
+    void addTo(QWidget * w);
+    void popup(const QPoint &pt);
+
+protected Q_SLOTS:
+    void onShowMenu();
+    void onAction(QAction *action);
+
+private:
+    QMenu* _menu;
+};
+
 GuiExport void setupMenuStyle(QWidget *);
 
 } // namespace Gui

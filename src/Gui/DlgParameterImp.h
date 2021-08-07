@@ -24,6 +24,10 @@
 #ifndef GUI_DIALOG_DLGPARAMETER_H
 #define GUI_DIALOG_DLGPARAMETER_H
 
+#include <set>
+#include <unordered_map>
+#include <boost_signals2.hpp>
+
 #include <Base/Parameter.h>
 
 #include <QTreeWidgetItem>
@@ -36,21 +40,54 @@ namespace Dialog {
 
 class Ui_DlgParameter;
 class DlgParameterFind;
+class ParameterGroup;
+class ParameterGroupItem;
+class ParameterValue;
+class ParameterValueItem;
+
+struct ParamKey {
+    QByteArray type;
+    QByteArray name;
+
+    ParamKey(const char *t, const QString &n)
+        :type(QByteArray::fromRawData(t, strlen(t)))
+        ,name(n.toUtf8())
+    {}
+
+    ParamKey(const char *t, const char *n)
+        :type(QByteArray::fromRawData(t, strlen(t)))
+        ,name(QByteArray::fromRawData(n, strlen(n)))
+    {}
+
+    bool operator<(const ParamKey &other) const {
+        if (type.size() < other.type.size())
+            return true;
+        if (type.size() > other.type.size())
+            return false;
+        int res = memcmp(type.constData(), other.type.constData(), type.size());
+        if (res < 0)
+            return true;
+        if (res > 0)
+            return false;
+        if (name.size() < other.name.size())
+            return true;
+        if (name.size() > other.name.size())
+            return false;
+        return memcmp(name.constData(), other.name.constData(), name.size()) < 0;
+    }
+};
 
 /**
  * The DlgParameterImp class implements a dialog showing all parameters in a list view.
  * \author Jürgen Riegel
  */
-class GuiExport DlgParameterImp : public QDialog
+class GuiExport DlgParameterImp : public QWidget
 {
     Q_OBJECT
 
 public:
     DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DlgParameterImp();
-
-    void accept();
-    void reject();
 
     void activateParameterSet(const char*);
 
@@ -59,6 +96,20 @@ protected Q_SLOTS:
     void on_buttonFind_clicked();
     void on_findGroupLE_textChanged(const QString &SearchStr);
     void on_buttonSaveToDisk_clicked();
+    void on_btnMerge_clicked();
+    void on_btnExport_clicked();
+    void on_btnImport_clicked();
+    void on_btnAdd_clicked();
+    void on_btnRemove_clicked();
+    void on_btnRename_clicked();
+    void on_btnRestart_clicked();
+    void on_btnReset_clicked();
+    void on_checkBoxPreset_toggled(bool);
+    void on_checkBoxMonitor_toggled(bool);
+    void onParameterSetNameChanged();
+
+    void onGroupItemChanged(QTreeWidgetItem *item, int col);
+    void onValueItemChanged(QTreeWidgetItem *item, int col);
 
     void onGroupSelected(QTreeWidgetItem *);
     void on_closeButton_clicked();
@@ -69,18 +120,46 @@ protected:
     void showEvent(QShowEvent*);
     void closeEvent(QCloseEvent*);
 
+    void doImportOrMerge(ParameterGrp *hGrp, bool merge);
+    bool doExport(ParameterGrp *hGrp);
+    void updateGroupItemCheckState(QTreeWidgetItem *item);
+    void setGroupItemState(ParameterGroupItem *item, Qt::CheckState state);
+    void setValueItemState(ParameterValueItem *item, Qt::CheckState state);
+    bool checkGroupItemState(ParameterGroupItem *item, Qt::CheckState state);
+    void clearGroupItem(ParameterGroupItem *item,
+        std::unordered_map<ParameterGrp*, std::set<ParamKey>> &changes);
+    void saveState(bool saveGeometry);
+    void removeState();
+
+    void slotParamChanged(ParameterGrp *Param,
+                          const char *Type,
+                          const char *Name,
+                          const char *Value);
+
 protected:
-    QTreeWidget* paramGroup;
-    QTreeWidget* paramValue;
+    friend class ParameterGroup;
+    friend class ParameterValue;
+    ParameterGroup* paramGroup;
+    ParameterValue* paramValue;
     Ui_DlgParameter* ui;
     QPointer<DlgParameterFind> finder;
+
+    struct MonitorInfo {
+        ParameterGrp::handle handle;
+        boost::signals2::scoped_connection conn;
+        std::unordered_map<ParameterGrp*, std::set<ParamKey>> changes;
+    };
+    std::map<ParameterManager*, MonitorInfo> monitors;
+    Base::Reference<ParameterManager> curParamManager;
 
 private:
     QFont defaultFont;
     QBrush defaultColor;
     QFont boldFont;
     QList<QTreeWidgetItem*> foundList;
+    bool importing = false;
     bool geometryRestored = false;
+    int lastIndex = -1;
 };
 
 // --------------------------------------------------------------------
@@ -95,8 +174,11 @@ class ParameterGroup : public QTreeWidget
     Q_OBJECT
 
 public:
-    ParameterGroup( QWidget * parent = 0 );
+    ParameterGroup(DlgParameterImp *owner, QWidget *parent);
     virtual ~ParameterGroup();
+
+    ParameterGroupItem *findItem(ParameterGrp *) const;
+    void clear();
 
 protected:
     /** Shows the context menu. */
@@ -119,11 +201,15 @@ protected Q_SLOTS:
     void onExportToFile();
     /** Imports a file and inserts the parameter to the current selected parameter node. */
     void onImportFromFile();
+    void onMergeFromFile();
     /** Changes the name of the leaf of the selected item. */
     void onRenameSelectedItem();
 
 protected:
     void changeEvent(QEvent *e);
+    void applyLanguage();
+
+    friend class ParameterGroupItem;
 
 private:
     QMenu* menuEdit;
@@ -133,9 +219,14 @@ private:
     QAction* renameAct;
     QAction* exportAct;
     QAction* importAct;
+    QAction* mergeAct;
+    std::unordered_map<ParameterGrp*, ParameterGroupItem*> itemMap;
+    DlgParameterImp *_owner;
 };
 
 // --------------------------------------------------------------------
+
+class ParameterValueItem;
 
 /**
  * The ParameterValue class displays all leaves of a parameter group. A leaf is represented
@@ -147,13 +238,17 @@ class ParameterValue : public QTreeWidget
     Q_OBJECT
 
 public:
-    ParameterValue( QWidget * parent = 0 );
+    ParameterValue(DlgParameterImp *owner, QWidget *parent);
     virtual ~ParameterValue();
 
     /** Sets the current parameter group that is displayed. */
     void setCurrentGroup( const Base::Reference<ParameterGrp>& _hcGrp );
     /** Returns the current parameter group that is displayed. */
     Base::Reference<ParameterGrp> currentGroup() const;
+
+    ParameterValueItem * findItem(const ParamKey &key) const;
+    
+    void clear();
 
 protected:
     /** Shows the context menu. */
@@ -200,6 +295,11 @@ private:
     QAction* newUlgAct;
     QAction* newBlnAct;
     Base::Reference<ParameterGrp> _hcGrp;
+
+    friend class ParameterValueItem;
+
+    std::map<ParamKey, ParameterValueItem*> itemMap;
+    DlgParameterImp *_owner;
 };
 
 /** The link between the Tree and the shown Label.
@@ -214,7 +314,7 @@ class ParameterGroupItem : public QTreeWidgetItem
 public:
     /// Constructor
     ParameterGroupItem( ParameterGroupItem * parent, const Base::Reference<ParameterGrp> &hcGrp );
-    ParameterGroupItem( QTreeWidget* parent, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterGroupItem( ParameterGroup* parent, const Base::Reference<ParameterGrp> &hcGrp);
     ~ParameterGroupItem();
 
     void setData ( int column, int role, const QVariant & value );
@@ -222,6 +322,7 @@ public:
 
     void fillUp(void);
     Base::Reference<ParameterGrp> _hcGrp;
+    ParameterGroup *_owner;
 };
 
 // --------------------------------------------------------------------
@@ -237,8 +338,13 @@ class ParameterValueItem : public QTreeWidgetItem
 {
 public:
     /// Constructor
-    ParameterValueItem ( QTreeWidget* parent, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterValueItem ( ParameterValue* parent,
+                         const char *type,
+                         const QString &label,
+                         const Base::Reference<ParameterGrp> &hcGrp);
     virtual ~ParameterValueItem();
+
+    const ParamKey & getKey() const {return _key;}
 
     /** If the name of the item has changed replace() is invoked. */
     virtual void setData ( int column, int role, const QVariant & value );
@@ -255,6 +361,8 @@ protected:
 
 protected:
     Base::Reference<ParameterGrp> _hcGrp;
+    ParamKey _key;
+    ParameterValue *_owner;
 };
 
 /**
@@ -265,7 +373,7 @@ class ParameterText : public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterText ( QTreeWidget * parent, QString label1, const char* value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterText ( ParameterValue * parent, QString label1, const char* value, const Base::Reference<ParameterGrp> &hcGrp);
     ~ParameterText();
 
     void changeValue();
@@ -284,7 +392,7 @@ class ParameterInt : public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterInt ( QTreeWidget * parent, QString label1, long value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterInt ( ParameterValue * parent, QString label1, long value, const Base::Reference<ParameterGrp> &hcGrp);
     ~ParameterInt();
 
     void changeValue();
@@ -303,7 +411,7 @@ class ParameterUInt : public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterUInt ( QTreeWidget * parent, QString label1, unsigned long value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterUInt ( ParameterValue * parent, QString label1, unsigned long value, const Base::Reference<ParameterGrp> &hcGrp);
     ~ParameterUInt();
 
     void changeValue();
@@ -322,7 +430,7 @@ class ParameterFloat : public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterFloat ( QTreeWidget * parent, QString label1, double value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterFloat ( ParameterValue * parent, QString label1, double value, const Base::Reference<ParameterGrp> &hcGrp);
     ~ParameterFloat();
 
     void changeValue();
@@ -341,7 +449,7 @@ class ParameterBool : public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterBool ( QTreeWidget * parent, QString label1, bool value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterBool ( ParameterValue * parent, QString label1, bool value, const Base::Reference<ParameterGrp> &hcGrp);
     ~ParameterBool();
 
     void changeValue();

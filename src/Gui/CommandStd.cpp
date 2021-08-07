@@ -354,9 +354,13 @@ StdCmdDlgParameter::StdCmdDlgParameter()
 void StdCmdDlgParameter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Dialog::DlgParameterImp cDlg(getMainWindow());
-    cDlg.resize(QSize(800, 600));
-    cDlg.exec();
+    static QPointer<Dialog::DlgParameterImp> dlg;
+    if (!dlg) {
+        dlg = new Dialog::DlgParameterImp();
+        dlg->resize(QSize(800, 600));
+    }
+    dlg->show();
+    dlg->activateWindow();
 }
 
 //===========================================================================
@@ -387,8 +391,14 @@ Action * StdCmdDlgPreferences::createAction(void)
 void StdCmdDlgPreferences::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
-    cDlg.exec();
+    static QPointer<Gui::Dialog::DlgPreferencesImp> cDlg;
+    if (!cDlg) {
+        cDlg = new Dialog::DlgPreferencesImp(getMainWindow());
+        cDlg->setModal(false);
+        cDlg->setAttribute(Qt::WA_DeleteOnClose);
+    }
+    cDlg->show();
+    cDlg->raise();
 }
 
 //===========================================================================
@@ -948,6 +958,45 @@ Action * StdCmdToolbarMenus::createAction(void)
     return pcAction;
 }
 
+//===========================================================================
+// Std_CmdPresets
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdPresets)
+
+StdCmdPresets::StdCmdPresets()
+  :Command("Std_CmdPresets")
+{
+  sGroup        = QT_TR_NOOP("Tools");
+  sMenuText     = QT_TR_NOOP("Preset Configurations");
+  sToolTipText  = QT_TR_NOOP("List of preset configurations");
+  sWhatsThis    = "Std_CmdPresets";
+  sStatusTip    = sToolTipText;
+  eType         = NoTransaction | NoHistory;
+}
+
+bool StdCmdPresets::isActive(void)
+{
+    return true;
+}
+
+void StdCmdPresets::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    if (_pcAction)
+        static_cast<PresetsAction*>(_pcAction)->popup(QCursor::pos());
+}
+
+Action * StdCmdPresets::createAction(void)
+{
+    Action *pcAction;
+    pcAction = new PresetsAction(this, getMainWindow());
+    if (sAccel)
+        pcAction->setShortcut(QString::fromLatin1(sAccel));
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
+
 namespace Gui {
 
 void CreateStdCommands(void)
@@ -981,6 +1030,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdToolbarMenus());
     rcCmdMgr.addCommand(new StdCmdRestart());
     rcCmdMgr.addCommand(new StdCmdResetAndRestart());
+    rcCmdMgr.addCommand(new StdCmdPresets());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());

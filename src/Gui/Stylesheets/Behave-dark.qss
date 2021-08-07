@@ -120,6 +120,7 @@ QToolBar * {
 Main window
 ==================================================================================================*/
 QMainWindow,
+Gui--Dialog--DlgParameterImp,
 QDialog,
 QDockWidget,
 QToolBar  {

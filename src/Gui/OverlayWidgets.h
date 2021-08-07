@@ -53,6 +53,13 @@ public:
     void save();
     void retranslate();
 
+    enum ReloadMode {
+        ReloadPending = 0,
+        ReloadPause = 1,
+        ReloadResume = 2,
+    };
+    void reload(ReloadMode mode = ReloadPending);
+
     void refresh(QWidget *widget=nullptr, bool refreshStyle=false);
 
     void setupTitleBar(QDockWidget *);
@@ -236,6 +243,8 @@ public:
 
     void onSplitterResize(int index);
 
+    bool isSaving() const {return _saving;}
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
@@ -304,6 +313,7 @@ private:
     State _state = State_Normal;
 
     std::map<QDockWidget *, int> _sizemap;
+    bool _saving = false;
 };
 
 class OverlayDragFrame: public QWidget

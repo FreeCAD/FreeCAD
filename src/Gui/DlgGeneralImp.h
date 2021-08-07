@@ -45,6 +45,8 @@ public:
     DlgGeneralImp( QWidget* parent = 0 );
     ~DlgGeneralImp();
 
+    static void attachObserver();
+
     void saveSettings();
     void loadSettings();
 

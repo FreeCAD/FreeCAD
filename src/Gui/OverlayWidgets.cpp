@@ -749,6 +749,10 @@ bool OverlayTabWidget::eventFilter(QObject *o, QEvent *ev)
 
 void OverlayTabWidget::restore(ParameterGrp::handle handle)
 {
+    if (!handle) {
+        hGrp = handle;
+        return;
+    }
     if (!parentWidget())
         return;
     std::string widgets = handle->GetASCII("Widgets","");
@@ -829,6 +833,7 @@ void OverlayTabWidget::saveTabs()
         }
         _sizemap[dock] = sizes[i];
     }
+    Base::StateLocker lock(_saving);
     hGrp->SetASCII("Widgets", os.str().c_str());
     hGrp->SetASCII("Sizes", os2.str().c_str());
 }
@@ -928,8 +933,10 @@ void OverlayTabWidget::onAction(QAction *action)
         OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleActive);
         return;
     } else if(action == &actTransparent) {
-        if(hGrp)
+        if(hGrp) {
+            Base::StateLocker lock(_saving);
             hGrp->SetBool("Transparent", actTransparent.isChecked());
+        }
     }
     OverlayManager::instance()->refresh(this);
 }
@@ -1348,8 +1355,10 @@ void OverlayTabWidget::setTransparent(bool enable)
 {
     if(actTransparent.isChecked() == enable)
         return;
-    if(hGrp)
+    if(hGrp) {
+        Base::StateLocker lock(_saving);
         hGrp->SetBool("Transparent", enable);
+    }
     actTransparent.setChecked(enable);
     OverlayManager::instance()->refresh(this);
 }
@@ -1397,6 +1406,7 @@ void OverlayTabWidget::setAutoMode(OverlayAutoMode mode)
         default:
             break;
         }
+        Base::StateLocker lock(_saving);
         hGrp->SetBool("AutoHide", autohide);
         hGrp->SetBool("EditShow", editshow);
         hGrp->SetBool("EditHide", edithide);
@@ -1537,6 +1547,7 @@ void OverlayTabWidget::setOffset(const QSize &ofs)
     if(offset != ofs) {
         offset = ofs;
         if(hGrp) {
+            Base::StateLocker lock(_saving);
             hGrp->SetInt("Offset1", ofs.width());
             hGrp->SetInt("Offset3", ofs.height());
         }
@@ -1546,8 +1557,10 @@ void OverlayTabWidget::setOffset(const QSize &ofs)
 void OverlayTabWidget::setSizeDelta(int delta)
 {
     if(sizeDelta != delta) {
-        if(hGrp)
+        if(hGrp) {
+            Base::StateLocker lock(_saving);
             hGrp->SetInt("Offset2", delta);
+        }
         sizeDelta = delta;
     }
 }
@@ -1586,6 +1599,7 @@ void OverlayTabWidget::setRect(QRect rect)
     }
 
     if(hGrp && rect.size() != rectOverlay.size()) {
+        Base::StateLocker lock(_saving);
         hGrp->SetInt("Width", rect.width());
         hGrp->SetInt("Height", rect.height());
     }
@@ -2670,6 +2684,15 @@ struct OverlayInfo {
         tabWidget->setMovable(true);
         hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetGroup(name);
+        App::GetApplication().GetUserParameter().signalParamChanged.connect(
+            [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+                if (hGrp == Param && Name && !tabWidget->isSaving()) {
+                    // This will prevent saving settings which will mess up the
+                    // just restored ones
+                    tabWidget->restore(nullptr); 
+                    OverlayManager::instance()->reload();
+                }
+            });
     }
 
     bool addWidget(QDockWidget *dock, bool forced=true) {
@@ -2751,7 +2774,6 @@ struct OverlayInfo {
                 overlayMap[dock] = this;
         }
     }
-
 };
 
 #endif // FC_HAS_DOCK_OVERLAY
@@ -2769,6 +2791,7 @@ public:
 
 #ifdef FC_HAS_DOCK_OVERLAY
     QTimer _timer;
+    QTimer _reloadTimer;
 
     bool mouseTransparent = false;
 
@@ -2799,6 +2822,8 @@ public:
 
     bool raising = false;
 
+    OverlayManager::ReloadMode curReloadMode = OverlayManager::ReloadPending;
+
     Private(OverlayManager *host, QWidget *parent)
         :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlayMap)
         ,_right(parent,"OverlayRight", Qt::RightDockWidgetArea,_overlayMap)
@@ -2811,6 +2836,17 @@ public:
 
         connect(&_timer, SIGNAL(timeout()), host, SLOT(onTimer()));
         _timer.setSingleShot(true);
+
+        _reloadTimer.setSingleShot(true);
+        connect(&_reloadTimer, &QTimer::timeout, [this]() {
+            for (auto &o : _overlayInfos) {
+                o->tabWidget->restore(nullptr); // prevent saving setting first
+                o->removeWidget();
+            }
+            for (auto &o : _overlayInfos)
+                o->restore();
+            refresh();
+        });
 
         connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
                 host, SLOT(onFocusChanged(QWidget*,QWidget*)));
@@ -3774,9 +3810,20 @@ public:
             _dockWidgetNameMap.erase(it);
     }
 
+    void reload(OverlayManager::ReloadMode mode) {
+        if (mode == OverlayManager::ReloadResume)
+            mode = OverlayManager::ReloadPending;
+        if (mode == OverlayManager::ReloadPending) {
+            if (curReloadMode != OverlayManager::ReloadPause)
+                _reloadTimer.start(100);
+        }
+        curReloadMode = mode;
+    }
+
 #else // FC_HAS_DOCK_OVERLAY
 
     Private(OverlayManager *, QWidget *) {}
+    void reload() {}
     void refresh(QWidget *, bool) {}
     void setMouseTransparent(bool) {}
     void save() {}
@@ -3952,6 +3999,11 @@ void OverlayManager::retranslate()
 void OverlayManager::onTimer()
 {
     d->onTimer();
+}
+
+void OverlayManager::reload(ReloadMode mode)
+{
+    d->reload(mode);
 }
 
 void OverlayManager::raiseAll()

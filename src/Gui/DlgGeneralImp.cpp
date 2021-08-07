@@ -27,6 +27,7 @@
 # include <QLocale>
 # include <QStyleFactory>
 # include <QTextStream>
+# include <QTimer>
 #endif
 
 #include "DlgGeneralImp.h"
@@ -39,8 +40,10 @@
 #include "PythonConsole.h"
 #include "TreeParams.h"
 #include "ViewParams.h"
+#include "OverlayWidgets.h"
 #include "Language/Translator.h"
 
+using namespace Gui;
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgGeneralImp */
@@ -124,33 +127,21 @@ void DlgGeneralImp::saveSettings()
     ui->SplashScreen->onSave();
     ui->PythonWordWrap->onSave();
 
-    QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-    PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
-    if (pcPython) {
-        bool pythonWordWrap = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
-
-        if (pythonWordWrap) {
-            pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        } else {
-            pcPython->setWordWrapMode(QTextOption::NoWrap);
-        }
-    }
-
     setRecentFileSize();
+
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale().language());
     QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
     if (current != language) {
         hGrp->SetASCII("Language", current.constData());
-        Translator::instance()->activateLanguage(current.constData());
+        // Translator::instance()->activateLanguage(current.constData());
     }
 
     QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());
     int pixel = size.toInt();
     hGrp->SetInt("ToolbarIconSize", pixel);
-    getMainWindow()->setIconSize(QSize(pixel,pixel));
+    // getMainWindow()->setIconSize(QSize(pixel,pixel));
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
     bool treeView=false, propertyView=false, comboView=true;
@@ -174,7 +165,7 @@ void DlgGeneralImp::saveSettings()
         hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
         hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
         hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
-        getMainWindow()->initDockWindows(true);
+        // getMainWindow()->initDockWindows(true);
     }
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
@@ -182,7 +173,10 @@ void DlgGeneralImp::saveSettings()
 
     QVariant sheet = ui->StyleSheets->itemData(ui->StyleSheets->currentIndex());
     hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
-    Application::Instance->setStyleSheet(sheet.toString(), ui->tiledBackground->isChecked());
+
+    // Most of the UI settings is now actively monitored by class AppStyleMonitor
+    //
+    // Application::Instance->setStyleSheet(sheet.toString(), ui->tiledBackground->isChecked());
 
     sheet = ui->OverlayStyleSheets->itemData(ui->OverlayStyleSheets->currentIndex());
     hGrp->SetASCII("OverlayActiveStyleSheet", (const char*)sheet.toByteArray());
@@ -341,6 +335,135 @@ void DlgGeneralImp::changeEvent(QEvent *e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+///////////////////////////////////////////////////////////
+namespace {
+
+bool applyStyleSheet(bool delayTrigger, ParameterGrp *hGrp)
+{
+    if (!delayTrigger)
+        return true;
+    auto sheet = hGrp->GetASCII("StyleSheet");
+    bool tiledBG = hGrp->GetBool("TiledBackground", false);
+    Application::Instance->setStyleSheet(QString::fromUtf8(sheet.c_str()), tiledBG);
+    return false;
+}
+
+bool applyDockWidget(bool delayTrigger, ParameterGrp *)
+{
+    if (!delayTrigger) {
+        OverlayManager::instance()->reload(OverlayManager::ReloadPause);
+        return true;
+    }
+    getMainWindow()->initDockWindows(true);
+    OverlayManager::instance()->reload(OverlayManager::ReloadResume);
+    return false;
+}
+
+bool applyToolbarIconSize(bool, ParameterGrp *hGrp)
+{
+    int pixel = hGrp->GetInt("ToolbarIconSize");
+    getMainWindow()->setIconSize(QSize(pixel,pixel));
+    return false;
+}
+
+bool applyLanguage(bool, ParameterGrp *hGrp)
+{
+    QString lang = QLocale::languageToString(QLocale().language());
+    std::string language = hGrp->GetASCII("Language", (const char*)lang.toLatin1());
+    Translator::instance()->activateLanguage(language.c_str());
+    return false;
+}
+
+bool applyPythonWordWrap(bool, ParameterGrp *hGrp)
+{
+    QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
+    PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
+    if (pcPython) {
+        bool pythonWordWrap = hGrp->GetBool("PythonWordWrap", true);
+
+        if (pythonWordWrap) {
+            pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        } else {
+            pcPython->setWordWrapMode(QTextOption::NoWrap);
+        }
+    }
+    return false;
+}
+
+struct ParamKey {
+    ParameterGrp::handle hGrp;
+    const char *key;
+    mutable bool pending = false;
+
+    ParamKey(const char *path, const char *key)
+        :hGrp(App::GetApplication().GetUserParameter().GetGroup(path))
+        ,key(key)
+    {}
+
+    ParamKey(ParameterGrp *h, const char *key)
+        :hGrp(h), key(key)
+    {}
+
+    bool operator < (const ParamKey &other) const {
+        if (hGrp < other.hGrp)
+            return true;
+        if (hGrp > other.hGrp)
+            return false;
+        return strcmp(key, other.key) < 0;
+    }
+};
+
+struct ParamHandlers {
+    std::map<ParamKey, bool (*)(bool, ParameterGrp*)> handlers;
+    QTimer timer;
+
+    void attach() {
+        handlers[ParamKey("BaseApp/Preferences/MainWindow", "StyleSheet")] = applyStyleSheet;
+
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/DockWindows");
+        handlers[ParamKey(hGrp->GetGroup("ComboView"), "Enabled")] = applyDockWidget;
+        handlers[ParamKey(hGrp->GetGroup("TreeView"), "Enabled")] = applyDockWidget;
+        handlers[ParamKey(hGrp->GetGroup("PropertyView"), "Enabled")] = applyDockWidget;
+        handlers[ParamKey(hGrp->GetGroup("DAGView"), "Enabled")] = applyDockWidget;
+
+        hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+        handlers[ParamKey(hGrp, "Language")] = applyLanguage;
+        handlers[ParamKey(hGrp, "ToolbarIconSize")] = applyToolbarIconSize;
+
+        handlers[ParamKey("BaseApp/Preferences/General", "PythonWordWrap")] = applyPythonWordWrap;
+
+        App::GetApplication().GetUserParameter().signalParamChanged.connect(
+            [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+                if (!Param || !Name)
+                    return;
+                auto it =  handlers.find(ParamKey(Param, Name));
+                if (it != handlers.end() && it->second(false, Param)) {
+                    it->first.pending = true;
+                    timer.start(100);
+                }
+            });
+        timer.setSingleShot(true);
+        QObject::connect(&timer, &QTimer::timeout, [this]() {
+            for (auto &v : handlers) {
+                if (v.first.pending) {
+                    v.first.pending = false;
+                    v.second(true, v.first.hGrp);
+                }
+            }
+        });
+    }
+};
+
+ParamHandlers _ParamHandlers;
+}
+
+
+void DlgGeneralImp::attachObserver()
+{
+    _ParamHandlers.attach();
 }
 
 #include "moc_DlgGeneralImp.cpp"

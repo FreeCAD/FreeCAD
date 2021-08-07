@@ -681,6 +681,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_DemoMode"
           << "Std_UnitsCalculator"
           << "Separator"
+          << "Std_CmdPresets"
           << "Std_DlgCustomize";
 #ifdef BUILD_ADDONMGR
     *tool << "Std_AddonMgr";

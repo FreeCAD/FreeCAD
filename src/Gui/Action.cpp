@@ -2413,5 +2413,52 @@ void ExpressionAction::popup(const QPoint &pt)
         _menu->exec(pt);
 }
 
+// --------------------------------------------------------------------
+
+PresetsAction::PresetsAction ( Command* pcCmd, QObject * parent )
+  : Action(pcCmd, parent), _menu(0)
+{
+}
+
+PresetsAction::~PresetsAction()
+{
+    delete _menu;
+}
+
+void PresetsAction::addTo ( QWidget * w )
+{
+    if (!_menu) {
+      _menu = new QMenu();
+      _action->setMenu(_menu);
+      connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
+      connect(_menu, SIGNAL(triggered(QAction*)), this, SLOT(onAction(QAction*)));
+    }
+
+    w->addAction(_action);
+}
+
+void PresetsAction::onAction(QAction *action) {
+    auto param = App::GetApplication().GetParameterSet(
+            action->data().toByteArray().constData());
+    if (param)
+        param->insertTo(&App::GetApplication().GetUserParameter());
+}
+
+void PresetsAction::onShowMenu()
+{
+    _menu->clear();
+    auto hGrp = App::GetApplication().GetParameterSetHandle();
+    for (auto &v : hGrp->GetBoolMap()) {
+        if (v.second && App::GetApplication().GetParameterSet(v.first.c_str())) {
+            auto action = _menu->addAction(tr(v.first.c_str()));
+            action->setData(QByteArray(v.first.c_str()));
+        }
+    }
+}
+
+void PresetsAction::popup(const QPoint &pt)
+{
+    PieMenu::exec(_menu, pt, _pcCmd->getName(), true);
+}
 
 #include "moc_Action.cpp"
