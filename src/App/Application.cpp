@@ -174,8 +174,8 @@ using namespace std;
 // Application
 //==========================================================================
 
-ParameterManager *App::Application::_pcSysParamMngr;
-ParameterManager *App::Application::_pcUserParamMngr;
+Base::Reference<ParameterManager> App::Application::_pcSysParamMngr;
+Base::Reference<ParameterManager> App::Application::_pcUserParamMngr;
 Base::ConsoleObserverStd  *Application::_pConsoleObserverStd =0;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile =0;
 
@@ -244,6 +244,10 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
+    _connParamSetChanged = _pcSysParamMngr->signalParamChanged.connect(
+            boost::bind(&Application::slotParameterSetsChanged, this, bp::_1));
+    _mpcPramHandle = _pcSysParamMngr->GetGroup("ParameterSets");
+    slotParameterSetsChanged(_mpcPramHandle);
 
     // setting up Python binding
     Base::PyGILStateLocker lock;
@@ -1188,33 +1192,122 @@ ParameterManager & Application::GetUserParameter(void)
 
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return it->second;
     else
         return 0;
 }
 
-const std::map<std::string,ParameterManager *> & Application::GetParameterSetList(void) const
+const std::map<std::string,Base::Reference<ParameterManager>> &
+Application::GetParameterSetList(void) const
 {
     return mpcPramManager;
 }
 
-void Application::AddParameterSet(const char* sName)
+ParameterManager *Application::AddParameterSet(const char* sName, const std::string &filename)
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
-    if ( it != mpcPramManager.end() )
-        return;
-    mpcPramManager[sName] = new ParameterManager();
+    Base::ConnectionBlocker block(_connParamSetChanged);
+
+    ParameterManager *manager;
+    auto it = mpcPramManager.find(sName);
+    if ( it == mpcPramManager.end() ) {
+        manager = new ParameterManager();
+        mpcPramManager[sName] = manager;
+    } else {
+        manager = it->second;
+        if (manager == _pcSysParamMngr || manager == _pcUserParamMngr)
+            return manager;
+    }
+
+    if (filename.empty())
+        return manager;
+
+    std::string pathPrefix = mConfig["UserAppData"];
+    if (mConfig.count("VendorCFGPrefix"))
+        pathPrefix += mConfig["VendorCFGPrefix"];
+
+    QFileInfo fi(QString::fromUtf8(filename.c_str()));
+    QString ext = fi.suffix();
+    if (ext != QLatin1String("cfg"))
+        ext = QLatin1String("cfg");
+    QString basename = fi.completeBaseName();
+    QFileInfo fdest(QString::fromLatin1("%1%2.%3").arg(
+                QString::fromUtf8(pathPrefix.c_str()), basename, ext));
+
+    std::set<std::string> fileset;
+    for (auto & v : mpcPramManager) {
+        if (v.second != manager) {
+            const auto &path = v.second->GetSerializeFileName();
+            if (path.empty())
+                continue;
+            QFileInfo fi(QString::fromUtf8(path.c_str()));
+            fileset.insert(fi.canonicalFilePath().toUtf8().constData());
+        }
+    }
+    
+    int i = 1;
+    std::string finaldest;
+    for (;;) {
+        finaldest = fdest.filePath().toUtf8().constData();
+        if (!fileset.count(finaldest))
+            break;
+        if (i >= 1000)
+            throw Base::RuntimeError("Cannot import parameter set");
+        fdest = QFileInfo(QString::fromLatin1("%1%2(%4).%3").arg(
+                QString::fromUtf8(pathPrefix.c_str()), basename, ext).arg(i++));
+    }
+
+    if (fi.exists() && fi.canonicalFilePath() != fdest.canonicalFilePath())
+        QFile::copy(fi.filePath(), fdest.filePath());
+
+    if (manager->GetSerializeFileName() != finaldest) {
+        manager->SetSerializer(new ParameterSerializer(finaldest));
+        if (fdest.exists()) {
+            try {
+                manager->LoadOrCreateDocument();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        }
+    }
+    _mpcPramHandle->SetASCII(sName, finaldest);
+    return manager;
+}
+
+bool Application::RenameParameterSet(const char *sName, ParameterManager *hManager)
+{
+    if (!sName || !sName[0] || !hManager
+            || hManager == _pcUserParamMngr || hManager == _pcSysParamMngr)
+        return false;
+    for (auto it = mpcPramManager.begin(); it != mpcPramManager.end(); ++it) {
+        if (it->second == hManager) {
+            if (it->first != sName) {
+                Base::ConnectionBlocker block(_connParamSetChanged);
+                _mpcPramHandle->SetASCII(sName,
+                        _mpcPramHandle->GetASCII(it->first.c_str(), ""));
+                _mpcPramHandle->SetBool(sName, _mpcPramHandle->GetBool(it->first.c_str(), true));
+                _mpcPramHandle->RemoveASCII(it->first.c_str());
+                _mpcPramHandle->RemoveBool(it->first.c_str());
+                mpcPramManager[sName] = hManager;
+                mpcPramManager.erase(it);
+            }
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::iterator it = mpcPramManager.find(sName);
+    Base::ConnectionBlocker block(_connParamSetChanged);
+    auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
-    delete it->second;
+    _mpcPramHandle->RemoveASCII(sName);
+    _mpcPramHandle->RemoveBool(sName);
     mpcPramManager.erase(it);
 }
 
@@ -1233,7 +1326,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     cName.erase(0,pos+1);
 
     // test if name is valid
-    std::map<std::string,ParameterManager *>::iterator It = mpcPramManager.find(cTemp.c_str());
+    auto It = mpcPramManager.find(cTemp.c_str());
     if (It == mpcPramManager.end())
         throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
@@ -1629,8 +1722,8 @@ void Application::destruct(void)
     Console().Log("Saving user parameter...done\n");
 
     // now save all other parameter files
-    std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
-    for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
+    auto& paramMgr = _pcSingleton->mpcPramManager;
+    for (auto it = paramMgr.begin(); it != paramMgr.end(); ++it) {
         if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
             if (it->second->HasSerializer()) {
                 Console().Log("Saving %s...\n", it->first.c_str());
@@ -1638,9 +1731,6 @@ void Application::destruct(void)
                 Console().Log("Saving %s...done\n", it->first.c_str());
             }
         }
-
-        // clean up
-        delete it->second;
     }
 
     paramMgr.clear();
@@ -2230,6 +2320,30 @@ void Application::initConfig(int argc, char ** argv)
     // capture path
     SaveEnv("PATH");
     logStatus();
+}
+
+void Application::slotParameterSetsChanged(ParameterGrp *Param)
+{
+    if (Param != _mpcPramHandle)
+        return;
+
+    std::map<std::string, std::string> map;
+    for (auto &v : _mpcPramHandle->GetASCIIMap())
+        map.insert(v);
+
+    // Erase any non existent parameter set first to prevent unnecessary conf
+    // file renaming
+    for (auto it = mpcPramManager.begin(); it != mpcPramManager.end();) {
+        if (it->second != _pcUserParamMngr
+                && it->second != _pcSysParamMngr
+                && !map.count(it->first))
+            it = mpcPramManager.erase(it);
+        else
+            ++it;
+    }
+
+    for (auto &v : map)
+        AddParameterSet(v.first.c_str(), v.second);
 }
 
 void Application::SaveEnv(const char* s)
