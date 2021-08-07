@@ -1549,25 +1549,43 @@ void MainWindow::loadWindowSettings()
     config.beginGroup(qtver);
     QPoint pos = config.value(QString::fromLatin1("Position"), this->pos()).toPoint();
     QSize size = config.value(QString::fromLatin1("Size"), rect.size()).toSize();
-    int x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, pos.x()));
-    int y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, pos.y()));
-    int w = std::min<int>(rect.width(), size.width());
-    int h = std::min<int>(rect.height(), size.height());
+    bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
+    bool showStatusBar = config.value(QString::fromLatin1("StatusBar"), true).toBool();
+    QByteArray windowState = config.value(QString::fromLatin1("MainWindowState")).toByteArray();
+    config.endGroup();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/MainWindow");
+    std::string geometry = hGrp->GetASCII("Geometry");
+    std::istringstream iss;
+    int x,y,w,h;
+    if (iss >> x >> y >> w >> h) {
+        pos = QPoint(x,y);
+        size = QSize(w,h);
+    }
+    max = hGrp->GetBool("Maximized", max);
+    showStatusBar = hGrp->GetBool("StatusBar", showStatusBar);
+    std::string wstate = hGrp->GetASCII("MainWindowState");
+    if (wstate.size())
+        windowState = QByteArray::fromBase64(wstate.c_str());
+
+    x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, pos.x()));
+    y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, pos.y()));
+    w = std::min<int>(rect.width(), size.width());
+    h = std::min<int>(rect.height(), size.height());
 
     this->move(x, y);
     this->resize(w, h);
 
     // tmp. disable the report window to suppress some bothering warnings
     Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
-    this->restoreState(config.value(QString::fromLatin1("MainWindowState")).toByteArray());
+    this->restoreState(windowState);
     std::clog << "Main window restored" << std::endl;
     Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
 
-    bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
 
-    statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
-    config.endGroup();
+    statusBar()->setVisible(showStatusBar);
 
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
@@ -1584,6 +1602,7 @@ void MainWindow::saveWindowSettings()
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
+#if 0
     config.beginGroup(qtver);
     config.setValue(QString::fromLatin1("Size"), this->size());
     config.setValue(QString::fromLatin1("Position"), this->pos());
@@ -1591,9 +1610,21 @@ void MainWindow::saveWindowSettings()
     config.setValue(QString::fromLatin1("MainWindowState"), this->saveState());
     config.setValue(QString::fromLatin1("StatusBar"), this->statusBar()->isVisible());
     config.endGroup();
+#else
+    // We are migrating from saving qt main window layout state in QSettings to
+    // FreeCAD parameters, for more control. To settings is explicitly remove
+    // from old QSettings conf to allow easier complete reset of application
+    // state by just removing FC user.cfg file.
+    config.remove(qtver);
+#endif
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/MainWindow");
+
+    hGrp->SetBool("Maximized", this->isMaximized());
+    hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
+    hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());
+
     std::ostringstream ss;
     QRect rect(this->pos(), this->size());
     ss << rect.left() << " " << rect.top() << " " << rect.width() << " " << rect.height();
