@@ -129,21 +129,6 @@ public:
         return _toHandle;
     }
 
-    /** Lower operator, needed for sorting in maps and sets */
-    bool operator<(const Reference<T>& p) const {
-        return _toHandle < p._toHandle;
-    }
-
-    /** Equal operator */
-    bool operator==(const Reference<T>& p) const {
-        return _toHandle == p._toHandle;
-    }
-
-    bool operator!=(const Reference<T>& p) const {
-        return _toHandle != p._toHandle;
-    }
-
-
     //**************************************************************************
     // checking on the state
 
@@ -195,6 +180,13 @@ public:
             delete this;
         else
             assert(res>0);
+        return res;
+    }
+
+    int unrefNoDelete() const
+    {
+        int res = --_lRefCount;
+        assert(res>=0);
         return res;
     }
 
