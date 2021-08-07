@@ -315,7 +315,7 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
 
     short attribute = 0;
     bool readonly = false, hidden = false;
-    const char *group=0, *doc=0, *attr=0, *ro=0, *hide=0;
+    const char *group=0, *doc=0, *ro=0, *hide=0;
     StringIDRef docID;
     group = reader.getAttribute("group");
     if (reader.hasAttribute("doc"))
