@@ -56,6 +56,8 @@
 // TODO: Apparently this header can be avoided. See ./Command.cpp:74.
 #include "ui_DlgActiveBody.h"
 
+Q_DECLARE_METATYPE(App::DocumentObject*);
+
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
 //===========================================================================
@@ -191,33 +193,27 @@ PartDesign::Body * needActiveBodyMessage (App::Document *doc,
         break; // Just get the body for first selected object
     }
 
-    int row = 0;
     for (auto body : bodies) {
-        row++;
-        dlg.bodySelect->addItem(QString::fromUtf8(body->Label.getValue()));
+        auto item = new QListWidgetItem(QString::fromUtf8(body->Label.getValue()));
+        item->setData(Qt::UserRole, QVariant::fromValue(body));
+        dlg.bodySelect->addItem(item);
 
         if (body == bodyOfActiveObject) {
-            dlg.bodySelect->setCurrentRow(row);
+            item->setSelected(true);
         }
 
         // TODO: Any other logic (hover, select effects on view etc.)
     }
 
     int result = dia.exec();
-    if (result == QDialog::DialogCode::Accepted) {
-        // TODO: Currently using an index system. Could we avoid it in any way?
-        int offset = 1;
-        int currentRow = dlg.bodySelect->currentRow();
-        // Check for selection because current != selected
-        if (!dlg.bodySelect->item(currentRow)->isSelected()) {
-            return activeBody;
-        }
-        if (currentRow == offset-1) {
-            // Index 0 is for "Create Body"
+    auto selectedItems = dlg.bodySelect->selectedItems();
+    if (result == QDialog::DialogCode::Accepted && !selectedItems.empty()) {
+        App::DocumentObject* selectedBody =
+            selectedItems[0]->data(Qt::UserRole).value<App::DocumentObject*>();
+        if (selectedBody) {
+            activeBody = makeBodyActive(selectedBody, doc);
+        } else {
             return makeBody(doc);
-        } else if (currentRow >= offset) {
-            // Index 1 and above for each of the bodies
-            activeBody = makeBodyActive(bodies[currentRow-offset], doc);
         }
     }
 
