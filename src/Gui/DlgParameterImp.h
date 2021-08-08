@@ -102,6 +102,7 @@ protected Q_SLOTS:
     void on_btnAdd_clicked();
     void on_btnRemove_clicked();
     void on_btnRename_clicked();
+    void on_btnRefresh_clicked();
     void on_btnRestart_clicked();
     void on_btnReset_clicked();
     void on_checkBoxPreset_toggled(bool);

@@ -697,6 +697,12 @@ void DlgParameterImp::on_btnRename_clicked()
     }
 }
 
+void DlgParameterImp::on_btnRefresh_clicked()
+{
+    saveState(false);
+    onChangeParameterSet(ui->parameterSet->currentIndex());
+}
+
 void DlgParameterImp::on_btnRemove_clicked()
 {
     int index = ui->parameterSet->currentIndex();
@@ -1004,7 +1010,7 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
     auto iter = changes.find(Param);
     ParamKey key(Type, Name);
     if (Value) {
-        // Means either value changed value (or new)
+        // Means either value changed or new value
         if (iter == changes.end())
             changes[Param].insert(key);
         else if (iter->second.size())
@@ -1049,7 +1055,7 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
             else
                 Value = "false";
         }
-        item->setText(1, QString::fromUtf8(Value));
+        item->setText(2, QString::fromUtf8(Value));
         setValueItemState(item, Qt::Checked);
         paramValue->scrollToItem(item);
     } else if (Name) {

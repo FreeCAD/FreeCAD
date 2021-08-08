@@ -18,6 +18,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QComboBox" name="parameterSet">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="editable">
         <bool>false</bool>
        </property>
@@ -38,7 +44,14 @@
         <string>Enable this to expose the setting as preset in 'Tools -&gt; Presets'</string>
        </property>
        <property name="text">
-        <string>Add to presets</string>
+        <string>Presets</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRefresh">
+       <property name="text">
+        <string>Refresh</string>
        </property>
       </widget>
      </item>
