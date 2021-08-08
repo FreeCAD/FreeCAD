@@ -34,6 +34,9 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
+import PySide.QtCore as QtCore
+import locale
+
 from femtools import femutils
 from femtools import membertools
 
@@ -42,6 +45,10 @@ class _TaskPanel(object):
 
     def __init__(self, obj):
         self._obj = obj
+
+        # get currently used locale
+        locale.setlocale(locale.LC_ALL, QtCore.QLocale().name())
+
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui")
         self._initParamWidget()
@@ -107,14 +114,14 @@ class _TaskPanel(object):
             not self._paramWidget.velocityXBox.isChecked()
         if self._obj.VelocityXEnabled:
             quantity = Units.Quantity(self._paramWidget.velocityXTxt.text())
-            self._obj.VelocityX = float(quantity.getValueAs(unit))
+            self._obj.VelocityX = locale.atof(quantity.getValueAs(unit))
         self._obj.VelocityYEnabled = \
             not self._paramWidget.velocityYBox.isChecked()
         if self._obj.VelocityYEnabled:
             quantity = Units.Quantity(self._paramWidget.velocityYTxt.text())
-            self._obj.VelocityY = float(quantity.getValueAs(unit))
+            self._obj.VelocityY = locale.atof(quantity.getValueAs(unit))
         self._obj.VelocityZEnabled = \
             not self._paramWidget.velocityZBox.isChecked()
         if self._obj.VelocityZEnabled:
             quantity = Units.Quantity(self._paramWidget.velocityZTxt.text())
-            self._obj.VelocityZ = float(quantity.getValueAs(unit))
+            self._obj.VelocityZ = locale.atof(quantity.getValueAs(unit))

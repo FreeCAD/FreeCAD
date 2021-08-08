@@ -34,6 +34,9 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
+import PySide.QtCore as QtCore
+import locale
+
 from femguiutils import selection_widgets
 from femtools import femutils
 from femtools import membertools
@@ -43,6 +46,10 @@ class _TaskPanel(object):
 
     def __init__(self, obj):
         self._obj = obj
+
+        # get currently used locale
+        locale.setlocale(locale.LC_ALL, QtCore.QLocale().name())
+
         self._refWidget = selection_widgets.BoundarySelector()
         self._refWidget.setReferences(obj.References)
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
@@ -131,7 +138,7 @@ class _TaskPanel(object):
                     .format(self._paramWidget.potentialTxt.text())
                 )
             if quantity is not None:
-                self._obj.Potential = float(quantity.getValueAs(unit))
+                self._obj.Potential = locale.atof(quantity.getValueAs(unit))
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 
         self._obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()

@@ -32,6 +32,8 @@ __url__ = "https://www.freecadweb.org"
 #  \brief task panel for common material object
 
 import sys
+import PySide.QtCore as QtCore
+import locale
 from PySide import QtCore
 from PySide import QtGui
 
@@ -67,6 +69,9 @@ class _TaskPanel:
         # they might not match because of special letters in the material_name
         # which are changed in the card_name to english standard characters
         self.has_transient_mat = False
+
+        # get currently used locale
+        locale.setlocale(locale.LC_ALL, QtCore.QLocale().name())
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -429,7 +434,7 @@ class _TaskPanel:
             if "PoissonRatio" in self.material:
                 # PoissonRatio does not have a unit, but it is checked it there is no value at all
                 try:
-                    float(self.material["PoissonRatio"])
+                    locale.atof(self.material["PoissonRatio"])
                 except ValueError:
                     FreeCAD.Console.PrintMessage(
                         "PoissonRatio has wrong or no data (reset the value): {}\n"
@@ -545,8 +550,8 @@ class _TaskPanel:
             old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
         else:
             # for example PoissonRatio
-            value = float(inputfield_text)
-            old_value = float(self.material[matProperty])
+            value = locale.atof(inputfield_text)
+            old_value = locale.atof(self.material[matProperty])
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material
@@ -648,7 +653,7 @@ class _TaskPanel:
             q = FreeCAD.Units.Quantity("{} {}".format(ym_with_new_unit, ym_new_unit))
             self.parameterWidget.input_fd_young_modulus.setText(q.UserString)
         if "PoissonRatio" in matmap:
-            self.parameterWidget.spinBox_poisson_ratio.setValue(float(matmap["PoissonRatio"]))
+            self.parameterWidget.spinBox_poisson_ratio.setValue(locale.atof(matmap["PoissonRatio"]))
         # Fluidic properties
         if "KinematicViscosity" in matmap:
             nu_new_unit = "m^2/s"

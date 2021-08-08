@@ -37,6 +37,9 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 
+import PySide.QtCore as QtCore
+import locale
+
 from femguiutils import selection_widgets
 from femobjects import element_fluid1D
 
@@ -49,6 +52,9 @@ class _TaskPanel:
     def __init__(self, obj):
 
         self.obj = obj
+
+        # get currently used locale
+        locale.setlocale(locale.LC_ALL, QtCore.QLocale().name())
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -422,22 +428,22 @@ class _TaskPanel:
         self.ContractArea2 = base_quantity_value
 
     def inlet_pressure_changed(self, base_quantity_value):
-        self.InletPressure = float(
+        self.InletPressure = locale.atof(
             FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa")
         )
 
     def outlet_pressure_changed(self, base_quantity_value):
-        self.OutletPressure = float(
+        self.OutletPressure = locale.atof(
             FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa")
         )
 
     def inlet_flowrate_changed(self, base_quantity_value):
-        self.InletFlowRate = float(
+        self.InletFlowRate = locale.atof(
             FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s")
         )
 
     def outlet_flowrate_changed(self, base_quantity_value):
-        self.OutletFlowRate = float(
+        self.OutletFlowRate = locale.atof(
             FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s")
         )
 
@@ -497,10 +503,10 @@ class _TaskPanel:
 
     def pump_characteristics_changed(self, row, column):
         if column == 0:
-            self.PumpFlowRate[row] = float(
+            self.PumpFlowRate[row] = locale.atof(
                 self.parameterWidget.tw_pump_characteristics.item(row, column).text()
             )
         else:
-            self.PumpHeadLoss[row] = float(
+            self.PumpHeadLoss[row] = locale.atof(
                 self.parameterWidget.tw_pump_characteristics.item(row, column).text()
             )
