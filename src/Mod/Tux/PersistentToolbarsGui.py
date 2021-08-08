@@ -27,6 +27,21 @@ from PySide import QtGui
 conectedToolbars = []
 timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
+_saving_params = False
+_observer = None
+
+class Observer:
+    def __init__(self):
+        pUser = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
+        pUser.AttachManager(self)
+        timer.setSingleShot(True)
+        timer.timeout.disconnect()
+        timer.timeout.connect(onWorkbenchActivated)
+
+    def slotParamChanged(self, _param, tp, name, value):
+        if not _saving_params and tp and name and value:
+            timer.start(100)
+
 
 def pythonToolbars():
     """Manage Python based toolbars in Arch and Draft workbench."""
@@ -59,6 +74,12 @@ def isConnected(i):
     else:
         pass
 
+def getGlobalToolbars():
+    pGlobal = App.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
+    globaltb = ["File", "Workbench", "Macro", "View", "Structure"]
+    for group in pGlobal.GetGroups():
+        globaltb.append(group.GetString("Name"))
+    return globaltb
 
 def onRestore(active):
     """Restore current workbench toolbars position."""
@@ -67,12 +88,13 @@ def onRestore(active):
     tb = mw.findChildren(QtGui.QToolBar)
     pUser = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
     pSystem = App.ParamGet("User parameter:Tux/PersistentToolbars/System")
+    globaltb = getGlobalToolbars()
 
     for i in tb:
 
         isConnected(i)
 
-        if i.objectName() and not i.isFloating():
+        if i.objectName() and i.toggleViewAction().isVisible() and not i.isFloating():
             toolbars[i.objectName()] = i
         else:
             pass
@@ -85,10 +107,10 @@ def onRestore(active):
         group = None
 
     if group:
-        topRestore = group.GetString("Top").split(",")
-        leftRestore = group.GetString("Left").split(",")
-        rightRestore = group.GetString("Right").split(",")
-        bottomRestore = group.GetString("Bottom").split(",")
+        topRestore = [ t for t in group.GetString("Top").split(",") if t not in globaltb ]
+        leftRestore = [ t for t in group.GetString("Left").split(",") if t not in globaltb ]
+        rightRestore = [ t for t in group.GetString("Right").split(",") if t not in globaltb ]
+        bottomRestore = [ t for t in group.GetString("Bottom").split(",") if t not in globaltb ]
 
         # Reduce flickering.
         for i in toolbars:
@@ -152,30 +174,31 @@ def onSave():
     active = Gui.activeWorkbench().__class__.__name__
     p = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
     group = p.GetGroup(active)
+    globaltb = getGlobalToolbars()
 
     top = []
     left = []
     right = []
     bottom = []
 
+    _saving_params = True
+
     for i in tb:
-        if i.objectName() and i.isVisible() and not i.isFloating():
+        if not i.isFloating():
 
             area = mw.toolBarArea(i)
 
             x = i.geometry().x()
             y = i.geometry().y()
-            b = mw.toolBarBreak(i)
-            n = i.objectName()
 
             if area == QtCore.Qt.ToolBarArea.TopToolBarArea:
-                top.append([x, y, b, n])
+                top.append([x, y, i])
             elif area == QtCore.Qt.ToolBarArea.LeftToolBarArea:
-                left.append([x, y, b, n])
+                left.append([x, y, i])
             elif area == QtCore.Qt.ToolBarArea.RightToolBarArea:
-                right.append([-x, y, b, n])
+                right.append([-x, y, i])
             elif area == QtCore.Qt.ToolBarArea.BottomToolBarArea:
-                bottom.append([x, -y, b, n])
+                bottom.append([x, -y, i])
             else:
                 pass
         else:
@@ -186,44 +209,26 @@ def onSave():
     right = sorted(right, key=operator.itemgetter(0, 1))
     bottom = sorted(bottom, key=operator.itemgetter(1, 0))
 
-    topSave = []
-    leftSave = []
-    rightSave = []
-    bottomSave = []
+    for info, name in [(top,"Top"), (bottom,"Bottom"), (left,"Left"), (right,"Right")]:
+        saved = []
+        for _,_,tb in info:
+            if mw.toolBarBreak(tb):
+                saved.append("Break")
 
-    for i in top:
-        if i[2] is True:
-            topSave.append("Break")
-            topSave.append(i[3])
-        else:
-            topSave.append(i[3])
+            if not tb.toggleViewAction().isVisible():
+                # Toolbar with its toggle view action hidden means it does not
+                # belong to the active workbench. But we shall still save the
+                # otherwise invisible toolbar (hence below).
+                continue
 
-    for i in left:
-        if i[2] is True:
-            leftSave.append("Break")
-            leftSave.append(i[3])
-        else:
-            leftSave.append(i[3])
+            name = tb.objectName()
+            if name:
+                saved.append(name)
 
-    for i in right:
-        if i[2] is True:
-            rightSave.append("Break")
-            rightSave.append(i[3])
-        else:
-            rightSave.append(i[3])
-
-    for i in bottom:
-        if i[2] is True:
-            bottomSave.append("Break")
-            bottomSave.append(i[3])
-        else:
-            bottomSave.append(i[3])
+        group.SetString(name, ",".join(saved))
 
     group.SetBool("Saved", 1)
-    group.SetString("Top", ",".join(topSave))
-    group.SetString("Left", ",".join(leftSave))
-    group.SetString("Right", ",".join(rightSave))
-    group.SetString("Bottom", ",".join(bottomSave))
+    _saving_params = False
 
 
 def onWorkbenchActivated():
@@ -253,6 +258,9 @@ def onStart():
             onWorkbenchActivated()
             mw.mainWindowClosed.connect(onClose)
             mw.workbenchActivated.connect(onWorkbenchActivated)
+            global _observer
+            if not _observer:
+                _observer = Observer()
 
 
 def onClose():
