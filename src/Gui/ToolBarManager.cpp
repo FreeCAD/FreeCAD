@@ -181,10 +181,44 @@ ToolBarManager::ToolBarManager()
 {
     hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("MainWindow")->GetGroup("Toolbars");
+    hMovable = hPref->GetGroup("Movable");
+    connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
+        [this](ParameterGrp *Param, const char *, const char *, const char *) {
+            if (Param == hPref || Param == hMovable)
+                timer.start(100);
+        });
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 }
 
 ToolBarManager::~ToolBarManager()
 {
+}
+
+bool ToolBarManager::isDefaultMovable() const
+{
+    return hMovable->GetBool("*", true);
+}
+
+void ToolBarManager::setDefaultMovable(bool enable)
+{
+    hMovable->Clear();
+    hMovable->SetBool("*", enable);
+}
+
+void ToolBarManager::onTimer()
+{
+    bool movable = isDefaultMovable();
+    for (auto tb : getMainWindow()->findChildren<QToolBar*>()) {
+        if (tb->parent() != getMainWindow())
+            continue;
+        QByteArray name = tb->objectName().toUtf8();
+        if (name.isEmpty())
+            continue;
+        if (tb->toggleViewAction()->isVisible())
+            tb->setVisible(hPref->GetBool(name, true));
+        tb->setMovable(hMovable->GetBool(name, movable));
+    }
 }
 
 void ToolBarManager::setup(ToolBarItem* toolBarItems)
@@ -199,6 +233,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
     QList<ToolBarItem*> items = toolBarItems->getItems();
     QList<QToolBar*> toolbars = toolBars();
+    bool movable = isDefaultMovable();
     for (auto item : items) {
         // search for the toolbar
         QString name;
@@ -226,16 +261,17 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                 QApplication::translate("Workbench",
                                         toolbarName.c_str())); // i18n
             toolbar->setObjectName(name);
-            toolbar->setVisible(visible);
             connect(toolbar, SIGNAL(visibilityChanged(bool)), this, SLOT(onToggleToolBar(bool)));
+            connect(toolbar, SIGNAL(movableChanged(bool)), this, SLOT(onMovableChanged(bool)));
             toolbar_added = true;
         }
         else {
             toolbars.removeOne(toolbar);
             toolbar->toggleViewAction()->setVisible(true);
-            QSignalBlocker blocker(toolbar);
-            toolbar->setVisible(visible);
         }
+        QSignalBlocker blocker(toolbar);
+        toolbar->setVisible(visible);
+        toolbar->setMovable(hMovable->GetBool(toolbarName.c_str(), movable));
 
         // setup the toolbar
         setup(item, toolbar);
@@ -328,12 +364,14 @@ void ToolBarManager::saveState() const
 void ToolBarManager::restoreState() const
 {
     QList<QToolBar*> toolbars = toolBars();
+    bool movable = isDefaultMovable();
     for (QStringList::ConstIterator it = this->toolbarNames.begin(); it != this->toolbarNames.end(); ++it) {
         QToolBar* toolbar = findToolBar(toolbars, *it);
         if (toolbar) {
             QByteArray toolbarName = toolbar->objectName().toUtf8();
             QSignalBlocker blocker(toolbar);
-            toolbar->setVisible(hPref->GetBool(toolbarName.constData(), toolbar->isVisible()));
+            toolbar->setVisible(hPref->GetBool(toolbarName, toolbar->isVisible()));
+            toolbar->setMovable(hMovable->GetBool(toolbarName, movable));
         }
     }
     restored = true;
@@ -398,7 +436,19 @@ void ToolBarManager::onToggleToolBar(bool visible)
             // the toolbar is enabled while at its owner workbench
             enabled = true;
         }
-        hPref->SetBool(toolbar->objectName().toUtf8().constData(), enabled);
+        Base::ConnectionBlocker block(connParam);
+        hPref->SetBool(toolbar->objectName().toUtf8(), enabled);
+    }
+}
+
+void ToolBarManager::onMovableChanged(bool movable)
+{
+    if (!restored)
+        return;
+    auto toolbar = qobject_cast<QToolBar*>(sender());
+    if (toolbar) {
+        Base::ConnectionBlocker block(connParam);
+        hMovable->SetBool(toolbar->objectName().toUtf8(), movable);
     }
 }
 

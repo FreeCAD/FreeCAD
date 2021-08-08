@@ -24,8 +24,10 @@
 #ifndef GUI_TOOLBARMANAGER_H
 #define GUI_TOOLBARMANAGER_H
 
+#include <boost_signals2.hpp>
 #include <string>
 #include <QStringList>
+#include <QTimer>
 #include <Base/Parameter.h>
 
 class QAction;
@@ -86,10 +88,14 @@ public:
     void setup(ToolBarItem*);
     void saveState() const;
     void restoreState() const;
+    void setDefaultMovable(bool enable);
+    bool isDefaultMovable() const;
     void retranslate() const;
 
 protected Q_SLOTS:
     void onToggleToolBar(bool);
+    void onMovableChanged(bool);
+    void onTimer();
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
@@ -101,9 +107,12 @@ protected:
     ~ToolBarManager();
 
 private:
+    QTimer timer;
     QStringList toolbarNames;
     static ToolBarManager* _instance;
     ParameterGrp::handle hPref;
+    ParameterGrp::handle hMovable;
+    boost::signals2::scoped_connection connParam;
     mutable bool restored = false;
 };
 
