@@ -159,6 +159,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint displacement
     con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacmentPrescribed")
     con_disp.References = [(geom_obj, "Face1")]
+    con_disp.zFree = False
     con_disp.zFix = True
     analysis.addObject(con_disp)
 
