@@ -143,7 +143,6 @@ def setup(doc=None, solvertype="ccxtools"):
     matprop["Name"] = "CalculiX-Steel"
     matprop["YoungsModulus"] = "210000 MPa"
     matprop["PoissonRatio"] = "0.30"
-    matprop["Density"] = "7900 kg/m^3"
     material_obj.Material = matprop
     analysis.addObject(material_obj)
 

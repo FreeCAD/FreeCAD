@@ -84,7 +84,6 @@ def setup_cantilever_base_solid(doc=None, solvertype="ccxtools"):
     mat["Name"] = "CalculiX-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 

@@ -141,8 +141,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "CalculiX-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
