@@ -847,7 +847,17 @@ class _Wall(ArchComponent.Component):
                                         offset = obj.OffsetFirst.Value
                                     else:
                                         offset = obj.OffsetSecond.Value
-                                    for edge in self.basewires[0].Edges:
+                                    # only 1 wire (first) is supported
+                                    if len(obj.Base.Shape.Edges) == 1:
+                                        # If there is a single edge, the wire was used
+                                        baseEdges = self.basewires[0].Edges
+                                    elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                                        # if obj.Base is Sketch, self.baseWires[0] returned is already a list of edge
+                                        baseEdges = self.basewires[0]
+                                    else:
+                                        # otherwise, it is wire
+                                        baseEdges = self.basewires[0].Edges
+                                    for edge in baseEdges:
                                         while offset < (edge.Length-obj.Joint.Value):
                                             #print i," Edge ",edge," : ",edge.Length," - ",offset
                                             if offset:
