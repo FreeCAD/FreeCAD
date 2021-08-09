@@ -37,7 +37,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Quad8",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "solid",
         "equation": "mechanical"
     }

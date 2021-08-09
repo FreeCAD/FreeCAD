@@ -39,7 +39,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Quad4",
         "constraints": ["displacement", "force"],
-        "solvers": ["calculix", "elmer", "mystran"],
+        "solvers": ["calculix", "ccxtools", "elmer", "mystran"],
         "material": "solid",
         "equation": "mechanical"
     }
