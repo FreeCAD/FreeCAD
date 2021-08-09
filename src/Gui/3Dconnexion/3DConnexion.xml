@@ -89,9 +89,9 @@
       <Map Description="ALT"           KeyCode="23" DownTime="short" Command=""/>
       <Map Description="SHIFT"         KeyCode="24" DownTime="short" Command=""/>
       <Map Description="CTRL"          KeyCode="25" DownTime="short" Command=""/>
-      <Map Description="Dominant"      KeyCode="26" DownTime="short" Command=""/>
+      <Map Description="Rotation"      KeyCode="26" DownTime="short" Command=""/>
       <Map Description="PanAndZoom"    KeyCode="27" DownTime="short" Command=""/>
-      <Map Description="Rotation"      KeyCode="28" DownTime="short" Command=""/>
+      <Map Description="Dominant"      KeyCode="28" DownTime="short" Command=""/>
       <Map Description="Plus"          KeyCode="29" DownTime="short" Command=""/>
       <Map Description="Minus"         KeyCode="30" DownTime="short" Command=""/>
    </Mapping>
