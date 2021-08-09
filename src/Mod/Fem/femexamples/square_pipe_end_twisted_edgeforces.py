@@ -120,7 +120,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
