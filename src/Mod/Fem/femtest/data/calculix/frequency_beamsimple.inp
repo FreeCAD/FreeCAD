@@ -17062,6 +17062,13 @@ Fix_YZ,3
 U
 *EL FILE
 S, E
+** outputs --> dat file
+** reaction forces for Constraint displacement constraining translation
+*NODE PRINT, NSET=Fix_XYZ, TOTALS=ONLY
+RF
+*NODE PRINT, NSET=Fix_YZ, TOTALS=ONLY
+RF
+
 
 ***********************************************************
 *END STEP 

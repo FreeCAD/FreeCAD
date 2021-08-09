@@ -60,8 +60,9 @@ def write_step_output(f, ccxwriter):
         # reaction forces: freecadweb.org/tracker/view.php?id=2934
         # some hint can be found in this topic:
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=20664&start=10#p520642
-        if ccxwriter.member.cons_fixed:
+        if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("** outputs --> dat file\n")
+        if ccxwriter.member.cons_fixed:
             # reaction forces for all Constraint fixed
             f.write("** reaction forces for Constraint fixed\n")
             for femobj in ccxwriter.member.cons_fixed:
@@ -69,7 +70,16 @@ def write_step_output(f, ccxwriter):
                 fix_obj_name = femobj["Object"].Name
                 f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(fix_obj_name))
                 f.write("RF\n")
-            # TODO: add Constraint Displacement if nodes are restrained
+        if ccxwriter.member.cons_displacement:
+            # reaction forces for Constraint displacement constraining translation
+            f.write("** reaction forces for Constraint displacement constraining translations\n")
+            for femobj in ccxwriter.member.cons_displacement:
+                if not femobj["Object"].xFree or not femobj["Object"].yFree or not femobj["Object"].zFree:
+                    # femobj --> dict, FreeCAD document object is femobj["Object"]
+                    disp_obj_name = femobj["Object"].Name
+                    f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(disp_obj_name))
+                    f.write("RF\n")
+        if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("\n")
 
         # there is no need to write all integration point results
