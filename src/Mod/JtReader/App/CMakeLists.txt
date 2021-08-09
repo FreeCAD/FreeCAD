@@ -12,7 +12,7 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${XERCESC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
 )
 
