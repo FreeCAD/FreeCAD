@@ -50,7 +50,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "force", "transform"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "solid",
         "equation": "mechanical"
     }

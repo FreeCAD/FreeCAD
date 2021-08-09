@@ -48,7 +48,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["section_print", "fixed", "pressure"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "solid",
         "equation": "mechanical"
     }
