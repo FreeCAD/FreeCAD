@@ -151,7 +151,7 @@ public:
     /// Loads the main window settings.
     void loadWindowSettings();
     /// Saves the main window settings.
-    void saveWindowSettings();
+    void saveWindowSettings(bool canDelay = false);
     //@}
 
     /** @name MIME data handling

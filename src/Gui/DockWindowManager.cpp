@@ -29,13 +29,14 @@
 # include <QMap>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "OverlayWidgets.h"
-
-FC_LOG_LEVEL_INIT("Dock", true, true);
 
 using namespace Gui;
 
@@ -97,6 +98,9 @@ struct DockWindowManagerP
     QList<QDockWidget*> _dockedWindows;
     QMap<QString, QPointer<QWidget> > _dockWindows;
     DockWindowItems _dockWindowItems;
+    ParameterGrp::handle hPref;
+    boost::signals2::scoped_connection connParam;
+    QTimer timer;
 };
 } // namespace Gui
 
@@ -118,6 +122,25 @@ void DockWindowManager::destruct()
 DockWindowManager::DockWindowManager()
 {
     d = new DockWindowManagerP;
+    d->hPref = App::GetApplication().GetUserParameter().GetGroup(
+            "BaseApp/MainWindow/DockWindows");
+    d->connParam = d->hPref->Manager()->signalParamChanged.connect(
+        [this](ParameterGrp *Param, const char *Type, const char *, const char *) {
+            if(Param == d->hPref && Type && boost::equals(Type, "FCBool"))
+                d->timer.start(100);
+        });
+
+    d->timer.setSingleShot(true);
+
+    connect(&d->timer, &QTimer::timeout, [this](){
+        for(auto w : this->getDockWindows()) {
+            if (auto dw = qobject_cast<QDockWidget*>(w)) {
+                QSignalBlocker blocker(dw);
+                QByteArray dockName = dw->toggleViewAction()->data().toByteArray();
+                dw->setVisible(d->hPref->GetBool(dockName, dw->isVisible()));
+            }
+        }
+    });
 }
 
 DockWindowManager::~DockWindowManager()
@@ -175,6 +198,16 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     d->_dockedWindows.push_back(dw);
 
     OverlayManager::instance()->initDockWidget(dw, widget);
+
+    connect(dw->toggleViewAction(), &QAction::triggered, [this, dw](){
+        Base::ConnectionBlocker block(d->connParam);
+        QByteArray dockName = dw->toggleViewAction()->data().toByteArray();
+        d->hPref->SetBool(dockName.constData(), dw->isVisible());
+    });
+
+    auto cb = []() {getMainWindow()->saveWindowSettings(true);};
+    connect(dw, &QDockWidget::topLevelChanged, cb);
+    connect(dw, &QDockWidget::dockLocationChanged, cb);
     return dw;
 }
 
@@ -327,15 +360,13 @@ void DockWindowManager::setup(DockWindowItems* items)
     saveState();
     d->_dockWindowItems = *items;
 
-    ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                               ->GetGroup("MainWindow")->GetGroup("DockWindows");
     QList<QDockWidget*> docked = d->_dockedWindows;
     const QList<DockWindowItem>& dws = items->dockWidgets();
 
     for (QList<DockWindowItem>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
         QDockWidget* dw = findDockWidget(docked, it->name);
         QByteArray dockName = it->name.toLatin1();
-        bool visible = hPref->GetBool(dockName.constData(), it->visibility);
+        bool visible = d->hPref->GetBool(dockName.constData(), it->visibility);
 
         if (!dw) {
             QMap<QString, QPointer<QWidget> >::ConstIterator jt = d->_dockWindows.find(it->name);
@@ -362,15 +393,12 @@ void DockWindowManager::setup(DockWindowItems* items)
 
 void DockWindowManager::saveState()
 {
-    ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                               ->GetGroup("MainWindow")->GetGroup("DockWindows");
-
     const QList<DockWindowItem>& dockItems = d->_dockWindowItems.dockWidgets();
     for (QList<DockWindowItem>::ConstIterator it = dockItems.begin(); it != dockItems.end(); ++it) {
         QDockWidget* dw = findDockWidget(d->_dockedWindows, it->name);
         if (dw) {
             QByteArray dockName = dw->toggleViewAction()->data().toByteArray();
-            hPref->SetBool(dockName.constData(), dw->isVisible());
+            d->hPref->SetBool(dockName.constData(), dw->isVisible());
         }
     }
 }

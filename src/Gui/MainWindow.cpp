@@ -60,6 +60,8 @@
 
 #include <QWidgetAction>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 // FreeCAD Base header
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -69,6 +71,7 @@
 #include <Base/Stream.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -182,6 +185,8 @@ struct MainWindowP
     QTimer* statusTimer;
     QTimer* activityTimer;
     QTimer* visibleTimer;
+    QTimer saveStateTimer;
+    QTimer restoreStateTimer;
     QMdiArea* mdiArea;
     QPointer<MDIView> activeView;
     QSignalMapper* windowMapper;
@@ -196,6 +201,10 @@ struct MainWindowP
     QMap<QString, QPointer<UrlHandler> > urlHandler;
     std::string hiddenDockWindows;
     int screen = -1;
+    boost::signals2::scoped_connection connParam;
+    ParameterGrp::handle hGrp;
+
+    void restoreWindowState(const QByteArray &);
 };
 
 class MDITabbar : public QTabBar
@@ -298,6 +307,31 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // global access
     instance = this;
+
+    d->connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
+        [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+            if (Param != d->hGrp || !Name)
+                return;
+            if (boost::equals(Name, "StatusBar")) {
+                if(auto sb = getMainWindow()->statusBar())
+                    sb->setVisible(d->hGrp->GetBool("StatusBar", sb->isVisible()));
+            }
+            else if (boost::equals(Name, "MainWindowState")) {
+                OverlayManager::instance()->reload(OverlayManager::ReloadPause);
+                d->restoreStateTimer.start(100);
+            }
+        });
+
+    d->hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/MainWindow");
+    d->saveStateTimer.setSingleShot(true);
+    connect(&d->saveStateTimer, &QTimer::timeout, [this](){this->saveWindowSettings();});
+
+    d->restoreStateTimer.setSingleShot(true);
+    connect(&d->restoreStateTimer, &QTimer::timeout, [this](){
+        d->restoreWindowState(QByteArray::fromBase64(d->hGrp->GetASCII("MainWindowState").c_str()));
+        OverlayManager::instance()->reload(OverlayManager::ReloadResume);
+    });
 
     // support for grouped dragging of dockwidgets
     // https://woboq.com/blog/qdockwidget-changes-in-56.html
@@ -697,6 +731,15 @@ void populateMenu(QMenu *menu, MenuType type)
                         checkbox->setChecked(checked);
                     });
                 }
+#ifdef FC_DEBUG
+                else {
+                    actions[action->text()] = action;
+                    if (!hiddenMenu) {
+                        hiddenMenu = new QMenu(QObject::tr("Other toolbars"), menu);
+                        hiddenMenu->setToolTipsVisible(true);
+                    }
+                }
+#endif
             }
         }
         break;
@@ -1598,18 +1641,16 @@ void MainWindow::loadWindowSettings()
     QByteArray windowState = config.value(QString::fromLatin1("MainWindowState")).toByteArray();
     config.endGroup();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/MainWindow");
-    std::string geometry = hGrp->GetASCII("Geometry");
+    std::string geometry = d->hGrp->GetASCII("Geometry");
     std::istringstream iss;
     int x,y,w,h;
     if (iss >> x >> y >> w >> h) {
         pos = QPoint(x,y);
         size = QSize(w,h);
     }
-    max = hGrp->GetBool("Maximized", max);
-    showStatusBar = hGrp->GetBool("StatusBar", showStatusBar);
-    std::string wstate = hGrp->GetASCII("MainWindowState");
+    max = d->hGrp->GetBool("Maximized", max);
+    showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
+    std::string wstate = d->hGrp->GetASCII("MainWindowState");
     if (wstate.size())
         windowState = QByteArray::fromBase64(wstate.c_str());
 
@@ -1621,14 +1662,10 @@ void MainWindow::loadWindowSettings()
     this->move(x, y);
     this->resize(w, h);
 
-    // tmp. disable the report window to suppress some bothering warnings
-    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
-    this->restoreState(windowState);
+    d->restoreWindowState(windowState);
     std::clog << "Main window restored" << std::endl;
-    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
 
     max ? showMaximized() : show();
-
     statusBar()->setVisible(showStatusBar);
 
     ToolBarManager::getInstance()->restoreState();
@@ -1637,8 +1674,31 @@ void MainWindow::loadWindowSettings()
     OverlayManager::instance()->restore();
 }
 
-void MainWindow::saveWindowSettings()
+void MainWindowP::restoreWindowState(const QByteArray &windowState)
 {
+    if (windowState.isEmpty())
+        return;
+
+    // tmp. disable the report window to suppress some bothering warnings
+    if (Base::Console().IsMsgTypeEnabled("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn)) {
+        Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
+        getMainWindow()->restoreState(windowState);
+        Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
+    } else
+        getMainWindow()->restoreState(windowState);
+
+    Base::ConnectionBlocker block(connParam);
+    // as a notification for user code on window state restore
+    hGrp->SetBool("WindowStateRestored", !hGrp->GetBool("WindowStateRestored", false));
+}
+
+void MainWindow::saveWindowSettings(bool canDelay)
+{
+    if (canDelay) {
+        d->saveStateTimer.start(100);
+        return;
+    }
+
     QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
     QString application = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
     int major = (QT_VERSION >> 0x10) & 0xff;
@@ -1656,23 +1716,21 @@ void MainWindow::saveWindowSettings()
     config.endGroup();
 #else
     // We are migrating from saving qt main window layout state in QSettings to
-    // FreeCAD parameters, for more control. To settings is explicitly remove
-    // from old QSettings conf to allow easier complete reset of application
-    // state by just removing FC user.cfg file.
+    // FreeCAD parameters, for more control. The old settings is explicitly
+    // remove from old QSettings conf to allow easier complete reset of
+    // application state by just removing FC user.cfg file.
     config.remove(qtver);
 #endif
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/MainWindow");
-
-    hGrp->SetBool("Maximized", this->isMaximized());
-    hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
-    hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());
+    Base::ConnectionBlocker block(d->connParam);
+    d->hGrp->SetBool("Maximized", this->isMaximized());
+    d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
+    d->hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());
 
     std::ostringstream ss;
     QRect rect(this->pos(), this->size());
     ss << rect.left() << " " << rect.top() << " " << rect.width() << " " << rect.height();
-    hGrp->SetASCII("Geometry", ss.str().c_str());
+    d->hGrp->SetASCII("Geometry", ss.str().c_str());
 
     DockWindowManager::instance()->saveState();
     OverlayManager::instance()->save();

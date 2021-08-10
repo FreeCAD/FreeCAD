@@ -378,6 +378,7 @@ protected:
     {
         if (getMainWindow()->findChild<QStatusBar *>() != nullptr && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
             this->action->setChecked(getMainWindow()->statusBar()->isVisible());
+            getMainWindow()->saveWindowSettings(true);
         }
         return false;
     }

@@ -263,6 +263,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbar->setObjectName(name);
             connect(toolbar, SIGNAL(visibilityChanged(bool)), this, SLOT(onToggleToolBar(bool)));
             connect(toolbar, SIGNAL(movableChanged(bool)), this, SLOT(onMovableChanged(bool)));
+            connect(toolbar, &QToolBar::topLevelChanged, [](){getMainWindow()->saveWindowSettings(true);});
             toolbar_added = true;
         }
         else {
