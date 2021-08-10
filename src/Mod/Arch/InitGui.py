@@ -59,7 +59,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
         import Arch
 
         # Set up command lists
-        self.archtools = ["Arch_Wall", "Arch_Structure", "Arch_Rebar",
+        self.archtools1 = ["Arch_Wall", "Arch_Structure", "Arch_Rebar",
                           "Arch_CurtainWall","Arch_BuildingPart",
                           "Arch_Project", "Arch_Site", "Arch_Building",
                           "Arch_Floor", "Arch_Reference",
@@ -68,8 +68,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
                           "Arch_PanelTools", "Arch_Equipment",
                           "Arch_Frame", "Arch_Fence", "Arch_Truss",
                           "Arch_Profile","Arch_MaterialTools",
-                          "Arch_Schedule", "Arch_PipeTools",
-                          "Arch_CutPlane", "Arch_CutLine",
+                          "Arch_Schedule", "Arch_PipeTools"]
+        self.archtools2 = ["Arch_CutPlane", "Arch_CutLine",
                           "Arch_Add", "Arch_Remove", "Arch_Survey"]
         self.utilities = ["Arch_Component", "Arch_CloneComponent",
                           "Arch_SplitMesh", "Arch_MeshToShape",
@@ -97,7 +97,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
                 def IsActive(self):
                     return not FreeCAD.ActiveDocument is None
             FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
-            self.archtools[2] = "Arch_RebarTools"
+            self.archtools1[2] = "Arch_RebarTools"
 
         # Set up Draft command lists
         import draftutils.init_tools as it
@@ -109,7 +109,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
         self.draft_utility_commands = it.get_draft_utility_commands()
 
         # Set up toolbars
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Arch tools"), self.archtools)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Arch tools 1"), self.archtools1)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Arch tools 2"), self.archtools2)
         self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft creation tools"), self.draft_drawing_commands)
         self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"), self.draft_annotation_commands)
         self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft modification tools"), self.draft_modification_commands)
@@ -118,7 +119,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
         self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Arch"),
                          QT_TRANSLATE_NOOP("arch", "Utilities")],
                         self.utilities)
-        self.appendMenu(QT_TRANSLATE_NOOP("arch", "&Arch"), self.archtools)
+        self.appendMenu(QT_TRANSLATE_NOOP("arch", "&Arch"), self.archtools1)
+        self.appendMenu(QT_TRANSLATE_NOOP("arch", "&Arch"), self.archtools2)
 
         self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
                          QT_TRANSLATE_NOOP("arch", "Creation")],
