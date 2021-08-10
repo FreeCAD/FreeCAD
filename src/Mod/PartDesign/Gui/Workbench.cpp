@@ -626,9 +626,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_SubtractiveLoft"
           << "PartDesign_SubtractivePipe"
           << "PartDesign_SubtractiveHelix"
-          << "PartDesign_CompPrimitiveSubtractive"
-          << "Separator"
-          << "PartDesign_Mirrored"
+          << "PartDesign_CompPrimitiveSubtractive";
+    part = new Gui::ToolBarItem(root);
+    part->setCommand("Part Design Extra");
+    *part << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
           << "PartDesign_GenericPattern"
