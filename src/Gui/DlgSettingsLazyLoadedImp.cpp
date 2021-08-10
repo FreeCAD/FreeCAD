@@ -32,6 +32,8 @@
 #include "WorkbenchManager.h"
 #include "Workbench.h"
 
+#include <QCheckBox>
+
 #include <sstream>
 
 using namespace Gui::Dialog;
@@ -99,6 +101,7 @@ void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
 {
     Workbench* originalActiveWB = WorkbenchManager::instance()->active();
     Application::Instance->activateWorkbench(wbName.toStdString().c_str());
+    Application::Instance->activateWorkbench(originalActiveWB->name().c_str());
     buildUnloadedWorkbenchList();
 }
 
