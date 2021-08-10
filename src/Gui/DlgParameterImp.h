@@ -50,13 +50,11 @@ struct ParamKey {
     QByteArray name;
 
     ParamKey(const char *t, const QString &n)
-        :type(QByteArray::fromRawData(t, strlen(t)))
-        ,name(n.toUtf8())
+        :type(t), name(n.toUtf8())
     {}
 
     ParamKey(const char *t, const char *n)
-        :type(QByteArray::fromRawData(t, strlen(t)))
-        ,name(QByteArray::fromRawData(n, strlen(n)))
+        :type(t), name(n)
     {}
 
     bool operator<(const ParamKey &other) const {
@@ -139,7 +137,9 @@ protected:
 
 protected:
     friend class ParameterGroup;
+    friend class ParameterGroupItem;
     friend class ParameterValue;
+    friend class ParameterValueItem;
     ParameterGroup* paramGroup;
     ParameterValue* paramValue;
     Ui_DlgParameter* ui;
@@ -178,7 +178,7 @@ public:
     ParameterGroup(DlgParameterImp *owner, QWidget *parent);
     virtual ~ParameterGroup();
 
-    ParameterGroupItem *findItem(ParameterGrp *) const;
+    ParameterGroupItem *findItem(ParameterGrp *, bool create = false);
     void clear();
 
 protected:
@@ -211,6 +211,7 @@ protected:
     void applyLanguage();
 
     friend class ParameterGroupItem;
+    friend class DlgParameterImp;
 
 private:
     QMenu* menuEdit;
@@ -283,6 +284,7 @@ protected Q_SLOTS:
      * doesn't have an int parameter.
      */
     bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
+    void onTouchItem();
 
 private:
     QMenu* menuEdit;
@@ -295,9 +297,11 @@ private:
     QAction* newIntAct;
     QAction* newUlgAct;
     QAction* newBlnAct;
+    QAction* touchAct;
     Base::Reference<ParameterGrp> _hcGrp;
 
     friend class ParameterValueItem;
+    friend class DlgParameterImp;
 
     std::map<ParamKey, ParameterValueItem*> itemMap;
     DlgParameterImp *_owner;

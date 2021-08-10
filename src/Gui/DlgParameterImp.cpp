@@ -159,6 +159,8 @@ DlgParameterImp::~DlgParameterImp()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+    paramValue->_owner = nullptr;
+    paramGroup->_owner = nullptr;
 }
 
 void DlgParameterImp::on_buttonFind_clicked()
@@ -417,6 +419,8 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
             }
         }
     }
+    else
+        paramValue->clear();
 }
 
 /** Switches the type of parameters with name @a config. */
@@ -508,10 +512,16 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         paramGroup->setCurrentItem(paramGroup->topLevelItem(0));
 
     curParamManager = rcParMngr;
-    ui->checkBoxMonitor->setChecked(monitors.count(rcParMngr) > 0);
 
     if (auto item = paramGroup->currentItem())
         onGroupSelected(item);
+
+    {
+        QSignalBlocker block(ui->checkBoxMonitor);
+        ui->checkBoxMonitor->setChecked(monitors.count(rcParMngr) > 0);
+        on_checkBoxMonitor_toggled(ui->checkBoxMonitor->isChecked());
+    }
+
 }
 
 void DlgParameterImp::on_checkBoxMonitor_toggled(bool checked)
@@ -535,9 +545,13 @@ void DlgParameterImp::on_checkBoxMonitor_toggled(bool checked)
     QSignalBlocker block(paramGroup);
     for (QTreeWidgetItemIterator it(paramGroup); *it; ++it) {
         auto item = static_cast<ParameterGroupItem*>(*it);
-        auto state = changes.count(item->_hcGrp)?Qt::Checked:Qt::Unchecked;
-        item->setCheckState(0, state);
-        if (state == Qt::Checked) {
+        if (!changes.count(item->_hcGrp))
+            item->setCheckState(0, Qt::Unchecked);
+        else if (checkGroupItemState(item, Qt::Checked))
+            setGroupItemState(item, Qt::Checked);
+        else
+            setGroupItemState(item, Qt::PartiallyChecked);
+        if (item->checkState(0) != Qt::Unchecked) {
             for (QTreeWidgetItem *t = item; t; t = t->parent())
                 t->setExpanded(true);
         }
@@ -978,8 +992,11 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
             // under this group for now.
             auto item = paramGroup->findItem(Param);
             if (item) {
+                auto curItem = paramGroup->currentItem();
                 clearGroupItem(item, changes); 
                 delete item;
+                if (paramGroup->currentItem() != curItem)
+                    onGroupSelected(paramGroup->currentItem());
             }
         } else if (Name == Value) {
             // This means new group
@@ -1005,7 +1022,7 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
         return;
     }
 
-    auto groupItem = paramGroup->findItem(Param);
+    auto groupItem = paramGroup->findItem(Param, true);
 
     auto iter = changes.find(Param);
     ParamKey key(Type, Name);
@@ -1014,7 +1031,7 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
         if (iter == changes.end())
             changes[Param].insert(key);
         else if (iter->second.size())
-            iter->second.insert(ParamKey(Type, Name));
+            iter->second.insert(key);
 
         if (groupItem) {
             if (checkGroupItemState(groupItem, Qt::Checked))
@@ -1148,11 +1165,22 @@ void ParameterGroup::clear()
     QTreeWidget::clear();
 }
 
-ParameterGroupItem *ParameterGroup::findItem(ParameterGrp *hGrp) const
+ParameterGroupItem *ParameterGroup::findItem(ParameterGrp *hGrp, bool create)
 {
     auto it = itemMap.find(hGrp);
     if (it != itemMap.end())
         return it->second;
+    if (!create || !hGrp || !_owner || hGrp->Manager() != _owner->curParamManager)
+        return nullptr;
+
+    if (hGrp->Parent() == _owner->curParamManager)
+        return new ParameterGroupItem(this, hGrp);
+
+    auto parent = findItem(hGrp->Parent(), true);
+    if (parent) {
+        parent->setExpanded(true);
+        return new ParameterGroupItem(parent,hGrp);
+    }
     return nullptr;
 }
 
@@ -1253,7 +1281,7 @@ void ParameterGroup::onCreateSubgroup()
 void ParameterGroup::onExportToFile()
 {
     QTreeWidgetItem* item = currentItem();
-    if (item && item->isSelected())
+    if (_owner && item && item->isSelected())
         _owner->doExport(static_cast<ParameterGroupItem*>(item)->_hcGrp);
 }
 
@@ -1278,7 +1306,7 @@ bool DlgParameterImp::doExport(ParameterGrp *hGrp)
 void ParameterGroup::onImportFromFile()
 {
     QTreeWidgetItem* item = currentItem();
-    if (item && item->isSelected())
+    if (_owner && item && item->isSelected())
         _owner->doImportOrMerge(static_cast<ParameterGroupItem*>(item)->_hcGrp, false);
 }
 
@@ -1345,7 +1373,7 @@ void DlgParameterImp::doImportOrMerge(ParameterGrp *hGrp, bool merge)
 void ParameterGroup::onMergeFromFile()
 {
     QTreeWidgetItem* item = currentItem();
-    if (item && item->isSelected())
+    if (_owner && item && item->isSelected())
         _owner->doImportOrMerge(static_cast<ParameterGroupItem*>(item)->_hcGrp, true);
 }
 
@@ -1394,6 +1422,7 @@ ParameterValue::ParameterValue( DlgParameterImp *owner, QWidget * parent )
     menuEdit->addSeparator();
     removeAct = menuEdit->addAction(tr("Remove key"), this, SLOT(onDeleteSelectedItem()));
     renameAct = menuEdit->addAction(tr("Rename key"), this, SLOT(onRenameSelectedItem()));
+    touchAct = menuEdit->addAction(tr("Touch item"), this, SLOT(onTouchItem()));
     menuEdit->setDefaultAction(changeAct);
 
     menuEdit->addSeparator();
@@ -1417,6 +1446,7 @@ void ParameterValue::clear()
 {
     itemMap.clear();
     QTreeWidget::clear();
+    _hcGrp = nullptr;
 }
 
 ParameterValueItem *ParameterValue::findItem(const ParamKey &key) const
@@ -1517,6 +1547,16 @@ void ParameterValue::onRenameSelectedItem()
     if (sel && sel->isSelected())
     {
         editItem(sel, 0);
+    }
+}
+
+void ParameterValue::onTouchItem()
+{
+    auto sel = static_cast<ParameterValueItem*>(currentItem());
+    if (sel && sel->isSelected()) {
+        if (auto manager = _hcGrp->Manager())
+            manager->signalParamChanged(_hcGrp,
+                    sel->getKey().type, sel->getKey().name, sel->text(2).toUtf8());
     }
 }
 
@@ -1695,11 +1735,6 @@ ParameterGroupItem::~ParameterGroupItem()
 {
     if (_owner)
         _owner->itemMap.erase(_hcGrp);
-
-    // if the group has already been removed from the parameters then clear the observer list
-    // as we cannot notify the attached observers here
-    if (_hcGrp.getRefCount() == 1)
-        _hcGrp->ClearObserver();
 }
 
 void ParameterGroupItem::fillUp(void)
