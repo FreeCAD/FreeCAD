@@ -171,7 +171,7 @@ class ObjectJob:
             obj.Stock.ViewObject.Visibility = False
 
     def setupSetupSheet(self, obj):
-        if not hasattr(obj, 'SetupSheet'):
+        if not getattr(obj, 'SetupSheet', None):
             obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'SetupSheet holding the settings for this job'))
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
@@ -223,53 +223,58 @@ class ObjectJob:
         PathLog.track(obj.Label, arg2)
         doc = obj.Document
 
-        # the first to tear down are the ops, they depend on other resources
-        PathLog.debug('taking down ops: %s' % [o.Name for o in self.allOperations()])
-        while obj.Operations.Group:
-            op = obj.Operations.Group[0]
-            if not op.ViewObject or not hasattr(op.ViewObject.Proxy, 'onDelete') or op.ViewObject.Proxy.onDelete(op.ViewObject, ()):
-                PathUtil.clearExpressionEngine(op)
-                doc.removeObject(op.Name)
-        obj.Operations.Group = []
-        doc.removeObject(obj.Operations.Name)
-        obj.Operations = None
+        if getattr(obj, 'Operations', None):
+            # the first to tear down are the ops, they depend on other resources
+            PathLog.debug('taking down ops: %s' % [o.Name for o in self.allOperations()])
+            while obj.Operations.Group:
+                op = obj.Operations.Group[0]
+                if not op.ViewObject or not hasattr(op.ViewObject.Proxy, 'onDelete') or op.ViewObject.Proxy.onDelete(op.ViewObject, ()):
+                    PathUtil.clearExpressionEngine(op)
+                    doc.removeObject(op.Name)
+            obj.Operations.Group = []
+            doc.removeObject(obj.Operations.Name)
+            obj.Operations = None
 
         # stock could depend on Model, so delete it first
-        if obj.Stock:
+        if getattr(obj, 'Stock', None):
             PathLog.debug('taking down stock')
             PathUtil.clearExpressionEngine(obj.Stock)
             doc.removeObject(obj.Stock.Name)
             obj.Stock = None
 
         # base doesn't depend on anything inside job
-        for base in obj.Model.Group:
-            PathLog.debug("taking down base %s" % base.Label)
-            self.removeBase(obj, base, False)
-        obj.Model.Group = []
-        doc.removeObject(obj.Model.Name)
-        obj.Model = None
+        if getattr(obj, 'Model', None):
+            for base in obj.Model.Group:
+                PathLog.debug("taking down base %s" % base.Label)
+                self.removeBase(obj, base, False)
+            obj.Model.Group = []
+            doc.removeObject(obj.Model.Name)
+            obj.Model = None
 
         # Tool controllers might refer to either legacy tool or toolbit
-        PathLog.debug('taking down tool controller')
-        for tc in obj.Tools.Group:
-            if hasattr(tc.Tool, "Proxy"):
-                PathUtil.clearExpressionEngine(tc.Tool)
-                doc.removeObject(tc.Tool.Name)
-            PathUtil.clearExpressionEngine(tc)
-            tc.Proxy.onDelete(tc)
-            doc.removeObject(tc.Name)
-        obj.Tools.Group = []
-        doc.removeObject(obj.Tools.Name)
-        obj.Tools = None
+        if getattr(obj, 'Tools', None):
+            PathLog.debug('taking down tool controller')
+            for tc in obj.Tools.Group:
+                if hasattr(tc.Tool, "Proxy"):
+                    PathUtil.clearExpressionEngine(tc.Tool)
+                    doc.removeObject(tc.Tool.Name)
+                PathUtil.clearExpressionEngine(tc)
+                tc.Proxy.onDelete(tc)
+                doc.removeObject(tc.Name)
+            obj.Tools.Group = []
+            doc.removeObject(obj.Tools.Name)
+            obj.Tools = None
 
         # SetupSheet
-        PathUtil.clearExpressionEngine(obj.SetupSheet)
-        doc.removeObject(obj.SetupSheet.Name)
-        obj.SetupSheet = None
+        if getattr(obj, 'SetupSheet', None):
+            PathUtil.clearExpressionEngine(obj.SetupSheet)
+            doc.removeObject(obj.SetupSheet.Name)
+            obj.SetupSheet = None
+
         return True
 
     def fixupOperations(self, obj):
-        if obj.Operations.ViewObject:
+        if getattr(obj.Operations, 'ViewObject', None):
             try:
                 obj.Operations.ViewObject.DisplayMode
             except Exception:  # pylint: disable=broad-except
@@ -295,6 +300,18 @@ class ObjectJob:
         if not hasattr(obj, 'CycleTime'):
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
             obj.setEditorMode('CycleTime', 1)  # read-only
+
+        if not hasattr(obj, "Fixtures"):
+            obj.addProperty("App::PropertyStringList", "Fixtures", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "The Work Coordinate Systems for the Job"))
+            obj.Fixtures = ['G54']
+
+        if not hasattr(obj, "OrderOutputBy"):
+            obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
+            obj.OrderOutputBy = ['Fixture', 'Tool', 'Operation']
+
+        if not hasattr(obj, "SplitOutput"):
+            obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Split output into multiple gcode files"))
+            obj.SplitOutput = False
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
@@ -397,7 +414,7 @@ class ObjectJob:
         return None
 
     def execute(self, obj):
-        if hasattr(obj, 'Operations'):
+        if getattr(obj, 'Operations', None):
             obj.Path = obj.Operations.Path
             self.getCycleTime()
 
@@ -445,6 +462,11 @@ class ObjectJob:
             self.obj.Operations.Group = group
             op.Path.Center = self.obj.Operations.Path.Center
 
+    def nextToolNumber(self):
+        # returns the next available toolnumber in the job
+        group = self.obj.Tools.Group
+        return sorted([t.ToolNumber for t in group])[-1] + 1
+
     def addToolController(self, tc):
         group = self.obj.Tools.Group
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
@@ -467,8 +489,11 @@ class ObjectJob:
                     ops.append(op)
                     for sub in op.Group:
                         collectBaseOps(sub)
-        for op in self.obj.Operations.Group:
-            collectBaseOps(op)
+
+        if getattr(self.obj, 'Operations', None) and getattr(self.obj.Operations, 'Group', None):
+            for op in self.obj.Operations.Group:
+                collectBaseOps(op)
+
         return ops
 
     def setCenterOfRotation(self, center):

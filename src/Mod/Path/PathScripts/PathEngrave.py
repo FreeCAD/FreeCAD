@@ -106,14 +106,18 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             PathLog.track(self.model)
             for base in self.model:
                 PathLog.track(base.Label)
-                if isinstance(base.Proxy, ArchPanel.PanelSheet):
+                if base.isDerivedFrom('Part::Part2DObject'):
+                    jobshapes.append(base.Shape)
+                elif base.isDerivedFrom('Sketcher::SketchObject'):
+                    jobshapes.append(base.Shape)
+                elif hasattr(base, 'ArrayType'):
+                    jobshapes.append(base.Shape)
+                elif isinstance(base.Proxy, ArchPanel.PanelSheet):
                     for tag in self.model[0].Proxy.getTags(self.model[0], transform=True):
                         tagWires = []
                         for w in tag.Wires:
                             tagWires.append(Part.Wire(w.Edges))
                         jobshapes.append(Part.makeCompound(tagWires))
-                else:
-                    jobshapes.append(Part.makeWires(base.Shape.Edges))
 
         if len(jobshapes) > 0:
             PathLog.debug('processing {} jobshapes'.format(len(jobshapes)))

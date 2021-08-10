@@ -55,6 +55,8 @@ SET(PathScripts_SRCS
     PathScripts/PathEngrave.py
     PathScripts/PathEngraveBase.py
     PathScripts/PathEngraveGui.py
+    PathScripts/PathFeatureExtensions.py
+    PathScripts/PathFeatureExtensionsGui.py
     PathScripts/PathFixture.py
     PathScripts/PathGeom.py
     PathScripts/PathGetPoint.py
@@ -159,6 +161,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/rml_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
+    PathScripts/post/uccnc_post.py
 )
 
 SET(Tools_Bit_SRCS

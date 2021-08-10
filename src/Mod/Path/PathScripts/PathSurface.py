@@ -114,9 +114,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
         self.propertiesReady = True
 
-    @classmethod
-    def opPropertyDefinitions(cls):
-        '''opPropertyDefinitions() ... Store operation specific properties'''
+    def opPropertyDefinitions(self):
+        '''opPropertyDefinitions(obj) ... Store operation specific properties'''
 
         return [
             ("App::PropertyBool", "ShowTempObjects", "Debug",
@@ -2122,7 +2121,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    return [tup[1] for tup in ObjectSurface.opPropertyDefinitions()]
+    return [tup[1] for tup in ObjectSurface.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None):

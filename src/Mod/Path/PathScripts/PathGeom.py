@@ -551,3 +551,101 @@ def flipWire(wire):
     PathLog.debug(edges)
     return Part.Wire(edges)
 
+def makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0):
+    '''makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0)...
+    Function to create boundbox face, with possible extra offset and custom Z-height.'''
+    p1 = FreeCAD.Vector(bBox.XMin - offset, bBox.YMin - offset, zHeight)
+    p2 = FreeCAD.Vector(bBox.XMax + offset, bBox.YMin - offset, zHeight)
+    p3 = FreeCAD.Vector(bBox.XMax + offset, bBox.YMax + offset, zHeight)
+    p4 = FreeCAD.Vector(bBox.XMin - offset, bBox.YMax + offset, zHeight)
+
+    L1 = Part.makeLine(p1, p2)
+    L2 = Part.makeLine(p2, p3)
+    L3 = Part.makeLine(p3, p4)
+    L4 = Part.makeLine(p4, p1)
+
+    return Part.Face(Part.Wire([L1, L2, L3, L4]))
+
+# Method to combine faces if connected
+def combineHorizontalFaces(faces):
+    '''combineHorizontalFaces(faces)...
+    This function successfully identifies and combines multiple connected faces and
+    works on multiple independent faces with multiple connected faces within the list.
+    The return value is list of simplifed faces.
+    The Adaptive op is not concerned with which hole edges belong to which face.
+
+    Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
+    PathGeom.combineConnectedShapes(), so this algorithm was created.
+    '''
+    horizontal = list()
+    offset = 10.0
+    topFace = None
+    innerFaces = list()
+
+    # Verify all incoming faces are at Z=0.0
+    for f in faces:
+        if f.BoundBox.ZMin != 0.0:
+            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+
+    # Make offset compound boundbox solid and cut incoming face extrusions from it
+    allFaces = Part.makeCompound(faces)
+    if hasattr(allFaces, "Area") and isRoughly(allFaces.Area, 0.0):
+        msg = translate('PathGeom',
+                        'Zero working area to process. Check your selection and settings.')
+        PathLog.info(msg)
+        return horizontal
+
+    afbb = allFaces.BoundBox
+    bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
+    bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
+    extrudedFaces = list()
+    for f in faces:
+        extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
+
+    # Fuse all extruded faces together
+    allFacesSolid = extrudedFaces.pop()
+    for i in range(len(extrudedFaces)):
+        temp = extrudedFaces.pop().fuse(allFacesSolid)
+        allFacesSolid = temp
+    cut = bboxSolid.cut(allFacesSolid)        
+
+    # Debug
+    # Part.show(cut)
+    # FreeCAD.ActiveDocument.ActiveObject.Label = "cut"
+
+    # Identify top face and floating inner faces that are the holes in incoming faces
+    for f in cut.Faces:
+        fbb = f.BoundBox
+        if isRoughly(fbb.ZMin, 5.0) and isRoughly(fbb.ZMax, 5.0):
+            if (isRoughly(afbb.XMin - offset, fbb.XMin) and
+                isRoughly(afbb.XMax + offset, fbb.XMax) and
+                isRoughly(afbb.YMin - offset, fbb.YMin) and
+                isRoughly(afbb.YMax + offset, fbb.YMax)):
+                topFace = f
+            else:
+                innerFaces.append(f)
+
+    if not topFace:
+        return horizontal
+
+    outer = [Part.Face(w) for w in topFace.Wires[1:]]
+
+    if outer:
+        for f in outer:
+            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+
+        if innerFaces:
+            # inner = [Part.Face(f.Wire1) for f in innerFaces]
+            inner = innerFaces
+
+            for f in inner:
+                f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+            innerComp = Part.makeCompound(inner)
+            outerComp = Part.makeCompound(outer)
+            cut = outerComp.cut(innerComp)
+            for f in cut.Faces:
+                horizontal.append(f)
+        else:
+            horizontal = outer
+
+    return horizontal

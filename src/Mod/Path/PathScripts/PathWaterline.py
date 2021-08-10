@@ -114,8 +114,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         self.propertiesReady = True
 
-    @classmethod
-    def opPropertyDefinitions(cls):
+    def opPropertyDefinitions(self):
         '''opPropertyDefinitions() ... return list of tuples containing operation specific properties'''
         return [
             ("App::PropertyBool", "ShowTempObjects", "Debug",
@@ -252,8 +251,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Used to hide inputs in properties list
         expMode = G = 0
         show = hide = A = B = C = 2
-        if hasattr(obj, 'EnableRotation'):
-            obj.setEditorMode('EnableRotation', hide)
 
         obj.setEditorMode('BoundaryEnforcement', hide)
         obj.setEditorMode('InternalFeaturesAdjustment', hide)
@@ -1814,7 +1811,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions()]
+    return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None):
