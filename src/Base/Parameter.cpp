@@ -411,6 +411,24 @@ Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
     }
 }
 
+static XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *
+CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name)
+{
+    if (XMLString::compareString(Start->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0 &&
+        XMLString::compareString(Start->getNodeName(), XStr("FCParameters").unicodeForm()) != 0) {
+        Base::Console().Warning("CreateElement: %s cannot have the element %s of type %s\n", StrX(Start->getNodeName()).c_str(), Name, Type);
+        return nullptr;
+    }
+
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *pDocument = Start->getOwnerDocument();
+
+    auto pcElem = pDocument->createElement(XStr(Type).unicodeForm());
+    pcElem-> setAttribute(XStr("Name").unicodeForm(), XStr(Name).unicodeForm());
+    Start->appendChild(pcElem);
+
+    return pcElem;
+}
+
 Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
 {
     Base::Reference<ParameterGrp> rParamGrp;
@@ -423,12 +441,19 @@ Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
     }
 
     // search if Group node already there
-    pcTemp = FindOrCreateElement(_pGroupNode,"FCParamGroup",Name);
+    pcTemp = FindElement(_pGroupNode,"FCParamGroup",Name);
+    bool notify = false;
+    if (!pcTemp) {
+        notify = true;
+        pcTemp = CreateElement(_pGroupNode,"FCParamGroup",Name);
+    }
 
     // create and register handle
     rParamGrp = Base::Reference<ParameterGrp> (new ParameterGrp(pcTemp,Name,this));
     _GroupMap[Name] = rParamGrp;
-    _Notify("FCParamGroup", Name, Name);
+
+    if (notify)
+        _Notify("FCParamGroup", Name, Name);
 
     return rParamGrp;
 }
@@ -755,24 +780,6 @@ void ParameterGrp::GetBlob(const char* /*Name*/, void* /*pBuf*/, long /*lMaxLeng
 {
     // not implemented so far
     assert(0);
-}
-
-static XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *
-CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name)
-{
-    if (XMLString::compareString(Start->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0 &&
-        XMLString::compareString(Start->getNodeName(), XStr("FCParameters").unicodeForm()) != 0) {
-        Base::Console().Warning("CreateElement: %s cannot have the element %s of type %s\n", StrX(Start->getNodeName()).c_str(), Name, Type);
-        return nullptr;
-    }
-
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *pDocument = Start->getOwnerDocument();
-
-    auto pcElem = pDocument->createElement(XStr(Type).unicodeForm());
-    pcElem-> setAttribute(XStr("Name").unicodeForm(), XStr(Name).unicodeForm());
-    Start->appendChild(pcElem);
-
-    return pcElem;
 }
 
 void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
