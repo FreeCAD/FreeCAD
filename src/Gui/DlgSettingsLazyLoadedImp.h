@@ -27,6 +27,8 @@
 #include "PropertyPage.h"
 #include <memory>
 
+class QCheckBox;
+
 namespace Gui {
 namespace Dialog {
 class Ui_DlgSettingsLazyLoaded;
