@@ -257,7 +257,8 @@ ParameterGrpPy::~ParameterGrpPy()
 {
     for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
         ParameterGrpObserver* obs = *it;
-        _cParamGrp->Detach(obs);
+        if (!obs->_target)
+            _cParamGrp->Detach(obs);
         delete obs;
     }
 }
