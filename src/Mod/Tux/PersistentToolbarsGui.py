@@ -18,6 +18,7 @@
 
 """Persistent toolbars for FreeCAD."""
 
+from collections import defaultdict
 import operator
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -29,17 +30,32 @@ timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
 _saving_params = False
 _observer = None
+_mw_observer = None
 
 class Observer:
     def __init__(self):
-        pUser = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
-        pUser.AttachManager(self)
-        timer.setSingleShot(True)
-        timer.timeout.disconnect()
-        timer.timeout.connect(onWorkbenchActivated)
+        self.pUser = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
+        self.pUser.AttachManager(self)
+        self.timer = QtCore.QTimer()
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(onWorkbenchActivated)
 
     def slotParamChanged(self, _param, tp, name, value):
         if not _saving_params and tp and name and value:
+            App.Logger('tux').log('pending restore {}', name)
+            timer.start(100)
+
+class MainWindowStateObserver:
+    def __init__(self):
+        self.param = App.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
+        self.param.AttachManager(self)
+        self.timer = QtCore.QTimer()
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(onWorkbenchActivated)
+
+    def slotParamChanged(self, _param, _tp, name, _value):
+        if name == "WindowStateRestored":
+            App.Logger('tux').log('pending restore {}', name)
             timer.start(100)
 
 
@@ -78,158 +94,194 @@ def getGlobalToolbars():
     pGlobal = App.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
     globaltb = ["File", "Workbench", "Macro", "View", "Structure"]
     for group in pGlobal.GetGroups():
-        globaltb.append(group.GetString("Name"))
-    return globaltb
+        globaltb.append(pGlobal.GetGroup(group).GetString("Name"))
+    return frozenset(globaltb)
+
+def getToolbars(restore):
+    """Return toolbars arranged according to the main window layout."""
+
+    # Qt toolbar layout in main window is completely hidden from user code. The
+    # order of toolbars is unknownable, because invisible toolbars can occupy
+    # the same position with a different underlying layout position. Therefore,
+    # We include only visible toolbar position to guess the layout.
+    #
+    # During restore, we shall only move toolbars that belongs to the current
+    # active workbench, that is, we shall exclude those with hidden
+    # toolbar.toggleViewAction(), and also exclude toolbars from global
+    # workbench (which will be managed by QMainwindow.restoreState()).
+
+    layout = defaultdict(list)
+    sorting = {}
+    toolbars = {}
+    for tb in mw.findChildren(QtGui.QToolBar):
+        if restore:
+            isConnected(tb)
+
+        name = tb.objectName()
+        if not name or tb.isFloating():
+            continue
+
+        toolbars[name] = tb
+
+        area = mw.toolBarArea(tb)
+        if not tb.isVisible():
+            continue
+
+        x = tb.x()
+        y = tb.y()
+
+        l = sorting.setdefault(area, [])
+        if area == QtCore.Qt.ToolBarArea.TopToolBarArea:
+            l.append((y,x,tb))
+        elif area == QtCore.Qt.ToolBarArea.LeftToolBarArea:
+            l.append((x,y,tb))
+        elif area == QtCore.Qt.ToolBarArea.RightToolBarArea:
+            l.append((-x,y,tb))
+        elif area == QtCore.Qt.ToolBarArea.BottomToolBarArea:
+            l.append((-y,x,tb))
+
+    logger = App.Logger('tux')
+    for area, tbs in sorting.items():
+        tbs.sort()
+        lines = []
+        r = None
+        for t in tbs:
+            if r is None or r != t[0]:
+                lines.append([])
+            r = t[0]
+            lines[-1].append(t[2])
+
+        logger.log('{} {}', 'restore' if restore else 'save',
+                [[t.objectName() for t in line] for line in lines])
+        layout[area] = lines
+
+    return (toolbars, layout)
+
+def getToolbarAreas():
+    return [("Top", QtCore.Qt.ToolBarArea.TopToolBarArea),
+            ("Bottom", QtCore.Qt.ToolBarArea.BottomToolBarArea),
+            ("Left", QtCore.Qt.ToolBarArea.LeftToolBarArea),
+            ("Right", QtCore.Qt.ToolBarArea.RightToolBarArea)]
 
 def onRestore(active):
     """Restore current workbench toolbars position."""
 
-    toolbars = {}
-    tb = mw.findChildren(QtGui.QToolBar)
     pUser = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
     pSystem = App.ParamGet("User parameter:Tux/PersistentToolbars/System")
     globaltb = getGlobalToolbars()
-
-    for i in tb:
-
-        isConnected(i)
-
-        if i.objectName() and i.toggleViewAction().isVisible() and not i.isFloating():
-            toolbars[i.objectName()] = i
-        else:
-            pass
+    toolbars, tbs = getToolbars(True)
 
     if pUser.GetGroup(active).GetBool("Saved"):
         group = pUser.GetGroup(active)
     elif pSystem.GetGroup(active).GetBool("Saved"):
         group = pSystem.GetGroup(active)
     else:
-        group = None
+        onSave()
+        return
 
-    if group:
-        topRestore = [ t for t in group.GetString("Top").split(",") if t not in globaltb ]
-        leftRestore = [ t for t in group.GetString("Left").split(",") if t not in globaltb ]
-        rightRestore = [ t for t in group.GetString("Right").split(",") if t not in globaltb ]
-        bottomRestore = [ t for t in group.GetString("Bottom").split(",") if t not in globaltb ]
+    logger = App.Logger('tux')
+    logger.log('global {}', globaltb)
+    for name, area in getToolbarAreas():
+        lines = []
+        curlines = tbs.get(area, [])
+        restore = []
 
-        # Reduce flickering.
-        for i in toolbars:
-            if (i not in topRestore and
-                    i not in leftRestore and
-                    i not in rightRestore and
-                    i not in bottomRestore):
+        # retrive the stored toolbars and break it into lines
+        for n in group.GetString(name).split(","):
+            if n == 'Break':
+                if lines and lines[-1]:
+                    lines.append([])
+                continue
+            tb = toolbars.get(n, None)
+            if tb and tb.isVisible():
+                if not lines:
+                    lines.append([])
+                lines[-1].append(tb)
+                restore.append(tb)
 
-                area = mw.toolBarArea(toolbars[i])
+        # now restore line by line
+        for r, line in enumerate(lines):
+            cur = curlines[r] if len(curlines) > r else []
+            # append any new non-global toolbars at the end of the line
+            for tb in cur:
+                if tb.objectName() not in globaltb and tb not in restore:
+                    line.append(tb)
 
-                if area == QtCore.Qt.ToolBarArea.LeftToolBarArea:
-                    leftRestore.append(i)
-                elif area == QtCore.Qt.ToolBarArea.RightToolBarArea:
-                    rightRestore.append(i)
-                elif area == QtCore.Qt.ToolBarArea.BottomToolBarArea:
-                    bottomRestore.append(i)
-                else:
-                    topRestore.append(i)
-            else:
-                pass
+            # Find a toolbar in the current line for insertion. We shall avoid
+            # adding new lines as much as possible.
+            tail = None
+            for tb in reversed(cur):
+                if tb in line:
+                    # If there is a toolbar from the end in the current line
+                    # that is also in the restored line, it is good for use as
+                    # an insertion point.
+                    tail = tb
+                    break
+                # otherwise, opt for the first global toolbar from the end of
+                # the current line
+                if tb.objectName() in globaltb:
+                    if not tail:
+                        tail = tb
 
-        for i in topRestore:
-            if i == "Break":
-                mw.addToolBarBreak(QtCore.Qt.TopToolBarArea)
-            elif i in toolbars:
-                mw.addToolBar(QtCore.Qt.TopToolBarArea, toolbars[i])
-            else:
-                pass
+            logger.log('current {}{} {}', name, r, [t.objectName() for t in cur])
+            logger.log('restore {}{} {}', name, r, [t.objectName() for t in line])
+            logger.log('tail {}{} {}', name, r, tail.objectName() if tail else None)
+            revert = True
+            # start actual restoring, from the end of the line
+            for tb in reversed(line):
+                if tb.objectName() in globaltb:
+                    # Do not try to move global toolbar. But if this recorded
+                    # global toolbar is actual in the current line, use it for
+                    # the next insertion point.
+                    if tb in cur:
+                        tail = tb
+                        revert = False
+                    continue
 
-        for i in leftRestore:
-            if i == "Break":
-                mw.addToolBarBreak(QtCore.Qt.LeftToolBarArea)
-            elif i in toolbars:
-                mw.addToolBar(QtCore.Qt.LeftToolBarArea, toolbars[i])
-            else:
-                pass
+                if tail is None:
+                    # if no insertion point can be found, start a new line
+                    logger.log('{}{}: add tail "{}"', name, r, tb.objectName())
+                    mw.addToolBar(tb)
+                    mw.insertToolBarBreak(tb)
+                elif tail != tb:
+                    logger.log('{}{}: add "{}" before "{}"',
+                            name, r, tb.objectName(), tail.objectName())
+                    # Insert the toolbar. Because QMainWindow only allow to
+                    # insert before a given toolbar, we may need to immediately
+                    # revert the position to get the correct order
+                    mw.insertToolBar(tail, tb)
+                    if revert:
+                        mw.insertToolBar(tb, tail)
+                        logger.log('{}{}: revert', name, r)
 
-        for i in rightRestore:
-            if i == "Break":
-                mw.addToolBarBreak(QtCore.Qt.RightToolBarArea)
-            elif i in toolbars:
-                mw.addToolBar(QtCore.Qt.RightToolBarArea, toolbars[i])
-            else:
-                pass
-
-        for i in bottomRestore:
-            if i == "Break":
-                mw.addToolBarBreak(QtCore.Qt.BottomToolBarArea)
-            elif i in toolbars:
-                mw.addToolBar(QtCore.Qt.BottomToolBarArea, toolbars[i])
-            else:
-                pass
-    else:
-        pass
+                # After adding/inserting the toolbar, use it for the next
+                # insertion point. And we don't need to revert any more.
+                revert = False
+                tail = tb
 
 
 def onSave():
     """Save current workbench toolbars position."""
 
-    tb = mw.findChildren(QtGui.QToolBar)
     active = Gui.activeWorkbench().__class__.__name__
     p = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
     group = p.GetGroup(active)
-    globaltb = getGlobalToolbars()
 
-    top = []
-    left = []
-    right = []
-    bottom = []
+    _, tbs = getToolbars(False)
 
+    global _saving_params
     _saving_params = True
-
-    for i in tb:
-        if not i.isFloating():
-
-            area = mw.toolBarArea(i)
-
-            x = i.geometry().x()
-            y = i.geometry().y()
-
-            if area == QtCore.Qt.ToolBarArea.TopToolBarArea:
-                top.append([x, y, i])
-            elif area == QtCore.Qt.ToolBarArea.LeftToolBarArea:
-                left.append([x, y, i])
-            elif area == QtCore.Qt.ToolBarArea.RightToolBarArea:
-                right.append([-x, y, i])
-            elif area == QtCore.Qt.ToolBarArea.BottomToolBarArea:
-                bottom.append([x, -y, i])
-            else:
-                pass
-        else:
-            pass
-
-    top = sorted(top, key=operator.itemgetter(1, 0))
-    left = sorted(left, key=operator.itemgetter(0, 1))
-    right = sorted(right, key=operator.itemgetter(0, 1))
-    bottom = sorted(bottom, key=operator.itemgetter(1, 0))
-
-    for info, name in [(top,"Top"), (bottom,"Bottom"), (left,"Left"), (right,"Right")]:
+    for name, area in getToolbarAreas():
         saved = []
-        for _,_,tb in info:
-            if mw.toolBarBreak(tb):
+        for line in tbs[area]:
+            if saved:
                 saved.append("Break")
-
-            if not tb.toggleViewAction().isVisible():
-                # Toolbar with its toggle view action hidden means it does not
-                # belong to the active workbench. But we shall still save the
-                # otherwise invisible toolbar (hence below).
-                continue
-
-            name = tb.objectName()
-            if name:
-                saved.append(name)
+            for tb in line:
+                saved.append(tb.objectName())
 
         group.SetString(name, ",".join(saved))
-
     group.SetBool("Saved", 1)
     _saving_params = False
-
 
 def onWorkbenchActivated():
     """When workbench gets activated restore toolbar position."""
@@ -261,6 +313,9 @@ def onStart():
             global _observer
             if not _observer:
                 _observer = Observer()
+            global _mw_observer
+            if not _mw_observer:
+                _mw_observer = MainWindowStateObserver()
 
 
 def onClose():
