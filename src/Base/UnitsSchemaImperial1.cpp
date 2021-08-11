@@ -132,6 +132,10 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
             factor = 6.894744825494;
         }
     }
+    else if (unit == Unit::Stiffness) { // Conversion to lbf/in
+        unitString = QString::fromLatin1("lbf/in");
+        factor = 4.448222/0.0254;
+    }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
         factor = 25.4/60;

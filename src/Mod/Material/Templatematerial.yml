@@ -138,6 +138,10 @@
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
       Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
+    Stiffness:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Stiffness'
+      Description: "Stiffness (or Spring Stiffness) in [FreeCAD Stiffness unit]"
 - Thermal:
     SpecificHeat:
       Type: 'Quantity'
