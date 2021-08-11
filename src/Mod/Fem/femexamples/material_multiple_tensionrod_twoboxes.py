@@ -41,7 +41,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "pressure"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "multimaterial",
         "equation": "mechanical"
     }
@@ -132,7 +132,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "Aluminium-Generic"
     mat["YoungsModulus"] = "70000 MPa"
     mat["PoissonRatio"] = "0.35"
-    mat["Density"] = "2700  kg/m^3"
     material_obj_low.Material = mat
     material_obj_low.References = [(boxlow, "Solid1")]
     analysis.addObject(material_obj_low)
@@ -142,7 +141,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7980 kg/m^3"
     material_obj_upp.Material = mat
     material_obj_upp.References = [(boxupp, "Solid1")]
     analysis.addObject(material_obj_upp)

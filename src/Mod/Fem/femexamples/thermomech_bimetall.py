@@ -49,7 +49,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "initial temperature", "temperature"],
-        "solvers": ["calculix", "elmer"],
+        "solvers": ["calculix", "ccxtools", "elmer"],
         "material": "multimaterial",
         "equation": "thermomechanical"
     }
@@ -174,7 +174,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["SpecificHeat"] = "510 J/kg/K"
     mat["ThermalConductivity"] = "13 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.0000012 m/m/K"
-    mat["Density"] = "1.00 kg/m^3"
     material_obj_top.Material = mat
     material_obj_top.References = [(geom_obj, "Solid2")]
     analysis.addObject(material_obj_top)
