@@ -168,7 +168,7 @@ QString UnitsApi::toNumber(const Base::Quantity& q, const QuantityFormat& f)
 
 QString UnitsApi::toNumber(double d, const QuantityFormat& f)
 {
-    QString number = QString::fromLatin1("%1").arg(d, 0, f.toFormat(), f.precision+2);
+    QString number = QString::fromLatin1("%1").arg(d, 0, f.toFormat(), f.precision+1);
     return number;
 }
 
