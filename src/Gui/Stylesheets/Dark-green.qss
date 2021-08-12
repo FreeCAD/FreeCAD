@@ -1959,21 +1959,19 @@ QToolBar > QToolButton {
     border-radius: 3px;
 }
 
-QToolBar > QToolButton:hover {
-    background-color: rgba(0,0,0,20);
-}
-
 QToolBar > QToolButton:pressed {
     background-color: rgba(0,0,0,30);
 }
 
 /* ToolBar menu buttons (buttons with drop-down menu) */
 QToolBar > QToolButton#qt_toolbutton_menubutton {
-    padding-right: 20px; /* Hack to add more width to buttons with menu */
+    padding: 3px;
     border: 1px solid transparent;
     border-radius: 3px;
 }
 
+QToolBar > QToolButton:hover,
+QToolBar > QToolButton:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton:hover,
 QToolBar > QToolButton#qt_toolbutton_menubutton:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton:open {
@@ -1982,35 +1980,33 @@ QToolBar > QToolButton#qt_toolbutton_menubutton:open {
 
 QToolBar QToolButton::menu-button,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button {
+    subcontrol-origin: padding;
+    subcontrol-position: bottom left;
     border: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    width: 16px; /* 16px width + 4px for border = 20px allocated above */
+    width: 15px;
+    height: 15px;
     outline: none;
+    margin-left: 1px;
+    border-radius: 3px;
     background-color: transparent;
 }
 
-QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover,
+QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover {
+    background-color: rgba(0,0,0,0.3);
+}
+
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:open {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0 #94b30f, stop:1 #a5c61a);
+    background-color: #a0a5c61a;
 }
 
 QToolBar > QToolButton::menu-arrow {
-    background-image: url(qss:images_dark-light/down_arrow_dark.svg);
+    background-image: url(qss:images_dark-light/expand_arrow.svg);
     background-position: center center;
     background-repeat: none;
     subcontrol-origin: padding;
-    subcontrol-position: bottom right;
+    subcontrol-position: bottom left;
     height: 10px; /* same as arrow image */
-}
-
-QToolBar > QToolButton::menu-arrow:hover {
-    background-image: url(qss:images_dark-light/down_arrow_lighter.svg);
-}
-
-QToolBar > QToolButton::menu-arrow:open {
-    background-image: url(qss:images_dark-light/down_arrow_lighter.svg);
 }
 
 /* when QToolButton is checked: */

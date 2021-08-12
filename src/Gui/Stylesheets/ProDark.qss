@@ -2016,21 +2016,19 @@ QToolBar > QToolButton {
     border-radius: 2px;
 }
 
-QToolBar > QToolButton:hover {
-    background-color: #557BB6;
-}
-
 QToolBar > QToolButton:pressed {
-    background-color: #557BB6;
+    background-color: rgba(255,255,255,30);
 }
 
 /* ToolBar menu buttons (buttons with drop-down menu) */
 QToolBar > QToolButton#qt_toolbutton_menubutton {
-    padding-right: 20px; /* Hack to add more width to buttons with menu */
+    padding: 3px;
     border: 1px solid transparent;
     border-radius: 2px;
 }
 
+QToolBar > QToolButton:hover,
+QToolBar > QToolButton:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton:hover,
 QToolBar > QToolButton#qt_toolbutton_menubutton:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton:open {
@@ -2039,35 +2037,33 @@ QToolBar > QToolButton#qt_toolbutton_menubutton:open {
 
 QToolBar QToolButton::menu-button,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button {
+    subcontrol-origin: padding;
+    subcontrol-position: bottom left;
     border: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    width: 16px; /* 16px width + 4px for border = 20px allocated above */
+    width: 15px;
+    height: 15px;
     outline: none;
+    margin-left: 1px;
+    border-radius: 3px;
     background-color: transparent;
 }
 
-QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover,
+QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:open {
-    background-color: #557BB6;
+    background-color: #A0557BF6;
 }
 
 QToolBar > QToolButton::menu-arrow {
-    background-image: url(qss:images_dark-light/down_arrow_light.svg);
+    background-image: url(qss:images_dark-light/expand_arrow.svg);
     background-position: center center;
     background-repeat: none;
     subcontrol-origin: padding;
-    subcontrol-position: bottom right;
+    subcontrol-position: bottom left;
     height: 10px; /* same as arrow image */
-}
-
-QToolBar > QToolButton::menu-arrow:hover {
-    background-image: url(qss:images_dark-light/down_arrow_lighter.svg);
-}
-
-QToolBar > QToolButton::menu-arrow:open {
-    background-image: url(qss:images_dark-light/down_arrow_lighter.svg);
 }
 
 /* when QToolButton is checked: */
@@ -2233,81 +2229,6 @@ QTableView > QWidget > QDateTimeEdit:read-only {
     color: black;
     background-color: transparent;
     border-color: transparent;
-}
-
-
-/*==================================================================================================
-SELECTORTOOLBAR widget (3rd party plugin)
-==================================================================================================*/
-QToolBar:horizontal#Selector,
-QToolBar:vertical#Selector {
-    background-color: rgba(0,0,0,120);
-    margin: 0px;
-    padding: 0px;
-}
-
-QToolBar::handle:top#Selector,
-QToolBar::handle:bottom#Selector,
-QToolBar::handle:horizontal#Selector {
-    alignment: bottom left;
-}
-
-QToolBar::handle:left#Selector,
-QToolBar::handle:right#Selector,
-QToolBar::handle:vertical#Selector {
-    width: 100%;
-    alignment: center left;
-}
-
-QToolBar:top#Selector QToolButton,
-QToolBar:bottom#Selector QToolButton,
-QToolBar:horizontal#Selector QToolButton {
-    alignment: bottom left;
-}
-
-QToolBar:left#Selector QToolButton,
-QToolBar:right#Selector QToolButton,
-QToolBar:vertical#Selector QToolButton {
-    alignment: center left;
-}
-
-QToolButton[toolbar_orientation="horizontal"] {
-    /* nothing, when Horizontal there's no need to add special parameters */
-}
-
-QToolButton[toolbar_orientation="vertical"] {
-    /* nothing, when Horizontal there's no need to add special parameters */
-}
-
-QToolBar#Selector QToolButton {
-    border: none;
-    margin: 0px;
-    padding: 2px 6px;
-    border-radius: 2px;
-}
-
-/* Active tab */
-QToolBar#Selector QToolButton:checked {
-    color: white;
-    background-color: #333333;
-}
-
-/* Unactive tabs */
-QToolBar#Selector QToolButton:!checked {
-    color: rgba(255,255,255,160);
-    background-color: transparent;
-    margin: 0px;
-}
-
-/* Unactive tabs (hover) */
-QToolBar#Selector QToolButton:!checked:hover {
-    color: rgba(255,255,255,255);
-    background-color: rgba(255,255,255,20);
-}
-
-/* Unactive tabs (pressed) */
-QToolBar#Selector QToolButton:!checked:pressed {
-    background-color: rgba(255,255,255,40);
 }
 
 
