@@ -290,7 +290,11 @@ def onWorkbenchActivated():
 
     if active:
         pythonToolbars()
-        onRestore(active)
+        try:
+            Gui.getMainWindow().setUpdatesEnabled(False)
+            onRestore(active)
+        finally:
+            Gui.getMainWindow().setUpdatesEnabled(True)
     else:
         pass
 
