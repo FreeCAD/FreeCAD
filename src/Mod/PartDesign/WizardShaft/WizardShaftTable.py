@@ -40,14 +40,14 @@ class WizardShaftTable:
     }
     rowDictReverse = {}
     headers = [
-               QT_TRANSLATE_NOOP("WizardShaftTable", "Length [mm]"),
-               QT_TRANSLATE_NOOP("WizardShaftTable", "Diameter [mm]"),
-               QT_TRANSLATE_NOOP("WizardShaftTable", "Inner diameter [mm]"),
-               QT_TRANSLATE_NOOP("WizardShaftTable", "Constraint type"),
-               QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge type"),
-               QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge size"),
-               QT_TRANSLATE_NOOP("WizardShaftTable", "End edge type"),
-               QT_TRANSLATE_NOOP("WizardShaftTable", "End edge size")
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Length [mm]"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Diameter [mm]"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Inner diameter [mm]"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Constraint type"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge type"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge size"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "End edge type"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "End edge size")
               ]
 
     def __init__(self, w, s):
@@ -82,12 +82,12 @@ class WizardShaftTable:
         self.addColumn()
         self.setLength(0, 40.0)
         self.setDiameter(0, 50.0)
-        self.setConstraintType(0, QT_TRANSLATE_NOOP("WizardShaftTable", "Fixed"))
+        self.setConstraintType(0, "Fixed")
         # Section 2
         self.addColumn()
         self.setLength(1, 80.0)
         self.setDiameter(1, 60.0)
-        self.setConstraintType(1, QT_TRANSLATE_NOOP("WizardShaftTable", "Force"))
+        self.setConstraintType(1, "Force")
 
     def slotInsertColumn(self):
         # FIXME: Allow inserting columns, not just adding at the end

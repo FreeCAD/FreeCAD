@@ -182,8 +182,8 @@ class WizardShaftGui:
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
-        ToolTip  = QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
+        MenuText = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
+        ToolTip  = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
         return {'Pixmap': IconPath,
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
@@ -207,8 +207,8 @@ class WizardShaftGuiCallback:
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
-        ToolTip  = QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
+        MenuText = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
+        ToolTip  = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
         return {'Pixmap': IconPath,
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
