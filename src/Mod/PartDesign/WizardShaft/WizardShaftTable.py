@@ -40,15 +40,15 @@ class WizardShaftTable:
     }
     rowDictReverse = {}
     headers = [
-                "Length [mm]",
-               "Diameter [mm]",
-               "Inner diameter [mm]",
-               "Constraint type",
-               "Start edge type",
-               "Start edge size",
-               "End edge type",
-               "End edge size"
-              ]    
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Length [mm]"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Diameter [mm]"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Inner diameter [mm]"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Constraint type"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge type"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge size"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "End edge type"),
+               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "End edge size")
+              ]
 
     def __init__(self, w, s):
         for key in iter(self.rowDict.keys()):
