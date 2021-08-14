@@ -68,10 +68,10 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
                         isDiff = True
                     break
             if noExpr:
-                widget.setProperty('readonly', False)
+                widget.setReadOnly(False)
                 widget.setStyleSheet("color: black")
             else:
-                widget.setProperty('readonly', True)
+                widget.setReadOnly(True)
                 widget.setStyleSheet("color: gray")
             widget.update()
 
@@ -100,6 +100,7 @@ class QuantitySpinBox:
         self.widget = widget
         self.onBeforeChange = onBeforeChange
         self.prop = None
+        self.obj = obj
         self.attachTo(obj, prop)
 
     def attachTo(self, obj, prop = None):
@@ -139,9 +140,14 @@ class QuantitySpinBox:
         If no value is provided the value of the bound property is used.
         quantity can be of type Quantity or Float.'''
         PathLog.track(self.prop, self.valid)
+
         if self.valid:
+            expr  = self._hasExpression()
             if quantity is None:
-                quantity = PathUtil.getProperty(self.obj, self.prop)
+                if expr:
+                    quantity = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+                else:
+                    quantity = PathUtil.getProperty(self.obj, self.prop)
             value = quantity.Value if hasattr(quantity, 'Value') else quantity
             self.widget.setProperty('rawValue', value)
 
@@ -150,4 +156,10 @@ class QuantitySpinBox:
         PathLog.track(self.prop, self.valid)
         if self.valid:
             return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
+        return None
+
+    def _hasExpression(self):
+        for (prop, exp) in self.obj.ExpressionEngine:
+            if prop == self.prop:
+                return exp
         return None
