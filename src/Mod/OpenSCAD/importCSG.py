@@ -69,7 +69,7 @@ def shallHide(subject):
 def setColorRecursively(obj, color, transp):
     '''
     For some reason a part made by cutting or fusing other parts do not have a color
-    unless it's constituents are also colored. This code sets colors for those
+    unless its constituents are also colored. This code sets colors for those
     constituents unless already set elsewhere.
     '''
     obj.ViewObject.ShapeColor = color
@@ -77,10 +77,10 @@ def setColorRecursively(obj, color, transp):
     # Add any other relevant features to this list
     boolean_features = ["Part::Fuse", "Part::MultiFuse", "Part::Cut",
                         "Part::Common", "Part::MultiCommon"]
-    if (obj.TypeId in boolean_features):
+    if obj.TypeId in boolean_features:
         for currentObject in obj.OutList:
             print(f"Fixing up colors for: {currentObject.FullName}")
-            if(currentObject not in hassetcolor):
+            if currentObject not in hassetcolor:
                 setColorRecursively(currentObject, color, transp)
 
 def fixVisibility():
