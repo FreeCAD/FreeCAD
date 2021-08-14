@@ -66,19 +66,22 @@ def shallHide(subject):
             return True
     return False
 
-def setColorRecursively(obj,color,transp):
-    if(obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse"):
-                for currentObject in obj.OutList:
-                    if (currentObject.TypeId=="Part::Fuse" or currentObject.TypeId=="Part::MultiFuse"):
-                        setColorRecursively(currentObject,color,transp)
-                    else:
-                        print("Fixing up colors for: "+str(currentObject.FullName))
-                    if(currentObject not in hassetcolor):
-                        currentObject.ViewObject.ShapeColor=color
-                        currentObject.ViewObject.Transparency=transp
-                        setColorRecursively(currentObject,color,transp)
-                    else:
-                        setColorRecursively(currentObject,color,transp)
+def setColorRecursively(obj, color, transp):
+    '''
+    For some reason a part made by cutting or fusing other parts do not have a color
+    unless its constituents are also colored. This code sets colors for those
+    constituents unless already set elsewhere.
+    '''
+    obj.ViewObject.ShapeColor = color
+    obj.ViewObject.Transparency = transp
+    # Add any other relevant features to this list
+    boolean_features = ["Part::Fuse", "Part::MultiFuse", "Part::Cut",
+                        "Part::Common", "Part::MultiCommon"]
+    if obj.TypeId in boolean_features:
+        for currentObject in obj.OutList:
+            print(f"Fixing up colors for: {currentObject.FullName}")
+            if currentObject not in hassetcolor:
+                setColorRecursively(currentObject, color, transp)
 
 def fixVisibility():
     for obj in FreeCAD.ActiveDocument.Objects:
@@ -555,22 +558,7 @@ def p_color_action(p):
                 if "Group" in obj.FullName:
                     obj.ViewObject.Visibility=False
                     alreadyhidden.append(obj)
-                if(obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse"):
-                    for currentObject in obj.OutList:
-                        if (currentObject.TypeId=="Part::Fuse" or   currentObject.TypeId=="Part::MultiFuse"):
-                            setColorRecursively(currentObject,color,transp)
-                        if(currentObject not in hassetcolor):
-                            currentObject.ViewObject.ShapeColor=color
-                            currentObject.ViewObject.Transparency=transp
-                            setColorRecursively(currentObject,color,transp)
-                        else:
-                            setColorRecursively(currentObject,color,transp)
-                else:
-                    obj.ViewObject.ShapeColor =color
-                    obj.ViewObject.Transparency = transp
-            else:
-                obj.ViewObject.ShapeColor =color
-                obj.ViewObject.Transparency = transp
+            setColorRecursively(obj, color, transp)
             hassetcolor.append(obj)
     p[0] = p[6]
 
