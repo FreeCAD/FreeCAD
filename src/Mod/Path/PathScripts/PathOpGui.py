@@ -1287,12 +1287,12 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name)
+    obj = res.objFactory(res.name, obj=None, parentJob=res.job)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Visibility = False
-
         FreeCAD.ActiveDocument.commitTransaction()
+
         obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
         return obj
     FreeCAD.ActiveDocument.abortTransaction()
@@ -1336,6 +1336,7 @@ class CommandResources:
         self.menuText = menuText
         self.accelKey = accelKey
         self.toolTip = toolTip
+        self.job = None
 
 
 def SetupOperation(name,
