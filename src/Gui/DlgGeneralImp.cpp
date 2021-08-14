@@ -70,6 +70,11 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         menuText[text] = *it;
     }
 
+    ui->toolbarArea->addItem(tr("Top"), QByteArray("Top"));
+    ui->toolbarArea->addItem(tr("Left"), QByteArray("Left"));
+    ui->toolbarArea->addItem(tr("Right"), QByteArray("Right"));
+    ui->toolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
+
     {   // add special workbench to selection
         QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
         QString key = QString::fromLatin1("<last>");
@@ -183,6 +188,9 @@ void DlgGeneralImp::saveSettings()
 
     sheet = ui->MenuStyleSheets->itemData(ui->MenuStyleSheets->currentIndex());
     hGrp->SetASCII("MenuStyleSheet", (const char*)sheet.toByteArray());
+
+    hGrp->SetASCII("DefaultToolBarArea",
+            ui->toolbarArea->itemData(ui->toolbarArea->currentIndex()).toByteArray());
 
     TreeParams::setIconSize(ui->treeIconSize->value());
     TreeParams::setFontSize(ui->treeFontSize->value());
@@ -319,6 +327,12 @@ void DlgGeneralImp::loadSettings()
     populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
     populateStylesheets("MenuStyleSheet", "qssm", ui->MenuStyleSheets, "Auto");
+
+    int area = ui->toolbarArea->findData(
+            QByteArray(hGrp->GetASCII("DefaultToolBarArea", "Top").c_str()));
+    if (area < 0)
+        area = 0;
+    ui->toolbarArea->setCurrentIndex(area);
 
     ui->treeIconSize->setValue(TreeParams::IconSize());
     ui->treeFontSize->setValue(TreeParams::FontSize());

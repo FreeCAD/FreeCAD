@@ -27,13 +27,20 @@
 # include <QAction>
 # include <QToolBar>
 # include <QToolButton>
+# include <QMenu>
+# include <QPointer>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string.hpp>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include "ToolBarManager.h"
 #include "MainWindow.h"
 #include "Application.h"
 #include "Command.h"
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 
@@ -179,16 +186,40 @@ void ToolBarManager::destruct()
 
 ToolBarManager::ToolBarManager()
 {
-    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                               ->GetGroup("MainWindow")->GetGroup("Toolbars");
+    defaultArea = Qt::TopToolBarArea;
+    hMainWindow = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/MainWindow");
+    std::string defarea = hMainWindow->GetASCII("DefaultToolBarArea");
+    if (defarea == "Bottom")
+        defaultArea = Qt::BottomToolBarArea;
+    else if (defarea == "Left")
+        defaultArea = Qt::LeftToolBarArea;
+    else if (defarea == "Right")
+        defaultArea = Qt::RightToolBarArea;
+
+    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp/MainWindow/Toolbars");
     hMovable = hPref->GetGroup("Movable");
     connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
-        [this](ParameterGrp *Param, const char *, const char *, const char *) {
-            if (Param == hPref || Param == hMovable)
+        [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+            if (Param == hPref || Param == hMovable
+                    || (Param == hMainWindow
+                        && Name
+                        && boost::equals(Name, "DefaultToolBarArea")))
                 timer.start(100);
         });
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+
+    auto toolbars = toolBars();
+    for (auto &v : hPref->GetBoolMap()) {
+        if (v.first.empty())
+            continue;
+        QString name = QString::fromUtf8(v.first.c_str());
+        QToolBar* toolbar = toolbars[name];
+        if (!toolbar)
+            toolbar = createToolBar(name);
+        toolbar->toggleViewAction()->setVisible(false);
+        setToolBarVisible(toolbar, false);
+    }
 }
 
 ToolBarManager::~ToolBarManager()
@@ -206,19 +237,132 @@ void ToolBarManager::setDefaultMovable(bool enable)
     hMovable->SetBool("*", enable);
 }
 
+struct ToolBarKey {
+    Qt::ToolBarArea area;
+    bool visible;
+    int a;
+    int b;
+
+    ToolBarKey(QToolBar *tb)
+        :area(getMainWindow()->toolBarArea(tb))
+        ,visible(tb->isVisible())
+    {
+        int x = tb->x();
+        int y = tb->y();
+        switch(area) {
+        case Qt::BottomToolBarArea:
+            a = -y; b = x;
+            break;
+        case Qt::LeftToolBarArea:
+            a = x; b = y;
+            break;
+        case Qt::RightToolBarArea:
+            a = -x, b = y;
+            break;
+        default:
+            a = y; b = x;
+            break;
+        }
+    }
+
+    bool operator<(const ToolBarKey &other) const {
+        if (area < other.area)
+            return true;
+        if (area > other.area)
+            return false;
+        if (visible > other.visible)
+            return true;
+        if (visible < other.visible)
+            return false;
+        if (a < other.a)
+            return true;
+        if (a > other.a)
+            return false;
+        return b < other.b;
+    }
+};
+
+static bool isToolBarAllowed(QToolBar *toolbar, Qt::ToolBarArea area)
+{
+    if (area == Qt::TopToolBarArea || area == Qt::BottomToolBarArea)
+        return true;
+    for (auto w : toolbar->findChildren<QWidget*>(QString(), Qt::FindDirectChildrenOnly)) {
+        if (qobject_cast<QToolButton*>(w)
+                || qobject_cast<QMenu*>(w)
+                || strstr(w->metaObject()->className(),"Separator"))
+            continue;
+        return false;
+    }
+    return true;
+}
+
 void ToolBarManager::onTimer()
 {
+    std::string defarea = hMainWindow->GetASCII("DefaultToolBarArea");
+    auto area = Qt::TopToolBarArea;
+    if (defarea == "Bottom")
+        area = Qt::BottomToolBarArea;
+    else if (defarea == "Left")
+        area = Qt::LeftToolBarArea;
+    else if (defarea == "Right")
+        area = Qt::RightToolBarArea;
+    auto mw = getMainWindow();
     bool movable = isDefaultMovable();
-    for (auto tb : getMainWindow()->findChildren<QToolBar*>()) {
-        if (tb->parent() != getMainWindow())
+
+    std::multimap<ToolBarKey, QToolBar*> lines;
+    for (auto &v : toolBars()) {
+        if (!v.second)
             continue;
-        QByteArray name = tb->objectName().toUtf8();
-        if (name.isEmpty())
-            continue;
+        QToolBar *tb = v.second;
+        if (defaultArea != area && mw->toolBarArea(tb) == defaultArea)
+            lines.emplace(ToolBarKey(tb),tb);
+        QByteArray name = v.first.toUtf8();
         if (tb->toggleViewAction()->isVisible())
-            tb->setVisible(hPref->GetBool(name, true));
+            setToolBarVisible(tb, hPref->GetBool(name, tb->isVisible()));
         tb->setMovable(hMovable->GetBool(name, movable));
     }
+
+    bool first = true;
+    int a;
+    for (auto &v : lines) {
+        if (!isToolBarAllowed(v.second, area))
+            continue;
+        QSignalBlocker block(v.second);
+        if (first)
+            first = false;
+        else if (a != v.first.a)
+            mw->addToolBarBreak(area);
+        a = v.first.a;
+        mw->addToolBar(area, v.second);
+    }
+
+    if (defaultArea != area) {
+        defaultArea = area;
+        mw->saveWindowSettings(true);
+    }
+}
+
+QToolBar *ToolBarManager::createToolBar(const QString &name)
+{
+    auto toolbar = new QToolBar(getMainWindow());
+    getMainWindow()->addToolBar(defaultArea, toolbar);
+    toolbar->setObjectName(name);
+    connectToolBar(toolbar);
+    return toolbar;
+}
+
+void ToolBarManager::connectToolBar(QToolBar *toolbar)
+{
+    auto &p = connectedToolBars[toolbar];
+    if (p == toolbar)
+        return;
+    p = toolbar;
+    connect(toolbar, SIGNAL(visibilityChanged(bool)), this, SLOT(onToggleToolBar(bool)));
+    connect(toolbar, SIGNAL(movableChanged(bool)), this, SLOT(onMovableChanged(bool)));
+    connect(toolbar, &QToolBar::topLevelChanged, [this](){
+        if (this->restored)
+            getMainWindow()->saveWindowSettings(true);
+    });
 }
 
 void ToolBarManager::setup(ToolBarItem* toolBarItems)
@@ -232,7 +376,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     int top_width = 0;
 
     QList<ToolBarItem*> items = toolBarItems->getItems();
-    QList<QToolBar*> toolbars = toolBars();
+    auto toolbars = toolBars();
     bool movable = isDefaultMovable();
     for (auto item : items) {
         // search for the toolbar
@@ -241,10 +385,9 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             name = QString::fromLatin1("Custom_%1").arg(QString::fromLatin1(item->id().c_str()));
         else
             name = QString::fromUtf8(item->command().c_str());
-        this->toolbarNames << name;
-        QToolBar* toolbar = findToolBar(toolbars, name);
-        std::string toolbarName = item->command();
 
+        this->toolbarNames << name;
+        std::string toolbarName = item->command();
         bool visible = hPref->GetBool(toolbarName.c_str(), true);
         if (item->id().size()) {
             // Migrate to use toolbar ID instead of title for identification to
@@ -254,24 +397,21 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                 visible = v;
         }
 
-        bool toolbar_added = false;
+        QToolBar *toolbar = nullptr;
+        auto it = toolbars.find(name);
+        if (it != toolbars.end()) {
+            toolbar = it->second;
+            toolbars.erase(it);
+        }
+        if (!toolbar)
+            toolbar = createToolBar(name);
 
-        if (!toolbar) {
-            toolbar = getMainWindow()->addToolBar(
-                QApplication::translate("Workbench",
-                                        toolbarName.c_str())); // i18n
-            toolbar->setObjectName(name);
-            connect(toolbar, SIGNAL(visibilityChanged(bool)), this, SLOT(onToggleToolBar(bool)));
-            connect(toolbar, SIGNAL(movableChanged(bool)), this, SLOT(onMovableChanged(bool)));
-            connect(toolbar, &QToolBar::topLevelChanged, [](){getMainWindow()->saveWindowSettings(true);});
-            toolbar_added = true;
-        }
-        else {
-            toolbars.removeOne(toolbar);
-            toolbar->toggleViewAction()->setVisible(true);
-        }
+        bool toolbar_added = toolbar->windowTitle().isEmpty();
+
         QSignalBlocker blocker(toolbar);
-        toolbar->setVisible(visible);
+        toolbar->setWindowTitle(QApplication::translate("Workbench", toolbarName.c_str())); // i18n
+        toolbar->toggleViewAction()->setVisible(true);
+        setToolBarVisible(toolbar, visible);
         toolbar->setMovable(hMovable->GetBool(toolbarName.c_str(), movable));
 
         // setup the toolbar
@@ -279,6 +419,10 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
         // try to add some breaks to avoid to have all toolbars in one line
         if (toolbar_added) {
+            auto area = getMainWindow()->toolBarArea(toolbar);
+            if (!isToolBarAllowed(toolbar, area))
+                getMainWindow()->addToolBar(toolbar);
+
             if (top_width > 0 && getMainWindow()->toolBarBreak(toolbar))
                 top_width = 0;
             // the width() of a toolbar doesn't return useful results so we estimate
@@ -293,7 +437,22 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     }
 
     // hide all unneeded toolbars
-    for (auto toolbar : toolbars) {
+    for (auto &v : toolbars) {
+        QToolBar *toolbar = v.second;
+        if (!toolbar)
+            continue;
+        // ignore toolbars which do not belong to the previously active workbench
+        if (!toolbar->toggleViewAction()->isVisible())
+            continue;
+        toolbar->toggleViewAction()->setVisible(false);
+        setToolBarVisible(toolbar, false);
+    }
+}
+
+void ToolBarManager::setToolBarVisible(QToolBar *toolbar, bool show)
+{
+    QSignalBlocker blocker(toolbar);
+    if (!show) {
         // make sure that the main window has the focus when hiding the toolbar with
         // the combo box inside
         QWidget *fw = QApplication::focusWidget();
@@ -304,13 +463,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             }
             fw = fw->parentWidget();
         }
-        // ignore toolbars which do not belong to the previously active workbench
-        if (!toolbar->toggleViewAction()->isVisible())
-            continue;
-        toolbar->toggleViewAction()->setVisible(false);
-        QSignalBlocker blocker(toolbar);
-        toolbar->hide();
     }
+    toolbar->setVisible(show);
 }
 
 void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
@@ -350,55 +504,39 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
 void ToolBarManager::saveState() const
 {
     // Toolbar visibility is now synced using Qt signals
-#if 0
-    QList<QToolBar*> toolbars = toolBars();
-    for (QStringList::ConstIterator it = this->toolbarNames.begin(); it != this->toolbarNames.end(); ++it) {
-        QToolBar* toolbar = findToolBar(toolbars, *it);
-        if (toolbar) {
-            QByteArray toolbarName = toolbar->objectName().toUtf8();
-            hPref->SetBool(toolbarName.constData(), toolbar->isVisible());
-        }
-    }
-#endif
 }
 
-void ToolBarManager::restoreState() const
+void ToolBarManager::restoreState()
 {
-    QList<QToolBar*> toolbars = toolBars();
     bool movable = isDefaultMovable();
-    for (QStringList::ConstIterator it = this->toolbarNames.begin(); it != this->toolbarNames.end(); ++it) {
-        QToolBar* toolbar = findToolBar(toolbars, *it);
-        if (toolbar) {
+    for (auto &v : toolBars()) {
+        QToolBar *toolbar = v.second;
+        if (!toolbar)
+            continue;
+        QSignalBlocker block(toolbar);
+        if (toolbar->windowTitle().isEmpty()) {
+            toolbar->toggleViewAction()->setVisible(false);
+            setToolBarVisible(toolbar, false);
+        }
+        else if (this->toolbarNames.indexOf(toolbar->objectName()) >= 0) {
             QByteArray toolbarName = toolbar->objectName().toUtf8();
-            QSignalBlocker blocker(toolbar);
-            toolbar->setVisible(hPref->GetBool(toolbarName, toolbar->isVisible()));
+            setToolBarVisible(toolbar, hPref->GetBool(toolbarName, toolbar->isVisible()));
             toolbar->setMovable(hMovable->GetBool(toolbarName, movable));
         }
     }
     restored = true;
 }
 
-void ToolBarManager::retranslate() const
+void ToolBarManager::retranslate()
 {
-    QList<QToolBar*> toolbars = toolBars();
-    for (QList<QToolBar*>::Iterator it = toolbars.begin(); it != toolbars.end(); ++it) {
-        if ((*it)->objectName().startsWith(QLatin1String("Custom_")))
+    for (auto &v : toolBars()) {
+        QToolBar *toolbar = v.second;
+        if (!toolbar) continue;
+        if (toolbar->objectName().startsWith(QLatin1String("Custom_")))
             continue;
-        QByteArray toolbarName = (*it)->objectName().toUtf8();
-        (*it)->setWindowTitle(
-            QApplication::translate("Workbench",
-                                    (const char*)toolbarName));
+        QByteArray toolbarName = toolbar->objectName().toUtf8();
+        toolbar->setWindowTitle(QApplication::translate("Workbench", (const char*)toolbarName));
     }
-}
-
-QToolBar* ToolBarManager::findToolBar(const QList<QToolBar*>& toolbars, const QString& item) const
-{
-    for (QList<QToolBar*>::ConstIterator it = toolbars.begin(); it != toolbars.end(); ++it) {
-        if ((*it)->objectName() == item)
-            return *it;
-    }
-
-    return 0; // no item with the user data found
 }
 
 QAction* ToolBarManager::findAction(const QList<QAction*>& acts, const QString& item) const
@@ -411,35 +549,69 @@ QAction* ToolBarManager::findAction(const QList<QAction*>& acts, const QString& 
     return 0; // no item with the user data found
 }
 
-QList<QToolBar*> ToolBarManager::toolBars() const
+std::map<QString, QPointer<QToolBar>> ToolBarManager::toolBars()
 {
-    QWidget* mw = getMainWindow();
-    QList<QToolBar*> tb;
-    QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>();
-    for (QList<QToolBar*>::ConstIterator it = bars.begin(); it != bars.end(); ++it) {
-        if ((*it)->parentWidget() == mw)
-            tb.push_back(*it);
-    }
+    std::map<QString, QPointer<QToolBar>> res;
+    for (auto tb : getMainWindow()->findChildren<QToolBar*>(
+                QString(), Qt::FindDirectChildrenOnly))
+    {
+        QString name = tb->objectName();
+        if (name.isEmpty())
+            continue;
+        auto &p = res[name];
+        if (!p) {
+            p = tb;
+            connectToolBar(tb);
+            continue;
+        }
+        if (p->windowTitle().isEmpty() || tb->windowTitle().isEmpty()) {
+            // We now pre-create all recorded toolbars (with an empty title)
+            // when application starts to be able to restore the toolbar
+            // position properly. However, some user code may later create the
+            // toolbar with the same name without checking existence (e.g. Draft
+            // tray). So we replace our toolbar here.
+            QToolBar *a = p, *b = tb;
+            if (a->windowTitle().isEmpty())
+                std::swap(a, b);
+            if (!a->windowTitle().isEmpty()) {
+                // replace toolbar b with a
+                getMainWindow()->insertToolBar(b, a);
+                p = a;
+                if (connectedToolBars.erase(b)) {
+                    b->setObjectName(QString::fromLatin1("__scrapped"));
+                    b->deleteLater();
+                }
+                continue;
+            }
+        }
 
-    return tb;
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("duplicate toolbar name " << name.toUtf8().constData());
+    }
+    return res;
 }
 
 void ToolBarManager::onToggleToolBar(bool visible)
 {
+    auto toolbar = qobject_cast<QToolBar*>(sender());
+    if (!toolbar)
+        return;
+    if (visible && toolbar->windowTitle().isEmpty()) {
+        setToolBarVisible(toolbar, false);
+        return;
+    }
     if (!restored)
         return;
-    auto toolbar = qobject_cast<QToolBar*>(sender());
-    if (toolbar) {
-        bool enabled = visible;
-        if (!visible && !toolbar->toggleViewAction()->isVisible()) {
-            // This usually means the toolbar is hidden as a result of
-            // workbench switch. The parameter entry however means whether
-            // the toolbar is enabled while at its owner workbench
-            enabled = true;
-        }
-        Base::ConnectionBlocker block(connParam);
-        hPref->SetBool(toolbar->objectName().toUtf8(), enabled);
+
+    bool enabled = visible;
+    if (!visible && !toolbar->toggleViewAction()->isVisible()) {
+        // This usually means the toolbar is hidden as a result of
+        // workbench switch. The parameter entry however means whether
+        // the toolbar is enabled while at its owner workbench
+        enabled = true;
     }
+    Base::ConnectionBlocker block(connParam);
+    hPref->SetBool(toolbar->objectName().toUtf8(), enabled);
 }
 
 void ToolBarManager::onMovableChanged(bool movable)

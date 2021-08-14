@@ -87,10 +87,10 @@ public:
     /** Sets up the toolbars of a given workbench. */
     void setup(ToolBarItem*);
     void saveState() const;
-    void restoreState() const;
+    void restoreState();
     void setDefaultMovable(bool enable);
     bool isDefaultMovable() const;
-    void retranslate() const;
+    void retranslate();
 
 protected Q_SLOTS:
     void onToggleToolBar(bool);
@@ -100,9 +100,11 @@ protected Q_SLOTS:
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
     /** Returns a list of all currently existing toolbars. */
-    QList<QToolBar*> toolBars() const;
-    QToolBar* findToolBar(const QList<QToolBar*>&, const QString&) const;
+    std::map<QString, QPointer<QToolBar>> toolBars();
     QAction* findAction(const QList<QAction*>&, const QString&) const;
+    QToolBar *createToolBar(const QString &name);
+    void connectToolBar(QToolBar *);
+    void setToolBarVisible(QToolBar *toolbar, bool show);
     ToolBarManager();
     ~ToolBarManager();
 
@@ -112,8 +114,12 @@ private:
     static ToolBarManager* _instance;
     ParameterGrp::handle hPref;
     ParameterGrp::handle hMovable;
+    ParameterGrp::handle hMainWindow;
     boost::signals2::scoped_connection connParam;
-    mutable bool restored = false;
+    bool restored = false;
+    bool migrating = false;
+    Qt::ToolBarArea defaultArea;
+    std::map<QToolBar*, QPointer<QToolBar>> connectedToolBars;
 };
 
 } // namespace Gui

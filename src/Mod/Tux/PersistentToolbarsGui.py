@@ -31,6 +31,14 @@ mw = Gui.getMainWindow()
 _saving_params = False
 _observer = None
 _mw_observer = None
+_tb_areas = {"Top": QtCore.Qt.ToolBarArea.TopToolBarArea,
+             "Bottom": QtCore.Qt.ToolBarArea.BottomToolBarArea,
+             "Left": QtCore.Qt.ToolBarArea.LeftToolBarArea,
+             "Right": QtCore.Qt.ToolBarArea.RightToolBarArea}
+_area_names = {QtCore.Qt.ToolBarArea.TopToolBarArea:'Top',
+               QtCore.Qt.ToolBarArea.BottomToolBarArea:'Bottom',
+               QtCore.Qt.ToolBarArea.LeftToolBarArea:'Left',
+               QtCore.Qt.ToolBarArea.RightToolBarArea:'Right'}
 
 class Observer:
     def __init__(self):
@@ -54,7 +62,7 @@ class MainWindowStateObserver:
         self.timer.timeout.connect(onWorkbenchActivated)
 
     def slotParamChanged(self, _param, _tp, name, _value):
-        if name == "WindowStateRestored":
+        if name == "WindowStateRestored" or name == "DefaultToolBarArea":
             App.Logger('tux').log('pending restore {}', name)
             timer.start(100)
 
@@ -157,31 +165,57 @@ def getToolbars(restore):
 
     return (toolbars, layout)
 
-def getToolbarAreas():
-    return [("Top", QtCore.Qt.ToolBarArea.TopToolBarArea),
-            ("Bottom", QtCore.Qt.ToolBarArea.BottomToolBarArea),
-            ("Left", QtCore.Qt.ToolBarArea.LeftToolBarArea),
-            ("Right", QtCore.Qt.ToolBarArea.RightToolBarArea)]
 
-def onRestore(active):
+def onRestore(active, migrating=False):
     """Restore current workbench toolbars position."""
+
+    pMain = App.ParamGet('User parameter:BaseApp/Preferences/MainWindow')
+    def_area = pMain.GetString('DefaultToolBarArea', 'Top')
+    saved_area = "Top"
 
     pUser = App.ParamGet("User parameter:Tux/PersistentToolbars/User")
     pSystem = App.ParamGet("User parameter:Tux/PersistentToolbars/System")
-    globaltb = getGlobalToolbars()
-    toolbars, tbs = getToolbars(True)
 
     if pUser.GetGroup(active).GetBool("Saved"):
         group = pUser.GetGroup(active)
+        saved_area = group.GetString('SavedDefaultArea', 'Top')
     elif pSystem.GetGroup(active).GetBool("Saved"):
         group = pSystem.GetGroup(active)
     else:
-        onSave()
+        if not migrating:
+            onSave()
         return
 
+    globaltb = getGlobalToolbars()
+    toolbars, tbs = getToolbars(True)
+
     logger = App.Logger('tux')
-    logger.log('global {}', globaltb)
-    for name, area in getToolbarAreas():
+    if migrating:
+        logger.log('migrating {}', active)
+
+    if saved_area != def_area:
+        restored = tbs[def_area]
+        for name, area in _tb_areas.items():
+            if name == def_area:
+                continue
+            lines = tbs[area]
+            for i,line in enumerate(list(lines)):
+                move = []
+                for tb in line:
+                    if tb not in globaltb:
+                        move.append(tb)
+                if not move:
+                    continue
+                if len(restored) <= i:
+                    restored.append([])
+                rline = restored[i]
+                for tb in move:
+                    line.remove(tb)
+                    rline.append(tb)
+                if not line:
+                    lines.remove(line)
+
+    for name, area in _tb_areas.items():
         lines = []
         curlines = tbs.get(area, [])
         restore = []
@@ -241,7 +275,7 @@ def onRestore(active):
                 if tail is None:
                     # if no insertion point can be found, start a new line
                     logger.log('{}{}: add tail "{}"', name, r, tb.objectName())
-                    mw.addToolBar(tb)
+                    mw.addToolBar(area, tb)
                     mw.insertToolBarBreak(tb)
                 elif tail != tb:
                     logger.log('{}{}: add "{}" before "{}"',
@@ -259,6 +293,18 @@ def onRestore(active):
                 revert = False
                 tail = tb
 
+    if def_area != saved_area:
+        breaks = []
+        darea = _area_names[def_area]
+        for tb in toolbars.values():
+            area = mw.toolBarArea()
+            if tb in globaltb or tb.isVisible() or area == darea:
+                continue
+            if mw.toolBarBreak(tb):
+                breaks.append(tb)
+            mw.addToolBar(darea, tb)
+        for tb in breaks:
+            mw.insertToolBarBreak(tb)
 
 def onSave():
     """Save current workbench toolbars position."""
@@ -271,7 +317,7 @@ def onSave():
 
     global _saving_params
     _saving_params = True
-    for name, area in getToolbarAreas():
+    for name, area in _tb_areas.items():
         saved = []
         for line in tbs[area]:
             if saved:
@@ -281,6 +327,9 @@ def onSave():
 
         group.SetString(name, ",".join(saved))
     group.SetBool("Saved", 1)
+    pMain = App.ParamGet('User parameter:BaseApp/Preferences/MainWindow')
+    def_area = pMain.GetString('DefaultToolBarArea', 'Top')
+    group.SetString('SavedDefaultArea', def_area)
     _saving_params = False
 
 def onWorkbenchActivated():
@@ -298,29 +347,44 @@ def onWorkbenchActivated():
     else:
         pass
 
+def migrate():
+    param = App.ParamGet('User parameter:Tux/PersistentToolbars')
+    d = param.GetInt('Deprecated', 1)
+    if d == 0:
+        return False
+    if d != 1:
+        return True
+    param.SetInt('Deprecated', 2)
+
+    if param.HasGroup('User'):
+        param = param.GetGroup('User')
+    elif param.HasGroup('System'):
+        param = param.GetGroup('System')
+    else:
+        return True
+    for name in param.GetGroups():
+        onRestore(name, True);
+    return True
 
 def onStart():
     """Start persistent toolbars."""
     if mw.property("eventLoop"):
-        start = False
+        timer.stop()
+
+        if migrate():
+            return
         try:
-            mw.mainWindowClosed
-            mw.workbenchActivated
-            start = True
-        except AttributeError:
-            pass
-        if start:
-            timer.stop()
-            onWorkbenchActivated()
             mw.mainWindowClosed.connect(onClose)
             mw.workbenchActivated.connect(onWorkbenchActivated)
-            global _observer
-            if not _observer:
-                _observer = Observer()
-            global _mw_observer
-            if not _mw_observer:
-                _mw_observer = MainWindowStateObserver()
-
+        except AttributeError:
+            return
+        onWorkbenchActivated()
+        global _observer
+        if not _observer:
+            _observer = Observer()
+        global _mw_observer
+        if not _mw_observer:
+            _mw_observer = MainWindowStateObserver()
 
 def onClose():
     """Remove system provided presets on FreeCAD close."""

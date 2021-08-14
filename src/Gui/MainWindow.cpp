@@ -712,12 +712,12 @@ void populateMenu(QMenu *menu, MenuType type)
         lockMenu->addSeparator();
 
         for (auto toolbar : mw->findChildren<QToolBar*>()) {
+            auto action = toolbar->toggleViewAction();
             if (toolbar->parentWidget() == mw) {
-                auto action = toolbar->toggleViewAction();
                 // Some misbehaved code may force the toolbar to be visible
                 // while hiding its action, which causes the user to be unable
                 // to switch it off. We'll just include those actions anyway.
-                if (action->isVisible() || toolbar->isVisible()) {
+                if ((action->isVisible() || toolbar->isVisible()) && action->text().size()) {
                     action->setVisible(true);
                     actions[action->text()] = action;
                     QCheckBox *checkbox;
@@ -733,7 +733,7 @@ void populateMenu(QMenu *menu, MenuType type)
                 }
 #ifdef FC_DEBUG
                 else {
-                    actions[action->text()] = action;
+                    actions[action->text().size() ? action->text() : toolbar->objectName()] = action;
                     if (!hiddenMenu) {
                         hiddenMenu = new QMenu(QObject::tr("Other toolbars"), menu);
                         hiddenMenu->setToolTipsVisible(true);
@@ -761,7 +761,7 @@ void populateMenu(QMenu *menu, MenuType type)
         QCheckBox *checkbox;
         QWidgetAction *wa = addCheckable(
                 hiddenMenu && !action->isVisible() ? hiddenMenu : menu,
-                action->text(), tooltip, action->isChecked(), checkbox);
+                it.key(), tooltip, action->isChecked(), checkbox);
         QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SIGNAL(triggered(bool)));
         QObject::connect(wa, SIGNAL(triggered(bool)), action, SIGNAL(triggered(bool)));
     }
