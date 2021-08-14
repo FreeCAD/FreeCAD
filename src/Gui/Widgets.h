@@ -373,7 +373,7 @@ private:
 
 // ----------------------------------------------------------------------
 
-class PropertyListEditor : public QPlainTextEdit
+class GuiExport PropertyListEditor : public QPlainTextEdit
 {
     Q_OBJECT
 
