@@ -255,6 +255,7 @@ void VectorListEditor::setValues(const QList<Base::Vector3d>& v)
         ui->spinBox->setRange(1, 1);
         ui->spinBox->setEnabled(false);
         ui->toolButtonRemove->setEnabled(false);
+        ui->toolButtonAccept->setEnabled(false);
     }
     else {
         ui->spinBox->setRange(1, v.size());
@@ -310,10 +311,16 @@ void VectorListEditor::acceptCurrent()
 
 void VectorListEditor::addRow()
 {
-    model->insertRow(ui->tableWidget->currentIndex().row() + 1);
+    auto newRow = ui->tableWidget->currentIndex().row() + 1;
+    model->insertRow(newRow);
+    ui->tableWidget->setCurrentIndex(model->index(newRow, 0));
+    QSignalBlocker blocker(ui->spinBox);
     ui->spinBox->setMaximum(model->rowCount());
+    ui->spinBox->setValue(newRow + 1);
     ui->spinBox->setEnabled(true);
     ui->toolButtonRemove->setEnabled(true);
+    ui->toolButtonAccept->setEnabled(true);
+    acceptCurrent(); // The new row gets the values from the spinboxes
 }
 
 void VectorListEditor::removeRow()

@@ -592,6 +592,7 @@ PyObject * TopoShape::getPyObject()
         }
     }
 
+    prop->setNotTracking();
     return prop;
 }
 
@@ -704,7 +705,10 @@ Base::Matrix4D TopoShape::getTransform(void) const
     return mtrx;
 }
 
-void TopoShape::setPlacement(const Base::Placement& rclTrf)
+/*!
+ * \obsolete
+ */
+void TopoShape::setShapePlacement(const Base::Placement& rclTrf)
 {
     const Base::Vector3d& pos = rclTrf.getPosition();
     Base::Vector3d axis;
@@ -718,7 +722,10 @@ void TopoShape::setPlacement(const Base::Placement& rclTrf)
     _Shape.Location(loc);
 }
 
-Base::Placement TopoShape::getPlacemet(void) const
+/*!
+ * \obsolete
+ */
+Base::Placement TopoShape::getShapePlacement(void) const
 {
     TopLoc_Location loc = _Shape.Location();
     gp_Trsf trsf = loc.Transformation();
@@ -865,7 +872,7 @@ void TopoShape::importBrep(const char *FileName)
         BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
         pi->EndScope();
 #else
-        BRepTools::Read(aShape,(const Standard_CString)FileName,aBuilder);
+        BRepTools::Read(aShape,(Standard_CString)FileName,aBuilder);
 #endif
         this->_Shape = aShape;
     }
@@ -1339,6 +1346,9 @@ unsigned int TopoShape::getMemSize (void) const
         TopExp::MapShapes(_Shape, M);
         for (int i=0; i<M.Extent(); i++) {
             const TopoDS_Shape& shape = M(i+1);
+            if (shape.IsNull())
+                continue;
+
             // add the size of the underlying geomtric data
             Handle(TopoDS_TShape) tshape = shape.TShape();
             memsize += tshape->DynamicType()->Size();
@@ -1350,7 +1360,15 @@ unsigned int TopoShape::getMemSize (void) const
                     // first, last, tolerance
                     memsize += 5*sizeof(Standard_Real);
                     const TopoDS_Face& face = TopoDS::Face(shape);
-                    BRepAdaptor_Surface surface(face);
+                    // if no geometry is attached to a face an exception is raised
+                    BRepAdaptor_Surface surface;
+                    try {
+                        surface.Initialize(face);
+                    }
+                    catch (const Standard_Failure&) {
+                        continue;
+                    }
+
                     switch (surface.GetType())
                     {
                     case GeomAbs_Plane:
@@ -1398,7 +1416,15 @@ unsigned int TopoShape::getMemSize (void) const
                     // first, last, tolerance
                     memsize += 3*sizeof(Standard_Real);
                     const TopoDS_Edge& edge = TopoDS::Edge(shape);
-                    BRepAdaptor_Curve curve(edge);
+                    // if no geometry is attached to an edge an exception is raised
+                    BRepAdaptor_Curve curve;
+                    try {
+                        curve.Initialize(edge);
+                    }
+                    catch (const Standard_Failure&) {
+                        continue;
+                    }
+
                     switch (curve.GetType())
                     {
                     case GeomAbs_Line:
@@ -2412,7 +2438,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     Handle(Geom_Surface) surf;
     Standard_Boolean isCylinder;
 
-    if (angle < Precision::Confusion()) {                                      // Cylindrical helix
+    if (std::fabs(angle) < Precision::Confusion()) {                           // Cylindrical helix
         if (radius < Precision::Confusion())
             Standard_Failure::Raise("Radius of helix too small");
         surf= new Geom_CylindricalSurface(cylAx2, radius);
@@ -2420,8 +2446,6 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     }
     else {                                                                     // Conical helix
         angle = Base::toRadians(angle);
-        if (angle < Precision::Confusion())
-            Standard_Failure::Raise("Angle of helix too small");
         surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
         isCylinder = false;
     }
@@ -2477,6 +2501,60 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     TopoDS_Wire wire = mkWire.Wire();
     BRepLib::BuildCurves3d(wire);
+    return TopoDS_Shape(std::move(wire));
+}
+
+TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
+                                  Standard_Real height, Standard_Real nbturns,
+                                  Standard_Real breakperiod, Standard_Boolean leftHanded) const
+{
+    // 1000 periods is an OCCT limit. The 3D curve gets truncated
+    // if the 2D curve spans beyond this limit.
+    if ((breakperiod < 0) || (breakperiod > 1000))
+        Standard_Failure::Raise("Break period must be in [0, 1000]");
+    if (breakperiod == 0)
+        breakperiod = 1000;
+    if (nbturns <= 0)
+        Standard_Failure::Raise("Number of turns must be greater than 0");
+
+    Standard_Real nbPeriods = nbturns/breakperiod;
+    Standard_Real nbFullPeriods = floor(nbPeriods);
+    Standard_Real partPeriod = nbPeriods - nbFullPeriods;
+
+    // A Bezier curve is used below, to get a periodic surface also for spirals.
+    TColgp_Array1OfPnt poles(1,2);
+    poles(1) = gp_Pnt(radiusbottom, 0, 0);
+    poles(2) = gp_Pnt(radiustop, 0, height);
+    Handle(Geom_BezierCurve) meridian = new Geom_BezierCurve(poles);
+
+    gp_Ax1 axis(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+    Handle(Geom_Surface) surf = new Geom_SurfaceOfRevolution(meridian, axis);
+
+    gp_Pnt2d beg(0, 0);
+    gp_Pnt2d end(0, 0);
+    gp_Vec2d dir(breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+    if (leftHanded == Standard_True)
+        dir = gp_Vec2d(-breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+    Handle(Geom2d_TrimmedCurve) segm;
+    TopoDS_Edge edgeOnSurf;
+    BRepBuilderAPI_MakeWire mkWire;
+    for (unsigned long i = 0; i < nbFullPeriods; i++) {
+        end = beg.Translated(dir);
+        segm = GCE2d_MakeSegment(beg , end);
+        edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        mkWire.Add(edgeOnSurf);
+        beg = end;
+    }
+    if (partPeriod > Precision::Confusion()) {
+        dir.Scale(partPeriod);
+        end = beg.Translated(dir);
+        segm = GCE2d_MakeSegment(beg , end);
+        edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        mkWire.Add(edgeOnSurf);
+    }
+
+    TopoDS_Wire wire = mkWire.Wire();
+    BRepLib::BuildCurves3d(wire, Precision::Confusion(), GeomAbs_Shape::GeomAbs_C1, 14, 10000);
     return TopoDS_Shape(std::move(wire));
 }
 

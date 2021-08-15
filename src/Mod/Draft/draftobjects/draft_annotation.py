@@ -40,7 +40,7 @@ through Coin (pivy).
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftutils.messages import _wrn
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 
 class DraftAnnotation(object):
@@ -86,19 +86,10 @@ class DraftAnnotation(object):
                              _tip)
             vobj.ScaleMultiplier = 1.00
 
-            _info = "added view property 'ScaleMultiplier'"
-            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added view property 'ScaleMultiplier'"))
 
         if 'AnnotationStyle' not in vproperties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Annotation style to apply "
-                                     "to this object.\n"
-                                     "When using a saved style "
-                                     "some of the view properties "
-                                     "will become read-only;\n"
-                                     "they will only be editable by changing "
-                                     "the style through "
-                                     "the 'Annotation style editor' tool.")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Annotation style to apply to this object.\nWhen using a saved style some of the view properties will become read-only;\nthey will only be editable by changing the style through the 'Annotation style editor' tool.")
             vobj.addProperty("App::PropertyEnumeration",
                              "AnnotationStyle",
                              "Annotation",
@@ -111,7 +102,7 @@ class DraftAnnotation(object):
             vobj.AnnotationStyle = [""] + styles
 
             _info = "added view property 'AnnotationStyle'"
-            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added view property 'ScaleMultiplier'"))
 
     def __getstate__(self):
         """Return a tuple of objects to save or None.
@@ -131,14 +122,12 @@ class DraftAnnotation(object):
                 # the 'DraftText' type was changed to 'Text' type
                 if state["Type"] == "DraftText":
                     state["Type"] = "Text"
-                    _info = "migrated 'DraftText' type to 'Text'"
-                    _wrn("v0.19, " + _tr(_info))
+                    _wrn("v0.19, " + translate("draft","migrated 'DraftText' type to 'Text'"))
                 self.Type = state["Type"]
             else:
                 if state == "DraftText":
                     state = "Text"
-                    _info = "migrated 'DraftText' type to 'Text'"
-                    _wrn("v0.19, " + _tr(_info))
+                    _wrn("v0.19, " + translate("draft","migrated 'DraftText' type to 'Text'"))
                 self.Type = state
 
     def execute(self, obj):

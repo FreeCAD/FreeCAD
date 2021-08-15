@@ -75,7 +75,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskLoftParameters* ui;
+    std::unique_ptr<Ui_TaskLoftParameters> ui;
 
     enum selectionModes { none, refAdd, refRemove, refProfile };
     selectionModes selectionMode = none;

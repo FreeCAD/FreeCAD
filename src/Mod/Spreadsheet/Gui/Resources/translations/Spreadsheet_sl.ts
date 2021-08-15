@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Poravnaj navpično sredinsko</translation>
+      <translation>Sredinso poravnaj po navpičnici</translation>
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Levo poravnavanje polja</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Sredinjenje polja</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Desno poravnavanje polja</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Gornje poravnavanje polja</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Spodnje poravnavanje polja</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Sredinjenje polj po navpičnici</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Nastavi na krepko besedilo</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Nastavi na ležeče besedilo</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Nastavi na podčrtano besedilo</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Ustvari preglednico</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Nastavi lastnosti polja</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Uredi polje</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Počisti polje (i, a)</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Nastavi barvo ospredja</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Nastavi barvo ozadja</translation>
     </message>
   </context>
   <context>
@@ -563,24 +563,80 @@ Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Vstavi vrstice</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Odstrani vrstice</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Vstavi stolpce</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Odstrani stolpce</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Lastnosti …</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Vstavi zgoraj %n vrsto</numerusform>
+        <numerusform>Vstavi zgoraj %n vrsti</numerusform>
+        <numerusform>Vstavi zgoraj %n vrste</numerusform>
+        <numerusform>Vstavi zgoraj %n vrst</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Vstavi spodaj %n vrsto</numerusform>
+        <numerusform>Vstavi spodaj %n vrsti</numerusform>
+        <numerusform>Vstavi spodaj %n vrste</numerusform>
+        <numerusform>Vstavi spodaj %n vrst</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Vstavi %n nezvezno vrstico</numerusform>
+        <numerusform>Vstavi %n nezvezni vrstici</numerusform>
+        <numerusform>Vstavi %n nezvezne vrstice</numerusform>
+        <numerusform>Vstavi %n nezveznih vrstic</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Odstrani vrstico</numerusform>
+        <numerusform>Odstrani vrstici</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Vstavi %n stolpec levo</numerusform>
+        <numerusform>Vstavi %n stolpca levo</numerusform>
+        <numerusform>Vstavi %n stolpce levo</numerusform>
+        <numerusform>Vstavi %n stolpcev levo</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Vstavi %n stolpec desno</numerusform>
+        <numerusform>Vstavi %n stolpca desno</numerusform>
+        <numerusform>Vstavi %n stolpce desno</numerusform>
+        <numerusform>Vstavi %n stolpcev desno</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Vstavi %n nezvezen stolpec</numerusform>
+        <numerusform>Vstavi %n nezvezna stolpca</numerusform>
+        <numerusform>Vstavi %n nezvezne stolpce</numerusform>
+        <numerusform>Vstavi %n nezveznih stolpcev</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Odstrani stolpec</numerusform>
+        <numerusform>Odstrani stolpca</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
+      </translation>
     </message>
   </context>
   <context>

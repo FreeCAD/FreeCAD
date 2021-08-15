@@ -167,7 +167,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation>Sujungti briaunas, jei atstumas yra mažesnis, nei</translation>
+      <translation>Sujungti kraštines esant atstumui mažesniam, nei</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="345"/>
@@ -489,13 +489,13 @@ Dydis kinta 0,2-10 verčių ribose.</translation>
       <translation>„gmsh“</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Nėra taisytino dokumento</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Pirmiausia pasirinkite daiktą tinklui sukurti.</translation>
     </message>

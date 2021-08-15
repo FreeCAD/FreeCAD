@@ -142,6 +142,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
     Gui::ToolBarItem* thermal = new Gui::ToolBarItem(root);
@@ -176,10 +177,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_SolverElmer"
         << "Separator"
         << "FEM_EquationElasticity"
+        << "FEM_EquationElectricforce"
         << "FEM_EquationElectrostatic"
         << "FEM_EquationFlow"
         << "FEM_EquationFlux"
-        << "FEM_EquationElectricforce"
         << "FEM_EquationHeat"
         << "Separator"
         << "FEM_SolverControl"
@@ -211,7 +212,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      utils->setCommand("Utilities");
      *utils
         << "FEM_ClippingPlaneAdd"
-        << "FEM_ClippingPlaneRemoveAll";
+        << "FEM_ClippingPlaneRemoveAll"
+        << "FEM_Examples";
 
     return root;
 }
@@ -267,6 +269,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
     Gui::MenuItem* thermal = new Gui::MenuItem;
@@ -334,13 +337,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_SolverCalculixCxxtools"
         << "FEM_SolverCalculiX"
         << "FEM_SolverElmer"
+        << "FEM_SolverMystran"
         << "FEM_SolverZ88"
         << "Separator"
         << "FEM_EquationElasticity"
+        << "FEM_EquationElectricforce"
         << "FEM_EquationElectrostatic"
         << "FEM_EquationFlow"
         << "FEM_EquationFlux"
-        << "FEM_EquationElectricforce"
         << "FEM_EquationHeat"
         << "Separator"
         << "FEM_SolverControl"

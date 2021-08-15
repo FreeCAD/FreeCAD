@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>Создать новую траекторию </translation>
+      <source>Create a new empty trajectory</source>
+      <translation>Создать новую пустую траекторию</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="286"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-      <translation>ускорение: (например, 1 м/с ^ 2 или 3 см/с ^ 2)</translation>
+      <translation>ускорение: (например, 1 м/с^2 или 3 см/с^2)</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="413"/>

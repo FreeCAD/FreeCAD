@@ -51,7 +51,9 @@ public:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg)=0;
     const QString onAddSelection(const Gui::SelectionChanges& msg);
-    void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar);
+    virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
+    virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
+    void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle = false);
     void exitSelectionMode();
     QVariant setUpToFace(const QString& text);
     /// Try to find the name of a feature with the given label.

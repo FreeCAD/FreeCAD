@@ -31,7 +31,7 @@ namespace SketcherGui {
 
 bool checkBothExternal(int GeoId1, int GeoId2);
 
-bool checkBothExternalOrConstructionPoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
+bool checkBothExternalOrBSplinePoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
 
 bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
 
@@ -47,7 +47,7 @@ bool inline isEdge(int GeoId, Sketcher::PointPos PosId);
 
 bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
 
-bool isConstructionPoint(const Sketcher::SketchObject* Obj, int GeoId);
+bool isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId);
 
 bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj);
 
@@ -137,7 +137,14 @@ void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
 bool checkConstraint(const std::vector< Sketcher::Constraint * > &vals, Sketcher::ConstraintType type, int geoid, Sketcher::PointPos pos);
 
 /// Does an endpoint-to-endpoint tangency
-void doEndpointTangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
+void doEndpointTangency(Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
+
+/// Does an endpoint-edge tangency
+void doEndpointToEdgeTangency( Sketcher::SketchObject* Obj, int GeoId1, Sketcher::PointPos PosId1, int GeoId2);
+
+/// shows constraint substitution information dialog box, enabling the user to forgo further notifications
+void notifyConstraintSubstitutions(const QString & message);
+
 }
 #endif // SKETCHERGUI_DrawSketchHandler_H
 

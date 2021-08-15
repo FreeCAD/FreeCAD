@@ -290,6 +290,18 @@ private:
      */
     void SplitNeighbourFacet(unsigned long ulFacetPos, unsigned short uSide,
                              const Base::Vector3f rPoint);
+    void SplitFacetOnOneEdge(unsigned long ulFacetPos,
+                             const Base::Vector3f& rP1);
+    void SplitFacetOnTwoEdges(unsigned long ulFacetPos,
+                              const Base::Vector3f& rP1,
+                              const Base::Vector3f& rP2);
+    void SplitFacet(unsigned long ulFacetPos, unsigned long P1,
+                    unsigned long P2, unsigned long Pn);
+    void AddFacet(unsigned long P1, unsigned long P2, unsigned long P3);
+    void AddFacet(unsigned long P1, unsigned long P2, unsigned long P3,
+                  unsigned long N1, unsigned long N2, unsigned long N3);
+    void HarmonizeNeighbours(unsigned long facet1, unsigned long facet2);
+    void HarmonizeNeighbours(const std::vector<unsigned long>& ulFacets);
     /**
      * Returns all facets that references the point index \a uPointPos. \a uFacetPos
      * is a facet that must reference this point and is added to the list as well.

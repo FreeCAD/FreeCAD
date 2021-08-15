@@ -55,11 +55,15 @@ class Template:
     StartDepthExpression = 'StartDepthExpression'
     FinalDepthExpression = 'FinalDepthExpression'
     StepDownExpression = 'StepDownExpression'
+    Fixtures = 'Fixtures'
+    OrderOutputBy = 'OrderOutputBy'
+    SplitOutput = 'SplitOutput'
 
     All = [HorizRapid, VertRapid, CoolantMode, SafeHeightOffset, SafeHeightExpression, ClearanceHeightOffset, ClearanceHeightExpression, StartDepthExpression, FinalDepthExpression, StepDownExpression]
 
 
 def _traverseTemplateAttributes(attrs, codec):
+    PathLog.debug(attrs)
     coded = {}
     for key, value in PathUtil.keyValueIter(attrs):
         if type(value) == dict:

@@ -42,14 +42,16 @@ class ReferenceSelection : public Gui::SelectionFilterGate
     bool allowOtherBody;
     // Allow whole object selection
     bool whole;
+    // Allow picking circular edges (incl arcs)
+    bool circle;
 
 public:
     ReferenceSelection(const App::DocumentObject* support_,
-                       const bool edge_, const bool plane_, const bool planar_, 
-                       const bool point_ = false, bool whole_ = false)
+                       const bool edge_, const bool plane_, const bool planar_,
+                       const bool point_ = false, bool whole_ = false, bool circle_ = false)
         : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),
-          support(support_), edge(edge_), plane(plane_), 
-          planar(planar_), point(point_), allowOtherBody(true), whole(whole_)
+          support(support_), edge(edge_), plane(plane_),
+          planar(planar_), point(point_), allowOtherBody(true), whole(whole_), circle(circle_)
     {
     }
     /**

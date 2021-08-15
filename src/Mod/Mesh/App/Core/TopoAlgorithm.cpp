@@ -1109,132 +1109,245 @@ bool MeshTopoAlgorithm::CollapseFacet(unsigned long ulFacetPos)
     return true;
 }
 
-/// FIXME: Implement
 void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, const Base::Vector3f& rP1, const Base::Vector3f& rP2)
 {
-  float fEps = MESH_MIN_EDGE_LEN;
-  MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
-  MeshPoint& rVertex0 = _rclMesh._aclPointArray[rFace._aulPoints[0]];
-  MeshPoint& rVertex1 = _rclMesh._aclPointArray[rFace._aulPoints[1]];
-  MeshPoint& rVertex2 = _rclMesh._aclPointArray[rFace._aulPoints[2]];
+    float fEps = MESH_MIN_EDGE_LEN;
+    MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
+    MeshPoint& rVertex0 = _rclMesh._aclPointArray[rFace._aulPoints[0]];
+    MeshPoint& rVertex1 = _rclMesh._aclPointArray[rFace._aulPoints[1]];
+    MeshPoint& rVertex2 = _rclMesh._aclPointArray[rFace._aulPoints[2]];
 
-  unsigned short equalP1=USHRT_MAX, equalP2=USHRT_MAX;
-  if ( Base::Distance(rVertex0, rP1) < fEps )
-    equalP1=0;
-  else if ( Base::Distance(rVertex1, rP1) < fEps )
-    equalP1=1;
-  else if ( Base::Distance(rVertex2, rP1) < fEps )
-    equalP1=2;
-  if ( Base::Distance(rVertex0, rP2) < fEps )
-    equalP2=0;
-  else if ( Base::Distance(rVertex1, rP2) < fEps )
-    equalP2=1;
-  else if ( Base::Distance(rVertex2, rP2) < fEps )
-    equalP2=2;
+    auto pointIndex = [=](const Base::Vector3f& rP) {
+        unsigned short equalP = USHRT_MAX;
+        if (Base::Distance(rVertex0, rP) < fEps)
+            equalP = 0;
+        else if (Base::Distance(rVertex1, rP) < fEps)
+            equalP = 1;
+        else if (Base::Distance(rVertex2, rP) < fEps)
+            equalP = 2;
+        return equalP;
+    };
 
-  // both points are coincident with the corner points
-  if ( equalP1 != USHRT_MAX && equalP2 != USHRT_MAX )
-    return; // must not split the facet
+    unsigned short equalP1 = pointIndex(rP1);
+    unsigned short equalP2 = pointIndex(rP2);
 
-  if ( equalP1 != USHRT_MAX )
-  {
-    // get the edge to the second given point and perform a split edge operation
+    // both points are coincident with the corner points
+    if (equalP1 != USHRT_MAX && equalP2 != USHRT_MAX)
+        return; // must not split the facet
+
+    if (equalP1 != USHRT_MAX) {
+        // get the edge to the second given point and perform a split edge operation
+        SplitFacetOnOneEdge(ulFacetPos, rP2);
+    }
+    else if (equalP2 != USHRT_MAX) {
+        // get the edge to the first given point and perform a split edge operation
+        SplitFacetOnOneEdge(ulFacetPos, rP1);
+    }
+    else {
+        SplitFacetOnTwoEdges(ulFacetPos, rP1, rP2);
+    }
+}
+
+void MeshTopoAlgorithm::SplitFacetOnOneEdge(unsigned long ulFacetPos, const Base::Vector3f& rP)
+{
     float fMinDist = FLOAT_MAX;
-    unsigned short iEdgeNo=USHRT_MAX;
-    for ( unsigned short i=0; i<3; i++ )
-    {
-      Base::Vector3f cBase(_rclMesh._aclPointArray[rFace._aulPoints[i]]);
-      Base::Vector3f cEnd (_rclMesh._aclPointArray[rFace._aulPoints[(i+1)%3]]);
-      Base::Vector3f cDir = cEnd - cBase;
+    unsigned short iEdgeNo = USHRT_MAX;
+    MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
 
-      float fDist = rP2.DistanceToLine(cBase, cDir);
-      if ( fMinDist < fDist )
-      {
-        fMinDist = fDist;
-        iEdgeNo = i;
-      }
-    }
-    if ( fMinDist < 0.05f )
-    {
-      if ( rFace._aulNeighbours[iEdgeNo] != ULONG_MAX )
-        SplitEdge(ulFacetPos, rFace._aulNeighbours[iEdgeNo], rP2);
-      else
-        SplitOpenEdge(ulFacetPos, iEdgeNo, rP2);
-    }
-  }
-  else if ( equalP2 != USHRT_MAX )
-  {
-    // get the edge to the first given point and perform a split edge operation
-    float fMinDist = FLOAT_MAX;
-    unsigned short iEdgeNo=USHRT_MAX;
-    for ( unsigned short i=0; i<3; i++ )
-    {
-      Base::Vector3f cBase(_rclMesh._aclPointArray[rFace._aulPoints[i]]);
-      Base::Vector3f cEnd (_rclMesh._aclPointArray[rFace._aulPoints[(i+1)%3]]);
-      Base::Vector3f cDir = cEnd - cBase;
+    for (unsigned short i=0; i<3; i++) {
+        Base::Vector3f cBase(_rclMesh._aclPointArray[rFace._aulPoints[i]]);
+        Base::Vector3f cEnd (_rclMesh._aclPointArray[rFace._aulPoints[(i+1)%3]]);
+        Base::Vector3f cDir = cEnd - cBase;
 
-      float fDist = rP1.DistanceToLine(cBase, cDir);
-      if ( fMinDist < fDist )
-      {
-        fMinDist = fDist;
-        iEdgeNo = i;
-      }
+        float fDist = rP.DistanceToLine(cBase, cDir);
+        if (fDist < fMinDist) {
+            fMinDist = fDist;
+            iEdgeNo = i;
+        }
     }
-    if ( fMinDist < 0.05f )
-    {
-      if ( rFace._aulNeighbours[iEdgeNo] != ULONG_MAX )
-        SplitEdge(ulFacetPos, rFace._aulNeighbours[iEdgeNo], rP1);
-      else
-        SplitOpenEdge(ulFacetPos, iEdgeNo, rP1);
+
+    if (fMinDist < 0.05f) {
+        if (rFace._aulNeighbours[iEdgeNo] != ULONG_MAX)
+            SplitEdge(ulFacetPos, rFace._aulNeighbours[iEdgeNo], rP);
+        else
+            SplitOpenEdge(ulFacetPos, iEdgeNo, rP);
     }
-  }
-  else
-  {
+}
+
+void MeshTopoAlgorithm::SplitFacetOnTwoEdges(unsigned long ulFacetPos, const Base::Vector3f& rP1, const Base::Vector3f& rP2)
+{
     // search for the matching edges
-    unsigned short iEdgeNo1=USHRT_MAX, iEdgeNo2=USHRT_MAX;
+    unsigned short iEdgeNo1 = USHRT_MAX, iEdgeNo2 = USHRT_MAX;
     float fMinDist1 = FLOAT_MAX, fMinDist2 = FLOAT_MAX;
-    const MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
-    for ( unsigned short i=0; i<3; i++ )
-    {
-      Base::Vector3f cBase(_rclMesh._aclPointArray[rFace._aulPoints[i]]);
-      Base::Vector3f cEnd (_rclMesh._aclPointArray[rFace._aulPoints[(i+1)%3]]);
-      Base::Vector3f cDir = cEnd - cBase;
+    MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
 
-      float fDist = rP1.DistanceToLine(cBase, cDir);
-      if ( fMinDist1 < fDist )
-      {
-        fMinDist1 = fDist;
-        iEdgeNo1 = i;
-      }
-      fDist = rP2.DistanceToLine(cBase, cDir);
-      if ( fMinDist2 < fDist )
-      {
-        fMinDist2 = fDist;
-        iEdgeNo2 = i;
-      }
+    for (unsigned short i=0; i<3; i++) {
+        Base::Vector3f cBase(_rclMesh._aclPointArray[rFace._aulPoints[i]]);
+        Base::Vector3f cEnd (_rclMesh._aclPointArray[rFace._aulPoints[(i+1)%3]]);
+        Base::Vector3f cDir = cEnd - cBase;
+
+        float fDist = rP1.DistanceToLine(cBase, cDir);
+        if (fDist < fMinDist1) {
+            fMinDist1 = fDist;
+            iEdgeNo1 = i;
+        }
+        fDist = rP2.DistanceToLine(cBase, cDir);
+        if (fDist < fMinDist2) {
+            fMinDist2 = fDist;
+            iEdgeNo2 = i;
+        }
     }
 
-    if ( iEdgeNo1 == iEdgeNo2 || fMinDist1 >= 0.05f || fMinDist2 >= 0.05f ) 
-      return; // no valid configuration
+    if (iEdgeNo1 == iEdgeNo2 || fMinDist1 >= 0.05f || fMinDist2 >= 0.05f)
+        return; // no valid configuration
 
     // make first point lying on the previous edge
     Base::Vector3f cP1 = rP1;
     Base::Vector3f cP2 = rP2;
-    if ( (iEdgeNo2+1)%3 == iEdgeNo1 )
-    {
-      unsigned short tmp = iEdgeNo1;
-      iEdgeNo1 = iEdgeNo2;
-      iEdgeNo2 = tmp;
-      cP1 = rP2;
-      cP2 = rP1;
+    if ((iEdgeNo2 + 1) % 3 == iEdgeNo1) {
+        std::swap(iEdgeNo1, iEdgeNo2);
+        std::swap(cP1, cP2);
     }
 
-    // split up the facet now
-    if ( rFace._aulNeighbours[iEdgeNo1] != ULONG_MAX )
-      SplitNeighbourFacet(ulFacetPos, iEdgeNo1, cP1);
-    if ( rFace._aulNeighbours[iEdgeNo2] != ULONG_MAX )
-      SplitNeighbourFacet(ulFacetPos, iEdgeNo2, cP1);
-  }
+    // insert new points
+    unsigned long cntPts1 = this->GetOrAddIndex(cP1);
+    unsigned long cntPts2 = this->GetOrAddIndex(cP2);
+    unsigned long cntFts = _rclMesh.CountFacets();
+
+    unsigned short v0 = (iEdgeNo2 + 1) % 3;
+    unsigned short v1 = iEdgeNo1;
+    unsigned short v2 = iEdgeNo2;
+
+    unsigned long p0 = rFace._aulPoints[v0];
+    unsigned long p1 = rFace._aulPoints[v1];
+    unsigned long p2 = rFace._aulPoints[v2];
+
+    unsigned long n0 = rFace._aulNeighbours[v0];
+    unsigned long n1 = rFace._aulNeighbours[v1];
+    unsigned long n2 = rFace._aulNeighbours[v2];
+
+    // Modify and add facets
+    //
+    rFace._aulPoints[v0] = cntPts2;
+    rFace._aulPoints[v1] = cntPts1;
+    rFace._aulNeighbours[v0] = cntFts + 1;
+
+    float dist1 = Base::DistanceP2(_rclMesh._aclPointArray[p0], cP1);
+    float dist2 = Base::DistanceP2(_rclMesh._aclPointArray[p1], cP2);
+
+    if (dist1 > dist2) {
+        AddFacet(p0, p1, cntPts2, n0, cntFts + 1, n2);
+        AddFacet(p1, cntPts1, cntPts2, n1, ulFacetPos, cntFts);
+    }
+    else {
+        AddFacet(p0, p1, cntPts1, n0, n1, cntFts + 1);
+        AddFacet(p0, cntPts1, cntPts2, cntFts, ulFacetPos, n2);
+    }
+
+    std::vector<unsigned long> fixIndices;
+    fixIndices.push_back(ulFacetPos);
+
+    if (n0 != ULONG_MAX) {
+        fixIndices.push_back(n0);
+    }
+
+    // split up the neighbour facets
+    if (n1 != ULONG_MAX) {
+        fixIndices.push_back(n1);
+        MeshFacet& rN = _rclMesh._aclFacetArray[n1];
+        for (int i=0; i<3; i++)
+            fixIndices.push_back(rN._aulNeighbours[i]);
+        SplitFacet(n1, p1, p2, cntPts1);
+    }
+
+    if (n2 != ULONG_MAX) {
+        fixIndices.push_back(n2);
+        MeshFacet& rN = _rclMesh._aclFacetArray[n2];
+        for (int i=0; i<3; i++)
+            fixIndices.push_back(rN._aulNeighbours[i]);
+        SplitFacet(n2, p2, p0, cntPts2);
+    }
+
+    unsigned long cntFts2 = _rclMesh.CountFacets();
+    for (unsigned long i=cntFts; i<cntFts2; i++) {
+        fixIndices.push_back(i);
+    }
+
+    std::sort(fixIndices.begin(), fixIndices.end());
+    fixIndices.erase(std::unique(fixIndices.begin(), fixIndices.end()), fixIndices.end());
+    HarmonizeNeighbours(fixIndices);
+}
+
+void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, unsigned long P1,
+                                   unsigned long P2, unsigned long Pn)
+{
+    MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
+    unsigned short side = rFace.Side(P1, P2);
+    if (side != USHRT_MAX) {
+        unsigned long V1 = rFace._aulPoints[(side + 1) % 3];
+        unsigned long V2 = rFace._aulPoints[(side + 2) % 3];
+        unsigned long size = _rclMesh._aclFacetArray.size();
+
+        rFace._aulPoints[(side + 1) % 3] = Pn;
+        unsigned long N1 = rFace._aulNeighbours[(side + 1) % 3];
+        if (N1 != ULONG_MAX)
+            _rclMesh._aclFacetArray[N1].ReplaceNeighbour(ulFacetPos, size);
+
+        rFace._aulNeighbours[(side + 1) % 3] = ulFacetPos;
+        AddFacet(Pn, V1, V2);
+    }
+}
+
+void MeshTopoAlgorithm::AddFacet(unsigned long P1, unsigned long P2, unsigned long P3)
+{
+    MeshFacet facet;
+    facet._aulPoints[0] = P1;
+    facet._aulPoints[1] = P2;
+    facet._aulPoints[2] = P3;
+
+    _rclMesh._aclFacetArray.push_back(facet);
+}
+
+void MeshTopoAlgorithm::AddFacet(unsigned long P1, unsigned long P2, unsigned long P3,
+                                 unsigned long N1, unsigned long N2, unsigned long N3)
+{
+    MeshFacet facet;
+    facet._aulPoints[0] = P1;
+    facet._aulPoints[1] = P2;
+    facet._aulPoints[2] = P3;
+    facet._aulNeighbours[0] = N1;
+    facet._aulNeighbours[1] = N2;
+    facet._aulNeighbours[2] = N3;
+
+    _rclMesh._aclFacetArray.push_back(facet);
+}
+
+void MeshTopoAlgorithm::HarmonizeNeighbours(const std::vector<unsigned long>& ulFacets)
+{
+    for (unsigned long it : ulFacets) {
+        for (unsigned long jt : ulFacets) {
+            HarmonizeNeighbours(it, jt);
+        }
+    }
+}
+
+void MeshTopoAlgorithm::HarmonizeNeighbours(unsigned long facet1, unsigned long facet2)
+{
+    if (facet1 == facet2)
+        return;
+
+    MeshFacet& rFace1 = _rclMesh._aclFacetArray[facet1];
+    MeshFacet& rFace2 = _rclMesh._aclFacetArray[facet2];
+
+    unsigned short side = rFace1.Side(rFace2);
+    if (side != USHRT_MAX) {
+        rFace1._aulNeighbours[side] = facet2;
+    }
+
+    side = rFace2.Side(rFace1);
+    if (side != USHRT_MAX) {
+        rFace2._aulNeighbours[side] = facet1;
+    }
 }
 
 void MeshTopoAlgorithm::SplitNeighbourFacet(unsigned long ulFacetPos, unsigned short uFSide, const Base::Vector3f rPoint)

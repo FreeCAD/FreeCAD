@@ -69,7 +69,7 @@ class TestMirrored(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.Mirrored.Shape.Volume, 2.0)
 
-    def testMirroredOffsetFailureCase(self):
+    def testMirroredOffsetCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
         self.Body.addObject(self.Rect)
@@ -85,7 +85,7 @@ class TestMirrored(unittest.TestCase):
         self.Mirrored.MirrorPlane = (self.Rect, ["H_Axis"])
         self.Body.addObject(self.Mirrored)
         self.Doc.recompute()
-        self.assertIn("Invalid", self.Mirrored.State)
+        self.assertIn("Up-to-date", self.Mirrored.State)
 
     def tearDown(self):
         #closing doc

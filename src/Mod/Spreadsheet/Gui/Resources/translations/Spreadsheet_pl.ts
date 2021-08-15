@@ -39,7 +39,7 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Wyrównaj do środka</translation>
+      <translation>Wyśrodkuj w poziomie</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Wyrównaj komórkę do lewej</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Wyśrodkuj komórkę</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Wyrównaj komórkę do prawej</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Wyrównaj komórkę do góry</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Wyrównaj komórkę do dołu</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Wyśrodkuj komórkę w pionie</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Ustaw pogrubiony tekst</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Ustaw pochylony tekst</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Ustaw podkreślony tekst</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Utwórz Arkusz kalkulacyjny</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Ustaw właściwości komórki</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Edytuj komórkę</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Wyczyść komórkę(i)</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Ustawia kolor pierwszoplanowy</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Ustaw kolor tła</translation>
     </message>
   </context>
   <context>
@@ -564,24 +564,80 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Wstaw wiersze</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Usuń wiersze</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Wstaw kolumny</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Usuwanie kolumn</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Właściwości...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz powyżej</numerusform>
+        <numerusform>Wstaw %n wiersze powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) powyżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz poniżej</numerusform>
+        <numerusform>Wstaw %n wiersze poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) poniżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz, który nie jest sąsiadujący</numerusform>
+        <numerusform>Wstaw %n wiersze, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Usuń wiersz</numerusform>
+        <numerusform>Usuń wiersze</numerusform>
+        <numerusform>Usuń wierszy</numerusform>
+        <numerusform>Usuń wiersz(e)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę, która nie jest sąsiadująca</numerusform>
+        <numerusform>Wstaw %n kolumny, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Usuń kolumnę</numerusform>
+        <numerusform>Usuń kolumny</numerusform>
+        <numerusform>Usuń kolumn</numerusform>
+        <numerusform>Usuń kolumn(y)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

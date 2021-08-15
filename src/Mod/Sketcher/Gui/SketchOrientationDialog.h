@@ -46,7 +46,7 @@ protected Q_SLOTS:
     void onPreview();
 
 private:
-    Ui_SketchOrientationDialog* ui;
+    std::unique_ptr<Ui_SketchOrientationDialog> ui;
 };
 
 }

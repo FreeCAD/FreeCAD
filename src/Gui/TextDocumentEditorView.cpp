@@ -32,7 +32,7 @@
 # include <QTextBlock>
 # include <iostream>
 # include <boost_bind_bind.hpp>
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 #endif
 
 
@@ -167,7 +167,7 @@ bool TextDocumentEditorView::onMsg(const char* msg, const char**)
 
     if (strcmp(msg,"Save") == 0) {
         saveToObject();
-        return true;
+        return getGuiDocument()->save();
     }
     if (strcmp(msg,"Cut") == 0) {
         getEditor()->cut();
@@ -204,7 +204,7 @@ bool TextDocumentEditorView::onHasMsg(const char* msg) const
         return false;
 
     if (strcmp(msg,"Save") == 0) {
-        return isEditorModified();
+        return true;
     }
     if (strcmp(msg,"Cut") == 0) {
         return (!getEditor()->isReadOnly() &&
@@ -285,6 +285,7 @@ void TextDocumentEditorView::saveToObject()
     boost::signals2::shared_connection_block textBlock {textConnection};
     textDocument->Text.setValue(
             getEditor()->document()->toPlainText().toUtf8());
+    textDocument->purgeTouched();
     getEditor()->document()->setModified(false);
 }
 

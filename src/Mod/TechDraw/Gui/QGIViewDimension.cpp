@@ -36,6 +36,8 @@
   # include <BRepAdaptor_Curve.hxx>
   # include <Precision.hxx>
 
+  # include <QApplication>
+  # include <QDebug>
   # include <QGraphicsScene>
   # include <QGraphicsSceneMouseEvent>
   # include <QPainter>
@@ -59,7 +61,6 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -98,6 +99,8 @@ QGIDatumLabel::QGIDatumLabel()
     verticalSep = false;
     posX = 0;
     posY = 0;
+
+    parent = nullptr;
 
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(ItemSendsGeometryChanges, true);
@@ -148,10 +151,7 @@ void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
         m_ctrl = true;
     }
 
-    if(scene() && this == scene()->mouseGrabberItem()) {
-        Q_EMIT dragFinished();
-    }
-      QGraphicsItem::mousePressEvent(event);
+    QGraphicsItem::mousePressEvent(event);
 }
 
 void QGIDatumLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -163,11 +163,32 @@ void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
-    if(scene() && this == scene()->mouseGrabberItem()) {
-        Q_EMIT dragFinished();
+    if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton))
+        .length() > 0) {
+        if (scene() && this == scene()->mouseGrabberItem()) {
+            Q_EMIT dragFinished();
+        }
     }
 
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void QGIDatumLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    QGIViewDimension* qgivDimension = dynamic_cast<QGIViewDimension*>(parentItem());
+    if (qgivDimension == nullptr) {
+        qWarning() << "QGIDatumLabel::mouseDoubleClickEvent: No parent item";
+        return;
+    }
+
+    auto ViewProvider = dynamic_cast<ViewProviderDimension*>(qgivDimension->getViewProvider(qgivDimension->getViewObject()));
+    if (ViewProvider == nullptr) {
+        qWarning() << "QGIDatumLabel::mouseDoubleClickEvent: No valid view provider";
+        return;
+    }
+
+    ViewProvider->startDefaultEditMode();
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
 void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -228,7 +249,7 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     prepareGeometryChange();
     QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if( qgivd == nullptr ) {
-        return;                  //tarfu
+        return;
     }
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(qgivd->getViewObject()) );
     if( dim == nullptr ) {
@@ -311,28 +332,28 @@ void QGIDatumLabel::setDimString(QString t, qreal maxWidth)
     m_dimText->setTextWidth(maxWidth);
 }
 
-void QGIDatumLabel::setTolString()
+void QGIDatumLabel::setToleranceString()
 {
     prepareGeometryChange();
     QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if( qgivd == nullptr ) {
-        return;                  //tarfu
+        return;
     }
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(qgivd->getViewObject()) );
     if( dim == nullptr ) {
         return;
-    } else if (!dim->hasTolerance()) {
+        // don't show if both are zero or if EqualTolerance is true
+    } else if (!dim->hasOverUnderTolerance() || dim->EqualTolerance.getValue() || dim->TheoreticalExact.getValue()) {
         m_tolTextOver->hide();
-        m_tolTextUnder->hide();        // don't show if both zero
+        m_tolTextUnder->hide();
+        // we must explicitly empty the text otherwise the frame drawn for
+        // TheoreticalExact would be as wide as necessary for the text
+        m_tolTextOver->setPlainText(QString());
+        m_tolTextUnder->setPlainText(QString());
         return;
     }
     m_tolTextOver->show();
     m_tolTextUnder->show();
-
-    QString tolSuffix;
-    if ((dim->Type.isValue("Angle")) || (dim->Type.isValue("Angle3Pt"))) {
-        tolSuffix = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
-    }
 
     std::pair<std::string, std::string> labelTexts, unitTexts;
 
@@ -432,6 +453,7 @@ void QGIDatumLabel::setColor(QColor c)
 
 //**************************************************************
 QGIViewDimension::QGIViewDimension() :
+    dvDimension(nullptr),
     hasHover(false),
     m_lineWidth(0.0)
 {
@@ -586,11 +608,10 @@ void QGIViewDimension::updateView(bool update)
         float y = Rez::guiX(dim->Y.getValue());
         datumLabel->setPosFromCenter(x,-y);
         updateDim();
-     }
-     else if(vp->Fontsize.isTouched() ||
-               vp->Font.isTouched()) {
-         updateDim();
-    } else if (vp->LineWidth.isTouched()) {           //never happens!!
+    } else if(vp->Fontsize.isTouched() ||
+        vp->Font.isTouched()) {
+        updateDim();
+    } else if (vp->LineWidth.isTouched()) {
         m_lineWidth = vp->LineWidth.getValue();
         updateDim();
     } else {
@@ -611,18 +632,25 @@ void QGIViewDimension::updateDim()
         return;
     }
  
-//    QString labelText = QString::fromUtf8(dim->getFormattedDimensionValue().c_str());
-    //want this split into value and unit
     QString labelText;
     QString unitText;
-    if (dim->Arbitrary.getValue()) {
+    if ( (dim->Arbitrary.getValue() && !dim->EqualTolerance.getValue())
+        || (dim->Arbitrary.getValue() && dim->TheoreticalExact.getValue()) ) {
         labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
     } else {
         if (dim->isMultiValueSchema()) {
             labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
         } else {
             labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
-            unitText  = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
+            if (dim->EqualTolerance.getValue()) {
+                if (dim->ArbitraryTolerances.getValue()) {
+                    unitText = QString();
+                } else {
+                    unitText = QString::fromUtf8(dim->getFormattedToleranceValue(2).c_str()); //just the unit
+                }
+            } else {
+                unitText = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
+            }
         }
     }
     QFont font = datumLabel->getFont();
@@ -632,7 +660,7 @@ void QGIViewDimension::updateDim()
 
     prepareGeometryChange();
     datumLabel->setDimString(labelText);
-    datumLabel->setTolString();
+    datumLabel->setToleranceString();
     datumLabel->setUnitString(unitText);
     datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
 

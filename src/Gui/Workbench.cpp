@@ -586,7 +586,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
           << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection"
           << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
-          << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
+          << "Separator" << "Std_Placement" << "Std_TransformManip" << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 
     MenuItem* axoviews = new MenuItem;
@@ -695,7 +695,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Help
     MenuItem* help = new MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_FreeCADWebsite"
+    *help << "Std_OnlineHelp" << "Std_FreeCADWebsite" << "Std_FreeCADDonation"
           << "Std_FreeCADUserHub" << "Std_FreeCADPowerUserHub"
           << "Std_PythonHelp" << "Std_FreeCADForum"
           << "Std_FreeCADFAQ" << "Std_About" << "Std_WhatsThis";

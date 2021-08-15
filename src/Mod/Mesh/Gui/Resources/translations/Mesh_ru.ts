@@ -618,12 +618,12 @@
     <message>
       <location filename="../../Command.cpp" line="1831"/>
       <source>Split by components</source>
-      <translation type="unfinished">Split by components</translation>
+      <translation>Разделить по компонентам</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation type="unfinished">Split selected mesh into its components</translation>
+      <translation>Разделяет выбранную сетку на её компоненты</translation>
     </message>
   </context>
   <context>
@@ -739,8 +739,8 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
-      <source>Mesh Mesh Create</source>
-      <translation type="unfinished">Mesh Mesh Create</translation>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -750,22 +750,22 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Mesh union</source>
-      <translation type="unfinished">Mesh union</translation>
+      <translation>Объединить Сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh difference</source>
-      <translation type="unfinished">Mesh difference</translation>
+      <translation>Разница Сеток</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Mesh intersection</source>
-      <translation type="unfinished">Mesh intersection</translation>
+      <translation>Пересечение Сеток</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Import Mesh</source>
-      <translation type="unfinished">Import Mesh</translation>
+      <translation>Импорт Сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
@@ -776,37 +776,37 @@
       <location filename="../../Command.cpp" line="1414"/>
       <location filename="../../DlgSmoothing.cpp" line="178"/>
       <source>Mesh Smoothing</source>
-      <translation type="unfinished">Mesh Smoothing</translation>
+      <translation>Сглаживание Сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1505"/>
       <source>Harmonize mesh normals</source>
-      <translation type="unfinished">Harmonize mesh normals</translation>
+      <translation>Согласовать нормали сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation type="unfinished">Flip mesh normals</translation>
+      <translation>Отразить нормали сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Fill up holes</source>
-      <translation type="unfinished">Fill up holes</translation>
+      <translation>Заполнить отверстия</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
       <source>Mesh merge</source>
-      <translation type="unfinished">Mesh merge</translation>
+      <translation>Слияние Сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
       <source>Mesh split</source>
-      <translation type="unfinished">Mesh split</translation>
+      <translation>Разделить сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1896"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Масштаб сетки</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
@@ -836,12 +836,12 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
       <source>Remove duplicated faces</source>
-      <translation type="unfinished">Remove duplicated faces</translation>
+      <translation>Удалить дублированные грани</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
       <source>Remove duplicated points</source>
-      <translation type="unfinished">Remove duplicated points</translation>
+      <translation>Удалить дублированные точки</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
@@ -856,12 +856,12 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
       <source>Repair mesh</source>
-      <translation type="unfinished">Repair mesh</translation>
+      <translation>Ремонт сетки</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
       <source>Delete selection</source>
-      <translation type="unfinished">Delete selection</translation>
+      <translation>Удалить выделение</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="874"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1131"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Сегмент</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1726"/>
@@ -893,7 +893,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1833"/>
       <source>Fill hole</source>
-      <translation type="unfinished">Fill hole</translation>
+      <translation>Заполнить отверстие</translation>
     </message>
   </context>
   <context>
@@ -1649,48 +1649,48 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>Автоматически</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation>Адаптивный</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation>Фронтальный</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation>Передний квадрат</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation>Параллелограммы</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Время:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation>Запуск gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation>Не удалось запустить</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Ошибки</translation>
     </message>

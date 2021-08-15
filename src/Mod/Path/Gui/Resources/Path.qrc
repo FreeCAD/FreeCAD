@@ -97,6 +97,7 @@
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DressupPathBoundary.ui</file>
         <file>panels/DragKnifeEdit.ui</file>
+        <file>panels/DressUpLeadInOutEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
@@ -120,6 +121,8 @@
         <file>panels/PageOpVcarveEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
+        <file>panels/PropertyBag.ui</file>
+        <file>panels/PropertyCreate.ui</file>
         <file>panels/SetupGlobal.ui</file>
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>
@@ -129,6 +132,7 @@
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>
+        <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>

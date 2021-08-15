@@ -24,7 +24,7 @@
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include "FeaturePython.h"
 #include "DocumentObject.h"
 #include "PropertyLinks.h"

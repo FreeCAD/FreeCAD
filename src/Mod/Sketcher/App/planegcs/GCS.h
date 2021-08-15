@@ -106,7 +106,7 @@ namespace GCS
 
         // This is a map of primary and secondary identifiers that are found dependent by the solver
         // GCS ignores from a type point
-        std::vector< std::set<double *> > pDependentParametersGroups;
+        std::vector< std::vector<double *> > pDependentParametersGroups;
 
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
@@ -125,7 +125,7 @@ namespace GCS
 
         int dofs;
         std::set<Constraint *> redundant;
-        VEC_I conflictingTags, redundantTags;
+        VEC_I conflictingTags, redundantTags, partiallyRedundantTags;
 
         bool hasUnknowns;  // if plist is filled with the unknown parameters
         bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
@@ -295,9 +295,9 @@ namespace GCS
 
         int addConstraintCircleRadius(Circle &c, double *radius, int tagId=0, bool driving = true);
         int addConstraintArcRadius(Arc &a, double *radius, int tagId=0, bool driving = true);
-        int addConstraintCircleDiameter(Circle &c, double *radius, int tagId=0, bool driving = true);
-        int addConstraintArcDiameter(Arc &a, double *radius, int tagId=0, bool driving = true);
-        int addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId=0, bool driving = true);
+        int addConstraintCircleDiameter(Circle &c, double *diameter, int tagId=0, bool driving = true);
+        int addConstraintArcDiameter(Arc &a, double *diameter, int tagId=0, bool driving = true);
+        int addConstraintEqualLength(Line &l1, Line &l2, int tagId=0, bool driving = true);
         int addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId=0, bool driving = true);
@@ -325,9 +325,9 @@ namespace GCS
         int addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tag=0, bool driving = true);
 
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);
-        void calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY);
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const;
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const;
+        void calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const;
 
         // Calculates errors of all constraints which have a tag equal to
         // the one supplied. Individual errors are summed up using RMS.
@@ -361,11 +361,18 @@ namespace GCS
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
+        void getPartiallyRedundant (VEC_I &partiallyredundantOut) const
+          { partiallyredundantOut = hasDiagnosis ? partiallyRedundantTags : VEC_I(0); }
         void getDependentParams(VEC_pD &pdependentparameterlist) const
           { pdependentparameterlist = pDependentParameters;}
-        void getDependentParamsGroups(std::vector<std::set<double *>> &pdependentparametergroups) const
+        void getDependentParamsGroups(std::vector<std::vector<double *>> &pdependentparametergroups) const
           { pdependentparametergroups = pDependentParametersGroups;}
         bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
+
+        bool hasConflicting() const {return !(hasDiagnosis && conflictingTags.empty());}
+        bool hasRedundant() const {return !(hasDiagnosis && redundantTags.empty());}
+        bool hasPartiallyRedundant() const {return !(hasDiagnosis && partiallyRedundantTags.empty());}
+
         void invalidatedDiagnosis();
     };
 

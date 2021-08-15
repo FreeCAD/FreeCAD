@@ -64,7 +64,7 @@ public:
      */
     void setValue(const Geometry*);
     void setValues(const std::vector<Geometry*>&);
-    void setValues(const std::vector<Geometry*>&&);
+    void setValues(std::vector<Geometry*>&&);
 
     /// index operator
     const Geometry *operator[] (const int idx) const {
@@ -74,6 +74,8 @@ public:
     const std::vector<Geometry*> &getValues(void) const {
         return _lValueList;
     }
+
+    void set1Value(int idx, std::unique_ptr<Geometry> &&);
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);

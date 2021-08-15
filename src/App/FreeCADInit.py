@@ -34,21 +34,22 @@ def removeFromPath(module_name):
 	"""removes the module from the sys.path. The entry point for imports
 		will therefore always be FreeCAD.
 		eg.: from FreeCAD.Module.submodule import function"""
-	import sys, os
+	import sys
 	paths = sys.path
 	for path in paths:
 		if module_name in path:
 			sys.path.remove(path)
 			return
-	else:
-		Wrn(module_name + " not found in sys.path\n")
+	Wrn(module_name + " not found in sys.path\n")
 
 def setupSearchPaths(PathExtension):
 	# DLL resolution in Python 3.8 on Windows has changed
-	import sys, os
+	import sys
 	if sys.platform == 'win32' and hasattr(os, "add_dll_directory"):
 		if "FREECAD_LIBPACK_BIN" in os.environ:
 			os.add_dll_directory(os.environ["FREECAD_LIBPACK_BIN"])
+		if "WINDIR" in os.environ:
+			os.add_dll_directory(os.environ["WINDIR"] + os.sep + "system32")
 		for path in PathExtension:
 			os.add_dll_directory(path)
 
@@ -253,7 +254,7 @@ App.__unit_test__ = []
 Log ('Init: starting App::FreeCADInit.py\n')
 
 try:
-    import sys,os,traceback,io,inspect
+    import sys,os,traceback,inspect
     from datetime import datetime
 except ImportError:
     FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
@@ -632,7 +633,6 @@ FreeCAD.Logger = FCADLogger
 
 # init every application by importing Init.py
 try:
-	import traceback
 	InitApplications()
 except Exception as e:
 	Err('Error in InitApplications ' + str(e) + '\n')
@@ -733,6 +733,8 @@ App.Units.Volt          = App.Units.Quantity('V')
 App.Units.MilliVolt     = App.Units.Quantity('mV')
 App.Units.KiloVolt      = App.Units.Quantity('kV')
 
+App.Units.MegaSiemens   = App.Units.Quantity('MS')
+App.Units.KiloSiemens   = App.Units.Quantity('kS')
 App.Units.Siemens       = App.Units.Quantity('S')
 App.Units.MilliSiemens  = App.Units.Quantity('mS')
 App.Units.MicroSiemens  = App.Units.Quantity('uS')
@@ -809,6 +811,7 @@ App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
 App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
 App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
 App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
+App.Units.ElectricalConductivity = App.Units.Unit(-3,-1,3,2)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 

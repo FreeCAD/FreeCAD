@@ -1,39 +1,40 @@
 <RCC>
     <qresource>
-        <file>icons/Mesh_Add_Facet.svg</file>
-        <file>icons/Mesh_Boundary.svg</file>
-        <file>icons/Mesh_Bounding_Box.svg</file>
-        <file>icons/Mesh_Cross_Sections.svg</file>
-        <file>icons/Mesh_Curvature_Info.svg</file>
-        <file>icons/Mesh_Curvature_Plot.svg</file>
-        <file>icons/Mesh_Cut.svg</file>
+        <file>icons/Mesh_AddFacet.svg</file>
+        <file>icons/Mesh_BoundingBox.svg</file>
+        <file>icons/Mesh_BuildRegularSolid.svg</file>
+        <file>icons/Mesh_CrossSections.svg</file>
+        <file>icons/Mesh_CurvatureInfo.svg</file>
         <file>icons/Mesh_Decimating.svg</file>
         <file>icons/Mesh_Difference.svg</file>
-        <file>icons/Mesh_Evaluate_Solid.svg</file>
+        <file>icons/Mesh_EvaluateFacet.svg</file>
+        <file>icons/Mesh_EvaluateSolid.svg</file>
         <file>icons/Mesh_Evaluation.svg</file>
-        <file>icons/Mesh_Export_Mesh.svg</file>
-        <file>icons/Mesh_Flip_Normals.svg</file>
-        <file>icons/Mesh_Harmonize_Normals.svg</file>
-        <file>icons/Mesh_Import_Mesh.svg</file>
+        <file>icons/Mesh_Export.svg</file>
+        <file>icons/Mesh_FillInteractiveHole.svg</file>
+        <file>icons/Mesh_FillupHoles.svg</file>
+        <file>icons/Mesh_FlipNormals.svg</file>
+        <file>icons/Mesh_FromPartShape.svg</file>
+        <file>icons/Mesh_HarmonizeNormals.svg</file>
+        <file>icons/Mesh_Import.svg</file>
         <file>icons/Mesh_Intersection.svg</file>
         <file>icons/Mesh_Merge.svg</file>
-        <file>icons/Mesh_Mesh_from_Shape.svg</file>
-        <file>icons/Mesh_Pipette.svg</file>
-        <file>icons/Mesh_Poly_Trim.svg</file>
-        <file>icons/Mesh_Regular_Solid.svg</file>
-        <file>icons/Mesh_Remesh_Gmsh.svg</file>
-        <file>icons/Mesh_Remove_Comp_by_Hand.svg</file>
-        <file>icons/Mesh_Remove_Components.svg</file>
+        <file>icons/Mesh_PolyCut.svg</file>
+        <file>icons/Mesh_PolyTrim.svg</file>
+        <file>icons/Mesh_RemeshGmsh.svg</file>
+        <file>icons/Mesh_RemoveCompByHand.svg</file>
+        <file>icons/Mesh_RemoveComponents.svg</file>
         <file>icons/Mesh_Scale.svg</file>
-        <file>icons/Mesh_Section_by_Plane.svg</file>
-        <file>icons/Mesh_Fill_up_Holes.svg</file>
-        <file>icons/Mesh_Segmentation_Best_Fit.svg</file>
+        <file>icons/Mesh_SectionByPlane.svg</file>
+        <file>icons/Mesh_SegmentationBestFit.svg</file>
         <file>icons/Mesh_Segmentation.svg</file>
         <file>icons/Mesh_Smoothing.svg</file>
+        <file>icons/Mesh_SplitComponents.svg</file>
         <file>icons/Mesh_Tree.svg</file>
         <file>icons/Mesh_Tree_Curvature_Plot.svg</file>
-        <file>icons/Mesh_Trim_by_Plane.svg</file>
+        <file>icons/Mesh_TrimByPlane.svg</file>
         <file>icons/Mesh_Union.svg</file>
+        <file>icons/Mesh_VertexCurvature.svg</file>
         <file>icons/MeshWorkbench.svg</file>
         <file>icons/RegularSolids/Mesh_Cone.svg</file>
         <file>icons/RegularSolids/Mesh_Cube.svg</file>

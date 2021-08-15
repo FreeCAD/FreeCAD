@@ -76,7 +76,7 @@ private:
     
 private:
     QWidget* proxy;
-    Ui_TaskShapeBinder* ui;
+    std::unique_ptr<Ui_TaskShapeBinder> ui;
     ViewProviderShapeBinder* vp;
 };
 

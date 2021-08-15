@@ -54,10 +54,10 @@ using namespace Gui;
 
 TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
+    , ui(new Ui_TaskFilletParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskFilletParameters();
     ui->setupUi(proxy);
 
     this->groupLayout()->addWidget(proxy);
@@ -96,6 +96,9 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
         this, SLOT(doubleClicked(QListWidgetItem*)));
+
+    // the dialog can be called on a broken fillet, then hide the fillet
+    hideOnError();
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -186,6 +189,8 @@ void TaskFilletParameters::onRefDeleted(void)
     pcFillet->Base.setValue(base, refs);
     // recompute the feature
     pcFillet->recomputeFeature();
+    // hide the fillet if there was a computation error
+    hideOnError();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
@@ -203,6 +208,8 @@ void TaskFilletParameters::onLengthChanged(double len)
     setupTransaction();
     pcFillet->Radius.setValue(len);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
+    // hide the fillet if there was a computation error
+    hideOnError();   
 }
 
 double TaskFilletParameters::getLength(void) const
@@ -212,10 +219,14 @@ double TaskFilletParameters::getLength(void) const
 
 TaskFilletParameters::~TaskFilletParameters()
 {
-    Gui::Selection().clearSelection(); 
-    Gui::Selection().rmvSelectionGate();
-
-    delete ui;
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskFilletParameters::event(QEvent *e)
@@ -270,7 +281,10 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters()
 //}
 bool TaskDlgFilletParameters::accept()
 {
-    parameter->showObject();
+    auto obj = vp->getObject();
+    if (!obj->isError())
+        parameter->showObject();
+
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();

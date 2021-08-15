@@ -213,7 +213,8 @@ class JobCreate:
     def setupTemplate(self):
         templateFiles = []
         for path in PathPreferences.searchPaths():
-            templateFiles.extend(self.templateFilesIn(path))
+            cleanPaths = [f.replace("\\", "/") for f in self.templateFilesIn(path)]  # Standardize slashes used across os platforms
+            templateFiles.extend(cleanPaths)
 
         template = {}
         for tFile in templateFiles:
@@ -338,7 +339,7 @@ class JobTemplateExport:
             self.dialog.settingsOpsList.addItem(item)
 
         self.dialog.toolsList.clear()
-        for tc in sorted(job.ToolController, key=lambda o: o.Label):
+        for tc in sorted(job.Tools.Group, key=lambda o: o.Label):
             item = QtGui.QListWidgetItem(tc.Label)
             item.setData(self.DataObject, tc)
             item.setCheckState(QtCore.Qt.CheckState.Checked)

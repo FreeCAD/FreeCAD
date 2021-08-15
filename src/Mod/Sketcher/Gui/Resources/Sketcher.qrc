@@ -39,6 +39,8 @@
         <file>icons/constraints/Constraint_PointToObject.svg</file>
         <file>icons/constraints/Constraint_Radius.svg</file>
         <file>icons/constraints/Constraint_Radius_Driven.svg</file>
+        <file>icons/constraints/Constraint_Radiam.svg</file>
+        <file>icons/constraints/Constraint_Radiam_Driven.svg</file>
         <file>icons/constraints/Constraint_SnellsLaw.svg</file>
         <file>icons/constraints/Constraint_SnellsLaw_Driven.svg</file>
         <file>icons/constraints/Constraint_Symmetric.svg</file>
@@ -128,6 +130,7 @@
         <file>icons/geometry/Sketcher_CreateElliptical_Arc.svg</file>
         <file>icons/geometry/Sketcher_CreateElliptical_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateFillet.svg</file>
+        <file>icons/geometry/Sketcher_CreatePointFillet.svg</file>
         <file>icons/geometry/Sketcher_CreateHeptagon.svg</file>
         <file>icons/geometry/Sketcher_CreateHeptagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateHexagon.svg</file>
@@ -136,6 +139,8 @@
         <file>icons/geometry/Sketcher_CreateHyperbolic_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateLine.svg</file>
         <file>icons/geometry/Sketcher_CreateLine_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateOblong.svg</file>
+        <file>icons/geometry/Sketcher_CreateOblong_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateParabolic_Arc.svg</file>
@@ -149,6 +154,8 @@
         <file>icons/geometry/Sketcher_CreatePolyline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangle_Center.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangle_Center_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot.svg</file>
@@ -160,6 +167,7 @@
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
         <file>icons/geometry/Sketcher_External.svg</file>
+        <file>icons/geometry/Sketcher_Split.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
         <file>icons/geometry/Sketcher_Trimming.svg</file>
     </qresource>
@@ -192,36 +200,11 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Point.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Extension.svg</file>
         <file>icons/pointers/Sketcher_Pointer_External.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Oblong.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Regular_Polygon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Splitting.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/small/Constraint_Block_sm.xpm</file>
-        <file>icons/small/Constraint_Concentric_sm.xpm</file>
-        <file>icons/small/Constraint_EqualLength_sm.xpm</file>
-        <file>icons/small/Constraint_ExternalAngle_sm.xpm</file>
-        <file>icons/small/Constraint_HorizontalDistance_sm.xpm</file>
-        <file>icons/small/Constraint_Horizontal_sm.xpm</file>
-        <file>icons/small/Constraint_InternalAngle_sm.xpm</file>
-        <file>icons/small/Constraint_Length_sm.xpm</file>
-        <file>icons/small/Constraint_Lock_sm.xpm</file>
-        <file>icons/small/Constraint_Parallel_sm.xpm</file>
-        <file>icons/small/Constraint_Perpendicular_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnEnd_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnMidPoint_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnObject_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnPoint_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnStart_sm.xpm</file>
-        <file>icons/small/Constraint_PointToObject_sm.xpm</file>
-        <file>icons/small/Constraint_Radius_sm.xpm</file>
-        <file>icons/small/Constraint_SnellsLaw_sm.xpm</file>
-        <file>icons/small/Constraint_Symmetric_sm.xpm</file>
-        <file>icons/small/Constraint_TangentToEnd_sm.xpm</file>
-        <file>icons/small/Constraint_TangentToStart_sm.xpm</file>
-        <file>icons/small/Constraint_Tangent_sm.xpm</file>
-        <file>icons/small/Constraint_VerticalDistance_sm.xpm</file>
-        <file>icons/small/Constraint_Vertical_sm.xpm</file>
     </qresource>
     <qresource>
         <file>icons/splines/Sketcher_BSplineApproximate.svg</file>
@@ -244,6 +227,7 @@
         <file>icons/tools/Sketcher_DeleteGeometry.svg</file>
         <file>icons/tools/Sketcher_Move.svg</file>
         <file>icons/tools/Sketcher_RectangularArray.svg</file>
+        <file>icons/tools/Sketcher_RemoveAxesAlignment.svg</file>
         <file>icons/tools/Sketcher_SelectConflictingConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>

@@ -209,10 +209,21 @@ void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
         freehand->setLineWidth(3.0f);
         viewer->navigationStyle()->startSelection(freehand);
 
-        QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
-        QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
-        QCursor custom(cursor, mask, CROSS_HOT_X, CROSS_HOT_Y);
-        viewer->setComponentCursor(custom);
+        auto setComponentCursor = [=]() {
+            QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
+            QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
+#if defined(Q_OS_WIN32)
+            double dpr = viewer->devicePixelRatio();
+            cursor.setDevicePixelRatio(dpr);
+            mask.setDevicePixelRatio(dpr);
+#endif
+            QCursor custom(cursor, mask, CROSS_HOT_X, CROSS_HOT_Y);
+            viewer->setComponentCursor(custom);
+        };
+#if (QT_VERSION >= 0x050000)
+        QObject::connect(viewer, &Gui::View3DInventorViewer::devicePixelRatioChanged, setComponentCursor);
+#endif
+        setComponentCursor();
         this->addToSelection = add;
     }
 }

@@ -57,7 +57,7 @@ __title__  = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name=None):
+def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -128,7 +128,10 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
         obj.Height = height
     else:
         obj.Height = p.GetFloat("WallHeight",3000)
-    obj.Align = align
+    if align:
+        obj.Align = align
+    else:
+        obj.Align = ["Center","Left","Right"][p.GetInt("WallAlignment",0)]
     if obj.Base and FreeCAD.GuiUp:
         if Draft.getType(obj.Base) != "Space":
             obj.Base.ViewObject.hide()
@@ -858,7 +861,7 @@ class _Wall(ArchComponent.Component):
                                                 p2 = edge.valueAt(offset).add(p.negative())
                                                 sh = Part.LineSegment(p1,p2).toShape()
                                                 if obj.Joint.Value:
-                                                    sh = sh.extrude(t.multiply(obj.Joint.Value))
+                                                    sh = sh.extrude(-t.multiply(obj.Joint.Value))
                                                 sh = sh.extrude(n)
                                                 if i == 0:
                                                     cuts1.append(sh)
@@ -1023,7 +1026,7 @@ class _Wall(ArchComponent.Component):
                                 elif Draft.getType(obj.Base) == "Sketcher::SketchObject":
                                     try:
                                         obj.Base.movePoint(0,2,p2,0)
-                                    except:
+                                    except Exception:
                                         print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
@@ -1100,11 +1103,11 @@ class _Wall(ArchComponent.Component):
                     # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
-                    except:
+                    except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
                         widths = ArchSketchObject.sortSketchWidth(obj.Base, obj.OverrideWidth)
-                    except:
+                    except Exception:
                         widths = obj.OverrideWidth
                 else:
                     # If Base Object is not Sketch, but e.g. DWire, the width
@@ -1145,11 +1148,11 @@ class _Wall(ArchComponent.Component):
                     # sorted edges of Sketch
                     try:
                         import ArchSketchObject
-                    except:
+                    except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
                         aligns = ArchSketchObject.sortSketchAlign(obj.Base, obj.OverrideAlign)
-                    except:
+                    except Exception:
                         aligns = obj.OverrideAlign
                 else:
                     # If Base Object is not Sketch, but e.g. DWire, the align
@@ -1314,7 +1317,7 @@ class _Wall(ArchComponent.Component):
                                 try:
                                     if aligns[n] not in ['Left', 'Right', 'Center']:
                                         aligns[n] = align
-                                except:
+                                except Exception:
                                     aligns.append(align)
 
                                 # Fill the widths List with ArchWall's default
@@ -1323,7 +1326,7 @@ class _Wall(ArchComponent.Component):
                                 try:
                                     if not widths[n]:
                                         widths[n] = width
-                                except:
+                                except Exception:
                                     widths.append(width)
 
                             # Get a direction vector orthogonal to both the

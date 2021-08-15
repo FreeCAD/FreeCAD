@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Balra igazított cella</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Központi cella</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Jobbra igazított cella</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Felülre igazított cella</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Alulra igazított cella</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Függőlegesen középre igazított cellák</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Félkövér szöveg beállítása</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Dőlt szöveg beállítása</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Aláhúzott szöveg beállítása</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Táblázat létrehozása</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Cellatulajdonságok beállítása</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Cella szerkesztése</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Cella(k) törlése</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Előtér színének beállítása</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Háttér színének beállítása</translation>
     </message>
   </context>
   <context>
@@ -564,24 +564,64 @@ Spreadsheet.my_alias_name helyett Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Sorok beszúrása</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Sorok eltávolítása</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Oszlopok beszúrása</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Oszlopok eltávolítása</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Tulajdonságok...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>%n sor beszúrása alá</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at fölé</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>%n sor beszúrása alá</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at alá</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>%n nem összefüggő sorok beszúrása</numerusform>
+        <numerusform>%n nem összefüggő sorok beszúrása</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Sor(ok) eltávolítása</numerusform>
+        <numerusform>Sor(ok) eltávolítása</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>%n oszlop beszúrása balra</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at balra</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>%n oszlop beszúrása jobbra</numerusform>
+        <numerusform>Helyezze be az %n sor(ok)at jobbra</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>%n nem összefüggő oszlopok beszúrása</numerusform>
+        <numerusform>%n nem összefüggő oszlopok beszúrása</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Oszlop(ok) eltávolítása</numerusform>
+        <numerusform>Oszlop(ok) eltávolítása</numerusform>
+      </translation>
     </message>
   </context>
   <context>

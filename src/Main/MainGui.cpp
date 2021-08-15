@@ -59,7 +59,7 @@
 
 void PrintInitHelp(void);
 
-const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2020\n"\
+const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2021\n"\
 "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
 "FreeCAD wouldn't be possible without FreeCAD community.\n"\
 "  #####                 ####  ###   ####  \n" \
@@ -120,13 +120,6 @@ int main( int argc, char ** argv )
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
     (void)QLocale::system();
-#if QT_VERSION < 0x050000
-    // http://www.freecadweb.org/tracker/view.php?id=399
-    // Because of setting LANG=C the Qt automagic to use the correct encoding
-    // for file names is broken. This is a workaround to force the use of UTF-8 encoding
-    QFile::setEncodingFunction(myEncoderFunc);
-    QFile::setDecodingFunction(myDecoderFunc);
-#endif
     // See https://forum.freecadweb.org/viewtopic.php?f=18&t=20600
     // See Gui::Application::runApplication()
     putenv("LC_NUMERIC=C");
@@ -146,6 +139,10 @@ int main( int argc, char ** argv )
 #endif
 
 #if defined (FC_OS_WIN32)
+    // we need to force Coin not to use Freetype in order to find installed fonts on Windows
+    // see https://forum.freecadweb.org/viewtopic.php?p=485142#p485016
+    _putenv("COIN_FORCE_FREETYPE_OFF=1");
+
     int argc_ = argc;
     QVector<QByteArray> data;
     QVector<char *> argv_;
@@ -162,12 +159,10 @@ int main( int argc, char ** argv )
     }
 #endif
 
-#if PY_MAJOR_VERSION >= 3
 #if defined(_MSC_VER) && _MSC_VER <= 1800
     // See InterpreterSingleton::init
     Redirection out(stdout), err(stderr), inp(stdin);
 #endif
-#endif // PY_MAJOR_VERSION
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
@@ -179,15 +174,14 @@ int main( int argc, char ** argv )
     App::Application::Config()["CopyrightInfo"] = sBanner;
     App::Application::Config()["AppIcon"] = "freecad";
     App::Application::Config()["SplashScreen"] = "freecadsplash";
+    App::Application::Config()["AboutImage"] = "freecadabout";
     App::Application::Config()["StartWorkbench"] = "StartWorkbench";
     //App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment" ] = "Bottom|Left";
     App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
     App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0))
     QGuiApplication::setDesktopFileName(QStringLiteral("org.freecadweb.FreeCAD.desktop"));
-#endif
 
     try {
         // Init phase ===========================================================
@@ -253,15 +247,7 @@ int main( int argc, char ** argv )
                           "Python is searching for its files in the following directories:\n%3\n\n"
                           "Python version information:\n%4\n")
                           .arg(appName, QString::fromUtf8(e.what()),
-#if PY_MAJOR_VERSION >= 3
-#if PY_MINOR_VERSION >= 5
                           QString::fromUtf8(Py_EncodeLocale(Py_GetPath(),NULL)), QString::fromLatin1(Py_GetVersion()));
-#else
-                          QString::fromUtf8(_Py_wchar2char(Py_GetPath(),NULL)), QString::fromLatin1(Py_GetVersion()));
-#endif
-#else
-                          QString::fromUtf8(Py_GetPath()), QString::fromLatin1(Py_GetVersion()));
-#endif
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
             msg += QObject::tr("\nThe environment variable PYTHONHOME is set to '%1'.")

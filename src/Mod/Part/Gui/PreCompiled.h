@@ -177,7 +177,7 @@
 #include <Python.h>
 
 // Boost
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 
 // Qt Toolkit
@@ -195,6 +195,9 @@
 #   include <OpenGL/gl.h>
 #   include <OpenGL/glext.h>
 #  else
+#   ifndef GL_GLEXT_PROTOTYPES
+#    define GL_GLEXT_PROTOTYPES 1
+#   endif
 #   include <GL/gl.h>
 #   include <GL/glext.h>
 #  endif //FC_OS_MACOSX

@@ -52,7 +52,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
 from draftutils.messages import _msg, _err
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -70,19 +70,15 @@ class Trimex(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Trims or extends the selected object, "
-                "or extrudes single faces.\n"
-                "CTRL snaps, SHIFT constrains to current segment "
-                "or to normal, ALT inverts.")
 
         return {'Pixmap': 'Draft_Trimex',
                 'Accel': "T, R",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex", "Trims or extends the selected object, or extrudes single faces.\nCTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Trimex, self).Activated(name=_tr("Trimex"))
+        super(Trimex, self).Activated(name="Trimex")
         self.edges = []
         self.placement = None
         self.ghost = []
@@ -91,7 +87,7 @@ class Trimex(gui_base_original.Modifier):
         self.width = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select objects to trim or extend"))
                 self.call = \
                     self.view.addEventCallback("SoEvent",
@@ -109,7 +105,7 @@ class Trimex(gui_base_original.Modifier):
             self.finish()
             return
         self.obj = sel[0]
-        self.ui.trimUi()
+        self.ui.trimUi(title=translate("draft",self.featureName))
         self.linetrack = trackers.lineTracker()
 
         import DraftGeomUtils
@@ -124,8 +120,7 @@ class Trimex(gui_base_original.Modifier):
             self.extrudeMode = True
             self.ghost = [trackers.ghostTracker([self.obj])]
             self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-            for v in self.obj.Shape.Vertexes:
-                self.ghost.append(trackers.lineTracker())
+            self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
         elif len(self.obj.Shape.Faces) > 1:
             # face extrude mode, a new object is created
             ss = Gui.Selection.getSelectionEx()[0]
@@ -136,8 +131,7 @@ class Trimex(gui_base_original.Modifier):
                     self.extrudeMode = True
                     self.ghost = [trackers.ghostTracker([self.obj])]
                     self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                    for v in self.obj.Shape.Vertexes:
-                        self.ghost.append(trackers.lineTracker())
+                    self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor

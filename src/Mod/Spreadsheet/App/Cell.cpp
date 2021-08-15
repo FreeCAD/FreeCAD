@@ -41,6 +41,7 @@
 #include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
+#include <cctype>
 
 FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
@@ -279,62 +280,98 @@ void Cell::afterRestore() {
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
-    App::Expression * expr = 0;
+    ExpressionPtr newExpr;
 
     clearException();
-    if (value != 0) {
-        if(owner->sheet()->isRestoring()) {
-            expression.reset(new App::StringExpression(owner->sheet(),value));
+    if (value) {
+        if (owner->sheet()->isRestoring()) {
+            expression.reset(new App::StringExpression(owner->sheet(), value));
             setUsed(EXPRESSION_SET, true);
             return;
         }
         if (*value == '=') {
             try {
-                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
+                newExpr = ExpressionPtr(App::ExpressionParser::parse(owner->sheet(), value + 1));
             }
             catch (Base::Exception & e) {
-                expr = new App::StringExpression(owner->sheet(), value);
+                newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
                 setParseException(e.what());
             }
         }
         else if (*value == '\'') {
-            expr = new App::StringExpression(owner->sheet(), value + 1);
+            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
         }
         else if (*value != '\0') {
+            // check if value is just a number
             char * end;
             errno = 0;
-            double float_value = strtod(value, &end);
-            if (!*end && errno == 0) {
-                expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
+            const double float_value = strtod(value, &end);
+            if (errno == 0) {
+                const bool isEndEmpty = *end == '\0' || strspn(end, " \t\n\r") == strlen(end);
+                if (isEndEmpty) {
+                    newExpr = std::make_unique<App::NumberExpression>(owner->sheet(), Quantity(float_value));
+                }
             }
-            else {
+
+            // if not a float, check if it is a quantity or compatible fraction
+            const bool isStartingWithNumber = value != end;
+            if (!newExpr && isStartingWithNumber) {
                 try {
-                    expr = ExpressionParser::parse(owner->sheet(), value);
-                    if (expr)
-                        delete expr->eval();
+                    ExpressionPtr parsedExpr(App::ExpressionParser::parse(owner->sheet(), value));
+
+                    if (const auto fraction = freecad_dynamic_cast<OperatorExpression>(parsedExpr.get())) {
+                        if (fraction->getOperator() == OperatorExpression::UNIT) {
+                            const auto left = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+                            const auto right = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            if (left && right) {
+                                newExpr = std::move(parsedExpr);
+                            }
+                        }
+                        else if (fraction->getOperator() == OperatorExpression::DIV) {
+                            // only the following types of fractions are ok:
+                            //     1/2, 1m/2, 1/2s, 1m/2s, 1/m
+
+                            // check for numbers in (de)nominator
+                            const bool isNumberNom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+                            const bool isNumberDenom = freecad_dynamic_cast<NumberExpression>(fraction->getRight());
+
+                            // check for numbers with units in (de)nominator
+                            const auto opNom = freecad_dynamic_cast<OperatorExpression>(fraction->getLeft());
+                            const auto opDenom = freecad_dynamic_cast<OperatorExpression>(fraction->getRight());
+                            const bool isQuantityNom = opNom && opNom->getOperator() == OperatorExpression::UNIT;
+                            const bool isQuantityDenom = opDenom && opDenom->getOperator() == OperatorExpression::UNIT;
+
+                            // check for units in denomainator
+                            const auto uDenom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            const bool isUnitDenom = uDenom && uDenom->getTypeId() == UnitExpression::getClassTypeId();
+
+                            const bool isNomValid = isNumberNom || isQuantityNom;
+                            const bool isDenomValid = isNumberDenom || isQuantityDenom || isUnitDenom;
+                            if (isNomValid && isDenomValid) {
+                                newExpr = std::move(parsedExpr);
+                            }
+                        }
+                    }
+                    else if (const auto number = freecad_dynamic_cast<NumberExpression>(parsedExpr.get())) {
+                        // NumbersExpressions can accept more than can be parsed with strtod.
+                        //   Example: 12.34 and 12,34 are both valid NumberExpressions
+                        newExpr = std::move(parsedExpr);
+                    }
                 }
-                catch (Base::Exception &) {
-                    expr = new App::StringExpression(owner->sheet(), value);
-                }
+                catch (...) {}
             }
         }
-    }
 
-    try {
-        setExpression(App::ExpressionPtr(expr));
-        signaller.tryInvoke();
-    }
-    catch (Base::Exception &e) {
-        if (value) {
-            std::string _value = value;
-            if (_value[0] != '=') {
-                _value.insert (0, 1, '=');
-            }
-
-            setExpression(App::ExpressionPtr(new App::StringExpression(owner->sheet(), _value)));
-            setParseException(e.what());
+        if (!newExpr && *value != '\0') {
+            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
         }
+
+        // trying to add an empty string will make newExpr = nullptr
     }
+
+    // set expression, or delete the current expression by setting nullptr if empty string was entered
+    setExpression(std::move(newExpr));
+    signaller.tryInvoke();
 }
 
 /**
@@ -465,7 +502,7 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
+        std::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
         if (!e)
             throw Base::UnitsMismatchError("Invalid unit");
@@ -503,15 +540,22 @@ void Cell::setAlias(const std::string &n)
 
         owner->revAliasProp.erase(alias);
 
-        alias = n;
-
         // Update owner
-        if (alias != "") {
+        if (!n.empty()) {
             owner->aliasProp[address] = n;
             owner->revAliasProp[n] = address;
         }
-        else
+        else {
             owner->aliasProp.erase(address);
+        }
+
+        if (!alias.empty()) {
+            // The property may have been added in Sheet::updateAlias
+            auto * docObj = static_cast<App::DocumentObject*>(owner->getContainer());
+            docObj->removeDynamicProperty(alias.c_str());
+        }
+
+        alias = n;
 
         setUsed(ALIAS_SET, !alias.empty());
         setDirty();
@@ -1019,5 +1063,4 @@ std::string Cell::getFormattedQuantity(void)
     result = Base::Tools::toStdString(qFormatted);
     return result;
 }
-
 

@@ -110,11 +110,11 @@ public:
     /// set the transformation of the CasCade Shape
     void setTransform(const Base::Matrix4D& rclTrf);
     /// set the transformation of the CasCade Shape
-    void setPlacement(const Base::Placement& rclTrf);
+    void setShapePlacement(const Base::Placement& rclTrf);
+    /// get the transformation of the CasCade Shape
+    Base::Placement getShapePlacement(void) const;
     /// get the transformation of the CasCade Shape
     Base::Matrix4D getTransform(void) const;
-    /// get the transformation of the CasCade Shape
-    Base::Placement getPlacemet(void) const;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
@@ -257,6 +257,9 @@ public:
         Standard_Boolean left=Standard_False, Standard_Boolean style=Standard_False) const;
     TopoDS_Shape makeLongHelix(Standard_Real pitch, Standard_Real height,
         Standard_Real radius, Standard_Real angle=0,
+        Standard_Boolean left=Standard_False) const;
+    TopoDS_Shape makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
+        Standard_Real height, Standard_Real nbturns=1, Standard_Real breakperiod=1,
         Standard_Boolean left=Standard_False) const;
     TopoDS_Shape makeThread(Standard_Real pitch, Standard_Real depth,
         Standard_Real height, Standard_Real radius) const;

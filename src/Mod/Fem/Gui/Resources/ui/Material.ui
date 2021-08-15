@@ -246,7 +246,7 @@
            <double>2.000000000000000</double>
           </property>
           <property name="maximum" stdset="0">
-           <double>2000000000.000000000000000</double>
+           <double>90000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">Pa</string>

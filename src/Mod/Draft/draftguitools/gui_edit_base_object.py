@@ -61,14 +61,33 @@ class GuiTools:
         """
         pass
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        """ Return a list of Draft_Edit context menu actions.
+    def get_edit_point_context_menu(self, edit_command, obj, node_idx):
+        """ Get the context menu associated to edit points (user is over an editpoint)
+
+        Return a list of tuples containing menu labels and associated functions:
+            return [
+                ("action label", lambda: self.handle_action_label(edit_command, obj, node_idx)),
+            ]
+
+        Parameters:
+        edit_command: running Draft_Edit command
+        obj: the edited object
+        node_idx: number of the edited node
         """
         pass
-    
 
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        """ Do something when a Draft_Edit context menu action is triggered over a node.
+    def get_edit_obj_context_menu(self, edit_command, obj, position):
+        """ Get the context menu associated to edited object (user is over the object)
+
+        Return a list of tuples containing menu labels and associated functions:
+            return [
+                ("action label", lambda: self.handle_action_label(edit_command, obj, position)),
+            ]
+
+        Parameters:
+        edit_command: running Draft_Edit command
+        obj: the edited object
+        position: position of the cursor on the screen (x, y)
         """
         pass
 

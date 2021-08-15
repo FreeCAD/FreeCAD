@@ -34,7 +34,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.messages import _msg, _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftobjects.text import Text
 
 if App.GuiUp:
@@ -51,13 +51,7 @@ def make_text(string, placement=None, screen=False):
     ----------
     string: str, or list of str
         String to display on screen.
-
-        If it is a list, each element in the list should be a string.
-        In this case each element will be printed in its own line, that is,
-        a newline will be added at the end of each string.
-
-        If an empty string is passed `''` this won't cause an error
-        but the text `'Label'` will be displayed in the 3D view.
+        If it is a list, each element in the list represents a new text line.
 
     placement: Base::Placement, Base::Vector3, or Base::Rotation, optional
         It defaults to `None`.
@@ -87,24 +81,20 @@ def make_text(string, placement=None, screen=False):
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft","No active document. Aborting."))
         return None
 
     _msg("string: {}".format(string))
     try:
-        utils.type_check([(string, (str, list))])
+        utils.type_check([(string, (str, list))], name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a list of strings "
-                 "or a single string."))
+        _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
-    if not all(isinstance(element, str) for element in string):
-        _err(_tr("Wrong input: must be a list of strings "
-                 "or a single string."))
+    if (type(string) is list
+            and not all(isinstance(element, str) for element in string)):
+        _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
-
-    if isinstance(string, str):
-        string = [string]
 
     _msg("placement: {}".format(placement))
     if not placement:
@@ -114,8 +104,7 @@ def make_text(string, placement=None, screen=False):
                                        App.Vector,
                                        App.Rotation))], name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a placement, a vector, "
-                 "or a rotation."))
+        _err(translate("draft","Wrong input: must be a placement, a vector, or a rotation."))
         return None
 
     # Convert the vector or rotation to a full placement
@@ -180,7 +169,7 @@ def convert_draft_texts(textslist=None):
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft","No active document. Aborting."))
         return None
 
     if not textslist:

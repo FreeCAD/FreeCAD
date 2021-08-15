@@ -36,7 +36,7 @@ class ViewProviderTube:
     def __init__(self, obj):
         ''' Set this object to the proxy object of the actual view provider '''
         obj.Proxy = self
-        obj.addExtension("PartGui::ViewProviderAttachExtensionPython", self)
+        obj.addExtension("PartGui::ViewProviderAttachExtensionPython")
         obj.setIgnoreOverlayIcon(True, "PartGui::ViewProviderAttachExtensionPython")
 
     def attach(self, obj):
@@ -92,6 +92,10 @@ class TaskTubeUI:
         self.form.tubeOuterRadius.valueChanged.connect(lambda x: self.onChangeOuterRadius(x))
         self.form.tubeInnerRadius.valueChanged.connect(lambda x: self.onChangeInnerRadius(x))
         self.form.tubeHeight.valueChanged.connect(lambda x: self.onChangeHeight(x))
+
+        FreeCADGui.ExpressionBinding(self.form.tubeOuterRadius).bind(object,"OuterRadius")
+        FreeCADGui.ExpressionBinding(self.form.tubeInnerRadius).bind(object,"InnerRadius")
+        FreeCADGui.ExpressionBinding(self.form.tubeHeight).bind(object,"Height")
 
     def onChangeOuterRadius(self, radius):
         object = self.viewObject.Object

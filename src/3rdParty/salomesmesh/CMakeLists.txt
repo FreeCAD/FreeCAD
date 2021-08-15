@@ -1,5 +1,6 @@
 # SGEOM cmake build file
 #PROJECT(SMESH Fortran CXX)
+set(CMAKE_AUTOMOC FALSE)
 
 SET(SMESH_VERSION_MAJOR 7)  # see main CMakeLists.txt of FreeCAD
 SET(SMESH_VERSION_MINOR 7)
@@ -45,6 +46,12 @@ elseif(CMAKE_COMPILER_IS_CLANGXX)
     check_cxx_compiler_flag("-Wno-missing-field-initializers" _flag_found)
     if (_flag_found)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-field-initializers")
+    endif ()
+
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-c++17-extensions" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++17-extensions")
     endif ()
 endif()
 

@@ -30,7 +30,6 @@ import tempfile
 import os
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -323,8 +322,8 @@ class BuildingPart(ArchIFC.IfcProduct):
     def __init__(self,obj):
 
         obj.Proxy = self
-        obj.addExtension('App::GroupExtensionPython', self)
-        #obj.addExtension('App::OriginGroupExtensionPython', self)
+        obj.addExtension('App::GroupExtensionPython')
+        #obj.addExtension('App::OriginGroupExtensionPython')
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -432,9 +431,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
-                if hasattr(child,"Area") and hasattr(child,"IfcType"):
-                    # only add arch objects that have an Area property
-                    # TODO only spaces? ATM only spaces and windows have an Area property
+                if (Draft.get_type(child) in ["Space","BuildingPart"]) and hasattr(child,"IfcType"):
                     area += child.Area.Value
         return area
 
@@ -444,8 +441,9 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         shapes = []
         for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape'):
-                shapes.extend(child.Shape.Faces)
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape'):
+                    shapes.extend(child.Shape.Faces)
         return shapes
 
     def getSpaces(self,obj):
@@ -488,8 +486,8 @@ class ViewProviderBuildingPart:
 
     def __init__(self,vobj):
 
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
-        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython")
         vobj.Proxy = self
         self.setProperties(vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
@@ -711,7 +709,7 @@ class ViewProviderBuildingPart:
                         u = q.getUserPreferred()[2]
                     try:
                         q = q.getValueAs(u)
-                    except:
+                    except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
                     d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
                     fmt = "{0:."+ str(d) + "f}"

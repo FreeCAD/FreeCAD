@@ -103,8 +103,13 @@ public:
     inline const std::vector<int> &getConflicting(void) const { return Conflicting; }
     inline bool hasRedundancies(void) const { return !Redundant.empty(); }
     inline const std::vector<int> &getRedundant(void) const { return Redundant; }
+    inline bool hasPartialRedundancies(void) const { return !PartiallyRedundant.empty(); }
+    inline const std::vector<int> &getPartiallyRedundant(void) const { return PartiallyRedundant; }
 
-    inline bool hasMalformedConstraints(void) const { return malformedConstraints; }
+    inline float getSolveTime() const { return SolveTime; }
+
+    inline bool hasMalformedConstraints(void) const { return !MalformedConstraints.empty(); }
+    inline const std::vector<int> &getMalformedConstraints(void) const { return MalformedConstraints; }
 public:
     std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
 
@@ -131,6 +136,16 @@ public:
       * The relative flag permits moving relatively to the current position
       */
     int movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false);
+
+    /**
+     * Sets whether the initial solution should be recalculated while dragging after a certain distance from the previous drag point
+     * for smoother dragging operation.
+     */
+    bool getRecalculateInitialSolutionWhileMovingPoint() const
+        {return RecalculateInitialSolutionWhileMovingPoint;}
+
+    void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+        {RecalculateInitialSolutionWhileMovingPoint = recalculateInitialSolutionWhileMovingPoint;}
 
     /// add dedicated geometry
     //@{
@@ -356,7 +371,7 @@ public:
     double calculateAngleViaPoint(int geoId1, int geoId2, double px, double py );
 
     //This is to be used for rendering of angle-via-point constraint.
-    Base::Vector3d calculateNormalAtPoint(int geoIdCurve, double px, double py);
+    Base::Vector3d calculateNormalAtPoint(int geoIdCurve, double px, double py) const;
 
     //icstr should be the value returned by addXXXXConstraint
     //see more info in respective function in GCS.
@@ -378,8 +393,13 @@ public:
         BSpline = 9
     };
 
+protected:
     float SolveTime;
     bool RecalculateInitialSolutionWhileMovingPoint;
+
+    // regulates a second solve for cases where there result of having update the geometry (e.g. via OCCT)
+    // needs to be taken into account by the solver (for example to provide the right value of non-driving constraints)
+    bool resolveAfterGeometryUpdated;
 
 protected:
     /// container element to store and work with the geometric elements of this sketch
@@ -412,6 +432,8 @@ protected:
     int ConstraintsCounter;
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
+    std::vector<int> PartiallyRedundant;
+    std::vector<int> MalformedConstraints;
 
     std::vector<double *> pDependentParametersList;
 
@@ -439,8 +461,6 @@ protected:
     bool isFine;
     Base::Vector3d initToPoint;
     double moveStep;
-
-    bool malformedConstraints;
 
 public:
     GCS::Algorithm defaultSolver;
@@ -482,9 +502,77 @@ private:
 
     void clearTemporaryConstraints(void);
 
+    int internalSolve(std::string & solvername, int level = 0);
+
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;
     GCS::Curve* getGCSCurveByGeoId(int geoId);
+    const GCS::Curve* getGCSCurveByGeoId(int geoId) const;
+
+    // Block constraints
+
+    /** This function performs a pre-analysis of blocked geometries, separating them into:
+     *
+     *  1) onlyblockedGeometry : Geometries affected exclusively by a block constraint.
+     *
+     *  2) blockedGeoIds       : Geometries affected notonly by a block constraint.
+     *
+     * This is important because 1) can be pre-fixed when creating geometry and constraints
+     * before GCS::diagnose() via initSolution(). This is important because if no other constraint
+     * affect the geometry, the geometry parameters won't even appear in the Jacobian, and they won't
+     * be reported as dependent parameters.
+     *
+     * On the contrary 2) cannot be pre-fixed because it would lead to redundant constraints and requires
+     * a post-analysis, see analyseBlockedConstraintDependentParameters, to fix just the parameters that
+     * fulfil the dependacy groups.
+     */
+    bool analyseBlockedGeometry( const std::vector<Part::Geometry *> &internalGeoList,
+                                 const std::vector<Constraint *> &constraintList,
+                                 std::vector<bool> &onlyblockedGeometry,
+                                 std::vector<int> &blockedGeoIds) const;
+
+    /* This function performs a post-analysis of blocked geometries (see analyseBlockedGeometry for more detail
+     * on the pre-analysis).
+     *
+     * Basically identifies which parameters shall be fixed to make geometries having blocking constraints fixed,
+     * while not leading to redundant/conflicting constraints. These parameters must belong to blocked geometry. This
+     * is, groups may comprise parameters belonging to blocked geometry and parameters belonging to unconstrained geometry.
+     * It is licit that the latter remain as dependent parameters. The former are referred to as "blockable parameters".
+     *
+     * Extending this concept, there may be unsatisfiable groups (because they do not comprise any bloackable parameter),
+     * and it is the desired outcome NOT to satisfy such groups.
+     *
+     * There is not a single combination of fixed parameters from the blockable parameters that satisfy all the dependency
+     * groups. However:
+     *
+     * 1) some combinations do not satisfy all the dependency groups that must be satisfied (e.g. fixing one
+     * group containing two blockable parameters with a given one may result in another group, fixable only by the former, not
+     * to be satisfied). This leads, in a subsequent diagnosis, to satisfiable unsatisfied groups.
+     *
+     * 2) some combinations lead to partially redundant constraints, that the solver will silently drop in a subsequent diagnosis,
+     * thereby reducing the rank of the system fixing less than it should.
+     *
+     * Implementation rationale (at this time):
+     *
+     * The implementation is on the order of the groups provided by the QR decomposition used to reveal the parameters
+     * (see System::identifyDependentParameters in GCS). Zeros are made over the pilot of the full R matrix of the QR decomposition,
+     * which is a top triangular matrix.This, together with the permutation matrix, allow to know groups of dependent parameters
+     * (cols between rank and full size). Each group refers to a new parameter not affected by the rank in combination with other free
+     * parameters intervening in the rank (because of the triangular shape of the R matrix). This results in that each the first column
+     * between the rank and the full size, may only depend on a number of parameters, while the last full size column may be dependent on
+     * any amount of previously introduced parameters.
+     *
+     * Thus the rationale is: start from the last group (having **potentially** the larger amount of parameters) and selecting as blocking
+     * for that group the latest blockable parameter. Because previous groups do not have access to the last parameter, this can never
+     * interfere with previous groups. However, because the last parameter may not be a blockable one, there is a risk of selecting a parameter
+     * common with other group, albeit the probability is reduced and probably (I have not demonstrated it though and I am not sure), it leads
+     * to the right solution in one iteration.
+     *
+     */
+    bool analyseBlockedConstraintDependentParameters(std::vector<int> &blockedGeoIds, std::vector<double *> &params_to_block) const;
+
+    /// utility function refactoring fixing the provided parameters and running a new diagnose
+    void fixParametersAndDiagnose(std::vector<double *> &params_to_block);
 };
 
 } //namespace Part

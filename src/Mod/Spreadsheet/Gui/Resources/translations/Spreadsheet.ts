@@ -561,24 +561,56 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-        <source>Insert rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Insert columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Properties...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) above</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) below</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous rows</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove row(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) left</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) right</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous columns</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove column(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

@@ -79,12 +79,7 @@ Py::Object Translate::translate(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "ss|si", &context, &source, &disambiguation, &n))
         throw Py::Exception();
 
-#if (QT_VERSION >= 0x050000)
     QString str = QCoreApplication::translate(context, source, disambiguation, n);
-#else
-    QString str = QCoreApplication::translate(context, source, disambiguation,
-                                              QCoreApplication::UnicodeUTF8, n);
-#endif
     return Py::asObject(PyUnicode_FromString(str.toUtf8()));
 }
 

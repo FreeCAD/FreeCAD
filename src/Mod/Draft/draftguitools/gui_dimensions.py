@@ -71,51 +71,33 @@ class Dimension(gui_base_original.Creator):
     """
 
     def __init__(self):
+        super().__init__()
         self.max = 2
         self.cont = None
         self.dir = None
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a dimension.\n"
-                "\n"
-                "- Pick three points to create a simple linear dimension.\n"
-                "- Select a straight line to create a linear dimension "
-                "linked to that line.\n"
-                "- Select an arc or circle to create a radius or diameter "
-                "dimension linked to that arc.\n"
-                "- Select two straight lines to create an angular dimension "
-                "between them.\n"
-                "CTRL to snap, SHIFT to constrain, "
-                "ALT to select an edge or arc.\n"
-                "\n"
-                "You may select a single line or single circular arc "
-                "before launching this command\n"
-                "to create the corresponding linked dimension.\n"
-                "You may also select an 'App::MeasureDistance' object "
-                "before launching this command\n"
-                "to turn it into a 'Draft Dimension' object.")
 
         return {'Pixmap': 'Draft_Dimension',
                 'Accel': "D, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Dimension", "Dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension.\n\n- Pick three points to create a simple linear dimension.\n- Select a straight line to create a linear dimension linked to that line.\n- Select an arc or circle to create a radius or diameter dimension linked to that arc.\n- Select two straight lines to create an angular dimension between them.\nCTRL to snap, SHIFT to constrain, ALT to select an edge or arc.\n\nYou may select a single line or single circular arc before launching this command\nto create the corresponding linked dimension.\nYou may also select an 'App::MeasureDistance' object before launching this command\nto turn it into a 'Draft Dimension' object.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Dimension")
         if self.cont:
             self.finish()
         elif self.selected_app_measure():
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             self.dimtrack = trackers.dimTracker()
             self.arctrack = trackers.arcTracker()
             self.create_with_app_measure()
             self.finish()
         else:
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             if self.ui:
-                self.ui.pointUi(name)
+                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False
@@ -429,7 +411,7 @@ class Dimension(gui_base_original.Creator):
                     self.ui.switchUi(False)
                     if hasattr(Gui, "Snapper"):
                         Gui.Snapper.setSelectMode(False)
-                if self.dir:
+                if self.dir and ( (len(self.node) < 2) or self.ui.continueMode):
                     _p = DraftVecUtils.project(self.point.sub(self.node[0]),
                                                self.dir)
                     self.point = self.node[0].add(_p)

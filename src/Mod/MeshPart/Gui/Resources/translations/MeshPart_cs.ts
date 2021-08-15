@@ -35,8 +35,8 @@
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</translation>
+      <translation>Vytvoří přibližnou křivku na povrchu sítě.
+Tento příkaz pracuje pouze s objektem typu 'mesh'.</translation>
     </message>
   </context>
   <context>
@@ -99,12 +99,12 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
-      <translation type="unfinished">Trim with plane</translation>
+      <translation>Oříznout rovinou</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
-      <translation type="unfinished">Section with plane</translation>
+      <translation>Průřez pomocí roviny</translation>
     </message>
   </context>
   <context>
@@ -167,12 +167,12 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Propojit hrany, pokud je vzdálenost menší než</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Selhání</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Standardní</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>
@@ -378,7 +378,7 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Odhad</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -483,21 +483,21 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Ponechat panel otevřený</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Žádný aktivní dokument</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Nejprve vyber tvar pro síťování.</translation>
     </message>
@@ -540,12 +540,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Pod</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Nad</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

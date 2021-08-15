@@ -334,22 +334,25 @@ std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) 
 }
 
 
-void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
+void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geoext )
 {
     bool hasext=false;
 
     for( auto & ext : extensions) {
         // if same type and name, this modifies the existing extension.
-        if( ext->getTypeId() == geo->getTypeId() &&
-            ext->getName() == geo->getName()){
-            ext = std::move(geo);
+        if( ext->getTypeId() == geoext->getTypeId() &&
+            ext->getName() == geoext->getName()){
+            ext = std::move( geoext );
+            ext->notifyAttachment(this);
             hasext = true;
             break;
         }
     }
 
-    if(!hasext) // new type-name unique id, so add.
-        extensions.push_back(std::move(geo));
+    if(!hasext) { // new type-name unique id, so add.
+        extensions.push_back(std::move( geoext ));
+        extensions.back()->notifyAttachment(this);
+    }
 }
 
 void Geometry::deleteExtension(Base::Type type)
@@ -400,8 +403,10 @@ void Geometry::assignTag(const Part::Geometry * geo)
 
 void Geometry::copyNonTag(const Part::Geometry * src)
 {
-    for(auto & ext: src->extensions)
+    for(auto & ext: src->extensions) {
         this->extensions.push_back(ext->copy());
+        extensions.back()->notifyAttachment(this);
+    }
 }
 
 Geometry *Geometry::clone(void) const
@@ -679,7 +684,7 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
     return false;
 }
 
-bool GeomCurve::intersect(  GeomCurve * c,
+bool GeomCurve::intersect(  const GeomCurve *c,
                             std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                             double tol) const
 {
@@ -1181,15 +1186,36 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
     }
 }
 
+void GeomBSplineCurve::workAroundOCCTBug(const std::vector<double>& weights)
+{
+    // If during assignment of weights (during the for loop below) all weights
+    // become (temporarily) equal even though weights does not have equal values
+    // OCCT will convert all the weights (the already assigned and those not yet assigned)
+    // to 1.0 (nonrational b-splines have 1.0 weights). This may lead to the assignment of wrong
+    // of weight values.
+    //
+    // Little hack is to set the last weight to a value different from last but one current and to-be-assigned
+
+    if (weights.size() < 2) // at least two poles/weights
+        return;
+
+    auto lastindex = myCurve->NbPoles(); // OCCT is base-1
+    auto lastbutonevalue = myCurve->Weight(lastindex-1);
+    double fakelastvalue = lastbutonevalue + weights[weights.size()-2];
+    myCurve->SetWeight(weights.size(),fakelastvalue);
+}
+
 void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights)
 {
     if (poles.size() != weights.size())
         throw Base::ValueError("poles and weights mismatch");
 
+    workAroundOCCTBug(weights);
+
     Standard_Integer index=1;
 
-    for (std::size_t it = 0; it < poles.size(); it++, index++) {
-        setPole(index, poles[it], weights[it]);
+    for (std::size_t i = 0; i < poles.size(); i++, index++) {
+        setPole(index, poles[i], weights[i]);
     }
 }
 
@@ -1232,6 +1258,8 @@ std::vector<double> GeomBSplineCurve::getWeights() const
 
 void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
 {
+    workAroundOCCTBug(weights);
+
     try {
         Standard_Integer index=1;
 
@@ -1511,6 +1539,37 @@ bool GeomBSplineCurve::removeKnot(int index, int multiplicity, double tolerance)
     }
 }
 
+void GeomBSplineCurve::Trim(double u, double v)
+{
+    auto splitUnwrappedBSpline = [this](double u, double v) {
+        // it makes a copy internally (checked in the source code of OCCT)
+        auto handle = GeomConvert::SplitBSplineCurve (  myCurve,
+                                                            u,
+                                                            v,
+                                                            Precision::Confusion()
+                                                        );
+        setHandle(handle);
+    };
+
+    try {
+        if(!isPeriodic()) {
+            splitUnwrappedBSpline(u, v);
+        }
+        else { // periodic
+            if( v < u ) { // wraps over origin
+                v = v + 1.0; // v needs one extra lap (1.0)
+
+                splitUnwrappedBSpline(u, v);
+            }
+            else {
+                splitUnwrappedBSpline(u, v);
+            }
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+}
 
 // Persistence implementer
 unsigned int GeomBSplineCurve::getMemSize (void) const

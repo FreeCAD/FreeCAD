@@ -62,6 +62,8 @@
 
 #include "Sketch.h"
 
+//#define DEBUG_BLOCK_CONSTRAINT
+#undef DEBUG_BLOCK_CONSTRAINT
 
 using namespace Sketcher;
 using namespace Base;
@@ -72,9 +74,9 @@ TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 Sketch::Sketch()
   : SolveTime(0)
   , RecalculateInitialSolutionWhileMovingPoint(false)
+  , resolveAfterGeometryUpdated(false)
   , GCSsys(), ConstraintsCounter(0)
   , isInitMove(false), isFine(true), moveStep(0)
-  , malformedConstraints(false)
   , defaultSolver(GCS::DogLeg)
   , defaultSolverRedundant(GCS::DogLeg)
   , debugMode(GCS::Minimal)
@@ -98,6 +100,7 @@ void Sketch::clear(void)
     ArcsOfHyperbola.clear();
     ArcsOfParabola.clear();
     BSplines.clear();
+    resolveAfterGeometryUpdated = false;
 
     // deleting the doubles allocated with new
     for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it)
@@ -125,7 +128,55 @@ void Sketch::clear(void)
     isInitMove = false;
     ConstraintsCounter = 0;
     Conflicting.clear();
-    malformedConstraints = false;
+    Redundant.clear();
+    PartiallyRedundant.clear();
+    MalformedConstraints.clear();
+}
+
+bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &internalGeoList,
+                                     const std::vector<Constraint *> &constraintList,
+                                     std::vector<bool> &onlyblockedGeometry,
+                                     std::vector<int> &blockedGeoIds) const
+{
+    // To understand this function read the documentation in Sketch.h
+    // It is important that "onlyblockedGeometry" ONLY identifies blocked geometry
+    // that is not affected by any other driving constraint
+    bool doesBlockAffectOtherConstraints = false;
+
+    int geoindex = 0;
+    for(auto g : internalGeoList) {
+        if(GeometryFacade::getBlocked(g)) {
+            // is it only affected by one constraint, the block constraint (and this is driving), or by any other driving constraint ?
+            bool blockOnly = true;
+            bool blockisDriving = false;
+
+            for(auto c : constraintList) {
+                // is block driving
+                if( c->Type == Sketcher::Block && c->isDriving && c->First == geoindex)
+                    blockisDriving = true;
+                // We have another driving constraint (which may be InternalAlignment)
+                if( c->Type != Sketcher::Block && c->isDriving &&
+                    (c->First == geoindex || c->Second == geoindex || c->Third == geoindex) )
+                    blockOnly = false;
+            }
+
+            if(blockisDriving) {
+                if(blockOnly) {
+                    onlyblockedGeometry[geoindex] = true; // we pre-fix this geometry
+                }
+                else {
+                    // we will have to pos-analyse the first diagnose result for these geometries
+                    // in order to avoid redundant constraints
+                    doesBlockAffectOtherConstraints = true;
+                    blockedGeoIds.push_back(geoindex);
+                }
+            }
+
+        }
+        geoindex++;
+    }
+
+    return doesBlockAffectOtherConstraints;
 }
 
 int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
@@ -142,13 +193,47 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     for (int i=int(GeoList.size())-extGeoCount; i < int(GeoList.size()); i++)
         extGeoList.push_back(GeoList[i]);
 
-    std::vector<bool> blockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
+    std::vector<bool> onlyBlockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
     std::vector<bool> unenforceableConstraints(ConstraintList.size(),false); // these constraints are unenforceable due to a Blocked constraint
 
+    /* This implements the old block constraint. I have decided not to remove it at this time while the new is tested, just in case the change
+     * needs to be reverted */
     /*if(!intGeoList.empty())
         getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);*/
 
-    addGeometry(intGeoList,blockedGeometry);
+    // Pre-analysis of blocked geometry (new block constraint) to fix geometry only affected by a block constraint (see comment in Sketch.h)
+    std::vector<int> blockedGeoIds;
+    bool doesBlockAffectOtherConstraints = analyseBlockedGeometry(  intGeoList,
+                                                                    ConstraintList,
+                                                                    onlyBlockedGeometry,
+                                                                    blockedGeoIds);
+
+#ifdef DEBUG_BLOCK_CONSTRAINT
+    if(doesBlockAffectOtherConstraints)
+        Base::Console().Log("\n  Block interferes with other constraints: Post-analysis required");
+
+    Base::Console().Log("\nOnlyBlocked GeoIds:");
+    size_t i = 0;
+    bool found = false;
+    for(; i < onlyBlockedGeometry.size(); i++) {
+        if(onlyBlockedGeometry[i]) {
+            Base::Console().Log("\n  GeoId=%d", i);
+            found = true;
+        }
+    }
+    if(found)
+        Base::Console().Log("\n  None");
+
+    Base::Console().Log("\nNotOnlyBlocked GeoIds:");
+    i = 0;
+    for(; i < blockedGeoIds.size(); i++)
+        Base::Console().Log("\n  GeoId=%d", blockedGeoIds[i]);
+    if(i == 0)
+        Base::Console().Log("\n  None");
+    Base::Console().Log("\n");
+#endif //DEBUG_BLOCK_CONSTRAINT
+
+    addGeometry(intGeoList,onlyBlockedGeometry);
     int extStart=Geoms.size();
     addGeometry(extGeoList, true);
     int extEnd=Geoms.size()-1;
@@ -163,92 +248,65 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     GCSsys.declareUnknowns(Parameters);
     GCSsys.declareDrivenParams(DrivenParameters);
     GCSsys.initSolution(defaultSolverRedundant);
-    GCSsys.getConflicting(Conflicting);
-    GCSsys.getRedundant(Redundant);
-    GCSsys.getDependentParams(pDependentParametersList);
 
-    calculateDependentParametersElements();
+    // Post-analysis
+    // Now that we have all the parameters information, we deal properly with the block constraints if necessary
+    if(doesBlockAffectOtherConstraints) {
 
-    // Now that we have all the parameters information, we deal properly with the block constraint
-
-    bool isSomethingBlocked = false;
-    std::vector<int> blockedGeoIds;
-
-    int geoindex = 0;
-    for(auto & g : Geoms) {
-        if(!g.external && GeometryFacade::getBlocked(g.geo)) {
-            isSomethingBlocked = true;
-            blockedGeoIds.push_back(geoindex);
-        }
-        geoindex++;
-    }
-
-    for(auto c : ConstraintList) {
-        if(c->Type == InternalAlignment) {
-
-            auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
-
-            if(geoit != blockedGeoIds.end()) { // internal alignment geometry found, add to list
-                blockedGeoIds.push_back(*geoit);
-            }
-        }
-    }
-
-    if(isSomethingBlocked) {
-
-        // 1. Look what needs blocking
         std::vector<double *> params_to_block;
-        std::vector < std::set < double*>> groups;
-        GCSsys.getDependentParamsGroups(groups);
 
-        for(size_t i = 0; i < groups.size(); i++) {
-            for(size_t j = 0; j < groups[i].size(); j++) {
+        bool unsatisfied_groups = analyseBlockedConstraintDependentParameters(blockedGeoIds, params_to_block);
 
-                double * thisparam = *std::next(groups[i].begin(), j);
+        // I am unsure if more than one QR iterations are needed with the current implementation.
+        //
+        // With previous implementations mostly one QR iteration was enough, but if block constraint is abused, more
+        // iterations were needed.
+        int index = 0;
+        while(unsatisfied_groups) {
+            // We tried hard not to arrive to an unsatisfied group, so we try harder
+            // This loop has the advantage that the user will notice increased effort to solve,
+            // so may understand he is abusing the block constraint, while guaranteing that wrong
+            // behaviour of the block constraint is not undetected.
 
-                auto element = param2geoelement.find(thisparam);
+            // Another QR iteration
+            fixParametersAndDiagnose(params_to_block);
 
-                if (element != param2geoelement.end()) {
+            unsatisfied_groups = analyseBlockedConstraintDependentParameters(blockedGeoIds,params_to_block);
 
-                    auto blocked = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),element->second.first);
-
-                    if( blocked != blockedGeoIds.end()) { // this dependent parameter group contains a parameter that should be blocked
-                        params_to_block.push_back(thisparam);
-                        break; // one parameter per group is enough to fix the group
-                    }
-                }
+            if (debugMode==GCS::IterationLevel) {
+                Base::Console().Log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n",index);
             }
+            index++;
         }
 
         // 2. If something needs blocking, block-it
+       fixParametersAndDiagnose(params_to_block);
+
+#ifdef DEBUG_BLOCK_CONSTRAINT
         if(params_to_block.size() > 0) {
+            std::vector < std::vector < double*>> groups;
+            GCSsys.getDependentParamsGroups(groups);
 
-            for( auto p : params_to_block ) {
-                auto findparam = std::find(Parameters.begin(),Parameters.end(), p);
-
-                if(findparam != Parameters.end()) {
-                    FixParameters.push_back(*findparam);
-                    Parameters.erase(findparam);
-                }
-
+            // Debug code block
+            for(size_t i = 0; i < groups.size(); i++) {
+                Base::Console().Log("\nDepParams: Group %d:",i);
+                for(size_t j = 0; j < groups[i].size(); j++)
+                    Base::Console().Log("\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->first,
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
             }
-
-            pDependencyGroups.clear();
-            clearTemporaryConstraints();
-            GCSsys.invalidatedDiagnosis();
-            GCSsys.declareUnknowns(Parameters);
-            GCSsys.declareDrivenParams(DrivenParameters);
-            GCSsys.initSolution(defaultSolverRedundant);
-            GCSsys.getConflicting(Conflicting);
-            GCSsys.getRedundant(Redundant);
-            GCSsys.getDependentParams(pDependentParametersList);
-
-            calculateDependentParametersElements();
-
         }
-
-
+#endif //DEBUG_BLOCK_CONSTRAINT
     }
+
+    // Now we set the Sketch status with the latest solver information
+    GCSsys.getConflicting(Conflicting);
+    GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
+    GCSsys.getDependentParams(pDependentParametersList);
+
+    calculateDependentParametersElements();
 
     if (debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
         Base::TimeInfo end_time;
@@ -258,6 +316,113 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
     return GCSsys.dofsNumber();
 }
+
+void Sketch::fixParametersAndDiagnose(std::vector<double *> &params_to_block)
+{
+    if(params_to_block.size() > 0) { // only there are parameters to fix
+        for( auto p : params_to_block ) {
+            auto findparam = std::find(Parameters.begin(),Parameters.end(), p);
+
+            if(findparam != Parameters.end()) {
+                FixParameters.push_back(*findparam);
+                Parameters.erase(findparam);
+            }
+        }
+
+        pDependencyGroups.clear();
+        clearTemporaryConstraints();
+        GCSsys.invalidatedDiagnosis();
+        GCSsys.declareUnknowns(Parameters);
+        GCSsys.declareDrivenParams(DrivenParameters);
+        GCSsys.initSolution(defaultSolverRedundant);
+        /*GCSsys.getConflicting(Conflicting);
+        GCSsys.getRedundant(Redundant);
+        GCSsys.getPartlyRedundant(PartiallyRedundant);
+        GCSsys.getDependentParams(pDependentParametersList);
+
+        calculateDependentParametersElements();*/
+    }
+}
+
+bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &blockedGeoIds, std::vector<double *> &params_to_block) const
+{
+    // 1. Retrieve solver information
+    std::vector < std::vector < double*>> groups;
+    GCSsys.getDependentParamsGroups(groups);
+
+    // 2. Determine blockable parameters for each group (see documentation in header file).
+    struct group {
+        std::vector<double *> blockable_params_in_group;
+        double * blocking_param_in_group = nullptr;
+    };
+
+    std::vector<group> prop_groups(groups.size());
+
+#ifdef DEBUG_BLOCK_CONSTRAINT
+    for(size_t i = 0; i < groups.size(); i++) {
+        Base::Console().Log("\nDepParams: Group %d:",i);
+        for(size_t j = 0; j < groups[i].size(); j++)
+            Base::Console().Log("\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                            param2geoelement.find(*std::next(groups[i].begin(), j))->first,
+                            param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
+                            param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
+    }
+#endif //DEBUG_BLOCK_CONSTRAINT
+
+    for(size_t i = 0; i < groups.size(); i++) {
+        for(size_t j = 0; j < groups[i].size(); j++) {
+
+            double * thisparam = *std::next(groups[i].begin(), j);
+
+            auto element = param2geoelement.find(thisparam);
+
+            if (element != param2geoelement.end()) {
+
+                auto blockable = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),element->second.first);
+
+                if( blockable != blockedGeoIds.end()) {
+                    // This dependent parameter group contains at least one parameter that should be blocked, so added to the blockable list.
+                    prop_groups[i].blockable_params_in_group.push_back(thisparam);
+                }
+            }
+        }
+    }
+
+    // 3. Apply heuristic - pick the last blockable param available to block the group, starting from the last group
+    for(size_t i = prop_groups.size(); i--> 0;) {
+        for(size_t j = prop_groups[i].blockable_params_in_group.size(); j-->0; ) {
+            // check if parameter is already satisfying one group
+            double * thisparam = prop_groups[i].blockable_params_in_group[j];
+            auto pos = std::find(params_to_block.begin(), params_to_block.end(), thisparam);
+
+            if( pos == params_to_block.end()) { // not found, so add
+                params_to_block.push_back(thisparam);
+                prop_groups[i].blocking_param_in_group = thisparam;
+#ifdef DEBUG_BLOCK_CONSTRAINT
+                Base::Console().Log("\nTentatively blocking group %d, with param=%x", i, thisparam);
+#endif //DEBUG_BLOCK_CONSTRAINT
+                break;
+            }
+        }
+    }
+
+    // 4. Check if groups are satisfied or are licitly unsatisfiable and thus deemed as satisfied
+    bool unsatisfied_groups = false;
+    for(size_t i = 0; i < prop_groups.size(); i++) {
+        // 4.1. unsatisfiable group
+        if(prop_groups[i].blockable_params_in_group.size() == 0) {
+        // this group does not contain any blockable parameter, so it is by definition satisfied (or impossible to satisfy by block constraints)
+            continue;
+        }
+        // 4.2. satisfiable and not satisfied
+        if(prop_groups[i].blocking_param_in_group == nullptr) {
+            unsatisfied_groups = true;
+        }
+    }
+
+    return unsatisfied_groups;
+}
+
 
 void Sketch::clearTemporaryConstraints(void)
 {
@@ -308,7 +473,7 @@ void Sketch::calculateDependentParametersElements(void)
         }
     }
 
-    std::vector < std::set < double*>> groups;
+    std::vector < std::vector < double*>> groups;
     GCSsys.getDependentParamsGroups(groups);
 
     pDependencyGroups.resize(groups.size());
@@ -317,7 +482,7 @@ void Sketch::calculateDependentParametersElements(void)
     for(size_t i = 0; i < groups.size(); i++) {
         for(size_t j = 0; j < groups[i].size(); j++) {
 
-            auto element = param2geoelement.find(*std::next(groups[i].begin(), j));
+            auto element = param2geoelement.find(groups[i][j]);
 
             if (element != param2geoelement.end()) {
                 pDependencyGroups[i].insert(element->second);
@@ -382,6 +547,7 @@ int Sketch::resetSolver()
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
@@ -460,7 +626,10 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         return addArcOfParabola(*aop, fixed);
     } else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
         const GeomBSplineCurve *bsp = static_cast<const GeomBSplineCurve*>(geo);
-        // create the definition struct for that geom
+
+        // Current B-Spline implementation relies on OCCT calculations, so a second solve
+        // is necessary to update actual solver implementation to account for changes in B-Spline geometry
+        resolveAfterGeometryUpdated = true;
         return addBSpline(*bsp, fixed);
     }
     else {
@@ -1345,6 +1514,13 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
     };
 }
 
+const GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId) const
+{
+    // I hereby guarantee that if I modify the non-const version, I will still
+    // never modify (this). I return const copy to enforce on my users.
+    return const_cast<Sketch *>(this)->getGCSCurveByGeoId(geoId);
+}
+
 // constraint adding ==========================================================
 
 int Sketch::addConstraint(const Constraint *constraint)
@@ -1717,8 +1893,9 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
         rtn = addConstraint (*it);
 
         if(rtn == -1) {
-            Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
-            malformedConstraints = true;
+            int humanconstraintid = cid + 1;
+            Base::Console().Error("Sketcher constraint number %d is malformed!\n",humanconstraintid);
+            MalformedConstraints.push_back(humanconstraintid);
         }
     }
 
@@ -1736,8 +1913,9 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
             rtn = addConstraint (*it);
 
             if(rtn == -1) {
-                Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
-                malformedConstraints = true;
+                int humanconstraintid = cid + 1;
+                Base::Console().Error("Sketcher constraint number %d is malformed!\n",humanconstraintid);
+                MalformedConstraints.push_back(humanconstraintid);
             }
         }
         else {
@@ -2181,7 +2359,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
 //This function handles any type of tangent, perpendicular and angle
 // constraint that involves a point.
 // i.e. endpoint-to-curve, endpoint-to-endpoint and tangent-via-point
-//geoid1, geoid2 and geoid3 as in in the constraint object.
+//geoid1, geoid2 and geoid3 as in the constraint object.
 //For perp-ty and tangency, angle is used to lock the direction.
 //angle==0 - autodetect direction. +pi/2, -pi/2 - specific direction.
 int Sketch::addAngleAtPointConstraint(
@@ -2473,16 +2651,9 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         Geoms[geoId2].type == Line) {
         GCS::Line &l1 = Lines[Geoms[geoId1].index];
         GCS::Line &l2 = Lines[Geoms[geoId2].index];
-        double dx1 = (*l1.p2.x - *l1.p1.x);
-        double dy1 = (*l1.p2.y - *l1.p1.y);
-        double dx2 = (*l2.p2.x - *l2.p1.x);
-        double dy2 = (*l2.p2.y - *l2.p1.y);
-        double value = (sqrt(dx1*dx1+dy1*dy1)+sqrt(dx2*dx2+dy2*dy2))/2;
-        // add the parameter for the common length (this is added to Parameters, not FixParameters)
-        Parameters.push_back(new double(value));
-        double *length = Parameters[Parameters.size()-1];
+
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintEqualLength(l1, l2, length, tag);
+        GCSsys.addConstraintEqualLength(l1, l2, tag);
         return ConstraintsCounter;
     }
 
@@ -3095,7 +3266,7 @@ double Sketch::calculateAngleViaPoint(int geoId1, int geoId2, double px, double 
     return GCSsys.calculateAngleViaPoint(*crv1, *crv2, p);
 }
 
-Base::Vector3d Sketch::calculateNormalAtPoint(int geoIdCurve, double px, double py)
+Base::Vector3d Sketch::calculateNormalAtPoint(int geoIdCurve, double px, double py) const
 {
     geoIdCurve = checkGeoId(geoIdCurve);
 
@@ -3104,7 +3275,7 @@ Base::Vector3d Sketch::calculateNormalAtPoint(int geoIdCurve, double px, double 
     p.y = &py;
 
     //check pointers
-    GCS::Curve* crv = getGCSCurveByGeoId(geoIdCurve);
+    const GCS::Curve* crv = getGCSCurveByGeoId(geoIdCurve);
     if (!crv) {
         throw Base::ValueError("calculateNormalAtPoint: getGCSCurveByGeoId returned NULL!\n");
     }
@@ -3258,7 +3429,8 @@ bool Sketch::updateGeometry()
                 std::vector<double> knots;
                 std::vector<int> mult;
 
-                std::vector<double *>::const_iterator it3;
+                // This is the code that should be here when/if b-spline gets its full implementation in the solver.
+                /*std::vector<double *>::const_iterator it3;
                 std::vector<int>::const_iterator it4;
 
                 for( it3 = mybsp.knots.begin(), it4 = mybsp.mult.begin(); it3 != mybsp.knots.end() && it4 != mybsp.mult.end(); ++it3, ++it4) {
@@ -3266,7 +3438,14 @@ bool Sketch::updateGeometry()
                     mult.push_back((*it4));
                 }
 
-                bsp->setKnots(knots,mult);
+                bsp->setKnots(knots,mult);*/
+
+                // This is the code that needs to be here to take advantage of the current OCCT reliant implementation
+                // The current B-Spline implementation relies on OCCT for pole calculation, so the knots are set by the OCCT calculated values
+                auto occtknots = bsp->getKnots();
+
+                for(auto it3 = occtknots.begin() ; it3 != occtknots.end(); ++it3)
+                    knots.push_back(*it3);
 
                 #if OCC_VERSION_HEX >= 0x060900
                 int index = 0;
@@ -3278,7 +3457,14 @@ bool Sketch::updateGeometry()
                             auto pointf = GeometryFacade::getFacade(point);
 
                             if(pointf->getInternalType() == InternalType::BSplineKnotPoint) {
-                                point->setPoint(bsp->pointAtParameter(knots[index]));
+                                auto pointcoords = bsp->pointAtParameter(knots[index]);
+                                point->setPoint(pointcoords); // update the geompoint of the knot (geometry update)
+                                // Now we update the position of the points in the solver, so that any call to solve()
+                                // calculates constraints and positions based on the actual position of the knots.
+                                auto pointindex = getPointId(*it5, start);
+                                auto solverpoint = Points[pointindex];
+                                *(solverpoint.x) = pointcoords.x;
+                                *(solverpoint.y) = pointcoords.y;
                             }
                         }
                     }
@@ -3297,7 +3483,7 @@ bool Sketch::updateGeometry()
 
 bool Sketch::updateNonDrivingConstraints()
 {
-     for (std::vector<ConstrDef>::iterator it = Constrs.begin();it!=Constrs.end();++it){
+    for (std::vector<ConstrDef>::iterator it = Constrs.begin();it!=Constrs.end();++it){
         if(!(*it).driving) {
             if((*it).constr->Type==SnellsLaw) {
                 double n1 = *((*it).value);
@@ -3311,13 +3497,37 @@ bool Sketch::updateNonDrivingConstraints()
             }
             else if((*it).constr->Type==Diameter && (*it).constr->First>=0 ) {
 
-                (*it).constr->setValue(2.0**((*it).value));
+                // two cases, the geometry parameter is fixed or it is not
+                // NOTE: This is different from being blocked, as new block constraint may fix
+                // the parameter or not depending on whether other driving constraints are present
+                int geoId = (*it).constr->First;
+
+                geoId = checkGeoId( geoId );
+
+                double * rad = nullptr;
+
+                if (Geoms[geoId].type == Circle) {
+                    GCS::Circle &c = Circles[Geoms[geoId].index];
+                    rad = c.rad;
+                }
+                else if (Geoms[geoId].type == Arc) {
+                    GCS::Arc &a = Arcs[Geoms[geoId].index];
+                    rad = a.rad;
+                }
+
+                auto pos = std::find(FixParameters.begin(), FixParameters.end(), rad);
+
+                if (pos != FixParameters.end())
+                    (*it).constr->setValue(*((*it).value));
+                else
+                    (*it).constr->setValue(2.0**((*it).value));
             }
             else {
                 (*it).constr->setValue(*((*it).value));
             }
         }
      }
+
     return true;
 }
 
@@ -3326,6 +3536,24 @@ bool Sketch::updateNonDrivingConstraints()
 int Sketch::solve(void)
 {
     Base::TimeInfo start_time;
+    std::string solvername;
+
+    auto result = internalSolve(solvername);
+
+    Base::TimeInfo end_time;
+
+    if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
+
+        Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",solvername.c_str(),Base::TimeInfo::diffTime(start_time,end_time).c_str());
+    }
+
+    SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);
+
+    return result;
+}
+
+int Sketch::internalSolve(std::string & solvername, int level)
+{
     if (!isInitMove) { // make sure we are in single subsystem mode
         clearTemporaryConstraints();
         isFine = true;
@@ -3333,7 +3561,6 @@ int Sketch::solve(void)
 
     int ret = -1;
     bool valid_solution;
-    std::string solvername;
     int defaultsoltype = -1;
 
     if(isInitMove){
@@ -3456,14 +3683,11 @@ int Sketch::solve(void)
         } // soltype
     }
 
-    Base::TimeInfo end_time;
-
-    if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
-
-        Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",solvername.c_str(),Base::TimeInfo::diffTime(start_time,end_time).c_str());
+    // For OCCT reliant geometry that needs an extra solve() for example to update non-driving constraints.
+    if (resolveAfterGeometryUpdated && ret == GCS::Success && level == 0) {
+        return internalSolve(solvername, 1);
     }
 
-    SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);
     return ret;
 }
 
@@ -3923,8 +4147,11 @@ TopoShape Sketch::toShape(void) const
         auto gf = GeometryFacade::getFacade(it->geo);
         if (!it->external && !gf->getConstruction()) {
 
-            if (it->type != Point)
-                edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
+            if (it->type != Point) {
+                auto shape =it->geo->toShape();
+                if(!shape.IsNull())
+                    edge_list.push_back(TopoDS::Edge(shape));
+            }
             else
                 vertex_list.push_back(TopoDS::Vertex(it->geo->toShape()));
         }

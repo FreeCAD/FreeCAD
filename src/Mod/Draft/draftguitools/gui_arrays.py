@@ -60,13 +60,10 @@ class ArrayGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tooltip = ("Create various types of arrays, "
-                    "including rectangular, polar, circular, "
-                    "path, and point")
 
         return {'Pixmap': 'Draft_Array',
                 'MenuText': QT_TRANSLATE_NOOP("Draft", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft", _tooltip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft", "Create various types of arrays, including rectangular, polar, circular, path, and point")}
 
     def IsActive(self):
         """Return True when this command should be available."""

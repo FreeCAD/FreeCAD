@@ -50,7 +50,7 @@ ViewProviderAttachExtension::ViewProviderAttachExtension()
     initExtensionType(ViewProviderAttachExtension::getExtensionClassTypeId());
 }
 
-QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig) const
+QIcon ViewProviderAttachExtension::extensionMergeColorfullOverlayIcons (const QIcon & orig) const
 {
     QIcon mergedicon = orig;
 

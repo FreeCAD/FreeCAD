@@ -60,34 +60,22 @@ class ToolControllerTemplate:
 
 class ToolController:
 
-    def __init__(self, obj, cTool=False):
-        PathLog.track('tool: {}'.format(cTool))
+    def __init__(self, obj, legacyTool=False, createTool=True):
+        PathLog.track('tool: {}'.format(legacyTool))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber",
-                        "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController",
-                        "The active tool"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The active tool"))
         obj.ToolNumber = (0, 0, 10000, 1)
-        self.ensureUseLegacyTool(obj, cTool)
-        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool",
-                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
-                        "The speed of the cutting spindle in RPM"))
-        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool",
-                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
-                        "Direction of spindle rotation"))
+        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The speed of the cutting spindle in RPM"))
+        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Direction of spindle rotation"))
         obj.SpindleDir = ['Forward', 'Reverse']
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed",
-                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
-                        "Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",
-                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
-                        "Feed rate for horizontal moves"))
-        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid",
-                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
-                        "Rapid rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid",
-                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
-                        "Rapid rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for horizontal moves"))
         obj.setEditorMode('Placement', 2)
+
+        if createTool:
+            self.ensureUseLegacyTool(obj, legacyTool)
 
     def onDocumentRestored(self, obj):
         obj.setEditorMode('Placement', 2)
@@ -225,32 +213,32 @@ class ToolController:
                 obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
 
 
-def Create(name='TC: Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
-    legacyTool = PathPreferences.toolsReallyUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
+def Create(name='TC: Default Tool', tool=None, toolNumber=1, assignViewProvider=True, assignTool=True):
+    legacyTool = PathPreferences.toolsUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
 
     PathLog.track(tool, toolNumber, legacyTool)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
-    obj.Proxy = ToolController(obj, legacyTool)
+    obj.Proxy = ToolController(obj, legacyTool, assignTool)
 
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
-    if tool is None:
-        if legacyTool:
-            tool = Path.Tool()
-            tool.Diameter = 5.0
-            tool.Name = "Default Tool"
-            tool.CuttingEdgeHeight = 15.0
-            tool.ToolType = "EndMill"
-            tool.Material = "HighSpeedSteel"
-        else:
-            tool = PathToolBit.Factory.Create()
-            if tool.ViewObject:
-                tool.ViewObject.Visibility = False
-
-    obj.Tool = tool
+    if assignTool:
+        if not tool:
+            if legacyTool:
+                tool = Path.Tool()
+                tool.Diameter = 5.0
+                tool.Name = "Default Tool"
+                tool.CuttingEdgeHeight = 15.0
+                tool.ToolType = "EndMill"
+                tool.Material = "HighSpeedSteel"
+            else:
+                tool = PathToolBit.Factory.Create()
+                if tool.ViewObject:
+                    tool.ViewObject.Visibility = False
+        obj.Tool = tool
     obj.ToolNumber = toolNumber
     return obj
 
@@ -260,7 +248,7 @@ def FromTemplate(template, assignViewProvider=True):
     PathLog.track()
 
     name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)
-    obj = Create(name, assignViewProvider=True)
+    obj = Create(name, assignViewProvider=True, assignTool=False)
     obj.Proxy.setFromTemplate(obj, template)
 
     return obj

@@ -404,8 +404,8 @@ class CommandPathSanity:
 
         # Save the report
 
-        reportraw = self.outputpath + 'setupreport.asciidoc'
-        reporthtml = self.outputpath + 'setupreport.html'
+        reportraw = self.outputpath + job.PostProcessorOutputFile + '.asciidoc'
+        reporthtml = self.outputpath + job.PostProcessorOutputFile + '.html'
         with open(reportraw, 'w') as fd:
             fd.write(report)
             fd.close()
@@ -517,7 +517,7 @@ class CommandPathSanity:
         data = {}
 
         try:
-            for TC in obj.ToolController:
+            for TC in obj.Tools.Group:
                 if not hasattr(TC.Tool, 'BitBody'):
                     self.squawk("PathSanity",
                     "Tool number {} is a legacy tool. Legacy tools not \

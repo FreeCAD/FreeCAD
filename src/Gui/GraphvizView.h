@@ -25,8 +25,7 @@
 #define GUI_GRAPHVIZVIEW_H
 
 #include "MDIView.h"
-#include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 
 class QGraphicsScene;

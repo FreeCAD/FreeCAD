@@ -25,6 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include <QColor>
@@ -38,12 +40,15 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Material.h>
+#include <Gui/ActionFunction.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/LandmarkDimension.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "PreferencesGui.h"
+#include "TaskDimension.h"
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
 
@@ -65,7 +70,7 @@ ViewProviderDimension::ViewProviderDimension()
 {
     sPixmap = "TechDraw_Dimension";
 
-    static const char *group = "Dim Format";
+    static const char *group = "Dimension Format";
 
     ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()),
                                               group, App::Prop_None, "The name of the font to use");
@@ -74,16 +79,16 @@ ViewProviderDimension::ViewProviderDimension()
                                                                      "Dimension text size in units");
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None), 
                                                         "Dimension line width");
-    ADD_PROPERTY_TYPE(Color,(prefColor()),group,App::Prop_None,"The color of the Dimension");
+    ADD_PROPERTY_TYPE(Color, (prefColor()), group, App::Prop_None, "Color of the dimension");
     ADD_PROPERTY_TYPE(StandardAndStyle, (prefStandardAndStyle()), group, App::Prop_None, 
-                                        "Specifies the standard according to which this dimension is drawn");
+                                        "Standard and style according to which dimension is drawn");
     StandardAndStyle.setEnums(StandardAndStyleEnums);
 
-    ADD_PROPERTY_TYPE(RenderingExtent, (REND_EXTENT_NORMAL),  group, App::Prop_None,
+    ADD_PROPERTY_TYPE(RenderingExtent, (REND_EXTENT_NORMAL), group, App::Prop_None,
                                          "Select the rendering mode by space requirements");
     RenderingExtent.setEnums(RenderingExtentEnums);
     ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,
-                                          "Reverses the usual direction of dimension line terminators");
+                                          "Reverses usual direction of dimension line terminators");
 }
 
 ViewProviderDimension::~ViewProviderDimension()
@@ -112,6 +117,63 @@ std::vector<std::string> ViewProviderDimension::getDisplayModes(void) const
     std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
+}
+
+bool ViewProviderDimension::doubleClicked(void)
+{
+    startDefaultEditMode();
+    return true;
+}
+
+void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    act->setData(QVariant((int)ViewProvider::Default));
+    func->trigger(act, boost::bind(&ViewProviderDimension::startDefaultEditMode, this));
+
+    ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
+}
+
+void ViewProviderDimension::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
+}
+
+bool ViewProviderDimension::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        if (Gui::Control().activeDialog()) { // if TaskPanel already open
+            return false;
+        }
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        auto qgivDimension(dynamic_cast<QGIViewDimension*>(getQView()));
+        if (qgivDimension) {
+            Gui::Control().showDialog(new TaskDlgDimension(qgivDimension, this));
+        }
+        return true;
+    }
+    else {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    return true;
+}
+
+void ViewProviderDimension::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDrawingView::unsetEdit(ModNum);
+    }
 }
 
 void ViewProviderDimension::updateData(const App::Property* p)

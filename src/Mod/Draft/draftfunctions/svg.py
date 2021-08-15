@@ -75,7 +75,7 @@ def get_line_style(line_style, scale):
             # scale dashes
             style = ",".join([str(float(d)/scale) for d in style])
             # print("lstyle ", style)
-        except:
+        except Exception:
             # TODO: trap only specific exception; what is the problem?
             # Bad string specification?
             return "none"
@@ -119,14 +119,14 @@ def get_arrow(obj,
                                         point.x, point.y)
     _transl = 'translate({},{})'.format(point.x, point.y)
     _scale = 'scale({size},{size})'.format(size=arrowsize)
-    _style = 'style="stroke-miterlimit:4;stroke-dasharray:none"'
+    _style = 'style="stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square"'
 
     if obj.ViewObject.ArrowType == "Circle":
         svg += '<circle '
         svg += _cx_cy_r + ' '
         svg += 'fill="{}" stroke="{}" '.format("none", color)
         svg += 'style="stroke-width:{};'.format(linewidth)
-        svg += 'stroke-miterlimit:4;stroke-dasharray:none" '
+        svg += 'stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square" '
         svg += 'freecad:skip="1"'
         svg += '/>\n'
     elif obj.ViewObject.ArrowType == "Dot":
@@ -327,7 +327,7 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
         svg += stroke + '" '
         svg += 'stroke-width="' + str(linewidth) + ' px" '
         svg += 'style="stroke-width:' + str(linewidth)
-        svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+        svg += ';stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square" '
         svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
         svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
         svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
@@ -468,6 +468,8 @@ def get_svg(obj,
                 plane.alignToPointAndAxis_SVG(App.Vector(0, 0, 0),
                                               direction.negative().negative(),
                                               0)
+            else:
+                raise ValueError("'direction' cannot be: Vector(0, 0, 0)")
         elif isinstance(direction, WorkingPlane.plane):
             plane = direction
 
@@ -488,6 +490,11 @@ def get_svg(obj,
                 stroke = utils.get_rgb(obj.ViewObject.LineColor)
             elif hasattr(obj.ViewObject, "TextColor"):
                 stroke = utils.get_rgb(obj.ViewObject.TextColor)
+            if hasattr(obj.ViewObject, "TextColor"):
+                tstroke = utils.get_rgb(obj.ViewObject.TextColor)
+            else:
+                tstroke = stroke
+
 
     lstyle = "none"
     if override:
@@ -615,6 +622,7 @@ def get_svg(obj,
             svg_path += 'fill="none" '
             svg_path += 'stroke="{}" '.format(stroke)
             svg_path += 'stroke-width="{}" '.format(linewidth)
+            svg_path += 'stroke-linecap:square;'
             svg_path += 'd="{}"'.format(path_dir_str)
             svg_path += '/>'
             svg += svg_path
@@ -665,7 +673,7 @@ def get_svg(obj,
 
             j = obj.ViewObject.Justification
             svg += svgtext.get_text(plane, techdraw,
-                                    stroke, fontsize, n,
+                                    tstroke, fontsize, n,
                                     r, p, t,
                                     linespacing, j)
 

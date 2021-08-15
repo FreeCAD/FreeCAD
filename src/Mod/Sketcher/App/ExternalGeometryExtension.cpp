@@ -37,36 +37,35 @@ constexpr std::array<const char *, ExternalGeometryExtension::NumFlags> External
 
 TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryPersistenceExtension)
 
-// Persistence implementer
-void ExternalGeometryExtension::Save(Base::Writer &writer) const
+void ExternalGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
 {
-    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
+    Part::GeometryPersistenceExtension::copyAttributes(cpy);
 
-    const std::string name = getName();
-
-    if(name.size() > 0)
-        writer.Stream() << "\" name=\"" << name;
-
-    writer.Stream() << "\" Ref=\"" << Ref << "\" Flags=\"" << Flags.to_string() << "\"/>" << std::endl;
+    static_cast<ExternalGeometryExtension *>(cpy)->Ref = this->Ref;
+    static_cast<ExternalGeometryExtension *>(cpy)->Flags = this->Flags;
 }
 
-void ExternalGeometryExtension::Restore(Base::XMLReader &reader)
+void ExternalGeometryExtension::restoreAttributes(Base::XMLReader &reader)
 {
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     Ref = reader.getAttribute("Ref");
     Flags = FlagType(reader.getAttribute("Flags"));
+}
 
+void ExternalGeometryExtension::saveAttributes(Base::Writer &writer) const
+{
+    Part::GeometryPersistenceExtension::saveAttributes(writer);
+
+    writer.Stream() << "\" Ref=\"" << Ref
+                    << "\" Flags=\"" << Flags.to_string();
 }
 
 std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<ExternalGeometryExtension>();
 
-    cpy->Ref = this->Ref;
-    cpy->Flags = this->Flags;
-
-    cpy->setName(this->getName()); // Base Class
+    copyAttributes(cpy.get());
 
 #if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);

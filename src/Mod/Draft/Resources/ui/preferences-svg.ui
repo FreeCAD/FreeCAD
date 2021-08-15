@@ -181,7 +181,7 @@ One unit in the SVG file will translate as one millimeter. </string>
            <string>Max segment length for discretized arcs</string>
           </property>
           <property name="buddy">
-           <cstring></cstring>
+           <cstring/>
           </property>
          </widget>
         </item>

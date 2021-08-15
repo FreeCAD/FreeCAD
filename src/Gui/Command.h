@@ -584,6 +584,9 @@ public:
     };
     friend class LogDisabler;
 
+private:
+    void _invoke(int, bool disablelog);
+
 protected:
     enum CmdType {
         AlterDoc       = 1,  /**< Command change the Document */

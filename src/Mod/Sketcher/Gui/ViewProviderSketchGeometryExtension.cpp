@@ -39,13 +39,17 @@ ViewProviderSketchGeometryExtension::ViewProviderSketchGeometryExtension():Repre
 
 }
 
+void ViewProviderSketchGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
+{
+    Part::GeometryExtension::copyAttributes(cpy);
+    static_cast<ViewProviderSketchGeometryExtension *>(cpy)->RepresentationFactor = this->RepresentationFactor;
+}
+
 std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<ViewProviderSketchGeometryExtension>();
 
-    cpy->RepresentationFactor = this->RepresentationFactor;
-
-    cpy->setName(this->getName()); // Base Class
+    copyAttributes(cpy.get());
 
 #if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);

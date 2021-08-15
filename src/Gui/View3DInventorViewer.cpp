@@ -77,6 +77,7 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
+# include <QApplication>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -144,7 +145,6 @@
 #include <QGesture>
 
 #include "SoTouchEvents.h"
-#include "WinNativeGestureRecognizers.h"
 #include "Document.h"
 #include "ViewParams.h"
 
@@ -236,47 +236,13 @@ public:
     ~ViewerEventFilter() {}
 
     bool eventFilter(QObject* obj, QEvent* event) {
-
-#ifdef GESTURE_MESS
-        if (obj->isWidgetType()) {
-            View3DInventorViewer* v = dynamic_cast<View3DInventorViewer*>(obj);
-            if(v) {
-                /* Internally, Qt seems to set up the gestures upon showing the
-                 * widget (but after this event is processed), thus invalidating
-                 * our settings. This piece takes care to retune gestures on the
-                 * next event after the show event.
-                 */
-                if(v->winGestureTuneState == View3DInventorViewer::ewgtsNeedTuning) {
-                    try{
-                        WinNativeGestureRecognizerPinch::TuneWindowsGestures(v);
-                        v->winGestureTuneState = View3DInventorViewer::ewgtsTuned;
-                    } catch (Base::Exception &e) {
-                        Base::Console().Warning("Failed to TuneWindowsGestures. Error: %s\n",e.what());
-                        v->winGestureTuneState = View3DInventorViewer::ewgtsDisabled;
-                    } catch (...) {
-                        Base::Console().Warning("Failed to TuneWindowsGestures. Unknown error.\n");
-                        v->winGestureTuneState = View3DInventorViewer::ewgtsDisabled;
-                    }
-                }
-                if (event->type() == QEvent::Show && v->winGestureTuneState == View3DInventorViewer::ewgtsTuned)
-                    v->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning;
-
-            }
-        }
-#endif
-
         // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             QWheelEvent* we = static_cast<QWheelEvent*>(event);
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
             if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y()))
                 return true;
-#else
-            if (we->orientation() == Qt::Horizontal)
-                return true;
-#endif
         }
         else if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = static_cast<QKeyEvent*>(event);
@@ -578,20 +544,9 @@ void View3DInventorViewer::init()
     getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
     getEventFilter()->registerInputDevice(new GesturesDevice(this));
 
-    this->winGestureTuneState = View3DInventorViewer::ewgtsDisabled;
     try{
         this->grabGesture(Qt::PanGesture);
         this->grabGesture(Qt::PinchGesture);
-    #ifdef GESTURE_MESS
-        {
-            static WinNativeGestureRecognizerPinch* recognizer;//static to avoid creating more than one recognizer, thus causing memory leak and gradual slowdown
-            if(recognizer == 0){
-                recognizer = new WinNativeGestureRecognizerPinch;
-                recognizer->registerRecognizer(recognizer); //From now on, Qt owns the pointer.
-            }
-        }
-        this->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning;
-    #endif
     } catch (Base::Exception &e) {
         Base::Console().Warning("Failed to set up gestures. Error: %s\n", e.what());
     } catch (...) {
@@ -599,17 +554,10 @@ void View3DInventorViewer::init()
     }
 
     //create the cursors
-    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
-    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
-    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+    createStandardCursors(devicePixelRatio());
+    connect(this, &View3DInventorViewer::devicePixelRatioChanged,
+            this, &View3DInventorViewer::createStandardCursors);
 
-    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
-    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
-
-    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
-    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
 }
@@ -681,6 +629,35 @@ View3DInventorViewer::~View3DInventorViewer()
     SoGLRenderAction* glAction = this->getSoRenderManager()->getGLRenderAction();
     this->getSoRenderManager()->setGLRenderAction(nullptr);
     delete glAction;
+}
+
+void View3DInventorViewer::createStandardCursors(double dpr)
+{
+    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
+    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#else
+    Q_UNUSED(dpr)
+#endif
+    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+
+    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
+    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
+    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+
+    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
+    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
+    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()
@@ -951,7 +928,9 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
     if(Reason.Type == SelectionChanges::RmvPreselect ||
        Reason.Type == SelectionChanges::RmvPreselectSignal)
     {
-        SoFCHighlightAction cAct(SelectionChanges::RmvPreselect);
+        //Hint: do not create a tmp. instance of SelectionChanges
+        SelectionChanges selChanges(SelectionChanges::RmvPreselect);
+        SoFCHighlightAction cAct(selChanges);
         cAct.apply(pcViewProviderRoot);
     } else {
         SoFCSelectionAction cAct(Reason);
@@ -1483,8 +1462,6 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
 {
     if (t.isBad())
         return;
-
-    this->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning; //triggers enable/disable rotation gesture when preferences change
 
     if (this->navigation && this->navigation->getTypeId() == t)
         return; // nothing to do

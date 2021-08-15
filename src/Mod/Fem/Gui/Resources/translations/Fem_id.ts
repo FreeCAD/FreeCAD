@@ -11,12 +11,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>Untuk menambah referensi pilih mereka dalam 3D view dan kemudian klik "Tambahkan".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Untuk menambah referensi: pilih mereka dalam 3D view dan kemudian klik "Tambahkan".</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Direktori kerja</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Tulis</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
@@ -44,22 +44,22 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Waktu berlalu:</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Jalankan</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Tulis ulang</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Jalankan ulang</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
@@ -70,9 +70,14 @@
   <context>
     <name>GeometryElementsSelection</name>
     <message>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation>Pemilih referensi geometri untuk</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
       <source>Geometry reference selector for a </source>
-      <translation type="unfinished">Geometry reference selector for a </translation>
+      <translation>Pemilih referensi geometri untuk </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -82,12 +87,47 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
+      <translation>Klik "Tambahkan" dan pilih elemen geometri untuk menambahkannya ke daftar. Jika tidak ada geometri yang ditambahkan ke daftar, semua yang tersisa akan digunakan. Elemen geometri berikut adalah yang diperbolehkan untuk dipilih: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation>Klik "Tambahkan" dan pilih elemen geometri untuk menambahkannya ke daftar.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>Elemen geometri berikut adalah yang diperbolehkan untuk dipilih: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>Jika tidak ada geometri yang ditambahkan ke daftar, semua yang tersisa akan digunakan.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Klik "Tambahkan" dan pilih elemen geometri untuk menambahkan ke daftar.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation>Klik 'Tambahkan' dan pilih elemen geometri untuk menambahkannya ke daftar.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Mode pilihan</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
@@ -100,7 +140,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Pilih benda</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
@@ -110,7 +150,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Pilih bagian elemen dari benda yang harus ditambahkan ke daftar. Untuk menambahkan benda klik "Tambahkan".</translation>
     </message>
   </context>
   <context>
@@ -131,12 +171,12 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation>Analisis kontainer</translation>
+      <translation>Kontainer analisis</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Buat kontainer analisis dengan pembuat solusi standar CalculiX</translation>
     </message>
   </context>
   <context>
@@ -355,7 +395,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Material untuk benda cair</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -394,7 +434,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Material untuk benda padat</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -433,7 +473,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Tampilkan informasi FEM mesh</translation>
     </message>
   </context>
   <context>
@@ -620,7 +660,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Pengedit material</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>
@@ -693,7 +733,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation>Analisis kontainer</translation>
+      <translation>Kontainer analisis</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>

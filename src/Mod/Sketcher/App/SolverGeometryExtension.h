@@ -76,6 +76,9 @@ public:
         End = status;
     }
 
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+
 private:
     SolverGeometryExtension(const SolverGeometryExtension&) = default;
 

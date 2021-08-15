@@ -33,7 +33,7 @@ try:
     from Show import TempoVis
     from Show.DepGraphTools import getAllDependent
 except ImportError as err:
-    def TempoVis(doc):
+    def TempoVis(doc,tag):
         return None
     def getAllDependent(feature):
         return []
@@ -187,6 +187,12 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.callback_Apply     = callback_Apply
 
         self.obj = obj_to_attach
+        try:
+            if not self.obj.hasExtension('Part::AttachExtension'):
+                self.obj.addExtension('Part::AttachExtensionPython')
+        except Exception:
+            pass
+
         if hasattr(obj_to_attach,'Attacher'):
             self.attacher = obj_to_attach.Attacher
         elif hasattr(obj_to_attach,'AttacherType'):
@@ -224,7 +230,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
         import os
         self.form=uic.loadUi(os.path.dirname(__file__) + os.path.sep + 'TaskAttachmentEditor.ui')
-        self.form.setWindowIcon(QtGui.QIcon(':/icons/Part_Attachment.svg'))
+        self.form.setWindowIcon(QtGui.QIcon(':/icons/tools/Part_Attachment.svg'))
         self.form.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
 
         self.form.attachmentOffsetX.setProperty("unit", "mm")
