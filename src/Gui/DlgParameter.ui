@@ -50,6 +50,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnRefresh">
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
         <string>Refresh</string>
        </property>
@@ -274,6 +280,12 @@ This will overwrite the current configuration.</string>
      </item>
      <item>
       <widget class="QPushButton" name="btnReset">
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Clear the current configuration.</string>
        </property>
