@@ -76,6 +76,7 @@ public:
     virtual ~StringID();
 
     long value() const {return _id;}
+    const QVector<StringIDRef> &relatedIDs() const {return _sids;}
 
     bool isBinary() const {return _flags.test(Binary);}
     bool isHashed() const {return _flags.test(Hashed);}
@@ -142,6 +143,22 @@ public:
     void setPersistent(bool enable)
     {
         _flags.set(Persistent, enable);
+    }
+
+    bool operator<(const StringID &other) const {
+        return compare(other) < 0;
+    }
+
+    int compare(const StringID &other) const {
+        if (_hasher < other._hasher)
+            return -1;
+        if (_hasher > other._hasher)
+            return 1;
+        if (_id < other._id)
+            return -1;
+        if (_id > other._id)
+            return 1;
+        return 0;
     }
 
     friend class StringHasher;
@@ -253,9 +270,14 @@ public:
     }
 
     bool operator<(const StringIDRef & p) const {
-        if (_sid < p._sid)
+        if (!_sid)
             return true;
-        if (_sid > p._sid)
+        if (!p._sid)
+            return false;
+        int res = _sid->compare(*p._sid);
+        if (res < 0)
+            return true;
+        if (res > 0)
             return false;
         return _index < p._index;
     }
@@ -307,6 +329,12 @@ public:
         if (_sid)
             return _sid->value();
         return 0;
+    }
+
+    QVector<StringIDRef> relatedIDs() const {
+        if (_sid)
+            return _sid->relatedIDs();
+        return QVector<StringIDRef>();
     }
 
     bool isBinary() const {

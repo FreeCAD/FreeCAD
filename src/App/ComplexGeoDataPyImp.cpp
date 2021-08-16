@@ -107,25 +107,43 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
 PyObject* ComplexGeoDataPy::getElementIndexedName(PyObject *args)
 {
     char* input;
-    int direction = 0;
-    if (!PyArg_ParseTuple(args, "s|i", &input,&direction))
+    PyObject *returnID = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &input,&returnID))
         return NULL;
 
-    Data::MappedElement res = getComplexGeoDataPtr()->getElementName(input);
+    ElementIDRefs ids;
+    Data::MappedElement res = getComplexGeoDataPtr()->getElementName(
+            input, PyObject_IsTrue(returnID)?&ids:nullptr);
     std::string s;
-    return Py::new_reference_to(Py::String(res.index.toString(s)));
+    Py::String name(res.index.toString(s));
+    if (!PyObject_IsTrue(returnID))
+        return Py::new_reference_to(name);
+
+    Py::List list;
+    for (auto &id : ids)
+        list.append(Py::Long(id.value()));
+    return Py::new_reference_to(Py::TupleN(name, list));
 }
 
 PyObject* ComplexGeoDataPy::getElementMappedName(PyObject *args)
 {
     char* input;
-    int direction = 0;
-    if (!PyArg_ParseTuple(args, "s|i", &input,&direction))
+    PyObject *returnID = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &input,&returnID))
         return NULL;
 
-    Data::MappedElement res = getComplexGeoDataPtr()->getElementName(input);
+    ElementIDRefs ids;
+    Data::MappedElement res = getComplexGeoDataPtr()->getElementName(
+            input, PyObject_IsTrue(returnID)?&ids:nullptr);
     std::string s;
-    return Py::new_reference_to(Py::String(res.name.toString(s)));
+    Py::String name(res.name.toString(s));
+    if (!PyObject_IsTrue(returnID))
+        return Py::new_reference_to(name);
+
+    Py::List list;
+    for (auto &id : ids)
+        list.append(Py::Long(id.value()));
+    return Py::new_reference_to(Py::TupleN(name, list));
 }
 
 PyObject *ComplexGeoDataPy::setElementName(PyObject *args, PyObject *kwds) {

@@ -51,6 +51,13 @@ Py::Int StringIDPy::getValue(void) const {
     return Py::Int(getStringIDPtr()->value());
 }
 
+Py::List StringIDPy::getRelated(void) const {
+    Py::List list;
+    for (auto &id : getStringIDPtr()->relatedIDs())
+        list.append(Py::Long(id.value()));
+    return list;
+}
+
 Py::String StringIDPy::getData(void) const {
     return Py::String(getStringIDPtr()->dataToText(this->_index));
 }

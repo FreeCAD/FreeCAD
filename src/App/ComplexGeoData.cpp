@@ -108,6 +108,7 @@ struct MappedNameRef
     MappedNameRef(const MappedName &name, const ElementIDRefs & sids = ElementIDRefs())
         :name(name), sids(sids)
     {
+        compact();
     }
 
     MappedNameRef(const MappedNameRef & other)
@@ -145,7 +146,6 @@ struct MappedNameRef
             return;
         }
         std::unique_ptr<MappedNameRef> n(new MappedNameRef(name, sids));
-        n->compact();
         if (!this->next)
             this->next = std::move(n);
         else {
@@ -1536,8 +1536,19 @@ MappedName ComplexGeoData::hashElementName(
     if (name.find(elementMapPrefix()) < 0)
         return name;
     App::StringIDRef sid = this->Hasher->getID(name, sids);
-    sids.clear();
-    sids.push_back(sid);
+    const auto &related = sid.relatedIDs();
+    if (related == sids) {
+        sids.clear();
+        sids.push_back(sid);
+    } else {
+        ElementIDRefs tmp;
+        tmp.push_back(sid);
+        for (auto &s : sids) {
+            if (related.indexOf(s) < 0)
+                tmp.push_back(s);
+        }
+        sids = tmp;
+    }
     return MappedName(sid.toString());
 }
 
