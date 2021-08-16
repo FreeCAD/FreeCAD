@@ -170,7 +170,7 @@ void DocumentObject::touch(bool noRecompute)
         StatusBits.set(ObjectStatus::Enforce);
         if(++_revision == 0)
             ++_revision;
-        FC_LOG("enforce recompute " << _revision << " " << getFullName());
+        FC_TRACE("enforce recompute " << _revision << " " << getFullName());
         _enforceRecompute = true;
     }
     StatusBits.set(ObjectStatus::Touch);
@@ -189,7 +189,7 @@ bool DocumentObject::isTouched() const
 
 void DocumentObject::purgeTouched()
 {
-    FC_LOG("purgeTouched " << getFullName());
+    FC_TRACE("purgeTouched " << getFullName());
     StatusBits.reset(ObjectStatus::Enforce);
     setPropertyStatus(Property::Touched, false);
     if(StatusBits.test(ObjectStatus::Touch)) {
