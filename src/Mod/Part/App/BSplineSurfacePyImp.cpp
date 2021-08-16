@@ -447,10 +447,10 @@ PyObject* BSplineSurfacePy::setVKnot(PyObject *args)
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     if (M == -1) {
-        surf->SetUKnot(Index, K);
+        surf->SetVKnot(Index, K);
     }
     else {
-        surf->SetUKnot(Index, K, M);
+        surf->SetVKnot(Index, K, M);
     }
 
     Py_Return;
