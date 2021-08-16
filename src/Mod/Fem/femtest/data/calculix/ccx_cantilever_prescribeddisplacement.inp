@@ -407,6 +407,9 @@ S, E
 ** reaction forces for Constraint fixed
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
+** reaction forces for Constraint displacement constraining translation
+*NODE PRINT, NSET=ConstraintDisplacmentPrescribed, TOTALS=ONLY
+RF
 
 
 ***********************************************************

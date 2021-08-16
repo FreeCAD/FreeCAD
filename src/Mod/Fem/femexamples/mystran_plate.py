@@ -38,8 +38,8 @@ def get_information():
         "name": "Mystran Plate",
         "meshtype": "face",
         "meshelement": "Quad4",
-        "constraints": ["displacement", "force"],
-        "solvers": ["calculix", "elmer", "mystran"],
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix", "ccxtools", "elmer", "mystran"],
         "material": "solid",
         "equation": "mechanical"
     }

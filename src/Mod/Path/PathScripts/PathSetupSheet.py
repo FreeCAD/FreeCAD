@@ -34,7 +34,7 @@ __doc__ = "A container for all default values and job specific configuration val
 
 _RegisteredOps = {}
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 

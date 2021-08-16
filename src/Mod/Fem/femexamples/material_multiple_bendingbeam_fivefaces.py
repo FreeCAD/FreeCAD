@@ -38,7 +38,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "multimaterial",
         "equation": "mechanical"
     }
@@ -141,7 +141,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "Concrete-Generic"
     mat["YoungsModulus"] = "32000 MPa"
     mat["PoissonRatio"] = "0.17"
-    mat["Density"] = "0 kg/m^3"
     material_obj1.Material = mat
     analysis.addObject(material_obj1)
 
@@ -154,7 +153,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "PLA"
     mat["YoungsModulus"] = "3640 MPa"
     mat["PoissonRatio"] = "0.36"
-    mat["Density"] = "0 kg/m^3"
     material_obj2.Material = mat
     analysis.addObject(material_obj2)
 
@@ -164,7 +162,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
     material_obj3.Material = mat
     analysis.addObject(material_obj3)
 

@@ -737,9 +737,19 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def SetupProperties():
+    setup = ["Side", "OperationType", "Tolerance", "StepOver",
+             "LiftDistance", "KeepToolDownRatio", "StockToLeave",
+             "ForceInsideOut", "FinishingProfile", "Stopped",
+             "StopProcessing", "UseHelixArcs", "AdaptiveInputState",
+             "AdaptiveOutputState", "HelixAngle", "HelixConeAngle",
+             "HelixDiameterLimit", "UseOutline"]
+    return setup
+
+
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Adaptive operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = PathAdaptive(obj, name)
+    obj.Proxy = PathAdaptive(obj, name, parentJob)
     return obj

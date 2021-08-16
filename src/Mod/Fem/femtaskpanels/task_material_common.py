@@ -545,8 +545,10 @@ class _TaskPanel:
             old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
         else:
             # for example PoissonRatio
-            value = float(inputfield_text)
-            old_value = float(self.material[matProperty])
+            value = Units.Quantity(inputfield_text).Value
+            old_value = Units.Quantity(self.material[matProperty]).Value
+            # value = float(inputfield_text)  # this fails on locale with komma
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&p=523313#p523313
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material

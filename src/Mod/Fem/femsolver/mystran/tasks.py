@@ -57,7 +57,7 @@ _inputFileName = None
 class Check(run.Check):
 
     def run(self):
-        self.pushStatus("Checking analysis...\n")
+        self.pushStatus("Checking analysis member...\n")
         self.check_mesh_exists()
         self.check_material_exists()
         self.check_material_single()  # no multiple material
@@ -70,13 +70,11 @@ class Prepare(run.Prepare):
 
     def run(self):
         global _inputFileName
-        self.pushStatus("Preparing input files...\n")
-
-        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
+        self.pushStatus("Preparing solver input...\n")
 
         # get mesh set data
-        # TODO evaluate if it makes sense to add new task
-        # between check and prepare to the solver frame work
+        # TODO see calculix tasks get mesh set data
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
         meshdatagetter = meshsetsgetter.MeshSetsGetter(
             self.analysis,
             self.solver,
@@ -85,44 +83,36 @@ class Prepare(run.Prepare):
         )
         meshdatagetter.get_mesh_sets()
 
-        # write input file
+        # write solver input
         w = writer.FemInputWriterMystran(
             self.analysis,
             self.solver,
             mesh_obj,
             meshdatagetter.member,
             self.directory,
-            meshdatagetter.mat_geo_sets
         )
         path = w.write_solver_input()
         # report to user if task succeeded
         if path != "":
-            self.pushStatus("Write completed!")
+            self.pushStatus("Writing solver input completed.")
         else:
-            self.pushStatus("Writing CalculiX input file failed!")
+            self.pushStatus("Writing solver input failed.")
+            self.fail()
         _inputFileName = os.path.splitext(os.path.basename(path))[0]
 
 
 class Solve(run.Solve):
 
     def run(self):
-        # print(_inputFileName)
-        if not _inputFileName:
-            # TODO do not run solver, do not try to read results in a smarter way than an Exception
-            raise Exception("Error on writing Mystran input file.\n")
+        self.pushStatus("Executing solver...\n")
+
         infile = _inputFileName + ".bdf"
 
-        # TODO use solver framework status system
-        FreeCAD.Console.PrintMessage("Mystran: solver input file: {} \n\n".format(infile))
-
-        # get binary
-        self.pushStatus("Get solver...\n")
+        # get solver binary
+        self.pushStatus("Get solver binary...\n")
         binary = settings.get_binary("Mystran")
-        # use preferences editor to add a group Mystran and the prefs:
-        # "UseStandardMystranLocation" --> bool, set to False
-        # "mystranBinaryPath, string" --> the binary path
         if binary is None:
-            return  # a print has been made in settings module
+            self.fail()  # a print has been made in settings module
 
         # run solver
         self.pushStatus("Executing solver...\n")
@@ -147,19 +137,19 @@ class Results(run.Results):
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
         if result_reading is True:
-            self.load_results()  # ToDo in all solvers generischer name
+            self.load_results()
 
     def purge_results(self):
+        self.pushStatus("Purge existing results...\n")
+        # TODO see calculix result tasks
         for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
             if femutils.is_of_type(m.Mesh, "Fem::MeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         self.analysis.Document.recompute()
-        # deletes all results from any solver
-        # TODO: delete only the mystran results, fix in all solver
 
     def load_results(self):
-        self.pushStatus("Import results...\n")
+        self.pushStatus("Import new results...\n")
         neu_result_file = os.path.join(self.directory, _inputFileName + ".NEU")
         if os.path.isfile(neu_result_file):
             hfcMystranNeuIn.import_neu(neu_result_file)
@@ -169,11 +159,11 @@ class Results(run.Results):
                     self.analysis.addObject(o)
                     break
         else:
-            # TODO: use solver framework error and status message system
+            # TODO: use solver framework status message system
             FreeCAD.Console.PrintError(
-                "FEM: No results found at {}!\n".format(neu_result_file)
+                "FEM: No results found at {}!\n"
+                .format(neu_result_file)
             )
-            return
-
+            self.fail()
 
 ##  @}

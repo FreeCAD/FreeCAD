@@ -691,7 +691,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
             return false;
         }
 
-        Base::QuantityFormat format(Base::QuantityFormat::Default, Base::UnitsApi::getDecimals());
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
         switch(ui->widgetStack->currentIndex()) {
             case 1:         // box
                 cmd = QString::fromLatin1(
