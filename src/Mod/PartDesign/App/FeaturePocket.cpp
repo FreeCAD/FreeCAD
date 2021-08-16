@@ -207,7 +207,14 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism = base.makEPrism(profileshape, supportface, upToFace,
                     dir, mode, CheckUpToFaceLimits.getValue());
 #endif
-            prism.Tag = -this->getID();
+            // DO NOT assign id to the generated prism, because this prism is
+            // actually the final result. We obtain the subtracted shape by cut
+            // this prism with the original base. Assigning a minus self id here
+            // will mess up with preselection highlight. It is enough to re-tag
+            // the profile shape above.
+            //
+            // prism.Tag = -this->getID();
+
             // And the really expensive way to get the SubShape...
             try {
                 TopoShape result(0,getDocument()->getStringHasher());
