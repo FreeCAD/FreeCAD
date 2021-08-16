@@ -748,7 +748,7 @@ Body::getSiblings(App::DocumentObject *obj, bool all, bool reversed) const
         auto feature = static_cast<PartDesign::Feature*>(obj);
         while (feature) {
             auto base = feature->BaseFeature.getValue();
-            if (!base)
+            if (!base || !Group.find(base->getNameInDocument()))
                 break;
             if (reversed)
                 res.push_back(base);

@@ -53,7 +53,7 @@ short int FeatureBase::mustExecute(void) const {
     if(BaseFeature.isTouched())
         return 1;
     
-    return Part::Feature::mustExecute();
+    return PartDesign::Feature::mustExecute();
 }
 
 
@@ -80,15 +80,12 @@ void FeatureBase::onChanged(const App::Property* prop) {
     if (prop == &BaseFeature) {
         
         auto body = getFeatureBody();
-        if(!body)
-            return;
-    
-        if (BaseFeature.getValue() && body->BaseFeature.getValue() != BaseFeature.getValue()) {
+        if (body && BaseFeature.getValue() && body->BaseFeature.getValue() != BaseFeature.getValue()) {
             body->BaseFeature.setValue(BaseFeature.getValue());
         }
     }
     
-    Part::Feature::onChanged(prop);
+    PartDesign::Feature::onChanged(prop);
 }
 
 void FeatureBase::onDocumentRestored()
@@ -97,6 +94,7 @@ void FeatureBase::onDocumentRestored()
     auto body = getFeatureBody();
     if (!body)
         Placement.setStatus(App::Property::Hidden, false);
+    PartDesign::Feature::onDocumentRestored();
 }
 
 }//namespace PartDesign
