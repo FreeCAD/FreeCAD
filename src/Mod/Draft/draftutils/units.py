@@ -95,7 +95,7 @@ def display_external(internal_value,
     if dim == 'Length':
         q = App.Units.Quantity(internal_value, App.Units.Length)
         if not unit:
-            if decimals == None and showUnit:
+            if decimals is None and showUnit:
                 return q.UserString
 
             conversion = q.getUserPreferred()[1]
