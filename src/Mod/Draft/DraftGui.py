@@ -1095,7 +1095,7 @@ class DraftToolBar:
         self.taskUi(title, icon="Draft_Trimex")
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
-        self.radiusValue.setToolTip(translate("draft", "Trim distance"))
+        self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
