@@ -42,8 +42,10 @@ class DlgWorkbenchesImp : public CustomizeActionPage
 public:
     DlgWorkbenchesImp(QWidget* parent = 0);
     ~DlgWorkbenchesImp();
-    static QStringList load_enabled_workbenches();
-    static QStringList load_disabled_workbenches();
+    static QStringList load_enabled_workbenches(bool filter = false);
+    static QStringList load_disabled_workbenches(bool filter = false);
+    static void save_workbenches(const QStringList &enabled,
+                                 const QStringList &disabled = QStringList());
     static const QString all_workbenches;
 
 protected:

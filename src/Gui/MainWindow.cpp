@@ -660,32 +660,6 @@ enum MenuType {
     DockWindowMenu,
 };
 
-QWidgetAction *addCheckable(QMenu *menu,
-                            const QString &txt,
-                            const QString &tooltip,
-                            bool checked,
-                            QCheckBox *&checkbox)
-{
-    QWidget *widget = new QWidget(menu);
-    QHBoxLayout *layout = new QHBoxLayout(widget);
-    widget->setLayout(layout);
-    checkbox = new QCheckBox(widget);
-    layout->addWidget(checkbox);
-    layout->setContentsMargins(4,0,4,0);
-    QWidgetAction *wa = new QWidgetAction(menu);
-    wa->setDefaultWidget(widget);
-    wa->setToolTip(tooltip);
-    wa->setStatusTip(tooltip);
-    wa->setVisible(true);
-    wa->setText(txt);
-    checkbox->setText(txt);
-    checkbox->setChecked(checked);
-    wa->setCheckable(true);
-    wa->setChecked(checked);
-    menu->addAction(wa);
-    return wa;
-}
-
 void populateMenu(QMenu *menu, MenuType type)
 {
     auto mw = getMainWindow();
@@ -703,9 +677,9 @@ void populateMenu(QMenu *menu, MenuType type)
         lockMenu->setToolTipsVisible(true);
 
         QCheckBox *ckDefault;
-        auto wa = addCheckable(lockMenu, QObject::tr("Default"),
-                QObject::tr("Default locking of all toolbars"),
-                !ToolBarManager::getInstance()->isDefaultMovable(), ckDefault);
+        auto wa = Action::addCheckBox(lockMenu, QObject::tr("Default"),
+                QObject::tr("Default locking of all toolbars"), QIcon(),
+                !ToolBarManager::getInstance()->isDefaultMovable(), &ckDefault);
         auto cb = [](bool checked) {ToolBarManager::getInstance()->setDefaultMovable(!checked);};
         QObject::connect(wa, &QWidgetAction::toggled, cb);
         QObject::connect(ckDefault, &QCheckBox::toggled, cb);
@@ -721,11 +695,10 @@ void populateMenu(QMenu *menu, MenuType type)
                     action->setVisible(true);
                     actions[action->text()] = action;
                     QCheckBox *checkbox;
-                    auto wa = addCheckable(
-                            lockMenu, action->text(), ltooltip, !toolbar->isMovable(), checkbox);
+                    auto wa = Action::addCheckBox(lockMenu, action->text(),
+                            ltooltip, action->icon(), !toolbar->isMovable(), &checkbox);
                     auto cb = [toolbar](bool checked) {toolbar->setMovable(!checked);};
                     QObject::connect(wa, &QWidgetAction::toggled, cb);
-                    QObject::connect(checkbox, &QCheckBox::toggled, cb);
                     QObject::connect(ckDefault, &QCheckBox::toggled, [checkbox](bool checked){
                         QSignalBlocker block(checkbox);
                         checkbox->setChecked(checked);
@@ -759,9 +732,9 @@ void populateMenu(QMenu *menu, MenuType type)
     for(auto it=actions.begin(); it!=actions.end(); ++it) {
         auto action = *it;
         QCheckBox *checkbox;
-        QWidgetAction *wa = addCheckable(
+        auto wa = Action::addCheckBox(
                 hiddenMenu && !action->isVisible() ? hiddenMenu : menu,
-                it.key(), tooltip, action->isChecked(), checkbox);
+                it.key(), tooltip, action->icon(), action->isChecked(), &checkbox);
         QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SIGNAL(triggered(bool)));
         QObject::connect(wa, SIGNAL(triggered(bool)), action, SIGNAL(triggered(bool)));
     }

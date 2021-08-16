@@ -37,6 +37,7 @@
 # include <QToolButton>
 # include <QElapsedTimer>
 # include <QClipboard>
+# include <QCheckBox>
 #endif
 
 #include <QWidgetAction>
@@ -226,19 +227,24 @@ void Action::setToolTip(const QString & s, const QString & title)
 {
     _tooltip = s;
     _title = title;
+    _action->setToolTip(createToolTip(s,
+                title.isEmpty() ? _action->text() : title, 
+                _action->font(),
+                _action->shortcut().toString(QKeySequence::NativeText)));
+}
 
-    QString text;
-    if (_title.size())
-        text = _title.remove(QLatin1Char('&'));
-    else
-        text = _action->text().remove(QLatin1Char('&'));
+QString Action::createToolTip(QString _tooltip,
+                              const QString & title,
+                              const QFont &font,
+                              const QString &sc)
+{
+    QString text = title;
+    text.remove(QLatin1Char('&'));;
     while(text.size() && text[text.size()-1].isPunct())
         text.resize(text.size()-1);
 
-    if (text.isEmpty()) {
-        _action->setToolTip(_tooltip);
-        return;
-    }
+    if (text.isEmpty())
+        return _tooltip;
 
     // The follow code tries to make a more useful tooltip by inserting at the
     // begining of the tooltip the action title in bold followed by the
@@ -248,7 +254,7 @@ void Action::setToolTip(const QString & s, const QString & title)
     // a rich text tooltip but the width is too short. We can escape the auto
     // wrappin using <p style='white-space:pre'>.
 
-    QString shortcut = _action->shortcut().toString(QKeySequence::NativeText);
+    QString shortcut = sc;
     if (shortcut.size() && _tooltip.endsWith(shortcut))
         _tooltip.resize(_tooltip.size() - shortcut.size());
     if (shortcut.size())
@@ -262,18 +268,14 @@ void Action::setToolTip(const QString & s, const QString & title)
         _tooltip.resize(_tooltip.size() - shortcut.size());
 
     if (_tooltip.isEmpty()
-            || _tooltip == _action->text()
             || _tooltip == text
-            || _tooltip == _title)
+            || _tooltip == title)
     {
-        _action->setToolTip(tooltip);
-        return;
+        return tooltip;
     }
     if (Qt::mightBeRichText(_tooltip)) {
         // already rich text, so let it be to avoid duplicated unwrapping
-        tooltip += _tooltip;
-        _action->setToolTip(tooltip + _tooltip);
-        return;
+        return tooltip + _tooltip;
     }
 
     tooltip += QString::fromLatin1(
@@ -287,7 +289,7 @@ void Action::setToolTip(const QString & s, const QString & title)
         // If not, try to end the non wrapping paragraph at some pre defined
         // width, so that the following text can wrap at that width.
         float tipWidth = 400;
-        QFontMetrics fm(_action->font());
+        QFontMetrics fm(font);
         int width = fm.width(_tooltip);
         if (width <= tipWidth)
             tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
@@ -303,7 +305,7 @@ void Action::setToolTip(const QString & s, const QString & title)
                 + _tooltip.right(_tooltip.size()-index).trimmed().toHtmlEscaped();
         }
     }
-    _action->setToolTip(tooltip);
+    return tooltip;
 }
 
 QString Action::toolTip() const
@@ -324,6 +326,38 @@ QString Action::whatsThis() const
 void Action::setMenuRole(QAction::MenuRole menuRole)
 {
     _action->setMenuRole(menuRole);
+}
+
+QAction *
+Action::addCheckBox(QMenu *menu,
+                    const QString &txt,
+                    const QString &tooltip,
+                    const QIcon &icon,
+                    bool checked,
+                    QCheckBox **_checkbox)
+{
+    QWidget *widget = new QWidget(menu);
+    QHBoxLayout *layout = new QHBoxLayout(widget);
+    widget->setLayout(layout);
+    auto checkbox = new QCheckBox(widget);
+    if (_checkbox) *_checkbox = checkbox;
+    layout->addWidget(checkbox);
+    layout->setContentsMargins(4,0,4,0);
+    QWidgetAction *wa = new QWidgetAction(menu);
+    wa->setDefaultWidget(widget);
+    wa->setToolTip(tooltip);
+    wa->setStatusTip(tooltip);
+    wa->setVisible(true);
+    wa->setText(txt);
+    checkbox->setText(txt);
+    checkbox->setChecked(checked);
+    checkbox->setIcon(icon);
+    wa->setCheckable(true);
+    wa->setChecked(checked);
+    menu->addAction(wa);
+    QObject::connect(checkbox, SIGNAL(toggled(bool)), wa, SLOT(setChecked(bool)));
+    QObject::connect(checkbox, SIGNAL(toggled(bool)), wa, SIGNAL(toggled(bool)));
+    return wa;
 }
 
 // --------------------------------------------------------------------
@@ -530,6 +564,7 @@ WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent) : QCom
     connect(this, SIGNAL(activated(int)), this, SLOT(onActivated(int)));
     connect(getMainWindow(), SIGNAL(workbenchActivated(const QString&)),
             this, SLOT(onWorkbenchActivated(const QString&)));
+    connect(wb, SIGNAL(workbenchListUpdated()), this, SLOT(populate()));
 }
 
 WorkbenchComboBox::~WorkbenchComboBox()
@@ -545,7 +580,6 @@ void WorkbenchComboBox::showPopup()
         view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
     }
 
-    populate();
     QComboBox::showPopup();
 }
 
@@ -559,6 +593,12 @@ void WorkbenchComboBox::populate()
                 return a->text().compare(b->text(), Qt::CaseInsensitive) < 0;
             });
     }
+
+    auto wb = WorkbenchManager::instance()->active();
+    QString current;
+    if (wb)
+        current = QString::fromUtf8(wb->name().c_str());
+
     for (auto action : actions) {
         if (!action->isVisible())
             continue;
@@ -567,7 +607,7 @@ void WorkbenchComboBox::populate()
             this->addItem(action->text(), action->data());
         else
             this->addItem(icon, action->text(), action->data());
-        if (action->isChecked())
+        if (current == action->objectName())
             this->setCurrentIndex(this->count()-1);
     }
 }
@@ -622,8 +662,14 @@ class WorkbenchGroup::Private: public ParameterGrp::ObserverType
 public:
     Private(WorkbenchGroup *master, const char *path):master(master)
     {
+        hGeneral = App::GetApplication().GetUserParameter().GetGroup(
+                "BaseApp/Preferences/General");
         handle = App::GetApplication().GetParameterGroupByPath(path);
         handle->Attach(this);
+        timer.setSingleShot(true);
+        QObject::connect(&timer, &QTimer::timeout, [master](){
+            master->refreshWorkbenchList();
+        });
     }
 
     virtual ~Private()
@@ -631,17 +677,230 @@ public:
         handle->Detach(this);
     }
 
+    bool showText() {
+        return handle->GetBool("TabBarShowText", false);
+    }
+
+    void setShowText(bool enable) {
+        handle->SetBool("TabBarShowText", enable);
+    }
+
+    int toolbarIconSize() {
+        return hGeneral->GetInt("ToolbarIconSize");
+    }
+
+    bool showTabBar() {
+        return handle->GetBool("ShowTabBar", true);
+    }
+
+    void setShowTabBar(bool enable) {
+        handle->SetBool("ShowTabBar", enable);
+    }
+
     void OnChange(Base::Subject<const char*> &, const char *reason)
     {
-        if (reason && strcmp(reason, "Disabled")==0) {
-            master->refreshWorkbenchList();
+        if (!reason)
+            return;
+        if (boost::equals(reason, "Disabled")
+                || boost::equals(reason, "Enabled"))
+        {
+            timer.start(100);
         }
     }
 
 public:
     WorkbenchGroup *master;
     ParameterGrp::handle handle;
+    ParameterGrp::handle hGeneral;
+    QTimer timer;
 };
+
+// --------------------------------------------------------------------
+
+WorkbenchTabBar::WorkbenchTabBar(WorkbenchGroup* wb, QWidget* parent)
+    : QTabWidget(parent), group(wb)
+{
+    connect(this, SIGNAL(currentChanged(int)), this, SLOT(onCurrentChanged(int)));
+    connect(this->tabBar(), SIGNAL(tabMoved(int, int)), this, SLOT(onTabMoved(int, int)));
+    connect(getMainWindow(), SIGNAL(workbenchActivated(const QString&)),
+            this, SLOT(onWorkbenchActivated(const QString&)));
+    connect(wb, SIGNAL(workbenchListUpdated()), this, SLOT(updateWorkbenches()));
+    updateWorkbenches();
+    this->setMovable(true);
+    this->tabBar()->setDrawBase(true);
+    this->setDocumentMode(true);
+    // this->setUsesScrollButtons(true);
+
+    this->tabBar()->installEventFilter(this);
+
+    connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
+        [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+            if (!Name)
+                return;
+            if (Param == this->group->_pimpl->handle) {
+                if (boost::equals(Name, "TabBarShowText") || boost::equals(Name, "ShowTabBar"))
+                    timer.start(100);
+            } else if (Param == this->group->_pimpl->hGeneral) {
+                if (boost::equals(Name, "ToolbarIconSize"))
+                    timer.start(100);
+            }
+        });
+
+    timer.setSingleShot(true);
+    connect(&timer, &QTimer::timeout, [this]() {
+        updateWorkbenches();
+        setupVisibility();
+    });
+
+    onChangeOrientation();
+}
+
+WorkbenchTabBar::~WorkbenchTabBar()
+{
+}
+
+void WorkbenchTabBar::setupVisibility()
+{
+    if (!action)
+        return;
+
+    bool vis = this->group->_pimpl->showTabBar()
+        || this->tabPosition() == QTabWidget::West
+        || this->tabPosition() == QTabWidget::East;
+    if (vis == this->action->isVisible())
+        return;
+
+    if (auto parent = qobject_cast<QToolBar*>(this->parentWidget())) {
+        auto combo = parent->findChild<WorkbenchComboBox*>();
+        if (combo && combo->getAction()) {
+            for (auto w = QApplication::focusWidget();
+                    w && !w->isWindow();
+                    w = w->parentWidget())
+            {
+                if (w == parent) {
+                    getMainWindow()->setFocus();
+                    break;
+                }
+            }
+            combo->getAction()->setVisible(!vis);
+            this->action->setVisible(vis);
+        }
+    }
+}
+
+void WorkbenchTabBar::onChangeOrientation()
+{
+    auto parent = qobject_cast<QToolBar*>(parentWidget());
+    if (!parent)
+        return;
+
+    auto area = getMainWindow()->toolBarArea(parent);
+    QTabWidget::TabPosition pos;
+    if (parent->orientation() == Qt::Horizontal) {
+        if(area == Qt::BottomToolBarArea)
+            pos = QTabWidget::South;
+        else
+            pos = QTabWidget::North;
+    } else if (area == Qt::RightToolBarArea)
+        pos = QTabWidget::East;
+    else
+        pos = QTabWidget::West;
+    if (pos != this->tabPosition()) {
+        this->setTabPosition(pos);
+        // inform layout change
+        qApp->postEvent(parent, new QActionEvent(QEvent::ActionChanged, this->action));
+    }
+
+    setupVisibility();
+}
+
+void WorkbenchTabBar::updateWorkbenches()
+{
+    auto tab = this->tabBar();
+    int s = std::max(16, this->group->_pimpl->toolbarIconSize());
+    this->setIconSize(QSize(s,s));
+
+    auto wb = WorkbenchManager::instance()->active();
+    QString current;
+    if (wb)
+        current = QString::fromUtf8(wb->name().c_str());
+
+    QSignalBlocker block(this);
+    bool showText = this->group->_pimpl->showText();
+    if (showText)
+        this->setStyleSheet(QString());
+    else {
+        this->setStyleSheet(
+                QStringLiteral("::tab:top,"
+                               "::tab:bottom {min-width: -1;}"
+                               "::tab:left,"
+                               "::tab:right {min-height: -1;}"));
+    }
+    int i=0;
+    for (auto action : this->group->actions()) {
+        if (!action->isVisible())
+            continue;
+        if (i >= this->count())
+            this->addTab(new QWidget(), action->icon(), QString());
+        else
+            tab->setTabIcon(i, action->icon());
+        if (showText)
+            tab->setTabText(i, action->text());
+        else
+            tab->setTabText(i, QString());
+        tab->setTabData(i, action->objectName());
+        tab->setTabToolTip(i, 
+                Action::createToolTip(action->toolTip(),
+                                      action->text(),
+                                      action->font(),
+                                      action->shortcut().toString(QKeySequence::NativeText)));
+        if (current == action->objectName())
+            setCurrentIndex(i);
+        ++i;
+    }
+    while (this->count() > i)
+        this->removeTab(this->count()-1);
+}
+
+void WorkbenchTabBar::onCurrentChanged(int i)
+{
+    auto tab = this->tabBar();
+    QString name = tab->tabData(i).toString();
+    Application::Instance->activateWorkbench(name.toUtf8());
+}
+
+void WorkbenchTabBar::onTabMoved(int, int)
+{
+    moved = true;
+}
+
+bool WorkbenchTabBar::eventFilter(QObject *o, QEvent *ev)
+{
+    if (moved && o == this->tabBar()
+              && ev->type() == QEvent::MouseButtonRelease
+              && static_cast<QMouseEvent*>(ev)->button() == Qt::LeftButton)
+    {
+        moved = false;
+        QStringList enabled;
+        auto tab = this->tabBar();
+        for (int i=0, c=tab->count(); i<c; ++i)
+            enabled << tab->tabData(i).toString();
+        DlgWorkbenchesImp::save_workbenches(enabled);
+    }
+    return QTabWidget::eventFilter(o, ev);
+}
+
+void WorkbenchTabBar::onWorkbenchActivated(const QString& name)
+{
+    QSignalBlocker block(this);
+    auto tab = this->tabBar();
+    for (int i=0, c=tab->count(); i<c; ++i) {
+        if (tab->tabData(i).toString() == name)
+            setCurrentIndex(i);
+    }
+}
+
+// --------------------------------------------------------------------
 
 /* TRANSLATOR Gui::WorkbenchGroup */
 WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
@@ -667,6 +926,59 @@ WorkbenchGroup::~WorkbenchGroup()
     delete _menu;
 }
 
+void WorkbenchGroup::onContextMenuRequested(const QPoint &)
+{
+    bool combo = qobject_cast<QComboBox*>(sender()) != nullptr;
+    QMenu menu;
+    bool showText = _pimpl->showText();
+    QAction *actText = nullptr;
+    if (!combo)
+        actText = menu.addAction(showText ? tr("Hide text") : tr("Show text"));
+    auto actShow = menu.addAction(combo ? tr("Expand") : tr("Collapse"));
+    menu.addSeparator();
+
+    QMenu subMenu(tr("Disabled workbenches"));
+    std::vector<QAction*> actions;
+    QStringList disabled = DlgWorkbenchesImp::load_disabled_workbenches(true);
+    for (auto &wb : disabled) {
+        QString name = Application::Instance->workbenchMenuText(wb);
+        QPixmap px = Application::Instance->workbenchIcon(wb);
+        QString tip = Application::Instance->workbenchToolTip(wb);
+        auto action = Action::addCheckBox(&subMenu, name, tip, px, false);
+        action->setData(wb);
+        actions.push_back(action);
+    }
+    if (!subMenu.isEmpty()) {
+        menu.addMenu(&subMenu);
+        menu.addSeparator();
+    }
+    QStringList enabled = DlgWorkbenchesImp::load_enabled_workbenches(true);
+    for (auto &wb : enabled) {
+        QString name = Application::Instance->workbenchMenuText(wb);
+        QPixmap px = Application::Instance->workbenchIcon(wb);
+        QString tip = Application::Instance->workbenchToolTip(wb);
+        auto action = Action::addCheckBox(&menu, name, tip, px, true);
+        action->setData(wb);
+        actions.push_back(action);
+    }
+
+    auto act = menu.exec(QCursor::pos());
+    if (act && act == actText)
+        _pimpl->setShowText(!showText);
+    else if (act && act == actShow)
+        _pimpl->setShowTabBar(combo);
+
+    QStringList enabled2, disabled2;
+    for (auto action : actions) {
+        if (action->isChecked())
+            enabled2 << action->data().toString();
+        else
+            disabled2 << action->data().toString();
+    }
+    if (enabled != enabled2)
+        DlgWorkbenchesImp::save_workbenches(enabled2, disabled2);
+}
+
 void WorkbenchGroup::addTo(QWidget *w)
 {
     refreshWorkbenchList();
@@ -679,7 +991,27 @@ void WorkbenchGroup::addTo(QWidget *w)
         box->setWhatsThis(_action->whatsThis());
         connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated (QAction*)));
         box->populate();
-        bar->addWidget(box);
+        auto actBox = bar->addWidget(box);
+        box->setAction(actBox);
+        box->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(box, SIGNAL(customContextMenuRequested(QPoint)),
+                this, SLOT(onContextMenuRequested(QPoint)));
+
+        auto tabbar = new WorkbenchTabBar(this, w);
+        auto actTab = bar->addWidget(tabbar);
+        tabbar->setAction(actTab);
+        tabbar->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(tabbar, SIGNAL(customContextMenuRequested(QPoint)),
+                this, SLOT(onContextMenuRequested(QPoint)));
+        connect(bar, SIGNAL(orientationChanged(Qt::Orientation)),
+                tabbar, SLOT(onChangeOrientation()));
+        connect(bar, SIGNAL(topLevelChanged(bool)),
+                tabbar, SLOT(onChangeOrientation()));
+
+        if (_pimpl->showTabBar())
+            actBox->setVisible(false);
+        else
+            actTab->setVisible(false);
     }
     else if (w->inherits("QMenu")) {
         QMenu* menu = qobject_cast<QMenu*>(w);
@@ -760,6 +1092,12 @@ void WorkbenchGroup::refreshWorkbenchList()
             action->setCheckable(true);
             action->setData(QVariant(numActions++)); // set the index
         }
+    } else {
+        for (;extend < 0; ++extend) {
+            auto action = workbenches[numActions + extend];
+            action->setVisible(false);
+            action->setObjectName(QString());
+        }
     }
 
     // Show all enabled wb
@@ -767,6 +1105,8 @@ void WorkbenchGroup::refreshWorkbenchList()
     for (QStringList::Iterator it = enable_wbs.begin(); it != enable_wbs.end(); ++it) {
         setWorkbenchData(index++, *it);
     }
+
+    workbenchListUpdated();
 }
 
 void WorkbenchGroup::customEvent( QEvent* e )

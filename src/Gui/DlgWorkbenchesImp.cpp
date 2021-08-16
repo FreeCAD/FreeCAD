@@ -30,6 +30,7 @@
 # include <QInputDialog>
 #endif
 
+#include <Base/Console.h>
 #include "DlgWorkbenchesImp.h"
 #include "ui_DlgWorkbenches.h"
 #include "Application.h"
@@ -40,6 +41,8 @@
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "QListWidgetCustom.h"
+
+FC_LOG_LEVEL_INIT("Gui", true, true);
 
 using namespace Gui::Dialog;
 
@@ -69,15 +72,18 @@ DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
     for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
         if (workbenches.contains(*it)) {
             add_workbench(ui->lw_enabled_workbenches, *it);
-        } else {
-            qDebug() << "Ignoring unknown" << *it << "workbench found in user preferences.";
+        } else if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("Ignoring unknown" << (*it).toUtf8().constData()
+                    << "workbench found in user preferences.");
         }
     }
     for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if (disabled_wbs_list.contains(*it)){
             add_workbench(ui->lw_disabled_workbenches, *it);
         } else if (!enabled_wbs_list.contains(*it)){
-            qDebug() << "Adding unknown " << *it << "workbench.";
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Adding unknown " << (*it).toUtf8().constData() << "workbench");
+            }
             add_workbench(ui->lw_enabled_workbenches, *it);
         }
     }
@@ -204,7 +210,7 @@ void DlgWorkbenchesImp::on_add_all_to_enabled_workbenches_btn_clicked()
     }
 }
 
-QStringList DlgWorkbenchesImp::load_enabled_workbenches()
+QStringList DlgWorkbenchesImp::load_enabled_workbenches(bool filter)
 {
     QString enabled_wbs;
     QStringList enabled_wbs_list;
@@ -219,17 +225,29 @@ QStringList DlgWorkbenchesImp::load_enabled_workbenches()
 #endif
 
     if (enabled_wbs_list.at(0) == all_workbenches) {
-        enabled_wbs_list.removeFirst();
         QStringList workbenches = Application::Instance->workbenches();
+        enabled_wbs_list.removeFirst();
         for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
             enabled_wbs_list.append(*it);
         }
         enabled_wbs_list.sort();
+    } else if (filter) {
+        std::set<QString> wbset;
+        QStringList workbenches = Application::Instance->workbenches();
+        for (auto it = enabled_wbs_list.begin(); it != enabled_wbs_list.end();) {
+            if (!workbenches.contains(*it))
+                it = enabled_wbs_list.erase(it);
+            else if (!wbset.insert(*it).second) {
+                it = enabled_wbs_list.erase(it);
+                FC_WARN("duplicated enabled workbench " << (*it).toUtf8().constData());
+            } else
+                ++it;
+        }
     }
     return enabled_wbs_list;
 }
 
-QStringList DlgWorkbenchesImp::load_disabled_workbenches()
+QStringList DlgWorkbenchesImp::load_disabled_workbenches(bool filter)
 {
     QString disabled_wbs;
     QStringList disabled_wbs_list;
@@ -242,11 +260,38 @@ QStringList DlgWorkbenchesImp::load_disabled_workbenches()
 #else
     disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
 #endif
+    if (filter) {
+        std::set<QString> wbset;
+        QStringList workbenches = Application::Instance->workbenches();
+        for (auto it = disabled_wbs_list.begin(); it != disabled_wbs_list.end();) {
+            if (!workbenches.contains(*it)) {
+                it = disabled_wbs_list.erase(it);
+            } else if (!wbset.insert(*it).second) {
+                it = disabled_wbs_list.erase(it);
+                FC_WARN("duplicated disabled workbench " << (*it).toUtf8().constData());
+            } else
+                ++it;
+        }
+    }
 
     return disabled_wbs_list;
 }
 
 void DlgWorkbenchesImp::save_workbenches()
+{
+    QStringList enabled, disabled;
+    for (int i = 0; i < ui->lw_enabled_workbenches->count(); i++) {
+        QVariant item_data = ui->lw_enabled_workbenches->item(i)->data(Qt::UserRole);
+        enabled << item_data.toString();
+    }
+    for (int i = 0; i < ui->lw_disabled_workbenches->count(); i++) {
+        QVariant item_data = ui->lw_disabled_workbenches->item(i)->data(Qt::UserRole);
+        disabled << item_data.toString();
+    }
+    save_workbenches(enabled, disabled);
+}
+
+void DlgWorkbenchesImp::save_workbenches(const QStringList &enabled, const QStringList &disabled)
 {
     QString enabled_wbs;
     QString disabled_wbs;
@@ -255,21 +300,35 @@ void DlgWorkbenchesImp::save_workbenches()
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     hGrp->Clear();
 
-    if (ui->lw_enabled_workbenches->count() == 0) {
+    std::set<QString> wbset;
+    if (enabled.isEmpty()) {
         enabled_wbs.append(QString::fromLatin1("NoneWorkbench"));
+    } else if (enabled[0] == all_workbenches) {
+        enabled_wbs = all_workbenches;
     } else {
-        for (int i = 0; i < ui->lw_enabled_workbenches->count(); i++) {
-            QVariant item_data = ui->lw_enabled_workbenches->item(i)->data(Qt::UserRole);
-            QString name = item_data.toString();
-            enabled_wbs.append(name + QString::fromLatin1(","));
+        for (auto &wb : enabled) {
+            if (wbset.insert(wb).second)
+                enabled_wbs.append(wb + QLatin1String(","));
+            else if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("duplicated enabled workbench " << wb.toUtf8().constData());
         }
     }
     hGrp->SetASCII("Enabled", enabled_wbs.toLatin1());
 
-    for (int i = 0; i < ui->lw_disabled_workbenches->count(); i++) {
-        QVariant item_data = ui->lw_disabled_workbenches->item(i)->data(Qt::UserRole);
-        QString name = item_data.toString();
-        disabled_wbs.append(name + QString::fromLatin1(","));
+    if (enabled_wbs != all_workbenches) {
+        if (disabled.isEmpty()) {
+            for (auto &wb : Application::Instance->workbenches()) {
+                if (wbset.insert(wb).second)
+                    disabled_wbs.append(wb + QString::fromLatin1(","));
+            }
+        } else {
+            for (auto &wb : disabled) {
+                if (wbset.insert(wb).second)
+                    disabled_wbs.append(wb + QString::fromLatin1(","));
+                else if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    FC_WARN("duplicated disabled workbench " << wb.toUtf8().constData());
+            }
+        }
     }
     hGrp->SetASCII("Disabled", disabled_wbs.toLatin1());
 }

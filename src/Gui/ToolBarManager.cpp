@@ -327,7 +327,6 @@ void ToolBarManager::onTimer()
     for (auto &v : lines) {
         if (!isToolBarAllowed(v.second, area))
             continue;
-        QSignalBlocker block(v.second);
         if (first)
             first = false;
         else if (a != v.first.a)
@@ -408,14 +407,21 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
         bool toolbar_added = toolbar->windowTitle().isEmpty();
 
-        QSignalBlocker blocker(toolbar);
-        toolbar->setWindowTitle(QApplication::translate("Workbench", toolbarName.c_str())); // i18n
-        toolbar->toggleViewAction()->setVisible(true);
-        setToolBarVisible(toolbar, visible);
-        toolbar->setMovable(hMovable->GetBool(toolbarName.c_str(), movable));
-
         // setup the toolbar
         setup(item, toolbar);
+        if (toolbar->actions().isEmpty()) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("Empty toolbar " << name.toLatin1().constData());
+            continue;
+        }
+
+        toolbar->setWindowTitle(QApplication::translate("Workbench", toolbarName.c_str())); // i18n
+        toolbar->toggleViewAction()->setVisible(true);
+        {
+            QSignalBlocker blocker(toolbar);
+            setToolBarVisible(toolbar, visible);
+            toolbar->setMovable(hMovable->GetBool(toolbarName.c_str(), movable));
+        }
 
         // try to add some breaks to avoid to have all toolbars in one line
         if (toolbar_added) {
@@ -473,25 +479,31 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
     QList<ToolBarItem*> items = item->getItems();
     QList<QAction*> actions = toolbar->actions();
     for (QList<ToolBarItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
-        // search for the action item
-        QAction* action = findAction(actions, QString::fromLatin1((*it)->command().c_str()));
+        // search for the action item.
+        QString cmdName = QString::fromLatin1((*it)->command().c_str());
+        QAction* action = findAction(actions, cmdName);
         if (!action) {
-            if ((*it)->command() == "Separator") {
-                action = toolbar->addSeparator();
-            } else {
-                // Check if action was added successfully
-                if (mgr.addTo((*it)->command().c_str(), toolbar))
-                    action = toolbar->actions().last();
-            }
+            int size = toolbar->actions().size(); 
+            if ((*it)->command() == "Separator")
+                toolbar->addSeparator();
+            else 
+                mgr.addTo((*it)->command().c_str(), toolbar);
+            auto actions = toolbar->actions();
 
-            // set the tool button user data
-            if (action) action->setData(QString::fromLatin1((*it)->command().c_str()));
+            // We now support single command adding multiple actions
+            if (actions.size()) {
+                for (int i=std::min(actions.size()-1, size); i<actions.size(); ++i)
+                    actions[i]->setData(cmdName);
+            }
         } else {
-            // Note: For toolbars we do not remove and re-add the actions
-            // because this causes flicker effects. So, it could happen that the order of
-            // buttons doesn't match with the order of commands in the workbench.
-            int index = actions.indexOf(action);
-            actions.removeAt(index);
+            do {
+                // Note: For toolbars we do not remove and re-add the actions
+                // because this causes flicker effects. So, it could happen that the order of
+                // buttons doesn't match with the order of commands in the workbench.
+                int index = actions.indexOf(action);
+                actions.removeAt(index);
+            } while ((*it)->command() != "Separator"
+                    && (action = findAction(actions, cmdName)));
         }
     }
 
@@ -513,13 +525,13 @@ void ToolBarManager::restoreState()
         QToolBar *toolbar = v.second;
         if (!toolbar)
             continue;
-        QSignalBlocker block(toolbar);
         if (toolbar->windowTitle().isEmpty()) {
             toolbar->toggleViewAction()->setVisible(false);
             setToolBarVisible(toolbar, false);
         }
         else if (this->toolbarNames.indexOf(toolbar->objectName()) >= 0) {
             QByteArray toolbarName = toolbar->objectName().toUtf8();
+            QSignalBlocker block(toolbar);
             setToolBarVisible(toolbar, hPref->GetBool(toolbarName, toolbar->isVisible()));
             toolbar->setMovable(hMovable->GetBool(toolbarName, movable));
         }

@@ -30,11 +30,15 @@
 #include <QComboBox>
 #include <QKeySequence>
 #include <QCompleter>
+#include <QTimer>
 
 #include <memory>
 
+#include <boost_signals2.hpp>
+
 class QLineEdit;
 class QWidgetAction;
+class QCheckBox;
 
 namespace Gui
 {
@@ -81,6 +85,18 @@ public:
     QAction *action() const {
         return _action;
     }
+
+    static QAction *addCheckBox(QMenu *menu,
+                                const QString &txt,
+                                const QString &tooltip = QString(),
+                                const QIcon &icon = QIcon(),
+                                bool checked = false,
+                                QCheckBox **checkbox = nullptr);
+
+    static QString createToolTip(QString tooltip,
+                                 const QString &title,
+                                 const QFont &font,
+                                 const QString &shortcut);
 
 public Q_SLOTS:
     virtual void onActivated ();
@@ -148,17 +164,54 @@ public:
     WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=0);
     virtual ~WorkbenchComboBox();
     void showPopup();
-    void populate();
+    void setAction(QAction *act) {action = act;}
+    QAction *getAction() {return action;}
 
 public Q_SLOTS:
     void onActivated(int);
     void onActivated(QAction*);
+    void populate();
 
 protected Q_SLOTS:
     void onWorkbenchActivated(const QString&);
 
 private:
     WorkbenchGroup* group;
+    QAction *action = nullptr;
+};
+
+// --------------------------------------------------------------------
+
+class GuiExport WorkbenchTabBar : public QTabWidget
+{
+    Q_OBJECT
+public:
+
+public:
+    WorkbenchTabBar(WorkbenchGroup* wb, QWidget* parent=0);
+    virtual ~WorkbenchTabBar();
+    void setAction(QAction *act) {action = act;}
+    QAction *getAction() {return action;}
+    void setupVisibility();
+
+protected:
+    bool eventFilter(QObject *, QEvent *ev);
+
+protected Q_SLOTS:
+    void onCurrentChanged(int);
+    void onTabMoved(int from, int to);
+    void onWorkbenchActivated(const QString&);
+    void updateWorkbenches();
+    void onChangeOrientation();
+
+    friend class WorkbenchGroup;
+
+private:
+    WorkbenchGroup* group;
+    boost::signals2::scoped_connection connParam;
+    QTimer timer;
+    bool moved = false;
+    QAction *action = nullptr;
 };
 
 /**
@@ -189,9 +242,16 @@ protected:
 
 protected Q_SLOTS:
     void onShowMenu();
+    void onContextMenuRequested(const QPoint &);
+
+Q_SIGNALS:
+    void workbenchListUpdated();
 
 private:
     void setWorkbenchData(int i, const QString& wb);
+
+    friend class WorkbenchTabBar;
+    friend class WorkbenchComboBox;
 
 private:
     QMenu* _menu = nullptr;
