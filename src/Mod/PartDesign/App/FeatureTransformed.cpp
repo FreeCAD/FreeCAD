@@ -363,8 +363,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     // get transformations from subclass by calling virtual method
     std::vector<gp_Trsf> transformations;
     try {
-        std::list<gp_Trsf> t_list = getTransformations(originalShapes);
-        transformations.insert(transformations.end(), t_list.begin(), t_list.end());
+        if (!originalShapes.empty()) {
+            std::list<gp_Trsf> t_list = getTransformations(originalShapes);
+            transformations.insert(transformations.end(), t_list.begin(), t_list.end());
+        }
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
