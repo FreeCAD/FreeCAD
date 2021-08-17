@@ -466,23 +466,19 @@ def p_minkowski_action(p):
 def p_resize_action(p):
     '''
     resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
-    print(p[3])
     new_size = p[3]['newsize']
     auto    = p[3]['auto'] 
-    print(new_size)
-    print(auto)
     p[6][0].recompute()
     if p[6][0].Shape.isNull():
         doc.recompute()
+    p[6][0].Shape.tessellate(0.05)
     old_bbox = p[6][0].Shape.BoundBox
-    print ("Old bounding box: " + str(old_bbox))
     old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]
     for r in range(0,3) :
         if auto[r] == '1' :
            new_size[r] = new_size[0]
         if new_size[r] == '0' :
            new_size[r] = str(old_size[r])
-    print(new_size)
 
     # Calculate a transform matrix from the current bounding box to the new one:
     transform_matrix = FreeCAD.Matrix()
@@ -1314,8 +1310,10 @@ def p_projection_action(p) :
     if printverbose: print('Projection')
 
     doc.recompute()
+    p[6][0].Shape.tessellate(0.05) # Ensure the bounding box calculation is not done with the splines, which can give a bad result
     bbox = p[6][0].Shape.BoundBox
     for shape in p[6]:
+        shape.Shape.tessellate(0.05)
         bbox.add(shape.Shape.BoundBox)
     print (bbox)
     plane = doc.addObject("Part::Plane","xy_plane_used_for_projection")
