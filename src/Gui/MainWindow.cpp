@@ -1162,6 +1162,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         if (Workbench* wb = WorkbenchManager::instance()->active())
             wb->removeTaskWatcher();
 
+        /*emit*/ mainWindowClosed();
         d->activityTimer->stop();
         saveWindowSettings();
         delete d->assistant;
@@ -1175,7 +1176,6 @@ void MainWindow::closeEvent (QCloseEvent * e)
                 fi.deleteFile();
         }
 
-        /*emit*/ mainWindowClosed();
         if (this->property("QuitOnClosed").isValid()) {
             QApplication::closeAllWindows();
             qApp->quit(); // stop the event loop
