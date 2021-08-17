@@ -15,12 +15,12 @@ if True:
 
   lsv = QtGui.QListView()
   sim = QtGui.QStandardItemModel()
-  flt = QtCore.QSortFilterProxyModel()
-  flt.setSourceModel(sim)
-  flt.setFilterCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
-  sea.textChanged.connect(flt.setFilterWildcard)
+  #flt = QtCore.QSortFilterProxyModel()
+  #flt.setSourceModel(sim)
+  #flt.setFilterCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
+  #sea.textChanged.connect(flt.setFilterWildcard)
   # make the QListView non-editable
-  lsv.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+  #lsv.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
   #lsv.setModel(flt)
   #lay.addWidget(lsv)
 
@@ -33,6 +33,12 @@ if True:
   qom = QtGui.QCompleter()
   qom.setModel(sim)
   qom.setPopup(lsv)
+  qom.setParent(le)
+  def onChanged(x):
+    print(x)
+    lsv.show()
+    #qom.complete()
+  le.textChanged.connect(onChanged)
 
   all_tbs = set()
   for wbname, workbench in Gui.listWorkbenches().items():
