@@ -6,5 +6,7 @@ Jose Luis Cercós Pita <jlcercos@gmail.com>
 * Introduction
 --------------
 
-Plot is a module that provide an interface to perform plots.
+Plot is a module that provide an interface to perform plots. From FreeCAD 0.20
+Plot workbench is split into an indepent addon
+(https://github.com/FreeCAD/freecad.plot)
 

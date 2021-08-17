@@ -36,11 +36,7 @@ try:
 
     from matplotlib.figure import Figure
 except ImportError:
-    msg = PySide.QtGui.QApplication.translate(
-        "plot_console",
-        "matplotlib not found, so Plot module can not be loaded",
-        None)
-    FreeCAD.Console.PrintMessage(msg + '\n')
+    FreeCAD.Console.PrintWarning('matplotlib not found, so Plot module can not be loaded\n')
     raise ImportError("matplotlib not installed")
 
 
