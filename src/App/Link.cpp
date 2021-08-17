@@ -53,7 +53,7 @@ namespace bp = boost::placeholders;
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension(void)
-    :myOwner(0),enableLabelCache(false),hasOldSubElement(false)
+    :enableLabelCache(false),hasOldSubElement(false)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkTouched, (false), " Link",
@@ -61,6 +61,8 @@ LinkBaseExtension::LinkBaseExtension(void)
     EXTENSION_ADD_PROPERTY_TYPE(_ChildCache, (), " Link",
             PropertyType(Prop_Hidden|Prop_NoPersist|Prop_ReadOnly),0);
     _ChildCache.setScope(LinkScope::Global);
+    EXTENSION_ADD_PROPERTY_TYPE(_LinkOwner, (0), " Link",
+            PropertyType(Prop_Hidden|Prop_Output),0);
     props.resize(PropMax,0);
 }
 
@@ -194,7 +196,8 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
         PropertyPythonObject *proxy = 0;
         if(getLinkExecuteProperty()
                 && !boost::iequals(getLinkExecuteValue(), "none")
-                && (!myOwner || !container->getDocument()->getObjectByID(myOwner)))
+                && (!_LinkOwner.getValue() 
+                    || !container->getDocument()->getObjectByID(_LinkOwner.getValue())))
         {
             // Check if this is an element link. Do not invoke appLinkExecute()
             // if so, because it will be called from the link array.
@@ -980,9 +983,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     // for example, undo and redo. So we try to re-claim the
                     // children element first.
                     auto obj = freecad_dynamic_cast<LinkElement>(doc->getObject(name.c_str()));
-                    if(obj && (!obj->myOwner || obj->myOwner==ownerID))
+                    if(obj && (!obj->_LinkOwner.getValue() || obj->_LinkOwner.getValue()==ownerID)) {
                         obj->Visibility.setValue(false);
-                    else {
+                    } else {
                         obj = new LinkElement;
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
@@ -1015,7 +1018,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 long ownerID = owner?owner->getID():0;
                 while(objs.size()>elementCount) {
                     auto element = freecad_dynamic_cast<LinkElement>(objs.back());
-                    if(element && element->myOwner==ownerID)
+                    if(element && element->_LinkOwner.getValue()==ownerID)
                         tmpObjs.push_back(objs.back());
                     objs.pop_back();
                 }
@@ -1139,10 +1142,12 @@ void LinkBaseExtension::syncElementList() {
     auto elements = getElementListValue();
     for(size_t i=0;i<elements.size();++i) {
         auto element = freecad_dynamic_cast<LinkElement>(elements[i]);
-        if(!element || (element->myOwner && element->myOwner!=ownerID))
+        if(!element
+                || (element->_LinkOwner.getValue()
+                    && element->_LinkOwner.getValue()!=ownerID))
             continue;
 
-        element->myOwner = ownerID;
+        element->_LinkOwner.setValue(ownerID);
 
         element->LinkTransform.setStatus(Property::Hidden,transform!=0);
         element->LinkTransform.setStatus(Property::Immutable,transform!=0);
@@ -1286,7 +1291,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
             {
                 std::string name = parent->getDocument()->getUniqueObjectName("Link");
                 auto link = new Link;
-                link->myOwner = parent->getID();
+                link->_LinkOwner.setValue(parent->getID());
                 parent->getDocument()->addObject(link,name.c_str());
                 link->setLink(-1,obj,subname,subElements);
                 auto linked = link->getTrueLinkedObject(true);
@@ -1360,11 +1365,11 @@ void LinkBaseExtension::detachElement(DocumentObject *obj) {
     auto owner = getContainer();
     long ownerID = owner?owner->getID():0;
     if(getLinkModeValue()==LinkModeAutoUnlink) {
-        if(!ext || ext->myOwner!=ownerID)
+        if(!ext || ext->_LinkOwner.getValue()!=ownerID)
             return;
     }else if(getLinkModeValue()!=LinkModeAutoDelete) {
-        if(ext && ext->myOwner==ownerID)
-            ext->myOwner = 0;
+        if(ext && ext->_LinkOwner.getValue()==ownerID)
+            ext->_LinkOwner.setValue(0);
         return;
     }
     obj->getDocument()->removeObject(obj->getNameInDocument());
@@ -1511,11 +1516,11 @@ LinkElement::LinkElement() {
 }
 
 bool LinkElement::canDelete() const {
-    if(!myOwner)
+    if(!_LinkOwner.getValue())
         return true;
 
     auto owner = getContainer();
-    return !owner || !owner->getDocument()->getObjectByID(myOwner);
+    return !owner || !owner->getDocument()->getObjectByID(_LinkOwner.getValue());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
