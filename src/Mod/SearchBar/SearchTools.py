@@ -3,8 +3,8 @@ if True:
   mw = Gui.getMainWindow()
   mdi = mw.findChild(QtGui.QMdiArea)
   
-  mw.findChildren(QtGui.QToolBar, 'XternalApplications')
-  mw.findChildren(QtGui.QToolBar, 'XternalApplications')[0]
+  #mw.findChildren(QtGui.QToolBar, 'XternalApplications')
+  #mw.findChildren(QtGui.QToolBar, 'XternalApplications')[0]
 
   wdg = QtGui.QWidget()
   lay = QtGui.QGridLayout(wdg)
@@ -21,11 +21,18 @@ if True:
   sea.textChanged.connect(flt.setFilterWildcard)
   # make the QListView non-editable
   lsv.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-  lsv.setModel(flt)
-  lay.addWidget(lsv)
+  #lsv.setModel(flt)
+  #lay.addWidget(lsv)
 
   mwx.setCentralWidget(wdg)
   mdi.addSubWindow(mwx)
+
+  xap = mw.findChildren(QtGui.QToolBar, 'XternalApplications')[0]
+  le = QtGui.QLineEdit()
+  xap.addWidget(le)
+  qom = QtGui.QCompleter()
+  qom.setModel(sim)
+  qom.setPopup(lsv)
 
   all_tbs = set()
   for wbname, workbench in Gui.listWorkbenches().items():
