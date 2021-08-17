@@ -67,17 +67,19 @@ def write_step_output(f, ccxwriter):
             f.write("** reaction forces for Constraint fixed\n")
             for femobj in ccxwriter.member.cons_fixed:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
-                fix_obj_name = femobj["Object"].Name
-                f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(fix_obj_name))
+                f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(femobj["Object"].Name))
                 f.write("RF\n")
         if ccxwriter.member.cons_displacement:
             # reaction forces for Constraint displacement constraining translation
             f.write("** reaction forces for Constraint displacement constraining translation\n")
             for femobj in ccxwriter.member.cons_displacement:
-                if not femobj["Object"].xFree or not femobj["Object"].yFree or not femobj["Object"].zFree:
-                    # femobj --> dict, FreeCAD document object is femobj["Object"]
-                    disp_obj_name = femobj["Object"].Name
-                    f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(disp_obj_name))
+                # femobj --> dict, FreeCAD document object is femobj["Object"]
+                if (
+                    not femobj["Object"].xFree
+                    or not femobj["Object"].yFree
+                    or not femobj["Object"].zFree
+                ):
+                    f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(femobj["Object"].Name))
                     f.write("RF\n")
         if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("\n")
