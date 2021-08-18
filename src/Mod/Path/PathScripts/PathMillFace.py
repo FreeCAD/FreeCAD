@@ -265,16 +265,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         eYMax = env.BoundBox.YMax
         eZMin = faceZ
 
-        def isOverlap(fMn, fMx, eMn, eMx):
-            if fMx > eMn:
-                if fMx <= eMx:
-                    return True
-                elif fMx >= eMx and fMn <= eMx:
-                    return True
-            if fMn < eMx:
-                if fMn >= eMn:
-                    return True
-                elif fMn <= eMn and fMx >= eMn:
+        def isOverlap(faceMin, faceMax, envMin, envMax):
+            if faceMax > envMin:
+                if faceMin <= envMax or faceMin == envMin:
                     return True
             return False
 
