@@ -36,6 +36,12 @@
 #include <Inventor/nodes/SoTexture3Transform.h>
 #include <Inventor/nodes/SoTextureMatrixTransform.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/VRMLnodes/SoVRMLMaterial.h>
+#include <Inventor/VRMLnodes/SoVRMLTexture.h>
+#include <Inventor/VRMLnodes/SoVRMLTextureTransform.h>
+#include <Inventor/VRMLnodes/SoVRMLLight.h>
+#include <Inventor/VRMLnodes/SoVRMLColor.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoLight.h>
@@ -237,7 +243,11 @@ public:
   static SoCallbackAction::Response postAutoZoom(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postLightModel(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postLight(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postVRMLLight(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postMaterial(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postVRMLMaterial(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postColor(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postVRMLColor(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postDepthBuffer(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postResetTransform(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postTextureTransform(void *, SoCallbackAction *action, const SoNode * node);
@@ -440,14 +450,20 @@ void SoFCRenderCacheManagerP::initAction()
   this->action->addPreCallback(SoShape::getClassTypeId(), &preShape, this);
   this->action->addPostCallback(SoShape::getClassTypeId(), &postShape, this);
   this->action->addPostCallback(SoTexture::getClassTypeId(), &postTexture, this);
+  this->action->addPostCallback(SoVRMLTexture::getClassTypeId(), &postTexture, this);
   this->action->addPostCallback(SoResetTransform::getClassTypeId(), &postResetTransform, this);
   this->action->addPostCallback(SoTextureMatrixTransform::getClassTypeId(), &postTextureTransform, this);
   this->action->addPostCallback(SoTexture2Transform::getClassTypeId(), &postTextureTransform, this);
   this->action->addPostCallback(SoTexture3Transform::getClassTypeId(), &postTextureTransform, this);
+  this->action->addPostCallback(SoVRMLTextureTransform::getClassTypeId(), &postTextureTransform, this);
   this->action->addPostCallback(SoLightModel::getClassTypeId(), &postLightModel, this);
   this->action->addPostCallback(SoMaterial::getClassTypeId(), &postMaterial, this);
+  this->action->addPostCallback(SoVRMLMaterial::getClassTypeId(), &postVRMLMaterial, this);
+  this->action->addPostCallback(SoBaseColor::getClassTypeId(), &postColor, this);
+  this->action->addPostCallback(SoVRMLColor::getClassTypeId(), &postVRMLColor, this);
   this->action->addPostCallback(SoDepthBuffer::getClassTypeId(), &postDepthBuffer, this);
   this->action->addPostCallback(SoLight::getClassTypeId(), &postLight, this);
+  this->action->addPostCallback(SoVRMLLight::getClassTypeId(), &postVRMLLight, this);
   this->action->addPostCallback(SoClipPlane::getClassTypeId(), &postClipPlane, this);
   this->action->addPreCallback(SoAutoZoomTranslation::getClassTypeId(), &preAutoZoom, this);
   this->action->addPostCallback(SoAutoZoomTranslation::getClassTypeId(), &postAutoZoom, this);
@@ -1125,8 +1141,8 @@ SoFCRenderCacheManagerP::postTexture(void *userdata,
   if (self->stack.empty())
       return SoCallbackAction::CONTINUE;
 
-  assert(node && node->isOfType(SoTexture::getClassTypeId()));
-  self->stack.back()->addTexture(action->getState(), static_cast<const SoTexture*>(node));
+  assert(node);
+  self->stack.back()->addTexture(action->getState(), node);
   return SoCallbackAction::CONTINUE;
 }
 
@@ -1192,6 +1208,51 @@ SoFCRenderCacheManagerP::postMaterial(void *userdata,
 }
 
 SoCallbackAction::Response
+SoFCRenderCacheManagerP::postVRMLMaterial(void *userdata,
+                                          SoCallbackAction *action,
+                                          const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  assert(node && node->isOfType(SoVRMLMaterial::getClassTypeId()));
+  auto material = static_cast<const SoVRMLMaterial*>(node);
+  self->stack.back()->setMaterial(action->getState(), material);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postColor(void *userdata,
+                                   SoCallbackAction *action,
+                                   const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  assert(node && node->isOfType(SoBaseColor::getClassTypeId()));
+  const SoBaseColor *color = static_cast<const SoBaseColor*>(node);
+  self->stack.back()->setBaseColor(action->getState(), color, color->rgb);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postVRMLColor(void *userdata,
+                                       SoCallbackAction *action,
+                                       const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  assert(node && node->isOfType(SoVRMLColor::getClassTypeId()));
+  const SoVRMLColor *color = static_cast<const SoVRMLColor*>(node);
+  self->stack.back()->setBaseColor(action->getState(), color, color->color);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
 SoFCRenderCacheManagerP::postDepthBuffer(void *userdata,
                                          SoCallbackAction *action,
                                          const SoNode * node)
@@ -1216,8 +1277,25 @@ SoFCRenderCacheManagerP::postLight(void *userdata,
       return SoCallbackAction::CONTINUE;
 
   assert(node && node->isOfType(SoLight::getClassTypeId()));
-  const SoLight *light = static_cast<const SoLight*>(node);
-  self->stack.back()->addLight(action->getState(), light);
+  auto light = static_cast<const SoLight*>(node);
+  if (light->on.getValue() && !light->on.isIgnored())
+    self->stack.back()->addLight(action->getState(), light);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postVRMLLight(void *userdata,
+                                       SoCallbackAction *action,
+                                       const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  assert(node && node->isOfType(SoVRMLLight::getClassTypeId()));
+  auto light = static_cast<const SoVRMLLight*>(node);
+  if (light->on.getValue() && !light->on.isIgnored())
+    self->stack.back()->addLight(action->getState(), light);
   return SoCallbackAction::CONTINUE;
 }
 

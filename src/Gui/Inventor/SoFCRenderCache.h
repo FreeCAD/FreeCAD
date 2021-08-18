@@ -45,9 +45,11 @@ class SoTexture;
 class SoLight;
 class SoLightModel;
 class SoMaterial;
+class SoVRMLMaterial;
 class SoDepthBuffer;
 class SbBox3f;
 class SoClipPlane;
+class SoMFColor;
 
 class GuiExport SoFCRenderCache : public SoCache {
   typedef SoCache inherited;
@@ -88,7 +90,7 @@ public:
   typedef COWMap<int, MatrixInfo> TextureMatrixMap;
 
   struct TextureInfo {
-    Gui::CoinPtr<SoTexture> texture;
+    Gui::CoinPtr<SoNode> texture;
     SbMatrix matrix;
     bool identity = true;
     bool transparent = false;
@@ -465,18 +467,20 @@ public:
 
   SbBool isEmpty() const;
 
-  void addTexture(SoState * state, const SoTexture * texture);
+  void addTexture(SoState * state, const SoNode * texture);
   void addTextureTransform(SoState * state, const SoNode *);
 
   void addClipPlane(SoState * state, const SoClipPlane * light);
 
   void addAutoZoom(SoState * state, const Gui::SoAutoZoomTranslation * node);
 
-  void addLight(SoState * state, const SoLight * light);
+  void addLight(SoState * state, const SoNode * light);
 
   void setLightModel(SoState *state, const SoLightModel *);
 
   void setMaterial(SoState *state, const SoMaterial *);
+  void setMaterial(SoState *state, const SoVRMLMaterial *);
+  void setBaseColor(SoState *state, const SoNode *, const SoMFColor &);
 
   void setDepthBuffer(SoState *state, const SoDepthBuffer *);
 

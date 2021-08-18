@@ -127,6 +127,7 @@ public:
   SbBool hasTransparency(void) const;
   SbBool hasOpaqueParts(void) const;
   int hasSolid(void) const;
+  bool hasFlipNormal() const;
 
   uint32_t getFaceColor(int part) const;
   uint32_t getLineColor(int part) const;

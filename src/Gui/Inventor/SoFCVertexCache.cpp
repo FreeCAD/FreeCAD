@@ -68,6 +68,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoIndexedMarkerSet.h>
+#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoMFNode.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -450,6 +451,7 @@ public:
 
   bool hastransp;
   int hassolid = 0;
+  bool flipnormal = false;
   int colorpervertex;
   uint32_t firstcolor;
 
@@ -514,6 +516,11 @@ SoFCVertexCache::SoFCVertexCache(SoState * state, SoNode * node, SoFCVertexCache
     else if (node->isOfType(SoIndexedMarkerSet::getClassTypeId())) {
       PRIVATE(this)->markerindices = &static_cast<SoIndexedMarkerSet*>(node)->markerIndex;
       PRIVATE(this)->tmp->ispointindexed = true;
+    }
+    else if (node->isOfType(SoVRMLIndexedFaceSet::getClassTypeId())) {
+      auto faceset = static_cast<SoVRMLIndexedFaceSet*>(node);
+      PRIVATE(this)->flipnormal = !faceset->ccw.getValue();
+      PRIVATE(this)->hassolid = faceset->solid.getValue() ? 2 : 0;
     }
     if (PRIVATE(this)->markerindices && !PRIVATE(this)->markerindices->getNum())
       PRIVATE(this)->markerindices = nullptr;
@@ -581,6 +588,7 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
   PRIVATE(this)->firstcolor = PRIVATE(pprev)->firstcolor;
   PRIVATE(this)->colorpervertex = PRIVATE(pprev)->colorpervertex;
   PRIVATE(this)->hassolid = PRIVATE(pprev)->hassolid;
+  PRIVATE(this)->flipnormal = PRIVATE(pprev)->flipnormal;
 
   PRIVATE(this)->partcenters = PRIVATE(pprev)->partcenters;
   PRIVATE(this)->nonflatparts = PRIVATE(pprev)->nonflatparts;
@@ -1754,6 +1762,12 @@ int
 SoFCVertexCache::hasSolid() const
 {
   return PRIVATE(this)->hassolid;
+}
+
+bool
+SoFCVertexCache::hasFlipNormal() const
+{
+  return PRIVATE(this)->flipnormal;
 }
 
 const SbVec4f *

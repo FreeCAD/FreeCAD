@@ -46,6 +46,7 @@
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/VRMLnodes/SoVRMLMaterial.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/nodes/SoClipPlane.h>
@@ -488,15 +489,22 @@ SoFCRenderCache::setLightModel(SoState * state, const SoLightModel * lightmode)
 
 template<class N, class T>
 static inline bool
-testMaterial(SoFCRenderCache::Material &m, N node, T field, int flag, int mask)
+_testMaterial(SoFCRenderCache::Material &m, N node, T field, int flag, int mask)
 {
-  if (!(node->*field).isIgnored() && (node->*field).getNum() && !m.overrideflags.test(flag)) {
+  if (!(node->*field).isIgnored() && !m.overrideflags.test(flag)) {
     if (node->isOverride())
       m.overrideflags.set(flag);
     m.maskflags.set(mask);
     return true;
   }
   return false;
+}
+
+template<class N, class T>
+static inline bool
+testMaterial(SoFCRenderCache::Material &m, N node, T field, int flag, int mask)
+{
+  return (node->*field).getNum() && _testMaterial(m, node, field, flag, mask);
 }
 
 void
@@ -527,6 +535,66 @@ SoFCRenderCache::setMaterial(SoState * state, const SoMaterial * material)
     m.specular = material->specularColor[0].getPackedValue(t);
   if (testMaterial(m, material, &SoMaterial::shininess, Material::FLAG_SHININESS, Material::FLAG_SHININESS))
     m.shininess = material->shininess[0];
+}
+
+void
+SoFCRenderCache::setMaterial(SoState * state, const SoVRMLMaterial * material)
+{
+  PRIVATE(this)->checkState(state);
+
+  Material & m = PRIVATE(this)->material;
+  float t = 0.f;
+  if (_testMaterial(m, material, &SoVRMLMaterial::diffuseColor,
+        Material::FLAG_DIFFUSE, Material::FLAG_DIFFUSE)) {
+    m.diffuse &= 0xff;
+    m.diffuse |= material->diffuseColor.getValue().getPackedValue(t) & 0xffffff00;
+    SbFCUniqueId id = 0;
+    SoFCDiffuseElement::set(state, &id, NULL);
+  }
+  if (_testMaterial(m, material, &SoVRMLMaterial::transparency,
+        Material::FLAG_TRANSPARENCY, Material::FLAG_TRANSPARENCY)) {
+    m.diffuse &= 0xffffff00;
+    float alpha = SbClamp(1.0f-material->transparency.getValue(), 0.f, 1.f);
+    m.diffuse |= (uint8_t)(alpha * 255);
+    SbFCUniqueId id = 0;
+    SoFCDiffuseElement::set(state, NULL, &id);
+  }
+
+  // Note, VRML uses diffuse as ambient by default
+  if (_testMaterial(m, material, &SoVRMLMaterial::diffuseColor,
+        Material::FLAG_AMBIENT, Material::FLAG_AMBIENT)) {
+    SbColor ambient = material->diffuseColor.getValue();
+    if (!material->ambientIntensity.isIgnored())
+      ambient *= material->ambientIntensity.getValue();
+    m.ambient = ambient.getPackedValue(t);
+  }
+
+  if (_testMaterial(m, material, &SoVRMLMaterial::emissiveColor,
+        Material::FLAG_EMISSIVE, Material::FLAG_EMISSIVE))
+    m.emissive = material->emissiveColor.getValue().getPackedValue(t);
+  if (_testMaterial(m, material, &SoVRMLMaterial::specularColor,
+        Material::FLAG_SPECULAR, Material::FLAG_SPECULAR))
+    m.specular = material->specularColor.getValue().getPackedValue(t);
+  if (_testMaterial(m, material, &SoVRMLMaterial::shininess,
+        Material::FLAG_SHININESS, Material::FLAG_SHININESS))
+    m.shininess = material->shininess.getValue();
+}
+
+void
+SoFCRenderCache::setBaseColor(SoState *state, const SoNode *node, const SoMFColor &c)
+{
+  PRIVATE(this)->checkState(state);
+  Material & m = PRIVATE(this)->material;
+  if (c.getNum() && !c.isIgnored() && !m.overrideflags.test(Material::FLAG_DIFFUSE)) {
+    if (node->isOverride())
+      m.overrideflags.set(Material::FLAG_DIFFUSE);
+    m.maskflags.set(Material::FLAG_DIFFUSE);
+    m.diffuse &= 0xff;
+    float t = 0.f;
+    m.diffuse |= c[0].getPackedValue(t) & 0xffffff00;
+    SbFCUniqueId id = node->getNodeId();
+    SoFCDiffuseElement::set(state, &id, NULL);
+  }
 }
 
 void
@@ -1033,14 +1101,14 @@ public:
 };
 
 void
-SoFCRenderCache::addTexture(SoState * state, const SoTexture * texture)
+SoFCRenderCache::addTexture(SoState * state, const SoNode * texture)
 {
   PRIVATE(this)->checkState(state);
 
   int unit = SoTextureUnitElement::get(state);
 
   TextureInfo info;
-  info.texture = const_cast<SoTexture*>(texture);
+  info.texture = const_cast<SoNode*>(texture);
 
   auto elem = constElement<MyMultiTextureImageElement>(state);
   info.transparent = elem->hasTransparency(unit);
@@ -1083,15 +1151,14 @@ SoFCRenderCache::addTextureTransform(SoState * state, const SoNode * node)
 }
 
 void
-SoFCRenderCache::addLight(SoState * state, const SoLight * light)
+SoFCRenderCache::addLight(SoState * state, const SoNode * light)
 {
   PRIVATE(this)->checkState(state);
 
   (void)state;
-  if (!light->on.getValue() || light->on.isIgnored()) return;
 
   NodeInfo info;
-  info.node = const_cast<SoLight*>(light);
+  info.node = const_cast<SoNode*>(light);
   info.resetmatrix = PRIVATE(this)->resetmatrix;
 
   auto elem = constElement<SoModelMatrixElement>(state);
@@ -1333,6 +1400,10 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
           PRIVATE(this)->finalizeMaterial(material);
           if (!entry.vcache->getNormalArray())
             material.lightmodel = SoLazyElement::BASE_COLOR;
+        }
+        if (entry.vcache->hasFlipNormal()) {
+          material.vertexordering = SoShapeHints::CLOCKWISE;
+          material.maskflags.set(Material::FLAG_VERTEXORDERING);
         }
         if (vcache->hasSolid() > 1) {
           material.shapetype = SoShapeHintsElement::SOLID;
