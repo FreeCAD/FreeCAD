@@ -257,6 +257,8 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         return False
 
     def getAllIncludedFaces(self, base, env, faceZ):
+        '''getAllIncludedFaces(base, env, faceZ)...
+        Return all `base` faces extending above `faceZ` whose boundboxes overlap with the `env` boundbox.'''
         included = []
 
         eXMin = env.BoundBox.XMin
@@ -272,6 +274,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             return False
 
         for fi in range(0, len(base.Shape.Faces)):
+            # Check all faces of `base` shape
             incl = False
             face = base.Shape.Faces[fi]
             fXMin = face.BoundBox.XMin
@@ -281,8 +284,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             fZMax = face.BoundBox.ZMax
 
             if fZMax > eZMin:
-                if isOverlap(fXMin, fXMax, eXMin, eXMax):
-                    if isOverlap(fYMin, fYMax, eYMin, eYMax):
+                # Include face if its boundbox overlaps envelope boundbox
+                if isOverlap(fXMin, fXMax, eXMin, eXMax):  # check X values
+                    if isOverlap(fYMin, fYMax, eYMin, eYMax):  # check Y values
                         incl = True
             if incl:
                 included.append(face)
