@@ -199,7 +199,7 @@ public:
 
   void pauseShadowRender(SoState *state, bool paused);
   void renderLines(SoState *state, int array, DrawEntry &draw_entry);
-  void renderPoints(SoState *state, int array, DrawEntry &draw_entry);
+  void renderPoints(SoGLRenderAction *action, int array, DrawEntry &draw_entry);
 
   void renderOpaque(SoGLRenderAction * action,
                     SbFCVector<DrawEntry> & draw_entries,
@@ -1175,15 +1175,15 @@ SoFCRendererP::renderLines(SoState *state, int array, DrawEntry &draw_entry)
 }
 
 void
-SoFCRendererP::renderPoints(SoState *state, int array, DrawEntry &draw_entry)
+SoFCRendererP::renderPoints(SoGLRenderAction *action, int array, DrawEntry &draw_entry)
 {
   if (this->depthwriteonly || this->shadowmapping)
     return;
   if (!ViewParams::getHiddenLineHideVertex()
       || draw_entry.ventry->partidx >= 0
       || !draw_entry.material->outline) {
-    pauseShadowRender(state, true);
-    draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
+    pauseShadowRender(action->getState(), true);
+    draw_entry.ventry->cache->renderPoints(action, array, draw_entry.ventry->partidx);
     ++this->drawcallcount;
   }
 }
@@ -1626,7 +1626,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
         renderLines(state, array, draw_entry);
         break;
       case Material::Point:
-        renderPoints(state, array, draw_entry);
+        renderPoints(action, array, draw_entry);
         break;
       }
     }
@@ -1719,7 +1719,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
       renderLines(state, array, draw_entry);
       break;
     case Material::Point:
-      renderPoints(state, array, draw_entry);
+      renderPoints(action, array, draw_entry);
       break;
     case Material::Triangle:
       {

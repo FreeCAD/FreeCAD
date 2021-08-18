@@ -50,6 +50,9 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -60,8 +63,11 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoIndexedMarkerSet.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoMFNode.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -95,6 +101,7 @@ typedef SoFCVertexAttribute<SbVec2f> Vec2Array;
 typedef SoFCVertexAttribute<SbVec3f> Vec3Array;
 typedef SoFCVertexAttribute<SbVec4f> Vec4Array;
 typedef SoFCVertexAttribute<uint8_t> ByteArray;
+typedef SoFCVertexAttribute<int> IntArray;
 typedef CoinPtr<SoFCVertexCache> VertexCachePtr;
 typedef SoFCRenderCache::VertexCacheEntry VertexCacheEntry;
 
@@ -154,6 +161,7 @@ public:
     SbVec2f bumpcoord;
     uint32_t color;
     int texcoordidx;
+    int marker = -1;
 
     bool operator==(const Vertex & v) const {
       return
@@ -162,6 +170,7 @@ public:
         (this->texcoord0 == v.texcoord0) &&
         (this->bumpcoord == v.bumpcoord) &&
         (this->texcoordidx == v.texcoordidx) &&
+        (this->marker == v.marker) &&
         (this->color == v.color);
     }
   };
@@ -191,6 +200,7 @@ public:
       hash_combine(seed, v.bumpcoord[0]);
       hash_combine(seed, v.bumpcoord[1]);
       hash_combine(seed, v.texcoordidx);
+      hash_combine(seed, v.marker);
       return seed;
     }
   };
@@ -213,6 +223,9 @@ public:
 
     const int32_t *partindices = nullptr;
     int partcount = 0;
+
+    int pointindexcount = 0;
+    bool ispointindexed = false;
 
     SoFCVertexArrayIndexer::IndexArray prevtriangleindices;
     SoFCVertexArrayIndexer::IndexArray prevlineindices;
@@ -433,6 +446,8 @@ public:
 
   int numtranspparts;
 
+  SoMFInt32 *markerindices = nullptr;
+
   bool hastransp;
   int hassolid = 0;
   int colorpervertex;
@@ -469,45 +484,12 @@ public:
   COWVector<SbVec3f> partcenters;
   COWVector<int32_t> nonflatparts;
   COWVector<int32_t> seamindices;
+  COWVector<int> markers;
 
   SoFCVertexArrayIndexer * triangleindexer;
   SoFCVertexArrayIndexer * lineindexer;
   SoFCVertexArrayIndexer * noseamindexer;
   SoFCVertexArrayIndexer * pointindexer;
-
-  class CacheSensor : public SoDataSensor
-  {
-  public:
-    CacheSensor()
-      : node(NULL)
-    {}
-
-    ~CacheSensor() { detach(); }
-
-    void attach(const SoNode *node) {
-      if (this->node == node) return;
-      assert(!this->node);
-      this->node = const_cast<SoNode *>(node);
-      this->node->addAuditor(this, SoNotRec::SENSOR);
-    }
-
-    void detach() {
-      if (!this->node) return;
-      this->node->removeAuditor(this, SoNotRec::SENSOR);
-      this->node = NULL;
-    }
-
-    virtual void dyingReference(void) {
-      auto * node = static_cast<SoFCShapeInfo*>(this->node);
-      this->detach();
-      SoFCVertexCacheP::cachetable.erase(node);
-    }
-
-    SoNode * node;
-    SbFCVector<VertexCachePtr> caches;
-  };
-
-  static FC_COIN_THREAD_LOCAL std::unordered_map<const SoFCShapeInfo *, CacheSensor> cachetable;
 
   bool elementselectable;
   bool ontoppattern;
@@ -526,6 +508,16 @@ SoFCVertexCache::SoFCVertexCache(SoState * state, SoNode * node, SoFCVertexCache
   PRIVATE(this)->node = node;
   if (!PRIVATE(this)->tmp)
     PRIVATE(this)->tmp = new SoFCVertexCacheP::TempStorage;
+  if (node) {
+    if (node->isOfType(SoMarkerSet::getClassTypeId()))
+      PRIVATE(this)->markerindices = &static_cast<SoMarkerSet*>(node)->markerIndex;
+    else if (node->isOfType(SoIndexedMarkerSet::getClassTypeId())) {
+      PRIVATE(this)->markerindices = &static_cast<SoIndexedMarkerSet*>(node)->markerIndex;
+      PRIVATE(this)->tmp->ispointindexed = true;
+    }
+    if (PRIVATE(this)->markerindices && !PRIVATE(this)->markerindices->getNum())
+      PRIVATE(this)->markerindices = nullptr;
+  }
   PRIVATE(this)->tmp->state = state;
   PRIVATE(this)->elementselectable = false;
   PRIVATE(this)->ontoppattern = false;
@@ -573,6 +565,7 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
   auto pprev = &prev;
 
   PRIVATE(this)->node = PRIVATE(pprev)->node;
+  PRIVATE(this)->markerindices = PRIVATE(pprev)->markerindices;
   PRIVATE(this)->diffuseid = PRIVATE(pprev)->diffuseid;
   PRIVATE(this)->transpid = PRIVATE(pprev)->transpid;
 
@@ -603,6 +596,8 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
   PRIVATE(this)->seamindices = PRIVATE(pprev)->seamindices;
 
   PRIVATE(this)->highlightindices = PRIVATE(pprev)->highlightindices;
+
+  PRIVATE(this)->markers = PRIVATE(pprev)->markers;
 
   PRIVATE(this)->elementselectable = PRIVATE(pprev)->elementselectable;
   PRIVATE(this)->ontoppattern = PRIVATE(pprev)->ontoppattern;
@@ -1198,13 +1193,134 @@ SoFCVertexCache::renderLines(SoState * state, const int arrays, int part, bool n
 }
 
 void
-SoFCVertexCache::renderPoints(SoState * state, const int arrays, int part)
+SoFCVertexCache::renderPoints(SoGLRenderAction * action, const int arrays, int part)
 {
+  if (!PRIVATE(this)->pointindexer)
+    return;
+  int num = PRIVATE(this)->pointindexer->getNumIndices();
+  if (!num)
+    return;
+
+  auto state = action->getState();
   if (part >= 0) {
     PRIVATE(this)->render(state, PRIVATE(this)->pointindexer, arrays, part, 1);
     return;
   }
-  PRIVATE(this)->render(state, PRIVATE(this)->pointindexer, arrays);
+  if (!PRIVATE(this)->markerindices) {
+    PRIVATE(this)->render(state, PRIVATE(this)->pointindexer, arrays);
+    return;
+  }
+
+  state->push();
+  SoMultiTextureEnabledElement::disableAll(state);
+
+  const SbMatrix & mat = SoModelMatrixElement::get(state);
+  //const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+  const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
+                                 SoProjectionMatrixElement::get(state));
+  SbVec2s vpsize = vp.getViewportSizePixels();
+
+  GLint numPlanes = 0;
+  glGetIntegerv(GL_MAX_CLIP_PLANES, &numPlanes);
+  SbList<SbBool> planesEnabled;
+  for (GLint i = 0; i < numPlanes; ++i) {
+    planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + i));
+    glDisable(GL_CLIP_PLANE0 + i);
+  }
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+
+  auto vertices = PRIVATE(this)->vertexarray.getArrayPtr();
+  int numvert = PRIVATE(this)->vertexarray.getLength();
+
+  const uint8_t *colors = nullptr;
+  if (PRIVATE(this)->colorpervertex > 0
+      && (arrays & COLOR)
+      && PRIVATE(this)->colorarray.getLength())
+  {
+    colors = PRIVATE(this)->colorarray.getArrayPtr();
+    assert(numvert*4 == PRIVATE(this)->colorarray.getLength());
+  }
+
+  assert(PRIVATE(this)->markers.size() == num);
+
+  auto indices = PRIVATE(this)->pointindexer->getIndices();
+  for (int i = 0, cidx=0; i < num; i++, cidx+=4) {
+    int32_t idx = indices[i];
+    if (idx < 0 || idx >= numvert)
+      continue;
+
+    int marker = PRIVATE(this)->markers[i];
+    if (marker == SoMarkerSet::NONE) { continue; }//no marker to render
+
+    SbVec2s size;
+    const unsigned char * bytes;
+    SbBool isLSBFirst;
+
+    if (marker >= SoMarkerSet::getNumDefinedMarkers()) continue;
+
+    SbBool validMarker = SoMarkerSet::getMarker(marker, size, bytes, isLSBFirst);
+    if (!validMarker) continue;
+
+    if (colors) 
+      glColor4ub(colors[cidx], colors[cidx+1], colors[cidx+2], colors[cidx+3]);
+
+    SbVec3f point = vertices[idx];
+
+    // OpenGL's glBitmap() will not be clipped against anything but
+    // the near and far planes. We want markers to also be clipped
+    // against other clipping planes, to behave like the SoPointSet
+    // superclass.
+    const SbBox3f bbox(point, point);
+    // FIXME: if there are *heaps* of markers, this next line will
+    // probably become a bottleneck. Should really partition marker
+    // positions in a oct-tree data structure and cull several at
+    // the same time.  20031219 mortene.
+    if (SoCullElement::cullTest(state, bbox, TRUE)) { continue; }
+
+    projmatrix.multVecMatrix(point, point);
+    point[0] = (point[0] + 1.0f) * 0.5f * vpsize[0];
+    point[1] = (point[1] + 1.0f) * 0.5f * vpsize[1];
+
+    // To have the exact center point of the marker drawn at the
+    // projected 3D position.  (FIXME: I haven't actually checked that
+    // this is what TGS' implementation of the SoMarkerSet node does
+    // when rendering, but it seems likely. 20010823 mortene.)
+
+    point[0] = point[0] - (size[0] - 1) / 2;
+    point[1] = point[1] - (size[1] - 1) / 2;
+
+    //FIXME: this will probably fail if someone has overwritten one of the
+    //built-in markers. Currently there is no way of fetching a marker's
+    //alignment from outside the SoMarkerSet class though. 20090424 wiesener
+    int align = (marker >= SoMarkerSet::NUM_MARKERS) ? 1 : 4;
+    glPixelStorei(GL_UNPACK_ALIGNMENT, align);
+    glRasterPos3f(point[0], point[1], -point[2]);
+    glBitmap(size[0], size[1], 0, 0, 0, 0, bytes);
+  }
+
+  for (GLint i = 0; i < numPlanes; ++i) {
+    if (planesEnabled[i]) {
+      glEnable(GL_CLIP_PLANE0 + i);
+    }
+  }
+
+  // FIXME: this looks wrong, shouldn't we rather reset the alignment
+  // value to what it was previously?  20010824 mortene.
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+
+  state->pop();
 }
 
 class MyMultiTextureCoordinateElement : public SoMultiTextureCoordinateElement
@@ -1498,6 +1614,15 @@ SoFCVertexCache::addPoint(const SoPrimitiveVertex * v0)
 
   if (d && d->isOfType(SoPointDetail::getClassTypeId())) {
     const SoPointDetail * pd = static_cast<const SoPointDetail *>(d);
+    if (PRIVATE(this)->markerindices) {
+      int markeridx;
+      if (PRIVATE(this)->tmp->ispointindexed)
+        markeridx = PRIVATE(this)->tmp->pointindexcount;
+      else
+        markeridx = pd->getCoordinateIndex();
+      v.marker = (*PRIVATE(this)->markerindices)[std::min(
+          markeridx, PRIVATE(this)->markerindices->getNum()-1)];
+    }
     int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
     if (PRIVATE(this)->tmp->numbumpcoords) {
       v.bumpcoord = PRIVATE(this)->tmp->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->tmp->numbumpcoords-1)];
@@ -1528,6 +1653,9 @@ SoFCVertexCache::addPoint(const SoPrimitiveVertex * v0)
     }
   }
   PRIVATE(this)->pointindexer->addPoint(res.first->second);
+  if (v.marker >= 0)
+    PRIVATE(this)->markers.append(v.marker);
+  ++PRIVATE(this)->tmp->pointindexcount;
 }
 
 SoFCVertexCache *
@@ -2185,7 +2313,7 @@ uint32_t
 SoFCVertexCacheP::getColor(const SoFCVertexArrayIndexer * indexer, int part) const
 {
   uint32_t color = this->firstcolor;
-  if (!indexer || part < 0 || !this->colorpervertex || !this->colorarray)
+  if (!indexer || part < 0 || this->colorpervertex>0 || !this->colorarray)
     return color;
 
   const uint8_t * colors = this->colorarray.getArrayPtr();

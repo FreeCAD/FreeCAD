@@ -72,7 +72,7 @@ public:
 
   void renderTriangles(SoState * state, const int arrays = ALL, int part = -1, const SbPlane *plane = nullptr);
   void renderLines(SoState * state, const int arrays = ALL, int part = -1, bool noseam = false);
-  void renderPoints(SoState * state, const int array = ALL, int part = -1);
+  void renderPoints(SoGLRenderAction * action, const int array = ALL, int part = -1);
 
   void renderSolids(SoState * state);
 
