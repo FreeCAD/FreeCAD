@@ -27,6 +27,8 @@
 # include <Inventor/nodes/SoIndexedShape.h>
 # include <QHeaderView>
 # include <QTextStream>
+# include <QContextMenuEvent>
+# include <QMenu>
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -34,6 +36,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/fields/SoFields.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <App/Document.h>
 #include "SceneInspector.h"
 #include "ui_SceneInspector.h"
@@ -43,7 +46,10 @@
 #include "SoFCUnifiedSelection.h"
 #include "Document.h"
 #include "Application.h"
+#include "Macro.h"
 #include "ViewProviderLink.h"
+
+FC_LOG_LEVEL_INIT("Gui", true, true);
 
 Q_DECLARE_METATYPE(Gui::CoinPtr<SoNode>)
 
@@ -149,10 +155,7 @@ QModelIndex SceneModel::index(int row, int column, const QModelIndex &parent) co
         item = &rootItem;
 
     SoNode *node = item->node;
-    if (!item->expand
-            || (autoExpanding
-                && node != rootItem.node
-                && !node->isOfType(SoFCUnifiedSelection::getClassTypeId())))
+    if (!item->expand)
         return QModelIndex();
 
     QModelIndex index = createIndex(row, column, (void*)item);
@@ -243,6 +246,48 @@ DlgInspector::~DlgInspector()
     delete ui;
 }
 
+void DlgInspector::contextMenuEvent(QContextMenuEvent *ev)
+{
+    auto index = ui->treeView->indexAt(
+            ui->treeView->viewport()->mapFromGlobal(ev->globalPos()));
+    SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
+    auto it = model->items.find(index);
+    if (it == model->items.end())
+        return;
+
+    QMenu menu;
+    auto action = menu.addAction(tr("Get node in console"));
+    if (menu.exec(QCursor::pos()) == action) {
+        Base::PyGILStateLocker lock;
+        PyObject *pyobj = nullptr;
+        std::string type;
+        try {
+            type = "So";
+            type += it.value().node->getTypeId().getName().getString();
+            type += " *";
+            pyobj = Base::Interpreter().createSWIGPointerObj(
+                    "pivy.coin",type.c_str(), it.value().node, 1);
+            Base::Interpreter().addVariable("__coin_node", Py::Object(pyobj));
+        } catch (Base::Exception &) {
+            try {
+                FC_WARN("Failed to create Python wrapper for type " << type);
+                type = "SoNode *";
+                pyobj = Base::Interpreter().createSWIGPointerObj(
+                        "pivy.coin", "SoNode *", it.value().node, 1);
+                Base::Interpreter().addVariable("__coin_node", Py::Object(pyobj));
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        }
+        if (pyobj) {
+            std::ostringstream ss;
+            ss << "# __coin_node = " << Py::Object(pyobj).as_string();
+            Application::Instance->macroManager()->addLine(
+                    MacroManager::Cmt, ss.str().c_str());
+        }
+    }
+}
+
 void DlgInspector::setDocument(Gui::Document* doc)
 {
     setNodeNames(doc);
@@ -251,9 +296,7 @@ void DlgInspector::setDocument(Gui::Document* doc)
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         setNode(viewer->getSoRenderManager()->getSceneGraph());
-        SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
-        Base::StateLocker lock(model->autoExpanding);
-        ui->treeView->expandToDepth(1);
+        initExpand();
     }
 }
 
@@ -320,9 +363,21 @@ void DlgInspector::on_refreshButton_clicked()
         if (view) {
             View3DInventorViewer* viewer = view->getViewer();
             setNode(viewer->getSoRenderManager()->getSceneGraph());
-            SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
-            Base::StateLocker lock(model->autoExpanding);
-            ui->treeView->expandToDepth(1);
+            initExpand();
+        }
+    }
+}
+
+void DlgInspector::initExpand()
+{
+    auto model = static_cast<SceneModel*>(ui->treeView->model());
+    for (int i=0, c=model->rowCount(); i<c; ++i) {
+        auto index = model->index(i,0);
+        auto it = model->items.find(index);
+        if (it != model->items.end()
+            && it.value().node->isOfType(SoFCUnifiedSelection::getClassTypeId())) {
+            ui->treeView->setExpanded(index, true);
+            break;
         }
     }
 }
@@ -420,7 +475,7 @@ void DlgInspector::populateFieldView(QTreeWidgetItem *parent, SoNode *n)
     }
 }
 
-void DlgInspector::on_treeView_clicked(const QModelIndex &index)
+void DlgInspector::on_treeView_activated(const QModelIndex &index)
 {
     ui->fieldView->clear();
     auto model = static_cast<SceneModel*>(ui->treeView->model());

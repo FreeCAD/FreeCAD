@@ -94,7 +94,7 @@ public:
 
 private Q_SLOTS:
     void on_refreshButton_clicked();
-    void on_treeView_clicked(const QModelIndex &);
+    void on_treeView_activated(const QModelIndex &);
     void on_fieldView_itemExpanded(QTreeWidgetItem *item);
 
 protected:
@@ -103,6 +103,8 @@ protected:
     void setNodeNames(Gui::Document*);
     void populateFieldView(QTreeWidgetItem *parent, SoNode *n);
     void expandItem(QTreeWidgetItem *item, bool force = false);
+    void initExpand();
+    void contextMenuEvent(QContextMenuEvent *);
 
 private:
     Ui_SceneInspector* ui;
