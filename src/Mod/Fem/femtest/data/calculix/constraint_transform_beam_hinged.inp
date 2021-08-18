@@ -3780,6 +3780,11 @@ FemConstraintDisplacment,1
 U
 *EL FILE
 S, E
+** outputs --> dat file
+** reaction forces for Constraint displacement constraining translation
+*NODE PRINT, NSET=FemConstraintDisplacment, TOTALS=ONLY
+RF
+
 
 ***********************************************************
 *END STEP 
