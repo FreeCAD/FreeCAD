@@ -676,12 +676,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         pb = FreeCAD.Vector(Vb.X, Vb.Y, fdv)
         pe = FreeCAD.Vector(Ve.X, Ve.Y, fdv)
 
-        # Identify endpoints connecting circle center and diameter
-        # vectDist = pe.sub(pb)
-        # diam = vectDist.Length
-        # cntr = vectDist.multiply(0.5).add(pb)
-        # R = diam / 2
-
         # Obtain beginning point perpendicular points
         if blen > 0.1:
             bcp = begE.valueAt(
