@@ -1631,7 +1631,11 @@ void segmentation_fault_handler(int sig)
     (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
+#if defined(FC_DEBUG)
+    abort();
+#else
     exit(1);
+#endif
 #else
     switch (sig) {
         case SIGSEGV:
