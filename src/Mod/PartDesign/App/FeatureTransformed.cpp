@@ -548,9 +548,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     // to fail. The downside is that performance suffers when there are many originals. But it seems
     // safe to assume that in most cases there are few originals and many transformations
     int i=0;
-    std::vector<TopoShape> fuseShapes;
-    std::vector<TopoShape> cutShapes;
-    std::vector<TopoShape> intsectShapes;
     for (TopoShape &shape : originalShapes) {
         auto &sub = originalSubs[i];
         int idx = startIndices[i];
@@ -603,19 +600,20 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 addsub.emplace_back(shapeCopy, op);
                 if (isRecomputePaused())
                     continue;
+                if (support.isNull()) {
+                    support = shapeCopy;
+                    continue;
+                }
                 const char *maker;
                 switch(op) {
                 case Additive:
                     maker = TOPOP_FUSE;
-                    fuseShapes.push_back(shapeCopy);
                     break;
                 case Subtractive:
                     maker = TOPOP_CUT;
-                    cutShapes.push_back(shapeCopy);
                     break;
                 case Intersecting:
                     maker = TOPOP_COMMON;
-                    intsectShapes.push_back(shapeCopy);
                     break;
                 default:
                     return new App::DocumentObjectExecReturn("Unknown operation type");
