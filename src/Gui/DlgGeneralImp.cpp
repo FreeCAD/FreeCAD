@@ -359,8 +359,15 @@ void DlgGeneralImp::preferencePackSelectionChanged()
 void DlgGeneralImp::saveAsNewPreferencePack()
 {
     // Create and run a modal New PreferencePack dialog box
+    auto appearancePacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Appearance);
+    auto behaviorPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Behavior);
+    auto combinationPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Combination);
+    auto allPacks = appearancePacks;
+    allPacks.insert(allPacks.end(), behaviorPacks.begin(), behaviorPacks.end());
+    allPacks.insert(allPacks.end(), combinationPacks.begin(), combinationPacks.end());
     newPreferencePackDialog = std::make_unique<DlgCreateNewPreferencePackImp>(this);
     newPreferencePackDialog->setPreferencePackTemplates(Application::Instance->prefPackManager()->templateFiles());
+    newPreferencePackDialog->setPreferencePackNames(allPacks);
     connect(newPreferencePackDialog.get(), &DlgCreateNewPreferencePackImp::accepted, this, &DlgGeneralImp::newPreferencePackDialogAccepted);
     newPreferencePackDialog->open();
 }

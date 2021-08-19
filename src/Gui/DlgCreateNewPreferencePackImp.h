@@ -55,6 +55,7 @@ public:
     ~DlgCreateNewPreferencePackImp();
 
     void setPreferencePackTemplates(const std::vector<PreferencePackManager::TemplateFile> &availableTemplates);
+    void setPreferencePackNames(const std::vector<std::string>& usedNames);
 
     std::vector<PreferencePackManager::TemplateFile> selectedTemplates() const;
     std::string preferencePackName() const;
@@ -65,11 +66,14 @@ protected Q_SLOTS:
 
     void on_lineEdit_textEdited(const QString &text);
 
+    void accept() override;
+
 private:
     std::unique_ptr<Ui_DlgCreateNewPreferencePack> ui;
     std::map<std::string, QTreeWidgetItem*> _groups;
     std::vector<PreferencePackManager::TemplateFile> _templates;
     QRegExpValidator _nameValidator;
+    std::vector<std::string> _existingPackNames;
 };
 
 } // namespace Dialog
