@@ -753,7 +753,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     if ((btns & Qt::RightButton) && (btns & Qt::LeftButton)) {
         switch(_Mode) {
         case STATUS_SKETCH_UseHandler:
-            edit->sketchHandler->quit();
+            // edit->sketchHandler->quit();
             break;
         case STATUS_SKETCH_UseRubberBand:
             rubberband->setWorking(false);
