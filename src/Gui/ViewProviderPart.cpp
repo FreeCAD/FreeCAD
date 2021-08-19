@@ -57,6 +57,7 @@ ViewProviderPart::ViewProviderPart()
     initExtension(this);
 
     sPixmap = "Geofeaturegroup.svg";
+    aPixmap = "Geoassembly.svg";
 }
 
 ViewProviderPart::~ViewProviderPart()
@@ -111,6 +112,19 @@ bool ViewProviderPart::doubleClicked(void)
 
     return true;
 }
+
+QIcon ViewProviderPart::getIcon(void) const
+{
+    // the original Part object for this ViewProviderPart
+    App::Part* part = static_cast<App::Part*>(this->getObject());
+    // the normal case for Std_Part
+    const char* pixmap = sPixmap;
+    // if it's flagged as an Assembly in its Type, it gets another icon
+    if (part->Type.getStrValue() == "Assembly") { pixmap = aPixmap; }
+    
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(pixmap));
+}
+
 
 // Python feature -----------------------------------------------------------------------
 

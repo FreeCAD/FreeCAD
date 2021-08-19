@@ -1841,6 +1841,7 @@ class SaxStackElement:
 #
 class SaxGeneratemodelHandler(handler.ContentHandler):
     def __init__(self):
+        super().__init__()
         self.stack = []
         self.root = None
 
@@ -2344,6 +2345,7 @@ def usage():
 #
 class SaxSelectorHandler(handler.ContentHandler):
     def __init__(self):
+        super().__init__()
         self.topElementName = None
     def getTopElementName(self):
         return self.topElementName

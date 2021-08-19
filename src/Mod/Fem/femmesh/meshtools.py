@@ -537,14 +537,14 @@ def get_femelement_direction1D_set(
     theshape=None
 ):
     """
-    get for each geometry edge direction, the normal and the element ids and
+    get for each geometry edge direction, the local direction m and the element ids and
     # write all into the beamrotation_objects
     means no return value, we're going to write into the beamrotation_objects dictionary
     FEMRotations1D is a list of dictionaries for every beamdirection of all edges
     beamrot_obj["FEMRotations1D"] = [{
         "ids" : [theids],
         "direction" : direction,
-        "normal" : normal
+        "beam_axis_m" : beam_axis_m
     }, ... ]
     """
     if len(beamrotation_objects) == 0:
@@ -555,7 +555,7 @@ def get_femelement_direction1D_set(
         # add normals for each direction
         rotation_angle = 0
         for rot in rotations_ids:
-            rot["normal"] = get_beam_normal(rot["direction"], rotation_angle)
+            rot["beam_axis_m"] = get_beam_main_axis_m(rot["direction"], rotation_angle)
         # key "Object" will be empty
         beamrotation_objects.append({"FEMRotations1D": rotations_ids, "ShortName": "Rstd"})
     elif len(beamrotation_objects) == 1:
@@ -567,7 +567,7 @@ def get_femelement_direction1D_set(
         # add normals for each direction
         rotation_angle = beamrotation_objects[0]["Object"].Rotation
         for rot in rotations_ids:
-            rot["normal"] = get_beam_normal(rot["direction"], rotation_angle)
+            rot["beam_axis_m"] = get_beam_main_axis_m(rot["direction"], rotation_angle)
         beamrotation_objects[0]["FEMRotations1D"] = rotations_ids
         beamrotation_objects[0]["ShortName"] = "R0"
     elif len(beamrotation_objects) > 1:
@@ -611,7 +611,30 @@ def get_femelement_directions_theshape(femmesh, femelement_table, theshape):
 
 
 # ************************************************************************************************
-def get_beam_normal(beam_direction, defined_angle):
+def get_beam_main_axis_m(beam_direction, defined_angle):
+
+    # former name was get_beam_normal
+    # see forum topic https://forum.freecadweb.org/viewtopic.php?f=18&t=24878
+    # beam_direction ... FreeCAD vector
+    # defined_angle ... degree
+    # base for the rotation:
+    # a beam_direction = (1, 0, 0) and angle = 0, returns (-0, 1, 0)
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=24878&start=30#p195567
+    # https://forum.freecadweb.org/viewtopic.php?f=13&t=59239&start=140#p521999
+    # changing the angle, changes the normal accordingly, 360 would again return (0,1,0)
+
+    # CalxuliX uses negative z axis as base, if nothing is given in input file
+    # see the standard direction of 1-direction in CalxuliX manual
+
+    # here the local main axis is called beam_axis_m the minor axis will be beam_axis_n
+
+    # eventually a better name might be get_beam_rotation
+
+    # FIXME: since we fix the base ange we would get this information out of the mesh edge too
+    print("beam_axis_m is retrieved from the geometry but we could get if from mesh edge too")
+    # print("beam_direction: {}".format(beam_direction))
+    # print("defined_angle: {}".format(defined_angle))
+
     import math
     vector_a = beam_direction
     angle_rad = (math.pi / 180) * defined_angle
@@ -667,6 +690,7 @@ def get_beam_normal(beam_direction, defined_angle):
     # dummy usage of the axis dot to get flake8 quiet
     del dot_x, dot_y, dot_z, dot, dot_nt
 
+    # print("normal_n: {}".format(normal_n))
     return normal_n
 
 
@@ -2201,7 +2225,7 @@ def get_femmesh_eletype(
     if not femmesh:
         FreeCAD.Console.PrintError("Error: No femmesh.\n")
     if not femelement_table:
-        FreeCAD.Console.PrintError("The femelement_table need to be calculated.\n")
+        FreeCAD.Console.PrintWarning("The femelement_table need to be calculated.\n")
         femelement_table = get_femelement_table(femmesh)
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):

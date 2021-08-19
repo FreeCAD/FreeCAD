@@ -51,6 +51,9 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_base_edge.py
     femexamples/ccx_cantilever_base_face.py
     femexamples/ccx_cantilever_base_solid.py
+    femexamples/ccx_cantilever_beam_circle.py
+    femexamples/ccx_cantilever_beam_pipe.py
+    femexamples/ccx_cantilever_beam_rect.py
     femexamples/ccx_cantilever_ele_hexa20.py
     femexamples/ccx_cantilever_ele_quad4.py
     femexamples/ccx_cantilever_ele_quad8.py
@@ -87,7 +90,10 @@ SET(FemExamples_SRCS
     femexamples/thermomech_bimetall.py
     femexamples/thermomech_flow1d.py
     femexamples/thermomech_spine.py
+    femexamples/truss_3d_cs_circle_ele_seg2.py
+    femexamples/truss_3d_cs_circle_ele_seg3.py
 )
+
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
@@ -125,6 +131,8 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_thermomech_spine_tetra10.py
     femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
     femexamples/meshes/mesh_transform_torque_tetra10.py
+    femexamples/meshes/mesh_truss_crane_seg2.py
+    femexamples/meshes/mesh_truss_crane_seg3.py
 )
 
 SET(FemInOut_SRCS
@@ -319,7 +327,9 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/box.FCStd
     femtest/data/calculix/ccx_buckling_flexuralbuckling.dat
     femtest/data/calculix/ccx_buckling_flexuralbuckling.inp
-    femtest/data/calculix/ccx_cantilever_faceload.inp
+    femtest/data/calculix/ccx_cantilever_beam_circle.inp
+    femtest/data/calculix/ccx_cantilever_beam_pipe.inp
+    femtest/data/calculix/ccx_cantilever_beam_rect.inp
     femtest/data/calculix/ccx_cantilever_ele_hexa20.inp
     femtest/data/calculix/ccx_cantilever_ele_quad4.inp
     femtest/data/calculix/ccx_cantilever_ele_quad8.inp
@@ -327,6 +337,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/ccx_cantilever_ele_seg3.inp
     femtest/data/calculix/ccx_cantilever_ele_tria3.inp
     femtest/data/calculix/ccx_cantilever_ele_tria6.inp
+    femtest/data/calculix/ccx_cantilever_faceload.inp
     femtest/data/calculix/ccx_cantilever_nodeload.inp
     femtest/data/calculix/ccx_cantilever_prescribeddisplacement.inp
     femtest/data/calculix/constraint_centrif.inp

@@ -84,6 +84,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
+        self.removalshapes = []
 
         # self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         self.removalshapes = []
@@ -162,7 +163,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         #    shape.tessellate(0.05)  # originally 0.1
 
         if self.removalshapes:
-            obj.removalshape = self.removalshapes[0][0]
+            obj.removalshape = Part.makeCompound([tup[0] for tup in self.removalshapes])
+
         return self.removalshapes
 
     # Support methods
@@ -242,11 +244,11 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', name)
-
-    obj.Proxy = ObjectPocket(obj, name)
+    obj.Proxy = ObjectPocket(obj, name, parentJob)
+    return obj
 
     return obj

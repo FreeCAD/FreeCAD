@@ -729,7 +729,7 @@ class MeshSetsGetter():
     #                        "beamsection_obj" : "beamsection_obj"         if exists
     #                        "fluidsection_obj" : "fluidsection_obj"       if exists
     #                        "shellthickness_obj" : shellthickness_obj"    if exists
-    #                        "beam_normal" : normal vector                 for beams only
+    #                        "beam_axis_m" : main local beam axis          for beams only
     #                     },
     #                     {}, ... , {} ]
 
@@ -756,8 +756,8 @@ class MeshSetsGetter():
             matgeoset["mat_obj_name"] = mat_obj.Name
             matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
             matgeoset["beamsection_obj"] = beamsec_obj
-            # normal for this direction
-            matgeoset["beam_normal"] = beamdirection["normal"]
+            # beam_axis_m for this direction
+            matgeoset["beam_axis_m"] = beamdirection["beam_axis_m"]
             self.mat_geo_sets.append(matgeoset)
 
     def get_mat_geo_sets_single_mat_multiple_beam(self):
@@ -783,8 +783,8 @@ class MeshSetsGetter():
                     matgeoset["mat_obj_name"] = mat_obj.Name
                     matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                     matgeoset["beamsection_obj"] = beamsec_obj
-                    # normal for this direction
-                    matgeoset["beam_normal"] = beamdirection["normal"]
+                    # beam_axis_m for this direction
+                    matgeoset["beam_axis_m"] = beamdirection["beam_axis_m"]
                     self.mat_geo_sets.append(matgeoset)
 
     def get_mat_geo_sets_multiple_mat_single_beam(self):
@@ -809,8 +809,8 @@ class MeshSetsGetter():
                     matgeoset["mat_obj_name"] = mat_obj.Name
                     matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                     matgeoset["beamsection_obj"] = beamsec_obj
-                    # normal for this direction
-                    matgeoset["beam_normal"] = beamdirection["normal"]
+                    # beam_axis_m for this direction
+                    matgeoset["beam_axis_m"] = beamdirection["beam_axis_m"]
                     self.mat_geo_sets.append(matgeoset)
 
     def get_mat_geo_sets_multiple_mat_multiple_beam(self):
@@ -840,8 +840,8 @@ class MeshSetsGetter():
                         matgeoset["mat_obj_name"] = mat_obj.Name
                         matgeoset["ccx_mat_name"] = mat_obj.Material["Name"]
                         matgeoset["beamsection_obj"] = beamsec_obj
-                        # normal for this direction
-                        matgeoset["beam_normal"] = beamdirection["normal"]
+                        # beam_axis_m for this direction
+                        matgeoset["beam_axis_m"] = beamdirection["beam_axis_m"]
                         self.mat_geo_sets.append(matgeoset)
 
     # fluid

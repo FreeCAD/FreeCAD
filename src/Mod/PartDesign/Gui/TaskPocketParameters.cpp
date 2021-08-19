@@ -205,6 +205,7 @@ void TaskPocketParameters::updateUI(int index)
     // up to face
     else if (index == 3) {
         isOffsetEditVisable = true;
+        isReversedEnabled = true;
         isFaceEditEnabled    = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
@@ -215,6 +216,7 @@ void TaskPocketParameters::updateUI(int index)
     else {
         isLengthEditVisable = true;
         isLengthEdit2Visable = true;
+        isReversedEnabled = true;
     }    
 
     ui->lengthEdit->setVisible( isLengthEditVisable );

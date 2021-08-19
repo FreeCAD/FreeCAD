@@ -40,7 +40,8 @@ from addonmanager_macro import Macro
 have_git = False
 try:
     import git
-    have_git = True
+    # some versions of git module have no "Repo" class?? Bug #4072 module 'git' has no attribute 'Repo'
+    have_git = hasattr(git,"Repo")
 except ImportError:
     pass
 

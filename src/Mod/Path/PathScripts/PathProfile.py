@@ -380,7 +380,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         else:  # Try to build targets from the job models
             # No base geometry selected, so treating operation like a exterior contour operation
             self.opUpdateDepths(obj)
-            obj.Side = 'Outside'  # Force outside for whole model profile
 
             if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
                 if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
@@ -1302,9 +1301,9 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Profile based on faces operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectProfile(obj, name)
+    obj.Proxy = ObjectProfile(obj, name, parentJob)
     return obj

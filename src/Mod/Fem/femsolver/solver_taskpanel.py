@@ -76,9 +76,9 @@ class ControlTaskPanel(QtCore.QObject):
         # as soon as the widget of the task panel gets destroyed.
         self.form.destroyed.connect(self._disconnectMachine)
         self.form.destroyed.connect(self._timer.stop)
-        self.form.destroyed.connect(
-            lambda: self.machineStatusChanged.disconnect(
-                self.form.appendStatus))
+        # self.form.destroyed.connect(
+        #     lambda: self.machineStatusChanged.disconnect(
+        #         self.form.appendStatus))
 
         # Connect all proxy signals.
         self.machineStarted.connect(self._timer.start)

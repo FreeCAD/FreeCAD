@@ -2185,6 +2185,21 @@ void Application::runApplication(void)
     SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
 #endif
 
+    // Now run the background autoload, for workbenches that should be loaded at startup, but not
+    // displayed to the user immediately
+    std::string autoloadCSV = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetASCII("BackgroundAutoloadModules", "");
+
+    // Tokenize the comma-separated list and load the requested workbenches if they exist in this installation
+    std::vector<std::string> backgroundAutoloadedModules;
+    std::stringstream stream(autoloadCSV);
+    std::string workbench;
+    while (std::getline(stream, workbench, ','))
+        if (wb.contains(QString::fromLatin1(workbench.c_str())))
+            app.activateWorkbench(workbench.c_str());
+
+    // Reactivate the startup workbench
+    app.activateWorkbench(start.c_str());
 
     Instance->d->startingUp = false;
 

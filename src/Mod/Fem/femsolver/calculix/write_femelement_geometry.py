@@ -39,21 +39,34 @@ def write_femelement_geometry(f, ccxwriter):
 
             if "beamsection_obj"in matgeoset:  # beam mesh
                 beamsec_obj = matgeoset["beamsection_obj"]
-                normal = matgeoset["beam_normal"]
+                beam_axis_m = matgeoset["beam_axis_m"]
+                # in CalxuliX called the 1direction
+                # see meshtools.get_beam_main_axis_m(beam_direction, defined_angle)
+                section_nor = "{:.13G}, {:.13G}, {:.13G}\n".format(
+                    beam_axis_m[0],
+                    beam_axis_m[1],
+                    beam_axis_m[2]
+                )
+                print(section_nor)
                 if beamsec_obj.SectionType == "Rectangular":
-                    height = beamsec_obj.RectHeight.getValueAs("mm").Value
-                    width = beamsec_obj.RectWidth.getValueAs("mm").Value
+                    # see meshtools.get_beam_main_axis_m(beam_direction, defined_angle)
+                    # the method get_beam_main_axis_m() which calculates the beam_axis_m vector
+                    # returns for a line in x direction and angle 0 degree
+                    # the y-axis as local main direction (beam_axis_m vector)
+                    # in users head and in beam section object this is the Width
+                    len_beam_axis_m = beamsec_obj.RectWidth.getValueAs("mm").Value
+                    len_beam_axis_n = beamsec_obj.RectHeight.getValueAs("mm").Value
                     section_type = ", SECTION=RECT"
-                    section_geo = "{:.13G},{:.13G}\n".format(height, width)
+                    section_geo = "{:.13G},{:.13G}\n".format(len_beam_axis_m, len_beam_axis_n)
                     section_def = "*BEAM SECTION, {}{}{}\n".format(
                         elsetdef,
                         material,
                         section_type
                     )
                 elif beamsec_obj.SectionType == "Circular":
-                    radius = 0.5 * beamsec_obj.CircDiameter.getValueAs("mm").Value
+                    diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
                     section_type = ", SECTION=CIRC"
-                    section_geo = "{:.13G}\n".format(radius)
+                    section_geo = "{:.13G}\n".format(diameter)
                     section_def = "*BEAM SECTION, {}{}{}\n".format(
                         elsetdef,
                         material,
@@ -69,17 +82,10 @@ def write_femelement_geometry(f, ccxwriter):
                         material,
                         section_type
                     )
-                # see forum topic for output formatting of rotation
-                # https://forum.freecadweb.org/viewtopic.php?f=18&t=46133&p=405142#p405142
-                section_nor = "{:.13G}, {:.13G}, {:.13G}\n".format(
-                    normal[0],
-                    normal[1],
-                    normal[2]
-                )
                 f.write(section_def)
                 f.write(section_geo)
                 f.write(section_nor)
-            elif "fluidsection_obj"in matgeoset:  # fluid mesh
+            elif "fluidsection_obj" in matgeoset:  # fluid mesh
                 fluidsec_obj = matgeoset["fluidsection_obj"]
                 if fluidsec_obj.SectionType == "Liquid":
                     section_type = fluidsec_obj.LiquidSectionType
@@ -101,7 +107,7 @@ def write_femelement_geometry(f, ccxwriter):
                 """
                 f.write(section_def)
                 f.write(section_geo)
-            elif "shellthickness_obj"in matgeoset:  # shell mesh
+            elif "shellthickness_obj" in matgeoset:  # shell mesh
                 shellth_obj = matgeoset["shellthickness_obj"]
                 section_def = "*SHELL SECTION, {}{}\n".format(elsetdef, material)
                 thickness = shellth_obj.Thickness.getValueAs("mm").Value

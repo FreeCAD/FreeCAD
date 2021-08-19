@@ -119,7 +119,7 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyDistance", "OpStockZMin", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the min Z value of Stock"))
             obj.setEditorMode('OpStockZMin', 1)  # read-only
 
-    def __init__(self, obj, name):
+    def __init__(self, obj, name, parentJob=None):
         PathLog.track()
 
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"))
@@ -190,6 +190,8 @@ class ObjectOp(object):
         self.initOperation(obj)
 
         if not hasattr(obj, 'DoNotSetDefaultValues') or not obj.DoNotSetDefaultValues:
+            if parentJob:
+                self.job = PathUtils.addToJob(obj, jobname=parentJob.Name)
             job = self.setDefaultValues(obj)
             if job:
                 job.SetupSheet.Proxy.setOperationProperties(obj, name)
@@ -322,7 +324,10 @@ class ObjectOp(object):
     def setDefaultValues(self, obj):
         '''setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead.'''
-        job = PathUtils.addToJob(obj)
+        if self.job:
+            job = self.job
+        else:
+            job = PathUtils.addToJob(obj)
 
         obj.Active = True
 
@@ -622,5 +627,3 @@ class ObjectOp(object):
         This function can safely be overwritten by subclasses.'''
 
         return True
-
-

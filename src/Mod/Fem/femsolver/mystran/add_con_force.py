@@ -36,7 +36,7 @@ def add_con_force(f, model, mystran_writer):
     scale_factors = []
     load_ids = []
     force_code = "# force cards, mesh node loads\n"
-    for i, femobj in enumerate(mystran_writer.force_objects):
+    for i, femobj in enumerate(mystran_writer.member.cons_force):
 
         sid = i + 2  # 1 will be the id of the load card
         scale_factors.append(1.0)

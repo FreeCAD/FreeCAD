@@ -42,7 +42,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["fixed", "force", "displacement"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "reinforced",
         "equation": "mechanical"
     }
@@ -133,7 +133,6 @@ def setup(doc=None, solvertype="ccxtools"):
     matrixprop["CompressiveStrength"] = "15.75 MPa"
     # make some hint on the possible angle units in material system
     matrixprop["AngleOfFriction"] = "30 deg"
-    matrixprop["Density"] = "2500 kg/m^3"
     reinfoprop = {}
     reinfoprop["Name"] = "Reinforcement-FIB-B500"
     reinfoprop["YieldStrength"] = "315 MPa"
@@ -160,6 +159,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint displacement
     con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacmentPrescribed")
     con_disp.References = [(geom_obj, "Face1")]
+    con_disp.zFree = False
     con_disp.zFix = True
     analysis.addObject(con_disp)
 
