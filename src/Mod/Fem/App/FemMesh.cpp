@@ -882,16 +882,18 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
 #pragma omp parallel for schedule(dynamic)
     for (size_t i = 0; i < nodes.size(); ++i) {
         const SMDS_MeshNode* aNode = nodes[i];
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(solid,s);
+            BRepExtrema_DistShapeShape measure(solid, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
@@ -929,16 +931,18 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
 #pragma omp parallel for schedule(dynamic)
     for (size_t i = 0; i < nodes.size(); ++i) {
         const SMDS_MeshNode* aNode = nodes[i];
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(face,s);
+            BRepExtrema_DistShapeShape measure(face, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
