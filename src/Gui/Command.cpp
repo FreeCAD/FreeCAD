@@ -856,8 +856,22 @@ void Command::applyCommandData(const char* context, Action* action)
 {
     action->setText(QCoreApplication::translate(
         context, getMenuText()));
-    action->setToolTip(QCoreApplication::translate(
-        context, getToolTipText()));
+    // build the tooltip
+        QString tooltip;
+        tooltip.append(QString::fromLatin1("<h3>"));
+        tooltip.append(QCoreApplication::translate(
+            context, getMenuText()));
+        tooltip.append(QString::fromLatin1("</h3>"));
+        QRegularExpression re(QString::fromLatin1("([^&])&([^&])"));
+        tooltip.replace(re, QString::fromLatin1("\\1\\2"));
+        tooltip.replace(QString::fromLatin1("&&"), QString::fromLatin1("&"));
+        tooltip.append(QCoreApplication::translate(
+            context, getToolTipText()));
+        tooltip.append(QString::fromLatin1("<br><i>("));
+        tooltip.append(QCoreApplication::translate(
+            context, getWhatsThis()));
+        tooltip.append(QString::fromLatin1(")</i> "));
+    action->setToolTip(tooltip);
     action->setWhatsThis(QCoreApplication::translate(
         context, getWhatsThis()));
     if (sStatusTip)
