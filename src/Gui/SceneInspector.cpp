@@ -475,7 +475,7 @@ void DlgInspector::populateFieldView(QTreeWidgetItem *parent, SoNode *n)
     }
 }
 
-void DlgInspector::on_treeView_activated(const QModelIndex &index)
+void DlgInspector::on_treeView_pressed(const QModelIndex &index)
 {
     ui->fieldView->clear();
     auto model = static_cast<SceneModel*>(ui->treeView->model());

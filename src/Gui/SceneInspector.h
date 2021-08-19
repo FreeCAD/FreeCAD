@@ -94,7 +94,7 @@ public:
 
 private Q_SLOTS:
     void on_refreshButton_clicked();
-    void on_treeView_activated(const QModelIndex &);
+    void on_treeView_pressed(const QModelIndex &);
     void on_fieldView_itemExpanded(QTreeWidgetItem *item);
 
 protected:
