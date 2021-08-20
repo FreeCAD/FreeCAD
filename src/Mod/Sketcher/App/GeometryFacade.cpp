@@ -38,19 +38,25 @@ using namespace Sketcher;
 
 TYPESYSTEM_SOURCE(Sketcher::GeometryFacade,Base::BaseClass)
 
-GeometryFacade::GeometryFacade(): Geo(nullptr), SketchGeoExtension(nullptr)
+GeometryFacade::GeometryFacade(): Geo(nullptr), OwnerGeo(false), SketchGeoExtension(nullptr)
 {
 
 }
 
 GeometryFacade::GeometryFacade(const Part::Geometry * geometry)
-: Geo(geometry)
+: Geo(geometry), OwnerGeo(false)
 {
     if(geometry != nullptr)
         initExtension();
     else
         THROWM(Base::ValueError, "GeometryFacade initialized with Geometry null pointer");
 
+}
+
+GeometryFacade::~GeometryFacade()
+{
+    if (OwnerGeo)
+        delete Geo;
 }
 
 std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geometry)

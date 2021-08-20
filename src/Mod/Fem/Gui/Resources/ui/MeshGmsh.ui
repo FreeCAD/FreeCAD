@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>413</height>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,21 +34,21 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_dimension">
           <property name="text">
-           <string>Mesh element dimension:</string>
+           <string>Element dimension:</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QComboBox" name="cb_dimension"/>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
            <string>Max element size (0.0 = Auto):</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="Gui::InputField" name="if_max">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -85,14 +85,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
            <string>Min element size (0.0 = Auto):</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <widget class="Gui::InputField" name="if_min">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -129,6 +129,16 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_order"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="I_order">
+          <property name="text">
+           <string>Element order:</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -151,9 +161,16 @@
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <item row="0" column="1">
+        <item row="1" column="1">
          <layout class="QGridLayout" name="gl_actions">
-          <item row="1" column="0">
+          <item row="0" column="0">
+           <widget class="QTextEdit" name="te_output">
+            <property name="lineWrapMode">
+             <enum>QTextEdit::NoWrap</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
            <widget class="QLabel" name="l_time">
             <property name="font">
              <font>
@@ -165,10 +182,29 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QTextEdit" name="te_output">
-            <property name="lineWrapMode">
-             <enum>QTextEdit::NoWrap</enum>
+          <item row="6" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="7" column="0">
+           <widget class="QPushButton" name="pb_get_gmsh_version">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Gmsh version</string>
             </property>
            </widget>
           </item>

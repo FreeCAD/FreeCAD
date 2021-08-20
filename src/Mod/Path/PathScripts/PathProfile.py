@@ -37,6 +37,7 @@ from PySide import QtCore
 from lazy_loader.lazy_loader import LazyLoader
 ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
 Part = LazyLoader('Part', globals(), 'Part')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 
 
 __title__ = "Path Profile Operation"
@@ -99,10 +100,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return [
             ("App::PropertyEnumeration", "Direction", "Profile",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)")),
-            ("App::PropertyLength", "ExpandProfile", "Profile",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Extend the profile clearing beyond the Extra Offset.")),
-            ("App::PropertyPercent", "ExpandProfileStepOver", "Profile",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the stepover percentage, based on the tool's diameter.")),
             ("App::PropertyEnumeration", "HandleMultipleFeatures", "Profile",
                 QtCore.QT_TRANSLATE_NOOP("PathPocket", "Choose how to process multiple Base Geometry features.")),
             ("App::PropertyEnumeration", "JoinType", "Profile",
@@ -121,15 +118,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut")),
             ("App::PropertyBool", "UseComp", "Profile",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if using Cutter Radius Compensation")),
-
-            ("App::PropertyBool", "ReverseDirection", "Rotation",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Reverse direction of pocket operation.")),
-            ("App::PropertyBool", "InverseAngle", "Rotation",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Inverse the angle. Example: -22.5 -> 22.5 degrees.")),
-            ("App::PropertyBool", "AttemptInverseAngle", "Rotation",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Attempt the inverse angle for face access if original rotation fails.")),
-            ("App::PropertyBool", "LimitDepthToFace", "Rotation",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Enforce the Z-depth of the selected face as the lowest value for final depth. Higher user values will be observed."))
         ]
 
     def areaOpPropertyEnumerations(self):
@@ -147,17 +135,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         '''areaOpPropertyDefaults(obj, job) ... returns a dictionary of default values
         for the operation's properties.'''
         return {
-            'AttemptInverseAngle': True,
             'Direction': 'CW',
-            'ExpandProfile': 0.0,
-            'ExpandProfileStepOver': 100,
-            'HandleMultipleFeatures': 'Individually',
-            'InverseAngle': False,
+            'HandleMultipleFeatures': 'Collectively',
             'JoinType': 'Round',
-            'LimitDepthToFace': True,
             'MiterLimit': 0.1,
             'OffsetExtra': 0.0,
-            'ReverseDirection': False,
             'Side': 'Outside',
             'UseComp': True,
             'processCircles': False,
@@ -177,7 +159,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    propVal = getattr(prop, 'Value')
+                    # propVal = getattr(prop, 'Value')
+                    # Need to check if `val` below should be `propVal` commented out above
                     setattr(prop, 'Value', val)
                 else:
                     setattr(obj, n, val)
@@ -190,7 +173,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         '''setOpEditorProperties(obj, porp) ... Process operation-specific changes to properties visibility.'''
         fc = 2
         # ml = 0 if obj.JoinType == 'Miter' else 2
-        rotation = 2 if obj.EnableRotation == 'Off' else 0
         side = 0 if obj.UseComp else 2
         opType = self._getOperationType(obj)
 
@@ -203,24 +185,18 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         obj.setEditorMode('JoinType', 2)
         obj.setEditorMode('MiterLimit', 2)  # ml
-
         obj.setEditorMode('Side', side)
         obj.setEditorMode('HandleMultipleFeatures', fc)
         obj.setEditorMode('processCircles', fc)
         obj.setEditorMode('processHoles', fc)
         obj.setEditorMode('processPerimeter', fc)
 
-        obj.setEditorMode('ReverseDirection', rotation)
-        obj.setEditorMode('InverseAngle', rotation)
-        obj.setEditorMode('AttemptInverseAngle', rotation)
-        obj.setEditorMode('LimitDepthToFace', rotation)
-
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
             return 'Contour'
 
         # return first geometry type selected
-        (base, subsList) = obj.Base[0]
+        (_, subsList) = obj.Base[0]
         return subsList[0][:4]
 
     def areaOpOnDocumentRestored(self, obj):
@@ -232,7 +208,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnChanged(self, obj, prop):
         '''areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties.'''
-        if prop in ['UseComp', 'JoinType', 'EnableRotation', 'Base']:
+        if prop in ['UseComp', 'JoinType', 'Base']:
             if hasattr(self, 'propertiesReady') and self.propertiesReady:
                 self.setOpEditorProperties(obj)
 
@@ -258,29 +234,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         if obj.JoinType == 'Miter':
             params['MiterLimit'] = obj.MiterLimit
-
-        return params
-
-    def areaOpAreaParamsExpandProfile(self, obj, isHole):
-        '''areaOpPathParamsExpandProfile(obj, isHole) ... return dictionary with area parameters for expanded profile'''
-        params = {}
-
-        params['Fill'] = 1
-        params['Coplanar'] = 0
-        params['PocketMode'] = 1
-        params['SectionCount'] = -1
-        # params['Angle'] = obj.ZigZagAngle
-        # params['FromCenter'] = (obj.StartAt == "Center")
-        params['PocketStepover'] = self.tool.Diameter * (float(obj.ExpandProfileStepOver) / 100.0)
-        extraOffset = obj.OffsetExtra.Value
-        if False:  # self.pocketInvertExtraOffset():  # Method simply returns False
-            extraOffset = 0.0 - extraOffset
-        params['PocketExtraOffset'] = extraOffset
-        params['ToolRadius'] = self.radius
-
-        # Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
-        params['PocketMode'] = 2  # Pattern.index(obj.OffsetPattern) + 1
-        params['JoinType'] = 0  # jointype = ['Round', 'Square', 'Miter']
 
         return params
 
@@ -310,9 +263,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpUseProjection(self, obj):
         '''areaOpUseProjection(obj) ... returns True'''
-        if obj.ExpandProfile.Value == 0.0:
-            return True
-        return False
+        return True
 
     def opUpdateDepths(self, obj):
         if hasattr(obj, 'Base') and obj.Base.__len__() == 0:
@@ -324,14 +275,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         PathLog.track()
 
         shapes = []
-        baseSubsTuples = list()
-        allTuples = list()
-        edgeFaces = list()
-        subCount = 0
+        remainingObjBaseFeatures = list()
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         self.inaccessibleMsg = translate('PathProfile', 'The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.')
         self.offsetExtra = obj.OffsetExtra.Value
-        self.expandProfile = None
 
         if self.isDebug:
             for grpNm in ['tmpDebugGrp', 'tmpDebugGrp001']:
@@ -342,11 +289,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             self.tmpGrp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', 'tmpDebugGrp')
             tmpGrpNm = self.tmpGrp.Name
         self.JOB = PathUtils.findParentJob(obj)
-
-        if obj.ExpandProfile.Value != 0.0:
-            import PathScripts.PathSurfaceSupport as PathSurfaceSupport
-            self.PathSurfaceSupport = PathSurfaceSupport
-            self.expandProfile = True
 
         if obj.UseComp:
             self.useComp = True
@@ -359,43 +301,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Pre-process Base Geometry to process edges
         if obj.Base and len(obj.Base) > 0:  # The user has selected subobjects from the base.  Process each.
-            shapes.extend(self._processEdges(obj))
+            shapes.extend(self._processEdges(obj, remainingObjBaseFeatures))
 
-        if obj.Base and len(obj.Base) > 0:  # The user has selected subobjects from the base.  Process each.
-            if obj.EnableRotation != 'Off':
-                for p in range(0, len(obj.Base)):
-                    (base, subsList) = obj.Base[p]
-                    for sub in subsList:
-                        subCount += 1
-                        shape = getattr(base.Shape, sub)
-                        if isinstance(shape, Part.Face):
-                            tup = self._analyzeFace(obj, base, sub, shape, subCount)
-                            allTuples.append(tup)
-
-                if subCount > 1 and obj.HandleMultipleFeatures == 'Collectively':
-                    msg = translate('PathProfile', "Multiple faces in Base Geometry.") + "  "
-                    msg += translate('PathProfile', "Depth settings will be applied to all faces.")
-                    FreeCAD.Console.PrintWarning(msg)
-
-                (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
-                subList = []
-                for o in range(0, len(Tags)):
-                    subList = []
-                    for (base, sub, tag, angle, axis, stock) in Grps[o]:
-                        subList.append(sub)
-
-                    pair = base, subList, angle, axis, stock
-                    baseSubsTuples.append(pair)
-                # Efor
-            else:
-                stock = PathUtils.findParentJob(obj).Stock
-                for (base, subList) in obj.Base:
-                    baseSubsTuples.append((base, subList, 0.0, 'X', stock))
-            # Eif
-
-            # for base in obj.Base:
-            finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-            for (base, subsList, angle, axis, stock) in baseSubsTuples:
+        if obj.Base and len(obj.Base) > 0 and not remainingObjBaseFeatures:
+            # Edges were already processed, or whole model targeted.
+            PathLog.debug("remainingObjBaseFeatures is False")
+        elif remainingObjBaseFeatures and len(remainingObjBaseFeatures) > 0:  # Process remaining features after edges processed above.
+            for (base, subsList) in remainingObjBaseFeatures:
                 holes = []
                 faces = []
                 faceDepths = []
@@ -414,57 +326,36 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     else:
                         ignoreSub = base.Name + '.' + sub
                         msg = translate('PathProfile', "Found a selected object which is not a face. Ignoring:")
-                        # FreeCAD.Console.PrintWarning(msg + " {}\n".format(ignoreSub))
-
-                # Identify initial Start and Final Depths
-                finDep = obj.FinalDepth.Value
-                strDep = obj.StartDepth.Value
+                        PathLog.warning(msg + " {}".format(ignoreSub))
 
                 for baseShape, wire in holes:
                     cont = False
                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     drillable = PathUtils.isDrillable(baseShape, wire)
-                    ot = self._openingType(obj, baseShape, f, strDep, finDep)
 
                     if obj.processCircles:
                         if drillable:
-                            if ot < 1:
-                                cont = True
+                            cont = True
                     if obj.processHoles:
                         if not drillable:
-                            if ot < 1:
-                                cont = True
+                            cont = True
+
                     if cont:
-                        if self.expandProfile:
-                            shapeEnv = self._getExpandedProfileEnvelope(obj, f, True, obj.StartDepth.Value, finDep)
-                        else:
-                            shapeEnv = PathUtils.getEnvelope(baseShape, subshape=f, depthparams=self.depthparams)
+                        shapeEnv = PathUtils.getEnvelope(baseShape, subshape=f, depthparams=self.depthparams)
 
                         if shapeEnv:
                             self._addDebugObject('HoleShapeEnvelope', shapeEnv)
-                            # env = PathUtils.getEnvelope(baseShape, subshape=f, depthparams=self.depthparams)
-                            tup = shapeEnv, True, 'pathProfile', angle, axis, strDep, finDep
+                            tup = shapeEnv, True, 'pathProfile'
                             shapes.append(tup)
 
-                if obj.processPerimeter:
+                if faces and obj.processPerimeter:
                     if obj.HandleMultipleFeatures == 'Collectively':
                         custDepthparams = self.depthparams
                         cont = True
-
-                        if len(faces) > 0:
-                            profileshape = Part.makeCompound(faces)
-
-                        if obj.LimitDepthToFace is True and obj.EnableRotation != 'Off':
-                            if profileshape.BoundBox.ZMin > obj.FinalDepth.Value:
-                                finDep = profileshape.BoundBox.ZMin
-                                custDepthparams = self._customDepthParams(obj, strDep + 0.5, finDep)  # only an envelope
+                        profileshape = Part.makeCompound(faces)
 
                         try:
-                            # env = PathUtils.getEnvelope(profileshape, depthparams=custDepthparams)
-                            if self.expandProfile:
-                                shapeEnv = self._getExpandedProfileEnvelope(obj, shape, False, obj.StartDepth.Value, finDep)
-                            else:
-                                shapeEnv = PathUtils.getEnvelope(profileshape, depthparams=custDepthparams)
+                            shapeEnv = PathUtils.getEnvelope(profileshape, depthparams=custDepthparams)
                         except Exception as ee: # pylint: disable=broad-except
                             # PathUtils.getEnvelope() failed to return an object.
                             msg = translate('Path', 'Unable to create path for face(s).')
@@ -473,37 +364,25 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
                         if cont:
                             self._addDebugObject('CollectCutShapeEnv', shapeEnv)
-                            tup = shapeEnv, False, 'pathProfile', angle, axis, strDep, finDep
+                            tup = shapeEnv, False, 'pathProfile'
                             shapes.append(tup)
 
                     elif obj.HandleMultipleFeatures == 'Individually':
                         for shape in faces:
-                            finalDep = obj.FinalDepth.Value
                             custDepthparams = self.depthparams
-                            self._addDebugObject('Rotation_Indiv_Shp', shape)
-
-                            if self.expandProfile:
-                                shapeEnv = self._getExpandedProfileEnvelope(obj, shape, False, obj.StartDepth.Value, finalDep)
-                            else:
-                                shapeEnv = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
-
+                            self._addDebugObject('Indiv_Shp', shape)
+                            shapeEnv = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
                             if shapeEnv:
                                 self._addDebugObject('IndivCutShapeEnv', shapeEnv)
-                                tup = shapeEnv, False, 'pathProfile', angle, axis, strDep, finalDep
+                                tup = shapeEnv, False, 'pathProfile'
                                 shapes.append(tup)
 
         else:  # Try to build targets from the job models
             # No base geometry selected, so treating operation like a exterior contour operation
             self.opUpdateDepths(obj)
-            obj.Side = 'Outside'  # Force outside for whole model profile
 
             if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
                 if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
-                    # Cancel ExpandProfile feature. Unavailable for ArchPanels.
-                    if obj.ExpandProfile.Value != 0.0:
-                        obj.ExpandProfile.Value == 0.0
-                        msg = translate('PathProfile', 'No ExpandProfile support for ArchPanel models.')
-                        FreeCAD.Console.PrintWarning(msg + '\n')
                     modelProxy = self.model[0].Proxy
                     # Process circles and holes if requested by user
                     if obj.processCircles or obj.processHoles:
@@ -513,7 +392,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                                     env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
-                                    tup = env, True, 'pathProfile', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+                                    tup = env, True, 'pathProfile'
                                     shapes.append(tup)
 
                     # Process perimeter if requested by user
@@ -522,7 +401,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             for wire in shape.Wires:
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                                 env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
-                                tup = env, False, 'pathProfile', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+                                tup = env, False, 'pathProfile'
                                 shapes.append(tup)
                 else:
                     # shapes.extend([(PathUtils.getEnvelope(partshape=base.Shape, subshape=None, depthparams=self.depthparams), False) for base in self.model if hasattr(base, 'Shape')])
@@ -544,178 +423,26 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         return shapes
 
-    # Analyze a face for rotational needs
-    def _analyzeFace(self, obj, base, sub, shape, subCount):
-        rtn = False
-        (norm, surf) = self.getFaceNormAndSurf(shape)
-        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
-        PathLog.debug("initial faceRotationAnalysis: {}".format(praInfo))
-
-        if rtn is True:
-            # Rotational alignment is suggested from analysis
-            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
-            # Verify faces are correctly oriented - InverseAngle might be necessary
-            faceIA = getattr(clnBase.Shape, sub)
-            (norm, surf) = self.getFaceNormAndSurf(faceIA)
-            (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
-            PathLog.debug("follow-up faceRotationAnalysis: {}".format(praInfo2))
-            PathLog.debug("praAngle: {}".format(praAngle))
-
-            if abs(praAngle) == 180.0:
-                rtn = False
-                if self.isFaceUp(clnBase, faceIA) is False:
-                    PathLog.debug('isFaceUp 1 is False')
-                    angle -= 180.0
-
-            if rtn is True:
-                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
-                if obj.AttemptInverseAngle is True:
-                    PathLog.debug(translate("Path", "Applying inverse angle automatically."))
-                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                else:
-                    if obj.InverseAngle:
-                        PathLog.debug(translate("Path", "Applying inverse angle manually."))
-                        (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                    else:
-                        msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
-                        PathLog.warning(msg)
-
-                if self.isFaceUp(clnBase, faceIA) is False:
-                    PathLog.debug('isFaceUp 2 is False')
-                    angle += 180.0
-                else:
-                    PathLog.debug('  isFaceUp')
-
-            else:
-                PathLog.debug("Face appears to be oriented correctly.")
-
-            if angle < 0.0:
-                angle += 360.0
-
-            tup = clnBase, sub, tag, angle, axis, clnStock
-        else:
-            if self.warnDisabledAxis(obj, axis) is False:
-                PathLog.debug(str(sub) + ": No rotation used")
-            axis = 'X'
-            angle = 0.0
-            tag = base.Name + '_' + axis + str(angle).replace('.', '_')
-            stock = PathUtils.findParentJob(obj).Stock
-            tup = base, sub, tag, angle, axis, stock
-
-        return tup
-
-    def _openingType(self, obj, baseShape, face, strDep, finDep):
-        # Test if solid geometry above opening
-        extDistPos = strDep - face.BoundBox.ZMin
-        if extDistPos > 0:
-            extFacePos = face.extrude(FreeCAD.Vector(0.0, 0.0, extDistPos))
-            cmnPos = baseShape.common(extFacePos)
-            if cmnPos.Volume > 0:
-                # Signifies solid protrusion above,
-                # or overhang geometry above opening
-                return 1
-        # Test if solid geometry below opening
-        extDistNeg = finDep - face.BoundBox.ZMin
-        if extDistNeg < 0:
-            extFaceNeg = face.extrude(FreeCAD.Vector(0.0, 0.0, extDistNeg))
-            cmnNeg = baseShape.common(extFaceNeg)
-            if cmnNeg.Volume == 0:
-                # No volume below signifies
-                # an unobstructed/nonconstricted opening through baseShape
-                return 0
-            else:
-                # Could be a pocket,
-                # or a constricted/narrowing hole through baseShape
-                return -1
-        msg = translate('PathProfile', 'failed to return opening type.')
-        PathLog.debug('_openingType() ' + msg)
-        return -2
-
-    # Method for expanded profile
-    def _getExpandedProfileEnvelope(self, obj, faceShape, isHole, strDep, finalDep):
-        shapeZ = faceShape.BoundBox.ZMin
-
-        def calculateOffsetValue(obj, isHole):
-            offset = obj.ExpandProfile.Value + obj.OffsetExtra.Value  # 0.0
-            if obj.UseComp:
-                offset = obj.OffsetExtra.Value + self.tool.Diameter
-                offset += obj.ExpandProfile.Value
-            if isHole:
-                if obj.Side == 'Outside':
-                    offset = 0 - offset
-            else:
-                if obj.Side == 'Inside':
-                    offset = 0 - offset
-            return offset
-
-        faceEnv = self.PathSurfaceSupport.getShapeEnvelope(faceShape)
-        # newFace = self.PathSurfaceSupport.getSliceFromEnvelope(faceEnv)
-        newFace = self.PathSurfaceSupport.getShapeSlice(faceEnv)
-        # Compute necessary offset
-        offsetVal = calculateOffsetValue(obj, isHole)
-        expandedFace = self.PathSurfaceSupport.extractFaceOffset(newFace, offsetVal, newFace)
-        if expandedFace:
-            if shapeZ != 0.0:
-                expandedFace.translate(FreeCAD.Vector(0.0, 0.0, shapeZ))
-                newFace.translate(FreeCAD.Vector(0.0, 0.0, shapeZ))
-
-            if isHole:
-                if obj.Side == 'Outside':
-                    newFace = newFace.cut(expandedFace)
-                else:
-                    newFace = expandedFace.cut(newFace)
-            else:
-                if obj.Side == 'Inside':
-                    newFace = newFace.cut(expandedFace)
-                else:
-                    newFace = expandedFace.cut(newFace)
-
-            if finalDep - shapeZ != 0:
-                newFace.translate(FreeCAD.Vector(0.0, 0.0, finalDep - shapeZ))
-
-            if strDep - finalDep != 0:
-                if newFace.Area > 0:
-                    return newFace.extrude(FreeCAD.Vector(0.0, 0.0, strDep - finalDep))
-                else:
-                    PathLog.debug('No expanded profile face shape.\n')
-                    return False
-        else:
-            PathLog.debug(translate('PathProfile', 'Failed to extract offset(s) for expanded profile.') + '\n')
-
-        PathLog.debug(translate('PathProfile', 'Failed to expand profile.') + '\n')
-        return False
-
     # Method to handle each model as a whole, when no faces are selected
-    # It includes ExpandProfile implementation
     def _processEachModel(self, obj):
         shapeTups = list()
         for base in self.model:
             if hasattr(base, 'Shape'):
                 env = PathUtils.getEnvelope(partshape=base.Shape, subshape=None, depthparams=self.depthparams)
-                if self.expandProfile:
-                    eSlice = self.PathSurfaceSupport.getCrossSection(env)  # getSliceFromEnvelope(env)
-                    eSlice.translate(FreeCAD.Vector(0.0, 0.0, base.Shape.BoundBox.ZMin - env.BoundBox.ZMin))
-                    self._addDebugObject('ModelSlice', eSlice)
-                    shapeEnv = self._getExpandedProfileEnvelope(obj, eSlice, False, obj.StartDepth.Value, obj.FinalDepth.Value)
-                else:
-                    shapeEnv = env
-
-                if shapeEnv:
-                    shapeTups.append((shapeEnv, False))
+                if env:
+                    shapeTups.append((env, False))
         return shapeTups
 
     # Edges pre-processing
-    def _processEdges(self, obj):
-        import DraftGeomUtils
+    def _processEdges(self, obj, remainingObjBaseFeatures):
         shapes = list()
         basewires = list()
-        delPairs = list()
         ezMin = None
-        self.cutOut = self.tool.Diameter * (float(obj.ExpandProfileStepOver) / 100.0)
+        self.cutOut = self.tool.Diameter
 
         for p in range(0, len(obj.Base)):
             (base, subsList) = obj.Base[p]
-            tmpSubs = list()
+            keepFaces = list()
             edgelist = list()
             for sub in subsList:
                 shape = getattr(base.Shape, sub)
@@ -724,16 +451,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     edgelist.append(getattr(base.Shape, sub))
                 # save faces for regular processing
                 if isinstance(shape, Part.Face):
-                    tmpSubs.append(sub)
+                    keepFaces.append(sub)
             if len(edgelist) > 0:
                 basewires.append((base, DraftGeomUtils.findWires(edgelist)))
                 if ezMin is None or base.Shape.BoundBox.ZMin < ezMin:
                     ezMin = base.Shape.BoundBox.ZMin
-            # If faces
-            if len(tmpSubs) == 0:  # all edges in subsList = remove pair in obj.Base
-                delPairs.append(p)
-            elif len(edgelist) > 0:  # some edges in subsList were extracted, return faces only to subsList
-                obj.Base[p] = (base, tmpSubs)
+
+            if len(keepFaces) > 0:  # save faces for returning and processing
+                remainingObjBaseFeatures.append((base, keepFaces))
 
         for base, wires in basewires:
             for wire in wires:
@@ -745,39 +470,28 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     (origWire, flatWire) = self._flattenWire(obj, wire, obj.FinalDepth.Value)
                     f = flatWire.Wires[0]
                     if f:
-                        if self.expandProfile:
-                            shapeEnv = self._getExpandedProfileEnvelope(obj, Part.Face(f), False, obj.StartDepth.Value, ezMin)
-                        else:
-                            shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
-
+                        shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
                         if shapeEnv:
-                            tup = shapeEnv, False, 'Profile', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+                            tup = shapeEnv, False, 'pathProfile'
                             shapes.append(tup)
                     else:
                         PathLog.error(self.inaccessibleMsg)
                 else:
                     # Attempt open-edges profile
                     if self.JOB.GeometryTolerance.Value == 0.0:
-                        msg = self.JOB.Label + '.GeometryTolerance = 0.0.'
+                        msg = self.JOB.Label + '.GeometryTolerance = 0.0. '
                         msg += translate('PathProfile', 'Please set to an acceptable value greater than zero.')
                         PathLog.error(msg)
                     else:
                         flattened = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-                        if flattened:
+                        zDiff = math.fabs(wire.BoundBox.ZMin - obj.FinalDepth.Value)
+                        if flattened and zDiff >= self.JOB.GeometryTolerance.Value:
                             cutWireObjs = False
                             openEdges = list()
                             passOffsets = [self.ofstRadius]
                             (origWire, flatWire) = flattened
 
                             self._addDebugObject('FlatWire', flatWire)
-
-                            if self.expandProfile:
-                                # Identify list of pass offset values for expanded profile paths
-                                regularOfst = self.ofstRadius
-                                targetOfst = regularOfst + obj.ExpandProfile.Value
-                                while regularOfst < targetOfst:
-                                    regularOfst += self.cutOut
-                                    passOffsets.insert(0, regularOfst)
 
                             for po in passOffsets:
                                 self.ofstRadius = po
@@ -791,19 +505,19 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 else:
                                     PathLog.error(self.inaccessibleMsg)
 
-                            tup = openEdges, False, 'OpenEdge', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
-                            shapes.append(tup)
+                            if openEdges:
+                                tup = openEdges, False, 'OpenEdge'
+                                shapes.append(tup)
                         else:
-                            PathLog.error(self.inaccessibleMsg)
+                            if zDiff < self.JOB.GeometryTolerance.Value:
+                                msg = translate('PathProfile', 'Check edge selection and Final Depth requirements for profiling open edge(s).')
+                                PathLog.error(msg)
+                            else:
+                                PathLog.error(self.inaccessibleMsg)
                     # Eif
                 # Eif
             # Efor
         # Efor
-
-        delPairs.sort(reverse=True)
-        for p in delPairs:
-            # obj.Base.pop(p)
-            pass
 
         return shapes
 
@@ -835,14 +549,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     # Open-edges methods
     def _getCutAreaCrossSection(self, obj, base, origWire, flatWire):
         PathLog.debug('_getCutAreaCrossSection()')
-        FCAD = FreeCAD.ActiveDocument
+        # FCAD = FreeCAD.ActiveDocument
         tolerance = self.JOB.GeometryTolerance.Value
         toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathProfileBase modules
         minBfr = toolDiam * 1.25
         bbBfr = (self.ofstRadius * 2) * 1.25
         if bbBfr < minBfr:
             bbBfr = minBfr
-        fwBB = flatWire.BoundBox
+        # fwBB = flatWire.BoundBox
         wBB = origWire.BoundBox
         minArea = (self.ofstRadius - tolerance)**2 * math.pi
 
@@ -871,10 +585,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         pe = FreeCAD.Vector(Ve.X, Ve.Y, fdv)
 
         # Identify endpoints connecting circle center and diameter
-        vectDist = pe.sub(pb)
-        diam = vectDist.Length
-        cntr = vectDist.multiply(0.5).add(pb)
-        R = diam / 2
+        # vectDist = pe.sub(pb)
+        # diam = vectDist.Length
+        # cntr = vectDist.multiply(0.5).add(pb)
+        # R = diam / 2
 
         # Obtain beginning point perpendicular points
         if blen > 0.1:
@@ -1068,10 +782,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # CHECK for ZERO area of offset shape
         try:
-            osArea = ofstShp.Area
+            if hasattr(ofstShp, "Area"):
+                osArea = ofstShp.Area
+                if osArea:  # Make LGTM parser happy
+                    pass
+            else:
+                PathLog.error('No area to offset shape returned.')
+                return list()
         except Exception as ee:
             PathLog.error('No area to offset shape returned.\n{}'.format(ee))
-            return False
+            return list()
 
         self._addDebugObject('OffsetShape', ofstShp)
 
@@ -1088,7 +808,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if N[4] < min0:
                 min0 = N[4]
                 min0i = n
-        (w0, vi0, pnt0, vrt0, d0) = NEAR0[0]  # min0i
+        (w0, vi0, pnt0, _, _) = NEAR0[0]  # min0i
         near0Shp = Part.makeLine(cent0, pnt0)
         self._addDebugObject('Near0', near0Shp)
 
@@ -1100,7 +820,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if N[4] < min1:
                 min1 = N[4]
                 min1i = n
-        (w1, vi1, pnt1, vrt1, d1) = NEAR1[0]  # min1i
+        (w1, vi1, pnt1, _, _) = NEAR1[0]  # min1i
         near1Shp = Part.makeLine(cent1, pnt1)
         self._addDebugObject('Near1', near1Shp)
 
@@ -1399,7 +1119,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 nt = 4  # desired + 1
             mid = LE / nt
             spc = self.radius / 10
-            for i in range(0, nt):
+            for i in range(0, int(nt)):
                 if i == 0:
                     if e == 0:
                         if LE > 0.2:
@@ -1427,7 +1147,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         tagCnt += nt
                         intTags.append(intTObj)
                         extTags.append(extTObj)
-        tagArea = math.pi * tagRad**2 * tagCnt
+        # tagArea = math.pi * tagRad**2 * tagCnt
         iTAG = Part.makeCompound(intTags)
         eTAG = Part.makeCompound(extTags)
 
@@ -1464,13 +1184,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def _makeStop(self, sType, pA, pB, lbl):
         # PathLog.debug('_makeStop()')
-        rad = self.radius
         ofstRad = self.ofstRadius
-        extra = self.radius / 10
+        extra = self.radius / 5.0
+        lng = 0.05
+        med = lng / 2.0
+        shrt = lng / 5.0
 
         E = FreeCAD.Vector(pB.x, pB.y, 0)  # endpoint
         C = FreeCAD.Vector(pA.x, pA.y, 0)  # checkpoint
-        lenEC = E.sub(C).Length
 
         if self.useComp is True or (self.useComp is False and self.offsetExtra != 0):
             # 'L' stop shape and edge map
@@ -1484,16 +1205,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # positive dist in _makePerp2DVector() is CCW rotation
             p1 = E
             if sType == 'BEG':
-                p2 = self._makePerp2DVector(C, E, -0.25)  # E1
-                p3 = self._makePerp2DVector(p1, p2, ofstRad + 1.0 + extra)  # E2
-                p4 = self._makePerp2DVector(p2, p3, 0.25 + ofstRad + extra)  # E3
-                p5 = self._makePerp2DVector(p3, p4, 1.0 + extra)  # E4
+                p2 = self._makePerp2DVector(C, E, -1 * shrt)  # E1
+                p3 = self._makePerp2DVector(p1, p2, ofstRad + lng + extra)  # E2
+                p4 = self._makePerp2DVector(p2, p3, shrt + ofstRad + extra)  # E3
+                p5 = self._makePerp2DVector(p3, p4, lng + extra)  # E4
                 p6 = self._makePerp2DVector(p4, p5, ofstRad + extra)  # E5
             elif sType == 'END':
-                p2 = self._makePerp2DVector(C, E, 0.25)  # E1
-                p3 = self._makePerp2DVector(p1, p2, -1 * (ofstRad + 1.0 + extra))  # E2
-                p4 = self._makePerp2DVector(p2, p3, -1 * (0.25 + ofstRad + extra))  # E3
-                p5 = self._makePerp2DVector(p3, p4, -1 * (1.0 + extra))  # E4
+                p2 = self._makePerp2DVector(C, E, shrt)  # E1
+                p3 = self._makePerp2DVector(p1, p2, -1 * (ofstRad + lng + extra))  # E2
+                p4 = self._makePerp2DVector(p2, p3, -1 * (shrt + ofstRad + extra))  # E3
+                p5 = self._makePerp2DVector(p3, p4, -1 * (lng + extra))  # E4
                 p6 = self._makePerp2DVector(p4, p5, -1 * (ofstRad + extra))  # E5
             p7 = E  # E6
             L1 = Part.makeLine(p1, p2)
@@ -1512,15 +1233,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # positive dist in _makePerp2DVector() is CCW rotation
             p1 = E
             if sType == 'BEG':
-                p2 = self._makePerp2DVector(C, E, -1 * (0.25 + abs(self.offsetExtra)))  # left, 0.25
-                p3 = self._makePerp2DVector(p1, p2, 0.25 + abs(self.offsetExtra))
-                p4 = self._makePerp2DVector(p2, p3, (0.5 + abs(self.offsetExtra)))  #      FIRST POINT
-                p5 = self._makePerp2DVector(p3, p4, 0.25 + abs(self.offsetExtra))  # E1                SECOND
+                p2 = self._makePerp2DVector(C, E, -1 * (shrt + abs(self.offsetExtra)))  # left, shrt
+                p3 = self._makePerp2DVector(p1, p2, shrt + abs(self.offsetExtra))
+                p4 = self._makePerp2DVector(p2, p3, (med + abs(self.offsetExtra)))  #      FIRST POINT
+                p5 = self._makePerp2DVector(p3, p4, shrt + abs(self.offsetExtra))  # E1                SECOND
             elif sType == 'END':
-                p2 = self._makePerp2DVector(C, E, (0.25 + abs(self.offsetExtra)))  # left, 0.25
-                p3 = self._makePerp2DVector(p1, p2, -1 * (0.25 + abs(self.offsetExtra)))
-                p4 = self._makePerp2DVector(p2, p3, -1 * (0.5 + abs(self.offsetExtra)))  #      FIRST POINT
-                p5 = self._makePerp2DVector(p3, p4, -1 * (0.25 + abs(self.offsetExtra)))  # E1                SECOND
+                p2 = self._makePerp2DVector(C, E, (shrt + abs(self.offsetExtra)))  # left, shrt
+                p3 = self._makePerp2DVector(p1, p2, -1 * (shrt + abs(self.offsetExtra)))
+                p4 = self._makePerp2DVector(p2, p3, -1 * (med + abs(self.offsetExtra)))  #      FIRST POINT
+                p5 = self._makePerp2DVector(p3, p4, -1 * (shrt + abs(self.offsetExtra)))  # E1                SECOND
             p6 = p1  # E4
             L1 = Part.makeLine(p1, p2)
             L2 = Part.makeLine(p2, p3)
@@ -1580,9 +1301,9 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Profile based on faces operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectProfile(obj, name)
+    obj.Proxy = ObjectProfile(obj, name, parentJob)
     return obj

@@ -81,7 +81,7 @@ const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
 
 ViewProviderViewPart::ViewProviderViewPart()
 {
-    sPixmap = "TechDraw_Tree_View";
+    sPixmap = "TechDraw_TreeView";
 
     static const char *group = "Lines";
     static const char *dgroup = "Decoration";
@@ -177,9 +177,9 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm != nullptr) {
-        sPixmap = "TechDraw_Tree_Multi";
+        sPixmap = "TechDraw_TreeMulti";
     } else if (dvd != nullptr) {
-        sPixmap = "actions/techdraw-DetailView";
+        sPixmap = "actions/TechDraw_DetailView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);

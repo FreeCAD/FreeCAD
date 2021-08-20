@@ -106,6 +106,10 @@ class TaskPanel:
         If start is specified the Snapper UI is closed on the first point the user enters. If start remains None, then Snapper is kept open
         until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession.'''
 
+        # there's no get point without Snapper, if it's not loaded, need to do that explicitly
+        if not hasattr(FreeCADGui, 'Snapper'):
+            import DraftTools
+
         def displayPoint(p):
             self.point = p
             self.formPoint.globalX.setProperty('rawValue', p.x)
@@ -175,6 +179,7 @@ class TaskPanel:
 
         if self.buttonBox:
             self.buttonBox.setEnabled(False)
+
         FreeCADGui.Snapper.forceGridOff=True
 
     def pointFinish(self, ok, cleanup = True):

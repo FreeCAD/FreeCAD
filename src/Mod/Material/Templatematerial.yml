@@ -138,15 +138,19 @@
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
       Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
+    Stiffness:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Stiffness'
+      Description: "Stiffness (or Spring Stiffness) in [FreeCAD Stiffness unit]"
 - Thermal:
     SpecificHeat:
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Heat_capacity'
-      Description: " "
+      Description: "Specific capacity in [FreeCAD SpecificHeat unit]"
     ThermalConductivity:
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Thermal_conductivity'
-      Description: "Thermal conductivity in [FreCAD ThermalConductivity unit]"
+      Description: "Thermal conductivity in [FreeCAD ThermalConductivity unit]"
     ThermalExpansionCoefficient:
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
@@ -155,7 +159,11 @@
     RelativePermittivity:
       Type: 'Float'
       URL: 'https://en.wikipedia.org/wiki/Relative_permittivity'
-      Description: "a material property, expressing the ratio to the permittivity of the Vacuum"
+      Description: "The ratio to the permittivity of the vacuum"
+    ElectricalConductivity:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity'
+      Description: "The electrical conductivity in [FreeCAD ElectricalConductivity unit]"
 - Architectural:
     Color:
       Type:  'String'

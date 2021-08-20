@@ -119,7 +119,7 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyDistance", "OpStockZMin", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the min Z value of Stock"))
             obj.setEditorMode('OpStockZMin', 1)  # read-only
 
-    def __init__(self, obj, name):
+    def __init__(self, obj, name, parentJob=None):
         PathLog.track()
 
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"))
@@ -190,6 +190,8 @@ class ObjectOp(object):
         self.initOperation(obj)
 
         if not hasattr(obj, 'DoNotSetDefaultValues') or not obj.DoNotSetDefaultValues:
+            if parentJob:
+                self.job = PathUtils.addToJob(obj, jobname=parentJob.Name)
             job = self.setDefaultValues(obj)
             if job:
                 job.SetupSheet.Proxy.setOperationProperties(obj, name)
@@ -300,6 +302,13 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
+
+        # there's a bit of cycle going on here, if sanitizeBase causes the transaction to
+        # be cancelled we end right here again with the unsainitized Base - if that is the
+        # case, stop the cycle and return immediately
+        if prop == 'Base' and self.sanitizeBase(obj):
+            return
+
         if 'Restore' not in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
@@ -315,7 +324,10 @@ class ObjectOp(object):
     def setDefaultValues(self, obj):
         '''setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead.'''
-        job = PathUtils.addToJob(obj)
+        if self.job:
+            job = self.job
+        else:
+            job = PathUtils.addToJob(obj)
 
         obj.Active = True
 
@@ -422,7 +434,10 @@ class ObjectOp(object):
                 zmax = max(zmax, bb.ZMax)
                 for sub in sublist:
                     try:
-                        fbb = base.Shape.getElement(sub).BoundBox
+                        if sub:
+                            fbb = base.Shape.getElement(sub).BoundBox
+                        else:
+                            fbb = base.Shape.BoundBox
                         zmin = max(zmin, faceZmin(bb, fbb))
                         zmax = max(zmax, fbb.ZMax)
                     except Part.OCCError as e:
@@ -460,6 +475,19 @@ class ObjectOp(object):
 
         self.opUpdateDepths(obj)
 
+    def sanitizeBase(self, obj):
+        '''sanitizeBase(obj) ... check if Base is valid and clear on errors.'''
+        if hasattr(obj, 'Base'):
+            try:
+                for (o, sublist) in obj.Base:
+                    for sub in sublist:
+                        e = o.Shape.getElement(sub)
+            except Part.OCCError as e:
+                PathLog.error("{} - stale base geometry detected - clearing.".format(obj.Label))
+                obj.Base = []
+                return True
+        return False
+
     @waiting_effects
     def execute(self, obj):
         '''execute(obj) ... base implementation - do not overwrite!
@@ -490,6 +518,9 @@ class ObjectOp(object):
 
         if not self._setBaseAndStock(obj):
             return
+
+        # make sure Base is still valid or clear it
+        self.sanitizeBase(obj)
 
         if FeatureCoolant & self.opFeatures(obj):
             if not hasattr(obj, 'CoolantMode'):
@@ -596,5 +627,3 @@ class ObjectOp(object):
         This function can safely be overwritten by subclasses.'''
 
         return True
-
-

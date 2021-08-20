@@ -239,9 +239,58 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
+    
     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh tools");
-    *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_FromPartShape" << "Separator" << "Mesh_PolyCut" << "Mesh_VertexCurvature";
+    *mesh << "Mesh_Import" 
+          << "Mesh_Export" 
+          << "Mesh_FromPartShape"
+          << "Mesh_BuildRegularSolid";
+		  
+    Gui::ToolBarItem* modifying = new Gui::ToolBarItem(root);
+    modifying->setCommand("Mesh modify");
+    *modifying << "Mesh_HarmonizeNormals" 
+               << "Mesh_FlipNormals"
+               << "Mesh_FillupHoles"
+               << "Mesh_FillInteractiveHole"
+               << "Mesh_AddFacet"
+               << "Mesh_RemoveComponents"
+               << "Mesh_Smoothing"
+               << "Mesh_RemeshGmsh"
+               << "Mesh_Decimating"
+               << "Mesh_Scale";
+			   
+    Gui::ToolBarItem* boolean = new Gui::ToolBarItem(root);
+    boolean->setCommand("Mesh boolean");
+    *boolean << "Mesh_Union"
+             << "Mesh_Intersection"
+             << "Mesh_Difference";
+			 
+    Gui::ToolBarItem* cutting = new Gui::ToolBarItem(root);
+    cutting->setCommand("Mesh cutting");
+    *cutting << "Mesh_PolyCut"
+             << "Mesh_PolyTrim"
+             << "Mesh_TrimByPlane"
+             << "Mesh_SectionByPlane"
+             << "Mesh_CrossSections";
+			 
+    Gui::ToolBarItem* compseg = new Gui::ToolBarItem(root);
+    compseg->setCommand("Mesh segmentation");
+    *compseg << "Mesh_Merge"
+             << "Mesh_SplitComponents"
+             << "Mesh_Segmentation"
+             << "Mesh_SegmentationBestFit";
+			 
+    Gui::ToolBarItem* analyze = new Gui::ToolBarItem(root);
+    analyze->setCommand("Mesh analyze");
+    *analyze << "Mesh_Evaluation"
+             << "Mesh_EvaluateFacet"
+             << "Mesh_VertexCurvature"
+             << "Mesh_CurvatureInfo"
+             << "Mesh_EvaluateSolid"
+             << "Mesh_BoundingBox";
+		  
+		  
     return root;
 }
 

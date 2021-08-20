@@ -138,6 +138,7 @@
 
 FC_LOG_LEVEL_INIT("Import", true, true)
 
+namespace ImportGui {
 class OCAFBrowser
 {
 public:
@@ -382,7 +383,6 @@ public:
     }
 };
 
-namespace ImportGui {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
@@ -642,11 +642,10 @@ private:
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
-                std::string scheme = hGrp_stp->GetASCII("Scheme", "AP214IS");
-                if (scheme == "AP203")
-                    Interface_Static::SetCVal("write.step.schema", "AP203");
-                else if (scheme == "AP214IS")
-                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
+                std::string scheme = hGrp_stp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+                std::list<std::string> supported = Part::supportedSTEPSchemes();
+                if (std::find(supported.begin(), supported.end(), scheme) != supported.end())
+                    Interface_Static::SetCVal("write.step.schema", scheme.c_str());
 
                 STEPCAFControl_Writer writer;
                 Interface_Static::SetIVal("write.step.assembly",1);
@@ -694,7 +693,8 @@ private:
                 TColStd_IndexedDataMapOfStringString aMetadata;
                 RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
                 aWriter.SetTransformationFormat (RWGltf_WriterTrsfFormat_Compact);
-                //aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
+                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
+                aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
                 aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
                 Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
                 if (!ret) {

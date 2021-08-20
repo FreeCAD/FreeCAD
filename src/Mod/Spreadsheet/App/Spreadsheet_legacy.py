@@ -855,7 +855,7 @@ class SpreadsheetView(QtGui.QWidget):
                         v = float(value)
                     except:
                         try:
-                            v = v = str(value)
+                            v = str(value)
                         except:
                             v = value
                 setattr(self.spreadsheet.Proxy,key,v)

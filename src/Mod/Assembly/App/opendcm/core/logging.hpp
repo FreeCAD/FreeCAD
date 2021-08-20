@@ -33,7 +33,7 @@
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/log/expressions.hpp>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace logging = boost::log;
 namespace sinks = boost::log::sinks;
@@ -59,16 +59,16 @@ static int counter = 0;
 typedef sinks::synchronous_sink< sinks::text_file_backend > sink_t;
 typedef src::severity_logger< severity_level > dcm_logger;
 
-inline boost::shared_ptr< sink_t > init_log() {
+inline std::shared_ptr< sink_t > init_log() {
 
     //create the filename
     std::stringstream str;
     str<<"openDCM_"<<counter<<"_%N.log";
     counter++;
 
-    boost::shared_ptr< logging::core > core = logging::core::get();
+    std::shared_ptr< logging::core > core = logging::core::get();
 
-    boost::shared_ptr< sinks::text_file_backend > backend =
+    std::shared_ptr< sinks::text_file_backend > backend =
         boost::make_shared< sinks::text_file_backend >(
             keywords::file_name = str.str(),             //file name pattern
             keywords::rotation_size = 10 * 1024 * 1024 	//Rotation size is 10MB
@@ -76,7 +76,7 @@ inline boost::shared_ptr< sink_t > init_log() {
 
     // Wrap it into the frontend and register in the core.
     // The backend requires synchronization in the frontend.
-    boost::shared_ptr< sink_t > sink(new sink_t(backend));
+    std::shared_ptr< sink_t > sink(new sink_t(backend));
     
     sink->set_formatter(
         expr::stream <<"[" << expr::attr<std::string>("Tag") <<"] "
@@ -89,9 +89,9 @@ inline boost::shared_ptr< sink_t > init_log() {
     return sink;
 };
 
-inline void stop_log(boost::shared_ptr< sink_t >& sink) {
+inline void stop_log(std::shared_ptr< sink_t >& sink) {
 
-    boost::shared_ptr< logging::core > core = logging::core::get();
+    std::shared_ptr< logging::core > core = logging::core::get();
 
     // Remove the sink from the core, so that no records are passed to it
     core->remove_sink(sink);

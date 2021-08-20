@@ -57,10 +57,10 @@ using namespace Gui;
 
 TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
+    , ui(new Ui_TaskChamferParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskChamferParameters();
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
@@ -102,6 +102,9 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
         this, SLOT(doubleClicked(QListWidgetItem*)));
+
+    // the dialog can be called on a broken chamfer, then hide the chamfer
+    hideOnError();
 }
 
 void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
@@ -124,8 +127,8 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->chamferSize2->bind(pcChamfer->Size2);
 
     ui->chamferAngle->setUnit(Base::Unit::Angle);
-    ui->chamferAngle->setMinimum(0.0);
-    ui->chamferAngle->setMaximum(180.0);
+    ui->chamferAngle->setMinimum(pcChamfer->Angle.getMinimum());
+    ui->chamferAngle->setMaximum(pcChamfer->Angle.getMaximum());
     ui->chamferAngle->setValue(pcChamfer->Angle.getValue());
     ui->chamferAngle->bind(pcChamfer->Angle);
 
@@ -231,6 +234,8 @@ void TaskChamferParameters::onRefDeleted(void)
     pcChamfer->Base.setValue(base, refs);
     // recompute the feature
     pcChamfer->recomputeFeature();
+    // hide the chamfer if there was a computation error
+    hideOnError();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
@@ -248,6 +253,8 @@ void TaskChamferParameters::onTypeChanged(int index)
     ui->stackedWidget->setCurrentIndex(index);
     ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onSizeChanged(double len)
@@ -256,6 +263,8 @@ void TaskChamferParameters::onSizeChanged(double len)
     setupTransaction();
     pcChamfer->Size.setValue(len);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onSize2Changed(double len)
@@ -264,6 +273,8 @@ void TaskChamferParameters::onSize2Changed(double len)
     setupTransaction();
     pcChamfer->Size2.setValue(len);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onAngleChanged(double angle)
@@ -272,6 +283,8 @@ void TaskChamferParameters::onAngleChanged(double angle)
     setupTransaction();
     pcChamfer->Angle.setValue(angle);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onFlipDirection(bool flip)
@@ -280,6 +293,8 @@ void TaskChamferParameters::onFlipDirection(bool flip)
     setupTransaction();
     pcChamfer->FlipDirection.setValue(flip);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 int TaskChamferParameters::getType(void) const
@@ -309,10 +324,14 @@ bool TaskChamferParameters::getFlipDirection(void) const
 
 TaskChamferParameters::~TaskChamferParameters()
 {
-    Gui::Selection().clearSelection();
-    Gui::Selection().rmvSelectionGate();
-
-    delete ui;
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskChamferParameters::event(QEvent *e)
@@ -385,7 +404,10 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters()
 //}
 bool TaskDlgChamferParameters::accept()
 {
-    parameter->showObject();
+    auto obj = vp->getObject();
+    if (!obj->isError())
+        parameter->showObject();
+
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();

@@ -102,7 +102,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
                         << tr("Heading 3")
                         << tr("Heading 4")
                         << tr("Monospace")
-                        << tr(" ");
+                        << QString::fromUtf8(" ");
     f_paragraph->addItems(m_paragraphItems);
 
     connect(f_paragraph, SIGNAL(activated(int)),
@@ -315,6 +315,15 @@ void MRichTextEdit::textBold() {
 
 void MRichTextEdit::focusInEvent(QFocusEvent *) {
     f_textedit->setFocus(Qt::TabFocusReason);
+}
+
+void MRichTextEdit::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Return && event->modifiers() == Qt::ControlModifier) {
+        onSave();
+        return;
+    }
+
+    QWidget::keyPressEvent(event);
 }
 
 

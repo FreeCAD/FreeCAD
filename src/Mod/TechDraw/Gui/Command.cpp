@@ -114,7 +114,7 @@ CmdTechDrawPageDefault::CmdTechDrawPageDefault()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_PageDefault";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-PageDefault";
+    sPixmap         = "actions/TechDraw_PageDefault";
 }
 
 void CmdTechDrawPageDefault::activated(int iMsg)
@@ -177,17 +177,19 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_PageTemplate";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-PageTemplate";
+    sPixmap         = "actions/TechDraw_PageTemplate";
 }
 
 void CmdTechDrawPageTemplate::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    QString work_dir = Gui::FileDialog::getWorkingDirectory();
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                                                    QString::fromUtf8(QT_TR_NOOP("Select a Template File")),
                                                    templateDir,
                                                    QString::fromUtf8(QT_TR_NOOP("Template (*.svg *.dxf)")));
+    Gui::FileDialog::setWorkingDirectory(work_dir);  // Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
         return;
@@ -254,7 +256,7 @@ CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_RedrawPage";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-RedrawPage";
+    sPixmap         = "actions/TechDraw_RedrawPage";
 }
 
 void CmdTechDrawRedrawPage::activated(int iMsg)
@@ -316,6 +318,7 @@ void CmdTechDrawView::activated(int iMsg)
                                                    resolve,
                                                    single);
     for (auto& sel: selection) {
+        bool is_linked = false;
         auto obj = sel.getObject();
         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
@@ -323,6 +326,27 @@ void CmdTechDrawView::activated(int iMsg)
         if ( obj->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
              obj->isDerivedFrom(App::LinkGroup::getClassTypeId())   ||
              obj->isDerivedFrom(App::Link::getClassTypeId()) ) {
+            is_linked = true;
+        }
+        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
+        // 1st, is obj in another document?
+        if (obj->getDocument() != this->getDocument()) {
+            std::set<App::DocumentObject *> parents = obj->getInListEx(true);
+            for (auto &parent: parents) {
+                // Only consider parents in the current document, i.e. possible links in this View's document
+                if (parent->getDocument() != this->getDocument()) {
+                    continue;
+                }
+                // 2nd, do we really have a link to obj?
+                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::LinkGroup::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    is_linked = true;
+                }
+            }
+        }
+        if (is_linked) {
             xShapes.push_back(obj);
             continue;
         }
@@ -412,7 +436,7 @@ CmdTechDrawActiveView::CmdTechDrawActiveView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_ActiveView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-ActiveView";
+    sPixmap         = "actions/TechDraw_ActiveView";
 }
 
 void CmdTechDrawActiveView::activated(int iMsg)
@@ -446,7 +470,7 @@ CmdTechDrawSectionView::CmdTechDrawSectionView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_SectionView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-SectionView";
+    sPixmap         = "actions/TechDraw_SectionView";
 }
 
 void CmdTechDrawSectionView::activated(int iMsg)
@@ -496,7 +520,7 @@ CmdTechDrawDetailView::CmdTechDrawDetailView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_DetailView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-DetailView";
+    sPixmap         = "actions/TechDraw_DetailView";
 }
 
 void CmdTechDrawDetailView::activated(int iMsg)
@@ -545,7 +569,7 @@ CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup()
     sToolTipText    = QT_TR_NOOP("Insert multiple linked views of drawable object(s)");
     sWhatsThis      = "TechDraw_ProjectionGroup";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-ProjectionGroup";
+    sPixmap         = "actions/TechDraw_ProjectionGroup";
 }
 
 void CmdTechDrawProjectionGroup::activated(int iMsg)
@@ -572,6 +596,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
                                                    resolve,
                                                    single);
     for (auto& sel: selection) {
+        bool is_linked = false;
         auto obj = sel.getObject();
         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
@@ -579,6 +604,27 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         if ( obj->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
              obj->isDerivedFrom(App::LinkGroup::getClassTypeId())   ||
              obj->isDerivedFrom(App::Link::getClassTypeId()) ) {
+            is_linked = true;
+        }
+        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
+        // 1st, is obj in another document?
+        if (obj->getDocument() != this->getDocument()) {
+            std::set<App::DocumentObject *> parents = obj->getInListEx(true);
+            for (auto &parent: parents) {
+                // Only consider parents in the current document, i.e. possible links in this View's document
+                if (parent->getDocument() != this->getDocument()) {
+                    continue;
+                }
+                // 2nd, do we really have a link to obj?
+                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::LinkGroup::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    is_linked = true;
+                }
+            }
+        }
+        if (is_linked) {
             xShapes.push_back(obj);
             continue;
         }
@@ -815,7 +861,7 @@ CmdTechDrawClipGroup::CmdTechDrawClipGroup()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroup";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroup";
+    sPixmap       = "actions/TechDraw_ClipGroup";
 }
 
 void CmdTechDrawClipGroup::activated(int iMsg)
@@ -854,7 +900,7 @@ CmdTechDrawClipGroupAdd::CmdTechDrawClipGroupAdd()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroupAdd";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroupAdd";
+    sPixmap       = "actions/TechDraw_ClipGroupAdd";
 }
 
 void CmdTechDrawClipGroupAdd::activated(int iMsg)
@@ -937,7 +983,7 @@ CmdTechDrawClipGroupRemove::CmdTechDrawClipGroupRemove()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroupRemove";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroupRemove";
+    sPixmap       = "actions/TechDraw_ClipGroupRemove";
 }
 
 void CmdTechDrawClipGroupRemove::activated(int iMsg)
@@ -1012,7 +1058,7 @@ CmdTechDrawSymbol::CmdTechDrawSymbol()
     sToolTipText  = QT_TR_NOOP("Insert symbol from an SVG file");
     sWhatsThis    = "TechDraw_Symbol";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-symbol";
+    sPixmap       = "actions/TechDraw_Symbol";
 }
 
 void CmdTechDrawSymbol::activated(int iMsg)
@@ -1036,11 +1082,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Symbol");
         filename = Base::Tools::escapeEncodeFilename(filename);
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-#if PY_MAJOR_VERSION < 3
-        doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
-#else
         doCommand(Doc,"f = open(\"%s\",'r')",(const char*)filename.toUtf8());
-#endif
         doCommand(Doc,"svg = f.read()");
         doCommand(Doc,"f.close()");
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSymbol','%s')",FeatName.c_str());
@@ -1202,7 +1244,7 @@ CmdTechDrawSpreadsheetView::CmdTechDrawSpreadsheetView()
     sToolTipText  = QT_TR_NOOP("Insert View to a spreadsheet");
     sWhatsThis    = "TechDraw_SpreadsheetView";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-SpreadsheetView";
+    sPixmap       = "actions/TechDraw_SpreadsheetView";
 }
 
 void CmdTechDrawSpreadsheetView::activated(int iMsg)
@@ -1261,7 +1303,7 @@ CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageSVG";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ExportPageSVG";
+    sPixmap       = "actions/TechDraw_ExportPageSVG";
 }
 
 void CmdTechDrawExportPageSVG::activated(int iMsg)
@@ -1305,7 +1347,7 @@ CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageDXF";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ExportPageDXF";
+    sPixmap       = "actions/TechDraw_ExportPageDXF";
 }
 
 void CmdTechDrawExportPageDXF::activated(int iMsg)
@@ -1334,7 +1376,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
 //WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File")),
                                                    defaultDir,
                                                    QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
 

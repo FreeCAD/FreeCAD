@@ -113,7 +113,7 @@ def label_to_scale(label):
     try :
         scale = float(label)
         return scale
-    except :
+    except Exception:
         if ":" in label:
             f = label.split(":")
         elif "=" in label:
@@ -126,7 +126,7 @@ def label_to_scale(label):
                 den = App.Units.Quantity(f[1]).Value
                 scale = num/den
                 return scale
-            except:
+            except Exception:
                 err = QT_TRANSLATE_NOOP("draft",
                                         "Unable to convert input into a "
                                         "scale factor")
@@ -340,6 +340,7 @@ def init_draft_statusbar_snap():
 
     # add snap widget to the statusbar
     sb.insertPermanentWidget(2, snap_widget)
+    snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.show()
 
 
@@ -373,11 +374,13 @@ def show_draft_statusbar():
 
         snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
+            snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
             snap_widget.show()
         else:
             snap_widget = mw.findChild(QtGui.QToolBar,"draft_snap_widget")
             if snap_widget:
                 sb.insertPermanentWidget(2, snap_widget)
+                snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
                 snap_widget.show()
             elif params.GetBool("DisplayStatusbarSnapWidget", True):
                 t = QtCore.QTimer()

@@ -67,17 +67,36 @@ Part::~Part(void)
 {
 }
 
-App::Part *Part::getPartOfObject (const DocumentObject* obj) {
-
+static App::Part *_getPartOfObject(const DocumentObject *obj,
+                                   std::set<const DocumentObject*> *objset)
+{
     // as a Part is a geofeaturegroup it must directly link to all
     // objects it contains, even if they are in additional groups etc.
-    auto list = obj->getInList();
-    for (auto obj : list) {
-        if(obj->isDerivedFrom(App::Part::getClassTypeId()))
-            return static_cast<App::Part*>(obj);
+    // But we still must call 'hasObject()' to exclude link brought in by
+    // expressions.
+    for (auto inObj : obj->getInList()) {
+        if (objset && !objset->insert(inObj).second)
+            continue;
+        auto group = inObj->getExtensionByType<GeoFeatureGroupExtension>(true);
+        if(group && group->hasObject(obj)) {
+            if(inObj->isDerivedFrom(App::Part::getClassTypeId()))
+                return static_cast<App::Part*>(inObj);
+            else if (objset)
+                return _getPartOfObject(inObj, objset);
+            // Only one parent geofeature group per object, so break
+            break;
+        }
     }
 
     return nullptr;
+}
+
+App::Part *Part::getPartOfObject (const DocumentObject* obj, bool recursive) {
+    if (!recursive)
+        return _getPartOfObject(obj, nullptr);
+    std::set<const DocumentObject *> objset;
+    objset.insert(obj);
+    return _getPartOfObject(obj, &objset);
 }
 
 

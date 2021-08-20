@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 #***************************************************************************
 #*                                                                         *
@@ -64,7 +64,8 @@ You can also run the script without any language code, in which case all the
 languages contained in the archive or directory will be added.
 '''
 
-import sys, os, shutil, tempfile, zipfile, getopt, StringIO, re
+import sys, os, shutil, tempfile, zipfile, getopt, re
+import io as StringIO
 
 crowdinpath = "http://crowdin.net/download/project/freecad.zip"
 
@@ -90,7 +91,6 @@ locations = [["AddonManager","../Mod/AddonManager/Resources/translations","../Mo
              ["Sketcher","../Mod/Sketcher/Gui/Resources/translations","../Mod/Sketcher/Gui/Resources/Sketcher.qrc"],
              ["StartPage","../Mod/Start/Gui/Resources/translations","../Mod/Start/Gui/Resources/Start.qrc"],
              ["Test","../Mod/Test/Gui/Resources/translations","../Mod/Test/Gui/Resources/Test.qrc"],
-             ["Ship","../Mod/Ship/resources/translations","../Mod/Ship/resources/Ship.qrc"],
              ["Plot","../Mod/Plot/resources/translations","../Mod/Plot/resources/Plot.qrc"],
              ["Web","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"],
              ["Spreadsheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"],
@@ -110,7 +110,7 @@ def updateqrc(qrcpath,lncode):
     if not os.path.exists(qrcpath):
         print("ERROR: Resource file " + qrcpath + " doesn't exist")
         sys.exit()
-    f = open(qrcpath,"ro")
+    f = open(qrcpath,"r")
     resources = []
     for l in f.readlines():
         resources.append(l)
@@ -192,13 +192,13 @@ def doLanguage(lncode,fmodule=""):
         qrcpath = os.path.abspath(target[2])
         doFile(basefilepath,targetpath,lncode,qrcpath)
     print(lncode + " done!")
-
-if __name__ == "__main__":
     
+def run(args=[]):
+    
+    global tempfolder
     inputdir = ""
     inputzip = ""
     fmodule = ""
-    args = sys.argv[1:]
     if len(args) < 1:
         inputzip = os.path.join(os.path.abspath(os.curdir),"freecad.zip")
         if os.path.exists(inputzip):
@@ -208,7 +208,7 @@ if __name__ == "__main__":
             sys.exit()
     else:
         try:
-            opts, args = getopt.getopt(sys.argv[1:], "hd:z:m:", ["help", "directory=","zipfile=", "module="])
+            opts, args = getopt.getopt(args, "hd:z:m:", ["help", "directory=","zipfile=", "module="])
         except getopt.GetoptError:
             print(__doc__)
             sys.exit()
@@ -264,3 +264,8 @@ if __name__ == "__main__":
             print("ERROR: language path for " + ln + " not found!")
         else:
             doLanguage(ln,fmodule)
+
+
+if __name__ == "__main__":
+    
+    run(sys.argv[1:])

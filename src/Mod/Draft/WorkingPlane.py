@@ -34,10 +34,16 @@ YZ, and XZ planes.
 #  in FreeCAD and a couple of utility functions.
 
 import math
+import lazy_loader.lazy_loader as lz
 
 import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils.translate import translate
+
+DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+Part = lz.LazyLoader("Part", globals(), "Part")
+FreeCADGui = lz.LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
@@ -603,12 +609,6 @@ class Plane:
         """Align the plane to a selection if it defines a plane.
 
         If the selection uniquely defines a plane it will be used.
-        Currently it only works with one object selected, a `'Face'`.
-        It extracts the shape of the object or subobject
-        and then calls `alignToFace(shape, offset)`.
-
-        This method only works when `FreeCAD.GuiUp` is `True`,
-        that is, when the graphical interface is loaded.
 
         Parameter
         ---------
@@ -621,42 +621,100 @@ class Plane:
         bool
             `True` if the operation was successful, and `False` otherwise.
             It returns `False` if the selection has no elements,
-            or if it has more than one element,
             or if the object is not derived from `'Part::Feature'`
             or if the object doesn't have a `Shape`.
-
-        To do
-        -----
-        The method returns `False` if the selection list has more than
-        one element.
-        The method should search the list for objects like faces, points,
-        edges, wires, etc., and call the appropriate aligning submethod.
-
-        The method could work for curves (`'Edge'`  or `'Wire'`) but
-        `alignToCurve()` isn't fully implemented.
-
-        When the interface is not loaded it should fail and print
-        a message, `FreeCAD.Console.PrintError()`.
 
         See Also
         --------
         alignToFace, alignToCurve
         """
-        import FreeCADGui
-        sex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name)
-        if len(sex) == 0:
+        sel_ex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name)
+        if not sel_ex:
             return False
-        elif len(sex) == 1:
-            if (not sex[0].Object.isDerivedFrom("Part::Feature")
-                    or not sex[0].Object.Shape):
+
+        shapes = list()
+        names = list()
+        for obj in sel_ex:
+            # check that the geometric property is a Part.Shape object
+            geom_is_shape = False
+            if isinstance(obj.Object, FreeCAD.GeoFeature):
+                geom = obj.Object.getPropertyOfGeometry()
+                if isinstance(geom, Part.Shape):
+                    geom_is_shape = True
+            if not geom_is_shape:
+                FreeCAD.Console.PrintError(translate(
+                    "draft",
+                    "Object without Part.Shape geometry:'{}'\n".format(
+                        obj.ObjectName)))
                 return False
-            return (self.alignToFace(sex[0].Object.Shape, offset)
-                    or (len(sex[0].SubObjects) == 1
-                        and self.alignToFace(sex[0].SubObjects[0], offset))
-                    or self.alignToCurve(sex[0].Object.Shape, offset))
+            if geom.isNull():
+                FreeCAD.Console.PrintError(translate(
+                    "draft",
+                    "Object with null Part.Shape geometry:'{}'\n".format(
+                        obj.ObjectName)))
+                return False
+            if obj.HasSubObjects:
+                shapes.extend(obj.SubObjects)
+                names.extend([obj.ObjectName + "." + n for n in obj.SubElementNames])
+            else:
+                shapes.append(geom)
+                names.append(obj.ObjectName)
+
+        normal = None
+        for n in range(len(shapes)):
+            if not DraftGeomUtils.is_planar(shapes[n]):
+                FreeCAD.Console.PrintError(translate(
+                   "draft","'{}' object is not planar\n".format(names[n])))
+                return False
+            if not normal:
+                normal = DraftGeomUtils.get_normal(shapes[n])
+                shape_ref = n
+
+        # test if all shapes are coplanar
+        if normal:
+            for n in range(len(shapes)):
+                if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
+                    FreeCAD.Console.PrintError(translate(
+                        "draft","{} and {} aren't coplanar\n".format(
+                        names[shape_ref],names[n])))
+                    return False
         else:
-            # len(sex) > 2, look for point and line, three points, etc.
+            # suppose all geometries are straight lines or points
+            points = [vertex.Point for shape in shapes for vertex in shape.Vertexes]
+            if len(points) >= 3:
+                poly = Part.makePolygon(points)
+                if not DraftGeomUtils.is_planar(poly):
+                    FreeCAD.Console.PrintError(translate(
+                        "draft","All Shapes must be coplanar\n"))
+                    return False
+                normal = DraftGeomUtils.get_normal(poly)
+            else:
+                normal = None
+
+        if not normal:
+            FreeCAD.Console.PrintError(translate(
+                "draft","Selected Shapes must define a plane\n"))
             return False
+
+        # set center of mass
+        ctr_mass = FreeCAD.Vector(0,0,0)
+        ctr_pts = FreeCAD.Vector(0,0,0)
+        mass = 0
+        for shape in shapes:
+            if hasattr(shape, "CenterOfMass"):
+                ctr_mass += shape.CenterOfMass*shape.Mass
+                mass += shape.Mass
+            else:
+                ctr_pts += shape.Point
+        if mass > 0:
+            ctr_mass /= mass
+        # all shapes are vertexes
+        else:
+            ctr_mass = ctr_pts/len(shapes)
+
+        self.alignToPointAndAxis(ctr_mass, normal, offset)
+
+        return True
 
     def setup(self, direction=None, point=None, upvec=None, force=False):
         """Set up the working plane if it exists but is undefined.
@@ -779,7 +837,7 @@ class Plane:
             import FreeCADGui
             if FreeCADGui.ActiveDocument:
                 view = FreeCADGui.ActiveDocument.ActiveView
-                if view:
+                if view and hasattr(view,"getActiveOject"):
                     a = view.getActiveObject("Arch")
                     if a:
                         p = a.Placement.inverse().multiply(p)

@@ -74,6 +74,7 @@ TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 Sketch::Sketch()
   : SolveTime(0)
   , RecalculateInitialSolutionWhileMovingPoint(false)
+  , resolveAfterGeometryUpdated(false)
   , GCSsys(), ConstraintsCounter(0)
   , isInitMove(false), isFine(true), moveStep(0)
   , defaultSolver(GCS::DogLeg)
@@ -99,6 +100,7 @@ void Sketch::clear(void)
     ArcsOfHyperbola.clear();
     ArcsOfParabola.clear();
     BSplines.clear();
+    resolveAfterGeometryUpdated = false;
 
     // deleting the doubles allocated with new
     for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it)
@@ -127,6 +129,7 @@ void Sketch::clear(void)
     ConstraintsCounter = 0;
     Conflicting.clear();
     Redundant.clear();
+    PartiallyRedundant.clear();
     MalformedConstraints.clear();
 }
 
@@ -135,7 +138,9 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
                                      std::vector<bool> &onlyblockedGeometry,
                                      std::vector<int> &blockedGeoIds) const
 {
-    bool isSomethingBlocked = false;
+    // To understand this function read the documentation in Sketch.h
+    // It is important that "onlyblockedGeometry" ONLY identifies blocked geometry
+    // that is not affected by any other driving constraint
     bool doesBlockAffectOtherConstraints = false;
 
     int geoindex = 0;
@@ -149,7 +154,7 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
                 // is block driving
                 if( c->Type == Sketcher::Block && c->isDriving && c->First == geoindex)
                     blockisDriving = true;
-
+                // We have another driving constraint (which may be InternalAlignment)
                 if( c->Type != Sketcher::Block && c->isDriving &&
                     (c->First == geoindex || c->Second == geoindex || c->Third == geoindex) )
                     blockOnly = false;
@@ -158,12 +163,10 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
             if(blockisDriving) {
                 if(blockOnly) {
                     onlyblockedGeometry[geoindex] = true; // we pre-fix this geometry
-                    isSomethingBlocked = true;
                 }
                 else {
                     // we will have to pos-analyse the first diagnose result for these geometries
                     // in order to avoid redundant constraints
-                    isSomethingBlocked = true;
                     doesBlockAffectOtherConstraints = true;
                     blockedGeoIds.push_back(geoindex);
                 }
@@ -171,39 +174,6 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
 
         }
         geoindex++;
-    }
-
-    if(isSomethingBlocked) {
-
-        // look for internal geometry linked IAs
-        for(auto c : constraintList) {
-            if(c->Type == InternalAlignment) {
-
-                auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
-
-                if(geoit != blockedGeoIds.end() || onlyblockedGeometry[c->Second]) { // internal alignment geometry found, add to list
-                    // check if pre-fix or post-analyses
-                    bool blockAffectedOnly = true;
-
-                    for(auto ic : constraintList) {
-                        // there is another driving constraint
-                        if( ic->Type != Sketcher::Block && ic->isDriving &&
-                            (ic->First == c->First || ic->Second == c->First || ic->Third == c->First))
-                            blockAffectedOnly = false;
-                    }
-
-                    if(blockAffectedOnly) {
-                        onlyblockedGeometry[c->Second] = true; // we pre-fix this geometry
-                    }
-                    else {
-                        // we will have to post-analyse the first diagnose result for these geometries
-                        // in order to avoid redundant constraints
-                        doesBlockAffectOtherConstraints = true;
-                        blockedGeoIds.push_back(*geoit);
-                    }
-                }
-            }
-        }
     }
 
     return doesBlockAffectOtherConstraints;
@@ -244,19 +214,23 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
     Base::Console().Log("\nOnlyBlocked GeoIds:");
     size_t i = 0;
+    bool found = false;
     for(; i < onlyBlockedGeometry.size(); i++) {
-        if(onlyBlockedGeometry[i])
+        if(onlyBlockedGeometry[i]) {
             Base::Console().Log("\n  GeoId=%d", i);
+            found = true;
+        }
     }
-    if( i == 0)
+    if(found)
         Base::Console().Log("\n  None");
 
     Base::Console().Log("\nNotOnlyBlocked GeoIds:");
     i = 0;
     for(; i < blockedGeoIds.size(); i++)
         Base::Console().Log("\n  GeoId=%d", blockedGeoIds[i]);
-    if( i == 0)
+    if(i == 0)
         Base::Console().Log("\n  None");
+    Base::Console().Log("\n");
 #endif //DEBUG_BLOCK_CONSTRAINT
 
     addGeometry(intGeoList,onlyBlockedGeometry);
@@ -329,6 +303,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     // Now we set the Sketch status with the latest solver information
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
@@ -362,6 +337,7 @@ void Sketch::fixParametersAndDiagnose(std::vector<double *> &params_to_block)
         GCSsys.initSolution(defaultSolverRedundant);
         /*GCSsys.getConflicting(Conflicting);
         GCSsys.getRedundant(Redundant);
+        GCSsys.getPartlyRedundant(PartiallyRedundant);
         GCSsys.getDependentParams(pDependentParametersList);
 
         calculateDependentParametersElements();*/
@@ -571,6 +547,7 @@ int Sketch::resetSolver()
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
@@ -649,7 +626,10 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         return addArcOfParabola(*aop, fixed);
     } else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
         const GeomBSplineCurve *bsp = static_cast<const GeomBSplineCurve*>(geo);
-        // create the definition struct for that geom
+
+        // Current B-Spline implementation relies on OCCT calculations, so a second solve
+        // is necessary to update actual solver implementation to account for changes in B-Spline geometry
+        resolveAfterGeometryUpdated = true;
         return addBSpline(*bsp, fixed);
     }
     else {
@@ -2379,7 +2359,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
 //This function handles any type of tangent, perpendicular and angle
 // constraint that involves a point.
 // i.e. endpoint-to-curve, endpoint-to-endpoint and tangent-via-point
-//geoid1, geoid2 and geoid3 as in in the constraint object.
+//geoid1, geoid2 and geoid3 as in the constraint object.
 //For perp-ty and tangency, angle is used to lock the direction.
 //angle==0 - autodetect direction. +pi/2, -pi/2 - specific direction.
 int Sketch::addAngleAtPointConstraint(
@@ -2671,16 +2651,9 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         Geoms[geoId2].type == Line) {
         GCS::Line &l1 = Lines[Geoms[geoId1].index];
         GCS::Line &l2 = Lines[Geoms[geoId2].index];
-        double dx1 = (*l1.p2.x - *l1.p1.x);
-        double dy1 = (*l1.p2.y - *l1.p1.y);
-        double dx2 = (*l2.p2.x - *l2.p1.x);
-        double dy2 = (*l2.p2.y - *l2.p1.y);
-        double value = (sqrt(dx1*dx1+dy1*dy1)+sqrt(dx2*dx2+dy2*dy2))/2;
-        // add the parameter for the common length (this is added to Parameters, not FixParameters)
-        Parameters.push_back(new double(value));
-        double *length = Parameters[Parameters.size()-1];
+
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintEqualLength(l1, l2, length, tag);
+        GCSsys.addConstraintEqualLength(l1, l2, tag);
         return ConstraintsCounter;
     }
 
@@ -3456,7 +3429,8 @@ bool Sketch::updateGeometry()
                 std::vector<double> knots;
                 std::vector<int> mult;
 
-                std::vector<double *>::const_iterator it3;
+                // This is the code that should be here when/if b-spline gets its full implementation in the solver.
+                /*std::vector<double *>::const_iterator it3;
                 std::vector<int>::const_iterator it4;
 
                 for( it3 = mybsp.knots.begin(), it4 = mybsp.mult.begin(); it3 != mybsp.knots.end() && it4 != mybsp.mult.end(); ++it3, ++it4) {
@@ -3464,7 +3438,14 @@ bool Sketch::updateGeometry()
                     mult.push_back((*it4));
                 }
 
-                bsp->setKnots(knots,mult);
+                bsp->setKnots(knots,mult);*/
+
+                // This is the code that needs to be here to take advantage of the current OCCT reliant implementation
+                // The current B-Spline implementation relies on OCCT for pole calculation, so the knots are set by the OCCT calculated values
+                auto occtknots = bsp->getKnots();
+
+                for(auto it3 = occtknots.begin() ; it3 != occtknots.end(); ++it3)
+                    knots.push_back(*it3);
 
                 #if OCC_VERSION_HEX >= 0x060900
                 int index = 0;
@@ -3476,7 +3457,14 @@ bool Sketch::updateGeometry()
                             auto pointf = GeometryFacade::getFacade(point);
 
                             if(pointf->getInternalType() == InternalType::BSplineKnotPoint) {
-                                point->setPoint(bsp->pointAtParameter(knots[index]));
+                                auto pointcoords = bsp->pointAtParameter(knots[index]);
+                                point->setPoint(pointcoords); // update the geompoint of the knot (geometry update)
+                                // Now we update the position of the points in the solver, so that any call to solve()
+                                // calculates constraints and positions based on the actual position of the knots.
+                                auto pointindex = getPointId(*it5, start);
+                                auto solverpoint = Points[pointindex];
+                                *(solverpoint.x) = pointcoords.x;
+                                *(solverpoint.y) = pointcoords.y;
                             }
                         }
                     }
@@ -3495,7 +3483,7 @@ bool Sketch::updateGeometry()
 
 bool Sketch::updateNonDrivingConstraints()
 {
-     for (std::vector<ConstrDef>::iterator it = Constrs.begin();it!=Constrs.end();++it){
+    for (std::vector<ConstrDef>::iterator it = Constrs.begin();it!=Constrs.end();++it){
         if(!(*it).driving) {
             if((*it).constr->Type==SnellsLaw) {
                 double n1 = *((*it).value);
@@ -3509,13 +3497,37 @@ bool Sketch::updateNonDrivingConstraints()
             }
             else if((*it).constr->Type==Diameter && (*it).constr->First>=0 ) {
 
-                (*it).constr->setValue(2.0**((*it).value));
+                // two cases, the geometry parameter is fixed or it is not
+                // NOTE: This is different from being blocked, as new block constraint may fix
+                // the parameter or not depending on whether other driving constraints are present
+                int geoId = (*it).constr->First;
+
+                geoId = checkGeoId( geoId );
+
+                double * rad = nullptr;
+
+                if (Geoms[geoId].type == Circle) {
+                    GCS::Circle &c = Circles[Geoms[geoId].index];
+                    rad = c.rad;
+                }
+                else if (Geoms[geoId].type == Arc) {
+                    GCS::Arc &a = Arcs[Geoms[geoId].index];
+                    rad = a.rad;
+                }
+
+                auto pos = std::find(FixParameters.begin(), FixParameters.end(), rad);
+
+                if (pos != FixParameters.end())
+                    (*it).constr->setValue(*((*it).value));
+                else
+                    (*it).constr->setValue(2.0**((*it).value));
             }
             else {
                 (*it).constr->setValue(*((*it).value));
             }
         }
      }
+
     return true;
 }
 
@@ -3524,6 +3536,24 @@ bool Sketch::updateNonDrivingConstraints()
 int Sketch::solve(void)
 {
     Base::TimeInfo start_time;
+    std::string solvername;
+
+    auto result = internalSolve(solvername);
+
+    Base::TimeInfo end_time;
+
+    if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
+
+        Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",solvername.c_str(),Base::TimeInfo::diffTime(start_time,end_time).c_str());
+    }
+
+    SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);
+
+    return result;
+}
+
+int Sketch::internalSolve(std::string & solvername, int level)
+{
     if (!isInitMove) { // make sure we are in single subsystem mode
         clearTemporaryConstraints();
         isFine = true;
@@ -3531,7 +3561,6 @@ int Sketch::solve(void)
 
     int ret = -1;
     bool valid_solution;
-    std::string solvername;
     int defaultsoltype = -1;
 
     if(isInitMove){
@@ -3654,14 +3683,11 @@ int Sketch::solve(void)
         } // soltype
     }
 
-    Base::TimeInfo end_time;
-
-    if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
-
-        Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",solvername.c_str(),Base::TimeInfo::diffTime(start_time,end_time).c_str());
+    // For OCCT reliant geometry that needs an extra solve() for example to update non-driving constraints.
+    if (resolveAfterGeometryUpdated && ret == GCS::Success && level == 0) {
+        return internalSolve(solvername, 1);
     }
 
-    SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);
     return ret;
 }
 

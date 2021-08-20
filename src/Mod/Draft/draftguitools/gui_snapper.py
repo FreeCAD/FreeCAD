@@ -407,17 +407,17 @@ class Snapper:
                     # Special snapping for polygons: add the center
                     snaps.extend(self.snapToPolygon(obj))
 
+                elif (Draft.getType(obj) == "BuildingPart"
+                      and self.isEnabled("Center")):
+                    # snap to the base placement of empty BuildingParts
+                    snaps.append([obj.Placement.Base, 'center',
+                                  self.toWP(obj.Placement.Base)])
+
                 if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
                     if "Edge" in comp:
                         # we are snapping to an edge
-                        edge = None
                         if shape.ShapeType == "Edge":
                             edge = shape
-                        else:
-                            en = int(comp[4:])-1
-                            if len(shape.Edges) > en:
-                                edge = shape.Edges[en]
-                        if edge:
                             snaps.extend(self.snapToEndpoints(edge))
                             snaps.extend(self.snapToMidpoint(edge))
                             snaps.extend(self.snapToPerpendicular(edge, lastpoint))
@@ -433,9 +433,9 @@ class Snapper:
                                 # extra ellipse options
                                 snaps.extend(self.snapToCenter(edge))
                     elif "Face" in comp:
-                        en = int(comp[4:])-1
-                        if len(shape.Faces) > en:
-                            face = shape.Faces[en]
+                        # we are snapping to a face
+                        if shape.ShapeType == "Face":
+                            face = shape
                             snaps.extend(self.snapToFace(face))
                     elif "Vertex" in comp:
                         # directly snapped to a vertex
@@ -464,9 +464,11 @@ class Snapper:
                 # for points we only snap to points
                 snaps.extend(self.snapToEndpoints(obj.Points))
 
-            elif Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart"):
-                # snap to the center of WPProxies and BuildingParts
-                snaps.append([obj.Placement.Base, 'endpoint',
+            elif (Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart")
+                  and self.isEnabled("Center")):
+                # snap to the center of WPProxies or to the base
+                # placement of no empty BuildingParts
+                snaps.append([obj.Placement.Base, 'center',
                               self.toWP(obj.Placement.Base)])
 
             elif Draft.getType(obj) == "SectionPlane":
@@ -1024,7 +1026,7 @@ class Snapper:
                                     if pt:
                                         for p in pt:
                                             snaps.append([p, 'intersection', self.toWP(p)])
-                                except:
+                                except Exception:
                                     pass
                                     # some curve types yield an error
                                     # when trying to read their types

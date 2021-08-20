@@ -53,12 +53,12 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPocketParameters */
 
 TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent, bool newObj)
-    : TaskSketchBasedParameters(PocketView, parent, "PartDesign_Pocket",tr("Pocket parameters"))
+    : TaskSketchBasedParameters(PocketView, parent, "PartDesign_Pocket", tr("Pocket parameters"))
+    , ui(new Ui_TaskPocketParameters)
     , oldLength(0)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPocketParameters();
     ui->setupUi(proxy);
 #if QT_VERSION >= 0x040700
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
@@ -205,6 +205,7 @@ void TaskPocketParameters::updateUI(int index)
     // up to face
     else if (index == 3) {
         isOffsetEditVisable = true;
+        isReversedEnabled = true;
         isFaceEditEnabled    = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
@@ -215,6 +216,7 @@ void TaskPocketParameters::updateUI(int index)
     else {
         isLengthEditVisable = true;
         isLengthEdit2Visable = true;
+        isReversedEnabled = true;
     }    
 
     ui->lengthEdit->setVisible( isLengthEditVisable );
@@ -422,7 +424,6 @@ QString TaskPocketParameters::getFaceName(void) const
 
 TaskPocketParameters::~TaskPocketParameters()
 {
-    delete ui;
 }
 
 void TaskPocketParameters::changeEvent(QEvent *e)

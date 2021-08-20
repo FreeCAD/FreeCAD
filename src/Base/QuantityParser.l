@@ -138,6 +138,11 @@ CGRP     '\,'[0-9][0-9][0-9]
 "kN"       yylval = Quantity::KiloNewton;          return UNIT; // kilo Newton
 "MN"       yylval = Quantity::MegaNewton;          return UNIT; // mega Newton
 
+"N/m"       yylval = Quantity::NewtonPerMeter;     return UNIT; // Newton per meter (N/m or kg/s^2)
+"mN/m"      yylval = Quantity::MilliNewtonPerMeter;return UNIT; // milli Newton per meter
+"kN/m"      yylval = Quantity::KiloNewtonPerMeter; return UNIT; // kilo Newton per meter
+"MN/m"      yylval = Quantity::MegaNewtonPerMeter; return UNIT; // mega Newton per meter
+
 "Pa"       yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m/s^2 or N/m^2)
 "kPa"      yylval = Quantity::KiloPascal;          return UNIT; // kilo Pascal
 "MPa"      yylval = Quantity::MegaPascal;          return UNIT; // mega Pascal
@@ -164,6 +169,8 @@ CGRP     '\,'[0-9][0-9][0-9]
 "kV"       yylval = Quantity::KiloVolt;            return UNIT; // kilo Volt
 "mV"       yylval = Quantity::MilliVolt;           return UNIT; // milli Volt
 
+"MS"       yylval = Quantity::MegaSiemens;         return UNIT; // mega Siemens
+"kS"       yylval = Quantity::KiloSiemens;         return UNIT; // kilo Siemens
 "S"        yylval = Quantity::Siemens;             return UNIT; // Siemens (A^2*s^3/kg/m^2)
 "mS"       yylval = Quantity::MilliSiemens;        return UNIT; // milli Siemens
 "\xC2\xB5S"     yylval = Quantity::MicroSiemens;   return UNIT; // micro Siemens

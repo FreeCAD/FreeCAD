@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <stdexcept>
 #endif
 
 
@@ -164,7 +165,7 @@ doc.recompute()
     switch(ExceptionType.getValue())
     {
         case 0: break;
-        case 1: throw "Test Exception";
+        case 1: throw std::runtime_error("Test Exception");
         case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
 #if 0 // only allow these error types on purpose
         case 3: *i=0;printf("%i",*i);break;                 // seg-fault

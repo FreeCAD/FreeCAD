@@ -27,16 +27,13 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
-
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
-
-class Ui_TaskBalloon;
 
 namespace TechDrawGui
 {
 
+class Ui_TaskBalloon;
 class TaskBalloon : public QWidget
 {
     Q_OBJECT
@@ -63,7 +60,7 @@ private Q_SLOTS:
     void onKinkLengthChanged();
 
 private:
-    Ui_TaskBalloon *ui;
+    std::unique_ptr<Ui_TaskBalloon> ui;
     QGIViewBalloon *m_parent;
     ViewProviderBalloon* m_balloonVP;
 };

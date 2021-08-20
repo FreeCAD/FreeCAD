@@ -40,7 +40,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
@@ -238,7 +238,7 @@ public:
     }
 };
 
-typedef boost::shared_ptr<Converter> ConverterPtr;
+typedef std::shared_ptr<Converter> ConverterPtr;
 
 class DataStreambuf : public std::streambuf
 {

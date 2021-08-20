@@ -136,7 +136,7 @@
     </message>
     <message>
       <source>Paste expressions</source>
-      <translation type="unfinished">Paste expressions</translation>
+      <translation>Formülleri yapıştır</translation>
     </message>
     <message>
       <source>Make link group</source>
@@ -160,19 +160,19 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Ölçü ekle</translation>
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Metin dökümanı ekle</translation>
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>Bir parça ekle</translation>
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>Bir grup ekle</translation>
     </message>
     <message>
       <source>Align</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Bağlantı dönüşümü</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -274,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Dosya adı</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
     </message>
   </context>
   <context>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Kelime boyutu</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Katkıda Bulunanlar</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD çabaları olmadan hiçbir yerde olamazdı:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Lisans</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Koleksiyon</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Katkıda Bulunanlar</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1363,16 +1385,12 @@ Eğer bu işaretlenmeyecekse, özelliğe benzersiz bir ad verilmelidir ve böyle
       <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Kod satırları numaralandırılacak </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>&lt;Tab&gt; a basmak, tanımlı talep boyutu miktarını ekleyecek</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Sekme ızgarası boşluğa göre</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
@@ -1380,7 +1398,7 @@ Eğer bu işaretlenmeyecekse, özelliğe benzersiz bir ad verilmelidir ve böyle
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>&lt;Tab&gt; tuşuna bastığınızda tanımlı sekme boyutunda bir sekme durağı ekleyecek</translation>
     </message>
     <message>
       <source>Display items</source>
@@ -1401,6 +1419,10 @@ Eğer bu işaretlenmeyecekse, özelliğe benzersiz bir ad verilmelidir ve böyle
     <message>
       <source>Color:</source>
       <translation>Renk:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2534,10 +2556,6 @@ Bunu elde etmek için mevcut 3 seçenek bulunuyor:
       <translation>Merkezileştirilmiş</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Kullanılan çok örneklemeli kenar düzeltme türü </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Şeffaf nesneler:</translation>
     </message>
@@ -2560,13 +2578,6 @@ Bunu elde etmek için mevcut 3 seçenek bulunuyor:
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Stereo kipler için iki göz arası mesafe</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Stereo gösterimler için kullanılan iki göz arası mesafe.
-Belirlenen değer, o an görüntülenen 3B nesnenin sınırlama çerçevesi boyutu ile çoğaltılacak bir etkendir. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2618,13 +2629,25 @@ Daha büyük değer nesneleri seçmeyi kolaylaştırır ancak küçük şekiller
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+      <translation>Bu seçenek, grafik kartı ve sürücü sorunlarını gidermek için kullanışlıdır.
 
-Changing this option requires a restart of the application.</translation>
+Bu seçeneğin değiştirilmesi, uygulamanın yeniden başlatılmasını gerektirir.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>Yazılımsal OpenGL kullan</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -2994,23 +3017,23 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+      <translation>Genel yaratıcılar atıf benzer-paylaşım</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+      <translation>Genel yaratıcılar atıf-türetilemez</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+      <translation>Genel yaratıcılar atıf-ticari olmayan</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Genel yaratıcı atıf-ticari olmayan-benzer paylaşım</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Genel yaratıcılar atıf-ticari olmayan-türetilemez</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
@@ -3240,9 +3263,28 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation>Resim-arabelleği (bu haliyle)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation>Piksel tamponu</translation>
+      <source>Unloaded Workbenches</source>
+      <translation>Çalışma Tezgahları Yüklenmedi</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt; Tercih pencerelerini tercihler iletişim kutusuna ekleyerek seçilen çalışma tezgahlarını yükleyin. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Seçileni Yükle</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt; Kullanılabilir yüklenmemiş çalışma tezgahları &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt; Kaynakları korumak için FreeCAD, kullanılıncaya kadar çalışma tezgahlarını yüklemez. Bunları yüklemek, işlevleriyle ilgili ek tercihlere erişim sağlayabilir. &lt;/p&gt; &lt;p&gt; Aşağıdaki çalışma tezgahları kurulumunuzda mevcuttur, ancak henüz yüklenmemiştir: &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3459,12 +3501,6 @@ Değeri, ekrana sığdırılacak kürenin çapıdır.</translation>
       <translation>Zoom adımı</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Yakınlaştırma miktarı.
-1 yakınlaştırma adımı, adım başına 7.5 katsayı anlamına gelir. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Yakınlaştırma işlemlerinin yönü ters çevrilecek</translation>
     </message>
@@ -3476,9 +3512,9 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Parmak veya teker ile yakınlaştırırken görünümün eğilmesini önler.
+Yalnızca hareketle gezinme stilini etkiler.
+Bu ayarla fareyi eğme devre dışı bırakılmaz.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
@@ -3538,19 +3574,68 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>Döndürme modu</translation>
     </message>
     <message>
       <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
+      <translation>Pencere merkezi</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>İmleç ile sürükle</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>Nesne merkezi</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>seçim</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Seçili ögeyi içeren 3B görünümüne otomatik geçiş yap</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>İlgili nesne 3B görünümünde seçildiğinde ağaç ögesini otomatik genişlet</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Fare ağaç ögesinin üzerine geldiğinde 3B görünümdeki nesneyi ön seç</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Gezinme düğmesini kullanarak geri/ileri gitmek için unsur ağacında seçimi kaydedin</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Belge ağacında seçim için onay kutuları ekleyin</translation>
     </message>
   </context>
   <context>
@@ -3836,12 +3921,12 @@ Tercih edilen sistem, genel tercihlerdeki tek ayardır.</translation>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>bilinmeyen birim: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>birim uyuşmazlığı</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -5319,6 +5404,10 @@ sağ görünümde %2 nokta seçili.</translation>
     <message>
       <source>Expression...</source>
       <translation>İfade...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Otomatik Genişlet</translation>
     </message>
   </context>
   <context>
@@ -6824,14 +6913,6 @@ Daha fazlası için lütfen rapor görünümünü kontrol edin...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Fiziksel yol: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Belge: </translation>
@@ -6845,6 +6926,30 @@ Belge: </translation>
     <message>
       <source>Identical physical path</source>
       <translation>Özdeş fiziksel yol</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Hata</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Dosya yüklemesi esnasında hatalar vardı. Bazı veriler değiştirilmiş veya hiç kurtarılmamış olabilir. İlgili nesneler hakkında daha spesifik bilgi için rapor görünümüne bakın.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Dosyayı yüklerken ciddi hatalar oluştu. Bazı veriler değiştirilmiş veya hiç kurtarılmamış olabilir. Projenin kaydedilmesi büyük olasılıkla veri kaybına neden olacaktır.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Tezgah</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7289,8 +7394,8 @@ Belge: </translation>
       <translation>Seçim yok</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Lütfen önce dışa aktarmak istediğiniz nesneleri seçin.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Dışa Aktar'ı seçmeden önce dışa aktarılacak nesneleri seçin.</translation>
     </message>
   </context>
   <context>
@@ -7317,6 +7422,21 @@ Belge: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Belgeyi ya da özelliği yeniden hesapla</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Yardım</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Bağış Yap</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>FreeCAD'i geliştirmek için bağış yapın</translation>
     </message>
   </context>
   <context>
@@ -8229,7 +8349,7 @@ Belge: </translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
-      <translation type="unfinished">Repeat the backed selection</translation>
+      <translation>Desteklenen seçimi tekrarlayın</translation>
     </message>
   </context>
   <context>
@@ -8911,11 +9031,11 @@ Belge: </translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Kaydedilen kamerayı geri yükle</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Kaydedilen kamera ayarlarını geri yükle</translation>
     </message>
   </context>
   <context>
@@ -8971,11 +9091,11 @@ Belge: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Varsayılan kamerayı geri yükle</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Varsayılan kamera ayarlarını geri yükle</translation>
     </message>
   </context>
   <context>

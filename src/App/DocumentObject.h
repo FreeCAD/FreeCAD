@@ -65,6 +65,7 @@ enum ObjectStatus {
     Expand = 16, // indicate the object's tree item expansion status
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
+    RecomputeExtension = 19, // mark the object to recompute its extensions
 };
 
 /** Return object for feature execution
@@ -421,7 +422,7 @@ public:
 
     /* Expression support */
 
-    virtual void setExpression(const ObjectIdentifier & path, boost::shared_ptr<App::Expression> expr);
+    virtual void setExpression(const ObjectIdentifier & path, std::shared_ptr<App::Expression> expr);
 
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 

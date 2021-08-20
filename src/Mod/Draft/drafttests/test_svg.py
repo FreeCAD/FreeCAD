@@ -87,6 +87,28 @@ class DraftSVG(unittest.TestCase):
         obj = Draft.export_svg(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
+    def test_get_svg_from_arch_space_with_zero_vector(self):
+        """Try to get a svg string from an Arch Space with a zero-vector as direction."""
+        import Part
+        import Arch
+        import Draft
+
+        sb = Part.makeBox(1,1,1)
+        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        b.Shape = sb
+
+        s = Arch.makeSpace(b)
+        App.ActiveDocument.recompute()
+
+        try:
+            Draft.get_svg(s, direction=App.Vector(0,0,0))
+        except AttributeError as err:
+            self.fail("Cryptic exception thrown: {}".format(err))
+        except ValueError as err:
+            App.Console.PrintLog("Exception thrown, OK: {}".format(err))
+        else:
+            self.fail("no exception thrown")
+
     def tearDown(self):
         """Finish the test.
 

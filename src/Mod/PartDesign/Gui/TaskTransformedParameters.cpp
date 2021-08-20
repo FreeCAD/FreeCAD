@@ -65,14 +65,12 @@ using namespace Gui;
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
-              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()),
-              true,
-              parent),
-      proxy(nullptr),
-      TransformedView(TransformedView),
-      parentTask(nullptr),
-      insideMultiTransform(false),
-      blockUpdate(false)
+              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()), true, parent)
+    , proxy(nullptr)
+    , TransformedView(TransformedView)
+    , parentTask(nullptr)
+    , insideMultiTransform(false)
+    , blockUpdate(false)
 {
     selectionMode = none;
 
@@ -207,7 +205,7 @@ void TaskTransformedParameters::checkVisibility() {
     auto inset = feat->getInListEx(true);
     inset.emplace(feat);
     for(auto o : body->Group.getValues()) {
-        if(!o->Visibility.getValue() 
+        if(!o->Visibility.getValue()
                 || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             continue;
         if(inset.count(o))
@@ -412,10 +410,10 @@ void TaskTransformedParameters::exitSelectionMode()
     }
 }
 
-void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole)
+void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole, bool circle)
 {
     std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(
-            new ReferenceSelection(getBaseObject(), edge, face, planar,false,whole));
+            new ReferenceSelection(getBaseObject(), edge, face, planar, false, whole, circle));
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }

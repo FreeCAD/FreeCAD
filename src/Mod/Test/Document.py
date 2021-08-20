@@ -122,7 +122,7 @@ class DocumentBasicCases(unittest.TestCase):
     # test read only mechanismus
     try:
       self.Doc.UndoCount = 3
-    except:
+    except Exception:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
       self.fail("no exception thrown")
@@ -143,6 +143,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(not L1.getDocumentationOfProperty("Source1") == "")
     self.failUnless(L1.getGroupOfProperty("Source1") == "Feature Test")
     self.failUnless(L1.getTypeOfProperty("Source1") == [])
+    self.failUnless(L1.getEnumerationsOfProperty("Source1") is None)
 
 
     # test the constraint types ( both are constraint to percent range)
@@ -166,10 +167,11 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L1.Enum  == "Two",     "Different value to 'Two'")
     try:
       L1.Enum = "SurelyNotInThere!"
-    except:
+    except Exception:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
       self.fail("no exception thrown")
+    self.failUnless(sorted(L1.getEnumerationsOfProperty('Enum')) == sorted(['Zero', 'One', 'Two', 'Three', 'Four']))
 
     #self.failUnless(L1.IntegerList  == [4711]   )
     #f = L1.FloatList
@@ -216,7 +218,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.removeObject(L1.Name)
     try:
       L1.Name
-    except:
+    except Exception:
       self.failUnless(True)
     else:
       self.failUnless(False)
@@ -230,7 +232,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.undo()
     try:
       L2.Name
-    except:
+    except Exception:
       self.failUnless(True)
     else:
       self.failUnless(False)
@@ -243,13 +245,13 @@ class DocumentBasicCases(unittest.TestCase):
     #we should have all methods we need to handle extensions
     try:
       self.failUnless(not grp.hasExtension("App::GroupExtensionPython"))
-      grp.addExtension("App::GroupExtensionPython", self)
+      grp.addExtension("App::GroupExtensionPython")
       self.failUnless(grp.hasExtension("App::GroupExtension"))
       self.failUnless(grp.hasExtension("App::GroupExtensionPython"))
       grp.addObject(obj)
       self.failUnless(len(grp.Group) == 1)
       self.failUnless(grp.Group[0] == obj)
-    except:
+    except Exception:
       self.failUnless(False)
 
     #test if the method override works
@@ -258,14 +260,15 @@ class DocumentBasicCases(unittest.TestCase):
             return False;
 
     callback = SpecialGroup()
-    grp2 = self.Doc.addObject("App::DocumentObject", "Extension_3")
-    grp2.addExtension("App::GroupExtensionPython", callback)
+    grp2 = self.Doc.addObject("App::FeaturePython", "Extension_3")
+    grp2.addExtension("App::GroupExtensionPython")
+    grp2.Proxy = callback
 
     try:
       self.failUnless(grp2.hasExtension("App::GroupExtension"))
       grp2.addObject(obj)
       self.failUnless(len(grp2.Group) == 0)
-    except:
+    except Exception:
       self.failUnless(True)
 
     self.Doc.removeObject(grp.Name)
@@ -279,7 +282,7 @@ class DocumentBasicCases(unittest.TestCase):
 
         class MyExtension():
             def __init__(self, obj):
-                obj.addExtension("App::GroupExtensionPython", self)
+                obj.addExtension("App::GroupExtensionPython")
 
         obj = self.Doc.addObject("App::DocumentObject", "myObj")
         MyExtension(obj)
@@ -291,7 +294,7 @@ class DocumentBasicCases(unittest.TestCase):
   def testExtensionGroup(self):
     obj = self.Doc.addObject("App::DocumentObject", "Obj")
     grp = self.Doc.addObject("App::FeaturePython", "Extension_2")
-    grp.addExtension("App::GroupExtensionPython", None)
+    grp.addExtension("App::GroupExtensionPython")
     grp.Group = [obj]
     self.assertTrue(obj in grp.Group)
 
@@ -299,11 +302,11 @@ class DocumentBasicCases(unittest.TestCase):
 
     class Layer():
       def __init__(self, obj):
-        obj.addExtension("App::GroupExtensionPython", self)
+        obj.addExtension("App::GroupExtensionPython")
 
     class LayerViewProvider():
       def __init__(self, obj):
-        obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        obj.addExtension("Gui::ViewProviderGroupExtensionPython")
         obj.Proxy = self
 
     obj = self.Doc.addObject("App::FeaturePython","Layer")
@@ -383,7 +386,7 @@ class DocumentBasicCases(unittest.TestCase):
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup():
     def __init__(self, obj):
-        obj.addExtension("App::GroupExtensionPython", self)
+        obj.addExtension("App::GroupExtensionPython")
         obj.Proxy = self
 
     def allowObject(self, obj):
@@ -392,7 +395,7 @@ class SaveRestoreSpecialGroup():
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroupViewProvider():
     def __init__(self, obj):
-        obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        obj.addExtension("Gui::ViewProviderGroupExtensionPython")
         obj.Proxy = self
 
     def testFunction(self):
@@ -453,7 +456,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         Active = FreeCAD.activeDocument()
         # Second is still a valid object
         self.failUnless(Second != Active)
-    except:
+    except Exception:
         # Okay, no document open
         self.failUnless(True)
 
@@ -466,7 +469,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     grp1 = Doc.addObject("App::DocumentObject", "Extension_1")
     grp2 = Doc.addObject("App::FeaturePython", "Extension_2")
 
-    grp1.addExtension("App::GroupExtensionPython", None)
+    grp1.addExtension("App::GroupExtensionPython")
     SaveRestoreSpecialGroup(grp2)
     if FreeCAD.GuiUp:
         SaveRestoreSpecialGroupViewProvider(grp2.ViewObject)
@@ -478,16 +481,12 @@ class DocumentSaveRestoreCases(unittest.TestCase):
 
     self.failUnless(Doc.Extension_1.hasExtension("App::GroupExtension"))
     self.failUnless(Doc.Extension_2.hasExtension("App::GroupExtension"))
-    self.failUnless(Doc.Extension_1.ExtensionProxy is None)
-    self.failUnless(Doc.Extension_2.ExtensionProxy is not None)
     self.failUnless(Doc.Extension_2.Group[0] is Doc.Obj)
     self.failUnless(hasattr(Doc.Extension_2.Proxy, 'allowObject'))
-    self.failUnless(hasattr(Doc.Extension_2.ExtensionProxy, 'allowObject'))
 
     if FreeCAD.GuiUp:
       self.failUnless(Doc.Extension_2.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython"))
       self.failUnless(hasattr(Doc.Extension_2.ViewObject.Proxy, 'testFunction'))
-      self.failUnless(hasattr(Doc.Extension_2.ViewObject.ExtensionProxy, 'testFunction'))
 
     FreeCAD.closeDocument("SaveRestoreExtensions")
 
@@ -926,7 +925,7 @@ class DocumentGroupCases(unittest.TestCase):
     # Adding the group to itself must fail
     try:
       G1.addObject(G1)
-    except:
+    except Exception:
       FreeCAD.Console.PrintLog("Cannot add group to itself, OK\n")
     else:
       self.fail("Adding the group to itself must not be possible")
@@ -1028,7 +1027,7 @@ class DocumentGroupCases(unittest.TestCase):
         grp = prt1.Group
         grp.append(obj1)
         prt1.Group = grp
-    except:
+    except Exception:
         grp.remove(obj1)
         self.failUnless(prt1.Group == grp)
     else:
@@ -1040,7 +1039,7 @@ class DocumentGroupCases(unittest.TestCase):
     grp.append(obj1)
     try:
         grp1.Group = grp
-    except:
+    except Exception:
         pass
     else:
         self.fail("No exception thrown when object is in multiple Groups")
@@ -1081,7 +1080,7 @@ class DocumentGroupCases(unittest.TestCase):
     prt2.Group = []
     try:
         prt2.Group = [prt2]
-    except:
+    except Exception:
         pass
     else:
         self.fail("Exception is expected")
@@ -1168,7 +1167,7 @@ class DocumentPlatformCases(unittest.TestCase):
       self.Doc = FreeCAD.open(self.DocName)
 
       self.failUnless(self.Doc.Points.Points.count() == 0)
-    except:
+    except Exception:
       pass
 
   def tearDown(self):
@@ -1308,7 +1307,7 @@ class DocumentFileIncludeCases(unittest.TestCase):
     # copy file from L5 which is in the same directory
     L7 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject3")
     L7.File = (L5.File,"Copy.txt")
-    self.failUnless(os.path.exists(L5.File))
+    self.failUnless(os.path.exists(L7.File))
     FreeCAD.closeDocument("Doc2")
 
 
@@ -1801,7 +1800,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter2.pop() == 'Prop')
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
-    pyobj.addExtension("App::GroupExtensionPython", None)
+    pyobj.addExtension("App::GroupExtensionPython")
     self.failUnless(self.Obs.signal.pop() == 'ObjDynExt')
     self.failUnless(self.Obs.parameter.pop() is pyobj)
     self.failUnless(self.Obs.parameter2.pop() == 'App::GroupExtensionPython')
@@ -1943,7 +1942,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
-    obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython", None)
+    obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
     self.failUnless(self.Obs.signal.pop() == 'ObjDynExt')
     self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
     self.failUnless(self.Obs.parameter2.pop() == 'Gui::ViewProviderGroupExtensionPython')

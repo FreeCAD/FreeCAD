@@ -109,7 +109,7 @@ protected:
     MDIViewPage* m_mdi;
 
 private:
-    Ui_TaskProjGroup * ui;
+    std::unique_ptr<Ui_TaskProjGroup> ui;
     TechDraw::DrawProjGroup* multiView;
     bool m_createMode;
 

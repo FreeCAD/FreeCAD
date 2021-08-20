@@ -121,6 +121,7 @@ public:
     static Unit ElectricalInductance;
     static Unit ElectricalConductance;
     static Unit ElectricalResistance;
+    static Unit ElectricalConductivity;
     static Unit AmountOfSubstance;
     static Unit LuminousIntensity;
 
@@ -133,6 +134,8 @@ public:
     static Unit YieldStrength;
     static Unit YoungsModulus;
 
+    static Unit Stiffness;
+    
     static Unit Force;
     static Unit Work;
     static Unit Power;

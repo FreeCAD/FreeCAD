@@ -63,7 +63,7 @@ private Q_SLOTS:
     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:
-    Ui_DlgBooleanOperation* ui;
+    std::unique_ptr<Ui_DlgBooleanOperation> ui;
     Connection connectNewObject;
     Connection connectModObject;
     std::list<const App::DocumentObject*> observe;

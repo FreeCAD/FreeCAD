@@ -172,7 +172,7 @@ struct Object : public PropertyOwner<typename details::properties_by_object<type
       * @tparam Prop property type which should be accessed
       * @return Prop::type& a reference to the properties actual value.
       **/
-    virtual boost::shared_ptr<Derived> clone(Sys& newSys);
+    virtual std::shared_ptr<Derived> clone(Sys& newSys);
 
     Sys* m_system;
 };

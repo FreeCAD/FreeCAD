@@ -33,6 +33,22 @@
 
 using namespace TechDrawGui;
 
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("Workbench", "Dimensions");
+    qApp->translate("Workbench", "Annotations");
+    qApp->translate("Workbench", "Add Lines");
+    qApp->translate("Workbench", "Add Vertices");    
+    qApp->translate("Workbench", "TechDraw");
+    qApp->translate("Workbench", "TechDraw Pages");
+    qApp->translate("Workbench", "TechDraw Views");
+    qApp->translate("Workbench", "TechDraw Clips");
+    qApp->translate("Workbench", "TechDraw Dimensions");
+    qApp->translate("Workbench", "TechDraw File Access");
+    qApp->translate("Workbench", "TechDraw Decoration");
+    qApp->translate("Workbench", "TechDraw Annotation");
+    qApp->translate("Workbench", "Views");
+#endif
+
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)
 
 Workbench::Workbench()
@@ -249,7 +265,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPageSVG";
     *file << "TechDraw_ExportPageDXF";
- 
+
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";

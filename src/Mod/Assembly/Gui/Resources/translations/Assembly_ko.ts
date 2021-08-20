@@ -310,7 +310,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>
       <source>Fix</source>
-      <translation type="unfinished">Fix</translation>
+      <translation>수정</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="236"/>

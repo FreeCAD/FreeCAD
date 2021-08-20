@@ -248,6 +248,12 @@ EXPO     [eE][-+]?[0-9]+
 "kN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Newton
 "MN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return UNIT; // mega Newton
 
+"N/m"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonPerMeter;      yylval.quantity.unitStr = yytext; return UNIT; // NewtonPerMeter (N/m or kg/s^2)
+"mN/m"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewtonPerMeter; yylval.quantity.unitStr = yytext; return UNIT; // milli NewtonPerMeter 
+"kN/m"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewtonPerMeter;  yylval.quantity.unitStr = yytext; return UNIT; // kilo NewtonPerMeter 
+"MN/m"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewtonPerMeter;  yylval.quantity.unitStr = yytext; return UNIT; // mega NewtonPerMeter
+
+
 "Pa"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = yytext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
 "kPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Pascal
 "MPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // mega Pascal
@@ -274,6 +280,8 @@ EXPO     [eE][-+]?[0-9]+
 "kV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloVolt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Volt
 "mV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliVolt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Volt
 
+"MS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // mega Siemens
+"kS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // kilo Siemens
 "S"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Siemens;             yylval.quantity.unitStr = yytext; return UNIT; // Siemens (A^2*s^3/kg/m^2)
 "mS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // milli Siemens
 "uS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // micro Siemens

@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
         <file>freecadsplash.png</file>
+        <file>freecadabout.png</file>
         <file>background.png</file>
         <file>mouse_pointer.svg</file>
         <file>Document.svg</file>
@@ -26,6 +27,7 @@
         <file>preferences-display.svg</file>
         <file>preferences-general.svg</file>
         <file>preferences-import-export.svg</file>
+        <file>preferences-workbenches.svg</file>
         <file>utilities-terminal.svg</file>
         <file>ClassBrowser/const_member.png</file>
         <file>ClassBrowser/member.png</file>
@@ -160,6 +162,7 @@
         <file>Std_HideSelection.svg</file>
         <file>Std_Import.svg</file>
         <file>Std_MergeProjects.svg</file>
+        <file>Std_MarkToRecompute.svg</file>
         <file>Std_PrintPdf.svg</file>
         <file>Std_RandomColor.svg</file>
         <file>Std_RecentFiles.svg</file>
@@ -187,6 +190,7 @@
         <file>Std_Tool10.svg</file>
         <file>Std_Tool11.svg</file>
         <file>Std_Tool12.svg</file>
+        <file>Std_TransformManip.svg</file>
         <file>Std_ViewDimetric.svg</file>
         <file>Std_ViewHome.svg</file>
         <file>Std_ViewIvIssueCamPos.svg</file>
@@ -196,6 +200,7 @@
         <file>Std_ViewIvStereoQuadBuff.svg</file>
         <file>Std_ViewIvStereoRedGreen.svg</file>
         <file>Std_ViewTrimetric.svg</file>
+        <file>Std_Windows.svg</file>
         <file>Std_WindowCascade.svg</file>
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>
@@ -211,6 +216,7 @@
         <file>AddonManager.svg</file>
         <file>Group.svg</file>
         <file>Geofeaturegroup.svg</file>
+        <file>Geoassembly.svg</file>
         <file>Std_Axis.svg</file>
         <file>Std_Plane.svg</file>
         <file>Link.svg</file>

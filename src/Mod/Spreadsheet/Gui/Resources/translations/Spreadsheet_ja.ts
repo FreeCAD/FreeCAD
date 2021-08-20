@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>別名設定</translation>
+      <translation>エイリアスを設定</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>選択したセルに別名を設定</translation>
+      <translation>選択したセルのエイリアスを設定</translation>
     </message>
   </context>
   <context>
@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>セルを左揃え</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>セルを中央揃え</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>セルを右揃え</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>セルを上揃え</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>セルを下揃え</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>セルを上下中央揃え</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>太字にする</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>斜体にする</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>下線</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>スプレッドシートを作成</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>セルのプロパティ</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>セルを編集</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>セルをクリア</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>文字色を設定</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>背景色を設定</translation>
     </message>
   </context>
   <context>
@@ -376,7 +376,7 @@
     </message>
     <message>
       <source>Italic</source>
-      <translation>斜体字</translation>
+      <translation>斜体</translation>
     </message>
     <message>
       <source>Underline</source>
@@ -396,14 +396,14 @@
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>このセルのエイリアス</translation>
+      <translation>エイリアス名</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>All (*)</source>
-      <translation>全て (*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
     <message>
       <source>Import file</source>
@@ -564,24 +564,56 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>行を挿入</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>行を削除</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>列を挿入</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>列を削除</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>プロパティ(&amp;P)...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

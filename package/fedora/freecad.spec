@@ -32,7 +32,7 @@
 Name:           %{name}
 Epoch:          1
 Version:    	0.19
-Release:        pre_{{{ git_commit_no }}}
+Release:        pre_{{{ git_commit_no }}}%{?dist}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
 
@@ -339,3 +339,5 @@ fi
 %files data
 %{_datadir}/%{name}/
 %{_docdir}/%{name}/%{name}.q*
+%{_docdir}/%{name}/CONTRIBUTORS
+%{_docdir}/%{name}/LICENSE.html

@@ -26,7 +26,9 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Basic shapes"
 
 
+import FreeCAD
 import Part
+
 
 def makeTube(outerRadius, innerRadius, height):
     outer_cylinder = Part.makeCylinder(outerRadius, height)
@@ -43,9 +45,20 @@ class TubeFeature:
         obj.addProperty("App::PropertyLength","OuterRadius","Tube","Outer radius").OuterRadius = 5.0
         obj.addProperty("App::PropertyLength","InnerRadius","Tube","Inner radius").InnerRadius = 2.0
         obj.addProperty("App::PropertyLength","Height","Tube", "Height of the tube").Height = 10.0
-        obj.addExtension("Part::AttachExtensionPython", self)
+        obj.addExtension("Part::AttachExtensionPython")
 
     def execute(self, fp):
         if fp.InnerRadius >= fp.OuterRadius:
             raise ValueError("Inner radius must be smaller than outer radius")
         fp.Shape = makeTube(fp.OuterRadius, fp.InnerRadius, fp.Height)
+
+
+def addTube(doc, name="Tube"):
+    """addTube(document, [name]): adds a tube object"""
+
+    obj = doc.addObject("Part::FeaturePython", name)
+    TubeFeature(obj)
+    if FreeCAD.GuiUp:
+        from . import ViewProviderShapes
+        ViewProviderShapes.ViewProviderTube(obj.ViewObject)
+    return obj

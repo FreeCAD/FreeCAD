@@ -116,18 +116,23 @@ Py::Object SelectionObjectPy::getObject(void) const
 
 Py::Tuple SelectionObjectPy::getSubObjects(void) const
 {
-    std::vector<PyObject *> objs;
+    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
+    if (!obj)
+        throw Py::RuntimeError("Cannot get sub-objects of deleted object");
+
+    std::vector<PyObject *> subObjs;
 
     for(const auto &subname : getSelectionObjectPtr()->getSubNames()) {
         PyObject *pyObj=0;
         Base::Matrix4D mat;
-        getSelectionObjectPtr()->getObject()->getSubObject(subname.c_str(),&pyObj,&mat);
-        if(pyObj) objs.push_back(pyObj);
+        obj->getSubObject(subname.c_str(),&pyObj,&mat);
+        if(pyObj)
+            subObjs.push_back(pyObj);
     }
 
-    Py::Tuple temp(objs.size());
+    Py::Tuple temp(subObjs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<PyObject *>::const_iterator it= objs.begin();it!=objs.end();++it)
+    for(std::vector<PyObject *>::const_iterator it= subObjs.begin();it!=subObjs.end();++it)
         temp.setItem(index++, Py::asObject(*it));
 
     return temp;

@@ -255,22 +255,22 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <source>,</source>
-      <translation type="unfinished">,</translation>
+      <translation>,</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="270"/>
       <source>;</source>
-      <translation type="unfinished">;</translation>
+      <translation>;</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="275"/>
       <source>\t</source>
-      <translation type="unfinished">\t</translation>
+      <translation>\t</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="280"/>
       <source>\w</source>
-      <translation type="unfinished">\w</translation>
+      <translation>\w</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="289"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="294"/>
       <source>X,Y</source>
-      <translation type="unfinished">X,Y</translation>
+      <translation>X,Y</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="302"/>
@@ -300,7 +300,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="348"/>
       <source>100</source>
-      <translation type="unfinished">100</translation>
+      <translation>100</translation>
     </message>
   </context>
   <context>

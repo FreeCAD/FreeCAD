@@ -251,8 +251,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Used to hide inputs in properties list
         expMode = G = 0
         show = hide = A = B = C = 2
-        if hasattr(obj, 'EnableRotation'):
-            obj.setEditorMode('EnableRotation', hide)
 
         obj.setEditorMode('BoundaryEnforcement', hide)
         obj.setEditorMode('InternalFeaturesAdjustment', hide)
@@ -1816,9 +1814,9 @@ def SetupProperties():
     return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions(False)]
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Waterline operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectWaterline(obj, name)
+    obj.Proxy = ObjectWaterline(obj, name, parentJob)
     return obj

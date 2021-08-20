@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <limits>
 #include "Tools.h"
 #include "Vector3D.h"
 
@@ -418,21 +419,21 @@ Vector3<_Precision> & Vector3<_Precision>::Normalize (void)
 template <class _Precision>
 _Precision Vector3<_Precision>::GetAngle (const Vector3 &rcVect) const
 {
-    _Precision divid, fNum;
+    _Precision len1 = Length();
+    _Precision len2 = rcVect.Length();
+    if (len1 <= traits_type::epsilon() || len2 <= traits_type::epsilon())
+        return std::numeric_limits<_Precision>::quiet_NaN(); // division by zero
 
-    divid = Length() * ((Vector3<_Precision>&)rcVect).Length();
+    _Precision dot = Dot(rcVect);
+    dot /= len1;
+    dot /= len2;
 
-    if ((divid < -1e-10f) || (divid > 1e-10f)) {
-        fNum = (*this * rcVect) / divid;
-        if (fNum < -1)
-            return traits_type::pi();
-        else if (fNum > 1)
-            return 0.0F;
-        else
-            return _Precision(acos(fNum));
-    }
-    else
-        return traits_type::maximum(); // division by zero
+    if (dot <= -1.0)
+        return traits_type::pi();
+    else if (dot >= 1.0)
+        return 0.0;
+
+    return _Precision(acos(dot));
 }
 
 template <class _Precision>

@@ -277,11 +277,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
         }
         Py::Dict ret;
         ret["ReferenceCombinations"] = pyListOfCombinations;
-#if PY_MAJOR_VERSION >= 3
         ret["ModeIndex"] = Py::Long(mmode);
-#else
-        ret["ModeIndex"] = Py::Int(mmode);
-#endif
         try {
             Py::Module module(PyImport_ImportModule("PartGui"),true);
             if (module.isNull() || !module.hasAttr("AttachEngineResources")) {
@@ -292,11 +288,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
             Py::Callable method(submod.getAttr("getModeStrings"));
             Py::Tuple arg(2);
             arg.setItem(0, Py::String(this->getAttachEnginePtr()->getTypeId().getName()));
-#if PY_MAJOR_VERSION >= 3
             arg.setItem(1, Py::Long(mmode));
-#else
-            arg.setItem(1, Py::Int(mmode));
-#endif
             Py::List strs = method.apply(arg);
             assert(strs.size() == 2);
             ret["UserFriendlyName"] = strs[0];
@@ -369,13 +361,8 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
         AttachEngine &attacher = *(this->getAttachEnginePtr());
         eRefType rt = attacher.getRefTypeByName(typeName);
         Py::Dict ret;
-#if PY_MAJOR_VERSION >= 3
         ret["TypeIndex"] = Py::Long(rt);
         ret["Rank"] = Py::Long(AttachEngine::getTypeRank(rt));
-#else
-        ret["TypeIndex"] = Py::Int(rt);
-        ret["Rank"] = Py::Int(AttachEngine::getTypeRank(rt));
-#endif
 
         try {
             Py::Module module(PyImport_ImportModule("PartGui"),true);
@@ -386,11 +373,7 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
             Py::Object submod(module.getAttr("AttachEngineResources"));
             Py::Callable method(submod.getAttr("getRefTypeUserFriendlyName"));
             Py::Tuple arg(1);
-#if PY_MAJOR_VERSION >= 3
             arg.setItem(0, Py::Long(rt));
-#else
-            arg.setItem(0, Py::Int(rt));
-#endif
             Py::String st = method.apply(arg);
             ret["UserFriendlyName"] = st;
         } catch (Py::Exception& e) {

@@ -73,12 +73,6 @@ class ArchWallGuiTools(GuiTools):
             if vz.Length > 0:
                 obj.Height = vz.Length
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class ArchWindowGuiTools(GuiTools):
 
@@ -112,12 +106,6 @@ class ArchWindowGuiTools(GuiTools):
         for obj in obj.Hosts:
             obj.recompute()
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class ArchStructureGuiTools(GuiTools):
 
@@ -137,12 +125,6 @@ class ArchStructureGuiTools(GuiTools):
         nodes = obj.Nodes
         nodes[node_idx] = v
         obj.Nodes = nodes
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
     def get_object_style(self, obj):
         return (obj.ViewObject.DisplayMode,
@@ -170,18 +152,12 @@ class ArchSpaceGuiTools(GuiTools):
             editpoints = []
             editpoints.append(obj.ViewObject.Proxy.getTextPosition(obj.ViewObject))
             return editpoints
-        except:
+        except Exception:
             pass
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
         if node_idx == 0:
             obj.ViewObject.TextPosition = v
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 
 class ArchPanelCutGuiTools(GuiTools):
@@ -202,12 +178,6 @@ class ArchPanelCutGuiTools(GuiTools):
         if node_idx == 0:
             obj.TagPosition = v
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class ArchPanelSheetGuiTools(GuiTools):
 
@@ -226,12 +196,5 @@ class ArchPanelSheetGuiTools(GuiTools):
             obj.TagPosition = v
         else:
             obj.Group[node_idx-1].Placement.Base = v
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 ## @}

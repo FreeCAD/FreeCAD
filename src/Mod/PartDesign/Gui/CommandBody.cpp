@@ -127,9 +127,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 baseFeature = nullptr;
             }
             else if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
-                // Prevent creating bodies based on bodies
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on another body."));
+                // Prevent creating bodies based on bodies (but don't pop-up a dialog)
                 baseFeature = nullptr;
             }
             else {
@@ -286,7 +284,7 @@ void CmdPartDesignBody::activated(int iMsg)
                     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
                     if (!dlg) {
                         Gui::Selection().clearSelection();
-                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
+                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
                     }
                 }
             }
@@ -316,6 +314,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sToolTipText  = QT_TR_NOOP("Migrate document to the modern PartDesign workflow");
     sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Migrate";
 }
 
 void CmdPartDesignMigrate::activated(int iMsg)
@@ -665,7 +664,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
     sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
     sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeature";
 }
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
@@ -827,7 +826,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
     sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
     sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeatureInTree";
 }
 
 void CmdPartDesignMoveFeatureInTree::activated(int iMsg)

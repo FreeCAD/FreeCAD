@@ -226,7 +226,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     reader.readEndElement("GeometryList");
 
     // assignment
-    setValues(values);
+    setValues(std::move(values));
 }
 
 App::Property *PropertyGeometryList::Copy(void) const

@@ -88,7 +88,7 @@ void StartGui::Workbench::loadStartPage()
         str << std::endl;
         str << "class WebPage(object):" << std::endl;
         str << "    def __init__(self):" << std::endl;
-        str << "        self.browser=WebGui.openBrowserWindow(u'" << escapedstr.c_str() << "')" << std::endl;
+        str << "        self.browser=WebGui.openBrowserWindow(u\"" << escapedstr.c_str() << "\")" << std::endl;
 #if defined(FC_OS_WIN32)
         str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
 #else

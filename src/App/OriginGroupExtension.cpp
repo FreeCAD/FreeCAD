@@ -27,11 +27,14 @@
 #endif
 
 #include <Base/Exception.h>
-
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include "Origin.h"
 
 #include "GeoFeature.h"
+
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
@@ -160,8 +163,12 @@ void OriginGroupExtension::extensionOnChanged(const Property* p) {
                    && owner->getDocument()->testStatus(Document::Importing)) {
             for (auto o : origin->getInList()) {
                 if(o != owner && o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
-                    Origin.setValue(nullptr);
-                    throw Base::RuntimeError("Origin can only be in a single OriginGroup");
+                    // Temporarily reset 'Restoring' status to allow document to auto label new objects
+                    Base::ObjectStatusLocker<Document::Status, Document> guard(
+                            Document::Restoring, owner->getDocument(), false);
+                    Origin.setValue(owner->getDocument()->addObject("App::Origin", "Origin"));
+                    FC_WARN("Reset origin in " << owner->getFullName());
+                    return;
                 }
             }
         }

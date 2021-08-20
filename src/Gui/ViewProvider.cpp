@@ -539,6 +539,7 @@ void ViewProvider::onBeforeChange(const App::Property* prop)
 void ViewProvider::onChanged(const App::Property* prop)
 {
     Application::Instance->signalChangedObject(*this, *prop);
+    Application::Instance->updateActions();
 
     App::TransactionalObject::onChanged(prop);
 }

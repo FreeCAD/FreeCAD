@@ -103,6 +103,8 @@ public:
     inline const std::vector<int> &getConflicting(void) const { return Conflicting; }
     inline bool hasRedundancies(void) const { return !Redundant.empty(); }
     inline const std::vector<int> &getRedundant(void) const { return Redundant; }
+    inline bool hasPartialRedundancies(void) const { return !PartiallyRedundant.empty(); }
+    inline const std::vector<int> &getPartiallyRedundant(void) const { return PartiallyRedundant; }
 
     inline float getSolveTime() const { return SolveTime; }
 
@@ -395,6 +397,10 @@ protected:
     float SolveTime;
     bool RecalculateInitialSolutionWhileMovingPoint;
 
+    // regulates a second solve for cases where there result of having update the geometry (e.g. via OCCT)
+    // needs to be taken into account by the solver (for example to provide the right value of non-driving constraints)
+    bool resolveAfterGeometryUpdated;
+
 protected:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef {
@@ -426,6 +432,7 @@ protected:
     int ConstraintsCounter;
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
+    std::vector<int> PartiallyRedundant;
     std::vector<int> MalformedConstraints;
 
     std::vector<double *> pDependentParametersList;
@@ -494,6 +501,8 @@ private:
     void calculateDependentParametersElements(void);
 
     void clearTemporaryConstraints(void);
+
+    int internalSolve(std::string & solvername, int level = 0);
 
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;

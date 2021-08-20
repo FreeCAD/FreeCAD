@@ -136,7 +136,7 @@
     </message>
     <message>
       <source>Paste expressions</source>
-      <translation type="unfinished">Paste expressions</translation>
+      <translation>Ausdrücke einfügen</translation>
     </message>
     <message>
       <source>Make link group</source>
@@ -160,19 +160,19 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Messung einfügen</translation>
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Textdokument einfügen</translation>
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>Ein Teil hinzufügen</translation>
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>Gruppe hinzufügen</translation>
     </message>
     <message>
       <source>Align</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Transformation verknüpfen</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -211,7 +211,7 @@
     </message>
     <message>
       <source>Enable Translations</source>
-      <translation>Verschiebung aktivieren</translation>
+      <translation>Verschiebungen zulassen</translation>
     </message>
     <message>
       <source>Enable Rotations</source>
@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Ausdruck eingeben...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Ausdruck: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -318,7 +329,7 @@
     </message>
     <message>
       <source>Fixed object</source>
-      <translation>Festes Objekt</translation>
+      <translation>fixiertes Objekt</translation>
     </message>
   </context>
   <context>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Wortgröße</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Danksagungen</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD wäre nirgends ohne ihre Anstrengungen:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Lizenz</translation>
     </message>
@@ -485,7 +488,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Diese Software verwendet Open-Source-Komponenten, deren Urheberrechte und andere Eigentumsrechte ihren jeweiligen Eigentümern gehören:</translation>
+      <translation>Dieses Programm verwendet Open-Source-Komponenten, deren Urheberrechte und andere Eigentumsrechte ihren jeweiligen Eigentümern gehören:</translation>
     </message>
     <message>
       <source>License</source>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Sammlung</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Danksagungen</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD wäre nicht möglich ohne die Beiträge von</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Personen</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organisationen</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
       <translation>Text source</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Codezeilen werden nummeriert </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Durch Drücken von &lt;Tab&gt; wird die unter Einrückbreite definierte Anzahl von Leerzeichen eingefügt</translation>
     </message>
@@ -1401,6 +1419,10 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <source>Color:</source>
       <translation>Farbe:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Code-Zeilen werden nummeriert</translation>
     </message>
   </context>
   <context>
@@ -1478,12 +1500,12 @@ Siehe FreeCAD Wiki für Details über das Bild.</translation>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Wählen Sie Ihre Präferenz für die Größe der Symbolleiste aus. Sie können
-entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen</translation>
+      <translation>Legt die Größe der Schaltflächen innerhalb der Symbolleisten fest. Sie können diese
+entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen.</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation>Baum-Ansichtsmodus:</translation>
+      <translation>Baumstruktur-Ansichtsmodus:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1546,7 +1568,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation>BaumAnsicht und EigenschaftsAnsicht</translation>
+      <translation>Baumansicht und Eigenschaftsansicht</translation>
     </message>
     <message>
       <source>Both</source>
@@ -1611,7 +1633,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation>Speicher-Ort der Benutzer-Makros:</translation>
+      <translation>Speicherort der Benutzermakros:</translation>
     </message>
     <message>
       <source>Rename</source>
@@ -1623,7 +1645,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>Addons...</source>
-      <translation>Add-ons...</translation>
+      <translation>Addons...</translation>
     </message>
     <message>
       <source>Toolbar</source>
@@ -2304,7 +2326,7 @@ on-screen while displaying the log message</source>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>Schriftfarbe für Protokoll Nachrichten in der Berichtsansicht</translation>
+      <translation>Schriftfarbe für normale Nachrichten in der Berichtsansicht</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
@@ -2525,10 +2547,6 @@ aber langsamere Reaktion auf Szenenänderungen.</translation>
       <translation>Zentralisiert</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Welche Art von Multisample Anti-Aliasing wird verwendet </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Transparente Objekte:</translation>
     </message>
@@ -2551,14 +2569,6 @@ aber langsamere Reaktion auf Szenenänderungen.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Augenabstand für Stereo-Modi</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Augenabstand für Stereo-Projektionen.
-Der angegebene Wert ist ein Faktor, der mit der Bounding-Box-Größe des gerade angezeigten 3D-Objekts
-multipliziert wird. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2609,13 +2619,24 @@ Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+      <translation>Diese Option ist nützlich für die Fehlerbehebung von Grafikkarten- und Treiberproblemen.
 
-Changing this option requires a restart of the application.</translation>
+Das Ändern dieser Option erfordert einen Neustart der Anwendung.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>Software OpenGL verwenden</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Welche Art von Multisample Anti-Aliasing wird verwendet</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Augenabstand für Stereo-Projektionen.
+Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des gerade angezeigten 3D-Objekts multipliziert wird.</translation>
     </message>
   </context>
   <context>
@@ -3231,9 +3252,28 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
       <source>Framebuffer (as is)</source>
       <translation>Bildpuffer (wie bestehend)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation>Pixelpuffer</translation>
+      <source>Unloaded Workbenches</source>
+      <translation>Nicht geladene Arbeitsbereiche</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laden Sie die ausgewählten Arbeitsbereich und fügen Sie ihre Einstellungs-Fenster dem Einstellungs-Dialog hinzu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Lädt die Auswahl</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deaktivierte Arbeitsbereiche&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um Ressourcen zu schonen, lädt FreeCAD keine Arbeitsbereiche solange sie nicht verwendet werden. Wenn sie geladen werden, haben Sie Zugriff auf die zusätzlichen Einstellungen.&lt;/p&gt;&lt;p&gt;Die folgenden Arbeitsbereiche sind in Ihrer Installation verfügbar, aber noch nicht geladen:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3280,7 +3320,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Makro in lokaler Umgebung ausführen</translation>
+      <translation>Makros in lokaler Umgebung ausführen</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
@@ -3450,12 +3490,6 @@ Der Wert ist der Durchmesser der Kugel, der auf den Bildschirm passt.</translati
       <translation>Zoom-Schritt</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Wie stark gezoomt wird.
-Ein Zoom-Schritt von '1' bedeutet einen Faktor von 7,5 für jeden Zoom-Schritt. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Richtung der Zoom-Operationen wird umgekehrt</translation>
     </message>
@@ -3529,19 +3563,68 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     </message>
     <message>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>Art der Drehung</translation>
     </message>
     <message>
       <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
+      <translation>Um die Fenstermitte</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>Um den Mauszeiger</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>Um das Objektzentrum</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Dreht zum nächstmöglichen Zustand beim Klicken auf eine Würfel Seite</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Drehen zum nächstgelegenen</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Würfelgröße</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Größe des Navigationswürfels</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Wie stark vergrößert werden soll.
+Zoom-Schritt von '1' bedeutet für jeden Zoom-Schritt einen Faktor von 7,5.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Auswahl</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Automatischer Wechsel zur 3D-Ansicht mit dem ausgewählten Element</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Baum automatisch ausdehnen, wenn das zugehörige Objekt in der 3D-Ansicht ausgewählt wird</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Vorauswählen des Objekts in 3D -ansicht, wenn die Maus über das Baumelement fährt</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Auswahl in der Baumansicht aufzeichnen. Mit den Navigationstasten vor/zurück gehen</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Checkboxen für die Auswahl im Dokumentenbaum hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -3827,12 +3910,12 @@ Das Präferenzsystem ist das in den allgemeinen Einstellungen festgelegte System
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unbekannte Einheit: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>Einheit stimmt nicht überein</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unbekannte Einheit:</translation>
     </message>
   </context>
   <context>
@@ -4330,7 +4413,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation>Verwende das Zentrum der Masse</translation>
+      <translation>Verwende den Schwerpunkt</translation>
     </message>
     <message>
       <source>Axial:</source>
@@ -4378,7 +4461,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Rotation around the z-axis</source>
-      <translation>Drehen um die z-Achse</translation>
+      <translation>Drehung um die z-Achse</translation>
     </message>
     <message>
       <source>Euler angles (xy'z'')</source>
@@ -4619,7 +4702,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation>Arten der Bildschirm-Meldungen</translation>
+      <translation>Nachrichtenarten anzeigen</translation>
     </message>
     <message>
       <source>Normal messages</source>
@@ -5308,6 +5391,10 @@ How do you want to proceed?</source>
     <message>
       <source>Expression...</source>
       <translation>Ausdruck...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Automatisch erweitern</translation>
     </message>
   </context>
   <context>
@@ -6709,7 +6796,7 @@ Bitte überprüfen Sie die Berichtsansicht für weitere Details.</translation>
     </message>
     <message>
       <source>Unlink failed</source>
-      <translation>Entkopplung fehlgeschlagen</translation>
+      <translation>Verknüpfung aufheben fehlgeschlagen</translation>
     </message>
     <message>
       <source>Replace link failed</source>
@@ -6717,11 +6804,11 @@ Bitte überprüfen Sie die Berichtsansicht für weitere Details.</translation>
     </message>
     <message>
       <source>Failed to import links</source>
-      <translation>Fehler beim Importieren der Verbindungen</translation>
+      <translation>Fehler beim Importieren der Verknüpfungen</translation>
     </message>
     <message>
       <source>Failed to import all links</source>
-      <translation>Fehler beim Importieren aller Verbindungen</translation>
+      <translation>Fehler beim Importieren aller Verknüpfungen</translation>
     </message>
     <message>
       <source>Invalid name</source>
@@ -6819,14 +6906,6 @@ Bitte überprüfen Sie die Berichtsansicht für mehr...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Physischer Pfad: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Dokument: </translation>
@@ -6840,6 +6919,30 @@ Dokument: </translation>
     <message>
       <source>Identical physical path</source>
       <translation>Identischer physischer Pfad</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Fehlermeldungen</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Beim Laden der Datei sind Fehler aufgetreten. Einige Daten wurden möglicherweise geändert oder gar nicht wiederhergestellt. In der Berichtansicht finden Sie genauere Informationen zu den betroffenen Objekten.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Es gab schwerwiegende Fehler beim Laden der Datei. Einige Daten wurden möglicherweise geändert oder konnten nicht wiederhergestellt werden. Das Speichern des Projekts wird höchstwahrscheinlich zu Datenverlust führen.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Arbeitsbereiche</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Physischer Pfad: </translation>
     </message>
   </context>
   <context>
@@ -7213,7 +7316,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>List of available dock panels</source>
-      <translation>Liste der vorhandenen Dock-Panele</translation>
+      <translation>Liste der vorhandenen Dock-Panels</translation>
     </message>
   </context>
   <context>
@@ -7284,8 +7387,8 @@ Dokument: </translation>
       <translation>Keine Auswahl</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Bitte das erste, zu exportierende, Objekt auswählen.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Wählen Sie die Objekte aus, bevor Sie Export wählen.</translation>
     </message>
   </context>
   <context>
@@ -7312,6 +7415,21 @@ Dokument: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Feature oder Dokument neu berechnen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Hilfe</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Spenden</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Spende, um die FreeCAD-Entwicklung zu unterstützen</translation>
     </message>
   </context>
   <context>
@@ -7383,7 +7501,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation>Benutzer Dokumentation auf der FreeCAD Website</translation>
+      <translation>Benutzerdokumentation auf der FreeCAD-Website</translation>
     </message>
   </context>
   <context>
@@ -7653,7 +7771,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation>Entkoppeln</translation>
+      <translation>Verknüpfung auflösen</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -7668,7 +7786,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation>An Remote-Debugger angehangen...</translation>
+      <translation>An Remote-Debugger anhängen...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
@@ -7698,7 +7816,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Step into</source>
-      <translation>Treten Sie ein</translation>
+      <translation>Einzelschritt</translation>
     </message>
   </context>
   <context>
@@ -8906,11 +9024,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Gespeicherte Kamera wiederherstellen</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Gespeicherte Kameraeinstellungen wiederherstellen</translation>
     </message>
   </context>
   <context>
@@ -8936,7 +9054,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Rotate Left</source>
-      <translation>Linksherum rotieren</translation>
+      <translation>Nach links drehen</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
@@ -8966,11 +9084,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Aktuelle Kamera speichern</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Aktuelle Kameraeinstellungen speichern</translation>
     </message>
   </context>
   <context>

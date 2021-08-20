@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QListIterator>
 # include <QTimer>
+# include <QListWidgetItem>
 #endif
 
 #include <Gui/Application.h>
@@ -79,6 +80,7 @@ const QString TaskFeaturePick::getFeatureStatusString(const featureStatus st)
 
 TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                                  const std::vector<featureStatus>& status,
+                                 bool singleFeatureSelect,
                                  QWidget* parent)
   : TaskBox(Gui::BitmapFactory().pixmap("edit-select-box"),
             tr("Select feature"), true, parent)
@@ -96,6 +98,12 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onItemSelectionChanged()));
+    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(onDoubleClick(QListWidgetItem *)));
+
+
+    if (!singleFeatureSelect) {
+        ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    }
 
     enum { axisBit=0, planeBit = 1};
 
@@ -273,7 +281,6 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
                     result.push_back(obj);
                 }
 
-                break;
             }
 
             index++;
@@ -471,6 +478,18 @@ void TaskFeaturePick::onItemSelectionChanged()
     doSelection = false;
 }
 
+void TaskFeaturePick::onDoubleClick(QListWidgetItem *item)
+{
+    if (doSelection)
+        return;
+    doSelection = true;
+    QString t = item->data(Qt::UserRole).toString();
+    Gui::Selection().addSelection(documentName.c_str(), t.toLatin1());
+    doSelection = false;
+
+    QMetaObject::invokeMethod(qobject_cast<Gui::ControlSingleton*>(&Gui::Control()), "accept", Qt::QueuedConnection);
+}
+
 void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
     std::vector<Gui::ViewProviderOrigin*>::iterator it;
@@ -510,10 +529,11 @@ TaskDlgFeaturePick::TaskDlgFeaturePick( std::vector<App::DocumentObject*> &objec
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
                                         boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
                                         boost::function<void (std::vector<App::DocumentObject*>)> wfunc,
+                                        bool singleFeatureSelect,
                                         boost::function<void (void)> abortfunc /* = NULL */ )
     : TaskDialog(), accepted(false)
 {
-    pick  = new TaskFeaturePick(objects, status);
+    pick  = new TaskFeaturePick(objects, status, singleFeatureSelect);
     Content.push_back(pick);
 
     acceptFunction = afunc;
@@ -570,6 +590,7 @@ void TaskDlgFeaturePick::showExternal(bool val)
 {
     pick->showExternal(val);
 }
+
 
 
 #include "moc_TaskFeaturePick.cpp"

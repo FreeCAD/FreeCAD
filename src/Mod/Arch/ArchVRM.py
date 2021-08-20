@@ -200,7 +200,7 @@ class Renderer:
                 wires.append(Part.makePolygon(verts))
         try:
             sh = ArchCommands.makeFace(wires)
-        except:
+        except Exception:
             if DEBUG: print("Error: Unable to project face on the WP")
             return None
         else:
