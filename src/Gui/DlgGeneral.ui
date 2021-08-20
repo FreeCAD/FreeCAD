@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>780</height>
+    <height>835</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -220,20 +220,27 @@ are shown on the same screen as the main window.</string>
              </property>
             </widget>
            </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="toolbarArea">
+             <property name="toolTip">
+              <string>Choose default toolbar docking area</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1">
             <widget class="QComboBox" name="OverlayStyleSheets"/>
            </item>
-           <item row="8" column="0">
+           <item row="9" column="0">
             <widget class="QLabel" name="treeModeLabel">
              <property name="text">
               <string>Tree view mode:</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="1">
+           <item row="8" column="1">
             <widget class="QSpinBox" name="treeItemSpacing"/>
            </item>
-           <item row="6" column="1">
+           <item row="7" column="1">
             <widget class="QSpinBox" name="treeFontSize">
              <property name="toolTip">
               <string>Set tree view label font size</string>
@@ -247,7 +254,7 @@ are shown on the same screen as the main window.</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="0">
+           <item row="8" column="0">
             <widget class="QLabel" name="label_6">
              <property name="text">
               <string>Tree view item spacing:</string>
@@ -271,7 +278,7 @@ are shown on the same screen as the main window.</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="1">
+           <item row="9" column="1">
             <widget class="QComboBox" name="treeMode">
              <property name="toolTip">
               <string>Customize how tree view is shown in the panel (restart required).
@@ -282,7 +289,7 @@ are shown on the same screen as the main window.</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
+           <item row="6" column="1">
             <widget class="QSpinBox" name="treeIconSize">
              <property name="toolTip">
               <string>Choose your preference for tree view icon size in pixel.
@@ -306,14 +313,14 @@ this according to your screen size or personal taste</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="6" column="0">
             <widget class="QLabel" name="label_3">
              <property name="text">
               <string>Tree view icon size:</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
+           <item row="7" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
               <string>Tree view font size:</string>
@@ -327,10 +334,17 @@ this according to your screen size or personal taste</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QComboBox" name="toolbarArea">
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Default font size</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QSpinBox" name="appFontSize">
              <property name="toolTip">
-              <string>Choose default toolbar docking area</string>
+              <string>Set the default application font size</string>
              </property>
             </widget>
            </item>

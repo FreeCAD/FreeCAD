@@ -197,6 +197,7 @@ void DlgGeneralImp::saveSettings()
     TreeParams::setItemSpacing(ui->treeItemSpacing->value());
     ViewParams::setCommandHistorySize(ui->CmdHistorySize->value());
     ViewParams::setCheckWidgetPlacementOnRestore(ui->checkPopUpWindow->isChecked());
+    ViewParams::setDefaultFontSize(ui->appFontSize->value());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -339,6 +340,7 @@ void DlgGeneralImp::loadSettings()
     ui->treeItemSpacing->setValue(TreeParams::ItemSpacing());
     ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
     ui->checkPopUpWindow->setChecked(ViewParams::getCheckWidgetPlacementOnRestore());
+    ui->appFontSize->setValue(ViewParams::getDefaultFontSize());
 }
 
 void DlgGeneralImp::changeEvent(QEvent *e)
@@ -478,6 +480,7 @@ ParamHandlers _ParamHandlers;
 void DlgGeneralImp::attachObserver()
 {
     _ParamHandlers.attach();
+    ViewParams::init();
 }
 
 #include "moc_DlgGeneralImp.cpp"

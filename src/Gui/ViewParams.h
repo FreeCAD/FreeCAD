@@ -356,6 +356,7 @@ public:
     FC_VIEW_PARAM(ForceSolidSingleSideLighting, bool , Bool, true,  \
         QT_TRANSLATE_NOOP("ViewParams","Force single side lighting on solid. This can help visualizing invalid\n" \
                                        "solid shapes with flipped normals.")) \
+    FC_VIEW_PARAM2(DefaultFontSize, int , Int, 0,  "") \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
@@ -389,6 +390,7 @@ public:
 
     static void useRenderer(bool enable);
     static bool isUsingRenderer();
+    static void init();
 
 private:
     void remove(const char *);
