@@ -285,8 +285,9 @@ protected:
      *  element of Type and with the attribute Name=Name. On success it returns
      *  the pointer to that element, otherwise it creates the element and returns the pointer.
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name) const;
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name);
 
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name);
 
     /// DOM Node of the Base node of this group
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *_pGroupNode;
@@ -296,6 +297,13 @@ protected:
     std::map <std::string ,Base::Reference<ParameterGrp> > _GroupMap;
     ParameterGrp * _Parent = nullptr;
     ParameterManager *_Manager = nullptr;
+    /// Means this group xml element has not been added to its parent yet.
+    bool _Detached = false;
+    /** Indicate this group is currently being cleared
+     *
+     * This is used to prevent anynew value/sub-group to be added in observer
+     */
+    bool _Clearing = false;
 };
 
 /** The parameter serializer class

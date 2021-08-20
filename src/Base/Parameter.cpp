@@ -62,11 +62,15 @@
 #   include <unistd.h>
 #endif
 
+#include <boost/algorithm/string.hpp>
+
 #include "Parameter.h"
 #include "Parameter.inl"
 #include "Exception.h"
 #include "Console.h"
+#include "Tools.h"
 
+FC_LOG_LEVEL_INIT("Parameter", true, true)
 
 //#ifdef XERCES_HAS_CPP_NAMESPACE
 //  using namespace xercesc;
@@ -278,6 +282,8 @@ ParameterGrp::~ParameterGrp()
         v.second->_Parent = nullptr;
         v.second->_Manager = nullptr;
     }
+    if (_Detached && _pGroupNode)
+        _pGroupNode->release();
 }
 
 //**************************************************************************
@@ -427,46 +433,40 @@ void ParameterGrp::revert(Base::Reference<ParameterGrp> Grp)
 
 Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
 {
-    std::string cName = Name;
+    Base::Reference<ParameterGrp> hGrp = this;
+    if (!Name)
+        return hGrp;
 
-    std::string::size_type pos = cName.find('/');
-
-    // is there a path separator ?
-    if (pos == std::string::npos) {
-        return _GetGroup(Name);
+    std::vector<std::string> tokens;
+    boost::split(tokens, Name, boost::is_any_of("/"));
+    for (auto &token : tokens) {
+        boost::trim(token);
+        if (token.empty())
+            continue;
+        hGrp = hGrp->_GetGroup(token.c_str());
+        if (!hGrp) {
+            // The group is clearing. Return some dummy group to avoid caller
+            // crashing for backward compatibility.
+            hGrp = new ParameterGrp();
+            hGrp->_cName = Name;
+            break;
+        }
     }
-    else if (pos == cName.size()) {
-        // ending slash! cut it away
-        cName.erase(pos);
-        return _GetGroup(cName.c_str());
-    }
-    else if (pos == 0) {
-        // a leading slash is not handled (root unknown)
-        //throw FCException("ParameterGrp::GetGroup() leading slash not allowed");
-        // remove leading slash
-        cName.erase(0,1);
-        // subsequent call
-        return GetGroup(cName.c_str());
-    }
-    else {
-        // path, split the first path
-        std::string cTemp;
-        // getting the first part
-        cTemp.assign(cName,0,pos);
-        // removing the first part from the original
-        cName.erase(0,pos+1);
-        //sbsequent call
-        return _GetGroup(cTemp.c_str())->GetGroup(cName.c_str());
-    }
+    return hGrp;
 }
 
-static XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *
-CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name)
+XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *
+ParameterGrp::CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name)
 {
     if (XMLString::compareString(Start->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0 &&
         XMLString::compareString(Start->getNodeName(), XStr("FCParameters").unicodeForm()) != 0) {
         Base::Console().Warning("CreateElement: %s cannot have the element %s of type %s\n", StrX(Start->getNodeName()).c_str(), Name, Type);
         return nullptr;
+    }
+
+    if (_Detached && _Parent) {
+        // re-attach the group
+        _Parent->_GetGroup(_cName.c_str());
     }
 
     XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *pDocument = Start->getOwnerDocument();
@@ -481,27 +481,40 @@ CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type
 Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
 {
     Base::Reference<ParameterGrp> rParamGrp;
-    DOMElement *pcTemp;
-
-    // already created?
-    if ((rParamGrp=_GroupMap[Name]).isValid()) {
-        // just return the already existing Group handle
+    if (!_pGroupNode) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Adding group " << Name << " in an orphan group " << _cName);
+        return rParamGrp;
+    }
+    if (_Clearing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Adding group " << Name << " while clearing " << GetPath());
         return rParamGrp;
     }
 
+    DOMElement *pcTemp;
+
     // search if Group node already there
     pcTemp = FindElement(_pGroupNode,"FCParamGroup",Name);
-    bool notify = false;
-    if (!pcTemp) {
-        notify = true;
-        pcTemp = CreateElement(_pGroupNode,"FCParamGroup",Name);
+
+    // already created?
+    if (!(rParamGrp=_GroupMap[Name]).isValid()) {
+        if (!pcTemp)
+            pcTemp = CreateElement(_pGroupNode,"FCParamGroup",Name);
+        // create and register handle
+        rParamGrp = Base::Reference<ParameterGrp> (new ParameterGrp(pcTemp,Name,this));
+        _GroupMap[Name] = rParamGrp;
+    } else if (!pcTemp) {
+        _pGroupNode->appendChild(rParamGrp->_pGroupNode);
+        rParamGrp->_Detached = false;
+        if (this->_Detached && this->_Parent) {
+            // Re-attach the group. Note that this may fail if the parent is
+            // clearing. That's why we check this->_Detached below.
+            this->_Parent->_GetGroup(_cName.c_str());
+        }
     }
 
-    // create and register handle
-    rParamGrp = Base::Reference<ParameterGrp> (new ParameterGrp(pcTemp,Name,this));
-    _GroupMap[Name] = rParamGrp;
-
-    if (notify)
+    if (!pcTemp && !this->_Detached)
         _Notify("FCParamGroup", Name, Name);
 
     return rParamGrp;
@@ -522,13 +535,20 @@ std::vector<Base::Reference<ParameterGrp> > ParameterGrp::GetGroups(void)
 {
     Base::Reference<ParameterGrp> rParamGrp;
     std::vector<Base::Reference<ParameterGrp> >  vrParamGrp;
+
+    if (!_pGroupNode)
+        return vrParamGrp;
+
     DOMElement *pcTemp; //= _pGroupNode->getFirstChild();
     std::string Name;
 
     pcTemp = FindElement(_pGroupNode,"FCParamGroup");
 
     while (pcTemp) {
-        Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
+        auto pcAttrs = static_cast<DOMElement*>(pcTemp)->getAttributes();
+        auto item = pcAttrs->getNamedItem(XStr("Name").unicodeForm());
+        auto value = item->getNodeValue();
+        Name = StrX(value).c_str();
         // already created?
         if (!(rParamGrp=_GroupMap[Name]).isValid()) {
             rParamGrp = Base::Reference<ParameterGrp> (new ParameterGrp(static_cast<DOMElement*>(pcTemp),Name.c_str()));
@@ -545,7 +565,7 @@ std::vector<Base::Reference<ParameterGrp> > ParameterGrp::GetGroups(void)
 /// test if this group is empty
 bool ParameterGrp::IsEmpty(void) const
 {
-    if ( _pGroupNode->getFirstChild() )
+    if ( _pGroupNode && _pGroupNode->getFirstChild() )
         return false;
     else
         return true;
@@ -557,7 +577,7 @@ bool ParameterGrp::HasGroup(const char* Name) const
     if ( _GroupMap.find(Name) != _GroupMap.end() )
         return true;
 
-    if ( FindElement(_pGroupNode,"FCParamGroup",Name) != 0 )
+    if ( _pGroupNode && FindElement(_pGroupNode,"FCParamGroup",Name) != 0 )
         return true;
 
     return false;
@@ -571,6 +591,19 @@ void ParameterGrp::_Notify(const char *Type, const char *Name, const char *Value
 
 void ParameterGrp::_SetAttribute(const char *Type, const char *Name, const char *Value)
 { 
+    if (!_pGroupNode) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Setting attribute " << Type << ":"
+                    << Name << " in an orphan group " << _cName);
+        return;
+    }
+    if (_Clearing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Adding attribute " << Type << ":"
+                    << Name << " while clearing " << GetPath());
+        return;
+    }
+
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,Type,Name);
     if (pcElem) {
@@ -589,6 +622,9 @@ void ParameterGrp::_SetAttribute(const char *Type, const char *Name, const char 
 
 bool ParameterGrp::GetBool(const char* Name, bool bPreset) const
 {
+    if (!_pGroupNode)
+        return bPreset;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCBool",Name);
     // if not return preset
@@ -608,6 +644,9 @@ void  ParameterGrp::SetBool(const char* Name, bool bValue)
 std::vector<bool> ParameterGrp::GetBools(const char * sFilter) const
 {
     std::vector<bool>  vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMElement *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -630,6 +669,9 @@ std::vector<bool> ParameterGrp::GetBools(const char * sFilter) const
 std::vector<std::pair<std::string,bool> > ParameterGrp::GetBoolMap(const char * sFilter) const
 {
     std::vector<std::pair<std::string,bool> >  vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMElement *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -651,6 +693,9 @@ std::vector<std::pair<std::string,bool> > ParameterGrp::GetBoolMap(const char * 
 
 long ParameterGrp::GetInt(const char* Name, long lPreset) const
 {
+    if (!_pGroupNode)
+        return lPreset;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCInt",Name);
     // if not return preset
@@ -669,6 +714,9 @@ void  ParameterGrp::SetInt(const char* Name, long lValue)
 std::vector<long> ParameterGrp::GetInts(const char * sFilter) const
 {
     std::vector<long>  vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMNode *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -688,6 +736,9 @@ std::vector<long> ParameterGrp::GetInts(const char * sFilter) const
 std::vector<std::pair<std::string,long> > ParameterGrp::GetIntMap(const char * sFilter) const
 {
     std::vector<std::pair<std::string,long> > vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMNode *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -707,6 +758,9 @@ std::vector<std::pair<std::string,long> > ParameterGrp::GetIntMap(const char * s
 
 unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset) const
 {
+    if (!_pGroupNode)
+        return lPreset;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCUInt",Name);
     // if not return preset
@@ -725,6 +779,9 @@ void  ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
 std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char * sFilter) const
 {
     std::vector<unsigned long>  vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMNode *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -744,6 +801,9 @@ std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char * sFilter) cons
 std::vector<std::pair<std::string,unsigned long> > ParameterGrp::GetUnsignedMap(const char * sFilter) const
 {
     std::vector<std::pair<std::string,unsigned long> > vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMNode *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -763,6 +823,9 @@ std::vector<std::pair<std::string,unsigned long> > ParameterGrp::GetUnsignedMap(
 
 double ParameterGrp::GetFloat(const char* Name, double dPreset) const
 {
+    if (!_pGroupNode)
+        return dPreset;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCFloat",Name);
     // if not return preset
@@ -781,6 +844,9 @@ void  ParameterGrp::SetFloat(const char* Name, double dValue)
 std::vector<double> ParameterGrp::GetFloats(const char * sFilter) const
 {
     std::vector<double>  vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMElement *pcTemp ;//= _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -800,6 +866,9 @@ std::vector<double> ParameterGrp::GetFloats(const char * sFilter) const
 std::vector<std::pair<std::string,double> > ParameterGrp::GetFloatMap(const char * sFilter) const
 {
     std::vector<std::pair<std::string,double> > vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMElement *pcTemp ;//= _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -833,6 +902,19 @@ void ParameterGrp::GetBlob(const char* /*Name*/, void* /*pBuf*/, long /*lMaxLeng
 
 void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
 {
+    if (!_pGroupNode) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Setting attribute " << "FCText:"
+                    << Name << " in an orphan group " << _cName);
+        return;
+    }
+    if (_Clearing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Adding attribute " << "FCText:"
+                    << Name << " while clearing " << GetPath());
+        return;
+    }
+
     bool isNew = false;
     DOMElement *pcElem = FindElement(_pGroupNode,"FCText",Name);
     if (!pcElem) {
@@ -860,6 +942,9 @@ void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
 
 std::string ParameterGrp::GetASCII(const char* Name, const char * pPreset) const
 {
+    if (!_pGroupNode)
+        return pPreset ? pPreset : "";
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCText",Name);
     // if not return preset
@@ -883,6 +968,9 @@ std::string ParameterGrp::GetASCII(const char* Name, const char * pPreset) const
 std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
 {
     std::vector<std::string>  vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMElement *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -905,6 +993,9 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
 std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const char * sFilter) const
 {
     std::vector<std::pair<std::string,std::string> >  vrValues;
+    if (!_pGroupNode)
+        return vrValues;
+
     DOMElement *pcTemp;// = _pGroupNode->getFirstChild();
     std::string Name;
 
@@ -929,6 +1020,9 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
 
 void ParameterGrp::RemoveASCII(const char* Name)
 {
+    if (!_pGroupNode)
+        return;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCText",Name);
     // if not return
@@ -945,6 +1039,9 @@ void ParameterGrp::RemoveASCII(const char* Name)
 
 void ParameterGrp::RemoveBool(const char* Name)
 {
+    if (!_pGroupNode)
+        return;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCBool",Name);
     // if not return
@@ -974,6 +1071,9 @@ void ParameterGrp::RemoveBlob(const char* /*Name*/)
 
 void ParameterGrp::RemoveFloat(const char* Name)
 {
+    if (!_pGroupNode)
+        return;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCFloat",Name);
     // if not return
@@ -990,6 +1090,9 @@ void ParameterGrp::RemoveFloat(const char* Name)
 
 void ParameterGrp::RemoveInt(const char* Name)
 {
+    if (!_pGroupNode)
+        return;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCInt",Name);
     // if not return
@@ -1006,6 +1109,9 @@ void ParameterGrp::RemoveInt(const char* Name)
 
 void ParameterGrp::RemoveUnsigned(const char* Name)
 {
+    if (!_pGroupNode)
+        return;
+
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCUInt",Name);
     // if not return
@@ -1022,39 +1128,28 @@ void ParameterGrp::RemoveUnsigned(const char* Name)
 
 void ParameterGrp::RemoveGrp(const char* Name)
 {
+    if (!_pGroupNode)
+        return;
+
     auto it = _GroupMap.find(Name);
     if (it == _GroupMap.end())
         return;
 
-    // if this or any of its children is referenced by an observer
-    // it cannot be deleted
-#if 1
-    if (!it->second->ShouldRemove()) {
-        it->second->Clear();
+    // If this or any of its children is referenced by an observer we do not
+    // delete the handle, just in case the group is later added again, or else
+    // those existing observer won't get any notification. BUT, we DO delete
+    // the underlying xml elements, so that we don't save the empty group
+    // later.
+    it->second->Clear();
+    if (!it->second->_Detached) {
+        it->second->_Detached = true;
+        _pGroupNode->removeChild(it->second->_pGroupNode);
     }
-    else {
-#endif
-        // remove group handle
-        auto it = _GroupMap.find(Name);
-        if (it != _GroupMap.end()) {
-            // trigger observer
-            auto hGrp = it->second;
-            hGrp->_Notify("FCParamGroup", nullptr, nullptr);
-            hGrp->_Parent = nullptr;
-            hGrp->_Manager = nullptr;
-            _GroupMap.erase(Name);
-        }
-
-        // check if Element in group
-        DOMElement *pcElem = FindElement(_pGroupNode,"FCParamGroup",Name);
-        // if not return
-        if (pcElem) {
-            DOMNode* node = _pGroupNode->removeChild(pcElem);
-            node->release();
-        }
-#if 1
+    if (it->second->ShouldRemove()) {
+        it->second->_Parent = nullptr;
+        it->second->_Manager = nullptr;
+        _GroupMap.erase(it);
     }
-#endif
 
     // trigger observer
     Notify(Name);
@@ -1062,6 +1157,9 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
 bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
 {
+    if (!_pGroupNode)
+        return false;
+
     auto it = _GroupMap.find(OldName);
     if (it == _GroupMap.end())
         return false;
@@ -1085,40 +1183,41 @@ bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
 
 void ParameterGrp::Clear(void)
 {
-    std::vector<DOMNode*> vecNodes;
+    if (!_pGroupNode)
+        return;
+
+    Base::StateLocker guard(_Clearing);
 
     // early trigger notification of group removal when all its children
     // hierarchies are intact.
     _Notify("FCParamGroup", nullptr, nullptr);
 
     // checking on references
-    std::vector<ParameterGrp::handle> removeGrp;
     for (auto it = _GroupMap.begin();it!=_GroupMap.end();) {
-        // If a group is referenced by some observer then do not remove it
-        // but clear it
-        if (!it->second->ShouldRemove()) {
-            it->second->Clear();
-            ++it;
+        // If a group handle is referenced by some observer, then do not remove
+        // it but clear it, so that any existing observer can still get
+        // notification if the group is later on add back. We do remove the
+        // underlying xml element from its parent so that we won't save this
+        // empty group.
+        it->second->Clear();
+        if (!it->second->_Detached) {
+            it->second->_Detached = true;
+            _pGroupNode->removeChild(it->second->_pGroupNode);
         }
+        if (!it->second->ShouldRemove())
+            ++it;
         else {
-            vecNodes.push_back(it->second->_pGroupNode);
-            removeGrp.push_back(it->second);
             it->second->_Parent = nullptr;
             it->second->_Manager = nullptr;
             it = _GroupMap.erase(it);
         }
     }
 
-    // searching all non-group nodes
-    for (DOMNode *child = _pGroupNode->getFirstChild(); child != 0;  child = child->getNextSibling()) {
-        if (XMLString::compareString(child->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0)
-            vecNodes.push_back(child);
-    }
-
-    // deleting the nodes
-    for (auto it = vecNodes.begin(); it != vecNodes.end(); ++it) {
-        DOMNode *child = _pGroupNode->removeChild(*it);
-        child->release();
+    // Remove the reset of non-group nodes;
+    for (DOMNode *child = _pGroupNode->getFirstChild(), *next = child; child != 0;  child = next) {
+        next = next->getNextSibling();
+        DOMNode *node = _pGroupNode->removeChild(child);
+        node->release();
     }
 
     // trigger observer
@@ -1183,7 +1282,7 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindNextElement(XERCES_
     return NULL;
 }
 
-XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name) const
+XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name)
 {
     auto it = _ParamLock.find(this);
     if(it!=_ParamLock.end()) {
@@ -1203,6 +1302,9 @@ std::vector<std::pair<std::string,std::string> >
 ParameterGrp::GetParameterNames(const char * sFilter) const
 {
     std::vector<std::pair<std::string,std::string> > res;
+    if (!_pGroupNode)
+        return res;
+
     std::string Name;
 
     for (DOMNode *clChild = _pGroupNode->getFirstChild();
