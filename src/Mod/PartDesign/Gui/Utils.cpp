@@ -169,6 +169,7 @@ PartDesign::Body * makeBodyActive(App::DocumentObject* body, App::Document *doc)
     return dynamic_cast<PartDesign::Body*>(body);
 }
 
+// TODO: See if it is possible to move this to its own class
 PartDesign::Body * needActiveBodyMessage (App::Document *doc,
                                           const QString& infoText)
 {
@@ -188,12 +189,12 @@ PartDesign::Body * needActiveBodyMessage (App::Document *doc,
     auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
 
     PartDesign::Body* bodyOfActiveObject = nullptr;
-    for (Gui::SelectionSingleton::SelObj obj :  Gui::Selection().getSelection()) {
+    for (const auto &obj :  Gui::Selection().getSelection()) {
         bodyOfActiveObject = PartDesign::Body::findBodyOf(obj.pObject);
         break; // Just get the body for first selected object
     }
 
-    for (auto body : bodies) {
+    for (const auto &body : bodies) {
         auto item = new QListWidgetItem(QString::fromUtf8(body->Label.getValue()));
         item->setData(Qt::UserRole, QVariant::fromValue(body));
         dlg.bodySelect->addItem(item);
@@ -210,11 +211,10 @@ PartDesign::Body * needActiveBodyMessage (App::Document *doc,
     if (result == QDialog::DialogCode::Accepted && !selectedItems.empty()) {
         App::DocumentObject* selectedBody =
             selectedItems[0]->data(Qt::UserRole).value<App::DocumentObject*>();
-        if (selectedBody) {
+        if (selectedBody)
             activeBody = makeBodyActive(selectedBody, doc);
-        } else {
+        else
             return makeBody(doc);
-        }
     }
 
     return activeBody;
@@ -237,9 +237,8 @@ PartDesign::Body * makeBody(App::Document *doc)
                              "App.getDocument('%s').addObject('PartDesign::Body','%s')",
                              doc->getName(), bodyName.c_str() );
     auto body = dynamic_cast<PartDesign::Body*>(doc->getObject(bodyName.c_str()));
-    if(body) {
+    if(body)
         makeBodyActive(body, doc);
-    }
     return body;
 }
 

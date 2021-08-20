@@ -85,12 +85,12 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
 
     auto shouldMakeBody( false );
-    if (pcActiveBody == nullptr) {
+    if (!pcActiveBody) {
         if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
             shouldMakeBody = true;
         } else {
             pcActiveBody = PartDesignGui::needActiveBodyMessage(doc);
-            if (pcActiveBody == nullptr)
+            if (!pcActiveBody)
                 return;
         }
     }
@@ -105,7 +105,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
 
-    if (pcActiveBody == nullptr) {
+    if (!pcActiveBody) {
         return;
     }
 

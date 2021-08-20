@@ -505,12 +505,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // objects (in which case, just make one) to make a new sketch.
 
         pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
-        if (pcActiveBody == nullptr) {
+        if (!pcActiveBody) {
             if ( doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0 ) {
                 shouldMakeBody = true;
             } else {
                 pcActiveBody = PartDesignGui::needActiveBodyMessage(doc);
-                if (pcActiveBody == nullptr)
+                if (!pcActiveBody)
                     return;
             }
         }
