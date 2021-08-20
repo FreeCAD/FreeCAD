@@ -376,6 +376,55 @@ void ParameterGrp::insert(const char* FileName)
     unrefNoDelete();
 }
 
+void ParameterGrp::revert(const char* FileName)
+{
+    ParameterManager Mngr;
+
+    if (Mngr.LoadDocument(FileName) != 1)
+        throw FileException("ParameterGrp::revert() cannot load document", FileName);
+
+    Mngr.ref();
+    revert(Base::Reference<ParameterGrp>(&Mngr));
+    Mngr.unrefNoDelete();
+}
+
+void ParameterGrp::revert(Base::Reference<ParameterGrp> Grp)
+{
+    if (Grp == this)
+        return;
+
+    for (auto &grp : Grp->GetGroups()) {
+        if (HasGroup(grp->GetGroupName()))
+            GetGroup(grp->GetGroupName())->revert(grp);
+    }
+
+    for (const auto &v : Grp->GetASCIIMap()) {
+        if (GetASCII(v.first.c_str(), v.second.c_str()) == v.second)
+            RemoveASCII(v.first.c_str());
+    }
+
+    for (const auto &v : Grp->GetBoolMap()) {
+        if (GetBool(v.first.c_str(), v.second) == v.second)
+            RemoveBool(v.first.c_str());
+    }
+
+    for (const auto &v : Grp->GetIntMap()) {
+        if (GetInt(v.first.c_str(), v.second) == v.second)
+            RemoveInt(v.first.c_str());
+    }
+
+    for (const auto &v : Grp->GetUnsignedMap()) {
+        if (GetUnsigned(v.first.c_str(), v.second) == v.second)
+            RemoveUnsigned(v.first.c_str());
+    }
+
+    for (const auto &v : Grp->GetFloatMap()) {
+        if (GetFloat(v.first.c_str(), v.second) == v.second)
+            RemoveFloat(v.first.c_str());
+    }
+}
+
+
 Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
 {
     std::string cName = Name;

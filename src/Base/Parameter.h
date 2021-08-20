@@ -117,6 +117,10 @@ public:
     void importFrom(const char* FileName);
     /// insert from a file to this group, overwrite only the similar
     void insert(const char* FileName);
+    /// revert to default value by deleting any parameter that has the same value in the given file
+    void revert(const char* FileName);
+    /// revert to default value by deleting any parameter that has the same value in the given group
+    void revert(Base::Reference<ParameterGrp>);
     //@}
 
     /** @name methods for group handling */
