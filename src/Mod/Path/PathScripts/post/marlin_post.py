@@ -84,8 +84,8 @@ PRECISION = 4
 RAPID_MOVES = ['G0', 'G00']
 
 G0XY_FEEDRATE = 1000
-G0Z_UP_FEEDRATE = 200
-G0Z_DOWN_FEEDRATE = 150
+G0Z_UP_FEEDRATE = 75
+G0Z_DOWN_FEEDRATE = 75
 
 #Preamble text will appear at the Beginning of the GCODE output file.
 PREAMBLE = '''G90
@@ -430,7 +430,7 @@ def emulFastMove(c, state): #Let's separate Z
     if 'F' in params:
         F = params['F']
     else:
-        F= G0Z_DOWN_FEEDRATE / 60.0
+        F = G0XY_FEEDRATE / 60.0
         
     if F > (G0Z_DOWN_FEEDRATE / 60.0):
         F2 = G0Z_DOWN_FEEDRATE / 60.0
@@ -439,18 +439,18 @@ def emulFastMove(c, state): #Let's separate Z
         
     if 'Z' in params:
         if 'X' in params or 'Y' in params:
-            cmdlist =  [["G0", {'Z' : params['Z'], 'F': F2}],
-                        ["G0", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
+            cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
+                        ["G1", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
         else:
-            cmdlist = [["G0", {'Z' : params['Z'], 'F': F2}]]
+            cmdlist = [["G1", {'Z' : params['Z'], 'F': F2}]]
     else:
         if 'X' in params:
             if 'Y' in params:
-                cmdlist = [["G0", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
+                cmdlist = [["G1", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
             else:
-                cmdlist = [["G0", {'X' : params['X'], 'F': F}]]
+                cmdlist = [["G1", {'X' : params['X'], 'F': F}]]
         else:
-            cmdlist = [["G0", {'Y' : params['Y'], 'F': F}]]
+            cmdlist = [["G1", {'Y' : params['Y'], 'F': F}]]
                 
     return iter(cmdlist)
    
