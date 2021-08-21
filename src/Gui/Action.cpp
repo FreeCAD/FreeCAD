@@ -2769,6 +2769,7 @@ void PresetsAction::addTo ( QWidget * w )
 {
     if (!_menu) {
       _menu = new QMenu();
+      _menu->setToolTipsVisible(true);
       _action->setMenu(_menu);
       connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
       connect(_menu, SIGNAL(triggered(QAction*)), this, SLOT(onAction(QAction*)));
@@ -2780,17 +2781,23 @@ void PresetsAction::addTo ( QWidget * w )
 void PresetsAction::onAction(QAction *action) {
     auto param = App::GetApplication().GetParameterSet(
             action->data().toByteArray().constData());
-    if (param)
-        param->insertTo(&App::GetApplication().GetUserParameter());
+    if (param) {
+        if (QApplication::queryKeyboardModifiers() == Qt::ControlModifier)
+            App::GetApplication().GetUserParameter().revert(param);
+        else
+            param->insertTo(&App::GetApplication().GetUserParameter());
+    }
 }
 
 void PresetsAction::onShowMenu()
 {
     _menu->clear();
     auto hGrp = App::GetApplication().GetParameterSetHandle();
+    QString tooltip = tr("Click to apply the setting.\nCtrl + Click to revert to default.");
     for (auto &v : hGrp->GetBoolMap()) {
         if (v.second && App::GetApplication().GetParameterSet(v.first.c_str())) {
             auto action = _menu->addAction(tr(v.first.c_str()));
+            action->setToolTip(tooltip);
             action->setData(QByteArray(v.first.c_str()));
         }
     }
