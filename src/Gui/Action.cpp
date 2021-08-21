@@ -693,7 +693,7 @@ public:
     }
 
     bool showTabBar() {
-        return handle->GetBool("ShowTabBar", true);
+        return handle->GetBool("ShowTabBar", false);
     }
 
     void setShowTabBar(bool enable) {
