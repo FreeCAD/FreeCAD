@@ -754,6 +754,8 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
                 vrValues.emplace_back(StrXUTF8(pcElem2->getNodeValue()).c_str() );
+            else
+                vrValues.emplace_back(""); // For a string, an empty value is possible and allowed
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
@@ -776,6 +778,8 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
                 vrValues.emplace_back(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()));
+            else
+                vrValues.emplace_back(Name, std::string()); // For a string, an empty value is possible and allowed
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
