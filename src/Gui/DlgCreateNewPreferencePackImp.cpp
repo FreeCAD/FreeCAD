@@ -29,6 +29,7 @@
 #include "ui_DlgCreateNewPreferencePack.h"
 
 #include <QPushButton>
+#include <QMessageBox>
 
 using namespace Gui::Dialog;
 
