@@ -1357,6 +1357,13 @@ void ParameterGrp::NotifyAll()
         Notify(It5->first.c_str());
 }
 
+void ParameterGrp::_Reset()
+{
+    _pGroupNode = nullptr;
+    for (auto &v : _GroupMap)
+        v.second->_Reset();
+}
+
 //**************************************************************************
 //**************************************************************************
 // ParameterSerializer
@@ -1465,6 +1472,7 @@ ParameterManager::ParameterManager()
   */
 ParameterManager::~ParameterManager()
 {
+    _Reset();
     delete _pDocument;
     delete paramSerializer;
 }

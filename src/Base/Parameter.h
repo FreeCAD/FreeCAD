@@ -267,6 +267,8 @@ protected:
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
     bool ShouldRemove() const;
 
+    void _Reset();
+
     void _SetAttribute(const char *Type, const char *Name, const char *Value);
     void _Notify(const char *Type, const char *Name, const char *Value);
 
