@@ -244,10 +244,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
-    _connParamSetChanged = _pcSysParamMngr->signalParamChanged.connect(
-            boost::bind(&Application::slotParameterSetsChanged, this, bp::_1));
-    _mpcPramHandle = _pcSysParamMngr->GetGroup("ParameterSets");
-    slotParameterSetsChanged(_mpcPramHandle);
+    RefreshParameterSet();
 
     // setting up Python binding
     Base::PyGILStateLocker lock;
@@ -1207,9 +1204,7 @@ Application::GetParameterSetList(void) const
 
 ParameterManager *Application::AddParameterSet(const char* sName, const std::string &filename)
 {
-    Base::ConnectionBlocker block(_connParamSetChanged);
-
-    ParameterManager *manager;
+    ParameterManager *manager = nullptr;
     auto it = mpcPramManager.find(sName);
     if ( it == mpcPramManager.end() ) {
         manager = new ParameterManager();
@@ -1223,55 +1218,46 @@ ParameterManager *Application::AddParameterSet(const char* sName, const std::str
     if (filename.empty())
         return manager;
 
-    std::string pathPrefix = mConfig["UserAppData"];
-    if (mConfig.count("VendorCFGPrefix"))
-        pathPrefix += mConfig["VendorCFGPrefix"];
-
     QFileInfo fi(QString::fromUtf8(filename.c_str()));
-    QString ext = fi.suffix();
-    if (ext != QLatin1String("cfg"))
-        ext = QLatin1String("cfg");
     QString basename = fi.completeBaseName();
-    QFileInfo fdest(QString::fromLatin1("%1%2.%3").arg(
-                QString::fromUtf8(pathPrefix.c_str()), basename, ext));
 
-    std::set<std::string> fileset;
-    for (auto & v : mpcPramManager) {
-        if (v.second != manager) {
-            const auto &path = v.second->GetSerializeFileName();
-            if (path.empty())
-                continue;
-            QFileInfo fi(QString::fromUtf8(path.c_str()));
-            fileset.insert(fi.canonicalFilePath().toUtf8().constData());
+    QFileInfo fdest(QString::fromLatin1("%1/data/Settings/%2.FCParam").arg(
+                QString::fromUtf8(getHomePath()), basename));
+
+    bool doCopy = true;
+    if (fi.canonicalFilePath() == fdest.canonicalFilePath())
+        doCopy = false;
+    else {
+        std::string pathPrefix = getUserAppDataDir();
+        if (mConfig.count("VendorCFGPrefix"))
+            pathPrefix += mConfig["VendorCFGPrefix"];
+        fdest = QFileInfo(QString::fromLatin1("%1/Settings/%2.FCParam").arg(
+                    QString::fromUtf8(pathPrefix.c_str()), basename));
+        if (fi.canonicalFilePath() == fdest.canonicalFilePath())
+            doCopy = false;
+    }
+
+    if (doCopy) {
+        for (int i=1; fdest.exists(); ++i) {
+            fdest = QFileInfo(QString::fromLatin1("%1/%2(%3).FCParam").arg(
+                    fdest.absolutePath(), fdest.completeBaseName()).arg(i++));
         }
-    }
-    
-    int i = 1;
-    std::string finaldest;
-    for (;;) {
-        finaldest = fdest.filePath().toUtf8().constData();
-        if (!fileset.count(finaldest))
-            break;
-        if (i >= 1000)
-            throw Base::RuntimeError("Cannot import parameter set");
-        fdest = QFileInfo(QString::fromLatin1("%1%2(%4).%3").arg(
-                QString::fromUtf8(pathPrefix.c_str()), basename, ext).arg(i++));
-    }
-
-    if (fi.exists() && fi.canonicalFilePath() != fdest.canonicalFilePath())
         QFile::copy(fi.filePath(), fdest.filePath());
+    }
 
-    if (manager->GetSerializeFileName() != finaldest) {
-        manager->SetSerializer(new ParameterSerializer(finaldest));
-        if (fdest.exists()) {
-            try {
-                manager->LoadOrCreateDocument();
-            } catch (Base::Exception &e) {
-                e.ReportException();
-            }
+    QFileInfo finfo(QString::fromUtf8(manager->GetSerializeFileName().c_str()));
+    if (finfo.canonicalFilePath() != fdest.canonicalFilePath()) {
+        QFile::remove(finfo.filePath());
+        manager->SetSerializer(new ParameterSerializer(
+                    fdest.canonicalFilePath().toUtf8().constData()));
+        try {
+            manager->LoadOrCreateDocument();
+            if (!fdest.exists())
+                manager->SaveDocument();
+        } catch (Base::Exception &e) {
+            e.ReportException();
         }
     }
-    _mpcPramHandle->SetASCII(sName, finaldest);
     return manager;
 }
 
@@ -1283,14 +1269,17 @@ bool Application::RenameParameterSet(const char *sName, ParameterManager *hManag
     for (auto it = mpcPramManager.begin(); it != mpcPramManager.end(); ++it) {
         if (it->second == hManager) {
             if (it->first != sName) {
-                Base::ConnectionBlocker block(_connParamSetChanged);
-                _mpcPramHandle->SetASCII(sName,
-                        _mpcPramHandle->GetASCII(it->first.c_str(), ""));
-                _mpcPramHandle->SetBool(sName, _mpcPramHandle->GetBool(it->first.c_str(), true));
-                _mpcPramHandle->RemoveASCII(it->first.c_str());
-                _mpcPramHandle->RemoveBool(it->first.c_str());
                 mpcPramManager[sName] = hManager;
                 mpcPramManager.erase(it);
+                if (hManager->HasSerializer()) {
+                    QFileInfo fi(QString::fromUtf8(hManager->GetSerializeFileName().c_str()));
+                    QFileInfo fdest(QString::fromLatin1("%1/%2.FCParam").arg(
+                                fi.absolutePath(), QString::fromUtf8(sName)));
+                    if (fi.exists())
+                        QFile::rename(fi.absoluteFilePath(), fdest.absoluteFilePath());
+                    hManager->SetSerializer(new ParameterSerializer(
+                                fdest.canonicalFilePath().toUtf8().constData()));
+                }
             }
             return true;
         }
@@ -1301,13 +1290,15 @@ bool Application::RenameParameterSet(const char *sName, ParameterManager *hManag
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    Base::ConnectionBlocker block(_connParamSetChanged);
     auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
-    _mpcPramHandle->RemoveASCII(sName);
-    _mpcPramHandle->RemoveBool(sName);
+    const auto &path = it->second->GetSerializeFileName();
+    if (!path.empty()) {
+        Base::FileInfo fi(path);
+        fi.deleteFile();
+    }
     mpcPramManager.erase(it);
 }
 
@@ -2322,28 +2313,57 @@ void Application::initConfig(int argc, char ** argv)
     logStatus();
 }
 
-void Application::slotParameterSetsChanged(ParameterGrp *Param)
+void Application::RefreshParameterSet(bool savefirst)
 {
-    if (Param != _mpcPramHandle)
-        return;
-
-    std::map<std::string, std::string> map;
-    for (auto &v : _mpcPramHandle->GetASCIIMap())
-        map.insert(v);
-
-    // Erase any non existent parameter set first to prevent unnecessary conf
-    // file renaming
+    std::map<std::string, Base::Reference<ParameterManager>> tmp;
     for (auto it = mpcPramManager.begin(); it != mpcPramManager.end();) {
+        if (savefirst && it->second->HasSerializer())
+            it->second->SaveDocument();
         if (it->second != _pcUserParamMngr
                 && it->second != _pcSysParamMngr
-                && !map.count(it->first))
+                && it->second->HasSerializer())
+        {
+            tmp[it->first] = it->second;
             it = mpcPramManager.erase(it);
+        }
         else
             ++it;
     }
-
-    for (auto &v : map)
-        AddParameterSet(v.first.c_str(), v.second);
+    std::vector<std::string> paths;
+    paths.push_back(getHomePath());
+    paths.back() += "/data/settings/";
+    paths.push_back(getUserAppDataDir());
+    paths.back() += "/settings/";
+    for (auto &path : paths) {
+        QDir dir(QString::fromUtf8(path.c_str()));
+        auto fileNames = dir.entryInfoList(
+                QStringList(QStringLiteral("*.FCParam")), QDir::Files, QDir::Name);
+        for (auto &file : fileNames) {
+            Base::Reference<ParameterManager> manager = new ParameterManager();
+            manager->SetSerializer(new ParameterSerializer(
+                        file.canonicalFilePath().toUtf8().constData()));
+            try {
+                manager->LoadDocument();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+                continue;
+            }
+            std::string basename = file.completeBaseName().toUtf8().constData();
+            std::ostringstream ss;
+            std::string name(basename);
+            for (int i=1; mpcPramManager.count(name.c_str()); ++i) {
+                ss.str("");
+                ss << basename << "(" << setfill('0') << setw(3) << i << ")";
+                name = ss.str();
+            }
+            auto it = tmp.find(name);
+            if (it != tmp.end()) {
+                manager->copyTo((ParameterManager*)it->second);
+                manager = it->second;
+            }
+            mpcPramManager[name] = manager;
+        }
+    }
 }
 
 void Application::SaveEnv(const char* s)

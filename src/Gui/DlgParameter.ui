@@ -75,6 +75,19 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="btnToolTip">
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>ToolTip</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btnAdd">
        <property name="maximumSize">
         <size>

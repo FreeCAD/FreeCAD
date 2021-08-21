@@ -329,7 +329,7 @@ public:
     ParameterManager * AddParameterSet(const char* sName, const std::string &filename = std::string());
     void RemoveParameterSet(const char* sName);
     bool RenameParameterSet(const char *sName, ParameterManager *);
-    ParameterGrp::handle GetParameterSetHandle() const {return _mpcPramHandle;}
+    void RefreshParameterSet(bool savefirst = true);
     //@}
 
     /** @name methods for the open handler
@@ -470,7 +470,6 @@ protected:
     void slotStartSaveDocument(const App::Document&, const std::string&);
     void slotFinishSaveDocument(const App::Document&, const std::string&);
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
-    void slotParameterSetsChanged(ParameterGrp *Param);
     //@}
 
     /// open single document only
@@ -599,8 +598,6 @@ private:
     mutable std::map<std::string,Document*> DocFileMap;
 
     std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
-    ParameterGrp::handle _mpcPramHandle;
-    boost::signals2::scoped_connection _connParamSetChanged;
 
     std::map<std::string,std::string> &_mConfig;
 

@@ -101,6 +101,7 @@ protected Q_SLOTS:
     void on_btnRemove_clicked();
     void on_btnRename_clicked();
     void on_btnRefresh_clicked();
+    void on_btnToolTip_clicked();
     void on_btnRestart_clicked();
     void on_btnReset_clicked();
     void on_checkBoxPreset_toggled(bool);
@@ -135,6 +136,8 @@ protected:
                           const char *Name,
                           const char *Value);
 
+    void populate();
+
 protected:
     friend class ParameterGroup;
     friend class ParameterGroupItem;
@@ -156,6 +159,7 @@ protected:
 private:
     QFont defaultFont;
     QBrush defaultColor;
+    bool hasDefaultColor = false;
     QFont boldFont;
     QList<QTreeWidgetItem*> foundList;
     bool importing = false;

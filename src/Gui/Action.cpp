@@ -2795,14 +2795,20 @@ void PresetsAction::onAction(QAction *action) {
 void PresetsAction::onShowMenu()
 {
     _menu->clear();
-    auto hGrp = App::GetApplication().GetParameterSetHandle();
     QString tooltip = tr("Click to apply the setting.\nCtrl + Click to revert to default.");
-    for (auto &v : hGrp->GetBoolMap()) {
-        if (v.second && App::GetApplication().GetParameterSet(v.first.c_str())) {
-            auto action = _menu->addAction(tr(v.first.c_str()));
-            action->setToolTip(tooltip);
-            action->setData(QByteArray(v.first.c_str()));
-        }
+    for (auto &v : App::GetApplication().GetParameterSetList()) {
+        if (v.second == &App::GetApplication().GetUserParameter()
+                || v.second == &App::GetApplication().GetSystemParameter()
+                || !v.second->GetBool("Preset", true))
+            continue;
+        auto action = _menu->addAction(QString::fromUtf8(
+                    v.second->GetASCII("Name", v.first.c_str()).c_str()));
+        QString t = QString::fromUtf8(v.second->GetASCII("ToolTip").c_str());
+        if (t.size())
+            t += QStringLiteral("\n\n");
+        t += tooltip;
+        action->setToolTip(t);
+        action->setData(QByteArray(v.first.c_str()));
     }
 }
 

@@ -121,17 +121,6 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     qApp->translate( "Gui::Dialog::DlgParameterImp", "User parameter" );
 #endif
 
-    ParameterManager* sys = App::GetApplication().GetParameterSet("System parameter");
-    const auto& rcList = App::GetApplication().GetParameterSetList();
-    for (auto it= rcList.begin();it!=rcList.end();++it) {
-        if (it->second != sys) // for now ignore system parameters because they are nowhere used
-            ui->parameterSet->addItem(tr(it->first.c_str()), QVariant(QByteArray(it->first.c_str())));
-    }
-
-    QByteArray cStr("User parameter");
-    ui->parameterSet->setCurrentIndex(ui->parameterSet->findData(cStr));
-    onChangeParameterSet(ui->parameterSet->currentIndex());
-
     connect(ui->parameterSet, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onChangeParameterSet(int)));
     connect(paramGroup, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
@@ -144,13 +133,14 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     defaultFont = paramGroup->font();
     boldFont = defaultFont;
     boldFont.setBold(true);
-    defaultColor = paramGroup->topLevelItem(0)->foreground(0);
 
     // set a placeholder text to inform the user
     // (QLineEdit has no placeholderText property in Qt4)
 #if QT_VERSION >= 0x050200
     ui->findGroupLE->setPlaceholderText(tr("Search Group"));
 #endif
+
+    populate();
 }
 
 /**
@@ -308,6 +298,8 @@ void DlgParameterImp::showEvent(QShowEvent *ev)
             this->move(x, y);
             this->resize(w, h);
         }
+        if (hGrp->GetBool("Maximized", false))
+            QMetaObject::invokeMethod(this, "showMaximized", Qt::QueuedConnection);
     }
     QWidget::showEvent(ev);
 }
@@ -345,6 +337,7 @@ void DlgParameterImp::saveState(bool saveGeometry)
         hGrp->GetGroup("LastGroup")->SetASCII(
                 ui->parameterSet->itemData(lastIndex).toByteArray(),
                 (const char*)path.toUtf8());
+        hGrp->SetASCII("LastParameterSet", ui->parameterSet->itemData(lastIndex).toByteArray());
     }
     lastIndex = ui->parameterSet->currentIndex();
 
@@ -355,6 +348,7 @@ void DlgParameterImp::saveState(bool saveGeometry)
         str << "(" << r.left() << "," << r.top() << ","
             << r.right() << "," << r.bottom() << ")";
         hGrp->SetASCII("Geometry", str.str().c_str());
+        hGrp->SetBool("Maximized", isMaximized());
     }
 }
 
@@ -449,12 +443,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     ui->parameterSet->setEditable(false);
     ui->btnRename->setEnabled(editable);
     ui->checkBoxPreset->setEnabled(editable);
-
-    {
-        QSignalBlocker blocker(ui->checkBoxPreset);
-        ui->checkBoxPreset->setChecked(
-                App::GetApplication().GetParameterSetHandle()->GetBool(paramName, true));
-    }
+    ui->btnToolTip->setEnabled(editable);
 
     rcParMngr->CheckDocument();
     ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
@@ -513,6 +502,10 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         paramGroup->setCurrentItem(paramGroup->topLevelItem(0));
 
     curParamManager = rcParMngr;
+    {
+        QSignalBlocker blocker(ui->checkBoxPreset);
+        ui->checkBoxPreset->setChecked(curParamManager->GetBool("Preset", true));
+    }
 
     if (auto item = paramGroup->currentItem())
         onGroupSelected(item);
@@ -522,7 +515,6 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         ui->checkBoxMonitor->setChecked(monitors.count(rcParMngr) > 0);
         on_checkBoxMonitor_toggled(ui->checkBoxMonitor->isChecked());
     }
-
 }
 
 void DlgParameterImp::on_checkBoxMonitor_toggled(bool checked)
@@ -633,6 +625,7 @@ void DlgParameterImp::on_btnExport_clicked()
     }
 
     ParameterManager hTmp;
+    hTmp.ref();
     hTmp.CreateDocument();
     for (auto &v : it->second.changes) {
         if (v.first->Manager() != curParamManager)
@@ -667,6 +660,7 @@ void DlgParameterImp::on_btnExport_clicked()
         }
     }
     doExport(&hTmp);
+    hTmp.unrefNoDelete();
 }
 
 void DlgParameterImp::on_btnAdd_clicked()
@@ -713,7 +707,59 @@ void DlgParameterImp::on_btnRename_clicked()
 void DlgParameterImp::on_btnRefresh_clicked()
 {
     saveState(false);
-    onChangeParameterSet(ui->parameterSet->currentIndex());
+    QSignalBlocker guard(paramGroup);
+    QSignalBlocker guard2(paramValue);
+    App::GetApplication().RefreshParameterSet();
+    populate();
+}
+
+void DlgParameterImp::populate()
+{
+    QSignalBlocker guard(paramGroup);
+    QSignalBlocker guard2(paramValue);
+    QSignalBlocker guard3(ui->parameterSet);
+
+    monitors.clear();
+    paramValue->clear();
+    paramGroup->clear();
+    ui->parameterSet->clear();
+
+    const auto& rcList = App::GetApplication().GetParameterSetList();
+    for (auto it= rcList.begin();it!=rcList.end();++it) {
+        // for now ignore system parameters because they are nowhere used
+        if (it->second == &App::GetApplication().GetSystemParameter())
+            continue;
+        QString name;
+        QString tooltip;
+        if (it->second == &App::GetApplication().GetUserParameter()) {
+            name = tr(it->first.c_str());
+            tooltip = tr("Application configuration");
+        } else {
+            name = QString::fromUtf8(
+                    it->second->GetASCII("Name", it->first.c_str()).c_str());
+            tooltip = QString::fromUtf8(it->second->GetASCII("ToolTip").c_str());
+            QString t = QString::fromUtf8(it->second->GetSerializeFileName().c_str());
+            if (t.size()) {
+                if (tooltip.size())
+                    tooltip += QStringLiteral("\n\n");
+                tooltip += t;
+            }
+        }
+        ui->parameterSet->addItem(name, QVariant(QByteArray(it->first.c_str())));
+        ui->parameterSet->setItemData(ui->parameterSet->count()-1, tooltip, Qt::ToolTipRole);
+    }
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp/Preferences/ParameterEditor");
+    auto lastParameter = QByteArray(hGrp->GetASCII("LastParameterSet", "User parameter").c_str());
+    int index = ui->parameterSet->findData(lastParameter);
+    if (index < 0)
+        index = 0;
+    ui->parameterSet->setCurrentIndex(index);
+    onChangeParameterSet(index);
+    if (!hasDefaultColor && paramGroup->topLevelItemCount()) {
+        hasDefaultColor = true;
+        defaultColor = paramGroup->topLevelItem(0)->foreground(0);
+    }
 }
 
 void DlgParameterImp::on_btnRemove_clicked()
@@ -735,13 +781,37 @@ void DlgParameterImp::on_btnRemove_clicked()
     onChangeParameterSet(index);
 }
 
+void DlgParameterImp::on_btnToolTip_clicked()
+{
+    int index = ui->parameterSet->currentIndex();
+    if (index < 0)
+        return;
+    auto hManager = App::GetApplication().GetParameterSet(
+            ui->parameterSet->itemData(index).toByteArray());
+    if (hManager == &App::GetApplication().GetUserParameter()
+            || hManager == &App::GetApplication().GetSystemParameter())
+        return;
+
+    bool ok = false;
+    QString tooltip = QInputDialog::getMultiLineText(
+            this, ui->parameterSet->currentText(), tr("Tool tip:"),
+            QString::fromUtf8(hManager->GetASCII("ToolTip").c_str()), &ok);
+    if (ok) {
+        hManager->SetASCII("ToolTip", tooltip.toUtf8().constData());
+        QString t = QString::fromUtf8(hManager->GetSerializeFileName().c_str());
+        if (t.size())
+            tooltip += QStringLiteral("\n\n");
+        tooltip += t;
+        ui->parameterSet->setItemData(index, tooltip, Qt::ToolTipRole);
+    }
+}
+
 void DlgParameterImp::on_checkBoxPreset_toggled(bool checked)
 {
     int index = ui->parameterSet->currentIndex();
     if (index < 0)
         return;
-    App::GetApplication().GetParameterSetHandle()->SetBool(
-            ui->parameterSet->itemData(index).toByteArray(), checked);
+    curParamManager->SetBool("Preset", checked);
 }
 
 void DlgParameterImp::onParameterSetNameChanged()
@@ -751,14 +821,8 @@ void DlgParameterImp::onParameterSetNameChanged()
             ui->parameterSet->itemData(index).toByteArray());
     QString text = ui->parameterSet->currentText();
     ui->parameterSet->setEditable(false);
-    if (App::GetApplication().RenameParameterSet(
-                text.toUtf8().constData(), parmgr))
-    {
-        removeState();
-        ui->parameterSet->setItemText(index, text);
-        ui->parameterSet->setItemData(index, text.toUtf8());
-    } else
-        ui->parameterSet->setCurrentText(ui->parameterSet->itemText(index));
+    parmgr->SetASCII("Name", text.toUtf8().constData());
+    ui->parameterSet->setItemText(index, text);
 }
 
 static inline bool hasCheckedItem(QTreeWidget *widget)
