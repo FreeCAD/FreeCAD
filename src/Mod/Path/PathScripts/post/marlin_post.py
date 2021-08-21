@@ -83,7 +83,7 @@ PRECISION = 4
 
 RAPID_MOVES = ['G0', 'G00']
 
-G0XY_FEEDRATE = 2000
+G0XY_FEEDRATE = 1000
 G0Z_UP_FEEDRATE = 200
 G0Z_DOWN_FEEDRATE = 150
 
@@ -96,7 +96,7 @@ G92 X0 Y0 Z0
 POSTAMBLE = '''
 G0 Z20
 M5
-G0 X0 Y0 F''' + format(G0XY_FEEDRATE, 'd') + '''
+G0 X0 Y0 F''' + format(G0XY_FEEDRATE /60.0, '.' + str(PRECISION) +'f') + '''
 G0 Z5
 ; M2
 '''
@@ -395,11 +395,11 @@ def boxlimits(data_stats, cmd, param, value, checkbounds):
 
 def emuldrill(c, state): #G81
     
-    cmdlist =  [["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5, 'F' : G0Z_DOWN_FEEDRATE / 60}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0, 'F' : G0Z_UP_FEEDRATE / 60}],
+    cmdlist =  [["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : 5,  'F' : G0Z_UP_FEEDRATE /60}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : -5, 'F' : G0Z_DOWN_FEEDRATE / 60}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : 0, 'F' : G0Z_UP_FEEDRATE / 60}],
                 ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z'], 'F' : G0Z_DOWN_FEEDRATE / 60}],
-                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5,  'F' : G0Z_UP_FEEDRATE /60}]
+                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : 5,  'F' : G0Z_UP_FEEDRATE /60}]
     ]
     
     return iter(cmdlist)
@@ -423,9 +423,39 @@ def emultoolchange(c, state): #M6 T?
         ]
     
     return iter(cmdlist)
+
+def emulFastMove(c, state): #Let's separate Z
+    params = c.Parameters
     
+    if 'F' in params:
+        F = params['F']
+    else:
+        F= G0Z_DOWN_FEEDRATE / 60.0
+        
+    if F > (G0Z_DOWN_FEEDRATE / 60.0):
+        F2 = G0Z_DOWN_FEEDRATE / 60.0
+    else:
+        F2 = F
+        
+    if 'Z' in params:
+        if 'X' in params or 'Y' in params:
+            cmdlist =  [["G0", {'Z' : params['Z'], 'F': F2}],
+                        ["G0", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
+        else:
+            cmdlist = [["G0", {'Z' : params['Z'], 'F': F2}]]
+    else:
+        if 'X' in params:
+            if 'Y' in params:
+                cmdlist = [["G0", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
+            else:
+                cmdlist = [["G0", {'X' : params['X'], 'F': F}]]
+        else:
+            cmdlist = [["G0", {'Y' : params['Y'], 'F': F}]]
+                
+    return iter(cmdlist)
+   
 class Commands:
-    tobe = {'G81': emuldrill, 'M6' : emultoolchange}
+    tobe = {'G81': emuldrill, 'M6' : emultoolchange, 'G0' : emulFastMove}
     state = {'output': False, 'notoolyet': True, 'lastz' : 100, 'lastx' : 0, 'lasty' : 0, 'lastf' : G0Z_DOWN_FEEDRATE, 'lasts' : 0}
              
     def __init__(self, pathobj = None, output = False):
@@ -442,8 +472,7 @@ class Commands:
         if self.epath != None:
             try:
                 res = next(self.epath)
-                #print ("macro line " + res[0])
-            
+                res = [res[0], res[1]]
             except:
                 self.epath = None
                 res = None
@@ -458,6 +487,7 @@ class Commands:
             if command in Commands.tobe:
                 func = Commands.tobe[command]
                 self.epath = func(item, Commands.state)
+                command = ';' + command
             elif Commands.state['output']:
                 if command == 'G0':
                     if 'Z' in params:
@@ -550,7 +580,9 @@ def parse(pathobj, data_stats, checkbounds):
                     outstring.pop(0) #remove the command
 
             if not command in ALLOWED_COMMANDS:
-                outstring.insert(0, ";")
+                if ';' not in outstring[0]:
+                    print(outstring)
+                    outstring.insert(0, ";")
 
             #prepEnd a line number and append a newline
             if len(outstring) >= 1:
