@@ -15,6 +15,9 @@ QDateTimeEdit,
 Gui--PropertyEditor--PropertyEditor QLabel {
   background : #6e6e6e;
 }
+Gui--PropertyEditor--PropertyEditor {
+    gridline-color: #20a0a0a0;
+}
 
 QComboBox:disabled,
 QAbstractSpinBox:disabled,
