@@ -85,7 +85,7 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     groupLabels << tr( "Group" );
     paramGroup = new ParameterGroup(this, ui->splitter3);
     paramGroup->setHeaderLabels(groupLabels);
-    paramGroup->setRootIsDecorated(false);
+    paramGroup->setRootIsDecorated(true);
 #if QT_VERSION >= 0x050000
     paramGroup->setSortingEnabled(true);
     paramGroup->sortByColumn(0, Qt::AscendingOrder);
@@ -97,6 +97,7 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     paramValue = new ParameterValue(this, ui->splitter3);
     paramValue->setHeaderLabels(valueLabels);
     paramValue->setRootIsDecorated(false);
+    paramValue->setSelectionMode(QTreeView::ExtendedSelection);
 #if QT_VERSION >= 0x050000
     paramValue->header()->setSectionResizeMode(0, QHeaderView::Stretch);
     paramValue->setSortingEnabled(true);
@@ -615,13 +616,11 @@ void DlgParameterImp::on_btnMerge_clicked()
 
 void DlgParameterImp::on_btnImport_clicked()
 {
-    if (curParamManager == &App::GetApplication().GetUserParameter()) {
-        if (QMessageBox::warning(this,
-                    tr("Import parameter from file"),
-                    tr("This will overwrite the current settings.\nDo you want to continue?"),
-                    QMessageBox::Yes|QMessageBox::No) != QMessageBox::Yes)
-            return;
-    }
+    if (QMessageBox::warning(this,
+                tr("Import parameter from file"),
+                tr("This will overwrite the current settings.\nDo you want to continue?"),
+                QMessageBox::Yes|QMessageBox::No) != QMessageBox::Yes)
+        return;
     doImportOrMerge(curParamManager, false);
 }
 
@@ -1217,23 +1216,23 @@ void ParameterGroup::keyPressEvent (QKeyEvent* event)
 void ParameterGroup::onDeleteSelectedItem()
 {
     QTreeWidgetItem* sel = currentItem();
-    if (sel && sel->isSelected() && sel->parent())
+    if (sel && sel->isSelected())
     {
         if ( QMessageBox::question(this, tr("Remove group"), tr("Do you really want to remove this parameter group?"),
                                QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape) ==
                                QMessageBox::Yes )
         {
-            QTreeWidgetItem* parent = sel->parent();
-            int index = parent->indexOfChild(sel);
-            parent->takeChild(index);
-
-            std::string groupName = sel->text(0).toStdString();
-            // must delete the tree item here because it and its children still
-            // hold a reference to the parameter group
-            delete sel;
-
-            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(parent);
-            para->_hcGrp->RemoveGrp(groupName.c_str());
+            auto item = static_cast<ParameterGroupItem*>(sel);
+            ParameterGrp::handle hParent;
+            if (!sel->parent())
+                hParent = _owner->curParamManager;
+            else {
+                auto parent = static_cast<ParameterGroupItem*>(sel->parent());
+                hParent = parent->_hcGrp;
+            }
+            auto hGrp = item->_hcGrp;
+            delete item;
+            hParent->RemoveGrp(hGrp->GetGroupName());
         }
     }
 }
@@ -1532,12 +1531,9 @@ void ParameterValue::onChangeSelectedItem()
 
 void ParameterValue::onDeleteSelectedItem()
 {
-    QTreeWidgetItem* sel = currentItem();
-    if (sel && sel->isSelected())
-    {
-        takeTopLevelItem(indexOfTopLevelItem(sel));
-        static_cast<ParameterValueItem*>(sel)->removeFromGroup();
-        delete sel;
+    for (auto item : selectedItems()) {
+        static_cast<ParameterValueItem*>(item)->removeFromGroup();
+        delete item;
     }
 }
 
@@ -1552,11 +1548,12 @@ void ParameterValue::onRenameSelectedItem()
 
 void ParameterValue::onTouchItem()
 {
-    auto sel = static_cast<ParameterValueItem*>(currentItem());
-    if (sel && sel->isSelected()) {
-        if (auto manager = _hcGrp->Manager())
-            manager->signalParamChanged(_hcGrp,
-                    sel->getKey().type, sel->getKey().name, sel->text(2).toUtf8());
+    if (auto manager = _hcGrp->Manager()) {
+        for(auto item : selectedItems()) {
+            auto vitem = static_cast<ParameterValueItem*>(item);
+            manager->signalParamChanged(_hcGrp, vitem->getKey().type,
+                    vitem->getKey().name, vitem->text(2).toUtf8());
+        }
     }
 }
 
