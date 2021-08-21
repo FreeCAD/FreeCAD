@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<FCParameters>
+  <FCParamGroup Name="Root">
+    <FCParamGroup Name="BaseApp">
+      <FCParamGroup Name="Workbenches"/>
+      <FCParamGroup Name="Preferences">
+        <FCParamGroup Name="MainWindow">
+          <FCText Name="GlobalToolBarArea">Left</FCText>
+          <FCText Name="DefaultToolBarArea">Right</FCText>
+        </FCParamGroup>
+      </FCParamGroup>
+    </FCParamGroup>
+    <FCText Name="Name">Vertical toolbars</FCText>
+    <FCText Name="ToolTip">Move workbench toolbars to right.
+Move global toolbars to left.
+Expand workbench ComboBox as TabBar.</FCText>
+  </FCParamGroup>
+
+</FCParameters>
