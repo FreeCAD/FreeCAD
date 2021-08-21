@@ -44,6 +44,11 @@
 
 #include "DlgCreateNewPreferencePackImp.h"
 
+// Only needed until PreferencePacks can be managed from the AddonManager:
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
+
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgGeneralImp */
@@ -94,8 +99,10 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
 
     // Future work: the Add-On Manager will be modified to include a section for Preference Packs, at which point this
-    // button will be enabled to open the Add-On Manager to that tab.
-    ui->ManagePreferencePacks->hide();
+    // button will be modified to open the Add-On Manager to that tab.
+    auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
+    QString pathToSavedPacks(QString::fromStdString(savedPreferencePacksDirectory.string()));
+    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, [pathToSavedPacks]() { QDesktopServices::openUrl(QUrl::fromLocalFile(pathToSavedPacks)); });
 }
 
 /**
