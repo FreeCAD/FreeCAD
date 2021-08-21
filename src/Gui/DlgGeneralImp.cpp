@@ -75,6 +75,11 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     ui->toolbarArea->addItem(tr("Right"), QByteArray("Right"));
     ui->toolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
 
+    ui->globalToolbarArea->addItem(tr("Top"), QByteArray("Top"));
+    ui->globalToolbarArea->addItem(tr("Left"), QByteArray("Left"));
+    ui->globalToolbarArea->addItem(tr("Right"), QByteArray("Right"));
+    ui->globalToolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
+
     {   // add special workbench to selection
         QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
         QString key = QString::fromLatin1("<last>");
@@ -191,6 +196,8 @@ void DlgGeneralImp::saveSettings()
 
     hGrp->SetASCII("DefaultToolBarArea",
             ui->toolbarArea->itemData(ui->toolbarArea->currentIndex()).toByteArray());
+    hGrp->SetASCII("GlobalToolBarArea",
+            ui->globalToolbarArea->itemData(ui->globalToolbarArea->currentIndex()).toByteArray());
 
     TreeParams::setIconSize(ui->treeIconSize->value());
     TreeParams::setFontSize(ui->treeFontSize->value());
@@ -334,6 +341,12 @@ void DlgGeneralImp::loadSettings()
     if (area < 0)
         area = 0;
     ui->toolbarArea->setCurrentIndex(area);
+
+    area = ui->globalToolbarArea->findData(
+            QByteArray(hGrp->GetASCII("GlobalToolBarArea", "Top").c_str()));
+    if (area < 0)
+        area = 0;
+    ui->globalToolbarArea->setCurrentIndex(area);
 
     ui->treeIconSize->setValue(TreeParams::IconSize());
     ui->treeFontSize->setValue(TreeParams::FontSize());

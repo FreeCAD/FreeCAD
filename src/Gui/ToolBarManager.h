@@ -105,6 +105,8 @@ protected:
     QToolBar *createToolBar(const QString &name);
     void connectToolBar(QToolBar *);
     void setToolBarVisible(QToolBar *toolbar, bool show);
+    void getGlobalToolbarNames();
+
     ToolBarManager();
     ~ToolBarManager();
 
@@ -115,10 +117,13 @@ private:
     ParameterGrp::handle hPref;
     ParameterGrp::handle hMovable;
     ParameterGrp::handle hMainWindow;
+    ParameterGrp::handle hGlobal;
     boost::signals2::scoped_connection connParam;
     bool restored = false;
     bool migrating = false;
     Qt::ToolBarArea defaultArea;
+    Qt::ToolBarArea globalArea;
+    std::set<QString> globalToolBarNames;
     std::map<QToolBar*, QPointer<QToolBar>> connectedToolBars;
 };
 

@@ -186,7 +186,7 @@ void ToolBarManager::destruct()
 
 ToolBarManager::ToolBarManager()
 {
-    defaultArea = Qt::TopToolBarArea;
+    globalArea = defaultArea = Qt::TopToolBarArea;
     hMainWindow = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/MainWindow");
     std::string defarea = hMainWindow->GetASCII("DefaultToolBarArea");
     if (defarea == "Bottom")
@@ -195,8 +195,20 @@ ToolBarManager::ToolBarManager()
         defaultArea = Qt::LeftToolBarArea;
     else if (defarea == "Right")
         defaultArea = Qt::RightToolBarArea;
+    defarea = hMainWindow->GetASCII("GlobalToolBarArea");
+    if (defarea == "Bottom")
+        globalArea = Qt::BottomToolBarArea;
+    else if (defarea == "Left")
+        globalArea = Qt::LeftToolBarArea;
+    else if (defarea == "Right")
+        globalArea = Qt::RightToolBarArea;
 
-    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp/MainWindow/Toolbars");
+    hGlobal = App::GetApplication().GetUserParameter().GetGroup(
+            "BaseApp/Workbench/Global/Toolbar");
+    getGlobalToolbarNames();
+
+    hPref = App::GetApplication().GetUserParameter().GetGroup(
+            "BaseApp/MainWindow/Toolbars");
     hMovable = hPref->GetGroup("Movable");
     connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
         [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
@@ -205,6 +217,8 @@ ToolBarManager::ToolBarManager()
                         && Name
                         && boost::equals(Name, "DefaultToolBarArea")))
                 timer.start(100);
+            else if (Param == hGlobal)
+                getGlobalToolbarNames();
         });
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
@@ -224,6 +238,18 @@ ToolBarManager::ToolBarManager()
 
 ToolBarManager::~ToolBarManager()
 {
+}
+
+void ToolBarManager::getGlobalToolbarNames()
+{
+    globalToolBarNames.clear();
+    globalToolBarNames.insert(QStringLiteral("File"));
+    globalToolBarNames.insert(QStringLiteral("Structure"));
+    globalToolBarNames.insert(QStringLiteral("Macro"));
+    globalToolBarNames.insert(QStringLiteral("View"));
+    globalToolBarNames.insert(QStringLiteral("Workbench"));
+    for (auto &hGrp : this->hGlobal->GetGroups())
+        globalToolBarNames.insert(QString::fromUtf8(hGrp->GetGroupName()));
 }
 
 bool ToolBarManager::isDefaultMovable() const
@@ -306,6 +332,15 @@ void ToolBarManager::onTimer()
         area = Qt::LeftToolBarArea;
     else if (defarea == "Right")
         area = Qt::RightToolBarArea;
+    defarea = hMainWindow->GetASCII("GlobalToolBarArea");
+    auto gArea = Qt::TopToolBarArea;
+    if (defarea == "Bottom")
+        gArea = Qt::BottomToolBarArea;
+    else if (defarea == "Left")
+        gArea = Qt::LeftToolBarArea;
+    else if (defarea == "Right")
+        gArea = Qt::RightToolBarArea;
+
     auto mw = getMainWindow();
     bool movable = isDefaultMovable();
 
@@ -325,18 +360,21 @@ void ToolBarManager::onTimer()
     bool first = true;
     int a;
     for (auto &v : lines) {
-        if (!isToolBarAllowed(v.second, area))
+        auto toolbarArea = globalToolBarNames.count(
+                v.second->objectName()) ? gArea : area;
+        if (!isToolBarAllowed(v.second, toolbarArea))
             continue;
         if (first)
             first = false;
         else if (a != v.first.a)
-            mw->addToolBarBreak(area);
+            mw->addToolBarBreak(toolbarArea);
         a = v.first.a;
-        mw->addToolBar(area, v.second);
+        mw->addToolBar(toolbarArea, v.second);
     }
 
-    if (defaultArea != area) {
+    if (defaultArea != area || globalArea != gArea) {
         defaultArea = area;
+        globalArea = gArea;
         mw->saveWindowSettings(true);
     }
 }
@@ -344,7 +382,8 @@ void ToolBarManager::onTimer()
 QToolBar *ToolBarManager::createToolBar(const QString &name)
 {
     auto toolbar = new QToolBar(getMainWindow());
-    getMainWindow()->addToolBar(defaultArea, toolbar);
+    getMainWindow()->addToolBar(
+            globalToolBarNames.count(name) ? globalArea : defaultArea, toolbar);
     toolbar->setObjectName(name);
     connectToolBar(toolbar);
     return toolbar;
