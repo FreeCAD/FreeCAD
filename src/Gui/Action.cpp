@@ -686,7 +686,10 @@ public:
     }
 
     int toolbarIconSize() {
-        return hGeneral->GetInt("ToolbarIconSize");
+        int pixel = hGeneral->GetInt("ToolbarIconSize");
+        if (pixel <= 0)
+            pixel = 24;
+        return pixel;
     }
 
     bool showTabBar() {

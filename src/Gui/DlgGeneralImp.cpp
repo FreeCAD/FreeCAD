@@ -380,6 +380,8 @@ bool applyDockWidget(bool delayTrigger, ParameterGrp *)
 bool applyToolbarIconSize(bool, ParameterGrp *hGrp)
 {
     int pixel = hGrp->GetInt("ToolbarIconSize");
+    if (pixel <= 0)
+        pixel = 24;
     getMainWindow()->setIconSize(QSize(pixel,pixel));
     return false;
 }
