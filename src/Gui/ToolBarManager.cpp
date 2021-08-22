@@ -211,7 +211,7 @@ ToolBarManager::ToolBarManager()
             "BaseApp/MainWindow/Toolbars");
     hMovable = hPref->GetGroup("Movable");
     connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
-        [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+        [this](ParameterGrp *Param, ParameterGrp::ParamType, const char *Name, const char *) {
             if (Param == hPref || Param == hMovable
                     || (Param == hMainWindow
                         && Name
@@ -349,7 +349,10 @@ void ToolBarManager::onTimer()
         if (!v.second)
             continue;
         QToolBar *tb = v.second;
-        if (defaultArea != area && mw->toolBarArea(tb) == defaultArea)
+        bool isGlobal = globalToolBarNames.count(v.first);
+        auto defArea = isGlobal ? globalArea : defaultArea;
+        auto curArea = isGlobal ? gArea : area;
+        if (defArea != curArea && mw->toolBarArea(tb) == defArea)
             lines.emplace(ToolBarKey(tb),tb);
         QByteArray name = v.first.toUtf8();
         if (tb->toggleViewAction()->isVisible())
@@ -410,8 +413,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
     this->toolbarNames.clear();
 
-    int max_width = getMainWindow()->width();
-    int top_width = 0;
+    std::map<int,int> widths;
 
     QList<ToolBarItem*> items = toolBarItems->getItems();
     auto toolbars = toolBars();
@@ -468,12 +470,15 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             if (!isToolBarAllowed(toolbar, area))
                 getMainWindow()->addToolBar(toolbar);
 
+            int &top_width = widths[area];
             if (top_width > 0 && getMainWindow()->toolBarBreak(toolbar))
                 top_width = 0;
             // the width() of a toolbar doesn't return useful results so we estimate
             // its size by the number of buttons and the icon size
             QList<QToolButton*> btns = toolbar->findChildren<QToolButton*>();
             top_width += (btns.size() * toolbar->iconSize().width());
+            int max_width = toolbar->orientation() == Qt::Vertical
+                ? getMainWindow()->height() : getMainWindow()->width();
             if (top_width > max_width) {
                 top_width = 0;
                 getMainWindow()->insertToolBarBreak(toolbar);

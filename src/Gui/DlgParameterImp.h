@@ -46,26 +46,21 @@ class ParameterValue;
 class ParameterValueItem;
 
 struct ParamKey {
-    QByteArray type;
+    ParameterGrp::ParamType type;
     QByteArray name;
 
-    ParamKey(const char *t, const QString &n)
+    ParamKey(ParameterGrp::ParamType t, const QString &n)
         :type(t), name(n.toUtf8())
     {}
 
-    ParamKey(const char *t, const char *n)
+    ParamKey(ParameterGrp::ParamType t, const char *n)
         :type(t), name(n)
     {}
 
     bool operator<(const ParamKey &other) const {
-        if (type.size() < other.type.size())
+        if (type < other.type)
             return true;
-        if (type.size() > other.type.size())
-            return false;
-        int res = memcmp(type.constData(), other.type.constData(), type.size());
-        if (res < 0)
-            return true;
-        if (res > 0)
+        if (type > other.type)
             return false;
         if (name.size() < other.name.size())
             return true;
@@ -132,7 +127,7 @@ protected:
     void removeState();
 
     void slotParamChanged(ParameterGrp *Param,
-                          const char *Type,
+                          ParameterGrp::ParamType type,
                           const char *Name,
                           const char *Value);
 
@@ -348,7 +343,7 @@ class ParameterValueItem : public QTreeWidgetItem
 public:
     /// Constructor
     ParameterValueItem ( ParameterValue* parent,
-                         const char *type,
+                         ParameterGrp::ParamType type,
                          const QString &label,
                          const Base::Reference<ParameterGrp> &hcGrp);
     virtual ~ParameterValueItem();

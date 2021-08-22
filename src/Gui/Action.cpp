@@ -737,7 +737,7 @@ WorkbenchTabBar::WorkbenchTabBar(WorkbenchGroup* wb, QWidget* parent)
     this->tabBar()->installEventFilter(this);
 
     connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
-        [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+        [this](ParameterGrp *Param, ParameterGrp::ParamType, const char *Name, const char *) {
             if (!Name)
                 return;
             if (Param == this->group->_pimpl->handle) {
@@ -857,8 +857,11 @@ void WorkbenchTabBar::updateWorkbenches()
                                       action->text(),
                                       action->font(),
                                       action->shortcut().toString(QKeySequence::NativeText)));
-        if (current == action->objectName())
+        if (current == action->objectName()) {
             setCurrentIndex(i);
+            if (!showText)
+                tab->setTabText(i, action->text());
+        }
         ++i;
     }
     while (this->count() > i)
@@ -869,6 +872,14 @@ void WorkbenchTabBar::onCurrentChanged(int i)
 {
     auto tab = this->tabBar();
     QString name = tab->tabData(i).toString();
+    if (!this->group->_pimpl->showText()) {
+        for (int j = 0, c = tab->count(); j<c; ++j) {
+            if (j == i)
+                tab->setTabText(i, Application::Instance->workbenchMenuText(name));
+            else
+                tab->setTabText(j, QString());
+        }
+    }
     Application::Instance->activateWorkbench(name.toUtf8());
 }
 
@@ -897,9 +908,18 @@ void WorkbenchTabBar::onWorkbenchActivated(const QString& name)
 {
     QSignalBlocker block(this);
     auto tab = this->tabBar();
-    for (int i=0, c=tab->count(); i<c; ++i) {
-        if (tab->tabData(i).toString() == name)
-            setCurrentIndex(i);
+    bool showText = this->group->_pimpl->showText();
+    int current = tab->currentIndex();
+    if (current >= 0 && tab->tabData(current).toString() != name) {
+        if (!showText)
+            tab->setTabText(current, QString());
+        for (int i=0, c=tab->count(); i<c; ++i) {
+            if (tab->tabData(i).toString() == name) {
+                setCurrentIndex(i);
+                if (!showText)
+                    tab->setTabText(i, Application::Instance->workbenchMenuText(name));
+            }
+        }
     }
 }
 

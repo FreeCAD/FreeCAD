@@ -515,7 +515,7 @@ Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
     }
 
     if (!pcTemp && !this->_Detached)
-        _Notify("FCParamGroup", Name, Name);
+        _Notify(FCGroup, Name, Name);
 
     return rParamGrp;
 }
@@ -583,14 +583,149 @@ bool ParameterGrp::HasGroup(const char* Name) const
     return false;
 }
 
-void ParameterGrp::_Notify(const char *Type, const char *Name, const char *Value)
+const char *ParameterGrp::TypeName(ParamType Type)
+{
+    switch(Type) {
+    case FCBool:
+        return "FCBool";
+    case FCInt:
+        return "FCInt";
+    case FCUInt:
+        return "FCUInt";
+    case FCText:
+        return "FCText";
+    case FCFloat:
+        return "FCFloat";
+    case FCGroup:
+        return "FCParamGroup";
+    default:
+        return 0;
+    }
+}
+
+ParameterGrp::ParamType ParameterGrp::TypeValue(const char *Name)
+{
+    if (Name) {
+        if (boost::equals(Name, "FCBool"))
+            return FCBool;
+        if (boost::equals(Name, "FCInt"))
+            return FCInt;
+        if (boost::equals(Name, "FCUInt"))
+            return FCUInt;
+        if (boost::equals(Name, "FCText"))
+            return FCText;
+        if (boost::equals(Name, "FCFloat"))
+            return FCFloat;
+        if (boost::equals(Name, "FCParamGroup"))
+            return FCGroup;
+    }
+    return FCInvalid;
+}
+
+void ParameterGrp::SetAttribute(ParamType Type, const char *Name, const char *Value)
+{
+    switch(Type) {
+    case FCBool:
+    case FCInt:
+    case FCUInt:
+    case FCFloat:
+        return _SetAttribute(Type, Name, Value);
+    case FCText:
+        return SetASCII(Name, Value);
+    case FCGroup:
+        RenameGrp(Name, Value);
+        break;
+    default:
+        break;
+    }
+}
+
+void ParameterGrp::RemoveAttribute(ParamType Type, const char *Name)
+{
+    switch(Type) {
+    case FCBool:
+        return RemoveBool(Name);
+    case FCInt:
+        return RemoveInt(Name);
+    case FCUInt:
+        return RemoveUnsigned(Name);
+    case FCText:
+        return RemoveASCII(Name);
+    case FCFloat:
+        return RemoveFloat(Name);
+    case FCGroup:
+        return RemoveGrp(Name);
+    default:
+        break;
+    }
+}
+
+const char *
+ParameterGrp::GetAttribute(ParamType Type,
+                           const char *Name,
+                           std::string &Value,
+                           const char *Default) const
+{
+    if (!_pGroupNode)
+        return Default;
+
+    const char *T = TypeName(Type);
+    if (!T)
+        return Default;
+
+    DOMElement *pcElem = FindElement(_pGroupNode,T,Name);
+    if (!pcElem)
+        return Default;
+
+    if (Type == FCText)
+        Value = GetASCII(Name, Default);
+    else if (Type != FCGroup)
+        Value = StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str();
+    return Value.c_str();
+}
+
+std::vector<std::pair<std::string, std::string>>
+ParameterGrp::GetAttributeMap(ParamType Type, const char *sFilter) const
+{
+    std::vector<std::pair<std::string, std::string>> res;
+    if (!_pGroupNode)
+        return res;
+
+    const char *T = TypeName(Type);
+    if (!T)
+        return res;
+
+    std::string Name;
+
+    DOMElement *pcTemp = FindElement(_pGroupNode, T);
+    while ( pcTemp) {
+        Name = StrX(static_cast<DOMElement*>(
+                    pcTemp)->getAttributes()->getNamedItem(
+                        XStr("Name").unicodeForm())->getNodeValue()).c_str();
+        // check on filter condition
+        if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
+            if (Type == FCGroup)
+                res.emplace_back(Name, std::string());
+            else
+                res.emplace_back(Name, StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(
+                            XStr("Value").unicodeForm())).c_str());
+        }
+        pcTemp = FindNextElement(pcTemp,T);
+    }
+    return res;
+}
+
+void ParameterGrp::_Notify(ParamType Type, const char *Name, const char *Value)
 {
     if (_Manager)
         _Manager->signalParamChanged(this, Type, Name, Value);
 }
 
-void ParameterGrp::_SetAttribute(const char *Type, const char *Name, const char *Value)
+void ParameterGrp::_SetAttribute(ParamType T, const char *Name, const char *Value)
 { 
+    const char *Type = TypeName(T);
+    if (!Type)
+        return;
     if (!_pGroupNode) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
             FC_WARN("Setting attribute " << Type << ":"
@@ -612,7 +747,7 @@ void ParameterGrp::_SetAttribute(const char *Type, const char *Name, const char 
         if (strcmp(StrX(pcElem->getAttribute(attr.unicodeForm())).c_str(),Value)!=0) {
             pcElem->setAttribute(attr.unicodeForm(), XStr(Value).unicodeForm());
             // trigger observer
-            _Notify(Type, Name, Value);
+            _Notify(T, Name, Value);
         }
         // For backward compatibility, old observer gets notified regardless of
         // value changes or not.
@@ -638,7 +773,7 @@ bool ParameterGrp::GetBool(const char* Name, bool bPreset) const
 
 void  ParameterGrp::SetBool(const char* Name, bool bValue)
 {
-    _SetAttribute("FCBool", Name, bValue?"1":"0");
+    _SetAttribute(FCBool, Name, bValue?"1":"0");
 }
 
 std::vector<bool> ParameterGrp::GetBools(const char * sFilter) const
@@ -708,7 +843,7 @@ void  ParameterGrp::SetInt(const char* Name, long lValue)
 {
     char cBuf[256];
     sprintf(cBuf,"%li",lValue);
-    _SetAttribute("FCInt", Name, cBuf);
+    _SetAttribute(FCInt, Name, cBuf);
 }
 
 std::vector<long> ParameterGrp::GetInts(const char * sFilter) const
@@ -773,7 +908,7 @@ void  ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
 {
     char cBuf[256];
     sprintf(cBuf,"%lu",lValue);
-    _SetAttribute("FCUInt", Name, cBuf);
+    _SetAttribute(FCUInt, Name, cBuf);
 }
 
 std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char * sFilter) const
@@ -838,7 +973,7 @@ void  ParameterGrp::SetFloat(const char* Name, double dValue)
 {
     char cBuf[256];
     sprintf(cBuf,"%.12f",dValue); // use %.12f instead of %f to handle values < 1.0e-6
-    _SetAttribute("FCFloat", Name, cBuf);
+    _SetAttribute(FCFloat, Name, cBuf);
 }
 
 std::vector<double> ParameterGrp::GetFloats(const char * sFilter) const
@@ -902,6 +1037,8 @@ void ParameterGrp::GetBlob(const char* /*Name*/, void* /*pBuf*/, long /*lMaxLeng
 
 void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
 {
+    if (boost::equals(Name, "StyleSheet"))
+        Name = Name;
     if (!_pGroupNode) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
             FC_WARN("Setting attribute " << "FCText:"
@@ -929,11 +1066,11 @@ void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
             DOMText *pText = pDocument->createTextNode(XUTF8Str(sValue).unicodeForm());
             pcElem->appendChild(pText);
             if (isNew  || sValue[0]!=0)
-                _Notify("FCText", Name, sValue);
+                _Notify(FCText, Name, sValue);
         }
         else if (strcmp(StrXUTF8(pcElem2->getNodeValue()).c_str(), sValue)!=0) {
             pcElem2->setNodeValue(XUTF8Str(sValue).unicodeForm());
-            _Notify("FCText", Name, sValue);
+            _Notify(FCText, Name, sValue);
         }
         // trigger observer
         Notify(Name);
@@ -1033,7 +1170,7 @@ void ParameterGrp::RemoveASCII(const char* Name)
     node->release();
 
     // trigger observer
-    _Notify("FCText", Name, nullptr);
+    _Notify(FCText, Name, nullptr);
     Notify(Name);
 }
 
@@ -1052,7 +1189,7 @@ void ParameterGrp::RemoveBool(const char* Name)
     node->release();
 
     // trigger observer
-    _Notify("FCBool", Name, nullptr);
+    _Notify(FCBool, Name, nullptr);
     Notify(Name);
 }
 
@@ -1084,7 +1221,7 @@ void ParameterGrp::RemoveFloat(const char* Name)
     node->release();
 
     // trigger observer
-    _Notify("FCFloat",Name, nullptr);
+    _Notify(FCFloat,Name, nullptr);
     Notify(Name);
 }
 
@@ -1103,7 +1240,7 @@ void ParameterGrp::RemoveInt(const char* Name)
     node->release();
 
     // trigger observer
-    _Notify("FCInt", Name, nullptr);
+    _Notify(FCInt, Name, nullptr);
     Notify(Name);
 }
 
@@ -1122,7 +1259,7 @@ void ParameterGrp::RemoveUnsigned(const char* Name)
     node->release();
 
     // trigger observer
-    _Notify("FCUInt", Name, nullptr);
+    _Notify(FCUInt, Name, nullptr);
     Notify(Name);
 }
 
@@ -1177,7 +1314,7 @@ bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
     if (pcElem)
         pcElem-> setAttribute(XStr("Name").unicodeForm(), XStr(NewName).unicodeForm());
 
-    _Notify("FCParamGroup", NewName, OldName);
+    _Notify(FCGroup, NewName, OldName);
     return true;
 }
 
@@ -1190,7 +1327,7 @@ void ParameterGrp::Clear(void)
 
     // early trigger notification of group removal when all its children
     // hierarchies are intact.
-    _Notify("FCParamGroup", nullptr, nullptr);
+    _Notify(FCGroup, nullptr, nullptr);
 
     // checking on references
     for (auto it = _GroupMap.begin();it!=_GroupMap.end();) {
@@ -1298,10 +1435,10 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindOrCreateElement(XER
     return CreateElement(Start,Type,Name);
 }
 
-std::vector<std::pair<std::string,std::string> >
+std::vector<std::pair<ParameterGrp::ParamType,std::string> >
 ParameterGrp::GetParameterNames(const char * sFilter) const
 {
-    std::vector<std::pair<std::string,std::string> > res;
+    std::vector<std::pair<ParameterGrp::ParamType,std::string> > res;
     if (!_pGroupNode)
         return res;
 
@@ -1311,17 +1448,13 @@ ParameterGrp::GetParameterNames(const char * sFilter) const
             clChild != 0;  clChild = clChild->getNextSibling()) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             StrX type(clChild->getNodeName());
-            if (strcmp("FCBool",type.c_str()) == 0
-                    || strcmp("FCInt", type.c_str()) == 0
-                    || strcmp("FCUInt", type.c_str()) == 0
-                    || strcmp("FCFloat", type.c_str()) == 0
-                    || strcmp("FCText", type.c_str()) == 0)
-            {
+            ParamType Type = TypeValue(type.c_str());
+            if (Type != FCInvalid && Type != FCGroup) {
                 if (clChild->getAttributes()->getLength() > 0) {
                     StrX name(clChild->getAttributes()->getNamedItem(
                                 XStr("Name").unicodeForm())->getNodeValue());
                     if (!sFilter || strstr(name.c_str(), sFilter))
-                        res.emplace_back(type.c_str(), name.c_str());
+                        res.emplace_back(Type, name.c_str());
                 }
             }
         }

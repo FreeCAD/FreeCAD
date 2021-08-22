@@ -689,14 +689,14 @@ Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
 
     ParameterGrpObserver* obs = new ParameterGrpObserver(o, attr, _cParamGrp);
     obs->conn = _cParamGrp->Manager()->signalParamChanged.connect(
-        [obs](ParameterGrp *Param, const char *Type, const char *Name, const char *Value) {
+        [obs](ParameterGrp *Param, ParameterGrp::ParamType Type, const char *Name, const char *Value) {
             if (!Param) return;
             for (auto p = Param; p; p = p->Parent()) {
                 if (p == obs->_target) {
                     Base::PyGILStateLocker lock;
                     Py::TupleN args(
                         Py::asObject(new ParameterGrpPy(Param)),
-                        Py::String(Type ? Type : ""),
+                        Py::String(ParameterGrp::TypeName(Type)),
                         Py::String(Name ? Name : ""),
                         Py::String(Value ? Value : ""));
                     try {

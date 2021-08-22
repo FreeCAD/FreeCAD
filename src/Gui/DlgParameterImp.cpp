@@ -632,27 +632,27 @@ void DlgParameterImp::on_btnExport_clicked()
             continue;
         auto hGrp = hTmp.GetGroup(v.first->GetPath().c_str());
         for (auto &key : v.second) {
-            if (key.type == "FCBool") {
+            if (key.type == ParameterGrp::FCBool) {
                 auto value = v.first->GetBool(key.name.constData(), false);
                 if (value == v.first->GetBool(key.name.constData(), true)) // to make sure the key exist
                     hGrp->SetBool(key.name.constData(), value);
             }
-            else if (key.type == "FCInt") {
+            else if (key.type == ParameterGrp::FCInt) {
                 auto value = v.first->GetInt(key.name.constData(), 0);
                 if (value == v.first->GetInt(key.name.constData(), 1)) // to make sure the key exist
                     hGrp->SetInt(key.name.constData(), value);
             }
-            else if (key.type == "FCUint") {
+            else if (key.type == ParameterGrp::FCUInt) {
                 auto value = v.first->GetUnsigned(key.name.constData(), 0);
                 if (value == v.first->GetUnsigned(key.name.constData(), 1)) // to make sure the key exist
                 hGrp->SetUnsigned(key.name.constData(), value);
             }
-            else if (key.type == "FCFloat") {
+            else if (key.type == ParameterGrp::FCFloat) {
                 auto value = v.first->GetFloat(key.name.constData(), 0.f);
                 if (value == v.first->GetFloat(key.name.constData(), 1.f)) // to make sure the key exist
                     hGrp->SetFloat(key.name.constData(), value);
             }
-            else if (key.type == "FCText") {
+            else if (key.type == ParameterGrp::FCText) {
                 auto value = v.first->GetASCII(key.name.constData(), "");
                 if (value == v.first->GetASCII(key.name.constData(), "0")) // to make sure the key exist
                     hGrp->SetASCII(key.name.constData(), value);
@@ -1030,13 +1030,13 @@ void DlgParameterImp::clearGroupItem(ParameterGroupItem *item,
 }
 
 void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
-                                       const char *Type,
+                                       ParameterGrp::ParamType Type,
                                        const char *Name, 
                                        const char *Value)
 {
-    if (!Param || !Type || importing)
+    if (!Param || importing)
         return;
-    if (!Type[0] || (Name && !Name[0]))
+    if (Name && !Name[0])
         return;
 
     auto it = monitors.find(Param->Manager());
@@ -1048,7 +1048,7 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
     QSignalBlocker block(paramGroup);
     QSignalBlocker block2(paramValue);
 
-    if (boost::equals(Type, "FCParamGroup")) {
+    if (Type == ParameterGrp::FCGroup) {
         if (!Name) {
             // This means the group itself is deleted. But currently we can
             // only sync for value changes. So just erase any current changes
@@ -1129,7 +1129,7 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
     if (!Value)
         delete item;
     else if (item) {
-        if (boost::equals(Type, "FCBool")) {
+        if (Type == ParameterGrp::FCBool) {
             if (boost::equals(Value, "1"))
                 Value = "true";
             else
@@ -1139,27 +1139,27 @@ void DlgParameterImp::slotParamChanged(ParameterGrp *Param,
         setValueItemState(item, Qt::Checked);
         paramValue->scrollToItem(item);
     } else if (Name) {
-        if (boost::equals(Type, "FCBool"))
+        if (Type == ParameterGrp::FCBool)
             item = new ParameterBool(paramValue,
                                      QString::fromUtf8(Name),
                                      Value[0] == '1',
                                      Param);
-        else if (boost::equals(Type, "FCInt"))
+        else if (Type == ParameterGrp::FCInt)
             item = new ParameterInt(paramValue,
                                     QString::fromUtf8(Name),
                                     atol(Value),
                                     Param);
-        else if (boost::equals(Type, "FCUint"))
+        else if (Type == ParameterGrp::FCUInt)
             item = new ParameterUInt(paramValue,
                                     QString::fromUtf8(Name),
                                     strtoul(Value, 0, 10),
                                     Param);
-        else if (boost::equals(Type, "FCFloat"))
+        else if (Type == ParameterGrp::FCFloat)
             item = new ParameterUInt(paramValue,
                                     QString::fromUtf8(Name),
                                     atof(Value),
                                     Param);
-        else if (boost::equals(Type, "FCText"))
+        else if (Type == ParameterGrp::FCText)
             item = new ParameterText(paramValue,
                                     QString::fromUtf8(Name),
                                     Value,
@@ -1864,7 +1864,7 @@ QVariant ParameterGroupItem::data ( int column, int role ) const
 // --------------------------------------------------------------------
 
 ParameterValueItem::ParameterValueItem ( ParameterValue* parent,
-                                         const char *type,
+                                         ParameterGrp::ParamType type,
                                          const QString &label,
                                          const Base::Reference<ParameterGrp> &hcGrp)
   : QTreeWidgetItem( parent ), _hcGrp(hcGrp), _key(type, label), _owner(parent)
@@ -1900,7 +1900,7 @@ void ParameterValueItem::setData ( int column, int role, const QVariant & value 
 // --------------------------------------------------------------------
 
 ParameterText::ParameterText ( ParameterValue * parent, QString label, const char* value, const Base::Reference<ParameterGrp> &hcGrp)
-  :ParameterValueItem( parent, "FCText", label, hcGrp)
+  :ParameterValueItem( parent, ParameterGrp::FCText, label, hcGrp)
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Text") );
     setText(0, label);
@@ -1944,7 +1944,7 @@ void ParameterText::appendToGroup()
 // --------------------------------------------------------------------
 
 ParameterInt::ParameterInt ( ParameterValue * parent, QString label, long value, const Base::Reference<ParameterGrp> &hcGrp)
-  :ParameterValueItem( parent, "FCInt", label, hcGrp)
+  :ParameterValueItem( parent, ParameterGrp::FCInt, label, hcGrp)
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Int") );
     setText(0, label);
@@ -1988,7 +1988,7 @@ void ParameterInt::appendToGroup()
 // --------------------------------------------------------------------
 
 ParameterUInt::ParameterUInt ( ParameterValue * parent, QString label, unsigned long value, const Base::Reference<ParameterGrp> &hcGrp)
-  :ParameterValueItem( parent, "FCUInt", label, hcGrp)
+  :ParameterValueItem( parent, ParameterGrp::FCUInt, label, hcGrp)
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_UInt") );
     setText(0, label);
@@ -2041,7 +2041,7 @@ void ParameterUInt::appendToGroup()
 // --------------------------------------------------------------------
 
 ParameterFloat::ParameterFloat ( ParameterValue * parent, QString label, double value, const Base::Reference<ParameterGrp> &hcGrp)
-  :ParameterValueItem( parent, "FCFloat", label, hcGrp)
+  :ParameterValueItem( parent, ParameterGrp::FCFloat, label, hcGrp)
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Float") );
     setText(0, label);
@@ -2085,7 +2085,7 @@ void ParameterFloat::appendToGroup()
 // --------------------------------------------------------------------
 
 ParameterBool::ParameterBool ( ParameterValue * parent, QString label, bool value, const Base::Reference<ParameterGrp> &hcGrp)
-  :ParameterValueItem( parent, "FCBool", label, hcGrp)
+  :ParameterValueItem( parent, ParameterGrp::FCBool, label, hcGrp)
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Bool") );
     setText(0, label);

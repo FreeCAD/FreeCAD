@@ -143,6 +143,35 @@ public:
     void Clear(void);
     //@}
 
+    /** @name methods for generic attribute handling */
+    //@{
+    enum ParamType {
+        FCInvalid = 0,
+        FCText = 1,
+        FCBool = 2,
+        FCInt = 3,
+        FCUInt = 4,
+        FCFloat = 5,
+        FCGroup = 6,
+    };
+    static const char *TypeName(ParamType type);
+    static ParamType TypeValue(const char *);
+    void SetAttribute(ParamType Type, const char *Name, const char *Value);
+    void RemoveAttribute(ParamType Type, const char *Name);
+    const char *GetAttribute(ParamType Type,
+                             const char *Name,
+                             std::string &Value,
+                             const char *Defult) const;
+    std::vector<std::pair<std::string, std::string>>
+        GetAttributeMap(ParamType Type, const char * sFilter = NULL) const;
+    /** Return the type and name of all parameters with optional filter
+     *  @param sFilter only strings which name includes sFilter are put in the vector
+     *  @return std::vector of pair(type, name)
+     */
+    std::vector<std::pair<ParamType,std::string>>
+        GetParameterNames(const char * sFilter = NULL) const;
+    //@}
+
     /** @name methods for bool handling */
     //@{
     /// read bool values or give default
@@ -231,11 +260,6 @@ public:
     std::vector<std::string> GetASCIIs(const char * sFilter = NULL) const;
     /// Same as GetASCIIs() but with key,value map
     std::vector<std::pair<std::string,std::string> > GetASCIIMap(const char * sFilter = NULL) const;
-    /** Return the type and name of all parameters with optional filter
-     *  @param sFilter only strings which name includes sFilter are put in the vector
-     *  @return std::vector of string pair(type, name)
-     */
-    std::vector<std::pair<std::string,std::string> > GetParameterNames(const char * sFilter = NULL) const;
     //@}
 
     friend class ParameterManager;
@@ -269,8 +293,8 @@ protected:
 
     void _Reset();
 
-    void _SetAttribute(const char *Type, const char *Name, const char *Value);
-    void _Notify(const char *Type, const char *Name, const char *Value);
+    void _SetAttribute(ParamType Type, const char *Name, const char *Value);
+    void _Notify(ParamType Type, const char *Name, const char *Value);
 
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
 
@@ -343,7 +367,7 @@ public:
     static void Init(void);
     static void Terminate(void);
 
-    boost::signals2::signal<void (ParameterGrp *, const char *, const char *, const char *)>
+    boost::signals2::signal<void (ParameterGrp *, ParamType, const char *, const char *)>
         signalParamChanged;
 
     int   LoadDocument(const char* sFileName);

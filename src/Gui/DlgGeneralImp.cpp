@@ -467,7 +467,7 @@ struct ParamHandlers {
         handlers[ParamKey("BaseApp/Preferences/General", "PythonWordWrap")] = applyPythonWordWrap;
 
         App::GetApplication().GetUserParameter().signalParamChanged.connect(
-            [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+            [this](ParameterGrp *Param, ParameterGrp::ParamType, const char *Name, const char *) {
                 if (!Param || !Name)
                     return;
                 auto it =  handlers.find(ParamKey(Param, Name));

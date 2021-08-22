@@ -125,8 +125,8 @@ DockWindowManager::DockWindowManager()
     d->hPref = App::GetApplication().GetUserParameter().GetGroup(
             "BaseApp/MainWindow/DockWindows");
     d->connParam = d->hPref->Manager()->signalParamChanged.connect(
-        [this](ParameterGrp *Param, const char *Type, const char *, const char *) {
-            if(Param == d->hPref && Type && boost::equals(Type, "FCBool"))
+        [this](ParameterGrp *Param, ParameterGrp::ParamType Type, const char *, const char *) {
+            if(Param == d->hPref && Type == ParameterGrp::FCBool)
                 d->timer.start(100);
         });
 

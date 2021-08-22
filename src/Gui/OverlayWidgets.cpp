@@ -2685,7 +2685,7 @@ struct OverlayInfo {
         hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetGroup(name);
         App::GetApplication().GetUserParameter().signalParamChanged.connect(
-            [this](ParameterGrp *Param, const char *, const char *Name, const char *) {
+            [this](ParameterGrp *Param, ParameterGrp::ParamType, const char *Name, const char *) {
                 if (hGrp == Param && Name && !tabWidget->isSaving()) {
                     // This will prevent saving settings which will mess up the
                     // just restored ones
