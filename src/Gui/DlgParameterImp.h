@@ -93,6 +93,7 @@ protected Q_SLOTS:
     void on_btnExport_clicked();
     void on_btnImport_clicked();
     void on_btnAdd_clicked();
+    void on_btnCopy_clicked();
     void on_btnRemove_clicked();
     void on_btnRename_clicked();
     void on_btnRefresh_clicked();
@@ -116,6 +117,7 @@ protected:
     void closeEvent(QCloseEvent*);
 
     void doImportOrMerge(ParameterGrp *hGrp, bool merge);
+    ParameterGrp::handle copyParameters();
     bool doExport(ParameterGrp *hGrp);
     void updateGroupItemCheckState(QTreeWidgetItem *item);
     void setGroupItemState(ParameterGroupItem *item, Qt::CheckState state);

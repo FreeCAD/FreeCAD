@@ -63,6 +63,8 @@
 namespace bp = boost::placeholders;
 using namespace Gui::Dialog;
 
+static QByteArray _LastParameterSet;
+
 /* TRANSLATOR Gui::Dialog::DlgParameterImp */
 
 /**
@@ -159,6 +161,18 @@ void DlgParameterImp::on_buttonFind_clicked()
     if (finder.isNull())
         finder = new DlgParameterFind(this);
     finder->show();
+}
+
+void DlgParameterImp::on_btnCopy_clicked()
+{
+    std::string name = QString::fromLatin1("%1(copy)").arg(
+            ui->parameterSet->currentText()).toUtf8().constData();
+    auto manager = App::GetApplication().AddParameterSet(
+            name, curParamManager->GetSerializeFileName());
+    if (auto h = copyParameters())
+        h->copyTo(manager);
+    ui->parameterSet->addItem(tr(name.c_str()), QByteArray(name.c_str()));
+    ui->parameterSet->setCurrentIndex(ui->parameterSet->count()-1);
 }
 
 void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
@@ -337,7 +351,7 @@ void DlgParameterImp::saveState(bool saveGeometry)
         hGrp->GetGroup("LastGroup")->SetASCII(
                 ui->parameterSet->itemData(lastIndex).toByteArray(),
                 (const char*)path.toUtf8());
-        hGrp->SetASCII("LastParameterSet", ui->parameterSet->itemData(lastIndex).toByteArray());
+        _LastParameterSet = ui->parameterSet->itemData(lastIndex).toByteArray();
     }
     lastIndex = ui->parameterSet->currentIndex();
 
@@ -593,6 +607,8 @@ void DlgParameterImp::on_btnReset_clicked()
     } else {
         try {
             curParamManager->Clear();
+            monitors.erase(curParamManager);
+            onChangeParameterSet(ui->parameterSet->currentIndex());
         } catch (Base::Exception &e) {
             e.ReportException();
             QMessageBox::critical(this, tr("Reset"), tr("Failed to reset configuration."));
@@ -746,10 +762,13 @@ void DlgParameterImp::populate()
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp/Preferences/ParameterEditor");
-    auto lastParameter = QByteArray(hGrp->GetASCII("LastParameterSet", "User parameter").c_str());
-    int index = ui->parameterSet->findData(lastParameter);
-    if (index < 0)
-        index = 0;
+    int index = ui->parameterSet->findData(_LastParameterSet);
+    if (index < 0) {
+        _LastParameterSet = "User parameter";
+        index = ui->parameterSet->findData(_LastParameterSet);
+        if (index < 0)
+            index = 0;
+    }
     ui->parameterSet->setCurrentIndex(index);
     onChangeParameterSet(index);
     if (!hasDefaultColor && paramGroup->topLevelItemCount()) {
@@ -774,6 +793,8 @@ void DlgParameterImp::on_btnRemove_clicked()
     QSignalBlocker block(ui->parameterSet);
     ui->parameterSet->removeItem(index);
     ui->parameterSet->setCurrentIndex(index);
+    if (index == ui->parameterSet->count())
+        --index;
     onChangeParameterSet(index);
 }
 
