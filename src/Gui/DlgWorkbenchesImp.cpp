@@ -298,8 +298,6 @@ void DlgWorkbenchesImp::save_workbenches(const QStringList &enabled, const QStri
     ParameterGrp::handle hGrp;
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
-    hGrp->Clear();
-
     std::set<QString> wbset;
     if (enabled.isEmpty()) {
         enabled_wbs.append(QString::fromLatin1("NoneWorkbench"));
