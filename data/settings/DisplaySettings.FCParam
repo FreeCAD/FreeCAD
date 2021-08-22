@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<FCParameters>
+
+  <FCParamGroup Name="Root">
+    <FCParamGroup Name="BaseApp">
+      <FCParamGroup Name="Preferences">
+        <FCParamGroup Name="View">
+          <FCBool Name="UseVBO" Value="1"/>
+          <FCInt Name="RenderCache" Value="3"/>
+          <FCInt Name="AntiAliasing" Value="3"/>
+        </FCParamGroup>
+        <FCParamGroup Name="Document">
+          <FCBool Name="SaveThumbnail" Value="1"/>
+          <FCBool Name="AddThumbnailLogo" Value="0"/>
+          <FCBool Name="ThumbnailNoBackground" Value="1"/>
+          <FCInt Name="ThumbnailSampleSize" Value="4"/>
+        </FCParamGroup>
+      </FCParamGroup>
+    </FCParamGroup>
+    <FCText Name="Name">Display settings</FCText>
+    <FCText Name="ToolTip">Includes some common 3D display settings,
+and better document thumnail saving.</FCText>
+  </FCParamGroup>
+
+</FCParameters>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<FCParameters>
+
+  <FCParamGroup Name="Root">
+    <FCParamGroup Name="BaseApp">
+      <FCParamGroup Name="MainWindow">
+        <FCParamGroup Name="DockWindows">
+          <FCParamGroup Name="OverlayLeft">
+            <FCText Name="Widgets">Tree view,</FCText>
+            <FCBool Name="Transparent" Value="1"/>
+            <FCText Name="Sizes">150</FCText>
+            <FCInt Name="Width" Value="300"/>
+            <FCInt Name="Height" Value="502"/>
+          </FCParamGroup>
+          <FCParamGroup Name="OverlayRight">
+            <FCText Name="Widgets">Combo View,Property view,</FCText>
+            <FCText Name="Sizes">202,258</FCText>
+            <FCBool Name="Transparent" Value="1"/>
+            <FCBool Name="AutoHide" Value="0"/>
+            <FCBool Name="EditShow" Value="0"/>
+            <FCBool Name="EditHide" Value="0"/>
+            <FCBool Name="TaskShow" Value="1"/>
+            <FCInt Name="Width" Value="300"/>
+            <FCInt Name="Height" Value="360"/>
+          </FCParamGroup>
+          <FCParamGroup Name="OverlayBottom">
+            <FCText Name="Widgets">Python console,Selection view,</FCText>
+            <FCText Name="Sizes">632,631</FCText>
+            <FCBool Name="AutoHide" Value="1"/>
+            <FCBool Name="EditShow" Value="0"/>
+            <FCBool Name="EditHide" Value="0"/>
+            <FCBool Name="TaskShow" Value="0"/>
+            <FCInt Name="Width" Value="1305"/>
+            <FCInt Name="Height" Value="180"/>
+          </FCParamGroup>
+          <FCParamGroup Name="OverlayTop">
+            <FCText Name="Widgets">Report view,</FCText>
+            <FCText Name="Sizes">1263</FCText>
+            <FCBool Name="Transparent" Value="1"/>
+            <FCBool Name="AutoHide" Value="1"/>
+            <FCBool Name="EditShow" Value="0"/>
+            <FCBool Name="EditHide" Value="0"/>
+            <FCBool Name="TaskShow" Value="0"/>
+            <FCInt Name="Width" Value="803"/>
+            <FCInt Name="Height" Value="150"/>
+          </FCParamGroup>
+          <FCBool Name="Std_PythonView" Value="1"/>
+          <FCBool Name="Std_ReportView" Value="0"/>
+          <FCBool Name="Std_SelectionView" Value="1"/>
+        </FCParamGroup>
+      </FCParamGroup>
+      <FCParamGroup Name="Preferences">
+        <FCParamGroup Name="TreeView">
+          <FCBool Name="HideColumn" Value="1"/>
+          <FCUInt Name="TreeEditColor" Value="1431634175"/>
+          <FCUInt Name="ItemBackground" Value="20"/>
+          <FCUInt Name="TreeActiveColor" Value="1431666687"/>
+        </FCParamGroup>
+        <FCParamGroup Name="MainWindow">
+          <FCText Name="StyleSheet">Dark-blue.qss</FCText>
+          <FCText Name="OverlayActiveStyleSheet">Dark-Outline.qss</FCText>
+        </FCParamGroup>
+        <FCParamGroup Name="DockWindows">
+          <FCParamGroup Name="ComboView">
+            <FCBool Name="Enabled" Value="0"/>
+          </FCParamGroup>
+          <FCParamGroup Name="TreeView">
+            <FCBool Name="Enabled" Value="1"/>
+          </FCParamGroup>
+          <FCParamGroup Name="PropertyView">
+            <FCBool Name="Enabled" Value="1"/>
+          </FCParamGroup>
+        </FCParamGroup>
+        <FCParamGroup Name="View">
+          <FCBool Name="DockOverlayCheckNaviCube" Value="1"/>
+          <FCBool Name="DockOverlayActivateOnHover" Value="0"/>
+          <FCBool Name="Gradient" Value="0"/>
+          <FCUInt Name="BackgroundColor" Value="1953789183"/>
+        </FCParamGroup>
+      </FCParamGroup>
+    </FCParamGroup>
+    <FCText Name="Name">Overlay dark theme</FCText>
+    <FCText Name="ToolTip">Switch on dock widget overlay mode with a dark colored theme.</FCText>
+  </FCParamGroup>
+
+</FCParameters>

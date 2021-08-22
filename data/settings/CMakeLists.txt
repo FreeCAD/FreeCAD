@@ -2,6 +2,9 @@
 SET(Conf_Files 
     LargeFontIcon.FCParam
     VerticalToolBars.FCParam
+    OverlayDark.FCParam
+    OverlayLight.FCParam
+    DisplaySettings.FCParam
 )
 
 ADD_CUSTOM_TARGET(Conf_data ALL

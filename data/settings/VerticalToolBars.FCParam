@@ -2,7 +2,9 @@
 <FCParameters>
   <FCParamGroup Name="Root">
     <FCParamGroup Name="BaseApp">
-      <FCParamGroup Name="Workbenches"/>
+      <FCParamGroup Name="Workbenches">
+          <FCBool Name="ShowTabBar" Value="1"/>
+        </FCParamGroup>
       <FCParamGroup Name="Preferences">
         <FCParamGroup Name="MainWindow">
           <FCText Name="GlobalToolBarArea">Left</FCText>

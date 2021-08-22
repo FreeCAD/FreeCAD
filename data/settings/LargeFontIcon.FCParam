@@ -12,6 +12,7 @@
         </FCParamGroup>
         <FCParamGroup Name="View">
           <FCInt Name="DefaultFontSize" Value="14"/>
+          <FCInt Name="PieMenuIconSize" Value="32"/>
         </FCParamGroup>
         <FCParamGroup Name="General">
           <FCInt Name="ToolbarIconSize" Value="32"/>
