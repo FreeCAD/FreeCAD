@@ -28,6 +28,8 @@
 #include <QTimer>
 #include <memory>
 
+#include <Base/Parameter.h>
+
 class QAbstractButton;
 class QListWidgetItem;
 class QTabWidget;
@@ -130,6 +132,7 @@ protected:
     void moveEvent(QMoveEvent *);
     void paintEvent(QPaintEvent *ev);
     void restoreGeometry();
+    void closeEvent(QCloseEvent *);
 
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
@@ -154,6 +157,8 @@ private:
     bool geometryRestored = false;
     QSize savedSize;
     QPoint savedPos;
+
+    ParameterGrp::handle hBackup;
 
     static const int GroupNameRole; /**< A name for our Qt::UserRole, used when storing user data in a list item */
 

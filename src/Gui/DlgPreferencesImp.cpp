@@ -272,8 +272,24 @@ void DlgPreferencesImp::moveEvent(QMoveEvent *ev)
     QDialog::moveEvent(ev);
 }
 
+void DlgPreferencesImp::closeEvent(QCloseEvent *e)
+{
+    saveGeometry();
+    QDialog::reject();
+    e->accept();
+}
+
 void DlgPreferencesImp::reject()
 {
+    if (hBackup) {
+        int res = QMessageBox::question(this, tr("Revert changes"),
+                tr("Do you want to revert back to previous settings before exit?"),
+                QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+        if (res == QMessageBox::Cancel)
+            return;
+        if (res == QMessageBox::Yes)
+            hBackup->copyTo(&App::GetApplication().GetUserParameter());
+    }
     saveGeometry();
     QDialog::reject();
 }
@@ -322,7 +338,7 @@ void DlgPreferencesImp::restoreDefaults()
             (*it)->loadSettings();
         }
 #else
-        reject();
+        QDialog::reject();
 #endif
     }
 }
@@ -383,6 +399,13 @@ void DlgPreferencesImp::reloadPages()
 
 void DlgPreferencesImp::applyChanges()
 {
+    if (!hBackup) {
+        auto manager = new ParameterManager;
+        manager->CreateDocument();
+        hBackup = manager;
+        App::GetApplication().GetUserParameter().copyTo(hBackup);
+    }
+
     // Checks if any of the classes that represent several pages of settings
     // (DlgSettings*.*) implement checkSettings() method.  If any of them do,
     // call it to validate if user input is correct.  If something fails (i.e.,
