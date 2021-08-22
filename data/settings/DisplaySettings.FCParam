@@ -6,6 +6,7 @@
       <FCParamGroup Name="Preferences">
         <FCParamGroup Name="View">
           <FCBool Name="UseVBO" Value="1"/>
+          <FCBool Name="UseAutoRotation" Value="1"/>
           <FCInt Name="RenderCache" Value="3"/>
           <FCInt Name="AntiAliasing" Value="3"/>
         </FCParamGroup>

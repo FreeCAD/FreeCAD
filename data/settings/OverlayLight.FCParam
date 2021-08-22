@@ -5,20 +5,15 @@
       <FCParamGroup Name="MainWindow">
         <FCParamGroup Name="DockWindows">
           <FCParamGroup Name="OverlayLeft">
-            <FCText Name="Widgets">Tree view,</FCText>
+            <FCText Name="Widgets">Tree view,Property view,</FCText>
             <FCBool Name="Transparent" Value="1"/>
-            <FCText Name="Sizes">150</FCText>
+            <FCText Name="Sizes">220,220</FCText>
             <FCInt Name="Width" Value="300"/>
             <FCInt Name="Height" Value="502"/>
           </FCParamGroup>
           <FCParamGroup Name="OverlayRight">
-            <FCText Name="Widgets">Combo View,Property view,</FCText>
-            <FCText Name="Sizes">202,258</FCText>
+            <FCText Name="Widgets">Combo View,</FCText>
             <FCBool Name="Transparent" Value="1"/>
-            <FCBool Name="AutoHide" Value="0"/>
-            <FCBool Name="EditShow" Value="0"/>
-            <FCBool Name="EditHide" Value="0"/>
-            <FCBool Name="TaskShow" Value="1"/>
             <FCInt Name="Width" Value="300"/>
             <FCInt Name="Height" Value="360"/>
           </FCParamGroup>
