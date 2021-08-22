@@ -103,7 +103,7 @@ G0 Z5
 #Marlin is primarily for 3d printing, the output from freeCAD for cnc router work is rather limited
 #Add more as support exists, tool changes maybe
 
-ALLOWED_COMMANDS = ['G0', 'G1', 'G2', 'G3', 'G5', 'G20', 'G21', 'G90', 'G91', 'G92', 'M0']
+ALLOWED_COMMANDS = ['G0', 'G1', 'G2', 'G3', 'G5', 'G20', 'G21', 'G90', 'G91', 'G92', 'M0', 'M400']
 
 # These commands are ignored by commenting them out
 # SUPPRESS_COMMANDS = [ 'G98', 'G80' ]
@@ -440,6 +440,7 @@ def emulFastMove(c, state): #Let's separate Z
     if 'Z' in params:
         if 'X' in params or 'Y' in params:
             cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
+                        ["M400", {}],
                         ["G1", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
         else:
             cmdlist = [["G1", {'Z' : params['Z'], 'F': F2}]]
