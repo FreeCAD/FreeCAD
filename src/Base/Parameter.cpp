@@ -1351,10 +1351,20 @@ void ParameterGrp::Clear(void)
     }
 
     // Remove the reset of non-group nodes;
+    std::vector<std::pair<ParamType, std::string>> params;
     for (DOMNode *child = _pGroupNode->getFirstChild(), *next = child; child != 0;  child = next) {
         next = next->getNextSibling();
+        ParamType type = TypeValue(StrX(child->getNodeName()).c_str());
+        if (type != FCInvalid && type != FCGroup)
+            params.emplace_back(type, StrX(child->getAttributes()->getNamedItem(
+                            XStr("Name").unicodeForm())->getNodeValue()).c_str());
         DOMNode *node = _pGroupNode->removeChild(child);
         node->release();
+    }
+
+    for (auto &v : params) {
+        _Notify(v.first, v.second.c_str(), nullptr);
+        Notify(v.second.c_str());
     }
 
     // trigger observer
