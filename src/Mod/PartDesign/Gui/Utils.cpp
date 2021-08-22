@@ -123,7 +123,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 App::DocumentObject *body = 0;
                 if(bodies.size()==1) {
                     body = bodies[0];
-                    activeBody = makeBodyActive(body, doc);
+                    activeBody = makeBodyActive(body, doc, topParent, subname);
                 }
             }
             if (!activeBody && messageIfNot) {
@@ -141,7 +141,9 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     return activeBody;
 }
 
-PartDesign::Body * makeBodyActive(App::DocumentObject* body, App::Document *doc)
+PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
+                                  App::DocumentObject **topParent,
+                                  std::string *subname)
 {
     App::DocumentObject *parent = 0;
     std::string sub;
@@ -162,8 +164,8 @@ PartDesign::Body * makeBodyActive(App::DocumentObject* body, App::Document *doc)
         _FCMD_DOC_CMD(Gui, _doc, "ActiveView.setActiveObject('" << PDBODYKEY
                       << "'," << Gui::Command::getObjectCmd(parent?parent:body)
                       << ",'" << sub << "')");
-        // return Gui::Application::Instance->activeView()->
-        //     getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+        return Gui::Application::Instance->activeView()->
+            getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
     }
 
     return dynamic_cast<PartDesign::Body*>(body);

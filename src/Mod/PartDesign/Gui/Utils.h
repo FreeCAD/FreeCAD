@@ -58,8 +58,13 @@ PartDesign::Body * needActiveBodyMessage(App::Document *doc,
  * Set given body active, and return pointer to it.
  * \param body the pointer to the body
  * \param doc the pointer to the document in question
+ * \param topParent and
+ * \param subname to be passed under certain circumstances
+ *        (currently only subshapebinder)
  */
-PartDesign::Body * makeBodyActive(App::DocumentObject* body, App::Document *doc);
+PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
+                                  App::DocumentObject **topParent=0,
+                                  std::string *subname=0);
 
 /// Display error when there are existing Body objects, but none are active
 void needActiveBodyError(void);
