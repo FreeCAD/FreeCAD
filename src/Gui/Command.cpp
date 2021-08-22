@@ -29,6 +29,7 @@
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
+# include <QRegularExpression>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
