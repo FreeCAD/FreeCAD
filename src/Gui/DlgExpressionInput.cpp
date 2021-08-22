@@ -99,7 +99,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     bool darkstyle = mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) >= 0;
     if (darkstyle) {
         this->stylesheet = QLatin1String("*{color:palette(bright-text)}");
-        ui->expression->setStyleSheet(QLatin1String("margin:0px; color:black"));
+        ui->expression->setStyleSheet(QLatin1String("margin:0px; color:white"));
     } else {
         this->stylesheet = QLatin1String("*{color:palette(text)}");
         ui->expression->setStyleSheet(QLatin1String("margin:0px"));
