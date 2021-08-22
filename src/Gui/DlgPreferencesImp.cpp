@@ -72,7 +72,6 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
       invalidParameter(false)
 {
     ui->setupUi(this);
-    ui->listBox->setFixedWidth(108);
     ui->listBox->setGridSize(QSize(108, 75));
 
     connect(ui->buttonBox,  SIGNAL (helpRequested()),
@@ -463,6 +462,15 @@ void DlgPreferencesImp::restoreGeometry()
     if (geometryRestored)
         return;
     geometryRestored = true;
+
+    int width = 0;
+    for (int i=0, c=ui->listBox->count(); i<c; ++i) {
+        width = std::max(width,
+                ui->listBox->visualItemRect(ui->listBox->item(i)).width());
+    }
+    width += style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 5;
+    ui->listBox->setFixedWidth(width);
+
     std::string geometry = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/General")->GetASCII(
                 "PreferenceGeometry", "");
