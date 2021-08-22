@@ -723,7 +723,7 @@ public:
 WorkbenchTabBar::WorkbenchTabBar(WorkbenchGroup* wb, QWidget* parent)
     : QTabWidget(parent), group(wb)
 {
-    connect(this, SIGNAL(currentChanged(int)), this, SLOT(onCurrentChanged(int)));
+    connect(this, SIGNAL(currentChanged(int)), this, SLOT(onCurrentChanged()));
     connect(this->tabBar(), SIGNAL(tabMoved(int, int)), this, SLOT(onTabMoved(int, int)));
     connect(getMainWindow(), SIGNAL(workbenchActivated(const QString&)),
             this, SLOT(onWorkbenchActivated(const QString&)));
@@ -754,6 +754,9 @@ WorkbenchTabBar::WorkbenchTabBar(WorkbenchGroup* wb, QWidget* parent)
         updateWorkbenches();
         setupVisibility();
     });
+
+    timerCurrentChange.setSingleShot(true);
+    connect(&timerCurrentChange, SIGNAL(timeout()), this, SLOT(onCurrentChanged()));
 
     onChangeOrientation();
 }
@@ -868,9 +871,15 @@ void WorkbenchTabBar::updateWorkbenches()
         this->removeTab(this->count()-1);
 }
 
-void WorkbenchTabBar::onCurrentChanged(int i)
+void WorkbenchTabBar::onCurrentChanged()
 {
+    if (QApplication::mouseButtons() & Qt::LeftButton) {
+        timerCurrentChange.start(10);
+        return;
+    }
+
     auto tab = this->tabBar();
+    int i = tab->currentIndex();
     QString name = tab->tabData(i).toString();
     if (!this->group->_pimpl->showText()) {
         for (int j = 0, c = tab->count(); j<c; ++j) {

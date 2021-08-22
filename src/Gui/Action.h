@@ -198,7 +198,7 @@ protected:
     bool eventFilter(QObject *, QEvent *ev);
 
 protected Q_SLOTS:
-    void onCurrentChanged(int);
+    void onCurrentChanged();
     void onTabMoved(int from, int to);
     void onWorkbenchActivated(const QString&);
     void updateWorkbenches();
@@ -210,6 +210,7 @@ private:
     WorkbenchGroup* group;
     boost::signals2::scoped_connection connParam;
     QTimer timer;
+    QTimer timerCurrentChange;
     bool moved = false;
     QAction *action = nullptr;
 };
