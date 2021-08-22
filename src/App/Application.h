@@ -326,7 +326,7 @@ public:
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
     const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList(void) const;
-    ParameterManager * AddParameterSet(const char* sName, const std::string &filename = std::string());
+    ParameterManager * AddParameterSet(std::string &name, const std::string &filename = std::string());
     void RemoveParameterSet(const char* sName);
     bool RenameParameterSet(const char *sName, ParameterManager *);
     void RefreshParameterSet(bool savefirst = true);

@@ -1202,61 +1202,49 @@ Application::GetParameterSetList(void) const
     return mpcPramManager;
 }
 
-ParameterManager *Application::AddParameterSet(const char* sName, const std::string &filename)
+ParameterManager *Application::AddParameterSet(std::string &name, const std::string &filename)
 {
     ParameterManager *manager = nullptr;
-    auto it = mpcPramManager.find(sName);
-    if ( it == mpcPramManager.end() ) {
-        manager = new ParameterManager();
-        mpcPramManager[sName] = manager;
-    } else {
-        manager = it->second;
-        if (manager == _pcSysParamMngr || manager == _pcUserParamMngr)
-            return manager;
+    if (filename.empty()) {
+        auto it = mpcPramManager.find(name.c_str());
+        if ( it == mpcPramManager.end() ) {
+            manager = new ParameterManager();
+            manager->CreateDocument();
+            mpcPramManager[name.c_str()] = manager;
+        } else
+            manager = it->second;
+        return manager;
     }
 
-    if (filename.empty())
-        return manager;
+    std::string pathPrefix = getUserAppDataDir();
+    if (mConfig.count("VendorCFGPrefix"))
+        pathPrefix += mConfig["VendorCFGPrefix"];
+
+    QFileInfo fdest;
+    std::string basename(name);
+    for (int i=1; ;++i) {
+        fdest = QFileInfo(QString::fromLatin1("%1/settings/%2.FCParam").arg(
+                    QString::fromUtf8(pathPrefix.c_str()), QString::fromUtf8(name.c_str())));
+        if (!fdest.exists() && !mpcPramManager.count(name.c_str()))
+            break;
+        name = basename + "(" + std::to_string(i) + ")";
+    }
+
+    QDir().mkpath(fdest.absolutePath());
 
     QFileInfo fi(QString::fromUtf8(filename.c_str()));
-    QString basename = fi.completeBaseName();
+    QFile::copy(fi.filePath(), fdest.filePath());
 
-    QFileInfo fdest(QString::fromLatin1("%1/data/Settings/%2.FCParam").arg(
-                QString::fromUtf8(getHomePath()), basename));
-
-    bool doCopy = true;
-    if (fi.canonicalFilePath() == fdest.canonicalFilePath())
-        doCopy = false;
-    else {
-        std::string pathPrefix = getUserAppDataDir();
-        if (mConfig.count("VendorCFGPrefix"))
-            pathPrefix += mConfig["VendorCFGPrefix"];
-        fdest = QFileInfo(QString::fromLatin1("%1/Settings/%2.FCParam").arg(
-                    QString::fromUtf8(pathPrefix.c_str()), basename));
-        if (fi.canonicalFilePath() == fdest.canonicalFilePath())
-            doCopy = false;
-    }
-
-    if (doCopy) {
-        for (int i=1; fdest.exists(); ++i) {
-            fdest = QFileInfo(QString::fromLatin1("%1/%2(%3).FCParam").arg(
-                    fdest.absolutePath(), fdest.completeBaseName()).arg(i++));
-        }
-        QFile::copy(fi.filePath(), fdest.filePath());
-    }
-
-    QFileInfo finfo(QString::fromUtf8(manager->GetSerializeFileName().c_str()));
-    if (finfo.canonicalFilePath() != fdest.canonicalFilePath()) {
-        QFile::remove(finfo.filePath());
-        manager->SetSerializer(new ParameterSerializer(
-                    fdest.canonicalFilePath().toUtf8().constData()));
-        try {
-            manager->LoadOrCreateDocument();
-            if (!fdest.exists())
-                manager->SaveDocument();
-        } catch (Base::Exception &e) {
-            e.ReportException();
-        }
+    manager = new ParameterManager();
+    mpcPramManager[name.c_str()] = manager;
+    manager->SetSerializer(new ParameterSerializer(
+                fdest.canonicalFilePath().toUtf8().constData()));
+    try {
+        manager->LoadOrCreateDocument();
+        if (!fdest.exists())
+            manager->SaveDocument(); // make sure the file exists
+    } catch (Base::Exception &e) {
+        e.ReportException();
     }
     return manager;
 }

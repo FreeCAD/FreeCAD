@@ -618,77 +618,73 @@ void DlgParameterImp::on_btnImport_clicked()
 
 void DlgParameterImp::on_btnExport_clicked()
 {
-    auto it = monitors.find(curParamManager);
-    if (it == monitors.end()) {
-        doExport(curParamManager);
-        return;
-    }
+    auto h = copyParameters();
+    if (!h)
+        h = curParamManager;
+    doExport(h);
+}
 
-    ParameterManager hTmp;
-    hTmp.ref();
-    hTmp.CreateDocument();
+ParameterGrp::handle DlgParameterImp::copyParameters()
+{
+    auto it = monitors.find(curParamManager);
+    if (it == monitors.end())
+        return nullptr;
+    ParameterManager *hTmp = new ParameterManager;
+    ParameterGrp::handle res = hTmp;
+    hTmp->CreateDocument();
     for (auto &v : it->second.changes) {
-        if (v.first->Manager() != curParamManager)
+        auto hSrc = v.first;
+        if (hSrc->Manager() != curParamManager)
             continue;
-        auto hGrp = hTmp.GetGroup(v.first->GetPath().c_str());
-        for (auto &key : v.second) {
-            if (key.type == ParameterGrp::FCBool) {
-                auto value = v.first->GetBool(key.name.constData(), false);
-                if (value == v.first->GetBool(key.name.constData(), true)) // to make sure the key exist
-                    hGrp->SetBool(key.name.constData(), value);
+        auto hGrp = hTmp->GetGroup(hSrc->GetPath().c_str());
+
+        auto setValue = [hSrc, hGrp](ParameterGrp::ParamType type, const char *name) {
+            if (type == ParameterGrp::FCBool) {
+                auto value = hSrc->GetBool(name, false);
+                if (value == hSrc->GetBool(name, true)) // to make sure the key exist
+                    hGrp->SetBool(name, value);
             }
-            else if (key.type == ParameterGrp::FCInt) {
-                auto value = v.first->GetInt(key.name.constData(), 0);
-                if (value == v.first->GetInt(key.name.constData(), 1)) // to make sure the key exist
-                    hGrp->SetInt(key.name.constData(), value);
+            else if (type == ParameterGrp::FCInt) {
+                auto value = hSrc->GetInt(name, 0);
+                if (value == hSrc->GetInt(name, 1)) // to make sure the key exist
+                    hGrp->SetInt(name, value);
             }
-            else if (key.type == ParameterGrp::FCUInt) {
-                auto value = v.first->GetUnsigned(key.name.constData(), 0);
-                if (value == v.first->GetUnsigned(key.name.constData(), 1)) // to make sure the key exist
-                hGrp->SetUnsigned(key.name.constData(), value);
+            else if (type == ParameterGrp::FCUInt) {
+                auto value = hSrc->GetUnsigned(name, 0);
+                if (value == hSrc->GetUnsigned(name, 1)) // to make sure the key exist
+                    hGrp->SetUnsigned(name, value);
             }
-            else if (key.type == ParameterGrp::FCFloat) {
-                auto value = v.first->GetFloat(key.name.constData(), 0.f);
-                if (value == v.first->GetFloat(key.name.constData(), 1.f)) // to make sure the key exist
-                    hGrp->SetFloat(key.name.constData(), value);
+            else if (type == ParameterGrp::FCFloat) {
+                auto value = hSrc->GetFloat(name, 0.f);
+                if (value == hSrc->GetFloat(name, 1.f)) // to make sure the key exist
+                    hGrp->SetFloat(name, value);
             }
-            else if (key.type == ParameterGrp::FCText) {
-                auto value = v.first->GetASCII(key.name.constData(), "");
-                if (value == v.first->GetASCII(key.name.constData(), "0")) // to make sure the key exist
-                    hGrp->SetASCII(key.name.constData(), value);
+            else if (type == ParameterGrp::FCText) {
+                auto value = hSrc->GetASCII(name, "");
+                if (value == hSrc->GetASCII(name, "0")) // to make sure the key exist
+                    hGrp->SetASCII(name, value);
             }
+        };
+
+        if (v.second.empty()) {
+            for (auto &v : v.first->GetParameterNames())
+                setValue(v.first, v.second.c_str());
+        } else {
+            for (auto &key : v.second)
+                setValue(key.type, key.name.constData());
         }
     }
-    doExport(&hTmp);
-    hTmp.unrefNoDelete();
+    return res;
 }
 
 void DlgParameterImp::on_btnAdd_clicked()
 {
     QString file = FileDialog::getOpenFileName( this,
             tr("Add Configuration"), QString(), QString::fromLatin1("XML (*.FCParam)"));
-    
-    int i=0;
-    std::string name;
-    std::ostringstream ss;
-    try {
-        for (;;++i) {
-            ss.str("");
-            ss << "Settings";
-            if (i)
-            ss << std::setfill('0') << std::setw(3) << i;
-            name = ss.str();
-            if (!App::GetApplication().GetParameterSet(name.c_str()))
-                break;
-            if (i >= 1000)
-                throw Base::RuntimeError("Failed to find a name for the new configuration");
-        }
-        App::GetApplication().AddParameterSet(name.c_str(), file.toUtf8().constData());
-    } catch (Base::Exception &e) {
-        e.ReportException();
-        QMessageBox::critical(this, tr("Add Configuration"), tr("Failed to add new configuration"));
+    if (file.isEmpty())
         return;
-    }
+    std::string name = QFileInfo(file).completeBaseName().toUtf8().constData();
+    App::GetApplication().AddParameterSet(name, file.toUtf8().constData());
     ui->parameterSet->addItem(tr(name.c_str()), QByteArray(name.c_str()));
     ui->parameterSet->setCurrentIndex(ui->parameterSet->count()-1);
 }
