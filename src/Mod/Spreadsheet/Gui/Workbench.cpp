@@ -104,7 +104,20 @@ void Workbench::activated()
             backgroundColor->setStatusTip(QObject::tr("Set cell(s) background color"));
             bar->addWidget(backgroundColor);
 
-            initialized = false;
+            auto toggleVisible = [bar]() {
+                bool visible = bar->orientation() == Qt::Horizontal;
+                auto actions = bar->actions();
+                for (auto picker : bar->findChildren<QtColorPicker*>()) {
+                    for (auto action : actions) {
+                        if (bar->widgetForAction(action) == picker)
+                            action->setVisible(visible);
+                    }
+                }
+            };
+            toggleVisible();
+            QObject::connect(bar, &QToolBar::orientationChanged, toggleVisible);
+
+            initialized = true;
         }
     }
 }
