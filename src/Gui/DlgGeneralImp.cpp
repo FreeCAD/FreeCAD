@@ -27,6 +27,7 @@
 # include <QLocale>
 # include <QStyleFactory>
 # include <QTextStream>
+# include <QDesktopServices>
 #endif
 
 #include "DlgGeneralImp.h"

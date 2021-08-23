@@ -213,6 +213,7 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
 
             // TODO: Are there other things that have to be manually triggered?
         }
+        return wasApplied;
     }
     else {
         throw std::runtime_error("No such Preference Pack: " + preferencePackName);
