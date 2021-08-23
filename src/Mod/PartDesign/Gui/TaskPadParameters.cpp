@@ -104,7 +104,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
-    ui->groupBoxDirection->setChecked(useCustom);
+    ui->checkBoxDirection->setChecked(useCustom);
+    onDirectionToggled(useCustom);
     ui->checkBoxAlongDirection->setChecked(alongCustom);
     ui->XDirectionEdit->setValue(xs);
     ui->YDirectionEdit->setValue(ys);
@@ -158,7 +159,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
             this, SLOT(onLength2Changed(double)));
     connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
         this, SLOT(onAlongSketchNormalChanged(bool)));
-    connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
+    connect(ui->checkBoxDirection, SIGNAL(toggled(bool)),
         this, SLOT(onDirectionToggled(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
         this, SLOT(onXDirectionEditChanged(double)));
@@ -331,8 +332,12 @@ void TaskPadParameters::onDirectionToggled(bool on)
     pcPad->UseCustomVector.setValue(on);
     // dis/enable length direction
     ui->checkBoxAlongDirection->setEnabled(on);
-    if (!on)
+    if (on) {
+        ui->groupBoxDirection->show();
+    } else {
         ui->checkBoxAlongDirection->setChecked(!on);
+        ui->groupBoxDirection->hide();
+    }
     recomputeFeature();
     // the calculation of the sketch's normal vector is done in FeaturePad.cpp
     // if this vector was used for the recomputation we must fill the direction
@@ -481,7 +486,7 @@ bool   TaskPadParameters::getAlongSketchNormal(void) const
 
 bool   TaskPadParameters::getCustom(void) const
 {
-    return ui->groupBoxDirection->isChecked();
+    return ui->checkBoxDirection->isChecked();
 }
 
 double TaskPadParameters::getXDirection(void) const
