@@ -37,6 +37,7 @@
 #include "Base/Parameter.h"
 #include "Base/Interpreter.h"
 #include "Base/Console.h"
+#include "DockWindowManager.h"
 
 #include <App/Application.h>
 
@@ -204,7 +205,14 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
     std::lock_guard<std::mutex> lock(_mutex);
     if (auto preferencePack = _preferencePacks.find(preferencePackName); preferencePack != _preferencePacks.end()) {
         BackupCurrentConfig();
-        return preferencePack->second.apply();
+        bool wasApplied = preferencePack->second.apply();
+        if (wasApplied) {
+            // If the visibility state of the dock windows was changed we have to manually reload their state
+            Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+            pDockMgr->loadState();
+
+            // TODO: Are there other things that have to be manually triggered?
+        }
     }
     else {
         throw std::runtime_error("No such Preference Pack: " + preferencePackName);
@@ -215,9 +223,14 @@ void copyTemplateParameters(Base::Reference<ParameterGrp> templateGroup, const s
 {
     auto userParameterHandle = App::GetApplication().GetParameterGroupByPath(path.c_str());
 
+    // Ensure that the DockWindowManager has saved its current state:
+    Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+    pDockMgr->saveState();
+
     auto boolMap = templateGroup->GetBoolMap();
     for (const auto& kv : boolMap) {
         auto currentValue = userParameterHandle->GetBool(kv.first.c_str(), kv.second);
+        Base::Console().Message("Parameter %s = %d\n", kv.first.c_str(), currentValue);
         outputGroup->SetBool(kv.first.c_str(), currentValue);
     }
 
