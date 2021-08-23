@@ -25,7 +25,7 @@
 				-- two Vectors (rotation from/to vector)
 				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
                 -- one string and three floats (Euler angles) as euler rotation 
-                   of a given type. Call toEulerSequence() for supported sequence types.
+                   of a given type. Call toEulerAngles() for supported sequence types.
 				-- four floats (Quaternion) where the quaternion is specified as:
 				   q=xi+yj+zk+w, i.e. the last parameter is the real part
 				-- three vectors that define rotated axes directions + an optional
