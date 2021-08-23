@@ -806,6 +806,8 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         _sizemap[dockWidget(idx++)] = sizes.back();
     }
 
+    FC_LOG("restore " << objectName().toLatin1().constData() << " " << savedSizes);
+
     getSplitter()->setSizes(sizes);
     hGrp = handle;
 }
@@ -836,6 +838,7 @@ void OverlayTabWidget::saveTabs()
     Base::StateLocker lock(_saving);
     hGrp->SetASCII("Widgets", os.str().c_str());
     hGrp->SetASCII("Sizes", os2.str().c_str());
+    FC_LOG("save " << objectName().toLatin1().constData() << " " << os2.str());
 }
 
 void OverlayTabWidget::onTabMoved(int from, int to)
@@ -2671,6 +2674,7 @@ struct OverlayInfo {
     Qt::DockWidgetArea dockArea;
     std::unordered_map<QDockWidget*, OverlayInfo*> &overlayMap;
     ParameterGrp::handle hGrp;
+    boost::signals2::scoped_connection conn;
 
     OverlayInfo(QWidget *parent,
                 const char *name,
@@ -2684,7 +2688,7 @@ struct OverlayInfo {
         tabWidget->setMovable(true);
         hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetGroup(name);
-        App::GetApplication().GetUserParameter().signalParamChanged.connect(
+        conn = App::GetApplication().GetUserParameter().signalParamChanged.connect(
             [this](ParameterGrp *Param, ParameterGrp::ParamType, const char *Name, const char *) {
                 if (hGrp == Param && Name && !tabWidget->isSaving()) {
                     // This will prevent saving settings which will mess up the
@@ -3814,10 +3818,16 @@ public:
         if (mode == OverlayManager::ReloadResume)
             mode = OverlayManager::ReloadPending;
         if (mode == OverlayManager::ReloadPending) {
-            if (curReloadMode != OverlayManager::ReloadPause)
+            if (curReloadMode != OverlayManager::ReloadPause) {
+                FC_LOG("reload pending");
                 _reloadTimer.start(100);
+            }
         }
         curReloadMode = mode;
+        if (mode == OverlayManager::ReloadPause) {
+            FC_LOG("reload paused");
+            _reloadTimer.stop();
+        }
     }
 
 #else // FC_HAS_DOCK_OVERLAY

@@ -14,7 +14,6 @@
           </FCParamGroup>
           <FCParamGroup Name="OverlayRight">
             <FCText Name="Widgets">Combo View,</FCText>
-            <FCText Name="Sizes">202,258</FCText>
             <FCBool Name="Transparent" Value="1"/>
             <FCInt Name="Width" Value="300"/>
             <FCInt Name="Height" Value="360"/>
