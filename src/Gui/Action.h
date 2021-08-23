@@ -39,6 +39,7 @@
 class QLineEdit;
 class QWidgetAction;
 class QCheckBox;
+class QToolBar;
 
 namespace Gui
 {
@@ -203,6 +204,7 @@ protected Q_SLOTS:
     void onWorkbenchActivated(const QString&);
     void updateWorkbenches();
     void onChangeOrientation();
+    QToolBar *getToolBar();
 
     friend class WorkbenchGroup;
 

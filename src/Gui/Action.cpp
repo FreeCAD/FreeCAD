@@ -765,6 +765,15 @@ WorkbenchTabBar::~WorkbenchTabBar()
 {
 }
 
+QToolBar *WorkbenchTabBar::getToolBar()
+{
+    for (auto parent = parentWidget(); parent; parent = parent->parentWidget()) {
+        if (auto tb = qobject_cast<QToolBar*>(parent))
+            return tb;
+    }
+    return nullptr;
+}
+
 void WorkbenchTabBar::setupVisibility()
 {
     if (!action)
@@ -824,7 +833,8 @@ void WorkbenchTabBar::updateWorkbenches()
 {
     auto tab = this->tabBar();
     int s = std::max(16, this->group->_pimpl->toolbarIconSize());
-    this->setIconSize(QSize(s,s));
+    if (this->iconSize() != QSize(s,s))
+        this->setIconSize(QSize(s,s));
 
     auto wb = WorkbenchManager::instance()->active();
     QString current;
@@ -833,9 +843,10 @@ void WorkbenchTabBar::updateWorkbenches()
 
     QSignalBlocker block(this);
     bool showText = this->group->_pimpl->showText();
-    if (showText)
-        this->setStyleSheet(QString());
-    else {
+    if (showText) {
+        if (this->styleSheet().size())
+            this->setStyleSheet(QString());
+    } else if (this->styleSheet().isEmpty()) {
         this->setStyleSheet(
                 QStringLiteral("::tab:top,"
                                "::tab:bottom {min-width: -1;}"
@@ -846,24 +857,31 @@ void WorkbenchTabBar::updateWorkbenches()
     for (auto action : this->group->actions()) {
         if (!action->isVisible())
             continue;
+        bool changed = true;
         if (i >= this->count())
             this->addTab(new QWidget(), action->icon(), QString());
-        else
+        else if (tab->tabData(i).toString() == action->objectName())
+            changed = false;
+
+        if (changed) {
             tab->setTabIcon(i, action->icon());
-        if (showText)
-            tab->setTabText(i, action->text());
-        else
-            tab->setTabText(i, QString());
-        tab->setTabData(i, action->objectName());
-        tab->setTabToolTip(i, 
-                Action::createToolTip(action->toolTip(),
-                                      action->text(),
-                                      action->font(),
-                                      action->shortcut().toString(QKeySequence::NativeText)));
-        if (current == action->objectName()) {
-            setCurrentIndex(i);
-            if (!showText)
+            tab->setTabData(i, action->objectName());
+            tab->setTabToolTip(i, 
+                    Action::createToolTip(action->toolTip(),
+                                        action->text(),
+                                        action->font(),
+                                        action->shortcut().toString(QKeySequence::NativeText)));
+        }
+        if (showText) {
+            if (tab->tabText(i) != action->text())
                 tab->setTabText(i, action->text());
+        } else if (tab->tabText(i).size())
+            tab->setTabText(i, QString());
+
+        if (current == action->objectName() && tab->currentIndex() != i) {
+            setCurrentIndex(i);
+            // if (!showText)
+            //     tab->setTabText(i, action->text());
         }
         ++i;
     }
@@ -881,14 +899,14 @@ void WorkbenchTabBar::onCurrentChanged()
     auto tab = this->tabBar();
     int i = tab->currentIndex();
     QString name = tab->tabData(i).toString();
-    if (!this->group->_pimpl->showText()) {
-        for (int j = 0, c = tab->count(); j<c; ++j) {
-            if (j == i)
-                tab->setTabText(i, Application::Instance->workbenchMenuText(name));
-            else
-                tab->setTabText(j, QString());
-        }
-    }
+    // if (!this->group->_pimpl->showText()) {
+    //     for (int j = 0, c = tab->count(); j<c; ++j) {
+    //         if (j == i)
+    //             tab->setTabText(i, Application::Instance->workbenchMenuText(name));
+    //         else
+    //             tab->setTabText(j, QString());
+    //     }
+    // }
     Application::Instance->activateWorkbench(name.toUtf8());
 }
 
@@ -908,6 +926,8 @@ bool WorkbenchTabBar::eventFilter(QObject *o, QEvent *ev)
         auto tab = this->tabBar();
         for (int i=0, c=tab->count(); i<c; ++i)
             enabled << tab->tabData(i).toString();
+        Base::ConnectionBlocker blocker(connParam);
+        QSignalBlocker blocker2(group);
         DlgWorkbenchesImp::save_workbenches(enabled);
     }
     return QTabWidget::eventFilter(o, ev);
@@ -917,16 +937,16 @@ void WorkbenchTabBar::onWorkbenchActivated(const QString& name)
 {
     QSignalBlocker block(this);
     auto tab = this->tabBar();
-    bool showText = this->group->_pimpl->showText();
+    // bool showText = this->group->_pimpl->showText();
     int current = tab->currentIndex();
     if (current >= 0 && tab->tabData(current).toString() != name) {
-        if (!showText)
-            tab->setTabText(current, QString());
+        // if (!showText)
+        //     tab->setTabText(current, QString());
         for (int i=0, c=tab->count(); i<c; ++i) {
             if (tab->tabData(i).toString() == name) {
                 setCurrentIndex(i);
-                if (!showText)
-                    tab->setTabText(i, Application::Instance->workbenchMenuText(name));
+                // if (!showText)
+                //     tab->setTabText(i, Application::Instance->workbenchMenuText(name));
             }
         }
     }
