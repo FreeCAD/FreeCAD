@@ -38,6 +38,7 @@
 #include "Base/Interpreter.h"
 #include "Base/Console.h"
 #include "DockWindowManager.h"
+#include "ToolBarManager.h"
 
 #include <App/Application.h>
 
@@ -211,6 +212,10 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
             Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
             pDockMgr->loadState();
 
+            // Same goes for toolbars:
+            Gui::ToolBarManager* pToolbarMgr = Gui::ToolBarManager::getInstance();
+            pToolbarMgr->restoreState();
+
             // TODO: Are there other things that have to be manually triggered?
         }
         return wasApplied;
@@ -227,6 +232,10 @@ void copyTemplateParameters(Base::Reference<ParameterGrp> templateGroup, const s
     // Ensure that the DockWindowManager has saved its current state:
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     pDockMgr->saveState();
+
+    // Do the same for ToolBars
+    Gui::ToolBarManager* pToolbarMgr = Gui::ToolBarManager::getInstance();
+    pToolbarMgr->saveState();
 
     auto boolMap = templateGroup->GetBoolMap();
     for (const auto& kv : boolMap) {
