@@ -1380,7 +1380,7 @@ void RecentFilesAction::restore()
     this->visibleItems = hGrp->GetInt("RecentFiles", this->visibleItems);
 
     int count = std::max<int>(this->maximumItems, this->visibleItems);
-    for (int i=0; i<count; i++)
+    for (int i=_group->actions().size(); i<count; i++)
         _group->addAction(QLatin1String(""))->setVisible(false);
     std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
     QStringList files;
