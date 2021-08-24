@@ -753,11 +753,9 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewSelection" << "Std_DrawStyle" << "Std_SelOptions"
+    *view << "Std_ViewFitAll" << "Std_ViewSelection" << "Std_DrawStyle" << "Std_SelOptions" << "Std_TreeViewActions"
           << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_SelUp" << "Std_LinkSelectActions"
-          << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
-          << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
-          << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
+          << "Separator" << "Std_MeasureDistance" ;
 
     // Structure
     ToolBarItem* structure = new ToolBarItem( root );
@@ -774,9 +772,7 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("Standard views");
-    *view << "Std_ViewFitAll" << "Std_ViewSelection" << "Std_ViewIsometric" << "Separator"
-          << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
-          << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
+    *view << "Std_ViewFitAll" << "Std_ViewSelection";
     // Special Ops
     ToolBarItem* macro = new ToolBarItem( root );
     macro->setCommand("Special Ops");
