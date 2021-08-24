@@ -327,7 +327,7 @@ void DlgPreferencesImp::restoreDefaults()
                               GetBool("SaveUserParameter", true);
 
         ParameterManager* mgr = App::GetApplication().GetParameterSet("User parameter");
-        mgr->Clear();
+        mgr->Clear(true);
 
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                               SetBool("SaveUserParameter", saveParameter);

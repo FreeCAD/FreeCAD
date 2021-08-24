@@ -606,7 +606,7 @@ void DlgParameterImp::on_btnReset_clicked()
         QTimer::singleShot(100, [](){Application::Instance->restart(true);});
     } else {
         try {
-            curParamManager->Clear();
+            curParamManager->Clear(true);
             monitors.erase(curParamManager);
             onChangeParameterSet(ui->parameterSet->currentIndex());
         } catch (Base::Exception &e) {

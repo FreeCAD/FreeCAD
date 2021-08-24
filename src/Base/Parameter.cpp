@@ -295,7 +295,7 @@ void ParameterGrp::copyTo(Base::Reference<ParameterGrp> Grp)
         return;
 
     // delete previous content
-    Grp->Clear();
+    Grp->Clear(true);
 
     // copy all
     insertTo(Grp);
@@ -1277,7 +1277,7 @@ void ParameterGrp::RemoveGrp(const char* Name)
     // those existing observer won't get any notification. BUT, we DO delete
     // the underlying xml elements, so that we don't save the empty group
     // later.
-    it->second->Clear();
+    it->second->Clear(false);
     if (!it->second->_Detached) {
         it->second->_Detached = true;
         _pGroupNode->removeChild(it->second->_pGroupNode);
@@ -1318,7 +1318,7 @@ bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
     return true;
 }
 
-void ParameterGrp::Clear(void)
+void ParameterGrp::Clear(bool notify)
 {
     if (!_pGroupNode)
         return;
@@ -1336,7 +1336,7 @@ void ParameterGrp::Clear(void)
         // notification if the group is later on add back. We do remove the
         // underlying xml element from its parent so that we won't save this
         // empty group.
-        it->second->Clear();
+        it->second->Clear(notify);
         if (!it->second->_Detached) {
             it->second->_Detached = true;
             _pGroupNode->removeChild(it->second->_pGroupNode);
@@ -1364,7 +1364,8 @@ void ParameterGrp::Clear(void)
 
     for (auto &v : params) {
         _Notify(v.first, v.second.c_str(), nullptr);
-        Notify(v.second.c_str());
+        if (notify)
+            Notify(v.second.c_str());
     }
 
     // trigger observer

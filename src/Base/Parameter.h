@@ -140,7 +140,8 @@ public:
     /// rename a sub group from this group
     bool RenameGrp(const char* OldName, const char* NewName);
     /// clears everything in this group (all types)
-    void Clear(void);
+    /// @param notify: whether to notify on deleted parameters using the Observer interface.
+    void Clear(bool notify = false);
     //@}
 
     /** @name methods for generic attribute handling */
