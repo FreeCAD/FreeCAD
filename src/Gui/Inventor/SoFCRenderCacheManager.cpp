@@ -981,8 +981,7 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
   SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
   if (!self->nodeset.insert(node).second) {
       self->prunenode = node;
-      SoDebugError::postWarning("SoFCRenderCacheManagerP::preSeparator",
-                                "recursive scene graph detected, %p", node);
+      SoFCSelectionRoot::reportCyclicScene(action, const_cast<SoNode*>(node));
       return SoCallbackAction::PRUNE;
   }
 
