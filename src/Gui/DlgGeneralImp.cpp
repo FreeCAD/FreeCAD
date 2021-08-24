@@ -102,6 +102,11 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     // Future work: the Add-On Manager will be modified to include a section for Preference Packs, at which point this
     // button will be modified to open the Add-On Manager to that tab.
     auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
+
+    // If that directory hasn't been created yet, just send the user to the preferences directory
+    if (!(fs::exists(savedPreferencePacksDirectory) && fs::is_directory(savedPreferencePacksDirectory)))
+        savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir());
+    
     QString pathToSavedPacks(QString::fromStdString(savedPreferencePacksDirectory.string()));
     connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, [pathToSavedPacks]() { QDesktopServices::openUrl(QUrl::fromLocalFile(pathToSavedPacks)); });
 }

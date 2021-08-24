@@ -240,7 +240,6 @@ void copyTemplateParameters(Base::Reference<ParameterGrp> templateGroup, const s
     auto boolMap = templateGroup->GetBoolMap();
     for (const auto& kv : boolMap) {
         auto currentValue = userParameterHandle->GetBool(kv.first.c_str(), kv.second);
-        Base::Console().Message("Parameter %s = %d\n", kv.first.c_str(), currentValue);
         outputGroup->SetBool(kv.first.c_str(), currentValue);
     }
 
