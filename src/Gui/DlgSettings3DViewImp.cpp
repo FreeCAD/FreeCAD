@@ -29,11 +29,14 @@
 # include <QRegExp>
 # include <QGridLayout>
 # include <QMessageBox>
+# include <QTimer>
 # include <memory>
 #endif
 
 #include "DlgSettings3DViewImp.h"
 #include "ui_DlgSettings3DView.h"
+#include "Application.h"
+#include "Document.h"
 #include "MainWindow.h"
 #include "NavigationStyle.h"
 #include "PrefWidgets.h"
@@ -47,10 +50,9 @@
 #include "ViewParams.h"
 
 using namespace Gui::Dialog;
+using namespace Gui;
 
 /* TRANSLATOR Gui::Dialog::DlgSettings3DViewImp */
-
-bool DlgSettings3DViewImp::showMsg = true;
 
 /**
  *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the
@@ -108,6 +110,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->sliderIntensity->onSave();
     ui->radioPerspective->onSave();
     ui->radioOrthographic->onSave();
+    ui->CheckBox_ApplyToViews->onSave();
     ui->spinPreselectionDelay->onSave();
     ViewParams::setAutoSortWBList(ui->CheckBox_SortWbList->isChecked());
     ViewParams::setRenderCacheMergeCount(ui->renderCacheMergeCount->value());
@@ -129,6 +132,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->sliderIntensity->onRestore();
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
+    ui->CheckBox_ApplyToViews->onRestore();
     ui->spinPreselectionDelay->onRestore();
     ui->CheckBox_SortWbList->setChecked(ViewParams::getAutoSortWBList());
     ui->renderCacheMergeCount->setValue(ViewParams::getRenderCacheMergeCount());
@@ -140,9 +144,6 @@ void DlgSettings3DViewImp::loadSettings()
     int index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
     index = Base::clamp(index, 0, ui->comboAliasing->count()-1);
     ui->comboAliasing->setCurrentIndex(index);
-    // connect after setting current item of the combo box
-    connect(ui->comboAliasing, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onAliasingChanged(int)));
 
     index = hGrp->GetInt("RenderCache", 0);
     ui->renderCache->setCurrentIndex(index);
@@ -178,17 +179,145 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgSettings3DViewImp::onAliasingChanged(int index)
+namespace {
+bool applyCameraType(bool delayTrigger, ParameterGrp *hGrp)
 {
-    if (index < 0 || !isVisible())
-        return;
-    // Show this message only once per application session to reduce
-    // annoyance when showing it too often.
-    if (showMsg) {
-        showMsg = false;
-        QMessageBox::information(this, tr("Anti-aliasing"),
-            tr("Open a new viewer or restart %1 to apply anti-aliasing changes.").arg(qApp->applicationName()));
+    if (!delayTrigger)
+        return true;
+
+    if (hGrp->GetBool("ApplyCameraTypeToAll", false)) {
+        const char *cameraType = hGrp->GetBool("Perspective", false) ?
+            "PerspectiveCamera" : "OrthographicCamera";
+        for (auto doc : App::GetApplication().getDocuments()) {
+            auto gdoc = Application::Instance->getDocument(doc);
+            if (!gdoc) continue;
+            gdoc->foreachView<MDIView>([cameraType](MDIView *view) {
+                view->onMsg(cameraType, nullptr);
+            });
+        }
     }
+    return false;
+}
+
+bool applyAntiAlias(bool delayTrigger, ParameterGrp *)
+{
+    if (!delayTrigger)
+        return true;
+
+    auto activeView = Base::freecad_dynamic_cast<View3DInventor>(
+            getMainWindow()->activeWindow());
+    std::vector<View3DInventor*> views;
+    std::map<View3DInventor*, View3DInventor*> bindings;
+    for (auto doc : App::GetApplication().getDocuments()) {
+        auto gdoc = Application::Instance->getDocument(doc);
+        if (!gdoc) continue;
+        gdoc->foreachView<View3DInventor>([&views, &bindings](View3DInventor *view) {
+            views.push_back(view);
+            if (auto target = view->boundView())
+                bindings[view] = target;
+        });
+    }
+    std::map<View3DInventor*, View3DInventor*> viewMap;
+    for (auto view : views) {
+        auto clone = static_cast<View3DInventor*>(
+                view->getGuiDocument()->cloneView(view));
+        if (!clone)
+            continue;
+        const char* ppReturn = 0;
+        if (view->onMsg("GetCamera", &ppReturn)) {
+            std::string sMsg = "SetCamera ";
+            sMsg += ppReturn;
+            const char** pReturnIgnore=0;
+            clone->onMsg(sMsg.c_str(), pReturnIgnore);
+        }
+        if (view->currentViewMode() == MDIView::Child)
+            getMainWindow()->addWindow(clone);
+        else
+            clone->setCurrentViewMode(view->currentViewMode());
+        viewMap[view] = clone;
+        view->deleteSelf();
+    }
+
+    for (auto &v : bindings) {
+        if (auto clone = viewMap[v.first]) {
+            if (auto target = viewMap[v.second])
+                clone->bindCamera(target->getCamera(), false);
+            else
+                clone->bindCamera(v.second->getCamera(), false);
+        }
+    }
+
+    auto it = viewMap.find(activeView);
+    if (it != viewMap.end())
+        getMainWindow()->setActiveWindow(it->second);
+    return false;
+}
+
+struct ParamKey {
+    ParameterGrp::handle hGrp;
+    const char *key;
+    mutable bool pending = false;
+
+    ParamKey(const char *key, const char *path = nullptr)
+        :hGrp(App::GetApplication().GetUserParameter().GetGroup(
+            path ? path : "BaseApp/Preferences/View"))
+        ,key(key)
+    {}
+
+    ParamKey(ParameterGrp *h, const char *key)
+        :hGrp(h), key(key)
+    {}
+
+    bool operator < (const ParamKey &other) const {
+        if (hGrp < other.hGrp)
+            return true;
+        if (hGrp > other.hGrp)
+            return false;
+        return strcmp(key, other.key) < 0;
+    }
+};
+
+struct ParamHandlers {
+    std::map<ParamKey, bool (*)(bool, ParameterGrp*)> handlers;
+    QTimer timer;
+
+    void attach() {
+        handlers[ParamKey("Orthographic")] = applyCameraType;
+        handlers[ParamKey("Perspective")] = applyCameraType;
+        handlers[ParamKey("ApplyCameraTypeToAll")] = applyCameraType;
+
+        handlers[ParamKey("AntiAliasing")] = applyAntiAlias;
+
+        App::GetApplication().GetUserParameter().signalParamChanged.connect(
+            [this](ParameterGrp *Param, ParameterGrp::ParamType, const char *Name, const char *) {
+                if (!Param || !Name)
+                    return;
+                auto it =  handlers.find(ParamKey(Param, Name));
+                if (it != handlers.end() && it->second(false, Param)) {
+                    it->first.pending = true;
+                    timer.start(100);
+                }
+            });
+        timer.setSingleShot(true);
+        QObject::connect(&timer, &QTimer::timeout, [this]() {
+            for (auto &v : handlers) {
+                if (v.first.pending) {
+                    v.first.pending = false;
+                    v.second(true, v.first.hGrp);
+                }
+            }
+        });
+    }
+};
+
+ParamHandlers _ParamHandlers;
+} // anonymous namespace
+
+
+void DlgSettings3DViewImp::attachObserver()
+{
+    _ParamHandlers.attach();
+    ViewParams::init();
 }
 
 #include "moc_DlgSettings3DViewImp.cpp"

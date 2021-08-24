@@ -186,7 +186,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
-    OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
     OnChange(*hGrp,"HeadlightIntensity");
@@ -203,6 +202,9 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"DimensionsDeltaVisible");
     OnChange(*hGrp,"PickRadius");
     OnChange(*hGrp,"TransparentObjectRenderType");
+
+    if (hGrp->GetBool("Perspective", false))
+        onMsg("PerspectiveCamera", nullptr);
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -418,14 +420,6 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"RenderCache") == 0) {
         _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
-    }
-    else if (strcmp(Reason,"Orthographic") == 0) {
-        // check whether a perspective or orthogrphic camera should be set
-        if (rGrp.GetBool("Orthographic", true))
-            _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
-        else
-            _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
-        bindCamera(boundCamera());
     }
     else if (strcmp(Reason, "DimensionsVisible") == 0) {
         if (rGrp.GetBool("DimensionsVisible", true))

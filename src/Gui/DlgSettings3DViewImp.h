@@ -46,11 +46,10 @@ public:
     DlgSettings3DViewImp(QWidget* parent = 0);
     ~DlgSettings3DViewImp();
 
+    static void attachObserver();
+
     void saveSettings();
     void loadSettings();
-
-private Q_SLOTS:
-    void onAliasingChanged(int);
 
 protected:
     void changeEvent(QEvent *e);

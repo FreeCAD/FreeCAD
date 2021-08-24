@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>563</width>
-    <height>703</height>
+    <height>810</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -650,6 +650,19 @@ bounding box size of the 3D object that is currently displayed.</string>
         </property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="CheckBox_ApplyToViews">
+        <property name="text">
+         <string>Apply to existing views</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ApplyCameraTypeToAll</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>View</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -671,14 +684,14 @@ bounding box size of the 3D object that is currently displayed.</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefRadioButton</class>
