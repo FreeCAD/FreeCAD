@@ -431,6 +431,8 @@ public:
                                             const uint32_t *color,
                                             bool changeWidth = true);
 
+    static void reportCyclicScene(SoAction *action, SoNode *node);
+
     friend class ::SoFCRenderCache;
     friend class ::SoFCRenderCacheP;
 
@@ -553,7 +555,7 @@ protected:
     static void setActionStack(SoAction *action, Stack *stack);
     static Stack *getActionStack(SoAction *action, bool create=false);
 
-    Stack &beginAction(SoAction *action, bool checkcycle=true);
+    Stack *beginAction(SoAction *action, bool checkcycle=true);
     void endAction(SoAction *action, Stack &stack, bool checkcycle=true);
 
     bool doActionPrivate(Stack &stack, SoAction *);

@@ -102,6 +102,7 @@
 #include "MainWindow.h"
 #include "Selection.h"
 #include "ViewProvider.h"
+#include "ViewProviderLink.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
 #include "ViewProviderDocumentObject.h"
@@ -2320,7 +2321,32 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node,
     return true;
 }
 
-static std::time_t _CyclicLastReported;
+void SoFCSelectionRoot::reportCyclicScene(SoAction *action, SoNode *node)
+{
+    static FC_COIN_THREAD_LOCAL std::time_t _last;
+    std::time_t t = std::time(0);
+    if(_last > t)
+        return;
+    _last = t+30;
+    auto stack = action->isOfType(SoGLRenderAction::getClassTypeId()) ?
+        &SelStack : SoFCSelectionRoot::getActionStack(action);
+    std::ostringstream ss;
+    ss << "Cyclic scene graph:\n";
+    if (!stack)
+        return;
+    for (auto n : *stack) {
+        auto obj = ViewProviderLink::linkedObjectByNode(
+            const_cast<SoFCSelectionRoot*>(n));
+        if (obj)
+            ss << n << ", " << obj->getFullName() << "\n";
+        else
+            ss << n << "\n";
+    }
+    auto obj = ViewProviderLink::linkedObjectByNode(const_cast<SoNode*>(node));
+    if (obj)
+        ss << node << ", " << obj->getFullName();
+    FC_ERR(ss.str());
+}
 
 struct SelectionRootPathCode {
     SelectionRootPathCode(SoAction *action, int &code)
@@ -2392,11 +2418,7 @@ static void _GLRenderInPath(SoNode *node, SoGLRenderAction * action)
 
 void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
     if(renderPathCode) {
-        std::time_t t = std::time(0);
-        if(_CyclicLastReported < t) {
-            _CyclicLastReported = t+5;
-            FC_ERR("Cyclic scene graph: " << getName());
-        }
+        reportCyclicScene(action, this);
         return;
     }
     SelectionRootPathCode guard(action,renderPathCode);
@@ -2607,7 +2629,7 @@ void SoFCSelectionRoot::moveActionStack(SoAction *from, SoAction *to, bool erase
         ActionStacks.erase(from);
 }
 
-SoFCSelectionRoot::Stack &
+SoFCSelectionRoot::Stack *
 SoFCSelectionRoot::beginAction(SoAction *action, bool checkcycle)
 {
     auto stack = getActionStack(action, true);
@@ -2615,15 +2637,11 @@ SoFCSelectionRoot::beginAction(SoAction *action, bool checkcycle)
         && ViewParams::instance()->getCoinCycleCheck()
         && !stack->nodeSet.insert(this).second)
     {
-        std::time_t t = std::time(0);
-        if(_CyclicLastReported < t) {
-            _CyclicLastReported = t+5;
-            FC_ERR("Cyclic scene graph: " << getName());
-        }
-        return *stack;
+        reportCyclicScene(action, this);
+        return nullptr;
     }
     stack->push_back(this);
-    return *stack;
+    return stack;
 }
 
 void SoFCSelectionRoot::endAction(SoAction *action, Stack &stack, bool checkcycle)
@@ -2640,61 +2658,75 @@ void SoFCSelectionRoot::endAction(SoAction *action, Stack &stack, bool checkcycl
 }
 
 void SoFCSelectionRoot::pick(SoPickAction * action) {
-    auto &stack = beginAction(action);
-    if(doActionPrivate(stack,action))
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
+    if(doActionPrivate(*stack,action))
         inherited::pick(action);
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
     if(selectionStyle.getValue() == Unpickable)
         return;
-    auto &stack = beginAction(action);
-    if(doActionPrivate(stack,action)) {
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
+    if(doActionPrivate(*stack,action)) {
         if(action->getCurPathCode() == SoAction::IN_PATH) {
             // skip cached bounding box cull test when traverse in path
             inherited::doAction(action);
         } else
             inherited::rayPick(action);
     }
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 void SoFCSelectionRoot::handleEvent(SoHandleEventAction * action) {
     if (noHandleEvent.getValue())
         return;
-    auto &stack = beginAction(action);
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
     inherited::handleEvent(action);
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 void SoFCSelectionRoot::search(SoSearchAction * action) {
-    auto &stack = beginAction(action);
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
     inherited::search(action);
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 void SoFCSelectionRoot::getPrimitiveCount(SoGetPrimitiveCountAction * action) {
-    auto &stack = beginAction(action);
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
     inherited::getPrimitiveCount(action);
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 void SoFCSelectionRoot::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-    auto &stack = beginAction(action);
-    if(doActionPrivate(stack,action)) {
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
+    if(doActionPrivate(*stack,action)) {
         selCounter.checkCache(action->getState(),true);
         inherited::getBoundingBox(action);
     }
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 void SoFCSelectionRoot::getMatrix(SoGetMatrixAction * action) {
-    auto &stack = beginAction(action);
-    if(doActionPrivate(stack,action))
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
+    if(doActionPrivate(*stack,action))
         inherited::getMatrix(action);
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 void SoFCSelectionRoot::callback(SoCallbackAction *action) {
@@ -2721,10 +2753,12 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
                 state->getElement(SoClipPlaneElement::getClassStackIndex()));
         element->init(state);
     }
-    auto &stack = beginAction(action);
-    if(doActionPrivate(stack,action))
+    auto stack = beginAction(action);
+    if (!stack)
+        return;
+    if(doActionPrivate(*stack,action))
         inherited::doAction(action);
-    endAction(action, stack);
+    endAction(action, *stack);
 }
 
 bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
