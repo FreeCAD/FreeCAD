@@ -383,7 +383,7 @@ LinkBaseExtension::getOnChangeCopyObjects(
         static std::map<std::string, std::string> dummy;
         const auto & map = prop && prop->getContainer()==obj ? prop->getValues() : dummy;
         const char *v = "";
-        if (parent->getDocument() != obj->getDocument())
+        if (src->getDocument() != obj->getDocument())
             v = "-";
         auto iter = map.find("*");
         if (iter != map.end())
