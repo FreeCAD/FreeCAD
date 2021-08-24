@@ -250,6 +250,11 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         (*it)->hide();
         (*it)->toggleViewAction()->setVisible(false);
     }
+
+    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Preferences")->GetGroup("General");
+    bool lockToolBars = hPref->GetBool("LockToolBars", false);
+    setMovable(!lockToolBars);
 }
 
 void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
@@ -314,6 +319,12 @@ void ToolBarManager::restoreState() const
             toolbar->setVisible(hPref->GetBool(toolbarName.constData(), toolbar->isVisible()));
         }
     }
+
+
+    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Preferences")->GetGroup("General");
+    bool lockToolBars = hPref->GetBool("LockToolBars", false);
+    setMovable(!lockToolBars);
 }
 
 void ToolBarManager::retranslate() const
@@ -324,6 +335,13 @@ void ToolBarManager::retranslate() const
         (*it)->setWindowTitle(
             QApplication::translate("Workbench",
                                     (const char*)toolbarName));
+    }
+}
+
+void Gui::ToolBarManager::setMovable(bool moveable) const
+{
+    for (auto& tb : toolBars()) {
+        tb->setMovable(moveable);
     }
 }
 
