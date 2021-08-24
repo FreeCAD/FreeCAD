@@ -932,7 +932,8 @@ DocumentObject *LinkBaseExtension::getContainer(){
 }
 
 DocumentObject *LinkBaseExtension::getLink(int depth) const{
-    GetApplication().checkLinkDepth(depth,false);
+    if (!GetApplication().checkLinkDepth(depth,true))
+        return nullptr;
     if(getLinkedObjectProperty())
         return getLinkedObjectValue();
     return 0;
