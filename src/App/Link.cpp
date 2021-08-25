@@ -723,7 +723,6 @@ void LinkBaseExtension::checkCopyOnChange(
 
     auto srcobjs = getOnChangeCopyObjects(nullptr, linked);
     for (auto obj : srcobjs) {
-        FC_MSG("copying object " << obj->getFullName());
         if (obj->testStatus(App::PartialObject)) {
             FC_THROWM(Base::RuntimeError, "Cannot copy partial loaded object: "
                 << App::SubObjectT(obj).getObjectFullName(parent->getDocument()->getName()));
@@ -1795,7 +1794,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     auto src = getLinkCopyOnChangeSourceValue();
                     if (src != &obj || !getLinkCopyOnChangeValue())
                         return;
-                    if (obj.testStatus(ObjectStatus::NoTouch) 
+                    if (App::Document::isAnyRestoring()
+                            || obj.testStatus(ObjectStatus::NoTouch) 
                             || (prop.getType() & Prop_Output) 
                             || prop.testStatus(Property::Output))
                         return;
