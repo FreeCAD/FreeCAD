@@ -518,6 +518,10 @@ public:
             if (ev.mbstate() == 0){
                 return transit<NS::IdleState>();
             }
+        } else if (QApplication::mouseButtons() == Qt::NoButton) {
+            // In certain cases, the button release event may got lost, causing
+            // false trigger of this state
+            return transit<NS::IdleState>();
         }
         if(ev.isLocation2Event()){
             ev.flags->processed = true;
@@ -563,6 +567,10 @@ public:
             if (ev.mbstate() == 0){
                 return transit<NS::IdleState>();
             }
+        } else if (QApplication::mouseButtons() == Qt::NoButton) {
+            // In certain cases, the button release event may got lost, causing
+            // false trigger of this state
+            return transit<NS::IdleState>();
         }
         if(ev.isLocation2Event()){
             ev.flags->processed = true;
@@ -610,6 +618,10 @@ public:
             if (ev.isRelease(1)){
                 return transit<NS::IdleState>();
             }
+        } else if (QApplication::mouseButtons() == Qt::NoButton) {
+            // In certain cases, the button release event may got lost, causing
+            // false trigger of this state
+            return transit<NS::IdleState>();
         }
         if(ev.isLocation2Event()){
             ev.flags->processed = true;
@@ -658,6 +670,10 @@ public:
             if (ev.mbstate() == 0){
                 return transit<NS::IdleState>();
             }
+        } else if (QApplication::mouseButtons() == Qt::NoButton) {
+            // In certain cases, the button release event may got lost, causing
+            // false trigger of this state
+            return transit<NS::IdleState>();
         }
         if(ev.isLocation2Event()){
             ev.flags->processed = true;
