@@ -397,13 +397,17 @@ std::istream &Base::XMLReader::beginCharStream(bool base64) {
     // characters. So we should not actually demand 'StartElement' here. But
     // with the current implementation of character stream, we cannot track
     // child elements and character content at the same time.
-    if(ReadType != StartElement)
+    if (ReadType == StartElement) {
+        CharacterOffset = 0;
+        read();
+    } else if (ReadType == StartEndElement) {
+        // If we are current at a self closing element, just leave the offset
+        // as negative and do not read any characeters. This will result in an
+        // empty input stream for the caller.
+        CharacterOffset = -1;
+    } else
         FC_READER_THROW("invalid state while reading character stream");
 
-    CharacterOffset = 0;
-    Characters.clear();
-
-    read();
     CharStream.reset(new bio::filtering_istream);
     auto f = static_cast<bio::filtering_istream*>(CharStream.get());
     if(base64)
