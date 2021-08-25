@@ -446,18 +446,22 @@ void LinkBaseExtension::syncCopyOnChange()
     auto parent = getContainer();
 
     auto linked = linkProp->getValue();
-    std::set<App::DocumentObjectT> oldObjs;
+    // Use deque so that we can emplace_front so that we can remove the object
+    // in reverse dependency order to avoid error, because, some parent objects
+    // may want to delete their children by themselves.
+    std::deque<App::DocumentObjectT> oldObjs;
     auto objs = getOnChangeCopyObjects(nullptr, linked);
     for (auto obj : objs) {
         if (obj->getDocument() != linked->getDocument())
             continue;
         auto prop = Base::freecad_dynamic_cast<PropertyUUID>(
                 obj->getPropertyByName("_SourceUUID"));
-        if (prop)
-            oldObjs.emplace(prop);
+        if (prop && prop->getContainer() == obj)
+            oldObjs.emplace_front(prop);
         else
-            oldObjs.emplace(obj);
+            oldObjs.emplace_front(obj);
     }
+    std::sort(objs.begin(), objs.end());
 
     auto copiedObjs = parent->getDocument()->copyObject(getOnChangeCopyObjects());
     if(copiedObjs.empty())
@@ -501,7 +505,6 @@ void LinkBaseExtension::syncCopyOnChange()
 
     std::vector<std::pair<App::DocumentObjectT, std::unique_ptr<App::Property> > > propChanges;
     if (!replacements.empty()) {
-        std::sort(objs.begin(), objs.end());
         std::sort(copiedObjs.begin(), copiedObjs.end());
 
         // Global search for links affected by the replacement
