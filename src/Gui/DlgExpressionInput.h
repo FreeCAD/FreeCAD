@@ -55,6 +55,39 @@ class GuiExport DlgExpressionInput : public QDialog
 {
     Q_OBJECT
 
+     /*
+     Sample style for use in .qss file
+     Colors in sample are not meant to be readable
+     All properties are optional
+     Ignoring Output Window settings might annoy some users, use with caution
+     
+     Gui--Dialog--DlgExpressionInput {
+        qproperty-ignoreOutputWindowColors: true;
+        qproperty-textColor: black;
+        qproperty-textBackgroundColor: white;
+        qproperty-logColor: white;
+        qproperty-logBackgroundColor: blue;
+        qproperty-warningColor: black;
+        qproperty-warningBackgroundColor: yellow;
+        qproperty-errorColor: red;
+        qproperty-errorBackgroundColor: white;
+    }
+    */
+
+    Q_PROPERTY(bool ignoreOutputWindowColors MEMBER _ignoreOutputWindowColors)
+
+    Q_PROPERTY(QColor textColor MEMBER _textColor NOTIFY ssTextColor)
+    Q_PROPERTY(QColor textBackgroundColor MEMBER _textBackgroundColor NOTIFY ssTextBackgroundColor)
+
+    Q_PROPERTY(QColor logColor MEMBER _logColor NOTIFY ssLogColor)
+    Q_PROPERTY(QColor logBackgroundColor MEMBER _logBackgroundColor NOTIFY ssLogBackgroundColor)
+
+    Q_PROPERTY(QColor warningColor MEMBER _warningColor NOTIFY ssWarningColor)
+    Q_PROPERTY(QColor warningBackgroundColor MEMBER _warningBackgroundColor NOTIFY ssWarningBackgroundColor)
+    
+    Q_PROPERTY(QColor errorColor MEMBER _errorColor NOTIFY ssErrorColor)
+    Q_PROPERTY(QColor errorBackgroundColor MEMBER _errorBackgroundColor NOTIFY ssErrorBackgroundColor)
+
 public:
     explicit DlgExpressionInput(const App::ObjectIdentifier & _path, boost::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
     ~DlgExpressionInput();
@@ -69,7 +102,16 @@ public:
 
 public Q_SLOTS:
     void show();
-    void applyStylesheet();
+
+public Q_SIGNAL:
+    void ssTextColor();
+    void ssTextBackgroundColor();
+    void ssLogColor();
+    void ssLogBackgroundColor();
+    void ssWarningColor();
+    void ssWarningBackgroundColor();
+    void ssErrorColor();
+    void ssErrorBackgroundColor();
 
 protected:
     void showEvent(QShowEvent*);
@@ -102,11 +144,33 @@ private:
 
     QColor borderColor;
     QColor backgroundColor;
-    QString stylesheet;
-    QString msgStyle;
-    QString colorLog;
-    QString colorError;
-    QString colorWarning;
+
+    QString textColorStyle;
+    QColor _textColor;
+    QColor _textBackgroundColor;
+
+    QString logColorStyle;
+    QColor _logColor;
+    QColor _logBackgroundColor;
+
+    QString warningColorStyle;
+    QColor _warningColor;
+    QColor _warningBackgroundColor;
+
+    QString errorColorStyle;
+    QColor _errorColor;
+    QColor _errorBackgroundColor;
+
+    bool _ignoreOutputWindowColors = false;
+
+    bool hasTextColor = false;
+    bool hasLogColor = false;
+    bool hasWarningColor = false;
+    bool hasErrorColor = false;
+    bool hasTextBackgroundColor = false;
+    bool hasLogBackgroundColor = false;
+    bool hasWarningBackgroundColor = false;
+    bool hasErrorBackgroundColor = false;
 
     bool adjustingPosition = false;
     bool noBackground;
@@ -119,6 +183,14 @@ private:
     friend class ProxyWidget;
 
     App::ExpressionFunctionCallDisabler exprFuncDisabler;
+
+    void setupColors();
+    QString colorPriority(QRgb userColor, QRgb fcDefaultColor, 
+                          bool hasStyleSheet, bool isDarkStyle, 
+                          bool hasSsColor, bool hasSsBackgroundColor,
+                          QRgb darkOverrideColor, QRgb darkOverrideBackgroundColor,
+                          QRgb lightOverrideColor, QRgb lightOverrideBackgroundColor,
+                          const QColor *styleSheetColor, const QColor* styleSheetBackgroundColor);
 };
 
 class ProxyWidget : public QWidget

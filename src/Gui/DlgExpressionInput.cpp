@@ -92,18 +92,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
     this->noBackground = ExprParams::NoSystemBackground();
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/MainWindow");
-    QString mainstyle = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
-    bool darkstyle = mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) >= 0;
-    if (darkstyle) {
-        this->stylesheet = QLatin1String("*{color:palette(bright-text)}");
-        ui->expression->setStyleSheet(QLatin1String("margin:0px; color:white"));
-    } else {
-        this->stylesheet = QLatin1String("*{color:palette(text)}");
-        ui->expression->setStyleSheet(QLatin1String("margin:0px"));
-    }
     if (this->noBackground) {
         // Both OSX and Windows will pass through mouse event on complete
         // transparent top level widgets. So we use an almost transparent child
@@ -117,45 +105,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         setAttribute(Qt::WA_NoSystemBackground, true);
         setAttribute(Qt::WA_TranslucentBackground, true);
         layout()->setContentsMargins(4,10,4,4);
-
-        uint borderColor;
-        if (darkstyle) {
-            this->msgStyle = QString::fromLatin1("background:#6e6e6e");
-            this->backgroundColor.setRgb(0x6e6e6e);
-            borderColor = 0x505050;
-        } else {
-            this->msgStyle = QString::fromLatin1("background:#f5f5f5");
-            borderColor = 0xc3c3c3;
-            this->backgroundColor.setRgb(0xf5f5f5);
-        }
-        QString checkboxStyle = QString::fromLatin1(
-                "%1;border:1px solid #%2;border-radius:3px")
-            .arg(msgStyle).arg(borderColor,6,16,QLatin1Char('0'));
-        ui->checkBoxWantReturn->setStyleSheet(checkboxStyle);
-        ui->checkBoxEvalFunc->setStyleSheet(checkboxStyle);
-        this->borderColor.setRgb(borderColor);
-        msgStyle += QString::fromLatin1(";border:none");
-    } else
-        this->msgStyle = QString::fromLatin1("background:transparent");
-
-    /// Some qt version seems having trouble apply the stylesheet on creation
-    QTimer::singleShot(300, this, SLOT(applyStylesheet()));
-
-    ui->msg->setStyleSheet(this->msgStyle);
-
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/OutputWindow");
-    uint color = hGrp->GetUnsigned("colorLogging", 0xffff);
-    color >>= 8;
-    colorLog = QString::fromLatin1("color:#%1").arg(color, 6, 16, QLatin1Char('0'));
-
-    color = hGrp->GetUnsigned("colorWarning", 0xffaa00ff);
-    color >>= 8;
-    colorWarning = QString::fromLatin1("color:#%1").arg(color, 6, 16, QLatin1Char('0'));
-
-    color = hGrp->GetUnsigned("colorError", 0xff0000ff);
-    color >>= 8;
-    colorError = QString::fromLatin1("color:#%1").arg(color, 6, 16, QLatin1Char('0'));
+    }
 
     qApp->installEventFilter(this);
     this->onTimer();
@@ -188,6 +138,8 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
             }
         }
     }
+
+    this->setupColors();
 }
 
 DlgExpressionInput::~DlgExpressionInput()
@@ -222,6 +174,7 @@ void DlgExpressionInput::onTimer()
         const QString &text = ui->expression->toPlainText();
         if (text.isEmpty()) {
             ui->msg->setPlainText(QString());
+            ui->msg->setStyleSheet(textColorStyle);
             return;
         }
         boost::shared_ptr<Expression> expr(
@@ -238,7 +191,7 @@ void DlgExpressionInput::onTimer()
             expression = expr;
             ui->okBtn->setEnabled(true);
             ui->msg->setPlainText(QString());
-            ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorLog));
+            ui->msg->setStyleSheet(logColorStyle);
 
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
@@ -257,7 +210,7 @@ void DlgExpressionInput::onTimer()
                 }
                 else if (!value.getUnit().isEmpty()) {
                     msg += QString::fromUtf8(" (Warning: unit discarded)");
-                    ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorWarning));
+                    ui->msg->setStyleSheet(warningColorStyle);
                 }
 
                 ui->msg->setPlainText(msg);
@@ -267,7 +220,7 @@ void DlgExpressionInput::onTimer()
         }
     }
     catch (App::ExpressionFunctionDisabledException &) {
-        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorWarning));
+        ui->msg->setStyleSheet(warningColorStyle);
         ui->msg->setPlainText(tr("Function evaluation and attribute writing are disabled while editing. "
                                  "You can enable it by checking 'Evaluate function' here. "
                                  "Be aware that invoking function may cause unexpected change "
@@ -275,7 +228,7 @@ void DlgExpressionInput::onTimer()
         ui->okBtn->setDisabled(false);
     }
     catch (Base::Exception & e) {
-        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorError));
+        ui->msg->setStyleSheet(errorColorStyle);
         ui->msg->setPlainText(QString::fromUtf8(e.what()));
         ui->okBtn->setDisabled(true);
     }
@@ -292,11 +245,6 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height)
     (void)height;
     (void)width;
     adjustPosition();
-}
-
-void DlgExpressionInput::applyStylesheet()
-{
-    this->setStyleSheet(stylesheet);
 }
 
 enum HitPos {
@@ -631,6 +579,137 @@ void ProxyWidget::paintEvent(QPaintEvent *)
     brush.setColor(QColor(0,0,0));
     painter.setBrush(brush);
     painter.drawRoundedRect(0, 0, width()-1, 8, 3, 3);
+}
+
+//Notification functions to flip flags indicating which proprties have been set by the style sheet
+void DlgExpressionInput::ssTextColor() { hasTextColor = true; }
+void DlgExpressionInput::ssLogColor() { hasLogColor = true; }
+void DlgExpressionInput::ssWarningColor() { hasWarningColor = true; }
+void DlgExpressionInput::ssErrorColor() { hasErrorColor = true; }
+
+void DlgExpressionInput::ssTextBackgroundColor() { hasTextBackgroundColor = true; }
+void DlgExpressionInput::ssLogBackgroundColor() { hasLogBackgroundColor = true; }
+void DlgExpressionInput::ssWarningBackgroundColor() { hasWarningBackgroundColor = true; }
+void DlgExpressionInput::ssErrorBackgroundColor() { hasErrorBackgroundColor = true; }
+
+//Does all the work related to picking up colors and preparing the style stings for later use
+//Has hardcoded default values, so might consider lifing those from somewhere else in the future
+void DlgExpressionInput::setupColors()
+{
+    //Forces qProperties evaluation for use in color priority logic
+    //Since this is called at the very end of the constructor there should be no difference with normal run
+    this->ensurePolished();
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/MainWindow");
+
+    //Unless something very wrong happens, empty style name means no style sheet
+    //And having dark in the name means dark style (this *needs* to be improved in the future)
+    QString styleName = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
+    bool hasStyleSheet = !styleName.isEmpty();
+    bool isDarkStyle = hasStyleSheet && styleName.indexOf(QLatin1String("dark"), 0, Qt::CaseInsensitive) >= 0;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+           "User parameter:BaseApp/Preferences/OutputWindow");
+
+    //Colors stored in preferences have no alpha information and are shifted opposed to standard color encoding
+    //So we need to bit shift until alpha values get properly supported there
+    constexpr QRgb defaultTextColor = qRgba(0, 0, 0, 255);
+    QRgb userTextColor = 0xFF000000 | (hGrp->GetUnsigned("colorText", 
+                         0x00000000 | (defaultTextColor << 8)) >> 8);
+
+    constexpr QRgb defaultLogColor = qRgba(0, 0, 255, 255);
+    QRgb userLogColor = 0xFF000000 | (hGrp->GetUnsigned("colorLogging", 
+                        0x00000000 | (defaultLogColor << 8)) >> 8);
+
+    constexpr QRgb defaultWarningColor = qRgba(255, 170, 0, 255);
+    QRgb userWarningColor = 0xFF000000 | (hGrp->GetUnsigned("colorWarning", 
+                            0x00000000 | (defaultWarningColor << 8)) >> 8);
+
+    constexpr QRgb defaultErrorColor = qRgba(255, 0, 0, 255);
+    QRgb userErrorColor = 0xFF000000 | (hGrp->GetUnsigned("colorError", 
+                          0x00000000 | (defaultErrorColor << 8)) >> 8);
+
+    //Color priority does the heavy lifting but needs lots of arguments to evaluate every case
+    //I feel this can be factored better but for *only* 4 calls it looks good enough and fits one screen
+    this->textColorStyle = colorPriority(userTextColor, defaultTextColor, 
+                           hasStyleSheet, isDarkStyle, this->hasTextColor, this->hasTextBackgroundColor,
+                           qRgba(255, 255, 255, 255), qRgba(28, 28, 28, 179), //dark colors
+                           qRgba(0, 0, 0, 228), qRgba(255, 255, 255, 200), //light colors
+                           &_textColor, &_textBackgroundColor);
+
+    this->logColorStyle = colorPriority(userLogColor, defaultLogColor, 
+                          hasStyleSheet, isDarkStyle, this->hasLogColor, this->hasLogBackgroundColor,
+                          qRgba(96, 205, 255, 179), qRgba(28, 28, 28, 179), //dark colors
+                          qRgba(0, 95, 183, 200), qRgba(255, 255, 255, 200), //light colors
+                          &_logColor, &_logBackgroundColor);
+
+    this->warningColorStyle = colorPriority(userWarningColor, defaultWarningColor, 
+                              hasStyleSheet, isDarkStyle, this->hasWarningColor, this->hasWarningBackgroundColor,
+                              qRgba(252, 225, 0, 179), qRgba(28, 28, 28, 179), //dark colors
+                              qRgba(157, 93, 0, 200), qRgba(255, 255, 255, 200), //light colors
+                              &_warningColor, &_warningBackgroundColor);
+
+    this->errorColorStyle = colorPriority(userErrorColor, defaultErrorColor, 
+                            hasStyleSheet, isDarkStyle, this->hasErrorColor, this->hasErrorBackgroundColor,
+                            qRgba(255, 153, 164, 179), qRgba(28, 28, 28, 179), //dark colors
+                            qRgba(198, 43, 28, 200), qRgba(255, 255, 255, 200), //light colors
+                            &this->_errorColor, &this->_errorBackgroundColor);
+
+    //Old logic to decide the border and background colors of the checkboxes if there no system background is on
+    //I failed to understand excatly *why* this was needed so for now I only removed redundant variables
+    if (this->noBackground) {
+        if (isDarkStyle) {
+            this->borderColor.setRgb(0x505050);
+            this->backgroundColor.setRgb(0x6e6e6e);
+        }
+        else {
+            this->borderColor.setRgb(0xc3c3c3);
+            this->backgroundColor.setRgb(0xf5f5f5);
+        }
+        QString checkboxStyle = QString::fromLatin1(
+            "%1;border:1px solid %2;border-radius:3px")
+            .arg(this->textColorStyle, this->borderColor.name(QColor::HexArgb));
+        this->ui->checkBoxWantReturn->setStyleSheet(checkboxStyle);
+        this->ui->checkBoxEvalFunc->setStyleSheet(checkboxStyle);
+    }
+
+    //Sets the intial styles on launch and without bound data
+    this->ui->msg->setStyleSheet(textColorStyle);
+    this->ui->expression->setStyleSheet(textColorStyle);
+}
+
+QString DlgExpressionInput::colorPriority(QRgb userColor, QRgb fcDefaultColor, 
+                                          bool hasStyleSheet, bool isDarkStyle, 
+                                          bool hasSsColor, bool hasSsBackgroundColor,
+                                          QRgb darkOverrideColor, QRgb darkOverrideBackgroundColor,
+                                          QRgb lightOverrideColor, QRgb lightOverrideBackgroundColor,
+                                          const QColor *styleSheetColor, const QColor *styleSheetBackgroundColor)
+{
+
+    QColor color = QColor::fromRgba(fcDefaultColor);
+    //When a user choses specific colors, respect those unless explicitely requested by the style sheet
+    if (userColor != fcDefaultColor && !_ignoreOutputWindowColors) {
+        color = QColor::fromRgba(userColor);
+    }
+    //When a style sheet is used without explicit support, override with readable colors
+    //Otherwhise return nothing and let the style sheet author do its job.
+    else if (hasStyleSheet) {
+        color = hasSsColor ? *styleSheetColor : QColor::fromRgba(isDarkStyle ? 
+            darkOverrideColor : lightOverrideColor);
+    }
+
+    QColor backgroundColor = QColor::fromRgba(qRgba(255, 255, 255, 200));
+    //Backgrounds are treated separately since there is no way currently for the enduser to change them through UI
+    if (hasStyleSheet) {
+        backgroundColor = hasSsBackgroundColor ? *styleSheetBackgroundColor : QColor::fromRgba(isDarkStyle ?
+            darkOverrideBackgroundColor : lightOverrideBackgroundColor);
+    }
+
+    //Style string includes some layout information what might be better suited in the .ui
+    QString formmatString = QString::fromLatin1("color:%1;background-color:%2;border:none;margin:0px");
+
+    return formmatString.arg(color.name(QColor::HexArgb), backgroundColor.name(QColor::HexArgb));
 }
 
 #include "moc_DlgExpressionInput.cpp"
