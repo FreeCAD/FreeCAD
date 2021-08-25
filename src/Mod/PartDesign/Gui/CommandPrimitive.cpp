@@ -41,6 +41,7 @@
 
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "DlgActiveBody.h"
 
 using namespace std;
 
@@ -89,7 +90,9 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
             shouldMakeBody = true;
         } else {
-            pcActiveBody = PartDesignGui::needActiveBodyMessage(doc);
+            PartDesignGui::DlgActiveBody dia(Gui::getMainWindow(), doc);
+            if (dia.exec() == QDialog::DialogCode::Accepted)
+                pcActiveBody = dia.getActiveBody();
             if (!pcActiveBody)
                 return;
         }

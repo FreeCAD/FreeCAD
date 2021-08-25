@@ -52,11 +52,8 @@
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "DlgActiveBody.h"
 
-// TODO: Apparently this header can be avoided. See ./Command.cpp:74.
-#include "ui_DlgActiveBody.h"
-
-Q_DECLARE_METATYPE(App::DocumentObject*);
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
@@ -127,13 +124,16 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 }
             }
             if (!activeBody && messageIfNot) {
-                activeBody = needActiveBodyMessage(
+                DlgActiveBody dia(
+                    Gui::getMainWindow(),
                     doc,
                     QObject::tr("In order to use PartDesign you need an active Body object in the document. "
                                 "Please make one active (double click) or create one."
                                 "\n\nIf you have a legacy document with PartDesign objects without Body, "
                                 "use the migrate function in PartDesign to put them into a Body."
-                                ));
+                        ));
+                if (dia.exec() == QDialog::DialogCode::Accepted)
+                    activeBody = dia.getActiveBody();
             }
         }
     }
@@ -169,57 +169,6 @@ PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
     }
 
     return dynamic_cast<PartDesign::Body*>(body);
-}
-
-// TODO: See if it is possible to move this to its own class
-PartDesign::Body * needActiveBodyMessage (App::Document *doc,
-                                          const QString& infoText)
-{
-    PartDesign::Body* activeBody = nullptr;
-    QDialog dia(Gui::getMainWindow());
-    PartDesignGui::Ui_DlgActiveBody dlg;
-    dlg.setupUi(&dia);
-
-    QObject::connect(dlg.bodySelect, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
-                     &dia, SLOT(accept()));
-
-    if(!infoText.isEmpty()) {
-        dlg.label->setText(infoText + QObject::tr("\n\n") +
-                           QObject::tr("Please select"));
-    }
-
-    auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-
-    PartDesign::Body* bodyOfActiveObject = nullptr;
-    for (const auto &obj :  Gui::Selection().getSelection()) {
-        bodyOfActiveObject = PartDesign::Body::findBodyOf(obj.pObject);
-        break; // Just get the body for first selected object
-    }
-
-    for (const auto &body : bodies) {
-        auto item = new QListWidgetItem(QString::fromUtf8(body->Label.getValue()));
-        item->setData(Qt::UserRole, QVariant::fromValue(body));
-        dlg.bodySelect->addItem(item);
-
-        if (body == bodyOfActiveObject) {
-            item->setSelected(true);
-        }
-
-        // TODO: Any other logic (hover, select effects on view etc.)
-    }
-
-    int result = dia.exec();
-    auto selectedItems = dlg.bodySelect->selectedItems();
-    if (result == QDialog::DialogCode::Accepted && !selectedItems.empty()) {
-        App::DocumentObject* selectedBody =
-            selectedItems[0]->data(Qt::UserRole).value<App::DocumentObject*>();
-        if (selectedBody)
-            activeBody = makeBodyActive(selectedBody, doc);
-        else
-            return makeBody(doc);
-    }
-
-    return activeBody;
 }
 
 void needActiveBodyError(void)
