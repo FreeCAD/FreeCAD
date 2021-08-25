@@ -325,6 +325,7 @@ void Workbench::setupCustomShortcuts() const
                 QString str = QString::fromUtf8(it->second.c_str());
                 QKeySequence shortcut = str;
                 cmd->getAction()->setShortcut(shortcut.toString(QKeySequence::NativeText));
+                cmd->recreateTooltip(it->first.c_str(), cmd->getAction()); // The tooltip has the shortcut in it...
             }
         }
     }
