@@ -531,7 +531,8 @@ void _getOutListRecursive(std::set<DocumentObject*>& objSet,
     for (const auto objIt : obj->getOutList()) {
         // if the check object is in the recursive inList we have a cycle!
         if (objIt == checkObj || depth <= 0) {
-            throw Base::BadGraphError("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
+            FC_ERR("cyclic dependency detected!");
+            return;
         }
 
         // if the element was already in the set then there is no need to process it again
