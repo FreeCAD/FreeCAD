@@ -50,7 +50,9 @@ BuildRequires:  git
 # Development Libraries
 
 BuildRequires:  Coin4-devel
+%if 0%{?fedora} < 35
 BuildRequires:  Inventor-devel
+%endif
 BuildRequires:  opencascade-devel
 BuildRequires:  boost-devel
 BuildRequires:  boost-python3-devel
