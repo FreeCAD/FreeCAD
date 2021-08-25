@@ -23,6 +23,7 @@
 #define GUI_DLGOBJECTSELECTION_H
 
 #include <QDialog>
+#include <App/DocumentObserver.h>
 
 class QCheckBox;
 
@@ -48,31 +49,43 @@ public:
     void accept();
     void reject();
 
+protected:
+    void showEvent(QShowEvent *);
+    void moveEvent(QMoveEvent *);
+    void resizeEvent(QResizeEvent *);
+    void closeEvent(QCloseEvent *);
+
 private Q_SLOTS:
-    void onItemExpanded(QTreeWidgetItem * item);
-    void onItemChanged(QTreeWidgetItem * item, int);
+    void onDepItemChanged(QTreeWidgetItem * item, int);
+    void onObjItemChanged(QTreeWidgetItem * item, int);
     void onItemSelectionChanged();
-    void onDepSelectionChanged();
 
 private:
-    QTreeWidgetItem *createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
-    App::DocumentObject *objFromItem(QTreeWidgetItem *item);
+    QTreeWidgetItem *getItem(App::DocumentObject *obj);
+    QTreeWidgetItem *createDepItem(QTreeWidget *parent, App::DocumentObject *obj);
 
     void init(const std::vector<App::DocumentObject*> &objs,
-              const std::vector<App::DocumentObject*> &excludes,
-              bool checkdeps);
+              const std::vector<App::DocumentObject*> &excludes);
+
+    void setItemState(std::set<App::DocumentObject*> &set,
+                      App::DocumentObject *obj,
+                      Qt::CheckState state,
+                      bool forced = false);
+    void updateAllItemState();
+    void saveGeometry();
 
 private:
-    struct Info {
-        std::map<App::DocumentObject *, Info*> inList;
-        std::map<App::DocumentObject *, Info*> outList;
-        std::vector<QTreeWidgetItem*> items;
-        QTreeWidgetItem *depItem = 0;
-        Qt::CheckState checkState = Qt::Checked;
-    };
-    std::map<App::DocumentObject *,Info> objMap;
     Ui_DlgObjectSelection* ui;
-    std::set<App::DocumentObject*> sels;
+    std::vector<App::DocumentObject*> initSels;
+    std::vector<App::DocumentObject*> deps;
+    std::set<App::DocumentObject*> depSet;
+    std::map<App::SubObjectT, QTreeWidgetItem*> itemMap;
+    std::map<App::SubObjectT, QTreeWidgetItem*> depMap;
+    std::map<App::SubObjectT, QTreeWidgetItem*> inMap;
+    QTreeWidgetItem *allItem = nullptr;
+    bool geometryRestored = false;
+    QSize savedSize;
+    QPoint savedPos;
 };
 
 } // namespace Gui

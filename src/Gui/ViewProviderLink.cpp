@@ -2778,7 +2778,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 auto objs = ext->getOnChangeCopyObjects(&excludes, src);
                 if (objs.empty())
                     return;
-                DlgObjectSelection dlg(objs, excludes, getMainWindow());
+                DlgObjectSelection dlg({src}, excludes, getMainWindow());
                 dlg.setMessage(QObject::tr(
                             "Please select which objects to copy when the configuration is changed"));
                 QCheckBox *box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
