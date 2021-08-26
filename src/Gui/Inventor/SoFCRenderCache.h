@@ -467,6 +467,8 @@ public:
 
   SbBool isEmpty() const;
 
+  void resetActionStateStackDepth();
+
   void addTexture(SoState * state, const SoNode * texture);
   void addTextureTransform(SoState * state, const SoNode *);
 

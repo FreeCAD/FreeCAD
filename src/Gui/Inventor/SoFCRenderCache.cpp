@@ -968,6 +968,12 @@ public:
 };
 
 void
+SoFCRenderCache::resetActionStateStackDepth()
+{
+  PRIVATE(this)->curdepth = 0;
+}
+
+void
 SoFCRenderCacheP::checkState(SoState *state)
 {
   int depth = state->getDepth();
