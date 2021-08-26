@@ -94,6 +94,13 @@ public:
                                 bool checked = false,
                                 QCheckBox **checkbox = nullptr);
 
+    static QAction *addCheckBox(QMenu *menu,
+                                const QString &txt,
+                                bool checked,
+                                QCheckBox **checkbox = nullptr,
+                                const QString &tooltip = QString(),
+                                const QIcon &icon = QIcon());
+
     static QString createToolTip(QString tooltip,
                                  const QString &title,
                                  const QFont &font,

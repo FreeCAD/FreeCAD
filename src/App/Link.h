@@ -106,13 +106,16 @@ public:
     (LinkCopyOnChange, long, App::PropertyEnumeration, ((long)0), \
       "Disabled: disable copy on change\n"\
       "Enabled: enable copy linked object on change of any of its property marked as CopyOnChange\n"\
-      "Owned: indicate the linked object has been copied and is now owned by the link. And the\n"\
-      "       the link will try to sync any change of the original linked object back to the copy.",\
+      "Owned: force copy of the linked object (if it has not done so) and take the ownership of the copy\n"\
       "Tracking: enable copy on change and auto synchronization of changes in the source object.",\
       ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...) \
     (LinkCopyOnChangeSource, App::DocumentObject*, App::PropertyLink, 0, "The copy on change source object", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_GROUP(...) \
+    (LinkCopyOnChangeGroup, App::DocumentObject*, App::PropertyLink, 0, \
+     "Linked to a internal group object for holding on change copies", ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...) \
     (LinkCopyOnChangeTouched, bool, App::PropertyBool, 0, "Indicating the copy on change source object has been changed", ##__VA_ARGS__)
@@ -212,6 +215,7 @@ public:
     LINK_PARAM(COLORED_ELEMENTS)\
     LINK_PARAM(COPY_ON_CHANGE)\
     LINK_PARAM(COPY_ON_CHANGE_SOURCE)\
+    LINK_PARAM(COPY_ON_CHANGE_GROUP)\
     LINK_PARAM(COPY_ON_CHANGE_TOUCHED)\
     LINK_PARAM(GROUP_VISIBILITY)\
     LINK_PARAM(LINK_EXECUTE)\
@@ -251,6 +255,13 @@ public:
 
     typedef std::map<std::string, PropInfo> PropInfoMap;
     virtual const PropInfoMap &getPropertyInfoMap() const;
+
+    enum LinkCopyOnChangeType {
+        CopyOnChangeDisabled = 0,
+        CopyOnChangeEnabled = 1,
+        CopyOnChangeOwned = 2,
+        CopyOnChangeTracking = 3
+    };
 
 #define LINK_PROP_GET(_1,_2,_param) \
     LINK_PTYPE(_param) BOOST_PP_SEQ_CAT((get)(LINK_PNAME(_param))(Value)) () const {\
@@ -384,6 +395,7 @@ protected:
     void update(App::DocumentObject *parent, const Property *prop);
     void checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop);
     void setupCopyOnChange(App::DocumentObject *parent, bool checkSource = false);
+    App::DocumentObject *makeCopyOnChange();
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
     void checkGeoElementMap(const App::DocumentObject *obj,
@@ -556,6 +568,7 @@ public:
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
     LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
     LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
     LINK_PARAM_EXT_ATYPE(AUTO_LABEL,App::Prop_Hidden)\
 
@@ -603,6 +616,7 @@ public:
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
     LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
     LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     // defines the actual properties
@@ -669,7 +683,6 @@ public:
     FC_LINK_PARAM(CreateInContainer, bool, Bool, false) \
     FC_LINK_PARAM(ActiveContainerKey, std::string, ASCII, "") \
     FC_LINK_PARAM(CopyOnChangeApplyToAll, bool, Bool, true) \
-    FC_LINK_PARAM(CopyOnChangeClaimChild, bool, Bool, true) \
 
 #undef FC_LINK_PARAM
 #define FC_LINK_PARAM(_name,_ctype,_type,_def) \

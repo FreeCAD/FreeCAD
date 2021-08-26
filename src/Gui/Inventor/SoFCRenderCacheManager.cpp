@@ -962,6 +962,11 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
 
     RenderCachePtr cache = new SoFCRenderCache(state, path->getTail());
     cache->open(state);
+    // Note that we are capturing state of the SoGLRenderAction here. However,
+    // we will change to use SoCallBackAction to build the rest of the render
+    // cache. That's why we need to reset the internal kept action state stack
+    // depth as shown below to avoid popping the initially captured state here.
+    cache->resetActionStateStackDepth();
     PRIVATE(this)->stack.resize(1, cache);
     PRIVATE(this)->initAction();
     PRIVATE(this)->action->apply(path->getTail());

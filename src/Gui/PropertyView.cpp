@@ -30,6 +30,7 @@
 # include <boost_bind_bind.hpp>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Parameter.h>
@@ -40,6 +41,7 @@
 #include <App/DocumentObject.h>
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "PropertyView.h"
 #include "Application.h"
@@ -78,6 +80,23 @@ static ParameterGrp::handle _GetParam() {
 PropertyView::PropertyView(QWidget *parent)
   : QWidget(parent),SelectionObserver(false,0)
 {
+    hParam = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/PropertyView");
+    connectParamChange = _GetParam()->Manager()->signalParamChanged.connect(
+        [this](ParameterGrp *h, ParameterGrp::ParamType, const char *Name, const char *) {
+            if (h == _GetParam() && Name && 
+                    (boost::equals(Name, "HideHeader")
+                     || boost::equals(Name, "ViewSectionSize")
+                     || boost::equals(Name, "DataSectionSize")
+                     || boost::equals(Name, "AutoTransactionView")
+                     || boost::equals(Name, "AutoExpandView")
+                     || boost::equals(Name, "AutoExpandData")))
+            {
+                paramChanged = true;
+                timer->start(100);
+            }
+        });
+
     QGridLayout* pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
@@ -98,28 +117,19 @@ PropertyView::PropertyView(QWidget *parent)
     pLayout->addWidget(tabs, 0, 0);
 
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
-    propertyEditorView->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionView", false));
-    propertyEditorView->setAutomaticExpand(_GetParam()->GetBool("AutoExpandView", false));
-    propertyEditorView->header()->resizeSection(0, _GetParam()->GetInt("ViewSectionSize", 150));
-    connect(propertyEditorView->header(), SIGNAL(sectionResized(int,int,int)),
-            this, SLOT(sectionResized(int,int,int)));
     tabs->addTab(propertyEditorView, tr("View"));
 
     propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
-    propertyEditorData->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionData", true));
-    propertyEditorData->setAutomaticExpand(_GetParam()->GetBool("AutoExpandData", false));
-    propertyEditorData->header()->resizeSection(0, _GetParam()->GetInt("DataSectionSize", 150));
-    connect(propertyEditorData->header(), SIGNAL(sectionResized(int,int,int)),
-            this, SLOT(sectionResized(int,int,int)));
     tabs->addTab(propertyEditorData, tr("Data"));
 
-    if (_GetParam()->GetBool("HideHeader", false)) {
-        propertyEditorView->hideHeader(true);
-        propertyEditorData->hideHeader(true);
-    }
+    applyParams();
+
+    connect(propertyEditorView->header(), SIGNAL(sectionResized(int,int,int)),
+            this, SLOT(sectionResized(int,int,int)));
+    connect(propertyEditorData->header(), SIGNAL(sectionResized(int,int,int)),
+            this, SLOT(sectionResized(int,int,int)));
 
     int preferredTab = _GetParam()->GetInt("LastTabIndex", 1);
-
     if ( preferredTab > 0 && preferredTab < tabs->count() )
         tabs->setCurrentIndex(preferredTab);
 
@@ -170,6 +180,7 @@ PropertyView::PropertyView(QWidget *parent)
 
 PropertyView::~PropertyView()
 {
+    this->connectParamChange.disconnect();
     this->connectPropData.disconnect();
     this->connectPropView.disconnect();
     this->connectPropAppend.disconnect();
@@ -206,10 +217,11 @@ void PropertyView::setShowAll(bool enable) {
 
 void PropertyView::toggleHeader(bool visible) {
     _GetParam()->SetBool("HideHeader",visible);
-    for(auto view : getMainWindow()->findChildren<PropertyView*>()) {
-        view->propertyEditorData->hideHeader(visible);
-        view->propertyEditorView->hideHeader(visible);
-    }
+}
+
+bool PropertyView::isHeaderHidden()
+{
+    return _GetParam()->GetBool("HideHeader",false);
 }
 
 void PropertyView::sectionResized(int index, int oldSize, int newSize)
@@ -218,6 +230,7 @@ void PropertyView::sectionResized(int index, int oldSize, int newSize)
     if(index != 0)
         return;
 
+    Base::ConnectionBlocker blocker(connectParamChange);
     _GetParam()->SetInt(sender() == propertyEditorView->header() ?
             "ViewSectionSize" : "DataSectionSize", newSize);
 }
@@ -391,9 +404,31 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
     timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
-void PropertyView::onTimer() {
+void PropertyView::applyParams()
+{
+    if (!paramChanged)
+        return;
+    paramChanged = false;
 
+    propertyEditorView->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionView", false));
+    propertyEditorView->setAutomaticExpand(_GetParam()->GetBool("AutoExpandView", false));
+    QSignalBlocker blocker(propertyEditorView->header());
+    propertyEditorView->header()->resizeSection(0, _GetParam()->GetInt("ViewSectionSize", 150));
+
+    propertyEditorData->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionData", true));
+    propertyEditorData->setAutomaticExpand(_GetParam()->GetBool("AutoExpandData", false));
+    QSignalBlocker blocker2(propertyEditorData->header());
+    propertyEditorData->header()->resizeSection(0, _GetParam()->GetInt("DataSectionSize", 150));
+
+    if (_GetParam()->GetBool("HideHeader", false)) {
+        propertyEditorView->hideHeader(true);
+        propertyEditorData->hideHeader(true);
+    }
+}
+
+void PropertyView::onTimer() {
     timer->stop();
+    applyParams();
     if(!this->isConnectionAttached()) {
         propertyEditorData->buildUp();
         propertyEditorView->buildUp();
@@ -589,6 +624,7 @@ void PropertyView::onTimer() {
 
 void PropertyView::tabChanged(int index)
 {
+    Base::ConnectionBlocker blocker(connectParamChange);
     _GetParam()->SetInt("LastTabIndex",index);
 }
 

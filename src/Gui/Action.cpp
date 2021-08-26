@@ -331,6 +331,17 @@ void Action::setMenuRole(QAction::MenuRole menuRole)
 QAction *
 Action::addCheckBox(QMenu *menu,
                     const QString &txt,
+                    bool checked,
+                    QCheckBox **checkbox,
+                    const QString &tooltip,
+                    const QIcon &icon)
+{
+    return addCheckBox(menu, txt, tooltip, icon, checked, checkbox);
+}
+
+QAction *
+Action::addCheckBox(QMenu *menu,
+                    const QString &txt,
                     const QString &tooltip,
                     const QIcon &icon,
                     bool checked,

@@ -32,6 +32,7 @@
 # include <QMessageBox>
 # include <QCheckBox>
 # include <QInputDialog>
+# include <QDesktopWidget>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -49,6 +50,7 @@
 #include "PropertyModel.h"
 #include "PropertyView.h"
 #include "Command.h"
+#include "Action.h"
 
 FC_LOG_LEVEL_INIT("PropertyView",true,true)
 
@@ -119,6 +121,16 @@ void PropertyEditor::onItemExpanded(const QModelIndex &index)
     item->setExpanded(true);
     for(int i=0, c=item->childCount(); i<c; ++i)
         setExpanded(propertyModel->index(i, 0, index), item->child(i)->isExpanded());
+}
+
+void PropertyEditor::collapseItem(const QModelIndex &index)
+{
+    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    if (item->isSeparator())
+        return;
+    item->setExpanded(false);
+    for(int i=0, c=item->childCount(); i<c; ++i)
+        setExpanded(propertyModel->index(i, 0, index), false);
 }
 
 void PropertyEditor::onItemCollapsed(const QModelIndex &index)
@@ -653,19 +665,37 @@ enum MenuAction {
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
     QMenu menu;
-    QAction *autoExpand = menu.addAction(tr("Auto expand"));
-    autoExpand->setCheckable(true);
-    autoExpand->setChecked(autoexpand);
-    autoExpand->setData(QVariant(MA_AutoExpand));
+    QAction *autoExpand = Action::addCheckBox(&menu, tr("Auto expand"), autoexpand);
+    connect(autoExpand, &QAction::toggled, [this](bool checked) {
+        this->autoexpand = checked;
+        if (checked)
+            this->expandAll();
+        else {
+            int numRows = propertyModel->rowCount(QModelIndex());
+            for (int i=0; i<numRows; ++i)
+                collapseItem(propertyModel->index(i, 0, QModelIndex()));
+        }
+    });
 
-    QAction *showAll = menu.addAction(tr("Show all"));
-    showAll->setCheckable(true);
-    showAll->setChecked(PropertyView::showAll());
-    showAll->setData(QVariant(MA_ShowAll));
+    QPoint pos(QCursor::pos());
+    std::vector<QAction*> hiddenActions;
+    QAction *showAll = Action::addCheckBox(&menu, tr("Show all"), PropertyView::showAll());
+    QRect rect = QApplication::desktop()->availableGeometry(this);
+    connect(showAll, &QAction::toggled, [&](bool checked) {
+        PropertyView::setShowAll(checked);
+        for (auto action : hiddenActions)
+            action->setVisible(checked);
+        QSize size = menu.sizeHint();
+        if (pos.y() + size.height() > rect.height()) {
+            QPoint p(pos.x(), std::max(0, rect.height()-size.height()));
+            menu.move(p);
+        }
+    });
 
-    QAction *toggleHeader = menu.addAction(
-            this->header()->isVisible() ? tr("Hide header") : tr("Show header"));
-    toggleHeader->setData(QVariant(MA_ToggleHeader));
+    QAction *toggleHeader = Action::addCheckBox(&menu, tr("Hide header"), PropertyView::isHeaderHidden());
+    connect(toggleHeader, &QAction::toggled, [](bool checked) {
+        PropertyView::toggleHeader(checked);
+    });
 
     menu.addAction(tr("Print to console"))->setData(QVariant(MA_Print));
 
@@ -708,172 +738,186 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
         }
     }
 
-    if(PropertyView::showAll()) {
-        if(props.size()) {
-            menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
-            unsigned count = 0;
-            for(auto prop : props) {
-                if(prop->testStatus(App::Property::PropDynamic)
-                        && !boost::starts_with(prop->getName(),prop->getGroup()))
-                {
-                    ++count;
-                } else
-                    break;
-            }
-            if(count == props.size())
-                menu.addAction(tr("Rename property group"))->setData(QVariant(MA_EditPropGroup));
-        }
-
-        bool canRemove = !props.empty();
-        unsigned long propType = 0;
-        unsigned long propStatus = 0xffffffff;
+    std::map<int, bool> flags;
+    if(props.size()) {
+        auto action = menu.addAction(tr("Add property"));
+        action->setData(QVariant(MA_AddProp));
+        hiddenActions.push_back(action);
+        unsigned count = 0;
         for(auto prop : props) {
-            propType |= prop->getType();
-            propStatus &= prop->getStatus();
-            if(!prop->testStatus(App::Property::PropDynamic)
-                || prop->testStatus(App::Property::LockDynamic))
+            if(prop->testStatus(App::Property::PropDynamic)
+                    && !boost::starts_with(prop->getName(),prop->getGroup()))
             {
-                canRemove = false;
-            }
+                ++count;
+            } else
+                break;
         }
-        if(canRemove)
-            menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
-
-        if(props.size()) {
-            menu.addSeparator();
-
-            QAction *action;
-            QString text;
-#define _ACTION_SETUP(_name) do {\
-                text = tr(#_name);\
-                action = menu.addAction(text);\
-                action->setData(QVariant(MA_##_name));\
-                action->setCheckable(true);\
-                if(propStatus & (1<<App::Property::_name))\
-                    action->setChecked(true);\
-            }while(0)
-#define ACTION_SETUP(_name) do {\
-                _ACTION_SETUP(_name);\
-                if(propType & App::Prop_##_name) {\
-                    action->setText(text + QString::fromLatin1(" *"));\
-                    action->setChecked(true);\
-                }\
-            }while(0)
-
-            ACTION_SETUP(Hidden);
-            ACTION_SETUP(Output);
-            ACTION_SETUP(NoRecompute);
-            ACTION_SETUP(ReadOnly);
-            ACTION_SETUP(Transient);
-            _ACTION_SETUP(Touched);
-            _ACTION_SETUP(EvalOnRestore);
-            _ACTION_SETUP(CopyOnChange);
-            if ((*props.begin())->isDerivedFrom(App::PropertyMaterial::getClassTypeId()))
-                _ACTION_SETUP(MaterialEdit);
+        if(count == props.size()) {
+            action = menu.addAction(tr("Rename property group"));
+            action->setData(QVariant(MA_EditPropGroup));
+            hiddenActions.push_back(action);
         }
     }
 
-    auto action = menu.exec(QCursor::pos());
-    if(!action)
-        return;
+    bool canRemove = !props.empty();
+    unsigned long propType = 0;
+    unsigned long propStatus = 0xffffffff;
+    for(auto prop : props) {
+        propType |= prop->getType();
+        propStatus &= prop->getStatus();
+        if(!prop->testStatus(App::Property::PropDynamic)
+            || prop->testStatus(App::Property::LockDynamic))
+        {
+            canRemove = false;
+        }
+    }
+    if(canRemove) {
+        auto action = menu.addAction(tr("Remove property"));
+        action->setData(QVariant(MA_RemoveProp));
+        hiddenActions.push_back(action);
+    }
 
-    switch(action->data().toInt()) {
-    case MA_Print: {
-        std::set<App::Property*> propSet;
-        for(auto index : sels) {
-            auto item = static_cast<PropertyItem*>(index.internalPointer());
-            if(item->isSeparator())
-                continue;
-            for(auto parent=item;parent;parent=parent->parent()) {
-                for(auto prop : parent->getPropertyData()) {
-                    if(propSet.insert(prop).second)
-                        Command::runCommand(Command::Doc,prop->getFullName(true).c_str());
+    if(props.size()) {
+        QAction *action;
+        action = menu.addSeparator();
+        hiddenActions.push_back(action);
+
+        QString text;
+        bool checked;
+        QCheckBox *checkbox;
+#define _ACTION_SETUP(_name) do {\
+            text = tr(#_name);\
+            checked = (propStatus & (1<<App::Property::_name)) ? true : false;\
+            action = Action::addCheckBox(&menu, text, checked, &checkbox);\
+            action->setData(QVariant(MA_##_name));\
+            hiddenActions.push_back(action);\
+            flags[MA_##_name] = checked;\
+        }while(0)
+#define ACTION_SETUP(_name) do {\
+            _ACTION_SETUP(_name);\
+            if(propType & App::Prop_##_name) {\
+                action->setText(text + QString::fromLatin1(" *"));\
+                checkbox->setChecked(true);\
+                checkbox->setDisabled(true);\
+                flags.erase(MA_##_name);\
+            }\
+        }while(0)
+
+        ACTION_SETUP(Hidden);
+        ACTION_SETUP(Output);
+        ACTION_SETUP(NoRecompute);
+        ACTION_SETUP(ReadOnly);
+        ACTION_SETUP(Transient);
+        _ACTION_SETUP(Touched);
+        _ACTION_SETUP(EvalOnRestore);
+        _ACTION_SETUP(CopyOnChange);
+        if ((*props.begin())->isDerivedFrom(App::PropertyMaterial::getClassTypeId()))
+            _ACTION_SETUP(MaterialEdit);
+    }
+
+    if (!PropertyView::showAll()) {
+        for (auto action : hiddenActions)
+            action->setVisible(false);
+    }
+    auto action = menu.exec(pos);
+    if (action) {
+        switch(action->data().toInt()) {
+        case MA_Print: {
+            std::set<App::Property*> propSet;
+            for(auto index : sels) {
+                auto item = static_cast<PropertyItem*>(index.internalPointer());
+                if(item->isSeparator())
+                    continue;
+                for(auto parent=item;parent;parent=parent->parent()) {
+                    for(auto prop : parent->getPropertyData()) {
+                        if(propSet.insert(prop).second)
+                            Command::runCommand(Command::Doc,prop->getFullName(true).c_str());
+                    }
                 }
             }
+            break;
         }
-        break;
-    }
-    case MA_AutoExpand:
-        autoexpand = autoExpand->isChecked();
-        if (autoexpand)
-            expandAll();
-        return;
-    case MA_ToggleHeader:
-        PropertyView::toggleHeader(header()->isVisible());
-        return;
-    case MA_ShowAll:
-        PropertyView::setShowAll(action->isChecked());
-        return;
-#define ACTION_CHECK(_name) \
-    case MA_##_name:\
-        for(auto prop : props) \
-            prop->setStatus(App::Property::_name,action->isChecked());\
-        break
-    ACTION_CHECK(Transient);
-    ACTION_CHECK(ReadOnly);
-    ACTION_CHECK(Output);
-    ACTION_CHECK(Hidden);
-    ACTION_CHECK(EvalOnRestore);
-    ACTION_CHECK(CopyOnChange);
-    ACTION_CHECK(MaterialEdit);
-    case MA_Touched:
-        for(auto prop : props) {
-            if(action->isChecked())
-                prop->touch();
-            else
-                prop->purgeTouched();
-        }
-        break;
-    case MA_Expression:
-        if(contextIndex == currentIndex()) {
-            Base::FlagToggler<> flag(binding);
-            openEditor(contextIndex);
-        }
-        break;
-    case MA_AddProp: {
-        App::AutoTransaction committer("Add property");
-        std::unordered_set<App::PropertyContainer*> containers;
-        auto sels = Gui::Selection().getSelection("*");
-        if(sels.size() == 1)
-            containers.insert(sels[0].pObject);
-        else {
-            for(auto prop : props)
-                containers.insert(prop->getContainer());
-        }
-        Gui::Dialog::DlgAddProperty dlg(
-                Gui::getMainWindow(),std::move(containers));
-        dlg.exec();
-        return;
-    }
-    case MA_EditPropGroup: {
-        // This operation is not undoable yet.
-        const char *groupName = (*props.begin())->getGroup();
-        if(!groupName)
-            groupName = "Base";
-        QString res = QInputDialog::getText(Gui::getMainWindow(),
-                tr("Rename property group"), tr("Group name:"),
-                QLineEdit::Normal, QString::fromUtf8(groupName));
-        if(res.size()) {
-            std::string group = res.toUtf8().constData();
-            for(auto prop : props)
-                prop->getContainer()->changeDynamicProperty(prop,group.c_str(),0);
-            buildUp(PropertyModel::PropertyList(propList),checkDocument);
-        }
-        return;
-    }
-    case MA_RemoveProp: {
-        App::AutoTransaction committer("Remove property");
-        for(auto prop : props) {
-            try {
-                prop->getContainer()->removeDynamicProperty(prop->getName());
-            }catch(Base::Exception &e) {
-                e.ReportException();
+        case MA_Expression:
+            if(contextIndex == currentIndex()) {
+                Base::FlagToggler<> flag(binding);
+                openEditor(contextIndex);
             }
+            break;
+        case MA_AddProp: {
+            App::AutoTransaction committer("Add property");
+            std::unordered_set<App::PropertyContainer*> containers;
+            auto sels = Gui::Selection().getSelection("*");
+            if(sels.size() == 1)
+                containers.insert(sels[0].pObject);
+            else {
+                for(auto prop : props)
+                    containers.insert(prop->getContainer());
+            }
+            Gui::Dialog::DlgAddProperty dlg(
+                    Gui::getMainWindow(),std::move(containers));
+            dlg.exec();
+            break;
         }
-        break;
+        case MA_EditPropGroup: {
+            // This operation is not undoable yet.
+            const char *groupName = (*props.begin())->getGroup();
+            if(!groupName)
+                groupName = "Base";
+            QString res = QInputDialog::getText(Gui::getMainWindow(),
+                    tr("Rename property group"), tr("Group name:"),
+                    QLineEdit::Normal, QString::fromUtf8(groupName));
+            if(res.size()) {
+                std::string group = res.toUtf8().constData();
+                for(auto prop : props)
+                    prop->getContainer()->changeDynamicProperty(prop,group.c_str(),0);
+                buildUp(PropertyModel::PropertyList(propList),checkDocument);
+            }
+            break;
+        }
+        case MA_RemoveProp: {
+            App::AutoTransaction committer("Remove property");
+            for(auto prop : props) {
+                try {
+                    prop->getContainer()->removeDynamicProperty(prop->getName());
+                }catch(Base::Exception &e) {
+                    e.ReportException();
+                }
+            }
+            break;
+        }
+        default:
+            break;
+        }
     }
-    default:
-        break;
+
+    for (auto action : menu.actions()) {
+        auto it = flags.find(action->data().toInt());
+        if (it == flags.end() || it->second == action->isChecked())
+            continue;
+        switch(it->first) {
+#define ACTION_CHECK(_name) \
+        case MA_##_name:\
+            for(auto prop : props) \
+                prop->setStatus(App::Property::_name,action->isChecked());\
+            break
+        ACTION_CHECK(Transient);
+        ACTION_CHECK(ReadOnly);
+        ACTION_CHECK(Output);
+        ACTION_CHECK(Hidden);
+        ACTION_CHECK(EvalOnRestore);
+        ACTION_CHECK(CopyOnChange);
+        ACTION_CHECK(MaterialEdit);
+        case MA_Touched:
+            for(auto prop : props) {
+                if(action->isChecked())
+                    prop->touch();
+                else
+                    prop->purgeTouched();
+            }
+            break;
+        default:
+            break;
+        }
     }
 }
 
