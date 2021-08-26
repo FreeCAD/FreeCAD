@@ -628,7 +628,9 @@ void PropertyLink::setValue(App::DocumentObject * lValue)
 {
     auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!testFlag(LinkAllowExternal) && parent && lValue && parent->getDocument()!=lValue->getDocument())
-        throw Base::ValueError("PropertyLink does not support external object");
+        FC_THROWM(Base::ValueError,
+                "Cannot link to  external object " << lValue->getFullName()
+                << " in " << getFullName());
 
     aboutToSetValue();
 #ifndef USE_OLD_DAG
@@ -888,9 +890,12 @@ void PropertyLinkList::setValues(std::vector<DocumentObject*> &&lValue) {
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
-            throw Base::ValueError("PropertyLinkList: invalid document object");
+            FC_THROWM(Base::ValueError,
+                    "Invalid linked document object in " << getFullName());
         if(!testFlag(LinkAllowExternal) && parent && parent->getDocument()!=obj->getDocument())
-            throw Base::ValueError("PropertyLinkList does not support external object");
+            FC_THROWM(Base::ValueError,
+                    "Cannot link to  external object " << obj->getFullName()
+                    << " in " << getFullName());
     }
     _nameMap.clear();
 
@@ -1210,9 +1215,12 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue,
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(lValue) {
         if(!lValue->getNameInDocument())
-            throw Base::ValueError("PropertyLinkSub: invalid document object");
+            FC_THROWM(Base::ValueError,
+                    "Invalid linked document object in " << getFullName());
         if(!testFlag(LinkAllowExternal) && parent && parent->getDocument()!=lValue->getDocument())
-            throw Base::ValueError("PropertyLinkSub does not support external object");
+            FC_THROWM(Base::ValueError,
+                    "Cannot link to  external object " << lValue->getFullName()
+                    << " in " << getFullName());
     }
     aboutToSetValue();
 #ifndef USE_OLD_DAG
@@ -2011,9 +2019,12 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(lValue) {
         if(!lValue->getNameInDocument())
-            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+            FC_THROWM(Base::ValueError,
+                    "Invalid linked document object in " << getFullName());
         if(!testFlag(LinkAllowExternal) && parent && parent->getDocument()!=lValue->getDocument())
-            throw Base::ValueError("PropertyLinkSubList does not support external object");
+            FC_THROWM(Base::ValueError,
+                    "Cannot link to  external object " << lValue->getFullName()
+                    << " in " << getFullName());
     }
 #ifndef USE_OLD_DAG
     //maintain backlinks
@@ -2053,9 +2064,12 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue, 
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
-            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+            FC_THROWM(Base::ValueError,
+                    "Invalid linked document object in " << getFullName());
         if(!testFlag(LinkAllowExternal) && parent && parent->getDocument()!=obj->getDocument())
-            throw Base::ValueError("PropertyLinkSubList does not support external object");
+            FC_THROWM(Base::ValueError,
+                    "Cannot link to  external object " << obj->getFullName()
+                    << " in " << getFullName());
     }
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
@@ -2109,9 +2123,12 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
-            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+            FC_THROWM(Base::ValueError,
+                    "Invalid linked document object in " << getFullName());
         if(!testFlag(LinkAllowExternal) && parent && parent->getDocument()!=obj->getDocument())
-            throw Base::ValueError("PropertyLinkSubList does not support external object");
+            FC_THROWM(Base::ValueError,
+                    "Cannot link to  external object " << obj->getFullName()
+                    << " in " << getFullName());
     }
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
@@ -2155,9 +2172,12 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
     if(lValue) {
         if(!lValue->getNameInDocument())
-            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+            FC_THROWM(Base::ValueError,
+                    "Invalid linked document object in " << getFullName());
         if(!testFlag(LinkAllowExternal) && parent && parent->getDocument()!=lValue->getDocument())
-            throw Base::ValueError("PropertyLinkSubList does not support external object");
+            FC_THROWM(Base::ValueError,
+                    "Cannot link to  external object " << lValue->getFullName()
+                    << " in " << getFullName());
     }
 #ifndef USE_OLD_DAG
     //maintain backlinks.
