@@ -286,6 +286,9 @@ void DlgCustomKeyboardImp::on_buttonReset_clicked()
         ui->accelLineEditShortcut->setText((txt.isEmpty() ? tr("none") : txt));
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
         hGrp->RemoveASCII(name.constData());
+
+        // update the tool tip (and status tip)
+        cmd->recreateTooltip(cmd->className(), cmd->getAction());
     }
 
     ui->buttonReset->setEnabled( false );
@@ -300,6 +303,10 @@ void DlgCustomKeyboardImp::on_buttonResetAll_clicked()
         if ((*it)->getAction()) {
           (*it)->getAction()->setShortcut(QKeySequence(QString::fromLatin1((*it)->getAccel()))
                                           .toString(QKeySequence::NativeText));
+
+
+          // update the tool tip (and status tip)
+          (*it)->recreateTooltip((*it)->className(), (*it)->getAction());
         }
     }
 
