@@ -193,6 +193,8 @@ public:
     FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false, "") \
     FC_VIEW_PARAM(HiddenLineShowOutline, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Show outline in hidden line draw style (only works in experiemental renderer)."))\
+    FC_VIEW_PARAM(HiddenLinePerFaceOutline, bool, Bool, false, \
+        QT_TRANSLATE_NOOP("ViewParams","Render per face outline in hidden line draw style (Warning! this may cause slow down)."))\
     FC_VIEW_PARAM(HiddenLineWidth, double, Float, 1.5, "") \
     FC_VIEW_PARAM(HiddenLinePointSize, double, Float, 2, "") \
     FC_VIEW_PARAM(HiddenLineHideSeam, bool, Bool, true, \

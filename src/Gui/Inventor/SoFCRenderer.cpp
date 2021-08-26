@@ -1210,7 +1210,7 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
   const int *partindices = nullptr;
   if (this->material.clippers.getNum() && drawidx < 0) {
     numparts = draw_entry.ventry->cache->getNumFaceParts();
-  } else if (numparts && drawidx < 0) {
+  } else if (ViewParams::HiddenLinePerFaceOutline() && numparts && drawidx < 0) {
     partindices = draw_entry.ventry->cache->getNonFlatParts();
   } else {
     numparts = 1;

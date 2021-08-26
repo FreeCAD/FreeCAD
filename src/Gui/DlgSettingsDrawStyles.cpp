@@ -119,6 +119,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     FC_DRAW_STYLE_PARAM(HiddenLineOverrideFaceColor, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(HiddenLineOverrideBackground, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(HiddenLineShowOutline, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(HiddenLinePerFaceOutline, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(HiddenLineHideFace, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(HiddenLineHideSeam, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(HiddenLineHideVertex, isChecked, setChecked)\
