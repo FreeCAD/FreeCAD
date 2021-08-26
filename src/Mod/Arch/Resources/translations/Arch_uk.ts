@@ -949,32 +949,32 @@
       <translation>Якщо відмічено, елемент вирівнюється по осях</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="714"/>
+      <location filename="ArchWall.py" line="717"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>Довжина цієї стіни. Не використовується, якщо стіна базується на об'єкті, який розташований під нею</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="716"/>
+      <location filename="ArchWall.py" line="719"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>Ширина цієї стіни. Не використовується, якщо стіна розташована на поверхні</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="726"/>
+      <location filename="ArchWall.py" line="729"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>Висота стіни. Задайте 0 для автоматичного визначення. Не використовується, якщо ця стіна базується на твердому тілі</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="731"/>
+      <location filename="ArchWall.py" line="734"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>Вирівнювання стіни на базовому об'єкті, якщо можливо</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="736"/>
+      <location filename="ArchWall.py" line="739"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Номер поверхні базового об'єкту, що використовується для створення цієї стіни</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="738"/>
+      <location filename="ArchWall.py" line="741"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>Зміщення стіни від базової лінії (тільки для лівого і правого вирівнювання)</translation>
     </message>
@@ -1054,7 +1054,7 @@
       <translation>Перекриття шнурів над нижної частиною проступей з'єднань</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1387"/>
+      <location filename="ArchWindow.py" line="1389"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Число дротів, що визначає отвір. Значення 0 означає автоматичне значення</translation>
     </message>
@@ -1074,7 +1074,7 @@
       <translation>Перетворення для кожної позначки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="867"/>
+      <location filename="ArchAxis.py" line="871"/>
       <source>The axes this system is made of</source>
       <translation>Осі, що утворюють систему</translation>
     </message>
@@ -1204,7 +1204,7 @@
       <translation>Розмір шрифту</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="869"/>
+      <location filename="ArchAxis.py" line="873"/>
       <source>The placement of this axis system</source>
       <translation>Розташування цієї системи осей</translation>
     </message>
@@ -1224,57 +1224,57 @@
       <translation>Товщина лінії цього об'єкту</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="503"/>
+      <location filename="ArchBuildingPart.py" line="502"/>
       <source>An optional unit to express levels</source>
       <translation>Опція одиниці рівнів</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="505"/>
+      <location filename="ArchBuildingPart.py" line="504"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Трансформація, яка застосовується до позначки рівня</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="508"/>
+      <location filename="ArchBuildingPart.py" line="507"/>
       <source>If true, show the level</source>
       <translation>Якщо увімкнено, показувати рівень</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="511"/>
+      <location filename="ArchBuildingPart.py" line="510"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Якщо увімкнено, показувати одиниці вимірювання на відмітці рівня</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="528"/>
+      <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Якщо правильно, при активації, робоча площина автоматично адаптується до цього рівня</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="518"/>
+      <location filename="ArchBuildingPart.py" line="517"/>
       <source>The font to be used for texts</source>
       <translation>Шрифт для тексту</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="521"/>
+      <location filename="ArchBuildingPart.py" line="520"/>
       <source>The font size of texts</source>
       <translation>Розмір шрифту тексту</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="533"/>
+      <location filename="ArchBuildingPart.py" line="532"/>
       <source>Camera position data associated with this object</source>
       <translation>Положення камери пов'язані з цим об'єктом</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="536"/>
+      <location filename="ArchBuildingPart.py" line="535"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Якщо вказано, вид збережений в цьому об'єкті буде відновлений подвійним натисканням</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="524"/>
+      <location filename="ArchBuildingPart.py" line="523"/>
       <source>The individual face colors</source>
       <translation>Індивідуальний колір поверхні</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="531"/>
+      <location filename="ArchBuildingPart.py" line="530"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Якщо встановлено значення True, робоча площина буде тримати в автоматичному режимі</translation>
     </message>
@@ -1419,42 +1419,42 @@
       <translation>Напрямок польоту після приземлення</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="747"/>
+      <location filename="ArchWall.py" line="750"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Увімкніть це, щоб стіна генерувала блоки</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="749"/>
+      <location filename="ArchWall.py" line="752"/>
       <source>The length of each block</source>
       <translation>Довжина кожного блоку</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="751"/>
+      <location filename="ArchWall.py" line="754"/>
       <source>The height of each block</source>
       <translation>Висота кожного блоку</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="753"/>
+      <location filename="ArchWall.py" line="756"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>Горизонтальне зміщення першого рядка блоків</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="755"/>
+      <location filename="ArchWall.py" line="758"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>Горизонтальне зміщення другого рядка блоків</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="757"/>
+      <location filename="ArchWall.py" line="760"/>
       <source>The size of the joints between each block</source>
       <translation>Розмір з'єднання між кожним блоком</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="759"/>
+      <location filename="ArchWall.py" line="762"/>
       <source>The number of entire blocks</source>
       <translation>Кількість всіх блоків</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="762"/>
+      <location filename="ArchWall.py" line="765"/>
       <source>The number of broken blocks</source>
       <translation>Кількість зламаних блоків</translation>
     </message>
@@ -1604,27 +1604,27 @@
       <translation>Товщина стояків</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="549"/>
+      <location filename="ArchBuildingPart.py" line="548"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Якщо так, показує об’єкти, що містяться в цій Building Part, приймуть ці параметри лінії, кольору та прозорості</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="551"/>
+      <location filename="ArchBuildingPart.py" line="550"/>
       <source>The line width of child objects</source>
       <translation>Ширина лінії дочірніх об'єктів</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="554"/>
+      <location filename="ArchBuildingPart.py" line="553"/>
       <source>The line color of child objects</source>
       <translation>Колір лінії дочірнього об'єкту</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="558"/>
+      <location filename="ArchBuildingPart.py" line="557"/>
       <source>The shape color of child objects</source>
       <translation>Колір лінії форми дочірнього об'єкту</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="562"/>
+      <location filename="ArchBuildingPart.py" line="561"/>
       <source>The transparency of child objects</source>
       <translation>Прозорість дитячих об'єктів</translation>
     </message>
@@ -1644,37 +1644,37 @@
       <translation>Цій властивості зберігається подання винахідника для цього об’єкта</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="513"/>
+      <location filename="ArchBuildingPart.py" line="512"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Якщо так, відображення зміщення вплине на початок координат також</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="515"/>
+      <location filename="ArchBuildingPart.py" line="514"/>
       <source>If true, the object's label is displayed</source>
       <translation>Якщо так, позначки об'єктів відображатимуться</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="542"/>
+      <location filename="ArchBuildingPart.py" line="541"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Якщо це увімкнено, то винахідник буде зберегти представництво цього об'єкта у файлі FreeCAD, дозволяє посилатись на нього в інших файлах в режимі легкої ваги.</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="544"/>
+      <location filename="ArchBuildingPart.py" line="543"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>Слот, щоб зберегти винахідник представлення цього об'єкта, якщо це увімкнено</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="566"/>
+      <location filename="ArchBuildingPart.py" line="565"/>
       <source>Cut the view above this level</source>
       <translation>Вирізати вигляд цього рівня</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="568"/>
+      <location filename="ArchBuildingPart.py" line="567"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Відстань між рівною площиною і лінії обрізки</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="571"/>
+      <location filename="ArchBuildingPart.py" line="570"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Ввімкнути вирізання при активації цього рівня</translation>
     </message>
@@ -1869,22 +1869,22 @@
       <translation>Як намалювати стрижні</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="720"/>
+      <location filename="ArchWall.py" line="723"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
       <translation>Це замінює атрибут Ширина на встановлену ширину кожного сегмента стіни. Ігнорується, якщо базовий об’єкт надає інформацію про ширину за допомогою методу getWidths (). (Перше значення замінює атрибут 'Width' для 1-го сегмента стіни; якщо значення дорівнює нулю, буде дотримуватися 1-го значення 'OverrideWidth')</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="723"/>
+      <location filename="ArchWall.py" line="726"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
       <translation>Це замінює атрибут Align, щоб встановити Align для кожного сегмента стіни. Ігнорується, якщо базовий об'єкт надає інформацію "Вирівнювання" за допомогою методу getAligns (). (Перше значення замінює атрибут "Вирівнювання" для 1-го сегмента стіни; якщо значення не є "Ліворуч, Праворуч, Центр", буде дотримуватися 1-го значення "OverrideAlign")</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="728"/>
+      <location filename="ArchWall.py" line="731"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation>Площа цієї стіни як просте обчислення висоти * довжини</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="538"/>
+      <location filename="ArchBuildingPart.py" line="537"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Якщо Правда, двічі клацніть на цей об'єкт в дереві активує його</translation>
     </message>
@@ -2041,13 +2041,13 @@
     <message>
       <location filename="ArchSectionPlane.py" line="933"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>Геометрія, що перевищує це значення, буде відрізана. Зберігайте нуль для безмежного.</translation>
     </message>
   </context>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1645"/>
+      <location filename="ArchWindow.py" line="1647"/>
       <source>Components</source>
       <translation>Компоненти</translation>
     </message>
@@ -2057,7 +2057,7 @@
       <translation>Компоненти цього об'єкта</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1112"/>
+      <location filename="ArchAxis.py" line="1116"/>
       <source>Axes</source>
       <translation>Вісі</translation>
     </message>
@@ -2067,27 +2067,27 @@
       <translation>Створити вісь</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1113"/>
+      <location filename="ArchAxis.py" line="1117"/>
       <source>Remove</source>
       <translation>Видалити</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1114"/>
+      <location filename="ArchAxis.py" line="1118"/>
       <source>Add</source>
       <translation>Додати</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="848"/>
+      <location filename="ArchAxis.py" line="852"/>
       <source>Axis</source>
       <translation>Вісь</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="849"/>
+      <location filename="ArchAxis.py" line="853"/>
       <source>Distance</source>
       <translation>Відстань</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="850"/>
+      <location filename="ArchAxis.py" line="854"/>
       <source>Angle</source>
       <translation>Кут</translation>
     </message>
@@ -2197,7 +2197,7 @@
       <translation>Створити структуру</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="602"/>
+      <location filename="ArchWall.py" line="605"/>
       <source>Create Wall</source>
       <translation>Створити стінку</translation>
     </message>
@@ -2222,42 +2222,42 @@
       <translation>Створити вікно</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1641"/>
+      <location filename="ArchWindow.py" line="1643"/>
       <source>Edit</source>
       <translation>Правка</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1642"/>
+      <location filename="ArchWindow.py" line="1644"/>
       <source>Create/update component</source>
       <translation>Створити або оновити компонент</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1643"/>
+      <location filename="ArchWindow.py" line="1645"/>
       <source>Base 2D object</source>
       <translation>Базовий двовимірний об’єкт</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1649"/>
+      <location filename="ArchWindow.py" line="1651"/>
       <source>Wires</source>
       <translation>Каркас</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1646"/>
+      <location filename="ArchWindow.py" line="1648"/>
       <source>Create new component</source>
       <translation>Створити новий компонент</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1647"/>
+      <location filename="ArchWindow.py" line="1649"/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1648"/>
+      <location filename="ArchWindow.py" line="1650"/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1650"/>
+      <location filename="ArchWindow.py" line="1652"/>
       <source>Thickness</source>
       <translation>Товщина</translation>
     </message>
@@ -2332,22 +2332,22 @@
       <translation>Не вдалося обчислити форму</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="659"/>
+      <location filename="ArchWall.py" line="662"/>
       <source>Merge Wall</source>
       <translation>Об'єднати стіни</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="672"/>
+      <location filename="ArchWall.py" line="675"/>
       <source>Please select only wall objects</source>
       <translation>Будь-ласка виберіть тільки стіни</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="674"/>
+      <location filename="ArchWall.py" line="677"/>
       <source>Merge Walls</source>
       <translation>Об'єднати стіни</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="847"/>
+      <location filename="ArchAxis.py" line="851"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Відстані (мм) і кути (град) між осями</translation>
     </message>
@@ -2799,22 +2799,22 @@
       <translation>Двері</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1652"/>
+      <location filename="ArchWindow.py" line="1654"/>
       <source>Hinge</source>
       <translation>Шарнір</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1653"/>
+      <location filename="ArchWindow.py" line="1655"/>
       <source>Opening mode</source>
       <translation>Режим відкриття</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1658"/>
+      <location filename="ArchWindow.py" line="1660"/>
       <source>Get selected edge</source>
       <translation>Отримати вибране ребро</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1659"/>
+      <location filename="ArchWindow.py" line="1661"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Натисніть, щоб отримати вибраний ребр</translation>
     </message>
@@ -2844,17 +2844,17 @@
       <translation>Новий шар</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="473"/>
+      <location filename="ArchWall.py" line="476"/>
       <source>Wall Presets...</source>
       <translation>Пресети Стіни</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1636"/>
+      <location filename="ArchWindow.py" line="1638"/>
       <source>Hole wire</source>
       <translation>Отвір для дроту</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1638"/>
+      <location filename="ArchWindow.py" line="1640"/>
       <source>Pick selected</source>
       <translation>Вибрати вибране</translation>
     </message>
@@ -2869,67 +2869,67 @@
       <translation>Створити сітку</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="851"/>
+      <location filename="ArchAxis.py" line="855"/>
       <source>Label</source>
       <translation>Позначка</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1115"/>
+      <location filename="ArchAxis.py" line="1119"/>
       <source>Axis system components</source>
       <translation>Компоненти системи осей</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1441"/>
+      <location filename="ArchAxis.py" line="1445"/>
       <source>Grid</source>
       <translation>Сітка</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1442"/>
+      <location filename="ArchAxis.py" line="1446"/>
       <source>Total width</source>
       <translation>Загальна ширина</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1443"/>
+      <location filename="ArchAxis.py" line="1447"/>
       <source>Total height</source>
       <translation>Загальна висота</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1444"/>
+      <location filename="ArchAxis.py" line="1448"/>
       <source>Add row</source>
       <translation>Додати рядок</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1445"/>
+      <location filename="ArchAxis.py" line="1449"/>
       <source>Del row</source>
       <translation>Видалити рядок</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1446"/>
+      <location filename="ArchAxis.py" line="1450"/>
       <source>Add col</source>
       <translation>Додати стовпчик</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1447"/>
+      <location filename="ArchAxis.py" line="1451"/>
       <source>Del col</source>
       <translation>Видалити стовпчик</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1448"/>
+      <location filename="ArchAxis.py" line="1452"/>
       <source>Create span</source>
       <translation>Створити проміжок</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1449"/>
+      <location filename="ArchAxis.py" line="1453"/>
       <source>Remove span</source>
       <translation>Видалити проміжок</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1450"/>
+      <location filename="ArchAxis.py" line="1454"/>
       <source>Rows</source>
       <translation>Рядки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1450"/>
+      <location filename="ArchAxis.py" line="1454"/>
       <source>Columns</source>
       <translation>Стовпці</translation>
     </message>
@@ -2944,12 +2944,12 @@
       <translation>Проміжок меж</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="1029"/>
+      <location filename="ArchWall.py" line="1042"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Помилка: Неможливо змінити основний об'єкт цієї стіни</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1635"/>
+      <location filename="ArchWindow.py" line="1637"/>
       <source>Window elements</source>
       <translation>Елементи вікна</translation>
     </message>
@@ -3014,22 +3014,22 @@
       <translation>Виберіть принаймні одну вісь</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1177"/>
+      <location filename="ArchAxis.py" line="1181"/>
       <source>Auto height is larger than height</source>
       <translation>Автоматична висота більша за висоту</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1186"/>
+      <location filename="ArchAxis.py" line="1190"/>
       <source>Total row size is larger than height</source>
       <translation>Загальний розмір рядка перевищує висоту</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1208"/>
+      <location filename="ArchAxis.py" line="1212"/>
       <source>Auto width is larger than width</source>
       <translation>Автоматична ширина перевищує ширину</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1217"/>
+      <location filename="ArchAxis.py" line="1221"/>
       <source>Total column size is larger than width</source>
       <translation>Загальний розмір колони більший за ширину</translation>
     </message>
@@ -3244,7 +3244,7 @@
       <translation>Змінити розмір</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="508"/>
+      <location filename="ArchWall.py" line="511"/>
       <source>Center</source>
       <translation>Центр</translation>
     </message>
@@ -3279,12 +3279,12 @@
       <translation>Виявлено перетин.</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="665"/>
+      <location filename="ArchWall.py" line="668"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>Виділена стіна не містить вкладених стін для об'єднання</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="922"/>
+      <location filename="ArchWall.py" line="935"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Не можна обчислити блоки для стіни</translation>
     </message>
@@ -3294,27 +3294,27 @@
       <translation>Виберіть грань на існуючому об'єкті або виберіть заготовку</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1597"/>
+      <location filename="ArchWindow.py" line="1599"/>
       <source>Unable to create component</source>
       <translation>Неможливо створити торрент</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1637"/>
+      <location filename="ArchWindow.py" line="1639"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Щільність сітки, що визначає отвір у хост-об'єкті. Значення нуля автоматично приймає найбільшу сітку</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1656"/>
+      <location filename="ArchWindow.py" line="1658"/>
       <source>+ default</source>
       <translation>+ за замовчуванням</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1655"/>
+      <location filename="ArchWindow.py" line="1657"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Якщо це позначено, значення кадру за замовчуванням цього вікна буде додано до значення, введеного тут</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1657"/>
+      <location filename="ArchWindow.py" line="1659"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Якщо це позначено, типове значення зміщення у цьому вікні буде додано до введеного тут значення</translation>
     </message>
@@ -3470,37 +3470,37 @@
       <translation>Продовжити</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="339"/>
+      <location filename="ArchWall.py" line="342"/>
       <source>First point of wall</source>
       <translation>Перша точка стіни</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="469"/>
+      <location filename="ArchWall.py" line="472"/>
       <source>Wall options</source>
       <translation>Параметри стіни</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="474"/>
+      <location filename="ArchWall.py" line="477"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>У цьому списку показані всі об’єкти MultiMaterials цього документа. Створіть кілька для визначення типів стін.</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="506"/>
+      <location filename="ArchWall.py" line="509"/>
       <source>Alignment</source>
       <translation>Вирівнювання</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="508"/>
+      <location filename="ArchWall.py" line="511"/>
       <source>Left</source>
       <translation>Ліворуч</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="509"/>
+      <location filename="ArchWall.py" line="512"/>
       <source>Right</source>
       <translation>Направо</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="525"/>
+      <location filename="ArchWall.py" line="528"/>
       <source>Use sketches</source>
       <translation>Використовувати ескізи</translation>
     </message>
@@ -3680,17 +3680,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Стіна</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1171"/>
+      <location filename="ArchWindow.py" line="1173"/>
       <source>This window has no defined opening</source>
       <translation>Це вікно не позначене відкриватися</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1660"/>
+      <location filename="ArchWindow.py" line="1662"/>
       <source>Invert opening direction</source>
       <translation>Інвертувати напрям відкриття</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1661"/>
+      <location filename="ArchWindow.py" line="1663"/>
       <source>Invert hinge position</source>
       <translation>Перевернути положення шарніру</translation>
     </message>
@@ -3946,7 +3946,7 @@ Floor creation aborted.</source>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="ArchAxis.py" line="1617"/>
+      <location filename="ArchAxis.py" line="1621"/>
       <source>Axis tools</source>
       <translation>Інструменти осей</translation>
     </message>
@@ -4120,62 +4120,62 @@ Floor creation aborted.</source>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="ArchAxis.py" line="1131"/>
+      <location filename="ArchAxis.py" line="1135"/>
       <source>The number of rows</source>
       <translation>Кількість рядків</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1133"/>
+      <location filename="ArchAxis.py" line="1137"/>
       <source>The number of columns</source>
       <translation>Кількість стовпців</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1135"/>
+      <location filename="ArchAxis.py" line="1139"/>
       <source>The sizes for rows</source>
       <translation>Розміри для рядків</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1137"/>
+      <location filename="ArchAxis.py" line="1141"/>
       <source>The sizes of columns</source>
       <translation>Розміри стовпців</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1139"/>
+      <location filename="ArchAxis.py" line="1143"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Масштабні межі клітин, які об'єднані разом</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1141"/>
+      <location filename="ArchAxis.py" line="1145"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Тип тривимірних точок, утворених цим об'єктом сітки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1144"/>
+      <location filename="ArchAxis.py" line="1148"/>
       <source>The total width of this grid</source>
       <translation>Загальна ширина цієї сітки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1146"/>
+      <location filename="ArchAxis.py" line="1150"/>
       <source>The total height of this grid</source>
       <translation>Загальна висота цієї сітки</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1148"/>
+      <location filename="ArchAxis.py" line="1152"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Автоматичне створення підрозділів стовпців (0 вимкнено)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1150"/>
+      <location filename="ArchAxis.py" line="1154"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Створює автоматичні поділи рядків (0 - вимкнено)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1152"/>
+      <location filename="ArchAxis.py" line="1156"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>У режимі середньої точки краю, якщо ця сітка повинна переорієнтувати своїх дітей за крайовими нормалями чи ні</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1154"/>
+      <location filename="ArchAxis.py" line="1158"/>
       <source>The indices of faces to hide</source>
       <translation>Індекси поверхонь, що сховаються</translation>
     </message>
@@ -4217,12 +4217,12 @@ Floor creation aborted.</source>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="ArchWall.py" line="628"/>
+      <location filename="ArchWall.py" line="631"/>
       <source>Merge Walls</source>
       <translation>Об'єднати стіни</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="631"/>
+      <location filename="ArchWall.py" line="634"/>
       <source>Merges the selected walls, if possible</source>
       <translation>По можливості об’єднує вибрані стіни</translation>
     </message>
@@ -4597,12 +4597,12 @@ Floor creation aborted.</source>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="ArchWall.py" line="271"/>
+      <location filename="ArchWall.py" line="274"/>
       <source>Wall</source>
       <translation>Стіна</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="275"/>
+      <location filename="ArchWall.py" line="278"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Створює об’єкт стіни з нуля, або з обраного об’єкту (дріт, поверхня або суцільна)</translation>
     </message>
@@ -4909,7 +4909,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Список фільтрів в форматі "властивіть:значення", розділені крапкою з комою (;). Поставте ! до імені властивості для того, щоб інвертувати ефект фільтра (тобто, щоб виключити об'єкти відповідні цьому фільтру). Об'єкти, чиї властивості містять відповідне значення, будуть співпадати. Приклади допустимих фільтрів (всі не чутливі до регістру):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Будуть розглядатися тільки об'єкти, що містять &amp;quot;Wall&amp;quot; в імені (внутрішньому імені)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Будуть розглядатися тільки об'єкти, які НЕ мають &amp;quot;Wall&amp;quot; в імені (внутрішньому імені)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Descriptionl:Win&lt;/span&gt; - Будуть розглядатися тільки об'єкт, що містять &amp;quot;Win&amp;quot; в описі&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Будуть розглядатися тільки об'єкти, які НЕ мають &amp;quot;Win&amp;quot; в їхній мітці&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Рассматривает только объекты, уозглядає тільки об'єкти у яких Ifc тип &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - будуть розглядатися тільки об'єкти, у яких тег не дорівнює&amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;Якщо Ви залишите це поле пустим, фільтрація не будет застосовуватися&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="29"/>
@@ -4919,13 +4919,13 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="ArchSchedule.ui" line="205"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Експортуються результати до файлу CSV або Markdown. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Примітка для експорту CSV:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;у Libreoffice, ви можете залишити цей CSV файл пов'язаним клікнувши правою кнопкою миші по панелі таблиць -&amp;gt; Нова таблиця -&amp;gt; З файлу -&amp;gt; посилання (Примітка: як у LibreOffice v6. правильний шлях: аркуш -&amp;gt; Вставити аркуш... -&amp;gt; з файлу -&amp;gt; Огляд...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="ArchBuildingPart.py" line="857"/>
+      <location filename="ArchBuildingPart.py" line="856"/>
       <source>Writing camera position</source>
       <translation>Запис положення камери</translation>
     </message>

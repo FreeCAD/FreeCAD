@@ -1063,7 +1063,7 @@ beyond the dimension line</source>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Количество копий для создания.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
@@ -1073,7 +1073,7 @@ beyond the dimension line</source>
     <message>
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Заполнить буквы гранями</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="216"/>
@@ -1115,12 +1115,12 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Если значение = True, данный объект будет включать в себя только видимые объекты </translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Данный объект будет пересчитан только если значение = True.</translation>
     </message>
   </context>
   <context>
@@ -1463,7 +1463,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="init_draft_statusbar.py" line="244"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Вкл/выкл Сетку</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
@@ -1486,7 +1486,7 @@ from menu Tools -&gt; Addon Manager</source>
       <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Невозможно вставить новый объект в масштабированную деталь</translation>
     </message>
@@ -1543,7 +1543,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="task_scale.py" line="141"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Выбрать точки от начала, до конца</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="142"/>
@@ -1595,7 +1595,7 @@ The array can be turned into an orthogonal or a circular array by changing its t
     <message>
       <location filename="gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation>Инструменты массива</translation>
+      <translation>Инструменты для работы с массивами</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
@@ -1639,29 +1639,29 @@ The array can be turned into a polar or a circular array by changing its type.</
       <translation>Создать фаску</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Сохранить стиль</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Название текущего нового стиля:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Указанное название уже существует. Перезаписать?</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Ошибка: модуль json не найден. Невзможно сохранить стиль</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
@@ -2077,12 +2077,12 @@ It must be at least 2.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Добавить в группу Конструкции</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2120,8 +2120,8 @@ It creates a construction group if it doesn't exist.</source>
       <location filename="gui_groups.py" line="74"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>Перемещает выбранные объекты в существующую группу или удаляет их из любой группы.
+Создайте группу, прежде чем использовать этот инструмент.</translation>
     </message>
   </context>
   <context>
@@ -2156,8 +2156,7 @@ Create a group first to use this tool.</translation>
       <location filename="gui_arcs.py" line="70"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Создает дугу по центральной точке и радиусу. CTRL для привязки, SHIFT для ограничения.</translation>
     </message>
   </context>
   <context>
@@ -2170,7 +2169,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_arcs.py" line="603"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>Создает различные типы круговых дуг.</translation>
     </message>
   </context>
   <context>
@@ -2257,8 +2256,7 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
-      <translation type="unfinished">Creates a circle (full circular arc).
-CTRL to snap, ALT to select tangent objects.</translation>
+      <translation>Создает окружность (на основе дуги). CTRL для привязки, ALT для выбора касательной.</translation>
     </message>
   </context>
   <context>
@@ -2359,16 +2357,16 @@ to turn it into a 'Draft Dimension' object.</translation>
     <message>
       <location filename="gui_downgrade.py" line="58"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Упрощающее Преобразование</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>Обращает выбранные объекты в более простые формы.
+Результат операции зависит от типов объектов, которые могут быть обращены несколько раз подряд.
+Например, команда преобразует выбранные полилинии в простейшие линии, грани и края. Также может вычесть грани.</translation>
     </message>
   </context>
   <context>
@@ -2417,9 +2415,9 @@ Use TechDraw Workbench instead for generating technical drawings.</translation>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Редактирует активный объект.
+Нажмите E или ALT+щелчок левой кнопкой мыши для отображения контекстного меню
+на поддерживаемых узлах и поддерживаемых объектах.</translation>
     </message>
   </context>
   <context>
@@ -2605,9 +2603,9 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Moves the selected objects from one base point to another point.
-If the "copy" option is active, it will create displaced copies.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Перемещает выделенные объекты из одной базовой точки в другую.
+Если опция "Копировать" активна, то функция создаст смещенные копии.
+CTRL для привязки, SHIFT для ограничения.</translation>
     </message>
   </context>
   <context>
@@ -2709,7 +2707,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Массив Точек</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -2809,7 +2807,7 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="gui_groups.py" line="165"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Выбрать группу</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="168"/>
@@ -2843,7 +2841,7 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_setstyle.py" line="55"/>
       <source>Set style</source>
-      <translation type="unfinished">Set style</translation>
+      <translation>Установить стиль</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="57"/>
@@ -2853,20 +2851,6 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -2941,12 +2925,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snapper.py" line="1535"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Вкл/выкл Сетку</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1536"/>
       <source>Toggle Draft Grid</source>
-      <translation type="unfinished">Toggle Draft Grid</translation>
+      <translation>Вкл/выкл сетку Draft</translation>
     </message>
   </context>
   <context>
@@ -3050,7 +3034,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="123"/>
       <source>Activates or deactivates all snap methods at once.</source>
-      <translation type="unfinished">Activates or deactivates all snap methods at once.</translation>
+      <translation>Включает или отключает все привязки одновременно.</translation>
     </message>
   </context>
   <context>
@@ -3076,7 +3060,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="424"/>
       <source>Set snapping to the nearest point of an edge.</source>
-      <translation type="unfinished">Set snapping to the nearest point of an edge.</translation>
+      <translation>Установить привязку к ближайшей точке кривой.</translation>
     </message>
   </context>
   <context>
@@ -3089,7 +3073,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="455"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
-      <translation type="unfinished">Set snapping to a direction that is a multiple of 45 degrees from a point.</translation>
+      <translation>Установите привязку по направлению, кратному 45 градусам от точки.</translation>
     </message>
   </context>
   <context>
@@ -3102,7 +3086,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="273"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is parallel to an edge.</translation>
+      <translation>Установите привязку параллельно кривой.</translation>
     </message>
   </context>
   <context>
@@ -3115,7 +3099,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="183"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is perpendicular to an edge.</translation>
+      <translation>Установите привязку перпендикулярно кривой.</translation>
     </message>
   </context>
   <context>
@@ -3170,7 +3154,7 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="gui_stretch.py" line="64"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Растянуть</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="67"/>
@@ -3245,16 +3229,15 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Переключить нормальное/каркасное отображение</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>Переключает режим отображения выбранных объектов с полноценного на каркасное и обратно, что позволяет быстро просмотреть объекты, скрытые за другими объектами.
+Предназначено для использования с замкнутыми и целыми фигурами. Не оказывает никакого влияния на незамкнутые ломанные.</translation>
     </message>
   </context>
   <context>
@@ -3275,14 +3258,14 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Укоротить / Растянуть</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="79"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces.
-CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</translation>
+      <translation>Укоротить или растянуть выбранный объект или сформировать отдельные грани.
+CTRL привязка, SHIFT ограничивает текущий сегмент или нормаль, ALT инверсия.</translation>
     </message>
   </context>
   <context>
@@ -3303,7 +3286,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Усложняющее Преобразование</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="61"/>
@@ -3311,10 +3294,10 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>Преобразует выбранные объекты в более сложные фигуры.
+Результат операции зависит от типов объектов, которые могут быть обращены несколько раз подряд.
+Например, он может объединить выбранные объекты в один объект, конвертировать простые ребра в полилинии,
+преобразует близко расположенные ребра в грани и многоугольники, а так же объединяет несколько граней в одну.</translation>
     </message>
   </context>
   <context>
@@ -3335,12 +3318,29 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>Ломаная в В-сплайн</translation>
     </message>
     <message>
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation type="unfinished">Create working plane proxy</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation type="unfinished">Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</translation>
     </message>
   </context>
   <context>
@@ -5186,12 +5186,12 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Конвертация прошла успешно</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation type="unfinished">Converting:</translation>
     </message>
@@ -5240,7 +5240,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Текущая команда:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Ничего</translation>
     </message>
@@ -5295,7 +5295,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Длина</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Угол</translation>
     </message>
@@ -5340,7 +5340,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Количество сторон</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Смещение</translation>
     </message>
@@ -5420,7 +5420,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
@@ -5693,22 +5693,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Если флажок установлен, то вместо целых объектов будут изменены дочерние элементы</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Сверху</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Спереди</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Сторона</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Текущая рабочая плоскость</translation>
     </message>
@@ -5733,14 +5733,9 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Нажмите эту кнопку, чтобы создать текстовый объект, или закончите ввод текста двумя пустыми строками</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Расстояние смещения</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Расстояние обрезки</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -5900,7 +5895,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="downgrade.py" line="288"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>Дальнейшее упрощение невозможно</translation>
     </message>
     <message>
       <location filename="make_label.py" line="237"/>
@@ -5955,12 +5950,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="make_arc_3points.py" line="195"/>
       <source>Face: True</source>
-      <translation type="unfinished">Face: True</translation>
+      <translation>Грань: True</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="197"/>
       <source>Support:</source>
-      <translation type="unfinished">Support:</translation>
+      <translation>Поддержка:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="198"/>
@@ -5970,7 +5965,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>длина:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="132"/>
@@ -6316,7 +6311,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_orthoarray.py" line="83"/>
       <source>Task panel:</source>
-      <translation type="unfinished">Task panel:</translation>
+      <translation>Панель задач:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="205"/>
@@ -6331,7 +6326,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_orthoarray.py" line="379"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>Объект:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="203"/>
@@ -6366,7 +6361,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_polararray.py" line="332"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Количество элементов:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="333"/>
@@ -6376,17 +6371,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_circulararray.py" line="388"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Центр вращения:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>Отменено:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="222"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>Количество слоёв должно быть не менее 2.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="234"/>
@@ -6411,17 +6406,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="task_circulararray.py" line="383"/>
       <source>Radial distance:</source>
-      <translation type="unfinished">Radial distance:</translation>
+      <translation>Радиальное расстояние:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="384"/>
       <source>Tangential distance:</source>
-      <translation type="unfinished">Tangential distance:</translation>
+      <translation>Тангенциальное расстояние:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="385"/>
       <source>Number of circular layers:</source>
-      <translation type="unfinished">Number of circular layers:</translation>
+      <translation>Количество круговых слоев:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="386"/>
@@ -6501,7 +6496,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_downgrade.py" line="85"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Упрощающее Преобразование</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="67"/>
@@ -6521,7 +6516,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_ellipses.py" line="138"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>Создать Эллипс</translation>
     </message>
     <message>
       <location filename="gui_rectangles.py" line="202"/>
@@ -6531,12 +6526,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_lines.py" line="167"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>Создать Линию</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="189"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>Создать Ломаную</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="140"/>
@@ -6551,7 +6546,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_lines.py" line="356"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Преобразовать в Ломаную</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="569"/>
@@ -6566,7 +6561,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
+      <translation>Выбранный элемент не является Узлом</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="749"/>
@@ -6596,7 +6591,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_dimensions.py" line="294"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Указать размер</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="309"/>
@@ -6606,7 +6601,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
+      <translation>Рёбра не пересекаются!</translation>
     </message>
     <message>
       <location filename="gui_drawing.py" line="77"/>
@@ -6641,7 +6636,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Усложняющее Преобразование</translation>
     </message>
     <message>
       <location filename="gui_move.py" line="204"/>
@@ -6656,12 +6651,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_move.py" line="103"/>
       <source>Pick start point</source>
-      <translation type="unfinished">Pick start point</translation>
+      <translation>Указать начальную точку</translation>
     </message>
     <message>
       <location filename="gui_move.py" line="302"/>
       <source>Pick end point</source>
-      <translation type="unfinished">Pick end point</translation>
+      <translation>Указать конечную точку</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="282"/>
@@ -6671,7 +6666,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_pointarray.py" line="122"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Массив Точек</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="104"/>
@@ -6686,7 +6681,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_togglemodes.py" line="93"/>
       <source>Construction mode</source>
-      <translation type="unfinished">Construction mode</translation>
+      <translation>Режим построения</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="125"/>
@@ -6706,12 +6701,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_snaps.py" line="144"/>
       <source>Midpoint snap</source>
-      <translation type="unfinished">Midpoint snap</translation>
+      <translation>Привязка к средним точкам</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="174"/>
       <source>Perpendicular snap</source>
-      <translation type="unfinished">Perpendicular snap</translation>
+      <translation>Перпендикулярная привязка</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="204"/>
@@ -6721,27 +6716,27 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_snaps.py" line="234"/>
       <source>Intersection snap</source>
-      <translation type="unfinished">Intersection snap</translation>
+      <translation>Привязка к точке пересечения</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="264"/>
       <source>Parallel snap</source>
-      <translation type="unfinished">Parallel snap</translation>
+      <translation>Параллельная привязка</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="294"/>
       <source>Endpoint snap</source>
-      <translation type="unfinished">Endpoint snap</translation>
+      <translation>Привязка к Конечным точкам</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="325"/>
       <source>Angle snap (30 and 45 degrees)</source>
-      <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
+      <translation>Угловая привязка (30 и 45 градусов)</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="355"/>
       <source>Arc center snap</source>
-      <translation type="unfinished">Arc center snap</translation>
+      <translation>Привязка к центру дуги</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="385"/>
@@ -6751,17 +6746,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_snaps.py" line="415"/>
       <source>Near snap</source>
-      <translation type="unfinished">Near snap</translation>
+      <translation>Ближайшая привязка</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="446"/>
       <source>Orthogonal snap</source>
-      <translation type="unfinished">Orthogonal snap</translation>
+      <translation>Ортогональная привязка</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="476"/>
       <source>Special point snap</source>
-      <translation type="unfinished">Special point snap</translation>
+      <translation>Привязка к специальной точке</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="507"/>
@@ -6791,12 +6786,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_arcs.py" line="89"/>
       <source>Pick center point</source>
-      <translation type="unfinished">Pick center point</translation>
+      <translation>Указать центральную точку</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="411"/>
       <source>Pick radius</source>
-      <translation type="unfinished">Pick radius</translation>
+      <translation>Указать радиус</translation>
     </message>
     <message>
       <location filename="gui_polygons.py" line="223"/>
@@ -6831,7 +6826,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_points.py" line="146"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Создать Точку</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="353"/>
@@ -6909,9 +6904,9 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Обратить размер</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Растянуть</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="75"/>
@@ -6919,27 +6914,27 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Select an object to stretch</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation type="unfinished">Pick first point of selection rectangle</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation type="unfinished">Pick opposite point of selection rectangle</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation type="unfinished">Pick start point of displacement</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation type="unfinished">Pick end point of displacement</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation type="unfinished">Turning one Rectangle into a Wire</translation>
     </message>
@@ -6951,12 +6946,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_rectangles.py" line="125"/>
       <source>Create Plane</source>
-      <translation type="unfinished">Create Plane</translation>
+      <translation>Создать Плоскость</translation>
     </message>
     <message>
       <location filename="gui_rectangles.py" line="142"/>
       <source>Create Rectangle</source>
-      <translation type="unfinished">Create Rectangle</translation>
+      <translation>Создать Прямоугольник</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="143"/>
@@ -6971,12 +6966,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_draft2sketch.py" line="99"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convert to Sketch</translation>
+      <translation>Преобразовать в Эскиз</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="114"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Convert to Draft</translation>
+      <translation>Преобразовать в Draft</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="51"/>
@@ -6991,7 +6986,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_labels.py" line="157"/>
       <source>Create Label</source>
-      <translation type="unfinished">Create Label</translation>
+      <translation>Создать Надпись</translation>
     </message>
     <message>
       <location filename="gui_labels.py" line="218"/>
@@ -7016,7 +7011,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: данный объект недоступен для редактирования</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="143"/>
@@ -7036,7 +7031,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Укоротить / Растянуть</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="91"/>
@@ -7044,39 +7039,29 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Select objects to trim or extend</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation type="unfinished">Pick distance</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation type="unfinished">The offset distance</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation type="unfinished">The offset angle</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation type="unfinished">Unable to trim these objects, too many wires</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Данные объекты не пересекаются.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
+      <translation>Слишком много точек пересечения.</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="76"/>
@@ -7104,22 +7089,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Создать B-сплайн</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation type="unfinished">Working plane aligned to global placement of</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
-      <translation type="unfinished">Dir</translation>
+      <translation>Направление</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Дополнительно</translation>
     </message>
@@ -7151,7 +7136,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_split.py" line="106"/>
       <source>Split line</source>
-      <translation type="unfinished">Split line</translation>
+      <translation>Разделить линию</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="77"/>
@@ -7166,7 +7151,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Ввести радиус.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="132"/>
@@ -7186,12 +7171,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_fillets.py" line="161"/>
       <source>Test object</source>
-      <translation type="unfinished">Test object</translation>
+      <translation>Тестовый объект</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="162"/>
       <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
+      <translation>Тестовый объект удален</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="164"/>
@@ -7211,17 +7196,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_styles.py" line="75"/>
       <source>Change Style</source>
-      <translation type="unfinished">Change Style</translation>
+      <translation>Изменить Стиль</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="64"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>Добавить в группу</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="159"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Выбрать группу</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="233"/>
@@ -7229,12 +7214,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Автогруппировка</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Добавить новый Слой</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation type="unfinished">Add to construction group</translation>
     </message>
@@ -7254,7 +7239,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Cannot offset this object type</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
     </message>
@@ -7306,7 +7291,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_arcs.py" line="514"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>Дуга по 3 точкам</translation>
     </message>
     <message>
       <location filename="gui_texts.py" line="75"/>
@@ -7331,7 +7316,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_rotate.py" line="100"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Указать центр вращения</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="389"/>
@@ -7346,7 +7331,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_rotate.py" line="393"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Указать начальный угол</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="402"/>
@@ -7374,15 +7359,14 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="DraftGui.py" line="748"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>Координаты будут указаны относительно последней точки или относительно центра системы координат если это первая точка для установки.</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="753"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Координаты будут указаны относительно центра глобальной системы координат.
+Отключите, если хотите использовать систему координат рабочей плоскости</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="759"/>
@@ -7399,32 +7383,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Относительное u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Относительное u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Относительное u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Абсолютное u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Абсолютное u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Абсолютное u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2047"/>
@@ -7473,6 +7457,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Selected Shapes must define a plane
 </translation>
     </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
+    </message>
   </context>
   <context>
     <name>importOCA</name>
@@ -7489,7 +7478,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
-      <translation type="unfinished">successfully exported</translation>
+      <translation>успешно экспортировано</translation>
     </message>
   </context>
 </TS>

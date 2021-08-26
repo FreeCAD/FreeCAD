@@ -326,7 +326,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>Wartość pomiaru.
 
 Ta właściwość jest tylko do odczytu, ponieważ wartość jest obliczana z
-właściwości „Pierwszy kąt” i „ostatni kąt”.</translation>
+właściwości „Pierwszy kąt” i „Ostatni kąt”.</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
@@ -349,7 +349,8 @@ Jest to lista ciągów; każdy element na liście będzie wyświetlany w osobnej
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation>Końcowy kąt łuku (dla pełnego okręgu, daj taką samą wartość jak dla pierwszego kąta)</translation>
+      <translation>Kąt końcowy łuku (dla pełnego okręgu, 
+                nadaj mu tę samą wartość co pierwszemu kątowi)</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
@@ -811,7 +812,7 @@ W przeciwnym razie duplikaty będą miały taką samą orientację jak oryginaln
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
       <translation>Jeśli Klony zawierają kilka obiektów,
-ustaw True dla połączenia lub False dla kombinacji</translation>
+ustaw wartość Prawda dla utworzenia połączenia, lub Fałsz dla kształtu złożonego</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="82"/>
@@ -960,12 +961,12 @@ beyond the dimension line</source>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation>Jeśli to prawda, obiekty zawarte w tej warstwie przyjmą kolor linii warstwy</translation>
+      <translation>Jeśli parametr ma wartość Prawda, obiekty zawarte w tej warstwie przyjmą kolor linii warstwy</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation>Jeśli to prawda, kolor wydruku zostanie użyty, gdy obiekty w tej warstwie zostaną umieszczone na stronie TechDraw</translation>
+      <translation>Jeśli parametr ma wartość Prawda, wówczas przy umieszczaniu obiektów na tej warstwie strony Rysunek Techniczny zostanie użyty kolor wydruku</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="102"/>
@@ -1118,12 +1119,12 @@ Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Jeśli parametr ma wartość Prawda, wówczas obiekt ten będzie zawierał tylko widoczne elementy</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Ten obiekt zostanie ponownie przeliczony tylko wtedy, gdy parametr ma wartość Prawda.</translation>
     </message>
   </context>
   <context>
@@ -1491,7 +1492,7 @@ z menu Przybory -&gt; Menedżer dodatków</translation>
       <translation>Włącz / wyłącz wiązanie do płaszczyzny roboczej</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nie można wstawić nowego obiektu do części skalowanej</translation>
     </message>
@@ -1644,7 +1645,7 @@ Tablicę można przekształcić w tablicę polarną lub okrągłą, zmieniając 
       <translation>Utwórz fazkę</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Kierunek przesunięcia nie jest zdefiniowany. Proszę najpierw przesunąć kursor myszki po obu stronach obiektu, aby wskazać kierunek</translation>
     </message>
@@ -2081,12 +2082,12 @@ Musi wynosić co najmniej 2.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Dodaj do grupy konstrukcyjnej</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2445,7 +2446,7 @@ na obsługiwanych węzłach i na obsługiwanych obiektach.</translation>
     <message>
       <location filename="gui_facebinders.py" line="60"/>
       <source>Facebinder</source>
-      <translation>Grupa ścian</translation>
+      <translation>Łącznik kształtu</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="62"/>
@@ -2860,20 +2861,6 @@ Można również wybrać trzy wierzchołki lub przejściową płaszczyznę roboc
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Utwórz pośrednią płaszczyznę roboczą</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Tworzy obiekt przejściowy z bieżącej płaszczyzny roboczej.
-Po utworzeniu obiektu kliknij go dwukrotnie w widoku drzewa, aby przywrócić pozycję ujęcia widoku i widoczność obiektów.
-Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów obiektów w dowolnie wybranym momencie.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3349,6 +3336,23 @@ CTRL do przyciągania, SHIFT aby związać.</translation>
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>Konwertuje zaznaczoną polilinię do linii złożonej lub linie złozoną do polilinii.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Utwórz pośrednią płaszczyznę roboczą</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Tworzy obiekt przejściowy z bieżącej płaszczyzny roboczej.
+Po utworzeniu obiektu kliknij go dwukrotnie w widoku drzewa, aby przywrócić pozycję ujęcia widoku i widoczność obiektów.
+Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów obiektów w dowolnie wybranym momencie.</translation>
     </message>
   </context>
   <context>
@@ -3943,7 +3947,7 @@ lub rodziny, jak np. "Arial, Helvetica, sans" lub nazwa w stylu np. "Arial: Bold
     <message>
       <location filename="preferences-draftsnap.ui" line="57"/>
       <source>Constrain mod</source>
-      <translation>moduł Ograniczanie</translation>
+      <translation>Modyfikator ograniczania</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="77"/>
@@ -4104,7 +4108,7 @@ Domyślnie ustawiona jest na lewo, co jest standardem ISO.</translation>
     <message>
       <location filename="preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
-      <translation>Zawsze przyciągaj (wyłącz tryb przyciągania)</translation>
+      <translation>Zawsze przyciągaj (wyłącz modyfikator przyciągania)</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="407"/>
@@ -4234,7 +4238,7 @@ Domyślnie ustawiona jest na lewo, co jest standardem ISO.</translation>
     <message>
       <location filename="preferences-draft.ui" line="267"/>
       <source>Fill objects with faces whenever possible</source>
-      <translation>Wypełnij obiekt powierzchniami, gdy tylko możliwe</translation>
+      <translation>Wypełniaj obiekty powierzchniami, gdy tylko jest to możliwe</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="224"/>
@@ -4635,7 +4639,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="26"/>
       <source>In-Command Shortcuts</source>
-      <translation>Skróty poleceń</translation>
+      <translation>Skróty klawiszowe</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="118"/>
@@ -4730,7 +4734,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="preferences-draftinterface.ui" line="352"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="preferences-draftinterface.ui" line="557"/>
@@ -4852,7 +4856,7 @@ Pozwala to wskazać kierunek i wprowadzić odległość.</translation>
     <message>
       <location filename="preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation>Ustaw ostrość na długość zamiast na współrzędną X</translation>
+      <translation>Ustaw aktywność na pole Długość zamiast na współrzędną X</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="250"/>
@@ -5211,12 +5215,12 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Konwersja zakończona</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation>Konwertowanie:</translation>
     </message>
@@ -5265,7 +5269,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
       <translation>aktywne polecenie:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Brak</translation>
     </message>
@@ -5317,10 +5321,10 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
     <message>
       <location filename="DraftGui.py" line="734"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Kąt</translation>
     </message>
@@ -5365,7 +5369,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
       <translation>Liczba boków</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Odsunięcie</translation>
     </message>
@@ -5445,7 +5449,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
       <translation>Etykieta</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
@@ -5650,7 +5654,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftGui.py" line="755"/>
       <source>Filled</source>
-      <translation>Wypełniony</translation>
+      <translation>Wypełnienie</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="761"/>
@@ -5718,22 +5722,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Jeśli ta opcja jest zaznaczona, modyfikowane będą elementy podrzędne, a nie całe obiekty</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Od góry</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Od przodu</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Strona</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Bieżąca płaszczyzna robocza</translation>
     </message>
@@ -5758,14 +5762,9 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Naciśnij ten przycisk, aby utworzyć obiekt tekstowy, lub zakończ tekst dwiema pustymi liniami</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Odległość przesunięcia</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Odległość przycięcia</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -5815,7 +5814,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="upgrade.py" line="469"/>
       <source>Found 2 objects: fusing them</source>
-      <translation>Znaleziono 2 obiekty: łączenie ich</translation>
+      <translation>Znaleziono dwa obiekty: zostanie wykonane scalenie</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="480"/>
@@ -6934,7 +6933,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Odwróć wymiar</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Rozciągnij</translation>
     </message>
@@ -6944,27 +6943,27 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Wybierz obiekt do rozciągnięcia</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Wybierz pierwszy punkt ramki zaznaczenia</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Wybierz przeciwny punkt ramki zaznaczenia</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Wybierz punkt początkowy przemieszczenia</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Wybierz punkt końcowy przemieszczenia</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Przekształcanie jednego prostokąta w linię łamaną</translation>
     </message>
@@ -7069,37 +7068,27 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Wybierz obiekty do przycięcia lub wydłużenia</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Wybierz odległość</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>Odległość przesunięcia</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>Kąt przesunięcia</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Nie można przyciąć tych obiektów, obsługiwane są tylko linie łamane i łuki.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Nie można przyciąć tych obiektów, zbyt wiele linii łamanych</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Te obiekty nie przecinają się.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>Zbyt wiele punktów przecięcia.</translation>
     </message>
@@ -7129,22 +7118,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Utwórz krzywą złożoną</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Wybierz płaszczyznę, 3 wierzchołki lub proxy WP, aby zdefiniować płaszczyznę rysowania</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Płaszczyzna robocza wyrównana względem globalnego umiejscowienia</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Katalog</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Niestandardowe</translation>
     </message>
@@ -7254,12 +7243,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Grupuj automatycznie</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Dodaj nową warstwę</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Dodaj do grupy konstrukcyjnej</translation>
     </message>
@@ -7279,7 +7268,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Nie można przesunąć tego typu obiektu</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>Przesunięcie krzywych Beziera nie jest obecnie obsługiwane</translation>
     </message>
@@ -7414,7 +7403,7 @@ Należy usunąć zaznaczenie, aby używać układu współrzędnych płaszczyzny
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Zaznacz, jeśli obiekt ma być wyświetlany jako wypełniony, w przeciwnym razie będzie wyświetlany jako szkielet.
-Niedostępne, jeśli opcja preferencji Rysunku Roboczego "używaj elementów pierwotnych" jest włączona</translation>
+Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj elementów pierwotnych" jest włączona</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="771"/>
@@ -7497,6 +7486,11 @@ Niedostępne, jeśli opcja preferencji Rysunku Roboczego "używaj elementów pie
 </source>
       <translation>Wybrane kształty muszą definiować płaszczyznę
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

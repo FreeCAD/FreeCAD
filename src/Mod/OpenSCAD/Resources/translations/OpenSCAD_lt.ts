@@ -142,12 +142,12 @@
       <translation>Prašome pirma pasirinkti 3 kūnus</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>Nepalaikoma funkcija</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>Paspauskite „Gerai“</translation>
     </message>

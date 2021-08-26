@@ -1061,43 +1061,43 @@ dışındaki mesafesi</translation>
     <message>
       <location filename="pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>A másolandó alap objektum.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Oluşturulacak kopyaların sayısı.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Bükülmüş dizi dönme etkeni.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Harfleri yüzeyle doldur</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="216"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>Ölçümlendirmeyi gösterecek birim.
+Sistem varsayılanı için boş bırakın.
+BM mimari gösterimi için 'mimari' yi kullanın</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Hariç tutulan noktalar listesi. Bu noktaların herhangi birine değen hiçbir kenar çizilmeyecek.</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Kesme Hatları ve Kesme Yüzeyleri kipleri için, 
+                    bu, yüzleri kesme konumunda bırakır</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
@@ -1109,22 +1109,22 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Eğer bu Doğru olarak belirtilmişse, sadece katı geometri işlenir. Bu durum, temel nesnenin Sadece Katılar özelliği üzerine yazılır</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Eğer bu Doğru olarak belirtilmişse, uygulanabilmesi durumunda, içerik kesit düzlemi sınırlarına kırpılır. Bu durum, temel nesnenin Kırpık özelliği üzerine yazılır</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Eğer bu Doğru ise bu nesne sadece görünür nesneler içerecek</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Bu nesne, sadece bu değişken Doğru olarak belirtilirse yeniden hesaplanacak.</translation>
     </message>
   </context>
   <context>
@@ -1492,7 +1492,7 @@ menüden Araçlar -&gt; Eklenti Yöneticisi</translation>
       <translation>Çalışma Düzlemine Kısıtlamayı Açma / Kapatma</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Ölçeklenmiş bir parçaya yeni nesne eklenemez</translation>
     </message>
@@ -1645,34 +1645,34 @@ Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürüle
       <translation>Pah oluştur</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Ofset yönü tanımlanmadı. Bir yönü belirtmek için lütfen fareyi nesnenin her iki yanında hareket ettirin</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Biçimi kaydet</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Yeni biçimin ismi:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Bu isim kullanılıyor. Üzerine yazılsın mı?</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Hata: json modülü bulunamadı. Biçim kaydedilemedi</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Uyarı</translation>
     </message>
   </context>
   <context>
@@ -2085,12 +2085,12 @@ En az 2 olmalıdır.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Yapı grubuna ekle</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2218,7 +2218,7 @@ Dizi oluşturulduktan sonra, özellikleri ve türü
     <message>
       <location filename="gui_splines.py" line="60"/>
       <source>B-spline</source>
-      <translation>B-spline</translation>
+      <translation>B-Şerit</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="63"/>
@@ -2824,10 +2824,9 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</source>
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
 those that are at the same level as this object, including the upper group that contains them all.</source>
-      <translation type="unfinished">If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
+      <translation>Seçim bir grupsa, bu grup ve içi içe geçmiş alt gruplardaki tüm nesneler seçilir.
 
-If the selection is a simple object inside a group, it will select the "brother" objects, that is,
-those that are at the same level as this object, including the upper group that contains them all.</translation>
+Eğer seçim bir grup içindeki basit bir nesneyse, "kardeş" nesneleri, yani hepsini içeren üst grup dahil olmak üzere bu nesneyle aynı düzeyde olanları seçecektir.</translation>
     </message>
   </context>
   <context>
@@ -2860,20 +2859,6 @@ Ayrıca üç köşe veya bir Çalışma Düzlemi Proxy'si de seçebilirsiniz.</t
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Çalışma Düzlemi Proxy'si Oluştur</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Mevcut çalışma düzleminden bir proxy (vekil) nesnesi oluşturur.
-Nesne oluşturulduktan sonra, kamera konumunu ve nesnelerin görünürlüğünü geri yüklemek için ağaç görünümünde nesneye çift tıklayın.
-Ardından, ihtiyacınız olan her an farklı bir kamera konumunu ve nesnelerin durumlarını kaydetmek için kullanabilirsiniz.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3351,6 +3336,23 @@ kapalı kenarları dolgulu yüzlere ve parametrik çokgenlere dönüştürün ve
     </message>
   </context>
   <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Çalışma Düzlemi Proxy'si Oluştur</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Mevcut çalışma düzleminden bir proxy (vekil) nesnesi oluşturur.
+Nesne oluşturulduktan sonra, kamera konumunu ve nesnelerin görünürlüğünü geri yüklemek için ağaç görünümünde nesneye çift tıklayın.
+Ardından, ihtiyacınız olan her an farklı bir kamera konumunu ve nesnelerin durumlarını kaydetmek için kullanabilirsiniz.</translation>
+    </message>
+  </context>
+  <context>
     <name>Form</name>
     <message>
       <location filename="TaskSelectPlane.ui" line="14"/>
@@ -3749,22 +3751,22 @@ sırasında değiştirebilirsiniz</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="22"/>
       <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+      <translation>Aşağıdaki değerleri kayıtlı bir biçim hazır ayarı ile doldurur</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>Hazır ayar yükle</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>Geçerli biçimi hazır ayar olarak kaydet...</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
+      <translation>Biçimi, seçilen nesne(ler) üzerine uygula</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="385"/>
@@ -3774,7 +3776,7 @@ sırasında değiştirebilirsiniz</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
+      <translation>Metinler/ölçüler</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="346"/>
@@ -3784,7 +3786,7 @@ sırasında değiştirebilirsiniz</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Metin ve ölçü çizgisi arasındaki boşluk</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3794,7 +3796,7 @@ sırasında değiştirebilirsiniz</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Metnin farklı satırları arasındaki boşluk</translation>
     </message>
   </context>
   <context>
@@ -5199,21 +5201,21 @@ Bu değer, maksimum parça uzunluğudur. </translation>
       <location filename="preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Python dışa aktarıcı, yoksa daha yeni C ++ kullanılır.
+Not: C ++ içe aktarıcı daha hızlıdır, ancak henüz o kadar özellikli değildir</translation>
     </message>
   </context>
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Dönüştürme başarılı</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Dönüştürülüyor:</translation>
     </message>
   </context>
   <context>
@@ -5260,7 +5262,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Etkin söz dizisi:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Hiçbiri</translation>
     </message>
@@ -5315,7 +5317,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Uzunluk</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Açı</translation>
     </message>
@@ -5360,7 +5362,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Yüzlerin sayısı</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Uzaklaşma</translation>
     </message>
@@ -5440,7 +5442,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Etiket</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
@@ -5714,22 +5716,22 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>İşaretlenirse, nesnelerin tamamı yerine alt öğeler değiştirilir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>üst</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Ön</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Yan</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Mevcut çalışma düzlemi</translation>
     </message>
@@ -5754,14 +5756,9 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Metin nesnesini oluşturmak veya metninizi iki boş satırla bitirmek için bu düğmeye basın</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Öteleme mesafesi</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Kırpma mesafesi</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6930,7 +6927,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Ölçüyü ters çevir</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Uzat</translation>
     </message>
@@ -6940,27 +6937,27 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Uzatmak için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Seçim dikdörtgeninin ilk noktasını seçin</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Seçim dikdörtgeninin karşıt noktasını seçin</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Yer değiştirme başlangıç noktasını seçin</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Yer değiştirme bitiş noktasını seçin</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Dikdörtgeni bir Tele Dönüştür</translation>
     </message>
@@ -7065,37 +7062,27 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Kırpılacak veya uzatılacak nesneleri seçin</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Mesafe seçin</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>Öteleme mesafesi</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>Öteleme açısı</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Bu nesneler kırpılamaz, yalnızca Taslak teller ve yaylar desteklenir.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Bu nesneler kırplılamıyor, teller çok fazla</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Bu nesneler kesişmiyor.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>Çok fazla çakışma noktası.</translation>
     </message>
@@ -7125,22 +7112,22 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>B-spline'ı yarat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Çizim düzlemini tanımlamak için bir yüzey, 3 nokta veya bir WP Proxy seçin</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Global yerleşime hizalanmış çalışma düzlemi</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Yön</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Özel</translation>
     </message>
@@ -7250,12 +7237,12 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Otogrup</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Yeni Katman Ekle</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Yapı grubuna ekle</translation>
     </message>
@@ -7275,7 +7262,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Bu nesne türünü ötelenemez</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>Bezier eğrilerinin ötelenmesi şu anda desteklenmiyor</translation>
     </message>
@@ -7402,8 +7389,8 @@ if is the first point to set</translation>
       <location filename="DraftGui.py" line="753"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Koordinatlar, küresel koordinat sistemine bağlıdır. Çalışma 
+düzlemi koordinat sistemini kullanmak için işareti kaldırın</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="759"/>
@@ -7420,79 +7407,84 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Yerel u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Yerel u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Yerel u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Küresel u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Küresel u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Küresel u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Oto-grup:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Noktalar:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="138"/>
       <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
+      <translation>Yerleşim:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="333"/>
       <source>Unable to scale object:</source>
-      <translation type="unfinished">Unable to scale object:</translation>
+      <translation>Nesne ölçeklendirilemiyor:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="337"/>
       <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
+      <translation>Nesneler ölçeklendirilemiyor:</translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="814"/>
       <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+      <translation>Çok fazla nesne seçili, maksimum sayı şuna ayarlanıyor:</translation>
     </message>
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>yansıtılmış</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
+      <translation>Şekil oluşturulamıyor:</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
+      <translation>Seçilen Şekiller bir düzlem belirtmelidir
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>
@@ -7510,7 +7502,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
-      <translation type="unfinished">successfully exported</translation>
+      <translation>başarıyla dışa aktarıldı</translation>
     </message>
   </context>
 </TS>

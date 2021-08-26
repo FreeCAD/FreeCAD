@@ -361,22 +361,22 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5921"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>Suapvalinimai</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5922"/>
       <source>Create a fillet between two lines</source>
-      <translation type="unfinished">Create a fillet between two lines</translation>
+      <translation>Padaryti užapvalinimą tarp dviejų tiesių</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5997"/>
       <source>Sketch fillet</source>
-      <translation type="unfinished">Sketch fillet</translation>
+      <translation>Brėžinio kraštinių suapvalinimas</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6001"/>
       <source>Constraint-preserving sketch fillet</source>
-      <translation type="unfinished">Constraint-preserving sketch fillet</translation>
+      <translation>Apribotasis brėžinio kraštinių suapvalinimas</translation>
     </message>
   </context>
   <context>
@@ -1283,12 +1283,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5890"/>
       <source>Create corner-preserving fillet</source>
-      <translation type="unfinished">Create corner-preserving fillet</translation>
+      <translation>Padaryti kampą išsaugantį kraštų suapvalinimą</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5891"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
+      <translation>Suapvalinimas išlaikant sankirtos tašką ir atsižvelgiant į kitus apribojimus</translation>
     </message>
   </context>
   <context>
@@ -2742,7 +2742,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="1978"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>Neįmanoma nustatyti kreivių sankirtos. Pabandykite pridėti tapatumo apribojimą tarp dviejų kreivių, kurias norite užapvalinti, viršūnių.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5735"/>
@@ -3924,7 +3924,7 @@ Priimtini deriniai: dvi kreivės; galinis taškas ir kreivė; du galiniai taška
     <message>
       <location filename="../../EditDatumDialog.cpp" line="104"/>
       <source>Radius:</source>
-      <translation type="unfinished">Radius:</translation>
+      <translation>Spindulys:</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="108"/>
@@ -5640,7 +5640,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="5998"/>
       <location filename="../../CommandCreateGeo.cpp" line="5999"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>Apskaičiuoja apvalinimo tarp dviejų tiesių spindulį</translation>
     </message>
   </context>
   <context>
@@ -5699,7 +5699,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="6002"/>
       <location filename="../../CommandCreateGeo.cpp" line="6003"/>
       <source>Fillet that preserves constraints and intersection point</source>
-      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+      <translation>Suapvalinimas išlaikant apribojimus ir sankirtos tašką</translation>
     </message>
   </context>
   <context>

@@ -305,7 +305,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Poprawia pierwszą geometrię pod względem obrotu i przesunięcia. Zauważ, że poprawka działa tylko dla bezpośredniego zespołu nadrzędnego. Jeśli układasz geometrię na stosie, geometria nadrzędna nie zostanie poprawiona względem pozostałych zespołów.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Poprawia pierwszą geometrię pod względem obrotu i przesunięcia. Zauważ, że poprawka działa tylko dla bezpośredniego zespołu nadrzędnego. Jeśli układasz geometrię w stos, geometria nadrzędna nie zostanie poprawiona względem pozostałych zespołów.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>

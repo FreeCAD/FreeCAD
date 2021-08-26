@@ -3260,20 +3260,51 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
       <translation>Nicht geladene Arbeitsbereiche</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laden Sie die ausgewählten Arbeitsbereich und fügen Sie ihre Einstellungs-Fenster dem Einstellungs-Dialog hinzu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Lädt die Auswahl</translation>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deaktivierte Arbeitsbereiche&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um Ressourcen zu schonen, lädt FreeCAD keine Arbeitsbereiche solange sie nicht verwendet werden. Wenn sie geladen werden, haben Sie Zugriff auf die zusätzlichen Einstellungen.&lt;/p&gt;&lt;p&gt;Die folgenden Arbeitsbereiche sind in Ihrer Installation verfügbar, aber noch nicht geladen:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Arbeitsbereich</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>

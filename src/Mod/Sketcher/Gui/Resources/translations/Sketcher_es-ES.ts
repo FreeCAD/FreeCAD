@@ -249,7 +249,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2391"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Crear un arco en el croquizador</translation>
+      <translation>Crea un arco en el croquis</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2468"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5027"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>Crear B-spline en el croquis</translation>
+      <translation>Crea una B-spline en el croquis</translation>
     </message>
   </context>
   <context>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4450"/>
       <source>Create a conic in the sketch</source>
-      <translation>Crear una curva cónica en el croquis</translation>
+      <translation>Crea una curva cónica en el croquis</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4555"/>
@@ -394,7 +394,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation>Crea un rectángulo en un boceto</translation>
+      <translation>Crea un rectángulo en el croquis</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1180"/>
@@ -427,7 +427,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7588"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation>Crear un polígono regular en el sketcher</translation>
+      <translation>Crea un polígono regular en el croquis</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7703"/>
@@ -1305,7 +1305,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1852"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Crear una polilínea en el croquis. La tecla 'M' cambia su comportamiento</translation>
+      <translation>Crea una polilínea en el croquis. La tecla 'M' cambia su comportamiento</translation>
     </message>
   </context>
   <context>
@@ -1359,7 +1359,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7557"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation>Crea un polígono regular en el boceto</translation>
+      <translation>Crea un polígono regular en el croquis</translation>
     </message>
   </context>
   <context>
@@ -1377,7 +1377,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7201"/>
       <source>Create a slot in the sketch</source>
-      <translation>Crear ranura en el croquis</translation>
+      <translation>Crea una ranura en el croquis</translation>
     </message>
   </context>
   <context>

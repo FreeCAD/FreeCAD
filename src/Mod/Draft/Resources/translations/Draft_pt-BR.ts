@@ -1117,7 +1117,7 @@ Use 'arch' para forçar a notação de arco dos EUA</translation>
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Se isso for verdadeiro, este objeto incluirá apenas objetos visíveis</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
@@ -1490,7 +1490,7 @@ no menu ferramentas-&gt; Addon Manager</translation>
       <translation>Liga/desliga restrição de plano de trabalho</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Não foi possível inserir o novo objeto em uma peça dimensionada</translation>
     </message>
@@ -1643,7 +1643,7 @@ A rede pode ser transformada em uma rede polar ou circular alterando seu tipo.</
       <translation>Criar chanfro</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Direção do deslocamento não definida. Por favor, mova o mouse de ambos os lados do objeto primeiro para indicar uma direção</translation>
     </message>
@@ -2079,12 +2079,12 @@ It must be at least 2.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Adicionar ao grupo de construção</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2854,20 +2854,6 @@ Você também pode selecionar três vértices ou um proxy de plano de trabalho.<
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Criar um proxy de plano de trabalho</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Cria um objeto proxy a partir do plano de trabalho atual.
-Uma vez que o objeto for criado, dê um clique duplo no ícone na árvore para restaurar a posição da câmera e a visibilidade dos objetos.
-Você pode usá-lo para salvar uma posição diferente de câmera e estados de objetos sempre que precisar.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3341,6 +3327,23 @@ converter arestas fechadas em faces preenchidas e polígonos paramétricos, e me
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>Converte uma polilinha selecionada em uma B-spline, ou uma B-spline em uma polilinha.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Criar um proxy de plano de trabalho</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Cria um objeto proxy a partir do plano de trabalho atual.
+Uma vez que o objeto for criado, dê um clique duplo no ícone na árvore para restaurar a posição da câmera e a visibilidade dos objetos.
+Você pode usá-lo para salvar uma posição diferente de câmera e estados de objetos sempre que precisar.</translation>
     </message>
   </context>
   <context>
@@ -5197,12 +5200,12 @@ Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda</tran
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Conversão bem sucedida</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation>Convertendo:</translation>
     </message>
@@ -5251,7 +5254,7 @@ Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda</tran
       <translation>comando ativo:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Nenhum</translation>
     </message>
@@ -5306,7 +5309,7 @@ Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda</tran
       <translation>Comprimento</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Ângulo</translation>
     </message>
@@ -5351,7 +5354,7 @@ Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda</tran
       <translation>Número de lados</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Deslocamento</translation>
     </message>
@@ -5431,7 +5434,7 @@ Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda</tran
       <translation>Rótulo</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Distância</translation>
     </message>
@@ -5704,22 +5707,22 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Se marcado, os sub-elementos serão modificados em vez de todos os objetos</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Topo</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Frente</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Lateral</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Plano de trabalho atual</translation>
     </message>
@@ -5744,14 +5747,9 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Pressione este botão para criar o objeto de texto, ou para terminar seu texto com duas linhas em branco</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Distância de deslocamento</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Distância de aparação</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6920,7 +6918,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Inverter dimensão</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Esticar</translation>
     </message>
@@ -6930,27 +6928,27 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Selecione um objeto para esticar</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Primeiro ponto do retângulo de seleção</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Ponto oposto do retângulo de seleção</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Escolha o ponto inicial do deslocamento</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Escolha o ponto final do deslocamento</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Convertendo um retângulo em arame</translation>
     </message>
@@ -7055,37 +7053,27 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Selecione objetos para aparar/estender</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Indique a distância</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>A distância de deslocamento</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>O ângulo de deslocamento</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Não é possível aparar estes objetos, somente arames e arcos são suportados.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Não é possível aparar estes objetos: número de arames muito alto</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Esses objetos não se cruzam.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>Número muito alto de pontos de interseção.</translation>
     </message>
@@ -7115,22 +7103,22 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Criar B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Escolha uma face, 3 vértices ou um proxy de plano de trabalho para definir o plano de desenho</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Plano de trabalho alinhado com a posição global de</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Direção</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Personalizado</translation>
     </message>
@@ -7240,12 +7228,12 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Auto-agrupar</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Adicionar uma nova camada</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Adicionar ao grupo de construção</translation>
     </message>
@@ -7265,7 +7253,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Não é possível gerar um deslocamento para esse tipo de objeto</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>O deslocamento de curvas de Bézier não é suportado atualmente</translation>
     </message>
@@ -7481,6 +7469,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
 </source>
       <translation>As Formas Selecionadas devem definir um plano
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

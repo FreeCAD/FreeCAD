@@ -213,7 +213,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6011"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>Yarı çapı/çapı otomatik kısıtla</translation>
     </message>
   </context>
   <context>
@@ -389,12 +389,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>Dikdörtgenler oluştur</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>Eskiz içerisinde bir dikdörtgen oluşturur</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1180"/>
@@ -404,12 +404,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1184"/>
       <source>Centered rectangle</source>
-      <translation type="unfinished">Centered rectangle</translation>
+      <translation>Merkezden dikdörtgen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1188"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>Yuvarlatılmış dikdörtgen</translation>
     </message>
   </context>
   <context>
@@ -629,7 +629,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3141"/>
       <source>Constrain vertical distance</source>
-      <translation type="unfinished">Constrain vertical distance</translation>
+      <translation>Dikey mesafeyi kısıtla</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3142"/>
@@ -774,12 +774,12 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5549"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>Yarı çapı/çapı otomatik kısıtla</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5550"/>
       <source>Fix automatically diameter on circle and radius on arc/pole</source>
-      <translation type="unfinished">Fix automatically diameter on circle and radius on arc/pole</translation>
+      <translation>Daire üzerindeki çapı ve yay/kutup üzerindeki yarı çapı otomatik onar</translation>
     </message>
   </context>
   <context>
@@ -1190,12 +1190,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>Yuvarlatılmış dikdörtgen oluştur</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>Eskizde, yuvarlatılmış bir dikdörtgen oluştur</translation>
     </message>
   </context>
   <context>
@@ -1334,12 +1334,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="729"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>Merkezden bir dikdörtgen oluştur</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="730"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+      <translation>Eskizde, merkezden bir dikdörtgen oluştur</translation>
     </message>
   </context>
   <context>
@@ -1760,12 +1760,12 @@ as mirroring reference.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2192"/>
       <source>Remove axes alignment</source>
-      <translation type="unfinished">Remove axes alignment</translation>
+      <translation>Eksenler hizalamasını kaldır</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2193"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>Seçimin kısıtlama ilişkisini korumaya çalışırken, eksenler hizalamasını kaldırmak için kısıtlamaları değiştirir</translation>
     </message>
   </context>
   <context>
@@ -1980,12 +1980,12 @@ Bu, eğer varsa, 'Destek' özelliğini temizler.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6584"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Kenarı böl</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6585"/>
       <source>Splits an edge into two while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
+      <translation>Kısıtlamaları koruyarak bir kenarı ikiye böl</translation>
     </message>
   </context>
   <context>
@@ -2330,7 +2330,7 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4230"/>
       <source>Swap PointOnObject+tangency with point to curve tangency</source>
-      <translation type="unfinished">Swap PointOnObject+tangency with point to curve tangency</translation>
+      <translation>NesneÜzerindeNokta+teğetlik işlevini eğri teğetliğine nokta işlevi ile değiştir</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4325"/>
@@ -2388,7 +2388,7 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
       <location filename="../../CommandConstraints.cpp" line="5736"/>
       <location filename="../../CommandConstraints.cpp" line="5827"/>
       <source>Add radiam constraint</source>
-      <translation type="unfinished">Add radiam constraint</translation>
+      <translation>Yarıçap kısıtlaması ekle</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6132"/>
@@ -2489,12 +2489,12 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="575"/>
       <source>Add centered sketch box</source>
-      <translation type="unfinished">Add centered sketch box</translation>
+      <translation>Merkezden eskiz çerçevesi ekle</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Add rounded rectangle</source>
-      <translation type="unfinished">Add rounded rectangle</translation>
+      <translation>Yuvarlatılmış dikdörtgen ekle</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1561"/>
@@ -2567,7 +2567,7 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6556"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Kenarı böl</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6731"/>
@@ -2647,7 +2647,7 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2278"/>
       <source>Remove Axes Alignment</source>
-      <translation type="unfinished">Remove Axes Alignment</translation>
+      <translation>Eksen Hizalamayı Kaldır</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
@@ -3417,22 +3417,22 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location filename="../../CommandConstraints.cpp" line="675"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation type="unfinished">Sketcher Constraint Substitution</translation>
+      <translation>Taslakçı Kısıtlama Yer Değişimi</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="681"/>
       <source>Keep notifying me of constraint substitutions</source>
-      <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
+      <translation>Kısıtlama yer değişikliklerinde beni uyarmaya devam et</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2674"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied instead.</translation>
+      <translation>Bunun yerine, kenar teğetliğine bitiş noktası uygulandı.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4242"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
+      <translation>Kenar teğetliğine bitiş noktası uygulandı. 'Nesne üzerinde nokta' kısıtlaması silindi.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4923"/>
@@ -3779,7 +3779,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2266"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
-      <translation type="unfinished">Removal of axes alignment requires at least one selected non-external geometric element</translation>
+      <translation>Eksenleri hizalamayı kaldırma için en az bir seçili iç geometrik eleman gerekir</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="80"/>
@@ -4318,12 +4318,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="20"/>
       <source>Working colors</source>
-      <translation type="unfinished">Working colors</translation>
+      <translation>Çalışma renkleri</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
       <source>Coordinate text</source>
-      <translation type="unfinished">Coordinate text</translation>
+      <translation>Koordinat metni</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
@@ -4333,27 +4333,27 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
+      <translation>Çizgi oluşturuluyor</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="115"/>
       <source>Cursor crosshair</source>
-      <translation type="unfinished">Cursor crosshair</translation>
+      <translation>İmleç göstergesi</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="140"/>
       <source>Geometric element colors</source>
-      <translation type="unfinished">Geometric element colors</translation>
+      <translation>Geometrik eleman renkleri</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="154"/>
       <source>Internal alignment edge</source>
-      <translation type="unfinished">Internal alignment edge</translation>
+      <translation>İç hizalama kenarı</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="167"/>
       <source>Unconstrained</source>
-      <translation type="unfinished">Unconstrained</translation>
+      <translation>Kısıtlanmamış</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="180"/>
@@ -4395,7 +4395,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="678"/>
       <source>Deactivated constraint</source>
-      <translation type="unfinished">Deactivated constraint</translation>
+      <translation>Devre dışı kısıtlama</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="723"/>
@@ -4415,7 +4415,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="442"/>
       <source>Constrained</source>
-      <translation type="unfinished">Constrained</translation>
+      <translation>Kısıtlanmış</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="466"/>
@@ -4425,7 +4425,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="479"/>
       <source>Fully constrained Sketch</source>
-      <translation type="unfinished">Fully constrained Sketch</translation>
+      <translation>Tamamen kısıtlanmış Eskiz</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
@@ -4460,12 +4460,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="556"/>
       <source>Constraint colors</source>
-      <translation type="unfinished">Constraint colors</translation>
+      <translation>Kısıtlama renkleri</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="570"/>
       <source>Constraint symbols</source>
-      <translation type="unfinished">Constraint symbols</translation>
+      <translation>Kısıtlama simgeleri</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="577"/>
@@ -4480,7 +4480,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="651"/>
       <source>Expression dependent constraint</source>
-      <translation type="unfinished">Expression dependent constraint</translation>
+      <translation>İfadeye bağımlı kısıtlama</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="658"/>
@@ -4607,12 +4607,12 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+      <translation>Düzenlemeye başlandığında dikey kamerayı zorla</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="244"/>
       <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <translation>Eskizi Kesit Görünüşü kipinde aç</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
@@ -4643,15 +4643,15 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>Düzenleme kipine girildiğinde, kameranın dikey görünümüne zorla.
+Sadece "Kamera konumunu düzenleme sonrası eski haline getir" etkin ise çalışır.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Open a by default sketch in Section View mode.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a by default sketch in Section View mode.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>Bir eskizi varsayılan olarak Kesit Görünüşü kipinde aç.
+Bu durumda nesneler, sadece taslak düzlemi arkasında görünür.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="285"/>
@@ -5339,27 +5339,27 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6554"/>
       <source>Over-constrained sketch</source>
-      <translation type="unfinished">Over-constrained sketch</translation>
+      <translation>Aşırı kısıtlanmış eskiz</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6561"/>
       <source>Sketch contains malformed constraints</source>
-      <translation type="unfinished">Sketch contains malformed constraints</translation>
+      <translation>Eskiz, hatalı biçimlendirilmiş kısıtlamalar içeriyor</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6568"/>
       <source>Sketch contains conflicting constraints</source>
-      <translation type="unfinished">Sketch contains conflicting constraints</translation>
+      <translation>Eskiz çakışan kısıtlamaları içeriyor</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6576"/>
       <source>Sketch contains redundant constraints</source>
-      <translation type="unfinished">Sketch contains redundant constraints</translation>
+      <translation>Eskiz, gereksiz kısıtlamaları içeriyor</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6585"/>
       <source>Sketch contains partially redundant constraints</source>
-      <translation type="unfinished">Sketch contains partially redundant constraints</translation>
+      <translation>Eskiz, kısmen gereksiz kısıtlamalar içeriyor</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6555"/>
@@ -5500,7 +5500,7 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../CommandConstraints.cpp" line="6013"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>Bir çember veya yayın yarı çapını/çapını onar</translation>
     </message>
   </context>
   <context>
@@ -5517,7 +5517,7 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../CommandConstraints.cpp" line="6012"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>Bir çember veya yayın yarı çapını/çapını onar</translation>
     </message>
   </context>
   <context>
@@ -5656,7 +5656,7 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1189"/>
       <source>Create a rounded rectangle</source>
-      <translation type="unfinished">Create a rounded rectangle</translation>
+      <translation>Yuvarlatılmış dikdörtgen oluştur</translation>
     </message>
   </context>
   <context>
@@ -5697,7 +5697,7 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1181"/>
       <source>Create a rectangle</source>
-      <translation type="unfinished">Create a rectangle</translation>
+      <translation>Dikdörtgen oluştur</translation>
     </message>
   </context>
   <context>
@@ -5705,7 +5705,7 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1185"/>
       <source>Create a centered rectangle</source>
-      <translation type="unfinished">Create a centered rectangle</translation>
+      <translation>Merkezden dikdörtgen oluştur</translation>
     </message>
   </context>
   <context>

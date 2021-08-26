@@ -949,32 +949,32 @@
       <translation>Se é verdadeiro, os elementos son aliñados cos eixos</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="714"/>
+      <location filename="ArchWall.py" line="717"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>A lonxitude desta parede. Non se emprega se esta parede está baseada sobre un obxecto subxacente</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="716"/>
+      <location filename="ArchWall.py" line="719"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>A largura desta parede. Non se emprega se esta parede está baseada nunha cara</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="726"/>
+      <location filename="ArchWall.py" line="729"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>A altura desta parede. Manteña 0 para automática. Non usada se esta parede está baseada nun sólido</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="731"/>
+      <location filename="ArchWall.py" line="734"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>O aliñamento desta parede no seu obxecto de base, se é aplicábel</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="736"/>
+      <location filename="ArchWall.py" line="739"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Número de caras do obxecto base usado para construír esta parede</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="738"/>
+      <location filename="ArchWall.py" line="741"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>A separación entre esta parede e a súa liña de base (só para aliñacións esquerda e dereita)</translation>
     </message>
@@ -1054,7 +1054,7 @@
       <translation>Remonte das banceiras na parte inferior dos chanzos</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1387"/>
+      <location filename="ArchWindow.py" line="1389"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>O número de arames que define o burato. Un valor de 0 significa automático</translation>
     </message>
@@ -1074,7 +1074,7 @@
       <translation>Unha transformación para aplicar a cada etiqueta</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="867"/>
+      <location filename="ArchAxis.py" line="871"/>
       <source>The axes this system is made of</source>
       <translation>Eixos de que esta feito este sistema</translation>
     </message>
@@ -1204,7 +1204,7 @@
       <translation>Tamaño da fonte</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="869"/>
+      <location filename="ArchAxis.py" line="873"/>
       <source>The placement of this axis system</source>
       <translation>Situación do sistema de eixos</translation>
     </message>
@@ -1224,57 +1224,57 @@
       <translation>Largura da lixa desde obxecto</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="503"/>
+      <location filename="ArchBuildingPart.py" line="502"/>
       <source>An optional unit to express levels</source>
       <translation>Unha unidade opcional para expresar niveis</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="505"/>
+      <location filename="ArchBuildingPart.py" line="504"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Unha transformación a aplicar á marca de nivel</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="508"/>
+      <location filename="ArchBuildingPart.py" line="507"/>
       <source>If true, show the level</source>
       <translation>Sendo verdadeiro, amosa o nivel</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="511"/>
+      <location filename="ArchBuildingPart.py" line="510"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Se é certo, amosa a unidade na etiqueta de nivel</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="528"/>
+      <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Se é certo, cando estea activado, o plano de traballo adaptarase automaticamente a este nivel</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="518"/>
+      <location filename="ArchBuildingPart.py" line="517"/>
       <source>The font to be used for texts</source>
       <translation>Fonte a usar nos textos</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="521"/>
+      <location filename="ArchBuildingPart.py" line="520"/>
       <source>The font size of texts</source>
       <translation>Tamaño da fonte nos textos</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="533"/>
+      <location filename="ArchBuildingPart.py" line="532"/>
       <source>Camera position data associated with this object</source>
       <translation>Datos de posición da cámara asociados con este obxecto</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="536"/>
+      <location filename="ArchBuildingPart.py" line="535"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Activado, a vista almacenada neste obxecto restáurase ao facer dobre clic</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="524"/>
+      <location filename="ArchBuildingPart.py" line="523"/>
       <source>The individual face colors</source>
       <translation>Cores para faces individuais</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="531"/>
+      <location filename="ArchBuildingPart.py" line="530"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Definido como certo, o plano de traballo será mantido en modo automático</translation>
     </message>
@@ -1419,42 +1419,42 @@
       <translation>A dirección dun treito de escaleira despois do relanzo</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="747"/>
+      <location filename="ArchWall.py" line="750"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Habilitar isto para facer bloques de parede xerados</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="749"/>
+      <location filename="ArchWall.py" line="752"/>
       <source>The length of each block</source>
       <translation>A lonxitude de cada bloque</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="751"/>
+      <location filename="ArchWall.py" line="754"/>
       <source>The height of each block</source>
       <translation>O alto de cada bloque</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="753"/>
+      <location filename="ArchWall.py" line="756"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>Desprazamento horizontal da primeira liña de bloques</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="755"/>
+      <location filename="ArchWall.py" line="758"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>Desprazamento horizontal da segunda liña de bloques</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="757"/>
+      <location filename="ArchWall.py" line="760"/>
       <source>The size of the joints between each block</source>
       <translation>Tamaño das unións entre cada bloque</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="759"/>
+      <location filename="ArchWall.py" line="762"/>
       <source>The number of entire blocks</source>
       <translation>O número de bloques enteiros</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="762"/>
+      <location filename="ArchWall.py" line="765"/>
       <source>The number of broken blocks</source>
       <translation>O número de bloques rompidos</translation>
     </message>
@@ -1604,27 +1604,27 @@
       <translation>Grosor do desnivel</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="549"/>
+      <location filename="ArchBuildingPart.py" line="548"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Se é verdadeiro, amosa obxectos contidos no Part Building que adoptarán esa liña, cor e axustes de transparencia</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="551"/>
+      <location filename="ArchBuildingPart.py" line="550"/>
       <source>The line width of child objects</source>
       <translation>Largura da liña de obxectos fillos</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="554"/>
+      <location filename="ArchBuildingPart.py" line="553"/>
       <source>The line color of child objects</source>
       <translation>A cor da liña de obxectos fillos</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="558"/>
+      <location filename="ArchBuildingPart.py" line="557"/>
       <source>The shape color of child objects</source>
       <translation>A cor da forma de obxectos fillos</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="562"/>
+      <location filename="ArchBuildingPart.py" line="561"/>
       <source>The transparency of child objects</source>
       <translation>A transparencia de obxectos fillos</translation>
     </message>
@@ -1644,37 +1644,37 @@
       <translation type="unfinished">This property stores an inventor representation for this object</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="513"/>
+      <location filename="ArchBuildingPart.py" line="512"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation type="unfinished">If true, display offset will affect the origin mark too</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="515"/>
+      <location filename="ArchBuildingPart.py" line="514"/>
       <source>If true, the object's label is displayed</source>
       <translation type="unfinished">If true, the object's label is displayed</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="542"/>
+      <location filename="ArchBuildingPart.py" line="541"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation type="unfinished">If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="544"/>
+      <location filename="ArchBuildingPart.py" line="543"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation type="unfinished">A slot to save the inventor representation of this object, if enabled</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="566"/>
+      <location filename="ArchBuildingPart.py" line="565"/>
       <source>Cut the view above this level</source>
       <translation type="unfinished">Cut the view above this level</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="568"/>
+      <location filename="ArchBuildingPart.py" line="567"/>
       <source>The distance between the level plane and the cut line</source>
       <translation type="unfinished">The distance between the level plane and the cut line</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="571"/>
+      <location filename="ArchBuildingPart.py" line="570"/>
       <source>Turn cutting on when activating this level</source>
       <translation type="unfinished">Turn cutting on when activating this level</translation>
     </message>
@@ -1869,22 +1869,22 @@
       <translation type="unfinished">How to draw the rods</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="720"/>
+      <location filename="ArchWall.py" line="723"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
       <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="723"/>
+      <location filename="ArchWall.py" line="726"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
       <translation type="unfinished">This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="728"/>
+      <location filename="ArchWall.py" line="731"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="538"/>
+      <location filename="ArchBuildingPart.py" line="537"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
     </message>
@@ -2047,7 +2047,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1645"/>
+      <location filename="ArchWindow.py" line="1647"/>
       <source>Components</source>
       <translation>Compoñentes</translation>
     </message>
@@ -2057,7 +2057,7 @@
       <translation>Compoñentes deste obxecto</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1112"/>
+      <location filename="ArchAxis.py" line="1116"/>
       <source>Axes</source>
       <translation>Eixos</translation>
     </message>
@@ -2067,27 +2067,27 @@
       <translation>Crear eixo</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1113"/>
+      <location filename="ArchAxis.py" line="1117"/>
       <source>Remove</source>
       <translation>Rexeitar</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1114"/>
+      <location filename="ArchAxis.py" line="1118"/>
       <source>Add</source>
       <translation>Engadir</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="848"/>
+      <location filename="ArchAxis.py" line="852"/>
       <source>Axis</source>
       <translation>Eixo</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="849"/>
+      <location filename="ArchAxis.py" line="853"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="850"/>
+      <location filename="ArchAxis.py" line="854"/>
       <source>Angle</source>
       <translation>Ángulo</translation>
     </message>
@@ -2197,7 +2197,7 @@
       <translation>Crear estrutura</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="602"/>
+      <location filename="ArchWall.py" line="605"/>
       <source>Create Wall</source>
       <translation>Crear parede</translation>
     </message>
@@ -2222,42 +2222,42 @@
       <translation>Crear a fiestra</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1641"/>
+      <location filename="ArchWindow.py" line="1643"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1642"/>
+      <location filename="ArchWindow.py" line="1644"/>
       <source>Create/update component</source>
       <translation>Crear/actualizar compoñente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1643"/>
+      <location filename="ArchWindow.py" line="1645"/>
       <source>Base 2D object</source>
       <translation>Obxecto base 2D</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1649"/>
+      <location filename="ArchWindow.py" line="1651"/>
       <source>Wires</source>
       <translation>Arames</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1646"/>
+      <location filename="ArchWindow.py" line="1648"/>
       <source>Create new component</source>
       <translation>Crear novo compoñente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1647"/>
+      <location filename="ArchWindow.py" line="1649"/>
       <source>Name</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1648"/>
+      <location filename="ArchWindow.py" line="1650"/>
       <source>Type</source>
       <translation>Tipo</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1650"/>
+      <location filename="ArchWindow.py" line="1652"/>
       <source>Thickness</source>
       <translation>Grosor</translation>
     </message>
@@ -2332,22 +2332,22 @@
       <translation>Non foi posíbel calcular unha forma</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="659"/>
+      <location filename="ArchWall.py" line="662"/>
       <source>Merge Wall</source>
       <translation>Unir parede</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="672"/>
+      <location filename="ArchWall.py" line="675"/>
       <source>Please select only wall objects</source>
       <translation>Por favor, escolla só obxectos parede</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="674"/>
+      <location filename="ArchWall.py" line="677"/>
       <source>Merge Walls</source>
       <translation>Unir Paredes</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="847"/>
+      <location filename="ArchAxis.py" line="851"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Distancias (mm) e ángulos (graos) entre eixos</translation>
     </message>
@@ -2799,22 +2799,22 @@
       <translation>Porta</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1652"/>
+      <location filename="ArchWindow.py" line="1654"/>
       <source>Hinge</source>
       <translation>Gonzo</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1653"/>
+      <location filename="ArchWindow.py" line="1655"/>
       <source>Opening mode</source>
       <translation>Xeito de apertura</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1658"/>
+      <location filename="ArchWindow.py" line="1660"/>
       <source>Get selected edge</source>
       <translation>Coller bordo escolmado</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1659"/>
+      <location filename="ArchWindow.py" line="1661"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Prema para recuperar o bordo escolmado</translation>
     </message>
@@ -2844,17 +2844,17 @@
       <translation>Nova capa</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="473"/>
+      <location filename="ArchWall.py" line="476"/>
       <source>Wall Presets...</source>
       <translation>Definicións de muros...</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1636"/>
+      <location filename="ArchWindow.py" line="1638"/>
       <source>Hole wire</source>
       <translation>Burato</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1638"/>
+      <location filename="ArchWindow.py" line="1640"/>
       <source>Pick selected</source>
       <translation>Elixir o escolmado</translation>
     </message>
@@ -2869,67 +2869,67 @@
       <translation>Crear Grella</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="851"/>
+      <location filename="ArchAxis.py" line="855"/>
       <source>Label</source>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1115"/>
+      <location filename="ArchAxis.py" line="1119"/>
       <source>Axis system components</source>
       <translation>Compoñentes do sistema de eixos</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1441"/>
+      <location filename="ArchAxis.py" line="1445"/>
       <source>Grid</source>
       <translation>Grella</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1442"/>
+      <location filename="ArchAxis.py" line="1446"/>
       <source>Total width</source>
       <translation>Largura total</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1443"/>
+      <location filename="ArchAxis.py" line="1447"/>
       <source>Total height</source>
       <translation>Altura total</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1444"/>
+      <location filename="ArchAxis.py" line="1448"/>
       <source>Add row</source>
       <translation>Engadir ringleira</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1445"/>
+      <location filename="ArchAxis.py" line="1449"/>
       <source>Del row</source>
       <translation>Borrar ringleira</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1446"/>
+      <location filename="ArchAxis.py" line="1450"/>
       <source>Add col</source>
       <translation>Engadir columna</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1447"/>
+      <location filename="ArchAxis.py" line="1451"/>
       <source>Del col</source>
       <translation>Borrar columna</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1448"/>
+      <location filename="ArchAxis.py" line="1452"/>
       <source>Create span</source>
       <translation>Crear van</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1449"/>
+      <location filename="ArchAxis.py" line="1453"/>
       <source>Remove span</source>
       <translation>Quitar van</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1450"/>
+      <location filename="ArchAxis.py" line="1454"/>
       <source>Rows</source>
       <translation>Ringleiras</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1450"/>
+      <location filename="ArchAxis.py" line="1454"/>
       <source>Columns</source>
       <translation>Columnas</translation>
     </message>
@@ -2944,12 +2944,12 @@
       <translation>Fronteiras de espazo</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="1029"/>
+      <location filename="ArchWall.py" line="1042"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Erro: Non se pode modificar o obxecto base desta parede</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1635"/>
+      <location filename="ArchWindow.py" line="1637"/>
       <source>Window elements</source>
       <translation>Elementos da fiestra</translation>
     </message>
@@ -3014,22 +3014,22 @@
       <translation>Por favor escolma polo menos un eixo</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1177"/>
+      <location filename="ArchAxis.py" line="1181"/>
       <source>Auto height is larger than height</source>
       <translation>A altura automática é maior que o alto</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1186"/>
+      <location filename="ArchAxis.py" line="1190"/>
       <source>Total row size is larger than height</source>
       <translation>O tamaño total da fila é maior que a altura</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1208"/>
+      <location filename="ArchAxis.py" line="1212"/>
       <source>Auto width is larger than width</source>
       <translation>A largura automática é maior que a largura</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1217"/>
+      <location filename="ArchAxis.py" line="1221"/>
       <source>Total column size is larger than width</source>
       <translation>O tamaño total das columnas é maior que a largura</translation>
     </message>
@@ -3244,7 +3244,7 @@
       <translation>Redimensionar</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="508"/>
+      <location filename="ArchWall.py" line="511"/>
       <source>Center</source>
       <translation>Centro</translation>
     </message>
@@ -3279,12 +3279,12 @@
       <translation>Intersección atopada.</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="665"/>
+      <location filename="ArchWall.py" line="668"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>A parede escolmada non contén ningunha sub-parede para fundir</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="922"/>
+      <location filename="ArchWall.py" line="935"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Non se pode calcular os bloques para a parede</translation>
     </message>
@@ -3294,27 +3294,27 @@
       <translation>Escolme unha face nun obxecto existente ou escolme un pre-definido</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1597"/>
+      <location filename="ArchWindow.py" line="1599"/>
       <source>Unable to create component</source>
       <translation>Non é posíbel crear o compoñente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1637"/>
+      <location filename="ArchWindow.py" line="1639"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>O número de arame que define un burato no obxecto hóspede. Un valor de cero adoptará automáticamente o arame máis grande</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1656"/>
+      <location filename="ArchWindow.py" line="1658"/>
       <source>+ default</source>
       <translation>+ por defecto</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1655"/>
+      <location filename="ArchWindow.py" line="1657"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Se se marca, a Estrutura predeterminada desta fiestra engadírase ao valor ingresado aquí</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1657"/>
+      <location filename="ArchWindow.py" line="1659"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Se se marca esta opción, o valor predeterminado de desprazamento desta fiestra engadírase ao valor ingresado aquí</translation>
     </message>
@@ -3469,37 +3469,37 @@
       <translation>&amp;Seguir</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="339"/>
+      <location filename="ArchWall.py" line="342"/>
       <source>First point of wall</source>
       <translation>Primeiro punto da parede</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="469"/>
+      <location filename="ArchWall.py" line="472"/>
       <source>Wall options</source>
       <translation>Opcións da parede</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="474"/>
+      <location filename="ArchWall.py" line="477"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Esta lista amosa tódolos obxectos MultiMateriais deste documento. Crea un novo para definir tipos de paredes.</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="506"/>
+      <location filename="ArchWall.py" line="509"/>
       <source>Alignment</source>
       <translation>Aliñamento</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="508"/>
+      <location filename="ArchWall.py" line="511"/>
       <source>Left</source>
       <translation>Esquerda</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="509"/>
+      <location filename="ArchWall.py" line="512"/>
       <source>Right</source>
       <translation>Dereita</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="525"/>
+      <location filename="ArchWall.py" line="528"/>
       <source>Use sketches</source>
       <translation>Usar esbozos</translation>
     </message>
@@ -3679,17 +3679,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Parede</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1171"/>
+      <location filename="ArchWindow.py" line="1173"/>
       <source>This window has no defined opening</source>
       <translation type="unfinished">This window has no defined opening</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1660"/>
+      <location filename="ArchWindow.py" line="1662"/>
       <source>Invert opening direction</source>
       <translation type="unfinished">Invert opening direction</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1661"/>
+      <location filename="ArchWindow.py" line="1663"/>
       <source>Invert hinge position</source>
       <translation type="unfinished">Invert hinge position</translation>
     </message>
@@ -3945,7 +3945,7 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="ArchAxis.py" line="1617"/>
+      <location filename="ArchAxis.py" line="1621"/>
       <source>Axis tools</source>
       <translation>Ferramentas de eixos</translation>
     </message>
@@ -4119,62 +4119,62 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="ArchAxis.py" line="1131"/>
+      <location filename="ArchAxis.py" line="1135"/>
       <source>The number of rows</source>
       <translation>Número de ringleiras</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1133"/>
+      <location filename="ArchAxis.py" line="1137"/>
       <source>The number of columns</source>
       <translation>Número de columnas</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1135"/>
+      <location filename="ArchAxis.py" line="1139"/>
       <source>The sizes for rows</source>
       <translation>Tamaños das filas</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1137"/>
+      <location filename="ArchAxis.py" line="1141"/>
       <source>The sizes of columns</source>
       <translation>Tamaños das columnas</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1139"/>
+      <location filename="ArchAxis.py" line="1143"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Rangos de extensión das celas que se fusionan</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1141"/>
+      <location filename="ArchAxis.py" line="1145"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Tipo de puntos 3D producidos por este obxecto grella</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1144"/>
+      <location filename="ArchAxis.py" line="1148"/>
       <source>The total width of this grid</source>
       <translation>Largura total desta grella</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1146"/>
+      <location filename="ArchAxis.py" line="1150"/>
       <source>The total height of this grid</source>
       <translation>Altura total desta grella</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1148"/>
+      <location filename="ArchAxis.py" line="1152"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Crea divisións automáticas na columna (poñer 0 para desactivar)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1150"/>
+      <location filename="ArchAxis.py" line="1154"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Crea divisións de ringleira automáticas (poñer a 0 para desactivar)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1152"/>
+      <location filename="ArchAxis.py" line="1156"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Cando no modo punto medio da aresta, se esta grella debe reorientar aos seus fillos ao longo das normais ó bordo ou non</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1154"/>
+      <location filename="ArchAxis.py" line="1158"/>
       <source>The indices of faces to hide</source>
       <translation>Índices das caras a agochar</translation>
     </message>
@@ -4216,12 +4216,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="ArchWall.py" line="628"/>
+      <location filename="ArchWall.py" line="631"/>
       <source>Merge Walls</source>
       <translation>Unir Paredes</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="631"/>
+      <location filename="ArchWall.py" line="634"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Une as paredes escolmadas, se é posible</translation>
     </message>
@@ -4596,12 +4596,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="ArchWall.py" line="271"/>
+      <location filename="ArchWall.py" line="274"/>
       <source>Wall</source>
       <translation>Parede</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="275"/>
+      <location filename="ArchWall.py" line="278"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Crea un obxecto Parede desde cero ou a partir dun obxecto escolmado (esbozo, arame, cara ou sólido)</translation>
     </message>
@@ -4925,7 +4925,7 @@ Leave blank to use all objects from the document</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="ArchBuildingPart.py" line="857"/>
+      <location filename="ArchBuildingPart.py" line="856"/>
       <source>Writing camera position</source>
       <translation>Escribir posición da cámara</translation>
     </message>

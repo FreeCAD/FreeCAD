@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation>Mocowanie ...</translation>
+      <translation>Dołączenie ...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Mocowanie</translation>
+      <translation>Dołączenie</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation>Zignorowano. Nie można dołączyć obiektu do siebie!</translation>
+      <translation>Zignorowano. Nie można dołączyć obiektu do samego siebie!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation>Dołączono z trybem {mode}</translation>
+      <translation>Załączony w trybie {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
@@ -106,12 +106,12 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
-      <translation>Odsunięcie załącznika:</translation>
+      <translation>Odsunięcie dołączenia:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Odsunięcie załącznika (nieaktywny - nie podłączony):</translation>
+      <translation>Odsunięcie dołączenia: (nieaktywny - nie dołączono):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
@@ -364,6 +364,16 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
       <translation>Pokrój część</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -385,16 +395,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 lub z kształtami wewnątrz bryły złożonej.
 Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
 Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -850,7 +850,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="847"/>
       <source>Set colors...</source>
-      <translation>Ustaw kolory...</translation>
+      <translation>Ustaw kolory ...</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="79"/>
@@ -2073,7 +2073,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -2512,7 +2512,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Cut</source>
-      <translation>Wytnij</translation>
+      <translation>Przetnij</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -2622,12 +2622,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Union</source>
-      <translation>Suma</translation>
+      <translation>Połączenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Make a union of several shapes</source>
-      <translation>Utwórz sumę kilku kształtów</translation>
+      <translation>Utwórz połączenie kilku kształtów</translation>
     </message>
   </context>
   <context>
@@ -3091,7 +3091,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset:</source>
-      <translation>Odsunięcie załącznika:</translation>
+      <translation>Odsunięcie dołączenia:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -3126,7 +3126,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Obróć strony</translation>
+      <translation>Odwróć strony</translation>
     </message>
   </context>
   <context>
@@ -3207,7 +3207,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="46"/>
       <source>Union</source>
-      <translation>Suma</translation>
+      <translation>Połączenie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
@@ -3281,7 +3281,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="415"/>
       <source>Performing union on non-solids is not possible</source>
-      <translation>Utworzenie sumy na obiektach nie będących bryłami nie jest możliwe</translation>
+      <translation>Utworzenie złączenia na obiektach nie będących bryłami nie jest możliwe</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="424"/>
@@ -3384,7 +3384,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
@@ -3632,7 +3632,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="827"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="829"/>
@@ -4000,7 +4000,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../DlgPrimitives.ui" line="42"/>
       <location filename="../../DlgPrimitives.cpp" line="401"/>
       <source>Box</source>
-      <translation>Prostopadłościan</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
@@ -4875,7 +4875,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation>Wybierz jedną lub więcej połączonych krawędzi, które chcesz wyciągnąć wzdłuż.</translation>
+      <translation>Wybierz jedną lub więcej połączonych krawędzi, po których chcesz wykonać przeciągnięcie.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4910,7 +4910,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Wybierz jedną lub więcej połączonych krawędzi w widoku 3D i naciśnij przycisk "Gotowe"</translation>
+      <translation>Wybierz jedną lub więcej połączonych krawędzi w oknie widoku 3D i naciśnij przycisk "Gotowe"</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
@@ -4926,7 +4926,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="435"/>
       <source>Sweep</source>
-      <translation>Rozciągnięcie po ścieżce</translation>
+      <translation>Wyciągnięcie po ścieżce</translation>
     </message>
   </context>
   <context>
@@ -4975,7 +4975,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset:</source>
-      <translation>Odsunięcie załącznika:</translation>
+      <translation>Odsunięcie dołączenia:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5010,7 +5010,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Obróć strony</translation>
+      <translation>Odwróć strony</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
@@ -5040,7 +5040,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Odsunięcie załącznika (nieaktywny - nie podłączony):</translation>
+      <translation>Odsunięcie dołączenia: (nieaktywny - nie dołączono):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
@@ -5127,7 +5127,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Aby wybrać ściany zaznacz je w widoku 3D.</translation>
+      <translation>Aby wybrać ściany zaznacz je w oknie widoku 3D.</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
@@ -5302,7 +5302,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Rozciągnięcie po ścieżce</translation>
+      <translation>Wyciągnięcie po ścieżce</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>

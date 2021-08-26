@@ -137,7 +137,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="103"/>
       <source>Close shape</source>
-      <translation type="unfinished">Close shape</translation>
+      <translation>Закрити фігуру</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="104"/>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6007"/>
       <source>Constrain diameter</source>
-      <translation type="unfinished">Constrain diameter</translation>
+      <translation>Обмежити діаметр</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6011"/>
@@ -272,12 +272,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5026"/>
       <source>Create a B-spline</source>
-      <translation type="unfinished">Create a B-spline</translation>
+      <translation>Створити B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5027"/>
       <source>Create a B-spline in the sketch</source>
-      <translation type="unfinished">Create a B-spline in the sketch</translation>
+      <translation>Створити B-сплайн в ескізі</translation>
     </message>
   </context>
   <context>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5921"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>Скруглення</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5922"/>
@@ -575,7 +575,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5230"/>
       <source>Constrain diameter</source>
-      <translation type="unfinished">Constrain diameter</translation>
+      <translation>Обмежити діаметр</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5231"/>
@@ -887,12 +887,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>
-      <translation type="unfinished">Convert geometry to B-spline</translation>
+      <translation>Перетворити геометрію на B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="386"/>
       <source>Converts the selected geometry to a B-spline</source>
-      <translation type="unfinished">Converts the selected geometry to a B-spline</translation>
+      <translation>Перетворює виділену геометрію на B-сплайн</translation>
     </message>
   </context>
   <context>

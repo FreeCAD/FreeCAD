@@ -1121,12 +1121,12 @@ Használja az 'arch' kifejezést amerikai US arch jelölésének kikényszerít�
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Ha ez igaz, akkor ez a tárgy csak látható tárgyelemeket tartalmaz</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Ez a tárgy csak akkor kerül újraszámításra, ha ez igaz.</translation>
     </message>
   </context>
   <context>
@@ -1494,7 +1494,7 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
       <translation>Be- és kikapcsolja a kényszerítést a munkasíkra</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nem lehet új tárgyat beszúrni egy méretezett alkatrészbe</translation>
     </message>
@@ -1647,7 +1647,7 @@ Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megv
       <translation>Letörés létrehozása</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Az eltolás iránya nem meghatározott. Először mozgassa az egeret a tárgy egyik oldalára, hogy meghatározza az irányt</translation>
     </message>
@@ -2087,12 +2087,12 @@ Legalább 2-esnek kell lennie.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Hozzáadás az építési csoporthoz</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2861,20 +2861,6 @@ Három csúcspontot vagy egy munkasík proxyt is kijelölhet.</translation>
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Munkasík proxy létrehozása</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Proxy tárgyat hoz létre az aktuális munkasíkból.
-A tárgy létrehozása után kattintson rá duplán a fa nézetben a kamera helyzetének és a tárgy láthatóságának visszaállításához.
-Ezután használhatja különböző kamera helyzetek mentéséhez és a tárgyakat állapotát bármikor, amikor akarja.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3348,6 +3334,23 @@ Egyesítheti például a kijelölt tárgyakat egyetlen tárgyba, vagy átalakít
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>A kijelölt vonalláncot B-görbévé vagy egy B-görbét vonallánccá alakítja.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Munkasík proxy létrehozása</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Proxy tárgyat hoz létre az aktuális munkasíkból.
+A tárgy létrehozása után kattintson rá duplán a fa nézetben a kamera helyzetének és a tárgy láthatóságának visszaállításához.
+Ezután használhatja különböző kamera helyzetek mentéséhez és a tárgyakat állapotát bármikor, amikor akarja.</translation>
     </message>
   </context>
   <context>
@@ -5210,14 +5213,14 @@ Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translat
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Az átalakítás sikeres</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
-      <translation>Átváltás:</translation>
+      <translation>Konverzió:</translation>
     </message>
   </context>
   <context>
@@ -5264,7 +5267,7 @@ Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translat
       <translation>aktív parancs:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Egyik sem</translation>
     </message>
@@ -5319,7 +5322,7 @@ Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translat
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
@@ -5364,7 +5367,7 @@ Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translat
       <translation>Oldalak száma</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Eltolás</translation>
     </message>
@@ -5444,7 +5447,7 @@ Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translat
       <translation>Felirat</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
@@ -5718,22 +5721,22 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Ha be van jelölve, az al-elemek lesznek módosítva a teljes tárgy helyett</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Felülnézet</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Elölnézet</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Oldal</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Jelenlegi munka sík</translation>
     </message>
@@ -5758,14 +5761,9 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Nyomja meg ezt a gombot a szöveges tárgy létrehozásához, vagy fejezze be a szöveget két üres vonallal</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Eltolási távolság</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Vágási távolság</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6881,7 +6879,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="gui_scale.py" line="203"/>
       <source>Some subelements could not be scaled.</source>
-      <translation>Egyes al elemeket nem lehetett méretezni.</translation>
+      <translation>Egyes al-elemeket nem lehetett méretezni.</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="340"/>
@@ -6916,7 +6914,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="gui_beziers.py" line="451"/>
       <source>Create BezCurve</source>
-      <translation>Béz-görbe létrehozás</translation>
+      <translation>Bézier-görbe létrehozás</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="376"/>
@@ -6934,7 +6932,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Méretek megfordítása</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Nyújtás</translation>
     </message>
@@ -6944,27 +6942,27 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Jelöljön ki egy tárgyat a nyújtáshoz</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Válassza ki az első pontot a téglalap kijelölésén</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Válassza ki a második pontot a téglalap kijelölésén</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Elmozdulás kezdőpontjának kiválasztása</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Elmozdulás végpontjának kiválasztása</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Egy téglalap átalakítása drótvázzá</translation>
     </message>
@@ -7069,37 +7067,27 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Válassza ki a tárgyakat a vágáshoz/nyújtáshoz</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Távolság kiválasztása</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>Eltolás távolsága</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>Eltolás szöge</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Nem lehet vágni a tárgyakat, csak tervrajz vonalak és ívek támogatottak.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Nem lehet ezeket a tárgyakat vágni, túl sok drótváz</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Ezek az objektumok nem metszik egymást.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>Túl sok metszési pont.</translation>
     </message>
@@ -7129,22 +7117,22 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>B-görbe létrehozása</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Válasszon egy felületet, 3 csúcspontot vagy egy munkasík proxyt a rajzsík meghatározásához</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>A globális elhelyezéshez igazított munkasík</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Irány</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Egyéni</translation>
     </message>
@@ -7254,12 +7242,12 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Autocsoport</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Új réteg hozzáadása</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Hozzáadás az építési csoporthoz</translation>
     </message>
@@ -7279,7 +7267,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Ez a tárgy típus nem tolható el</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>Bézier görbe eltolás jelenleg még nem támogatott</translation>
     </message>
@@ -7497,6 +7485,11 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
 </source>
       <translation>A kijelölt alakzatoknak meg kell határozniuk egy síkot
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

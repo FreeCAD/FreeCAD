@@ -11,7 +11,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="163"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>Показать/скрыть гребень кривизны B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="164"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="101"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>Показать/скрыть степень B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="102"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
+      <translation>Показать/скрыть кратность узлов B-сплайна </translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="132"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation type="unfinished">Show/hide B-spline control polygon</translation>
+      <translation>Показать/скрыть полигон управления B-сплайном</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="133"/>
@@ -160,22 +160,22 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="331"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>Показать/скрыть степень B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation type="unfinished">Show/hide B-spline control polygon</translation>
+      <translation>Показать/скрыть полигон управления B-сплайном</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>Показать/скрыть гребень кривизны B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
+      <translation>Показать/скрыть кратность узлов B-сплайна </translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4559"/>
       <source>Ellipse by periapsis, apoapsis, minor radius</source>
-      <translation type="unfinished">Ellipse by periapsis, apoapsis, minor radius</translation>
+      <translation>Эллипс по периапсиде, апоапсиде, малому радиусу</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4563"/>
@@ -508,7 +508,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="216"/>
       <source>Tie the end point of the element with next element's starting point</source>
-      <translation type="unfinished">Tie the end point of the element with next element's starting point</translation>
+      <translation>Соединить конечную точку одного элемента с начальной точкой другого</translation>
     </message>
   </context>
   <context>
@@ -544,7 +544,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1771"/>
       <source>Block constraint: block the selected edge from moving</source>
-      <translation type="unfinished">Block constraint: block the selected edge from moving</translation>
+      <translation>Блокирующее ограничение: блокирует перемещение выбранной линии</translation>
     </message>
   </context>
   <context>
@@ -1869,7 +1869,7 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="845"/>
       <source>Select unconstrained DoF</source>
-      <translation type="unfinished">Select unconstrained DoF</translation>
+      <translation>Выбрать геометрию имеющую неограниченные степени свободы</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="846"/>
@@ -1983,12 +1983,12 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6584"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Разделить ребро</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6585"/>
       <source>Splits an edge into two while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
+      <translation>Разделить ребро на две части с сохранением ограничений</translation>
     </message>
   </context>
   <context>
@@ -2129,7 +2129,7 @@ into driving or reference mode</translation>
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>Validate sketch...</source>
-      <translation>Проверить набросок...</translation>
+      <translation>Проверить эскиз...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="720"/>
@@ -2214,7 +2214,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1624"/>
       <source>Add 'Lock' constraint</source>
-      <translation type="unfinished">Add 'Lock' constraint</translation>
+      <translation>Добавить 'Блокирующее' ограничение</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1665"/>
@@ -2457,12 +2457,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="644"/>
       <source>Attach sketch</source>
-      <translation type="unfinished">Attach sketch</translation>
+      <translation>Прикрепить эскиз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>Detach sketch</source>
-      <translation type="unfinished">Detach sketch</translation>
+      <translation>Открепить эскиз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="789"/>
@@ -2570,7 +2570,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6556"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Разделить ребро</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6731"/>
@@ -2585,17 +2585,17 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7110"/>
       <source>Add slot</source>
-      <translation type="unfinished">Add slot</translation>
+      <translation>Добавить слот</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7320"/>
       <source>Add hexagon</source>
-      <translation type="unfinished">Add hexagon</translation>
+      <translation>Добавить шестиугольник</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
       <source>Convert to NURBS</source>
-      <translation type="unfinished">Convert to NURBS</translation>
+      <translation>Преобразовать в NURBS</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
@@ -2635,7 +2635,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
       <source>Create copy of geometry</source>
-      <translation type="unfinished">Create copy of geometry</translation>
+      <translation>Создать копию геометрии</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2091"/>
@@ -3157,7 +3157,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1811"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>Блокирующее ограничение не может быть добавлено, если эскиз не решаем или имеются избыточные или конфликтующие ограничения.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1829"/>
@@ -4295,7 +4295,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="14"/>
       <source>Colors</source>
-      <translation>Цвета</translation>
+      <translation>Выделение цветом</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="266"/>
@@ -4325,7 +4325,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
       <source>Coordinate text</source>
-      <translation type="unfinished">Coordinate text</translation>
+      <translation>Текст с указанием координат</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
@@ -4335,7 +4335,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
+      <translation>Создаваемый элемент</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="115"/>
@@ -4345,7 +4345,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="140"/>
       <source>Geometric element colors</source>
-      <translation type="unfinished">Geometric element colors</translation>
+      <translation>Цвет геометрических элементов</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="154"/>
@@ -4355,7 +4355,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="167"/>
       <source>Unconstrained</source>
-      <translation type="unfinished">Unconstrained</translation>
+      <translation>Без ограничения</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="180"/>
@@ -4417,7 +4417,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="442"/>
       <source>Constrained</source>
-      <translation type="unfinished">Constrained</translation>
+      <translation>С ограничением</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="466"/>
@@ -4427,7 +4427,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="479"/>
       <source>Fully constrained Sketch</source>
-      <translation type="unfinished">Fully constrained Sketch</translation>
+      <translation>Полностью ограниченный эскиз</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
@@ -4462,12 +4462,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="556"/>
       <source>Constraint colors</source>
-      <translation type="unfinished">Constraint colors</translation>
+      <translation>Цвет ограничения</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="570"/>
       <source>Constraint symbols</source>
-      <translation type="unfinished">Constraint symbols</translation>
+      <translation>Знаки ограничения</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="577"/>
@@ -5380,12 +5380,12 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6604"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
+      <translation>Эскиз ограничен не полностью и имеет &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 степень&lt;/span&gt;&lt;/a&gt; свободы. %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6607"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
+      <translation>Эскиз ограничен не полностью и имеет  &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 степени(ей)&lt;/span&gt;&lt;/a&gt; свободы. %2</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6612"/>

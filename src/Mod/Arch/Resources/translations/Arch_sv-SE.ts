@@ -949,32 +949,32 @@
       <translation>Om detta är sant justeras elementet till axlar</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="714"/>
+      <location filename="ArchWall.py" line="717"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>Längden på denna vägg. Används ej om denna vägg baseras på underliggande objekt</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="716"/>
+      <location filename="ArchWall.py" line="719"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>Tjockleken på denna vägg. Används inte om denna vägg är baserad på en yta</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="726"/>
+      <location filename="ArchWall.py" line="729"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>Höjden på denna vägg. Behåll på 0 för automatisk höjd. Används ej om denna vägg är baserad på en solid</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="731"/>
+      <location filename="ArchWall.py" line="734"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>Justeringen för denna vägg i förhållande till dess basobjekt, om applicerbart</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="736"/>
+      <location filename="ArchWall.py" line="739"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Ytnumret i basobjektet som användes för att skapa denna vägg</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="738"/>
+      <location filename="ArchWall.py" line="741"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>Förskjutningen mellan denna vägg och dess baslinje (endast för vänster- och högerjusteringar)</translation>
     </message>
@@ -1054,7 +1054,7 @@
       <translation>Överskjut för vangstyckena över botten på planstegen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1387"/>
+      <location filename="ArchWindow.py" line="1389"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Nummer på tråden som definierar hålet. Värdet 0 anger automatisk beräkning</translation>
     </message>
@@ -1074,7 +1074,7 @@
       <translation>En omvandling att applicera på varje etikett</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="867"/>
+      <location filename="ArchAxis.py" line="871"/>
       <source>The axes this system is made of</source>
       <translation>Axlarna detta system är skapat av</translation>
     </message>
@@ -1204,7 +1204,7 @@
       <translation>Teckenstorleken</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="869"/>
+      <location filename="ArchAxis.py" line="873"/>
       <source>The placement of this axis system</source>
       <translation>Placeringen av detta axelsystem</translation>
     </message>
@@ -1224,57 +1224,57 @@
       <translation>Linjetjockleken för detta objekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="503"/>
+      <location filename="ArchBuildingPart.py" line="502"/>
       <source>An optional unit to express levels</source>
       <translation>En valfri enhet för att uttrycka våningar</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="505"/>
+      <location filename="ArchBuildingPart.py" line="504"/>
       <source>A transformation to apply to the level mark</source>
       <translation>En omvandling att applicera på våningsmarkeringen</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="508"/>
+      <location filename="ArchBuildingPart.py" line="507"/>
       <source>If true, show the level</source>
       <translation>Om detta är sant visas våningen</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="511"/>
+      <location filename="ArchBuildingPart.py" line="510"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Om detta är sant visas enheten på våningsetiketten</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="528"/>
+      <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Om detta är sant kommer arbetsplanet när det är aktiverat att automatiskt anpassas till denna våning</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="518"/>
+      <location filename="ArchBuildingPart.py" line="517"/>
       <source>The font to be used for texts</source>
       <translation>Teckensnittet att använda för texter</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="521"/>
+      <location filename="ArchBuildingPart.py" line="520"/>
       <source>The font size of texts</source>
       <translation>Teckenstorleken för texter</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="533"/>
+      <location filename="ArchBuildingPart.py" line="532"/>
       <source>Camera position data associated with this object</source>
       <translation>Kamera-positionsdata associerad med detta objekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="536"/>
+      <location filename="ArchBuildingPart.py" line="535"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Om detta är ikryssat kommer den sparade vyn i detta objekt återställas med dubbelklick</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="524"/>
+      <location filename="ArchBuildingPart.py" line="523"/>
       <source>The individual face colors</source>
       <translation>De individuella ytfärgerna</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="531"/>
+      <location filename="ArchBuildingPart.py" line="530"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Om detta är sant, kommer arbetsplanet hållas i auto-läge</translation>
     </message>
@@ -1419,42 +1419,42 @@
       <translation>Riktningen för utgången av trappan</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="747"/>
+      <location filename="ArchWall.py" line="750"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Aktivera detta för att väggen ska generera block</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="749"/>
+      <location filename="ArchWall.py" line="752"/>
       <source>The length of each block</source>
       <translation>Längden på varje block</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="751"/>
+      <location filename="ArchWall.py" line="754"/>
       <source>The height of each block</source>
       <translation>Höjden på varje block</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="753"/>
+      <location filename="ArchWall.py" line="756"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>Den horisontella förskjutningen av den första blockraden</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="755"/>
+      <location filename="ArchWall.py" line="758"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>Den horisontella förskjutningen av den andra blockraden</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="757"/>
+      <location filename="ArchWall.py" line="760"/>
       <source>The size of the joints between each block</source>
       <translation>Storleken på blockförbindelserna</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="759"/>
+      <location filename="ArchWall.py" line="762"/>
       <source>The number of entire blocks</source>
       <translation>Antalet hela block</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="762"/>
+      <location filename="ArchWall.py" line="765"/>
       <source>The number of broken blocks</source>
       <translation>Antalet trasiga block</translation>
     </message>
@@ -1604,27 +1604,27 @@
       <translation>Tjockleken på sättstegen</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="549"/>
+      <location filename="ArchBuildingPart.py" line="548"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Om sant, kommer objekten i denna byggdel kommer att anta dessa linje-, färg- och transparensinställningar</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="551"/>
+      <location filename="ArchBuildingPart.py" line="550"/>
       <source>The line width of child objects</source>
       <translation>Linjetjockleken för underobjekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="554"/>
+      <location filename="ArchBuildingPart.py" line="553"/>
       <source>The line color of child objects</source>
       <translation>Linjefärgen för underobjekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="558"/>
+      <location filename="ArchBuildingPart.py" line="557"/>
       <source>The shape color of child objects</source>
       <translation>Formfärgen för underobjekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="562"/>
+      <location filename="ArchBuildingPart.py" line="561"/>
       <source>The transparency of child objects</source>
       <translation>Transparensen för underobjekt</translation>
     </message>
@@ -1644,37 +1644,37 @@
       <translation>Den här egenskapen lagrar en uppfinnarrepresentation för detta objekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="513"/>
+      <location filename="ArchBuildingPart.py" line="512"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Om sant, påverkar visningsförskjutning även origo märket</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="515"/>
+      <location filename="ArchBuildingPart.py" line="514"/>
       <source>If true, the object's label is displayed</source>
       <translation>Om sant, visas objektets etikett</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="542"/>
+      <location filename="ArchBuildingPart.py" line="541"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Om detta är aktiverat kommer inventor representationen av detta objekt att sparas i FreeCAD-filen, vilket tillåter att referera det i andra filer i lättviktsläge.</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="544"/>
+      <location filename="ArchBuildingPart.py" line="543"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>En plats för att spara inventor representationen av detta objekt, om aktiverad</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="566"/>
+      <location filename="ArchBuildingPart.py" line="565"/>
       <source>Cut the view above this level</source>
       <translation>Trimma vyn över denna nivå</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="568"/>
+      <location filename="ArchBuildingPart.py" line="567"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Avståndet mellan vågrätt plan och skärlinje</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="571"/>
+      <location filename="ArchBuildingPart.py" line="570"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Aktivera trimning när du aktiverar denna nivå</translation>
     </message>
@@ -1869,22 +1869,22 @@
       <translation>Hur man ritar stagen</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="720"/>
+      <location filename="ArchWall.py" line="723"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
       <translation>Detta åsidosätter bredd-attribut för att ange bredd på varje väggsegment. Detta ignoreras om Basobjekt ger Breddinformation, med getWidths() metoden. (1: a värdet åsidosätter 'Bredd'-attribut för 1: a väggsegmentet; om ett värde är noll, kommer 1: a värdet av 'ÅsidosBredd' att följas)</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="723"/>
+      <location filename="ArchWall.py" line="726"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
       <translation>Detta åsidosätter justerings-attribut för att ange justeringen på varje väggsegment. Detta ignoreras om Basobjekt ger Justeringsinformation, med getAligns() metoden. (1: a värdet åsidosätter 'Align'-attribut för 1: a väggsegmentet; om ett värde inte är 'Vänster, Höger, Center', kommer 1: a värdet av 'OverrideAlign' att följas)</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="728"/>
+      <location filename="ArchWall.py" line="731"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation>Denna väggs area som en enkel höjd * Längd beräkning</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="538"/>
+      <location filename="ArchBuildingPart.py" line="537"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Om sant, så gör en dubbelklickning på detta objekt i trädet, aktivt</translation>
     </message>
@@ -2047,7 +2047,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1645"/>
+      <location filename="ArchWindow.py" line="1647"/>
       <source>Components</source>
       <translation>Komponenter</translation>
     </message>
@@ -2057,7 +2057,7 @@
       <translation>Komponenter i det här objektet</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1112"/>
+      <location filename="ArchAxis.py" line="1116"/>
       <source>Axes</source>
       <translation>Axlar</translation>
     </message>
@@ -2067,27 +2067,27 @@
       <translation>Skapa axel</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1113"/>
+      <location filename="ArchAxis.py" line="1117"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1114"/>
+      <location filename="ArchAxis.py" line="1118"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="848"/>
+      <location filename="ArchAxis.py" line="852"/>
       <source>Axis</source>
       <translation>Axel</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="849"/>
+      <location filename="ArchAxis.py" line="853"/>
       <source>Distance</source>
       <translation>Distans</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="850"/>
+      <location filename="ArchAxis.py" line="854"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
@@ -2197,7 +2197,7 @@
       <translation>Skapa struktur</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="602"/>
+      <location filename="ArchWall.py" line="605"/>
       <source>Create Wall</source>
       <translation>Skapa vägg</translation>
     </message>
@@ -2222,42 +2222,42 @@
       <translation>Skapa fönster</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1641"/>
+      <location filename="ArchWindow.py" line="1643"/>
       <source>Edit</source>
       <translation>Redigera</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1642"/>
+      <location filename="ArchWindow.py" line="1644"/>
       <source>Create/update component</source>
       <translation>Skapa eller uppdatera komponent</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1643"/>
+      <location filename="ArchWindow.py" line="1645"/>
       <source>Base 2D object</source>
       <translation>2D basobjekt</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1649"/>
+      <location filename="ArchWindow.py" line="1651"/>
       <source>Wires</source>
       <translation>Trådar</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1646"/>
+      <location filename="ArchWindow.py" line="1648"/>
       <source>Create new component</source>
       <translation>Skapa ny komponent</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1647"/>
+      <location filename="ArchWindow.py" line="1649"/>
       <source>Name</source>
       <translation>Namn</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1648"/>
+      <location filename="ArchWindow.py" line="1650"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1650"/>
+      <location filename="ArchWindow.py" line="1652"/>
       <source>Thickness</source>
       <translation>Tjocklek</translation>
     </message>
@@ -2332,22 +2332,22 @@
       <translation>En form kunde inte beräknas</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="659"/>
+      <location filename="ArchWall.py" line="662"/>
       <source>Merge Wall</source>
       <translation>Sammanfoga vägg</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="672"/>
+      <location filename="ArchWall.py" line="675"/>
       <source>Please select only wall objects</source>
       <translation>Vänligen markera endast väggobjekt</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="674"/>
+      <location filename="ArchWall.py" line="677"/>
       <source>Merge Walls</source>
       <translation>Sammanfoga väggar</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="847"/>
+      <location filename="ArchAxis.py" line="851"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Avstånd (mm) och vinklar (grader) mellan axlar</translation>
     </message>
@@ -2799,22 +2799,22 @@
       <translation>Dörr</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1652"/>
+      <location filename="ArchWindow.py" line="1654"/>
       <source>Hinge</source>
       <translation>Gångjärn</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1653"/>
+      <location filename="ArchWindow.py" line="1655"/>
       <source>Opening mode</source>
       <translation>Öppningsläge</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1658"/>
+      <location filename="ArchWindow.py" line="1660"/>
       <source>Get selected edge</source>
       <translation>Hämta markerad kant</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1659"/>
+      <location filename="ArchWindow.py" line="1661"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Tryck för att hämta den markerade kanten</translation>
     </message>
@@ -2844,17 +2844,17 @@
       <translation>Nytt lager</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="473"/>
+      <location filename="ArchWall.py" line="476"/>
       <source>Wall Presets...</source>
       <translation>Väggförval...</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1636"/>
+      <location filename="ArchWindow.py" line="1638"/>
       <source>Hole wire</source>
       <translation>Tråd för hål</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1638"/>
+      <location filename="ArchWindow.py" line="1640"/>
       <source>Pick selected</source>
       <translation>Välj markering</translation>
     </message>
@@ -2869,67 +2869,67 @@
       <translation>Skapa rutnät</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="851"/>
+      <location filename="ArchAxis.py" line="855"/>
       <source>Label</source>
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1115"/>
+      <location filename="ArchAxis.py" line="1119"/>
       <source>Axis system components</source>
       <translation>Komponenter för axelsystem</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1441"/>
+      <location filename="ArchAxis.py" line="1445"/>
       <source>Grid</source>
       <translation>Rutnät</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1442"/>
+      <location filename="ArchAxis.py" line="1446"/>
       <source>Total width</source>
       <translation>Total bredd</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1443"/>
+      <location filename="ArchAxis.py" line="1447"/>
       <source>Total height</source>
       <translation>Total höjd</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1444"/>
+      <location filename="ArchAxis.py" line="1448"/>
       <source>Add row</source>
       <translation>Lägg till rad</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1445"/>
+      <location filename="ArchAxis.py" line="1449"/>
       <source>Del row</source>
       <translation>Ta bort rad</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1446"/>
+      <location filename="ArchAxis.py" line="1450"/>
       <source>Add col</source>
       <translation>Lägg till kolumn</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1447"/>
+      <location filename="ArchAxis.py" line="1451"/>
       <source>Del col</source>
       <translation>Ta bort kolumn</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1448"/>
+      <location filename="ArchAxis.py" line="1452"/>
       <source>Create span</source>
       <translation>Skapa spännvidd</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1449"/>
+      <location filename="ArchAxis.py" line="1453"/>
       <source>Remove span</source>
       <translation>Ta bort spännvidd</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1450"/>
+      <location filename="ArchAxis.py" line="1454"/>
       <source>Rows</source>
       <translation>Rader</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1450"/>
+      <location filename="ArchAxis.py" line="1454"/>
       <source>Columns</source>
       <translation>Kolumner</translation>
     </message>
@@ -2944,12 +2944,12 @@
       <translation>Utrymmesbegränsningar</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="1029"/>
+      <location filename="ArchWall.py" line="1042"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Fel: Kan inte modifiera basobjektet för denna vägg</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1635"/>
+      <location filename="ArchWindow.py" line="1637"/>
       <source>Window elements</source>
       <translation>Fönsterelement</translation>
     </message>
@@ -3014,22 +3014,22 @@
       <translation>Vänligen välj minst en axel</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1177"/>
+      <location filename="ArchAxis.py" line="1181"/>
       <source>Auto height is larger than height</source>
       <translation>Auto-höjd är större än höjd</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1186"/>
+      <location filename="ArchAxis.py" line="1190"/>
       <source>Total row size is larger than height</source>
       <translation>Total radstorlek är större än höjden</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1208"/>
+      <location filename="ArchAxis.py" line="1212"/>
       <source>Auto width is larger than width</source>
       <translation>Automatisk bredd är större än bredd</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1217"/>
+      <location filename="ArchAxis.py" line="1221"/>
       <source>Total column size is larger than width</source>
       <translation>Total kolumnstorlek är större än bredd</translation>
     </message>
@@ -3244,7 +3244,7 @@
       <translation>Ändra storlek</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="508"/>
+      <location filename="ArchWall.py" line="511"/>
       <source>Center</source>
       <translation>Centrum</translation>
     </message>
@@ -3279,12 +3279,12 @@
       <translation>Korsning hittad.</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="665"/>
+      <location filename="ArchWall.py" line="668"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>Det valda väggen innehåller ingen delvägg att sammanfoga</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="922"/>
+      <location filename="ArchWall.py" line="935"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Kan inte beräkna block för vägg</translation>
     </message>
@@ -3294,27 +3294,27 @@
       <translation>Välj en yta på ett befintligt objekt eller markera ett förval</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1597"/>
+      <location filename="ArchWindow.py" line="1599"/>
       <source>Unable to create component</source>
       <translation>Kan ej skapa komponent</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1637"/>
+      <location filename="ArchWindow.py" line="1639"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Antalet trådar som definierar ett hål i värdobjektet. Ett värde på noll kommer automatiskt att anta den största tråden</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1656"/>
+      <location filename="ArchWindow.py" line="1658"/>
       <source>+ default</source>
       <translation>+ standard</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1655"/>
+      <location filename="ArchWindow.py" line="1657"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1657"/>
+      <location filename="ArchWindow.py" line="1659"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
@@ -3469,37 +3469,37 @@
       <translation>For&amp;tsättning</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="339"/>
+      <location filename="ArchWall.py" line="342"/>
       <source>First point of wall</source>
       <translation>Första punkt för vägg</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="469"/>
+      <location filename="ArchWall.py" line="472"/>
       <source>Wall options</source>
       <translation>Vägginställningar</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="474"/>
+      <location filename="ArchWall.py" line="477"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Denna lista visar alla objekt med multimaterial i detta dokument. Skapa några för att definiera väggtyper.</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="506"/>
+      <location filename="ArchWall.py" line="509"/>
       <source>Alignment</source>
       <translation>Justering</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="508"/>
+      <location filename="ArchWall.py" line="511"/>
       <source>Left</source>
       <translation>Vänster</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="509"/>
+      <location filename="ArchWall.py" line="512"/>
       <source>Right</source>
       <translation>Höger</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="525"/>
+      <location filename="ArchWall.py" line="528"/>
       <source>Use sketches</source>
       <translation>Använd skisser</translation>
     </message>
@@ -3679,17 +3679,17 @@ Om Kör = 0 beräknas körningen så att höjden är densamma som den relativa p
       <translation>Vägg</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1171"/>
+      <location filename="ArchWindow.py" line="1173"/>
       <source>This window has no defined opening</source>
       <translation>Detta fönster har ingen definierad öppning</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1660"/>
+      <location filename="ArchWindow.py" line="1662"/>
       <source>Invert opening direction</source>
       <translation>Invertera öppningsriktning</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1661"/>
+      <location filename="ArchWindow.py" line="1663"/>
       <source>Invert hinge position</source>
       <translation>Invertera gångjärnsposition</translation>
     </message>
@@ -3939,7 +3939,7 @@ Skapande av golv avbruten.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="ArchAxis.py" line="1617"/>
+      <location filename="ArchAxis.py" line="1621"/>
       <source>Axis tools</source>
       <translation>Axelverktyg</translation>
     </message>
@@ -4113,62 +4113,62 @@ Skapande av golv avbruten.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="ArchAxis.py" line="1131"/>
+      <location filename="ArchAxis.py" line="1135"/>
       <source>The number of rows</source>
       <translation>Antalet rader</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1133"/>
+      <location filename="ArchAxis.py" line="1137"/>
       <source>The number of columns</source>
       <translation>Antalet kolumner</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1135"/>
+      <location filename="ArchAxis.py" line="1139"/>
       <source>The sizes for rows</source>
       <translation>Radstorlekar</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1137"/>
+      <location filename="ArchAxis.py" line="1141"/>
       <source>The sizes of columns</source>
       <translation>Kolumnstorlekar</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1139"/>
+      <location filename="ArchAxis.py" line="1143"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Spännvidden av celler som slås samman</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1141"/>
+      <location filename="ArchAxis.py" line="1145"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Den typ av 3D-punkter som produceras av detta rutnätsobjekt</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1144"/>
+      <location filename="ArchAxis.py" line="1148"/>
       <source>The total width of this grid</source>
       <translation>Den totala bredden på detta rutnät</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1146"/>
+      <location filename="ArchAxis.py" line="1150"/>
       <source>The total height of this grid</source>
       <translation>Den totala höjden på detta rutnät</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1148"/>
+      <location filename="ArchAxis.py" line="1152"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Skapar automatiska kolumndelningar (sätt till 0 för att inaktivera)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1150"/>
+      <location filename="ArchAxis.py" line="1154"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Skapar automatiska raddelningar (sätt till 0 för att inaktivera)</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1152"/>
+      <location filename="ArchAxis.py" line="1156"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>När kantens mittpunkt lägeär aktiverat: om detta rutnät måste reorientera sina barn längs kant normaler eller inte</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="1154"/>
+      <location filename="ArchAxis.py" line="1158"/>
       <source>The indices of faces to hide</source>
       <translation>Indexen av ytor som ska döljas</translation>
     </message>
@@ -4210,12 +4210,12 @@ Skapande av golv avbruten.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="ArchWall.py" line="628"/>
+      <location filename="ArchWall.py" line="631"/>
       <source>Merge Walls</source>
       <translation>Sammanfoga väggar</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="631"/>
+      <location filename="ArchWall.py" line="634"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Sammanfogar de markerade väggarna, om möjligt</translation>
     </message>
@@ -4590,12 +4590,12 @@ Skapande av golv avbruten.</translation>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="ArchWall.py" line="271"/>
+      <location filename="ArchWall.py" line="274"/>
       <source>Wall</source>
       <translation>Vägg</translation>
     </message>
     <message>
-      <location filename="ArchWall.py" line="275"/>
+      <location filename="ArchWall.py" line="278"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Skapar ett väggobjekt från början eller från ett markerat objekt (tråd, yta eller solid)</translation>
     </message>
@@ -4919,7 +4919,7 @@ Lämna tomt för att använda alla objekt från dokumentet</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="ArchBuildingPart.py" line="857"/>
+      <location filename="ArchBuildingPart.py" line="856"/>
       <source>Writing camera position</source>
       <translation>Skriver kamerans position</translation>
     </message>

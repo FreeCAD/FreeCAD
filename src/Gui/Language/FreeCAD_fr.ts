@@ -3273,20 +3273,51 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
       <translation>Ateliers non chargés</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charger les ateliers sélectionnés, en ajoutant leurs fenêtres de préférences dans la boîte de dialogue des préférences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Charger la sélection</translation>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ateliers non chargés disponibles&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pour préserver les ressources, FreeCAD ne charge pas les ateliers tant qu'ils ne sont pas utilisés. Le chargement de ceux-ci peut donner accès à des préférences supplémentaires liées à leurs fonctionnalités.&lt;/p&gt;&lt;p&gt;Les ateliers suivants sont disponibles dans votre installation, mais ne sont pas encore chargés :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Atelier</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>

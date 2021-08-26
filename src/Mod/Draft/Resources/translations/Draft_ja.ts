@@ -1478,7 +1478,7 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>作業平面への拘束のオン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>拡大縮小したパートに新しいオブジェクトを挿入できません。</translation>
     </message>
@@ -1629,7 +1629,7 @@ X、Y、Zの軸の指定方向にコピーを並べます。
       <translation>面取りを作成</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>オフセット方向が定義されていません。最初にオブジェクトのどちらか一方にマウスを動かして方向を指定してください。</translation>
     </message>
@@ -2069,12 +2069,12 @@ It must be at least 2.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>構築グループに追加</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2838,20 +2838,6 @@ You may also select a three vertices or a Working Plane Proxy.</source>
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>作業平面プロキシを作成</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>現在の作業平面からプロキシ・オブジェクトを作成します。
-オブジェクトを作成した後、ツリービュー上でダブルクリックするとカメラ位置とオブジェクトの表示状態が復元されます。
-これによって異なったカメラ位置とオブジェクトの状態を必要な時にいつでも保存することができます。</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3321,6 +3307,23 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>選択したポリラインをB-スプラインに、またはB-スプラインをポリラインに変換します。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>作業平面プロキシを作成</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>現在の作業平面からプロキシ・オブジェクトを作成します。
+オブジェクトを作成した後、ツリービュー上でダブルクリックするとカメラ位置とオブジェクトの表示状態が復元されます。
+これによって異なったカメラ位置とオブジェクトの状態を必要な時にいつでも保存することができます。</translation>
     </message>
   </context>
   <context>
@@ -5167,12 +5170,12 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>変換に成功しました</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation type="unfinished">Converting:</translation>
     </message>
@@ -5221,7 +5224,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>アクティブコマンド:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>なし</translation>
     </message>
@@ -5276,7 +5279,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>長さ</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -5321,7 +5324,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>辺の数</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>オフセット</translation>
     </message>
@@ -5401,7 +5404,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>ラベル</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
@@ -5675,22 +5678,22 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>チェックされている場合、オブジェクト全体ではなくサブ要素が変更されます。</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>上面図</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>正面図</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>サイド</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>現在の作業平面</translation>
     </message>
@@ -5715,14 +5718,9 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>このボタンを押して、テキストオブジェクト作成するか、２行の空白行でテキストを終了します。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>オフセットの距離</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>トリム距離</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6891,7 +6889,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>寸法を反転</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>伸縮</translation>
     </message>
@@ -6901,27 +6899,27 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>伸縮するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>選択四角形の最初の点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>選択四角形の対角点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>移動の始点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>移動の終点を選択</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>1つの四角形をワイヤーへ変換</translation>
     </message>
@@ -7026,37 +7024,27 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>トリムまたは伸縮するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>距離を選択</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>オフセット距離</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>オフセット角度</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>これらのオブジェクトをトリムすることはできません。サポートされているのはドラフトのワイヤーと円弧のみです。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>これらのオブジェクトはワイヤーが多すぎてトリムすることができません。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>これらのオブジェクトは交差してません。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>交点が多すぎます。</translation>
     </message>
@@ -7086,22 +7074,22 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>B-スプラインを作成</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>描画平面を定義する面、3つの頂点、またはWPプロキシを選択</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>作業平面は以下のグローバル位置に配置されました：</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>カスタム設定</translation>
     </message>
@@ -7211,12 +7199,12 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>オートグループ</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>新しいレイヤーを追加</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>構築グループに追加</translation>
     </message>
@@ -7236,7 +7224,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>この種類のオブジェクトはオフセットできません。</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>ベジェ曲線のオフセットは現在サポートされていません</translation>
     </message>
@@ -7454,6 +7442,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 </source>
       <translation type="unfinished">Selected Shapes must define a plane
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

@@ -360,6 +360,16 @@ Es pot usar un 'Filtre de Compost' per extreure'n els talls individuals.</transl
       <translation>Llesca a part</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragments booleans</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Divideix els objectes on s'interseccionen</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -380,16 +390,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <translation>Executa l'operació booleana 'O exclusiu' amb dos o més objectes seleccionats, o amb les formes dins un compost.
 Això significa que els volums superposats de les formes seran eliminats.
 Es pot usar un 'Filtre de Compost' per extreure'n les peces restants.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragments booleans</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Divideix els objectes on s'interseccionen</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

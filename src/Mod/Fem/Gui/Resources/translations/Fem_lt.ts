@@ -75,11 +75,6 @@
       <translation type="unfinished">Geometry reference selector for a</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation type="unfinished">Geometry reference selector for a </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Pridėti</translation>
@@ -133,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Pilnaviduris daiktas</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation type="unfinished">Geometry reference selector for a </translation>
     </message>
   </context>
   <context>
@@ -2019,7 +2019,7 @@
       <location filename="../../Command.cpp" line="129"/>
       <location filename="../../Command.cpp" line="191"/>
       <source>Fillet works only on parts</source>
-      <translation type="unfinished">Fillet works only on parts</translation>
+      <translation>Kampų suapvalinimas galimas tik detalėms</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="83"/>

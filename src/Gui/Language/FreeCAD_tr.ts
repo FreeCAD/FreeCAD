@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Bir ifade girin...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>İfade: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD, bu katkılar olmadan ortaya çıkamazdı:</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Kişiler</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Kuruluşlar</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ Eğer bu işaretlenmeyecekse, özelliğe benzersiz bir ad verilmelidir ve böyle
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Kod satırları numaralandırılacak</translation>
     </message>
   </context>
   <context>
@@ -2639,15 +2639,15 @@ Bu seçeneğin değiştirilmesi, uygulamanın yeniden başlatılmasını gerekti
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Kullanılan çok örneklemeli kenar düzeltme türü</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Stereo gösterimler için kullanılan iki göz arası mesafe.
+Belirlenen değer, şuan görüntülenen 3B nesnenin sınırlama
+çerçevesi boyutu ile çoğaltılacak bir etkendir.</translation>
     </message>
   </context>
   <context>
@@ -3271,20 +3271,51 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Çalışma Tezgahları Yüklenmedi</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt; Tercih pencerelerini tercihler iletişim kutusuna ekleyerek seçilen çalışma tezgahlarını yükleyin. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Seçileni Yükle</translation>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt; Kullanılabilir yüklenmemiş çalışma tezgahları &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt; Kaynakları korumak için FreeCAD, kullanılıncaya kadar çalışma tezgahlarını yüklemez. Bunları yüklemek, işlevleriyle ilgili ek tercihlere erişim sağlayabilir. &lt;/p&gt; &lt;p&gt; Aşağıdaki çalışma tezgahları kurulumunuzda mevcuttur, ancak henüz yüklenmemiştir: &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Tezgah</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3590,25 +3621,25 @@ Bu ayarla fareyi eğme devre dışı bırakılmaz.</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Küp yüzeyine tıklandığında, mümkün olan en yakın konuma döndürür</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>En yakına döndür</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Küp boyutu</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Gezinme küpü boyutu</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Yakınlaştırma miktarı.
+1 yakınlaştırma adımı, adım başına 7.5 katsayı anlamına gelir.</translation>
     </message>
   </context>
   <context>
@@ -3926,7 +3957,7 @@ Tercih edilen sistem, genel tercihlerdeki tek ayardır.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>bilinmeyen birim:</translation>
     </message>
   </context>
   <context>
@@ -6947,9 +6978,9 @@ Belge: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Fiziksel yol: </translation>
     </message>
   </context>
   <context>

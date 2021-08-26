@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>Pokaż / ukryj ilość węzłów krzywej złożonej</translation>
+      <translation>Pokaż / ukryj krotność węzłów krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>Pokaż / ukryj ilość węzłów krzywej złożonej</translation>
+      <translation>Pokaż / ukryj krotność węzłów krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
@@ -2810,7 +2810,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Broken link to support subelements</source>
-      <translation>Link do obsługi podelementów nie działa</translation>
+      <translation>Uszkodzony link do elementów podrzędnych wsparcia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="117"/>
@@ -2826,7 +2826,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../Command.cpp" line="123"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
-      <translation>Wybrane kształty mają złą formę (np. zakrzywiona krawędź, kiedy potrzebna jest prosta)</translation>
+      <translation>Wybrane kształty mają niewłaściwą formę (np. zakrzywiona krawędź, gdy należy użyć prostej)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
@@ -4049,7 +4049,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../PropertyConstraintListItem.cpp" line="131"/>
       <location filename="../../PropertyConstraintListItem.cpp" line="184"/>
       <source>Unnamed</source>
-      <translation>Bez nazwy</translation>
+      <translation>Nienazwany</translation>
     </message>
   </context>
   <context>
@@ -4183,7 +4183,7 @@ reflected on copies</source>
       <location filename="../../TaskSketcherGeneral.cpp" line="135"/>
       <location filename="../../TaskSketcherGeneral.cpp" line="140"/>
       <source>Normal Geometry</source>
-      <translation>Normalna Geometria</translation>
+      <translation>Geometria normalna</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.cpp" line="130"/>
@@ -4732,7 +4732,7 @@ Widoczne będą obiekty tylko za płaszczyzną szkicu.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="146"/>
       <source>%1 missing coincidences found</source>
-      <translation>%1 znaleziono brakujących niezbieżności</translation>
+      <translation>Znaleziono %1 przypadki brakujących zbieżności</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="182"/>
@@ -4803,7 +4803,7 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="263"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation>Zamykanie orientacji zostało włączone i przeliczone dla więzów %1. Wiązania zostały wymienione w widoku Raportu (menu Widok -&gt; Panele -&gt; Widok raportu).</translation>
+      <translation>Blokada orientacji została włączona i ponownie obliczona dla %1 wiązań. Wiązania zostały wymienione w widoku Raportu (menu Widok -&gt; Panele -&gt; Widok raportu).</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="277"/>

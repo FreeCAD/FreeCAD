@@ -1483,7 +1483,7 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <translation>Activa o desactiva la restricció al pla de treball</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>No es pot inserir un nou objecte a una part escalada</translation>
     </message>
@@ -1633,7 +1633,7 @@ La matriu es pot convertir en polar o circular canviant-ne el tipus.</translatio
       <translation>Crea un xamfrà</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>No s'ha definit la direcció de desplaçament. Si us plau, moveu el ratolí a un o altre costat de l'objecte abans per indicar-ne la direcció</translation>
     </message>
@@ -2072,12 +2072,12 @@ It must be at least 2.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Afegir al grup de construcció</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2835,20 +2835,6 @@ Podeu seleccionar també tres vèrtexs o un «proxy» de pla de preball.</transl
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Crea un proxy de pla de treball</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Crea un objecte proxy del pla de treball actual.
-Un cop l'objecte és creat, feu doble clic a la vista d'arbre per a restaurar la posició de càmera les visibilitats de l'objecte.
-Aleshores, podeu usar-lo per desar posicions de càmera i estats d'objectes sempre que sigui necessari.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3318,6 +3304,23 @@ Per exemple, pot unir objectes seleccionats en un de sol, convertir simples ares
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>Converteix una polilínia seleccionada a B-spline, o una B-spline a polilínia.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Crea un proxy de pla de treball</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Crea un objecte proxy del pla de treball actual.
+Un cop l'objecte és creat, feu doble clic a la vista d'arbre per a restaurar la posició de càmera les visibilitats de l'objecte.
+Aleshores, podeu usar-lo per desar posicions de càmera i estats d'objectes sempre que sigui necessari.</translation>
     </message>
   </context>
   <context>
@@ -5151,12 +5154,12 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Conversió correcta</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation type="unfinished">Converting:</translation>
     </message>
@@ -5205,7 +5208,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>ordre actiu:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
@@ -5260,7 +5263,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Longitud</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -5305,7 +5308,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Nombre de costats</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Equidistancia (ofset)</translation>
     </message>
@@ -5385,7 +5388,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
@@ -5658,22 +5661,22 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Si està marcat, els sub-elements es modificaran en lloc dels objectes sencers</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Alçat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Costat</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Pla de treball actual</translation>
     </message>
@@ -5698,14 +5701,9 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Premeu aquest botó per a crear l’objecte de text o finalitzeu el vostre text amb dues línies en blanc</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Distància de separació</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Distància de retall</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6874,7 +6872,7 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Inverteix l'acotació</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Estira</translation>
     </message>
@@ -6884,27 +6882,27 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Seleccioneu un objecte per estirar</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Trieu el primer punt del rectangle de selecció</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Trieu el punt oposat del rectangle de selecció</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Seleccioni el punt inicial del desplaçament</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Seleccioni el punt final del desplaçament</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Transformant un rectangle en un filferro</translation>
     </message>
@@ -7009,37 +7007,27 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Seleccioneu objectes per a retallar o allargar</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Trieu la distància</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>Distància de desplaçament</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>L'angle de desplaçament</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>No es poden retallar aquests objectes, només es permeten filferros i arcs d'Esbós.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>No es poden retallar aquests objectes, massa filferros</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Aquest objectes no es creuen.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>Massa punts d'intersecció.</translation>
     </message>
@@ -7069,22 +7057,22 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Crea un B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Trieu una cara, 3 vèrtexs o un Proxi de PT per definir el pla del dibuix</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>El pla de treball s'ha alineat al posicionament global de</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Personalitzat</translation>
     </message>
@@ -7194,12 +7182,12 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Agrupament automàtic</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Afegeix una capa nova</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Afegeix al grup de construcció</translation>
     </message>
@@ -7219,7 +7207,7 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>No es pot desplaçar aquest tipus d'objecte</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>El desplaçament de corbes Bézier no és suportat actualment</translation>
     </message>
@@ -7437,6 +7425,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 </source>
       <translation type="unfinished">Selected Shapes must define a plane
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

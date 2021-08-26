@@ -389,12 +389,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>Sortu laukizuzenak</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>Sortu laukizuzen bat krokisean</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1180"/>
@@ -404,12 +404,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1184"/>
       <source>Centered rectangle</source>
-      <translation type="unfinished">Centered rectangle</translation>
+      <translation>Laukizuzen zentratua</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1188"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>Laukizuzen biribildua</translation>
     </message>
   </context>
   <context>
@@ -1193,12 +1193,12 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>Sortu laukizuzen biribildua</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>Sortu laukizuzen biribildu bat krokisean</translation>
     </message>
   </context>
   <context>
@@ -1337,12 +1337,12 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="729"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>Sortu laukizuzen zentratua</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="730"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+      <translation>Sortu laukizuzen zentratu bat krokisean</translation>
     </message>
   </context>
   <context>
@@ -1766,7 +1766,7 @@ ispilatzerako erreferentzia gisa.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2192"/>
       <source>Remove axes alignment</source>
-      <translation type="unfinished">Remove axes alignment</translation>
+      <translation>Kendu ardatzen lerrokatzea</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2193"/>
@@ -2500,7 +2500,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Add rounded rectangle</source>
-      <translation type="unfinished">Add rounded rectangle</translation>
+      <translation>Gehitu laukizuzen biribildua</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1561"/>
@@ -2653,7 +2653,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2278"/>
       <source>Remove Axes Alignment</source>
-      <translation type="unfinished">Remove Axes Alignment</translation>
+      <translation>Kendu ardatzen lerrokatzea</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
@@ -3423,22 +3423,22 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../CommandConstraints.cpp" line="675"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation type="unfinished">Sketcher Constraint Substitution</translation>
+      <translation>Kroskisgile-murrizketen ordezkapena</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="681"/>
       <source>Keep notifying me of constraint substitutions</source>
-      <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
+      <translation>Jarraitu murrizketa-ordezkapenak jakinarazten</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2674"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied instead.</translation>
+      <translation>Amaiera-puntutik ertzerako tangentzia aplikatu da horren ordez.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4242"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
+      <translation>Amaiera-puntutik ertzerako tangentzia aplikatu da. Objektuaren gaineko puntuaren murrizketa ezabatu egin da.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4923"/>
@@ -4617,12 +4617,12 @@ Unitate-sistema guztiak onartzen ditu, 'US customary' eta 'Building US/Euro' sal
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+      <translation>Behartu kamera ortografikoa edizioa hastean</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="244"/>
       <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <translation>Ireki krokisa sekzio-bistaren moduan</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
@@ -5349,7 +5349,7 @@ Puntuak lerro batetik sareta-tamainaren bosten bat baino hurbilago ezarri behar 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6554"/>
       <source>Over-constrained sketch</source>
-      <translation type="unfinished">Over-constrained sketch</translation>
+      <translation>Gehiegi murriztutako krokisa</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6561"/>

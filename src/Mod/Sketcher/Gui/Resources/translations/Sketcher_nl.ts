@@ -203,17 +203,17 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6003"/>
       <source>Constrain radius</source>
-      <translation>Straal vastzetten</translation>
+      <translation>Straal bematen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6007"/>
       <source>Constrain diameter</source>
-      <translation>Beperk de diameter</translation>
+      <translation>Bemaat de diameter</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6011"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Beperk automatische straal/diameter</translation>
+      <translation>Bemaat straal/diameter automatisch</translation>
     </message>
   </context>
   <context>
@@ -526,7 +526,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6042"/>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Zet de hoek van een lijn of de hoek tussen twee lijnen vast</translation>
+      <translation>Bemaat de hoek van een lijn of de hoek tussen twee lijnen</translation>
     </message>
   </context>
   <context>
@@ -575,12 +575,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5230"/>
       <source>Constrain diameter</source>
-      <translation>Beperk de diameter</translation>
+      <translation>Bemaat de diameter</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5231"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Zet de diameter van een cirkel of een boog vast</translation>
+      <translation>Bemaat de diameter van een cirkel of een boog</translation>
     </message>
   </context>
   <context>
@@ -598,7 +598,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2291"/>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
-      <translation>Vergrendel de lengte van een lijn of de afstand tussen een lijn en een punt</translation>
+      <translation>Bemaat de lengte van een lijn of de afstand tussen een lijn en een punt</translation>
     </message>
   </context>
   <context>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2888"/>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>De horizontale afstand tussen twee punten of lijneinden vastzetten</translation>
+      <translation>De horizontale afstand tussen twee punten of lijneinden bematen</translation>
     </message>
   </context>
   <context>
@@ -634,7 +634,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3142"/>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>De verticale afstand tussen twee punten of lijneinden vastzetten</translation>
+      <translation>De verticale afstand tussen twee punten of lijneinden bematen</translation>
     </message>
   </context>
   <context>
@@ -775,12 +775,12 @@ op de geselecteerde hoekpunt</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5549"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Beperk automatische straal/diameter</translation>
+      <translation>Bemaat straal/diameter automatisch</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5550"/>
       <source>Fix automatically diameter on circle and radius on arc/pole</source>
-      <translation>Repareer automatisch diameter van cirkel en straal van boog/pool</translation>
+      <translation>Bemaat diameter van cirkel en straal van boog/pool automatisch</translation>
     </message>
   </context>
   <context>
@@ -3613,7 +3613,7 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
       <location filename="../../CommandConstraints.cpp" line="7400"/>
       <location filename="../../CommandConstraints.cpp" line="7578"/>
       <source>Nothing to constrain</source>
-      <translation>Niets vast te leggen</translation>
+      <translation>Niets te bematen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7491"/>
@@ -5502,7 +5502,7 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
       <location filename="../../CommandConstraints.cpp" line="6008"/>
       <location filename="../../CommandConstraints.cpp" line="6009"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Zet de diameter van een cirkel of een boog vast</translation>
+      <translation>Bemaat de diameter van een cirkel of een boog</translation>
     </message>
   </context>
   <context>
@@ -5519,7 +5519,7 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
       <location filename="../../CommandConstraints.cpp" line="6004"/>
       <location filename="../../CommandConstraints.cpp" line="6005"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>De straal van een cirkel of boog vastzetten</translation>
+      <translation>De straal van een cirkel of boog bematen</translation>
     </message>
   </context>
   <context>

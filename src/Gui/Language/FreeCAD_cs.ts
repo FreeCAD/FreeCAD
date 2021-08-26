@@ -3273,20 +3273,51 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <translation type="unfinished">Unloaded Workbenches</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Načíst Vybrané</translation>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Pracovní prostředí</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3736,7 +3767,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+      <translation>Stavební US (ft-in/sqft/cuft)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
@@ -3869,11 +3900,11 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Input the source value and unit</source>
-      <translation type="unfinished">Input the source value and unit</translation>
+      <translation>Zadat zdrojovou hodnotu a jednotku</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
-      <translation type="unfinished">Input here the unit for the result</translation>
+      <translation>Zde vložit jednotku pro výsledek</translation>
     </message>
     <message>
       <source>Result</source>
@@ -3882,8 +3913,8 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     <message>
       <source>List of last used calculations 
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
-To add a calculation press Return in the value input field</translation>
+      <translation>Seznam naposledy použitých výpočtů 
+Pro přidání stiskněte tlačítko Return do pole zadání hodnoty</translation>
     </message>
     <message>
       <source>Quantity</source>
@@ -3896,8 +3927,8 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
-      <translation type="unfinished">Unit system to be used for the Quantity
-The preference system is the one set in the general preferences.</translation>
+      <translation>Systém jednotek, který se použije pro množství
+Systém preferencí je systém nastavený v obecných preferencích.</translation>
     </message>
     <message>
       <source>Decimals:</source>
@@ -3905,7 +3936,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
-      <translation type="unfinished">Decimals for the Quantity</translation>
+      <translation>Desetinná místa pro množství</translation>
     </message>
     <message>
       <source>Unit category:</source>
@@ -3913,7 +3944,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation type="unfinished">Unit category for the Quantity</translation>
+      <translation>Kategorie jednotky pro množství</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
@@ -4613,7 +4644,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
+      <translation>Vybrané objekty obsahují jiné závislosti. Vyberte, které objekty chcete exportovat. Všechny závislosti jsou automaticky vybrány ve výchozím nastavení.</translation>
     </message>
     <message>
       <source>Dependency</source>
@@ -4641,7 +4672,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Partial</source>
-      <translation type="unfinished">Partial</translation>
+      <translation>Částečné</translation>
     </message>
   </context>
   <context>
@@ -5179,8 +5210,8 @@ Chcete uložit provedené změny?</translation>
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
+      <translation>Pro propojení s externími objekty musí být dokument uložen alespoň jednou.
+Chcete dokument nyní uložit?</translation>
     </message>
   </context>
   <context>
@@ -6774,8 +6805,8 @@ Dejte si pozor na místo, kam klikáte.</translation>
     <message>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
-      <translation type="unfinished">Failed to parse some of the expressions.
-Please check the Report View for more details.</translation>
+      <translation>Některé výrazy se nepodařilo analyzovat. 
+Další podrobnosti najdete v zobrazení Přehledu.</translation>
     </message>
     <message>
       <source>Failed to paste expressions</source>
@@ -6787,11 +6818,11 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Group with links</source>
-      <translation type="unfinished">Group with links</translation>
+      <translation>Skupina s odkazy</translation>
     </message>
     <message>
       <source>Group with transform links</source>
-      <translation type="unfinished">Group with transform links</translation>
+      <translation>Skupina s transformačními odkazy</translation>
     </message>
     <message>
       <source>Create link group failed</source>
@@ -6799,27 +6830,27 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Create link failed</source>
-      <translation type="unfinished">Create link failed</translation>
+      <translation>Selhalo vytvoření odkazu</translation>
     </message>
     <message>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>Selhalo vytvoření relativního odkazu</translation>
     </message>
     <message>
       <source>Unlink failed</source>
-      <translation type="unfinished">Unlink failed</translation>
+      <translation>Selhalo odpojení</translation>
     </message>
     <message>
       <source>Replace link failed</source>
-      <translation type="unfinished">Replace link failed</translation>
+      <translation>Selhalo nahrazení odkazu</translation>
     </message>
     <message>
       <source>Failed to import links</source>
-      <translation type="unfinished">Failed to import links</translation>
+      <translation>Selhal import odkazů</translation>
     </message>
     <message>
       <source>Failed to import all links</source>
-      <translation type="unfinished">Failed to import all links</translation>
+      <translation>Selhal import všech odkazů</translation>
     </message>
     <message>
       <source>Invalid name</source>
@@ -6841,15 +6872,15 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
-      <translation type="unfinished">Failed to add property to '%1': %2</translation>
+      <translation>Selhalo přidání vlastnosti do '%1': %2</translation>
     </message>
     <message>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>Uložit závislé soubory</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation type="unfinished">The file contains external dependencies. Do you want to save the dependent files, too?</translation>
+      <translation>Soubor obsahuje externí závislosti. Chcete také uložit závislé soubory?</translation>
     </message>
     <message>
       <source>Failed to save document</source>
@@ -6857,7 +6888,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>Dokumenty obsahují cyklické závislosti. Chcete je přesto uložit?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6881,7 +6912,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>Přejete si uložit změny před zavřením dokumentu?</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
@@ -6911,9 +6942,9 @@ Choose 'Abort' to abort</translation>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
+Další informace najdete v zobrazení Přehledu...</translation>
     </message>
     <message>
       <source>
@@ -6941,7 +6972,7 @@ Cesta: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Při načítání souboru došlo k vážným chybám. Některá data mohla být změněna nebo vůbec neobnovena. Uložení projektu s největší pravděpodobností povede ke ztrátě dat.</translation>
     </message>
     <message>
       <source>Workbenches</source>
@@ -6975,7 +7006,7 @@ Fyzická cesta: </translation>
     </message>
     <message>
       <source>Box element selection</source>
-      <translation type="unfinished">Box element selection</translation>
+      <translation>Výběr prvku oknem</translation>
     </message>
   </context>
   <context>
@@ -9602,8 +9633,8 @@ Are you sure you want to continue?
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
+      <translation>Pro propojení s externími objekty musí být dokument uložen alespoň jednou.
+Chcete dokument nyní uložit?</translation>
     </message>
   </context>
   <context>

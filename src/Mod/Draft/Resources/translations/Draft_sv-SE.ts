@@ -1065,7 +1065,7 @@ beyond the dimension line</source>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Antalet kopior att skapa.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
@@ -1075,16 +1075,16 @@ beyond the dimension line</source>
     <message>
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Fyll bokstäver med ytor</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="216"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>En enhet för att uttrycka mätning.
+Lämna tom för systemets standard.
+Använd 'arch' för att påtvinga US arch-notering</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="117"/>
@@ -1491,7 +1491,7 @@ menyverktyg -&gt; Insticksmodulshanterare</translation>
       <translation>Växlar Begränsning till arbetsplan på/av</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Kan inte infoga nytt objekt i en skalad del</translation>
     </message>
@@ -1643,7 +1643,7 @@ Matrisen kan förvandlas till en polär eller en cirkulär matris genom att änd
       <translation>Skapa avfasning</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Förskjutningsriktning är inte definierad. Flytta musen på ena sidan av objektet först för att indikera en riktning</translation>
     </message>
@@ -1655,17 +1655,17 @@ Matrisen kan förvandlas till en polär eller en cirkulär matris genom att änd
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Namnet på den här nya stilen:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Namnet existerar. Skriva över?</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Fel: json-modul finns inte. Kunde inte spara stil</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
@@ -2083,12 +2083,12 @@ Det måste vara minst 2.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Lägg till i Konstruktionsgrupp</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2854,20 +2854,6 @@ Du kan också välja tre hörn eller ett arbetsplan Proxy.</translation>
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Skapa Arbetsplansproxy</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Skapar ett proxyobjekt från det nuvarande arbetsplanet.
-När objektet har skapats dubbelklicka på det i trädvyn för att återställa kamerans position och objektens synlighet.
-Då kan du använda den för att spara ett annat kameraläge och objekts tillstånd när du behöver.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3343,6 +3329,23 @@ Det förenar till exempel de utvalda objekten till en, omvandlar enkla kanter ti
     </message>
   </context>
   <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Skapa Arbetsplansproxy</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Skapar ett proxyobjekt från det nuvarande arbetsplanet.
+När objektet har skapats dubbelklicka på det i trädvyn för att återställa kamerans position och objektens synlighet.
+Då kan du använda den för att spara ett annat kameraläge och objekts tillstånd när du behöver.</translation>
+    </message>
+  </context>
+  <context>
     <name>Form</name>
     <message>
       <location filename="TaskSelectPlane.ui" line="14"/>
@@ -3745,12 +3748,12 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>Ladda förval</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>Spara nuvarande stil som ett förval...</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="382"/>
@@ -5181,7 +5184,7 @@ Detta värde är den maximala segmentlängden. </translation>
     <message>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="71"/>
@@ -5194,12 +5197,12 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Konverteringen lyckades</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation>Konverterar:</translation>
     </message>
@@ -5248,7 +5251,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Aktivt kommando:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Inget</translation>
     </message>
@@ -5303,7 +5306,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
@@ -5348,7 +5351,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Antal sidor</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Offset</translation>
     </message>
@@ -5428,7 +5431,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Distans</translation>
     </message>
@@ -5703,22 +5706,22 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Om detta är ikryssat kommer underelement modifieras istället för hela objekt</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Topp</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Front</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Sida</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Nuvarande arbetsplan</translation>
     </message>
@@ -5743,14 +5746,9 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Tryck på den här knappen för att skapa textobjektet, eller avsluta din text med två tomma rader</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Förskjutningsavstånd</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Trimma avstånd</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6919,7 +6917,7 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Växla riktning på dimension</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Töj ut</translation>
     </message>
@@ -6929,27 +6927,27 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Markera ett objekt att töja</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Välj första punkt för markeringsrektangel</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Välj motstående punkt för markeringsrektangel</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Välj startpunkt för förflyttning</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Välj slutpunkt för förflyttning</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Omvandlar en rektangel till en tråd</translation>
     </message>
@@ -7054,37 +7052,27 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Markera objekt att trimma/förlänga</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Välj avstånd</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>Förskjutningsavstånd</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>Förskjutningsvinkeln</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Kan inte trimma dessa objekt, endast Draft-trådar och -cirkelbågar stöds.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Kan inte trimma dessa objekt, för många trådar</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Dessa objekt skär inte varandra.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>För många skärningspunkter.</translation>
     </message>
@@ -7114,22 +7102,22 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Skapa B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Välj en yta, 3 hörn eller ett arbetsplan Proxy för att definiera ritningsplanet</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Arbetsplan justerad till global placering av</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Riktning</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Anpassad</translation>
     </message>
@@ -7239,12 +7227,12 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation type="unfinished">Autogroup</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Lägg till nytt lager</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Lägg till i Konstruktionsgrupp</translation>
     </message>
@@ -7264,7 +7252,7 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
       <translation>Kan inte skapa förskjutning för denna objekttyp</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>Förskjutning av bezierkurvor stöds inte för tillfället</translation>
     </message>
@@ -7409,42 +7397,42 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Lokal u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Lokal u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Lokal u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Global u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Global u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Global u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Gruppera automatiskt:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Punkter:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="138"/>
@@ -7454,12 +7442,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="gui_scale.py" line="333"/>
       <source>Unable to scale object:</source>
-      <translation type="unfinished">Unable to scale object:</translation>
+      <translation>Kunde inte skala objekt:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="337"/>
       <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
+      <translation>Kunde inte skala objekten:</translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="814"/>
@@ -7482,6 +7470,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 </source>
       <translation type="unfinished">Selected Shapes must define a plane
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

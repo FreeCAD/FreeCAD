@@ -142,12 +142,12 @@
       <translation>Najpierw proszę wybrać 3 obiekty</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>Funkcja nieobsługiwana</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>Naciśnij przycisk OK</translation>
     </message>

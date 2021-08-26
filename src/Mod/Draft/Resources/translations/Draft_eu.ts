@@ -1097,35 +1097,35 @@ Erabili 'arch' US arku-notazioa behartzeko.</translation>
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Mozketa-lerroen eta mozketa-aurpegien moduetarako, 
+                honek mozketa-tokian uzten ditu aurpegiak</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Lerro-segmentuen luzera, elipseak edo B-spline kurbak 
+                lerro-segmentuetara teselatzen badira</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Hau egia bada, geometria solidoa soilik maneiatuko da. Honek oinarri-objektuaren 'Solidoak soilik' propietatea gainidazten du</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Hau egia bada, edukiak sekzio-planoaren ertzetatik ebakitzen da, aplikagarria bada. Honek oinarri-objektuaren 'Ebaki' propietatea gainidazten du</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Hau egia bada, objektu honek ikusgai dauden objektuak soilik hartuko ditu</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Objektua birkalkulatu egingo da hau egia bada soilik.</translation>
     </message>
   </context>
   <context>
@@ -1493,7 +1493,7 @@ Instalatu DXF liburutegiaren gehigarria eskuz
       <translation>Laneko planora murriztea aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Ezin izan da objektu berria txertatu eskalatutako piezan</translation>
     </message>
@@ -1646,7 +1646,7 @@ Matrizearen mota aldatu daiteke, polarra edo zirkularra izan dadin.</translation
       <translation>Sortu alaka</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Desplazamenduaren norabidea ez dago definituta. Eraman sagua objektuaren aldeetako batera, norabide bat adierazteko</translation>
     </message>
@@ -2085,12 +2085,12 @@ Gutxienez 2 izan behar du.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Gehitu eraikuntza taldeari</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2862,20 +2862,6 @@ Laneko plano baten proxy baten hiru erpin ere hautatu daitezke.</translation>
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Sortu laneko planoaren proxy-a</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Proxy-objektu bat sortzen du uneko laneko planotik abiatuta.
-Objektua sortu ondoren, egin klik bikoitza zuhaitz-bistan kameraren kokapena eta objektuen ikusgaitasunak leheneratzeko.
-Ondoren, kameraren kokapen desberdina eta objektuen egoera desberdinak gorde daitezke bertan, behar direnerako.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3354,6 +3340,23 @@ bihurtu daitezke, eta aurpegi anitz aurpegi bakarrean fusionatu daitezke.</trans
     </message>
   </context>
   <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Sortu laneko planoaren proxy-a</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Proxy-objektu bat sortzen du uneko laneko planotik abiatuta.
+Objektua sortu ondoren, egin klik bikoitza zuhaitz-bistan kameraren kokapena eta objektuen ikusgaitasunak leheneratzeko.
+Ondoren, kameraren kokapen desberdina eta objektuen egoera desberdinak gorde daitezke bertan, behar direnerako.</translation>
+    </message>
+  </context>
+  <context>
     <name>Form</name>
     <message>
       <location filename="TaskSelectPlane.ui" line="14"/>
@@ -3778,7 +3781,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Testuaren eta kota-lerroaren arteko tartea</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
@@ -3788,7 +3791,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Testu-lerro desberdinen arteko tartea</translation>
     </message>
   </context>
   <context>
@@ -5198,12 +5201,12 @@ Oharra: C++ esportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Bihurketa ongi egin da</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation>Bihurtzen:</translation>
     </message>
@@ -5252,7 +5255,7 @@ Oharra: C++ esportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
       <translation>Komando aktiboa:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Bat ere ez</translation>
     </message>
@@ -5307,7 +5310,7 @@ Oharra: C++ esportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
       <translation>Luzera</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Angelua</translation>
     </message>
@@ -5352,7 +5355,7 @@ Oharra: C++ esportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
       <translation>Alde kopurua</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Desplazamendua</translation>
     </message>
@@ -5432,7 +5435,7 @@ Oharra: C++ esportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
       <translation>Etiketa</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Distantzia</translation>
     </message>
@@ -5706,22 +5709,22 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Hautatuta badaude, azpi-elementuek objektu osoa ordeztuko dute</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Goikoa</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Aurrekoa</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Aldea</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Uneko laneko planoa</translation>
     </message>
@@ -5746,14 +5749,9 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Sakatu botoi hau testu-objektua sortzeko, edo amaitu zure testua bi lerro zurirekin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Desplazamendu-distantzia</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Muxarratze-distantzia</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6922,7 +6920,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Irauli kota</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Luzatu</translation>
     </message>
@@ -6932,27 +6930,27 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Hautatu luzatuko den objektua</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Aukeratu hautapen-laukizuzenaren lehen puntua</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Aukeratu hautapen-laukizuzenaren beste aldeko puntua</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Aukeratu desplazamenduaren hasiera-puntua</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Aukeratu desplazamenduaren amaiera-puntua</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Laukizuzen bat alanbre bihurtzen</translation>
     </message>
@@ -7057,37 +7055,27 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Hautatu muxarratuko/luzatuko diren objektuak</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Aukeratu distantzia</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>Desplazamendu-distantzia</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>Desplazamendu-angelua</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Ezin dira objektu horiek muxarratu, zirriborro-alanbreak eta arkuak soilik onartzen dira.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Ezin dira objektu horiek muxarratu, alanbre gehiegi</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Objektu hauek ez dute elkar ebakitzen.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>Ebakitze-puntu gehiegi.</translation>
     </message>
@@ -7117,22 +7105,22 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Sortu B-spline elementua</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Aukeratu aurpegi bat, 3 erpin edo WP proxy bat marrazte-planoa definitzeko</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Honako objektuaren kokapen globalarekin lerrokatutako laneko area:</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Norab.</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Pertsonalizatua</translation>
     </message>
@@ -7242,12 +7230,12 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Talde automatikoa</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Gehitu geruza berria</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Gehitu eraikuntza taldeari</translation>
     </message>
@@ -7267,7 +7255,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Ezin da objektu mota hau desplazatu</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>Bezier kurben desplazamendua ezin da oraindik egin</translation>
     </message>
@@ -7483,8 +7471,13 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
+      <translation>Hautatutako formek plano bat definitu behar dute
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

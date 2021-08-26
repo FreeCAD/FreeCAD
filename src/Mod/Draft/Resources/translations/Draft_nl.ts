@@ -1493,7 +1493,7 @@ vanuit het menu Tools -&gt; Addon Manager</translation>
       <translation>Schakelt beperkingen aan naar werkvlak aan/uit</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Kan geen nieuw object in een verschaald deel plaatsen</translation>
     </message>
@@ -1646,7 +1646,7 @@ De reeks kan worden omgezet in een polair of een circulaire reeks door het type 
       <translation>Afschuining maken</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Offset richting is niet gedefinieerd. Beweeg de muis aan een van de zijden van het object eerst om een richting aan te geven</translation>
     </message>
@@ -2086,12 +2086,12 @@ Het moet ten minste 2 zijn.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="341"/>
       <source>Add to Construction group</source>
       <translation>Toevoegen aan Constructiegroep</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="343"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2861,20 +2861,6 @@ U kunt ook een drietal hoekpunten of een werkvlak proxy selecteren.</translation
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Proxy voor werkvlak aanmaken</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Maakt een proxy-object aan van het huidige werk vlak.
-Zodra het object is gemaakt, dubbelklik dan op het structuur scherm om de camera positie en de zichtbaarheid van de objecten te herstellen.
-Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wanneer je nodig hebt.</translation>
-    </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
@@ -3349,6 +3335,23 @@ Zet gesloten randen om in gevulde vlakken en parametrische veelhoeken en voeg vl
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>Zet een geselecteerde polylijn om naar een B-spline, of een B-spline naar een polylijn.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Proxy voor werkvlak aanmaken</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Maakt een proxy-object aan van het huidige werk vlak.
+Zodra het object is gemaakt, dubbelklik dan op het structuur scherm om de camera positie en de zichtbaarheid van de objecten te herstellen.
+Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wanneer je nodig hebt.</translation>
     </message>
   </context>
   <context>
@@ -5207,12 +5210,12 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Conversie succesvol</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation type="unfinished">Converting:</translation>
     </message>
@@ -5261,7 +5264,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>actieve opdracht:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="275"/>
       <source>None</source>
       <translation>Geen</translation>
     </message>
@@ -5316,7 +5319,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Lengte</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Angle</source>
       <translation>Hoek</translation>
     </message>
@@ -5361,7 +5364,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Aantal zijden</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Verschuiving</translation>
     </message>
@@ -5441,7 +5444,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Label</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="212"/>
       <source>Distance</source>
       <translation>Afstand</translation>
     </message>
@@ -5715,22 +5718,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Indien aangevinkt, worden subelementen gewijzigd in plaats van hele objecten</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Boven</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Voorkant</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Zijde</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Huidig werkvlak</translation>
     </message>
@@ -5755,14 +5758,9 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Druk op deze knop om het tekstobject aan te maken of eindig uw tekst met twee lege regels</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="214"/>
       <source>Offset distance</source>
       <translation>Verschuiving afstand</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Trim afstand</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6931,7 +6929,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Afmeting spiegelen</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Uitrekken</translation>
     </message>
@@ -6941,27 +6939,27 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Selecteer een object om uit te rekken</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Kies het eerste punt van de selectierechthoek</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Kies het tegenovergestelde punt van de selectierechthoek</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Kies het startpunt van verplaatsing</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Kies het eindpunt van verplaatsing</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Een rechthoek in een draad veranderen</translation>
     </message>
@@ -7066,37 +7064,27 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Selecteer objecten om te trimmen of uit te breiden</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Kies afstand</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>De verschuivings afstand</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>De verschuif hoek</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="480"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Kan deze objecten niet trimmen, alleen Draft draden en bogen worden ondersteund.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="485"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Kan deze objecten niet trimmen, te veel draden</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="502"/>
       <source>These objects don't intersect.</source>
       <translation>Deze objecten doorsnijden elkaar niet.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>Too many intersection points.</source>
       <translation>Te veel snijpunten.</translation>
     </message>
@@ -7126,22 +7114,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Maak B-spline aan</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Kies een vlak, 3 hoekpunten of een WP-Proxy om het tekenvlak te definiëren</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Werkvlak is afgestemd op de globale plaatsing van</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Richting</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Eigen</translation>
     </message>
@@ -7251,12 +7239,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Autogroeperen</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="281"/>
       <source>Add new Layer</source>
       <translation>Nieuwe laag toevoegen</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="335"/>
       <source>Add to construction group</source>
       <translation>Voeg toe aan constructiegroep</translation>
     </message>
@@ -7276,7 +7264,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Kan dit objecttype niet verschuiven</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>Offset van Bezier-curves wordt momenteel niet ondersteund</translation>
     </message>
@@ -7494,6 +7482,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 </source>
       <translation type="unfinished">Selected Shapes must define a plane
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="219"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
   </context>
   <context>

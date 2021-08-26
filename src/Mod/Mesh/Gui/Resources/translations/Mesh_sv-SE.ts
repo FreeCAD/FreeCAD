@@ -851,7 +851,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
       <source>Remove folds</source>
-      <translation type="unfinished">Remove folds</translation>
+      <translation>Ta bort vik</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>

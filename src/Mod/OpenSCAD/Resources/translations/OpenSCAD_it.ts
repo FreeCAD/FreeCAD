@@ -142,12 +142,12 @@
       <translation>Seleziona prima 3 oggetti</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>Funzione non supportata</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>Premere OK</translation>
     </message>
