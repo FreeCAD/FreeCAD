@@ -3214,19 +3214,50 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>Workbench Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load Selected</source>
+        <source>Autoload?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>Load Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+        <source>Workbench</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autoload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If checked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will be loaded automatically when FreeCAD starts up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load now</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
