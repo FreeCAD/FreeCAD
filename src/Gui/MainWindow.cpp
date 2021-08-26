@@ -632,12 +632,13 @@ bool MainWindow::closeAllDocuments (bool close)
 {
     auto docs = App::GetApplication().getDocuments();
     try {
-        docs = App::Document::getDependentDocuments(docs,true);
+        docs = App::Document::getDependentDocuments(docs, true);
     }catch(Base::Exception &e) {
         e.ReportException();
     }
     bool checkModify = true;
     bool saveAll = false;
+    int failedSaves = 0;
     for(auto doc : docs) {
         auto gdoc = Application::Instance->getDocument(doc);
         if(!gdoc)
@@ -650,7 +651,7 @@ bool MainWindow::closeAllDocuments (bool close)
             continue;
         bool save = saveAll;
         if(!save && checkModify) {
-            int res = confirmSave(doc->Label.getStrValue().c_str(),this,docs.size()>1);
+            int res = confirmSave(doc->Label.getStrValue().c_str(), this, docs.size()>1);
             if(res==0)
                 return false;
             if(res>0) {
@@ -660,9 +661,22 @@ bool MainWindow::closeAllDocuments (bool close)
             } else if(res==-2)
                 checkModify = false;
         }
+
         if(save && !gdoc->save())
+            failedSaves++;
+    }
+
+    if (failedSaves > 0) {
+        int ret = QMessageBox::question(
+            getMainWindow(),
+            QObject::tr("%1 Document(s) not saved").arg(QString::number(failedSaves)),
+            QObject::tr("Some documents could not be saved. Do you want to cancel closing?"),
+            QMessageBox::Discard | QMessageBox::Cancel,
+            QMessageBox::Discard);
+        if (ret == QMessageBox::Cancel)
             return false;
     }
+
     if(close)
         App::GetApplication().closeAllDocuments();
     // d->mdiArea->closeAllSubWindows();

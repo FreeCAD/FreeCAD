@@ -1980,10 +1980,22 @@ bool Document::canClose (bool checkModify, bool checkLink)
 
     bool ok = true;
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
-        int res = getMainWindow()->confirmSave(getDocument()->Label.getValue(),getActiveView());
-        if(res>0)
+        const char *docName = getDocument()->Label.getValue();
+        int res = getMainWindow()->confirmSave(docName, getActiveView());
+        if(res>0) {
             ok = save();
-        else
+            if (!ok) {
+                int ret = QMessageBox::question(
+                    getActiveView(),
+                    QObject::tr("Document not saved"),
+                    QObject::tr("The document%1 could not be saved. Do you want to cancel closing it?")
+                    .arg(docName?(QString::fromUtf8(" ")+QString::fromUtf8(docName)):QString()),
+                    QMessageBox::Discard | QMessageBox::Cancel,
+                    QMessageBox::Discard);
+                if (ret == QMessageBox::Discard)
+                    ok = true;
+            }
+        } else
             ok = res<0;
     }
 
