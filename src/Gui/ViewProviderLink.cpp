@@ -2167,14 +2167,16 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             SbMatrix matrix = convert(ext->getTransform(false));
             linkView->renderDoubleSide(matrix.det3() < 0);
         }
-    }else if(prop == ext->getLinkedObjectProperty()) {
-        if (!App::Document::isAnyRestoring() && ext->isLinkMutated()) {
+    }else if(prop == ext->getLinkCopyOnChangeGroupProperty()) {
+        if (auto group = ext->getLinkCopyOnChangeGroupValue()) {
             auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
-                    Application::Instance->getViewProvider(ext->getLinkedObjectValue()));
-            if (vp)
+                    Application::Instance->getViewProvider(group));
+            if (vp) {
+                vp->hide();
                 vp->ShowInTree.setValue(false);
+            }
         }
-
+    }else if(prop == ext->getLinkedObjectProperty()) {
         if(!prop->testStatus(App::Property::User3)) {
             std::vector<std::string> subs;
             const char *subname = ext->getSubName();
@@ -2456,6 +2458,10 @@ ViewProvider *ViewProviderLink::getLinkedView(
 std::vector<App::DocumentObject*> ViewProviderLink::claimChildren(void) const {
     auto ext = getLinkExtension();
     std::vector<App::DocumentObject*> ret;
+
+    if (ext && ext->getLinkCopyOnChangeGroupValue())
+        ret.push_back(ext->getLinkCopyOnChangeGroupValue());
+
     if(ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
