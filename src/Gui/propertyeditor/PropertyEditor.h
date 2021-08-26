@@ -120,6 +120,7 @@ private:
     void setEditorMode(const QModelIndex & parent, int start, int end);
     void closeTransaction();
     void recomputeDocument(App::Document*);
+    void collapseItem(const QModelIndex &index);
 
 private:
     PropertyItemDelegate *delegate;

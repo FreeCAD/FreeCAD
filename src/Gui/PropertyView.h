@@ -69,6 +69,7 @@ public:
     static void setShowAll(bool);
     static bool isPropertyHidden(const App::Property *);
     static void toggleHeader(bool);
+    static bool isHeaderHidden();
 
 public Q_SLOTS:
     /// Stores a preference for the last tab selected
@@ -95,6 +96,7 @@ private:
     void slotDeletedObject(const App::DocumentObject&);
 
     void checkEnable(const char *doc = 0);
+    void applyParams();
 
 private:
     struct PropInfo;
@@ -113,8 +115,12 @@ private:
     Connection connectDelViewObject;
     Connection connectBeforeRecompute;
     Connection connectChangedDocument;
+    Connection connectParamChange;
+    ParameterGrp::handle hParam;
+
     QTabWidget* tabs;
     QTimer* timer;
+    bool paramChanged = true;
 };
 
 namespace DockWnd {
