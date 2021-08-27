@@ -852,34 +852,24 @@ const char * Command::endCmdHelp(void)
     return "</body></html>\n\n";
 }
 
-void Command::applyCommandData(const char* context, Action* action)
+void Command::recreateTooltip(const char* context, Action* action)
 {
-    action->setText(QCoreApplication::translate(
+    QString tooltip;
+    tooltip.append(QString::fromLatin1("<h3>"));
+    tooltip.append(QCoreApplication::translate(
         context, getMenuText()));
-    // build the tooltip
-        QString tooltip;
-        tooltip.append(QString::fromLatin1("<h3>"));
-        tooltip.append(QCoreApplication::translate(
-            context, getMenuText()));
-        tooltip.append(QString::fromLatin1("</h3>"));
-        QRegularExpression re(QString::fromLatin1("([^&])&([^&])"));
-        tooltip.replace(re, QString::fromLatin1("\\1\\2"));
-        tooltip.replace(QString::fromLatin1("&&"), QString::fromLatin1("&"));
-        tooltip.append(QCoreApplication::translate(
-            context, getToolTipText()));
-        tooltip.append(QString::fromLatin1("<br><i>("));
-        tooltip.append(QCoreApplication::translate(
-            context, getWhatsThis()));
-        tooltip.append(QString::fromLatin1(")</i> "));
-    action->setToolTip(tooltip);
-    action->setWhatsThis(QCoreApplication::translate(
+    tooltip.append(QString::fromLatin1("</h3>"));
+    QRegularExpression re(QString::fromLatin1("([^&])&([^&])"));
+    tooltip.replace(re, QString::fromLatin1("\\1\\2"));
+    tooltip.replace(QString::fromLatin1("&&"), QString::fromLatin1("&"));
+    tooltip.append(QCoreApplication::translate(
+        context, getToolTipText()));
+    tooltip.append(QString::fromLatin1("<br><i>("));
+    tooltip.append(QCoreApplication::translate(
         context, getWhatsThis()));
-    if (sStatusTip)
-        action->setStatusTip(QCoreApplication::translate(
-            context, getStatusTip()));
-    else
-        action->setStatusTip(QCoreApplication::translate(
-            context, getToolTipText()));
+    tooltip.append(QString::fromLatin1(")</i> "));
+    action->setToolTip(tooltip);
+
     QString accel = action->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
         // show shortcut inside tooltip
@@ -892,6 +882,22 @@ void Command::applyCommandData(const char* context, Action* action)
             .arg(accel, action->statusTip());
         action->setStatusTip(stip);
     }
+
+    if (sStatusTip)
+        action->setStatusTip(QCoreApplication::translate(
+            context, getStatusTip()));
+    else
+        action->setStatusTip(QCoreApplication::translate(
+            context, getToolTipText()));
+}
+
+void Command::applyCommandData(const char* context, Action* action)
+{
+    action->setText(QCoreApplication::translate(
+        context, getMenuText()));
+    recreateTooltip(context, action);
+    action->setWhatsThis(QCoreApplication::translate(
+        context, getWhatsThis()));
 }
 
 const char* Command::keySequenceToAccel(int sk) const
