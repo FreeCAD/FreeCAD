@@ -1982,7 +1982,13 @@ bool Document::canClose (bool checkModify, bool checkLink)
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
         const char *docName = getDocument()->Label.getValue();
         int res = getMainWindow()->confirmSave(docName, getActiveView());
-        if(res>0) {
+        switch (res)
+        {
+        case MainWindow::ConfirmSaveResult::Cancel:
+            ok = false;
+            break;
+        case MainWindow::ConfirmSaveResult::SaveAll:
+        case MainWindow::ConfirmSaveResult::Save:
             ok = save();
             if (!ok) {
                 int ret = QMessageBox::question(
@@ -1995,8 +2001,12 @@ bool Document::canClose (bool checkModify, bool checkLink)
                 if (ret == QMessageBox::Discard)
                     ok = true;
             }
-        } else
-            ok = res<0;
+            break;
+        case MainWindow::ConfirmSaveResult::DiscardAll:
+        case MainWindow::ConfirmSaveResult::Discard:
+            ok = true;
+            break;
+        }
     }
 
     if (ok) {

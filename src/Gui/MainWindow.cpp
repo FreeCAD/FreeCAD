@@ -612,15 +612,15 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
         discardBtn->setShortcut(QKeySequence::mnemonic(text));
     }
 
-    int res = 0;
+    int res = ConfirmSaveResult::Cancel;
     box.adjustSize(); // Silence warnings from Qt on Windows
     switch (box.exec())
     {
     case QMessageBox::Save:
-        res = checkBox.isChecked()?2:1;
+        res = checkBox.isChecked()?ConfirmSaveResult::SaveAll:ConfirmSaveResult::Save;
         break;
     case QMessageBox::Discard:
-        res = checkBox.isChecked()?-2:-1;
+        res = checkBox.isChecked()?ConfirmSaveResult::DiscardAll:ConfirmSaveResult::Discard;
         break;
     }
     if(addCheckbox && res)
@@ -652,14 +652,18 @@ bool MainWindow::closeAllDocuments (bool close)
         bool save = saveAll;
         if(!save && checkModify) {
             int res = confirmSave(doc->Label.getStrValue().c_str(), this, docs.size()>1);
-            if(res==0)
+            switch (res)
+            {
+            case ConfirmSaveResult::Cancel:
                 return false;
-            if(res>0) {
+            case ConfirmSaveResult::SaveAll:
+                saveAll = true;
+            case ConfirmSaveResult::Save:
                 save = true;
-                if(res==2)
-                    saveAll = true;
-            } else if(res==-2)
+                break;
+            case ConfirmSaveResult::DiscardAll:
                 checkModify = false;
+            }
         }
 
         if(save && !gdoc->save())
