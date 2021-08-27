@@ -83,28 +83,32 @@ PRECISION = 4
 
 RAPID_MOVES = ['G0', 'G00']
 
-G0XY_FEEDRATE = 30000
-G0Z_UP_FEEDRATE = 3600
-G0Z_DOWN_FEEDRATE = 3600
+G0XY_FEEDRATE = 1000
+G0Z_UP_FEEDRATE = 250
+G0Z_DOWN_FEEDRATE = 150
 SAFEZ = 5
 CLEARZ = 3
 ATTENTIONZ = 20
 DRILLZ = 5
 
 #Preamble text will appear at the Beginning of the GCODE output file.
+#Note no /60.0 as it is not processed.
+
 PREAMBLE = '''G90
 G92 X0 Y0 Z0
 %units%
-G1 Z''' + format(SAFEZ, 'd') + ''' F''' + format(G0Z_UP_FEEDRATE /60.0, '.' + str(PRECISION) +'f') + '''
-G1 X0 Y0 F''' + format(G0XY_FEEDRATE /60.0, '.' + str(PRECISION) +'f') + '''
+G1 Z''' + format(SAFEZ, 'd') + ''' F''' + format(G0Z_UP_FEEDRATE , '.' + str(PRECISION) +'f') + '''
+G1 X0 Y0 F''' + format(G0XY_FEEDRATE , '.' + str(PRECISION) +'f') + '''
 '''
 
 #Postamble text will appear following the last operation.
+#Note no /60.0 as it is not processed.
+
 POSTAMBLE = '''
 G1 Z''' + format(ATTENTIONZ , 'd') + '''
 M5
-G1 X0 Y0 F''' + format(G0XY_FEEDRATE /60.0, '.' + str(PRECISION) +'f') + '''
-G1 Z''' + format(SAFEZ, 'd') + ''' F''' + format(G0Z_UP_FEEDRATE /60.0, '.' + str(PRECISION) +'f') + '''
+G1 X0 Y0 F''' + format(G0XY_FEEDRATE, '.' + str(PRECISION) +'f') + '''
+G1 Z''' + format(SAFEZ, 'd') + ''' F''' + format(G0Z_UP_FEEDRATE , '.' + str(PRECISION) +'f') + '''
 ; M2
 '''
 #Marlin is primarily for 3d printing, the output from freeCAD for cnc router work is rather limited
@@ -433,13 +437,13 @@ def emultoolchange(c, state): #M6 T?
                     [";assumed starting tool", {'T' : c.Parameters['T']}]
         ]
     else:
-        cmdlist =  [["G0", {'z' : ATTENTIONZ, 'F': G0Z_UP_FEEDRATE / 60.0}],
-                    ["G0", {'x' : 0, 'y' : 0, 'F' : G0XY_FEEDRATE / 60.0}],
+        cmdlist =  [["G1", {'z' : ATTENTIONZ, 'F': G0Z_UP_FEEDRATE / 60.0}],
+                    ["G1", {'x' : 0, 'y' : 0, 'F' : G0XY_FEEDRATE / 60.0}],
                     ["M5" if SPINDLE_CONTROL else ";M5", {}],
                     ["M0", {'T': c.Parameters['T']}], # Pause and wait for click, turn off spindle, swap bit, home it, turn on spindle
                     ["G92", {'z' : 0}],
-                    ["G0", {'z' : ATTENTIONZ, 'F': G0Z_UP_FEEDRATE / 60.0}],
-                    ["G0", {'x' : state['lastx'], 'y': state['lasty'], 'F': G0XY_FEEDRATE / 60.0}],
+                    ["G1", {'z' : ATTENTIONZ, 'F': G0Z_UP_FEEDRATE / 60.0}],
+                    ["G1", {'x' : state['lastx'], 'y': state['lasty'], 'F': G0XY_FEEDRATE / 60.0}],
                     ["M3" if SPINDLE_CONTROL else ";M3", {'S' : state['lasts']}]
         ]
     
@@ -449,7 +453,10 @@ def emulFastMove(c, state): #Let's separate Z
     params = c.Parameters
     
     if 'F' in params:
-        F = params['F']
+        F = params['F'] / 60.0
+        if F > (G0XY_FEEDRATE / 60.0):
+            F = G0XY_FEEDRATE / 60.0
+            
     else:
         F = G0XY_FEEDRATE / 60.0
         
@@ -478,7 +485,7 @@ def emulFastMove(c, state): #Let's separate Z
    
 class Commands:
     tobe = {'G81': emuldrill, 'M6' : emultoolchange, 'G0' : emulFastMove}
-    state = {'output': False, 'notoolyet': True, 'lastz' : 100, 'lastx' : 0, 'lasty' : 0, 'lastf' : G0Z_DOWN_FEEDRATE, 'lasts' : 0}
+    state = {'output': False, 'notoolyet': True, 'lastz' : 100, 'lastx' : 0, 'lasty' : 0, 'lastf' : G0Z_DOWN_FEEDRATE / 60.0, 'lasts' : 0}
              
     def __init__(self, pathobj = None, output = False):
         self.paths = iter(pathobj.Path.Commands)
@@ -511,18 +518,18 @@ class Commands:
                 self.epath = func(item, Commands.state)
                 command = ';' + command
             elif Commands.state['output']:
-                if command == 'G0':
-                    if 'Z' in params:
-                        params['F'] = (G0Z_UP_FEEDRATE if params['Z'] > Commands.state['lastz'] else G0Z_DOWN_FEEDRATE if params['Z'] < Commands.state['lastz'] else G0XY_FEEDRATE) / 60.0
+ #               if command == 'G0':
+ #                   if 'Z' in params:
+ #                       params['F'] = (G0Z_UP_FEEDRATE if params['Z'] > Commands.state['lastz'] else G0Z_DOWN_FEEDRATE if params['Z'] < Commands.state['lastz'] else G0XY_FEEDRATE) / 60.0
                         #print ('lastz ' + format(Commands.state['lastz'], '0.2f') + ' currentZ ' + format(params['Z'], '0.2f') + ' G0 ' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
-                    else:
-                        params['F'] = G0XY_FEEDRATE / 60.0
+ #                   else:
+ #                       params['F'] = G0XY_FEEDRATE / 60.0
                         #print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
     
                 if 'X' in params: Commands.state['lastx'] = params['X']
                 if 'Y' in params: Commands.state['lasty'] = params['Y']
                 if 'Z' in params: Commands.state['lastz'] = params['Z']
-                if 'F' in params: Commands.state['lastf'] = params['F']
+                if 'F' in params: Commands.state['lastf'] = params['F'] / 60.0
                 if 'S' in params: Commands.state['lasts'] = params['S']
                 
             res = [command, params]
@@ -620,4 +627,3 @@ def parse(pathobj, data_stats, checkbounds):
 
 
 print(__name__ + " gcode postprocessor loaded.")
-
