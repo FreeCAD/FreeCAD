@@ -135,6 +135,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
 {
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
+
     if (doc && !doc->testStatus(App::Document::PartialDoc)
             && !doc->testStatus(App::Document::TempDoc))
     {
@@ -163,7 +164,8 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document");
         bool save = hGrp->GetBool("SaveThumbnail",false);
-        hGrp->SetBool("SaveThumbnail",false);
+        if (save)
+            hGrp->SetBool("SaveThumbnail",false);
 
         getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
         //qApp->processEvents();
@@ -219,7 +221,8 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
 
         std::string str = watch.toString(watch.elapsed());
         Base::Console().Log("Save AutoRecovery file: %s\n", str.c_str());
-        hGrp->SetBool("SaveThumbnail",save);
+        if (save)
+            hGrp->SetBool("SaveThumbnail",save);
     }
 }
 
@@ -227,7 +230,7 @@ void AutoSaver::timerEvent(QTimerEvent * event)
 {
     int id = event->timerId();
     for (std::map<std::string, AutoSaveProperty*>::iterator it = saverMap.begin(); it != saverMap.end(); ++it) {
-        if (it->second->timerId == id) {
+        if (it->second->timerId == id && !it->second->touched.empty()) {
             try {
                 saveDocument(it->first, *it->second);
                 it->second->touched.clear();
