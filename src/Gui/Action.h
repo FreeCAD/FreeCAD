@@ -40,6 +40,7 @@ class QLineEdit;
 class QWidgetAction;
 class QCheckBox;
 class QToolBar;
+class QSpinBox;
 
 namespace Gui
 {
@@ -100,6 +101,12 @@ public:
                                 QCheckBox **checkbox = nullptr,
                                 const QString &tooltip = QString(),
                                 const QIcon &icon = QIcon());
+
+    static QAction *addWidget(QMenu *menu,
+                              const QString &txt,
+                              const QString &tooltip,
+                              QWidget *widget,
+                              bool needLable = true);
 
     static QString createToolTip(QString tooltip,
                                  const QString &title,

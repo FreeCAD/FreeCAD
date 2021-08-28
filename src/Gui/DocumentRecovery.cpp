@@ -406,6 +406,10 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
     else if (rec_dir.exists(QLatin1String("Document.xml"))) {
         file = rec_dir.absoluteFilePath(QLatin1String("Document.xml"));
     }
+    else {
+        info.status = DocumentRecoveryPrivate::Unknown;
+        return info;
+    }
 
     info.status = DocumentRecoveryPrivate::Created;
     info.projectFile = file;

@@ -38,6 +38,7 @@
 # include <QElapsedTimer>
 # include <QClipboard>
 # include <QCheckBox>
+# include <QSpinBox>
 #endif
 
 #include <QWidgetAction>
@@ -347,27 +348,66 @@ Action::addCheckBox(QMenu *menu,
                     bool checked,
                     QCheckBox **_checkbox)
 {
+    auto checkbox = new QCheckBox;
+    checkbox->setText(txt);
+    checkbox->setChecked(checked);
+    checkbox->setIcon(icon);
+    if (_checkbox) *_checkbox = checkbox;
+    auto action = addWidget(menu, txt, tooltip, checkbox, false);
+    action->setCheckable(true);
+    action->setChecked(checked);
+    menu->addAction(action);
+    QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SLOT(setChecked(bool)));
+    QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SIGNAL(toggled(bool)));
+    return action;
+}
+
+class MenuFocusEventFilter: public QObject {
+public:
+    MenuFocusEventFilter(QMenu *menu, QAction *action)
+        :QObject(menu)
+        ,menu(menu), action(action)
+    {}
+
+    bool eventFilter(QObject *, QEvent *e) {
+        if (e->type() == QEvent::Enter)
+            menu->setActiveAction(action);
+        return false;
+    }
+
+    QMenu *menu;
+    QAction *action;
+};
+
+QAction *
+Action::addWidget(QMenu *menu,
+                  const QString &txt,
+                  const QString &tooltip,
+                  QWidget *w,
+                  bool needLabel)
+{
+    QWidgetAction *wa = new QWidgetAction(menu);
     QWidget *widget = new QWidget(menu);
     QHBoxLayout *layout = new QHBoxLayout(widget);
     widget->setLayout(layout);
-    auto checkbox = new QCheckBox(widget);
-    if (_checkbox) *_checkbox = checkbox;
-    layout->addWidget(checkbox);
+    if (needLabel) {
+        QLabel *label = new QLabel(widget);
+        label->installEventFilter(new MenuFocusEventFilter(menu, wa));
+        label->setText(txt);
+        layout->addWidget(label);
+    }
+    layout->addWidget(w);
     layout->setContentsMargins(4,0,4,0);
-    QWidgetAction *wa = new QWidgetAction(menu);
+    widget->setFocusProxy(w);
+    widget->setFocusPolicy(Qt::TabFocus);
+    w->installEventFilter(new MenuFocusEventFilter(menu, wa));
+    w->setFocusPolicy(Qt::TabFocus);
     wa->setDefaultWidget(widget);
     wa->setToolTip(tooltip);
     wa->setStatusTip(tooltip);
     wa->setVisible(true);
     wa->setText(txt);
-    checkbox->setText(txt);
-    checkbox->setChecked(checked);
-    checkbox->setIcon(icon);
-    wa->setCheckable(true);
-    wa->setChecked(checked);
     menu->addAction(wa);
-    QObject::connect(checkbox, SIGNAL(toggled(bool)), wa, SLOT(setChecked(bool)));
-    QObject::connect(checkbox, SIGNAL(toggled(bool)), wa, SIGNAL(toggled(bool)));
     return wa;
 }
 

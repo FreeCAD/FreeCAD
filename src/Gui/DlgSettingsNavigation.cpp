@@ -45,6 +45,7 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include "ViewParams.h"
+#include "NaviCube.h"
 
 using namespace Gui::Dialog;
 
@@ -61,6 +62,8 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
 {
     ui->setupUi(this);
     retranslate();
+    connect(ui->buttonNaviColors, &QPushButton::clicked, [this](){NaviCube::setColors(this);});
+    connect(ui->buttonNaviLabels, &QPushButton::clicked, [this](){NaviCube::setLabels(this);});
 }
 
 /**
@@ -88,7 +91,6 @@ void DlgSettingsNavigation::saveSettings()
     index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
-    ViewParams::setNaviWidgetSize(ui->naviCubeSize->value());
     ViewParams::setGestureLongPressRotationCenter(ui->checkBoxRotationCenter->isChecked());
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
@@ -97,6 +99,8 @@ void DlgSettingsNavigation::saveSettings()
     ui->CheckBox_UseAutoRotation->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
+    ui->naviCubeToNearest->onSave();
+    ui->prefCubeSize->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -114,7 +118,6 @@ void DlgSettingsNavigation::saveSettings()
 
 void DlgSettingsNavigation::loadSettings()
 {
-    ui->naviCubeSize->setValue(ViewParams::getNaviWidgetSize());
     ui->checkBoxRotationCenter->setChecked(ViewParams::getGestureLongPressRotationCenter());
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
@@ -123,6 +126,8 @@ void DlgSettingsNavigation::loadSettings()
     ui->CheckBox_UseAutoRotation->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
+    ui->naviCubeToNearest->onRestore();
+    ui->prefCubeSize->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");

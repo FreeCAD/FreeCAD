@@ -133,8 +133,11 @@ public:
        QT_TRANSLATE_NOOP("ViewParams", "Map child object into parent's coordinate space when showing on top.\n"\
                              "Note that once activated, this option will also activate option ShowOnTop.\n"\
                              "WARNING! This is an experimental option. Please use with caution."))\
-    FC_VIEW_PARAM(NaviWidgetSize,int,Int,132, "") \
     FC_VIEW_PARAM2(CornerNaviCube,int,Int,1, "") \
+    FC_VIEW_PARAM(NaviRotateToNearest, bool, Bool, true,\
+        QT_TRANSLATE_NOOP("", "Rotates to nearest possible state when clicking a cube face")) \
+    FC_VIEW_PARAM(NaviStepByTurn, int, Int, 8,\
+        QT_TRANSLATE_NOOP("", "Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)")) \
     FC_VIEW_PARAM2(DockOverlayAutoView,bool,Bool,true, "") \
     FC_VIEW_PARAM2(DockOverlayExtraState,bool,Bool,false, "") \
     FC_VIEW_PARAM(DockOverlayDelay,int,Int,200, \

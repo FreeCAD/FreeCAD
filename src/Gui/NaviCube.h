@@ -44,11 +44,11 @@ public:
 	NaviCube(Gui::View3DInventorViewer* viewer) ;
 	virtual ~NaviCube();
 	void drawNaviCube();
-	void createContextMenu(const std::vector<std::string>& cmd);
 	bool processSoEvent(const SoEvent* ev);
 	void setCorner(Corner);
-	static void setNaviCubeCommands(const std::vector<std::string>& cmd);
-	static void setNaviCubeLabels(const std::vector<std::string>& labels);
+    static int getNaviCubeSize();
+    static void setColors(QWidget *parent);
+    static void setLabels(QWidget *parent);
 private:
 	NaviCubeImplementation* m_NaviCubeImplementation;
 };
