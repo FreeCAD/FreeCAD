@@ -71,6 +71,7 @@
 #include <App/Application.h>
 #include "propertyeditor/PropertyEditor.h"
 #include "OverlayWidgets.h"
+#include "NaviCube.h"
 
 FC_LOG_LEVEL_INIT("Dock", true, true);
 
@@ -3079,7 +3080,7 @@ public:
         if(tabbar)
             h -= tabbar->height();
 
-        int naviCubeSize = ViewParams::getNaviWidgetSize();
+        int naviCubeSize = NaviCube::getNaviCubeSize();
         int naviCorner = ViewParams::getDockOverlayCheckNaviCube() ?
             ViewParams::getCornerNaviCube() : -1;
 

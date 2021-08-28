@@ -45,6 +45,7 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include "ViewParams.h"
+#include "NaviCube.h"
 
 using namespace Gui::Dialog;
 
@@ -61,6 +62,8 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
 {
     ui->setupUi(this);
     retranslate();
+    connect(ui->buttonNaviColors, &QPushButton::clicked, [this](){NaviCube::setColors(this);});
+    connect(ui->buttonNaviLabels, &QPushButton::clicked, [this](){NaviCube::setLabels(this);});
 }
 
 /**
@@ -115,7 +118,6 @@ void DlgSettingsNavigation::saveSettings()
 
 void DlgSettingsNavigation::loadSettings()
 {
-    ui->naviCubeSize->setValue(ViewParams::getNaviWidgetSize());
     ui->checkBoxRotationCenter->setChecked(ViewParams::getGestureLongPressRotationCenter());
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();

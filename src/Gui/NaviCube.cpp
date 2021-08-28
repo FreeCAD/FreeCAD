@@ -82,6 +82,11 @@
 # include <QStatusBar>
 # include <QBitmap>
 # include <QMimeData>
+# include <QSpinBox>
+# include <QLineEdit>
+# include <QCheckBox>
+# include <QDesktopWidget>
+# include <QFontDialog>
 #endif
 
 #include <sstream>
@@ -102,6 +107,8 @@
 #include "Command.h"
 #include "Document.h"
 #include "ViewParams.h"
+#include "Action.h"
+#include "Widgets.h"
 
 #include "NaviCube.h"
 
@@ -113,9 +120,7 @@
 #include <QPainterPath>
 #include <QApplication>
 
-#if defined(HAVE_QT5_OPENGL)
-# include <QOpenGLTexture>
-#endif
+#include <QOpenGLTexture>
 
 //#include <OpenGL/glu.h>
 #include <Eigen/Dense>
@@ -175,12 +180,168 @@ public:
 	}
 };
 
+enum { //
+    TEX_FRONT = 1, // 0 is reserved for 'nothing picked'
+    TEX_REAR,
+    TEX_TOP,
+    TEX_BOTTOM,
+    TEX_LEFT,
+    TEX_RIGHT,
+    TEX_FRONT_FACE,
+    TEX_CORNER_FACE,
+    TEX_EDGE_FACE,
+    TEX_FRONT_TOP,
+    TEX_FRONT_BOTTOM,
+    TEX_FRONT_LEFT,
+    TEX_FRONT_RIGHT, 
+    TEX_REAR_TOP,
+    TEX_REAR_BOTTOM,
+    TEX_REAR_LEFT,
+    TEX_REAR_RIGHT,
+    TEX_TOP_LEFT,
+    TEX_TOP_RIGHT,
+    TEX_BOTTOM_LEFT,
+    TEX_BOTTOM_RIGHT,
+    TEX_BOTTOM_RIGHT_REAR,
+    TEX_BOTTOM_FRONT_RIGHT,
+    TEX_BOTTOM_LEFT_FRONT,
+    TEX_BOTTOM_REAR_LEFT,
+    TEX_TOP_RIGHT_FRONT,
+    TEX_TOP_FRONT_LEFT,
+    TEX_TOP_LEFT_REAR,
+    TEX_TOP_REAR_RIGHT,
+    TEX_ARROW_NORTH,
+    TEX_ARROW_NORTH_PICK,
+    TEX_ARROW_SOUTH,
+    TEX_ARROW_SOUTH_PICK,
+    TEX_ARROW_EAST,
+    TEX_ARROW_EAST_PICK,
+    TEX_ARROW_WEST,
+    TEX_ARROW_WEST_PICK,
+    TEX_ARROW_RIGHT,
+    TEX_ARROW_RIGHT_PICK,
+    TEX_ARROW_LEFT,
+    TEX_ARROW_LEFT_PICK,
+    TEX_DOT_BACKSIDE,
+    TEX_DOT_BACKSIDE_PICK,
+    TEX_VIEW_MENU_ICON,
+    TEX_VIEW_MENU_FACE
+};
+enum {
+    DIR_UP,DIR_RIGHT,DIR_OUT
+};
+enum {
+    SHAPE_SQUARE, SHAPE_EDGE, SHAPE_CORNER
+};
+
+class NaviCubeShared {
+public:
+	NaviCubeShared()
+        : m_labels {
+            {"Front", "TextFront", "FRONT"},
+            {"Rear", "TextRear", "REAR"},
+            {"Top", "TextTop", "TOP"},
+            {"Bottom", "TextBottom", "BOTTOM"},
+            {"Right", "TextRight", "RIGHT"},
+            {"Left", "TextLeft", "LEFT"},}
+        , m_colors {
+            {"Text", "TextColor", Qt::black, m_TextColor},
+            {"Highlight", "HiliteColor", QColor(170, 226, 255, 255), m_HiliteColor},
+            {"Face", "FrontColor", QColor(226, 233, 239, 192), m_FrontFaceColor},
+            {"Edge", "EdgeColor", QColor(226, 233, 239, 192).dark(140), m_EdgeFaceColor},
+            {"Corner", "CornerColor", QColor(226, 233, 239, 192).dark(110), m_CornerFaceColor},
+            {"Button", "ButtonColor", QColor(226, 233, 239, 128), m_ButtonColor},}
+    {
+	    m_hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/NaviCube");
+        getParams();
+    }
+
+	virtual ~ NaviCubeShared() {
+        deinit();
+    }
+
+    static std::shared_ptr<NaviCubeShared> instance() {
+        static std::weak_ptr<NaviCubeShared> _instance;
+        auto res = _instance.lock();
+        if (!res) {
+            res = std::make_shared<NaviCubeShared>();
+            _instance = res;
+        }
+        return res;
+    }
+
+	void handleMenu(QWidget *parent);
+    void getParams();
+
+	bool drawNaviCube(SoCamera *cam, bool picking, int hiliteId);
+	bool initNaviCube();
+	void addFace(const Vector3f&, const Vector3f&, int, int, int, bool flag=false);
+
+    void setColors(QWidget *parent);
+    void setLabels(QWidget *parent);
+    QFont getLabelFont();
+    void setLabelFont(const QFont &);
+
+	GLuint createCubeFaceTex(float gap, const char* text, int shape);
+	GLuint createButtonTex(int button, bool stroke = true);
+	GLuint createMenuTex(bool);
+
+    void deinit();
+
+public:
+	static int m_CubeWidgetSize;
+
+    // With QPainter render hints, over sample is not really need. Resizing
+    // texture just make it look worse.
+	int m_OverSample = 1;
+
+	QColor m_TextColor;
+	QColor m_HiliteColor;
+	QColor m_ButtonColor;
+	QColor m_FrontFaceColor;
+	QColor m_EdgeFaceColor;
+	QColor m_CornerFaceColor;
+    bool m_ShowCS;
+
+	QtGLFramebufferObject* m_PickingFramebuffer = nullptr;
+
+	vector<GLubyte> m_IndexArray;
+	vector<Vector2f> m_TextureCoordArray;
+	vector<Vector3f> m_VertexArray;
+	map<int,GLuint> m_Textures;
+	vector<std::unique_ptr<Face>> m_Faces;
+	vector<int> m_Buttons;
+	vector<std::unique_ptr<QOpenGLTexture>> m_glTextures;
+
+    ParameterGrp::handle m_hGrp;
+
+    struct LabelInfo {
+        const char *title;
+        const char *name;
+        const char *def;
+    };
+	vector<LabelInfo> m_labels;
+
+    struct ColorInfo {
+        const char *title;
+        const char *name;
+        QColor def;
+        QColor &color;
+    };
+	vector<ColorInfo> m_colors;
+
+    QMenu m_Menu;
+};
+
+int NaviCubeShared::m_CubeWidgetSize;
+
 class NaviCubeImplementation : public ParameterGrp::ObserverType {
 public:
 	NaviCubeImplementation(Gui::View3DInventorViewer*);
 	virtual ~ NaviCubeImplementation();
 	void drawNaviCube();
-	void createContextMenu(const std::vector<std::string>& cmd);
+	void drawNaviCube(bool picking);
 
 	/// Observer message from the ParameterGrp
 	virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
@@ -194,109 +355,38 @@ private:
 	bool inDragZone(short x, short y);
 
 	void handleResize();
-	void handleMenu();
 
 	void setHilite(int);
-
-	void initNaviCube(QtGLWidget*);
-	void addFace(const Vector3f&, const Vector3f&, int, int, int, bool flag=false);
-
-	GLuint createCubeFaceTex(QtGLWidget* gl, float gap, const char* text, int shape);
-	GLuint createButtonTex(QtGLWidget*, int);
-	GLuint createMenuTex(QtGLWidget*, bool);
 
 	SbRotation setView(float ,float) const;
 	SbRotation rotateView(SbRotation, int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
 	void rotateView(const SbRotation&);
 
-	QString str(char* str);
-	char* enum2str(int);
-	QMenu* createNaviCubeMenu();
 public:
-	enum { //
-		TEX_FRONT = 1, // 0 is reserved for 'nothing picked'
-		TEX_REAR,
-		TEX_TOP,
-		TEX_BOTTOM,
-		TEX_LEFT,
-		TEX_RIGHT,
-		TEX_FRONT_FACE,
-		TEX_CORNER_FACE,
-		TEX_EDGE_FACE,
-		TEX_FRONT_TOP,
-		TEX_FRONT_BOTTOM,
-		TEX_FRONT_LEFT,
-		TEX_FRONT_RIGHT, 
-		TEX_REAR_TOP,
-		TEX_REAR_BOTTOM,
-		TEX_REAR_LEFT,
-		TEX_REAR_RIGHT,
-		TEX_TOP_LEFT,
-		TEX_TOP_RIGHT,
-		TEX_BOTTOM_LEFT,
-		TEX_BOTTOM_RIGHT,
-		TEX_BOTTOM_RIGHT_REAR,
-		TEX_BOTTOM_FRONT_RIGHT,
-		TEX_BOTTOM_LEFT_FRONT,
-		TEX_BOTTOM_REAR_LEFT,
-		TEX_TOP_RIGHT_FRONT,
-		TEX_TOP_FRONT_LEFT,
-		TEX_TOP_LEFT_REAR,
-		TEX_TOP_REAR_RIGHT,
-		TEX_ARROW_NORTH,
-		TEX_ARROW_SOUTH,
-		TEX_ARROW_EAST,
-		TEX_ARROW_WEST,
-		TEX_ARROW_RIGHT,
-		TEX_ARROW_LEFT,
-		TEX_DOT_BACKSIDE,
-		TEX_VIEW_MENU_ICON,
-		TEX_VIEW_MENU_FACE
-	};
-	enum {
-		DIR_UP,DIR_RIGHT,DIR_OUT
-	};
-	enum {
-		SHAPE_SQUARE, SHAPE_EDGE, SHAPE_CORNER
-	};
 	Gui::View3DInventorViewer* m_View3DInventorViewer;
-	void drawNaviCube(bool picking);
+    std::shared_ptr<NaviCubeShared> m_Shared;
+    ParameterGrp::handle m_hGrp;
 
-	int m_OverSample = 4;
-	int m_CubeWidgetSize = 0;
 	int m_CubeWidgetPosX = 0;
 	int m_CubeWidgetPosY = 0;
 	int m_CubeWidgetOffsetX = 0;
 	int m_CubeWidgetOffsetY = 0;
 	int m_PrevWidth = 0;
 	int m_PrevHeight = 0;
-	QColor m_TextColor;
-	QColor m_HiliteColor;
-	QColor m_ButtonColor;
-	QColor m_FrontFaceColor;
 	int m_HiliteId = 0;
 	bool m_MouseDown = false;
 	bool m_Dragging = false;
 	bool m_MightDrag = false;
     NaviCube::Corner m_Corner = NaviCube::TopRightCorner;
 
-	QtGLFramebufferObject* m_PickingFramebuffer;
-
-	bool m_NaviCubeInitialised = false;
-
-	vector<GLubyte> m_IndexArray;
-	vector<Vector2f> m_TextureCoordArray;
-	vector<Vector3f> m_VertexArray;
-	map<int,GLuint> m_Textures;
-	vector<Face*> m_Faces;
-	vector<int> m_Buttons;
-#if defined(HAVE_QT5_OPENGL)
-	vector<QOpenGLTexture *> m_glTextures;
-#endif
-	static vector<string> m_commands;
-	static vector<string> m_labels;
-	QMenu* m_Menu;
+	int &m_CubeWidgetSize = NaviCubeShared::m_CubeWidgetSize;
+    QTimer timer;
 };
+
+int NaviCube::getNaviCubeSize()
+{
+    return NaviCubeShared::m_CubeWidgetSize;
+}
 
 NaviCube::NaviCube(Gui::View3DInventorViewer* viewer) {
 	m_NaviCubeImplementation = new NaviCubeImplementation(viewer);
@@ -310,17 +400,9 @@ void NaviCube::drawNaviCube() {
 	m_NaviCubeImplementation->drawNaviCube();
 }
 
-void NaviCube::createContextMenu(const std::vector<std::string>& cmd) {
-	m_NaviCubeImplementation->createContextMenu(cmd);
-}
-
 bool NaviCube::processSoEvent(const SoEvent* ev) {
 	return m_NaviCubeImplementation->processSoEvent(ev);
 }
-
-
-vector<string> NaviCubeImplementation::m_commands;
-vector<string> NaviCubeImplementation::m_labels;
 
 void NaviCube::setCorner(Corner c) {
 	m_NaviCubeImplementation->m_Corner = c;
@@ -328,175 +410,105 @@ void NaviCube::setCorner(Corner c) {
 	m_NaviCubeImplementation->m_PrevHeight = 0;
 }
 
-NaviCubeImplementation::NaviCubeImplementation(
-	Gui::View3DInventorViewer* viewer) {
+NaviCubeImplementation::NaviCubeImplementation(Gui::View3DInventorViewer* viewer)
+	: m_View3DInventorViewer(viewer)
+    , m_Shared(NaviCubeShared::instance())
+    , m_hGrp(m_Shared->m_hGrp)
+{
+    m_hGrp->Attach(this);
 
-	m_View3DInventorViewer = viewer;
-
-	auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-	hGrp->Attach(this);
-
-	OnChange(*hGrp, "TextColor");
-	OnChange(*hGrp, "FrontColor");
-	OnChange(*hGrp, "HiliteColor");
-	OnChange(*hGrp, "ButtonColor");
-	OnChange(*hGrp, "CubeSize");
-
-	m_PickingFramebuffer = NULL;
-	m_Menu = createNaviCubeMenu();
+    timer.setSingleShot(true);
+    QObject::connect(&timer, &QTimer::timeout, [this](){
+        m_Shared->getParams();
+	    m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
+    });
 }
 
 NaviCubeImplementation::~NaviCubeImplementation() {
-	auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-	hGrp->Detach(this);
-
-	delete m_Menu;
-	if (m_PickingFramebuffer)
-		delete m_PickingFramebuffer;
-	for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++)
-		delete *f;
-#if defined(HAVE_QT5_OPENGL)
-	for (vector<QOpenGLTexture *>::iterator t = m_glTextures.begin(); t != m_glTextures.end(); t++)
-		delete *t;
-#endif
+	m_hGrp->Detach(this);
 }
 
-void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType &rCaller, ParameterGrp::MessageType reason)
+void NaviCubeShared::getParams()
 {
-	const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
-
-	if (strcmp(reason,"TextColor") == 0) {
-		m_TextColor.setRgba(rGrp.GetUnsigned(reason, QColor(0, 0, 0, 255).rgba()));
-	} else if (strcmp(reason,"FrontColor") == 0) {
-		m_FrontFaceColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 192).rgba()));
-	} else if (strcmp(reason,"HiliteColor") == 0) {
-		m_HiliteColor.setRgba(rGrp.GetUnsigned(reason, QColor(170, 226, 255, 255).rgba()));
-	} else if (strcmp(reason,"ButtonColor") == 0) {
-		m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 128).rgba()));
-	} else if (strcmp(reason,"CubeSize") == 0) {
-		m_CubeWidgetSize = (rGrp.GetInt(reason, 132));
-	}
+    for (auto &info : m_colors)
+        info.color = QColor::fromRgba(m_hGrp->GetUnsigned(info.name, info.def.rgba()));
+    m_CubeWidgetSize = m_hGrp->GetInt("CubeSize", 132);
+    m_ShowCS = m_hGrp->GetBool("ShowCS", true);
+    deinit();
 }
 
-char* NaviCubeImplementation::enum2str(int e) {
-	switch (e) {
-	default : return "???";
-	case TEX_FRONT : return "TEX_FRONT";
-	case TEX_REAR: return "TEX_REAR";
-	case TEX_TOP: return "TEX_TOP";
-	case TEX_BOTTOM: return "TEX_BOTTOM";
-	case TEX_RIGHT : return "TEX_RIGHT";
-	case TEX_LEFT: return "TEX_LEFT";
-	case TEX_FRONT_FACE: return "TEX_FRONT_FACE";
-	case TEX_CORNER_FACE: return "TEX_CORNER_FACE";
-	case TEX_EDGE_FACE: return "TEX_EDGE_FACE";
-	case TEX_FRONT_TOP: return "TEX_FRONT_TOP";
-	case TEX_FRONT_BOTTOM: return "TEX_FRONT_BOTTOM";
-	case TEX_FRONT_LEFT: return "TEX_FRONT_LEFT";
-	case TEX_FRONT_RIGHT: return "TEX_FRONT_RIGHT";
-	case TEX_REAR_TOP: return "TEX_REAR_TOP";
-	case TEX_REAR_BOTTOM: return "TEX_REAR_BOTTOM";
-	case TEX_REAR_LEFT: return "TEX_REAR_LEFT";
-	case TEX_REAR_RIGHT: return "TEX_REAR_RIGHT";
-	case TEX_BOTTOM_RIGHT_REAR: return "TEX_BOTTOM_RIGHT_REAR";
-	case TEX_BOTTOM_FRONT_RIGHT: return "TEX_BOTTOM_FRONT_RIGHT";
-	case TEX_BOTTOM_LEFT_FRONT: return "TEX_BOTTOM_LEFT_FRONT";
-	case TEX_BOTTOM_REAR_LEFT: return "TEX_BOTTOM_REAR_LEFT";
-	case TEX_TOP_RIGHT_FRONT: return "TEX_TOP_RIGHT_FRONT";
-	case TEX_TOP_FRONT_LEFT: return "TEX_TOP_FRONT_LEFT";
-	case TEX_TOP_LEFT_REAR: return "TEX_TOP_LEFT_REAR";
-	case TEX_TOP_REAR_RIGHT: return "TEX_TOP_REAR_RIGHT";
-	case TEX_ARROW_NORTH: return "TEX_ARROW_NORTH";
-	case TEX_ARROW_SOUTH: return "TEX_ARROW_SOUTH";
-	case TEX_ARROW_EAST: return "TEX_ARROW_EAST";
-	case TEX_ARROW_WEST: return "TEX_ARROW_WEST";
-	case TEX_ARROW_RIGHT: return "TEX_ARROW_RIGHT";
-	case TEX_ARROW_LEFT: return "TEX_ARROW_LEFT";
-	case TEX_DOT_BACKSIDE: return "TEX_DOT_BACKSIDE";
-	case TEX_VIEW_MENU_ICON : return "TEX_VIEW_MENU_ICON";
-	case TEX_VIEW_MENU_FACE: return "TEX_VIEW_MENU";
-	}
+void NaviCubeShared::deinit()
+{
+	if (m_PickingFramebuffer) {
+		delete m_PickingFramebuffer;
+        m_PickingFramebuffer = nullptr;
+    }
+    m_glTextures.clear();
+	m_IndexArray.clear();
+	m_TextureCoordArray.clear();
+	m_VertexArray.clear();
+	m_Textures.clear();
+	m_Faces.clear();
+	m_Buttons.clear();
 }
 
-GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, const char* text, int shape) {
+void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType &, ParameterGrp::MessageType)
+{
+    timer.start(200);
+}
+
+GLuint NaviCubeShared::createCubeFaceTex(float gap, const char* text, int shape) {
 	int texSize = m_CubeWidgetSize * m_OverSample;
 	float gapi = texSize * gap;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(255, 255, 255, 0));
 	QPainter paint;
-	QPen pen(Qt::black, 10);
 	paint.begin(&image);
+    paint.setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
 	if (text) {
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
 		paint.setPen(Qt::white);
-		QFont sansFont(str("Helvetica"), 0.18 * texSize);
-		QString fontString = QString::fromUtf8((hGrp->GetASCII("FontString")).c_str());
-		if (fontString.isEmpty()) {
-			// Improving readability
-			sansFont.setWeight(hGrp->GetInt("FontWeight", 87));
-			sansFont.setStretch(hGrp->GetInt("FontStretch", 62));
-		}
-		else {
-			sansFont.fromString(fontString);
-		}
-		// Override fromString
-		if (hGrp->GetInt("FontWeight") > 0) {
-			sansFont.setWeight(hGrp->GetInt("FontWeight"));
-		}
-		if (hGrp->GetInt("FontStretch") > 0) {
-			sansFont.setStretch(hGrp->GetInt("FontStretch"));
-		}
-		paint.setFont(sansFont);
+		paint.setFont(getLabelFont());
 		paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter,qApp->translate("Gui::NaviCube",text));
 	}
 	else if (shape == SHAPE_SQUARE) {
 		QPainterPath pathSquare;
 		pathSquare.addRect(QRectF(gapi, gapi, (qreal)texSize - 2.0 * gapi, (qreal)texSize - 2.0 * gapi));
 		paint.fillPath(pathSquare, Qt::white);
-		paint.setPen(pen);
-		paint.drawPath(pathSquare);
 	}
 	else if (shape == SHAPE_CORNER) {
 		QPainterPath pathCorner;
-		QRectF rectCorner = QRectF(3.46 * gapi, 3.31 * gapi, sqrt(2) * gapi, 1.3 * gapi);
-		pathCorner.moveTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
-		pathCorner.lineTo(rectCorner.bottomLeft());
-		pathCorner.lineTo(rectCorner.bottomRight());
-		pathCorner.lineTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
+        QRectF rectCorner = QRectF(3.5 * gapi, 3.5 * gapi, 1.5 * gapi, 1.5 * gapi);
+		// pathCorner.moveTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
+		// pathCorner.lineTo(rectCorner.bottomLeft());
+		// pathCorner.lineTo(rectCorner.bottomRight());
+		// pathCorner.lineTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
+		pathCorner.addRoundedRect(rectCorner, rectCorner.width()*0.5f, rectCorner.height()*0.5f);
 		paint.fillPath(pathCorner, Qt::white);
-		paint.setPen(pen);
-		paint.drawPath(pathCorner);
 	}
 	else if (shape == SHAPE_EDGE) {
 		QPainterPath pathEdge;
 		// sice the gap is 0.12, the rect must be geometriclly shifted up with a factor
 		pathEdge.addRect(QRectF(gapi, 3.46 * gapi, (qreal)texSize - 2.0 * gapi, sqrt(2) * gapi));
 		paint.fillPath(pathEdge, Qt::white);
-		paint.setPen(pen);
-		paint.drawPath(pathEdge);
 	}
 
 	paint.end();
-#if !defined(HAVE_QT5_OPENGL)
-	return gl->bindTexture(image);
-#else
-    Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
-    m_glTextures.push_back(texture);
-    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    m_glTextures.emplace_back(texture);
+    texture->setMinificationFilter(QOpenGLTexture::Linear);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
-#endif
 }
 
 
-GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
+GLuint NaviCubeShared::createButtonTex(int button, bool stroke) {
 	int texSize = m_CubeWidgetSize * m_OverSample;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(255, 255, 255, 0));
 	QPainter painter;
 	painter.begin(&image);
+    painter.setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
 	QTransform transform;
 	transform.translate(texSize / 2, texSize / 2);
@@ -576,34 +588,34 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 		break;
 	}
 	case TEX_DOT_BACKSIDE: {
-		path.arcTo(QRectF(1 - as1, -1, as1, as1), 0, 360);
+		path.addRoundedRect(QRectF(0.99 - as1, -0.99, as1, as1), as1*0.5, as1*0.5);
 		break;
 	}					
 	}
 
 	painter.fillPath(path, Qt::white);
+    if (stroke) {
+        path.closeSubpath();
+        painter.strokePath(path, QPen(Qt::black, 0));
+    }
 
 	painter.end();
 	//image.save(str(enum2str(button))+str(".png"));
 
-#if !defined(HAVE_QT5_OPENGL)
-	return gl->bindTexture(image);
-#else
-    Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
-    m_glTextures.push_back(texture);
-    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    m_glTextures.emplace_back(texture);
+    texture->setMinificationFilter(QOpenGLTexture::Linear);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
-#endif
 }
 
-GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
+GLuint NaviCubeShared::createMenuTex(bool forPicking) {
 	int texSize = m_CubeWidgetSize * m_OverSample;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(0, 0, 0, 0));
 	QPainter painter;
 	painter.begin(&image);
+    painter.setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
 	QTransform transform;
 	transform.translate(texSize * 12 / 16, texSize * 13 / 16);
@@ -661,19 +673,14 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 		painter.fillPath(path5, QColor(64,64,64));
 		}
 	painter.end();
-#if !defined(HAVE_QT5_OPENGL)
-	return gl->bindTexture(image);
-#else
-    Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
-    m_glTextures.push_back(texture);
-    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    m_glTextures.emplace_back(texture);
+    texture->setMinificationFilter(QOpenGLTexture::Linear);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
-#endif
 }
 
-void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int frontTex, int pickTex, int pickId, bool text) {
+void NaviCubeShared::addFace(const Vector3f& x, const Vector3f& z, int frontTex, int pickTex, int pickId, bool text) {
 	Vector3f y = x.cross(-z);
 	y = y / y.norm() * x.norm();
 
@@ -698,9 +705,10 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 		m_Textures[pickTex],
 		pickId,
 		m_Textures[pickTex],
-		m_FrontFaceColor,
+		pickTex == TEX_EDGE_FACE ? m_EdgeFaceColor :
+            (pickTex == TEX_CORNER_FACE ? m_CornerFaceColor : m_FrontFaceColor),
 		1);
-	m_Faces.push_back(FaceFront);
+	m_Faces.emplace_back(FaceFront);
 
 	if (text) {
 		Face* FaceText = new Face(
@@ -711,7 +719,7 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 			m_Textures[pickTex],
 			m_TextColor,
 			2);
-		m_Faces.push_back(FaceText);
+		m_Faces.emplace_back(FaceText);
 
 	}
 
@@ -719,10 +727,13 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 		m_IndexArray.push_back(t + i);
 }
 
-void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
-	Vector3f x(1, 0, 0);
-	Vector3f y(0, 1, 0);
-	Vector3f z(0, 0, 1);
+bool NaviCubeShared::initNaviCube() {
+    if (m_PickingFramebuffer)
+        return false;
+
+    Vector3f x(1, 0, 0);
+    Vector3f y(0, 1, 0);
+    Vector3f z(0, 0, 1);
 
 	float cs, sn;
 	cs = cos(90 * M_PI / 180);
@@ -756,38 +767,39 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
 	// first create front and backside of faces
 	float gap = 0.12f;
-	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_SQUARE);
+	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gap, NULL, SHAPE_SQUARE);
 
-    vector<string> labels = NaviCubeImplementation::m_labels;
+    vector<string> labels;
+	for (auto &info : m_labels)
+		labels.push_back(m_hGrp->GetASCII(
+                    info.name, QObject::tr(info.def).toUtf8().constData()));
 
-    if (labels.size() != 6) {
-        labels.clear();
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-        labels.push_back(hGrp->GetASCII("TextFront", "FRONT"));
-        labels.push_back(hGrp->GetASCII("TextRear", "REAR"));
-        labels.push_back(hGrp->GetASCII("TextTop", "TOP"));
-        labels.push_back(hGrp->GetASCII("TextBottom", "BOTTOM"));
-        labels.push_back(hGrp->GetASCII("TextRight", "RIGHT"));
-        labels.push_back(hGrp->GetASCII("TextLeft", "LEFT"));
-    }
 	// create the main faces
-	m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, labels[0].c_str(), SHAPE_SQUARE);
-	m_Textures[TEX_REAR] = createCubeFaceTex(gl, gap, labels[1].c_str(), SHAPE_SQUARE);
-	m_Textures[TEX_TOP] = createCubeFaceTex(gl, gap, labels[2].c_str(), SHAPE_SQUARE);
-	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gl, gap, labels[3].c_str(), SHAPE_SQUARE);
-	m_Textures[TEX_RIGHT] = createCubeFaceTex(gl, gap, labels[4].c_str(), SHAPE_SQUARE);
-	m_Textures[TEX_LEFT] = createCubeFaceTex(gl, gap, labels[5].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_FRONT] = createCubeFaceTex(gap, labels[0].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_REAR] = createCubeFaceTex(gap, labels[1].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_TOP] = createCubeFaceTex(gap, labels[2].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gap, labels[3].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_RIGHT] = createCubeFaceTex(gap, labels[4].c_str(), SHAPE_SQUARE);
+	m_Textures[TEX_LEFT] = createCubeFaceTex(gap, labels[5].c_str(), SHAPE_SQUARE);
 
 	// create the arrows
-	m_Textures[TEX_ARROW_NORTH] = createButtonTex(gl, TEX_ARROW_NORTH);
-	m_Textures[TEX_ARROW_SOUTH] = createButtonTex(gl, TEX_ARROW_SOUTH);
-	m_Textures[TEX_ARROW_EAST] = createButtonTex(gl, TEX_ARROW_EAST);
-	m_Textures[TEX_ARROW_WEST] = createButtonTex(gl, TEX_ARROW_WEST);
-	m_Textures[TEX_ARROW_LEFT] = createButtonTex(gl, TEX_ARROW_LEFT);
-	m_Textures[TEX_ARROW_RIGHT] = createButtonTex(gl, TEX_ARROW_RIGHT);
-	m_Textures[TEX_DOT_BACKSIDE] = createButtonTex(gl, TEX_DOT_BACKSIDE);
-	m_Textures[TEX_VIEW_MENU_ICON] = createMenuTex(gl, false);
-	m_Textures[TEX_VIEW_MENU_FACE] = createMenuTex(gl, true);
+	m_Textures[TEX_ARROW_NORTH] = createButtonTex(TEX_ARROW_NORTH);
+	m_Textures[TEX_ARROW_SOUTH] = createButtonTex(TEX_ARROW_SOUTH);
+	m_Textures[TEX_ARROW_EAST] = createButtonTex(TEX_ARROW_EAST);
+	m_Textures[TEX_ARROW_WEST] = createButtonTex(TEX_ARROW_WEST);
+	m_Textures[TEX_ARROW_LEFT] = createButtonTex(TEX_ARROW_LEFT);
+	m_Textures[TEX_ARROW_RIGHT] = createButtonTex(TEX_ARROW_RIGHT);
+	m_Textures[TEX_DOT_BACKSIDE] = createButtonTex(TEX_DOT_BACKSIDE);
+	m_Textures[TEX_ARROW_NORTH_PICK] = createButtonTex(TEX_ARROW_NORTH, false);
+	m_Textures[TEX_ARROW_SOUTH_PICK] = createButtonTex(TEX_ARROW_SOUTH, false);
+	m_Textures[TEX_ARROW_EAST_PICK] = createButtonTex(TEX_ARROW_EAST, false);
+	m_Textures[TEX_ARROW_WEST_PICK] = createButtonTex(TEX_ARROW_WEST, false);
+	m_Textures[TEX_ARROW_LEFT_PICK] = createButtonTex(TEX_ARROW_LEFT, false);
+	m_Textures[TEX_ARROW_RIGHT_PICK] = createButtonTex(TEX_ARROW_RIGHT, false);
+	m_Textures[TEX_DOT_BACKSIDE_PICK] = createButtonTex(TEX_DOT_BACKSIDE, false);
+
+	m_Textures[TEX_VIEW_MENU_ICON] = createMenuTex(false);
+	m_Textures[TEX_VIEW_MENU_FACE] = createMenuTex(true);
 
 			// front,back,pick,pickid
 	addFace(x, z, TEX_TOP, TEX_FRONT_FACE, TEX_TOP, true);
@@ -808,7 +820,7 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	addFace(x, z, TEX_BOTTOM, TEX_FRONT_FACE, TEX_BOTTOM, true);
 
 	// add corner faces
-	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_CORNER);
+	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gap, NULL, SHAPE_CORNER);
 	// we need to rotate to the edge, thus matrix for rotation angle of 54.7 deg
 	cs = cos(atan(sqrt(2.0)));
 	sn = sin(atan(sqrt(2.0)));
@@ -845,7 +857,7 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_REAR_RIGHT);
 
 	// add edge faces
-	m_Textures[TEX_EDGE_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_EDGE);
+	m_Textures[TEX_EDGE_FACE] = createCubeFaceTex(gap, NULL, SHAPE_EDGE);
 	// first back to top side
 	x[0] = 1; x[1] = 0; x[2] = 0;
 	z[0] = 0; z[1] = 0; z[2] = 1;
@@ -897,6 +909,7 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	m_Buttons.push_back(TEX_DOT_BACKSIDE);
 
 	m_PickingFramebuffer = new QtGLFramebufferObject(2*m_CubeWidgetSize,2* m_CubeWidgetSize, QtGLFramebufferObject::CombinedDepthStencil);
+    return true;
 }
 
 void NaviCubeImplementation::drawNaviCube() {
@@ -904,25 +917,13 @@ void NaviCubeImplementation::drawNaviCube() {
 	drawNaviCube(false);
 }
 
-void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& cmd) {
-    CommandManager &rcCmdMgr = Application::Instance->commandManager();
-    m_Menu->clear();
-
-    for (vector<string>::const_iterator i=cmd.begin(); i!=cmd.end(); i++) {
-        Command* cmd = rcCmdMgr.getCommandByName(i->c_str());
-        if (cmd)
-            cmd->addTo(m_Menu);
-    }
-}
-
 void NaviCubeImplementation::handleResize() {
 	SbVec2s view = m_View3DInventorViewer->getSoRenderManager()->getSize();
 	if ((m_PrevWidth != view[0]) || (m_PrevHeight != view[1])) {
 		if ((m_PrevWidth <= 0) || (m_PrevHeight <= 0)) {
 		    // initial position
-			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-			m_CubeWidgetOffsetX = hGrp->GetInt("OffsetX", 0);
-			m_CubeWidgetOffsetY = hGrp->GetInt("OffsetY", 0);
+			m_CubeWidgetOffsetX = m_hGrp->GetInt("OffsetX", 0);
+			m_CubeWidgetOffsetY = m_hGrp->GetInt("OffsetY", 0);
         }
         switch (m_Corner) {
         case NaviCube::TopLeftCorner:
@@ -959,22 +960,18 @@ void NaviCubeImplementation::handleResize() {
 }
 
 void NaviCubeImplementation::drawNaviCube(bool pickMode) {
-	// initializes stuff here when we actually have a context
-    // FIXME actually now that we have Qt5, we could probably do this earlier (as we do not need the opengl context)
-	if (!m_NaviCubeInitialised) {
-		QtGLWidget* gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
-		if (gl == NULL)
-			return;
-		initNaviCube(gl);
-		m_NaviCubeInitialised = true;
-	}
-
 	SoCamera* cam = m_View3DInventorViewer->getSoRenderManager()->getCamera();
 
 	if (!cam)
 		return;
 
 	handleResize();
+    if (m_Shared->drawNaviCube(cam, pickMode, m_HiliteId))
+		m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
+}
+
+bool NaviCubeShared::drawNaviCube(SoCamera *cam, bool pickMode, int hiliteId) {
+    bool res = initNaviCube();
 
 	// Store GL state.
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -1057,9 +1054,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 
 	if (!pickMode) {
 		// Draw the axes
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-		bool ShowCS = hGrp->GetBool("ShowCS", 1);
-		if (ShowCS) {
+		if (m_ShowCS) {
 			glDisable(GL_TEXTURE_2D);
 			float a=1.1f;
 
@@ -1090,26 +1085,26 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 
 	// Draw the cube faces
 	if (pickMode) {
-		for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++) {
-			glColor3ub((*f)->m_PickId, 0, 0);
-			glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
-			glDrawElements(GL_TRIANGLE_FAN, (*f)->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[(*f)->m_FirstVertex]);
+        for (auto &f : m_Faces) {
+			glColor3ub(f->m_PickId, 0, 0);
+			glBindTexture(GL_TEXTURE_2D, f->m_PickTextureId);
+			glDrawElements(GL_TRIANGLE_FAN, f->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[f->m_FirstVertex]);
 		}
 	}
 	else {
 		for (int pass = 0; pass < 3 ; pass++) {
-			for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++) {
+            for (auto &f : m_Faces) {
 				//if (pickMode) { // pick should not be drawn in tree passes
-				//	glColor3ub((*f)->m_PickId, 0, 0);
-				//	glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
+				//	glColor3ub(f->m_PickId, 0, 0);
+				//	glBindTexture(GL_TEXTURE_2D, f->m_PickTextureId);
 				//} else {
-					if (pass != (*f)->m_RenderPass)
+					if (pass != f->m_RenderPass)
 						continue;
-					QColor& c = (m_HiliteId == (*f)->m_PickId) && (pass < 2) ? m_HiliteColor : (*f)->m_Color;
+					QColor& c = (hiliteId == f->m_PickId) && (pass < 2) ? m_HiliteColor : f->m_Color;
 					glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
-					glBindTexture(GL_TEXTURE_2D, (*f)->m_TextureId);
+					glBindTexture(GL_TEXTURE_2D, f->m_TextureId);
 				//}
-				glDrawElements(GL_TRIANGLE_FAN, (*f)->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[(*f)->m_FirstVertex]);
+				glDrawElements(GL_TRIANGLE_FAN, f->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[f->m_FirstVertex]);
 			}
 		}
 	}
@@ -1130,13 +1125,14 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	glLoadIdentity();
 
 	for (vector<int>::iterator b = m_Buttons.begin(); b != m_Buttons.end(); b++) {
-		if (pickMode)
+		if (pickMode) {
 			glColor3ub(*b, 0, 0);
-		else {
-			QColor& c = (m_HiliteId ==(*b)) ? m_HiliteColor : m_ButtonColor;
+		    glBindTexture(GL_TEXTURE_2D, m_Textures[*b+1]);
+        } else {
+			QColor& c = (hiliteId ==(*b)) ? m_HiliteColor : m_ButtonColor;
 			glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+		    glBindTexture(GL_TEXTURE_2D, m_Textures[*b]);
 		}
-		glBindTexture(GL_TEXTURE_2D, m_Textures[*b]);
 
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
@@ -1156,7 +1152,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 		glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_FACE]);
 	}
 	else {
-		if (m_HiliteId == TEX_VIEW_MENU_FACE) {
+		if (hiliteId == TEX_VIEW_MENU_FACE) {
 			QColor& c = m_HiliteColor;
 			glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
 			glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_FACE]);
@@ -1199,12 +1195,14 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	glLoadMatrixd(projectionmatrix);
 
 	glPopAttrib();
+
+    return res;
 }
 
 int NaviCubeImplementation::pickFace(short x, short y) {
 	GLubyte pixels[4] = {0};
-	if (m_PickingFramebuffer) {
-		m_PickingFramebuffer->bind();
+    if (auto fb = m_Shared->m_PickingFramebuffer) {
+		fb->bind();
 
 		glViewport(0, 0, 2*m_CubeWidgetSize,2* m_CubeWidgetSize);
 		glLoadIdentity();
@@ -1217,7 +1215,7 @@ int NaviCubeImplementation::pickFace(short x, short y) {
 		glFinish();
 
 		glReadPixels(2*(x - (m_CubeWidgetPosX-m_CubeWidgetSize/2)), 2*(y - (m_CubeWidgetPosY-m_CubeWidgetSize/2)), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixels);
-		m_PickingFramebuffer->release();
+		fb->release();
 
 		//QImage image = m_PickingFramebuffer->toImage();
 		//image.save(QLatin1String("pickimage.png"));
@@ -1230,7 +1228,6 @@ bool NaviCubeImplementation::mousePressed(short x, short y) {
 	m_Dragging = false;
 	m_MightDrag = inDragZone(x, y);
 	int pick = pickFace(x, y);
-	// cerr << enum2str(pick) << endl;
 	setHilite(pick);
 	return pick != 0;
 }
@@ -1279,10 +1276,6 @@ void NaviCubeImplementation::rotateView(const SbRotation& rot) {
 	m_View3DInventorViewer->setCameraOrientation(rot);
 }
 
-void NaviCubeImplementation::handleMenu() {
-	m_Menu->exec(QCursor::pos());
-}
-
 bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	setHilite(0);
 	m_MouseDown = false;
@@ -1309,9 +1302,8 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		if (m_View3DInventorViewer->getDocument() 
             && m_View3DInventorViewer->getDocument()->getDocument()->getObjects().empty())
         {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-            hGrp->SetInt("OffsetX", m_CubeWidgetOffsetX);
-            hGrp->SetInt("OffsetY", m_CubeWidgetOffsetY);
+            m_hGrp->SetInt("OffsetX", m_CubeWidgetOffsetX);
+            m_hGrp->SetInt("OffsetY", m_CubeWidgetOffsetY);
         }
     } else {
         // get the curent view
@@ -1321,15 +1313,11 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 
 		float rot = 45;
 		float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
-		float rot = 45;
-		float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
 		int pick = pickFace(x, y);
 
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-		long step = Base::clamp(hGrp->GetInt("NaviStepByTurn", 8), 4L, 36L);
+		long step = Base::clamp(ViewParams::NaviStepByTurn(), 4, 36);
 		float rotStepAngle = 360.0f / step;
-		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
+		bool toNearest = ViewParams::NaviRotateToNearest();
 
 		SbRotation viewRot = CurrentViewRot;
 
@@ -1660,7 +1648,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			viewRot = rotateView(viewRot, 0, 180);
 			break;
 		case TEX_VIEW_MENU_FACE :
-			handleMenu();
+			m_Shared->handleMenu(m_View3DInventorViewer->parentWidget());
 			break;
 		}
 
@@ -1727,137 +1715,244 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
 }
 
 
-QString NaviCubeImplementation::str(char* str) {
-	return QString::fromLatin1(str);
-}
+void NaviCubeShared::handleMenu(QWidget *parent) {
+    if (!m_Menu.actions().isEmpty()) {
+        m_Menu.popup(QCursor::pos());
+        return;
+    }
 
-void NaviCube::setNaviCubeCommands(const std::vector<std::string>& cmd)
-{
-    NaviCubeImplementation::m_commands = cmd;
-}
-
-void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
-{
-    NaviCubeImplementation::m_labels = labels;
-}
-
-
-
-DEF_3DV_CMD(ViewIsometricCmd)
-ViewIsometricCmd::ViewIsometricCmd()
-  : Command("ViewIsometricCmd")
-{
-    sGroup        = QT_TR_NOOP("");
-    sMenuText     = QT_TR_NOOP("Isometric");
-    sToolTipText  = QT_TR_NOOP("Set NaviCube to Isometric mode");
-    sWhatsThis    = "";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "";
-    sAccel        = "";
-    eType         = Alter3DView;
-}
-
-void ViewIsometricCmd::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Command::doCommand(Command::Gui,"Gui.activeDocument().activeView().viewIsometric()");
-}
-
-DEF_3DV_CMD(ViewOrthographicCmd)
-ViewOrthographicCmd::ViewOrthographicCmd()
-  : Command("ViewOrthographicCmd")
-{
-    sGroup        = QT_TR_NOOP("");
-    sMenuText     = QT_TR_NOOP("Orthographic");
-    sToolTipText  = QT_TR_NOOP("Set View to Orthographic mode");
-    sWhatsThis    = "";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "";
-    sAccel        = "";
-    eType         = Alter3DView;
-}
-
-void ViewOrthographicCmd::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Command::doCommand(Command::Gui,"Gui.activeDocument().activeView().setCameraType(\"Orthographic\")");
-}
-
-DEF_3DV_CMD(ViewPerspectiveCmd)
-
-ViewPerspectiveCmd::ViewPerspectiveCmd()
-  : Command("ViewPerspectiveCmd")
-{
-    sGroup        = QT_TR_NOOP("");
-    sMenuText     = QT_TR_NOOP("Perspective");
-    sToolTipText  = QT_TR_NOOP("Set View to Perspective mode");
-    sWhatsThis    = "";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "";
-    sAccel        = "";
-    eType         = Alter3DView;
-}
-
-void ViewPerspectiveCmd::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Command::doCommand(Command::Gui,"Gui.activeDocument().activeView().setCameraType(\"Perspective\")");
-}
-
-DEF_3DV_CMD(ViewZoomToFitCmd)
-
-ViewZoomToFitCmd::ViewZoomToFitCmd()
-  : Command("ViewZoomToFit")
-{
-    sGroup        = QT_TR_NOOP("");
-    sMenuText     = QT_TR_NOOP("Zoom to fit");
-    sToolTipText  = QT_TR_NOOP("Zoom so that model fills the view");
-    sWhatsThis    = "";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "";
-    sAccel        = "";
-    eType         = Alter3DView;
-}
-
-void ViewZoomToFitCmd::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
-}
-
-
-QMenu* NaviCubeImplementation::createNaviCubeMenu() {
-    QMenu* menu = new QMenu(getMainWindow());
-    menu->setObjectName(str("NaviCube_Menu"));
-
+    m_Menu.setToolTipsVisible(true);
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
-    static bool init = true;
-    if (init) {
-        init = false;
-        rcCmdMgr.addCommand(new ViewOrthographicCmd);
-        rcCmdMgr.addCommand(new ViewPerspectiveCmd);
-        rcCmdMgr.addCommand(new ViewIsometricCmd);
-        rcCmdMgr.addCommand(new ViewZoomToFitCmd);
-    }
-
-    vector<string> commands = NaviCubeImplementation::m_commands;
-    if (commands.empty()) {
-        commands.push_back("ViewOrthographicCmd");
-        commands.push_back("ViewPerspectiveCmd");
-        commands.push_back("ViewIsometricCmd");
-        commands.push_back("Separator");
-        commands.push_back("ViewZoomToFit");
-    }
-
-    for (vector<string>::iterator i=commands.begin(); i!=commands.end(); ++i) {
-        if (*i == "Separator") {
-            menu->addSeparator();
+    static std::vector<const char *> commands = {
+        "Std_OrthographicCamera",
+        "Std_PerspectiveCamera",
+        "Std_ViewIsometric",
+        0,
+        "Std_ViewFitAll",
+    };
+    for (auto command : commands) {
+        if (!command) {
+        m_Menu.addSeparator();
         }
         else {
-            Command* cmd = rcCmdMgr.getCommandByName(i->c_str());
+            Command* cmd = rcCmdMgr.getCommandByName(command);
             if (cmd)
-                cmd->addTo(menu);
+                cmd->addTo(&m_Menu);
         }
     }
-    return menu;
+    m_Menu.addSeparator();
+
+    QCheckBox *checkbox;
+    auto action = Gui::Action::addCheckBox(
+                                &m_Menu,
+                                QObject::tr("Rotate to nearest"),
+                                QObject::tr(ViewParams::docNaviRotateToNearest()),
+                                QIcon(),
+                                ViewParams::NaviRotateToNearest(),
+                                &checkbox);
+    QObject::connect(action, &QAction::toggled, [](bool checked) {
+        ViewParams::setNaviRotateToNearest(checked);
+    });
+
+    auto spinBoxSize = new QSpinBox;
+    spinBoxSize->setMinimum(10);
+    spinBoxSize->setMaximum(1024);
+    spinBoxSize->setSingleStep(10);
+    spinBoxSize->setValue(m_CubeWidgetSize);
+    Gui::Action::addWidget(&m_Menu, QObject::tr("Cube size"),
+            QObject::tr("Size of the navigation cube"), spinBoxSize);
+    QObject::connect(spinBoxSize, QOverload<int>::of(&QSpinBox::valueChanged), [this](int value) {
+        m_hGrp->SetInt("CubeSize", value);
+    });
+
+    auto spinBoxSteps = new QSpinBox;
+    spinBoxSteps->setMinimum(4);
+    spinBoxSteps->setMaximum(36);
+    spinBoxSteps->setValue(ViewParams::NaviStepByTurn());
+    Gui::Action::addWidget(&m_Menu, QObject::tr("Steps by turn"),
+            QObject::tr(ViewParams::docNaviStepByTurn()), spinBoxSteps);
+    QObject::connect(spinBoxSteps, QOverload<int>::of(&QSpinBox::valueChanged), [this](int value) {
+        ViewParams::setNaviStepByTurn(value);
+    });
+
+    QObject::connect(&m_Menu, &QMenu::aboutToShow, [checkbox, spinBoxSize, spinBoxSteps](){
+        { QSignalBlocker blocker(checkbox); checkbox->setChecked(ViewParams::NaviRotateToNearest()); }
+        { QSignalBlocker blocker(spinBoxSize); spinBoxSize->setValue(m_CubeWidgetSize); }
+        { QSignalBlocker blocker(spinBoxSteps); spinBoxSteps->setValue(ViewParams::NaviStepByTurn()); }
+    });
+
+    action = m_Menu.addAction(QObject::tr("Colors..."));
+    action->setToolTip(QObject::tr("Change navigation cube face colors"));
+    QObject::connect(action, &QAction::triggered, [parent]() {
+        NaviCube::setColors(parent);
+    });
+
+    action = m_Menu.addAction(QObject::tr("Labels..."));
+    action->setToolTip(QObject::tr("Change navigation cube labels"));
+    QObject::connect(action, &QAction::triggered, [parent]() {
+        NaviCube::setLabels(parent);
+    });
+
+    m_Menu.popup(QCursor::pos());
 }
+
+void NaviCube::setLabels(QWidget *parent)
+{
+    NaviCubeShared::instance()->setLabels(parent);
+}
+
+void NaviCubeShared::setLabels(QWidget *parent)
+{
+    auto layout = new QVBoxLayout;
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+    QDialog dlg(parent);
+    dlg.setLayout(layout);
+    dlg.setWindowTitle(QObject::tr("Navigation Cube Labels"));
+    auto grid = new QGridLayout;
+    layout->addLayout(grid);
+    auto buttons = new QDialogButtonBox(
+            QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
+    QObject::connect(buttons, SIGNAL(accepted()), &dlg, SLOT(accept()));
+    QObject::connect(buttons, SIGNAL(rejected()), &dlg, SLOT(reject()));
+    layout->addWidget(buttons);
+    int row = 0;
+    std::vector<std::string> labels;
+    for (auto &info : m_labels) {
+        grid->addWidget(new QLabel(QObject::tr(info.title)), row, 0);
+        labels.push_back(m_hGrp->GetASCII(info.name));
+        auto edit = new QLineEdit;
+        if (labels.back().empty())
+            edit->setText(QObject::tr(info.def));
+        else
+            edit->setText(QString::fromUtf8(labels.back().c_str()));
+        QObject::connect(edit, &QLineEdit::editingFinished, [this, edit, info]() {
+            QString t = edit->text();
+            if (t.isEmpty())
+                m_hGrp->RemoveASCII(info.name);
+            else
+                m_hGrp->SetASCII(info.name, t.toUtf8().constData());
+        });
+        grid->addWidget(edit, row++, 1);
+    }
+
+    QFont font = getLabelFont();
+    auto fontButton = new QPushButton(QObject::tr("Label font"));
+    fontButton->setFont(font);
+    grid->addWidget(fontButton, row++, 0, 1, 2);
+    QObject::connect(fontButton, &QPushButton::clicked, [this, &dlg, fontButton]() {
+        QFont curFont(getLabelFont());
+        QFontDialog fontDlg(curFont, &dlg);
+        QObject::connect(&fontDlg, &QFontDialog::currentFontChanged, [this, fontButton](const QFont &f) {
+            setLabelFont(f);
+            fontButton->setFont(getLabelFont());
+        });
+        if (fontDlg.exec() == QDialog::Rejected) {
+            setLabelFont(curFont);
+            fontButton->setFont(curFont);
+        }
+    });
+
+    auto checkbox = new QCheckBox(QObject::tr("Auto size"));
+    bool autoSize = m_hGrp->GetBool("FontAutoSize", true);
+    checkbox->setChecked(autoSize);
+    grid->addWidget(checkbox, row++, 0, 1, 2);
+    QObject::connect(checkbox, &QCheckBox::toggled, [this, fontButton](bool checked) {
+        m_hGrp->SetBool("FontAutoSize", checked);
+        fontButton->setFont(getLabelFont());
+    });
+
+    grid->addWidget(new QLabel(QObject::tr("Font stretch")), row, 0);
+    auto spinBoxStretch = new QSpinBox;
+    grid->addWidget(spinBoxStretch, row++, 1);
+    spinBoxStretch->setValue(font.stretch());
+    QObject::connect(spinBoxStretch, QOverload<int>::of(&QSpinBox::valueChanged),
+        [this, fontButton](int value) {
+            QFont f = getLabelFont();
+            f.setStretch(value);
+            setLabelFont(f);
+            fontButton->setFont(f);
+        });
+
+    if (dlg.exec() == QDialog::Rejected) {
+        int i=0;
+        for (auto &info : m_labels) {
+            if (labels[i].empty())
+                m_hGrp->RemoveASCII(info.name);
+            else
+                m_hGrp->SetASCII(info.name, labels[i].c_str());
+            ++i;
+        }
+        setLabelFont(font);
+        m_hGrp->SetBool("FontAutoSize", autoSize);
+    }
+}
+
+void NaviCube::setColors(QWidget *parent)
+{
+    NaviCubeShared::instance()->setColors(parent);
+}
+
+void NaviCubeShared::setColors(QWidget *parent)
+{
+    QDialog dlg(parent);
+    auto layout = new QVBoxLayout;
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+    dlg.setLayout(layout);
+    dlg.setWindowTitle(QObject::tr("Navigation Cube Colors"));
+    auto grid = new QGridLayout;
+    layout->addLayout(grid);
+    auto buttons = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
+    QObject::connect(buttons, SIGNAL(accepted()), &dlg, SLOT(accept()));
+    QObject::connect(buttons, SIGNAL(rejected()), &dlg, SLOT(reject()));
+    layout->addWidget(buttons);
+    int row = 0;
+    std::vector<QColor> colors;
+    for (auto &info : m_colors) {
+        colors.push_back(info.color);
+        grid->addWidget(new QLabel(QObject::tr(info.title)), row, 0);
+        ColorButton *button = new ColorButton(nullptr);
+        button->setAllowChangeAlpha(true);
+        button->setAutoChangeColor(true);
+        button->setColor(info.color);
+        QObject::connect(button, &ColorButton::changed, [this, button, info]() {
+            m_hGrp->SetUnsigned(info.name, button->color().rgba());
+        });
+        grid->addWidget(button, row, 1);
+        ++row;
+    }
+    if (dlg.exec() == QDialog::Rejected) {
+        int i=0;
+        for (auto &info : m_colors)
+            m_hGrp->SetUnsigned(info.name, colors[i++].rgba()) ;
+    }
+}
+
+QFont NaviCubeShared::getLabelFont()
+{
+    QString fontString = QString::fromUtf8((m_hGrp->GetASCII("FontString", "Helvetica")).c_str());
+    int fontSize = m_hGrp->GetInt("FontSize");
+    QFont sansFont(fontString);
+    if (fontSize <= 0 || m_hGrp->GetBool("FontAutoSize", true)) {
+	    int texSize = m_CubeWidgetSize * m_OverSample;
+        sansFont.setPixelSize(0.18 * texSize);
+    } else
+        sansFont.setPointSize(fontSize);
+    sansFont.setItalic(m_hGrp->GetBool("FontItalic", false));
+    int weight = m_hGrp->GetInt("FontWeight", 87);
+    if (weight > 0)
+        sansFont.setWeight(weight);
+    int stretch = m_hGrp->GetInt("FontStretch", 62);
+    if (stretch > 0)
+        sansFont.setStretch(stretch);
+    return sansFont;
+}
+
+void NaviCubeShared::setLabelFont(const QFont &font)
+{
+    m_hGrp->SetASCII("FontString", font.family().toUtf8().constData());
+    m_hGrp->SetInt("FontSize", font.pointSize());
+    m_hGrp->SetInt("FontWeight", font.weight());
+    m_hGrp->SetInt("FontStretch", font.stretch());
+    m_hGrp->SetBool("FontItalic", font.italic());
+}
+
