@@ -74,19 +74,19 @@ class GuiExport DlgExpressionInput : public QDialog
     }
     */
 
-    Q_PROPERTY(bool ignoreOutputWindowColors MEMBER _ignoreOutputWindowColors)
+    Q_PROPERTY(bool ignoreOutputWindowColors READ ignoreOutputWindowColors WRITE setIgnoreOutputWindowColors)
 
-    Q_PROPERTY(QColor textColor MEMBER _textColor NOTIFY ssTextColor)
-    Q_PROPERTY(QColor textBackgroundColor MEMBER _textBackgroundColor NOTIFY ssTextBackgroundColor)
+    Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
+    Q_PROPERTY(QColor textBackgroundColor READ textBackgroundColor WRITE setTextBackgroundColor)
 
-    Q_PROPERTY(QColor logColor MEMBER _logColor NOTIFY ssLogColor)
-    Q_PROPERTY(QColor logBackgroundColor MEMBER _logBackgroundColor NOTIFY ssLogBackgroundColor)
+    Q_PROPERTY(QColor logColor READ logColor WRITE setLogColor)
+    Q_PROPERTY(QColor logBackgroundColor READ logBackgroundColor WRITE setLogBackgroundColor)
 
-    Q_PROPERTY(QColor warningColor MEMBER _warningColor NOTIFY ssWarningColor)
-    Q_PROPERTY(QColor warningBackgroundColor MEMBER _warningBackgroundColor NOTIFY ssWarningBackgroundColor)
+    Q_PROPERTY(QColor warningColor READ warningColor WRITE setWarningColor)
+    Q_PROPERTY(QColor warningBackgroundColor READ warningBackgroundColor WRITE setWarningBackgroundColor)
     
-    Q_PROPERTY(QColor errorColor MEMBER _errorColor NOTIFY ssErrorColor)
-    Q_PROPERTY(QColor errorBackgroundColor MEMBER _errorBackgroundColor NOTIFY ssErrorBackgroundColor)
+    Q_PROPERTY(QColor errorColor READ errorColor WRITE setErrorColor)
+    Q_PROPERTY(QColor errorBackgroundColor READ errorBackgroundColor WRITE setErrorBackgroundColor)
 
 public:
     explicit DlgExpressionInput(const App::ObjectIdentifier & _path, boost::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
@@ -100,18 +100,28 @@ public:
 
     bool eventFilter(QObject *obj, QEvent *event);
 
+    void setIgnoreOutputWindowColors(bool flag);
+    void setTextColor(QColor color);
+    void setTextBackgroundColor(QColor color);
+    void setLogColor(QColor color);
+    void setLogBackgroundColor(QColor color);
+    void setWarningColor(QColor color);
+    void setWarningBackgroundColor(QColor color);
+    void setErrorColor(QColor color);
+    void setErrorBackgroundColor(QColor color);
+
+    bool ignoreOutputWindowColors() const;
+    QColor textColor() const;
+    QColor textBackgroundColor() const;
+    QColor logColor() const;
+    QColor logBackgroundColor() const;
+    QColor warningColor() const;
+    QColor warningBackgroundColor() const;
+    QColor errorColor() const;
+    QColor errorBackgroundColor() const;
+
 public Q_SLOTS:
     void show();
-
-public Q_SIGNAL:
-    void ssTextColor();
-    void ssTextBackgroundColor();
-    void ssLogColor();
-    void ssLogBackgroundColor();
-    void ssWarningColor();
-    void ssWarningBackgroundColor();
-    void ssErrorColor();
-    void ssErrorBackgroundColor();
 
 protected:
     void showEvent(QShowEvent*);
