@@ -396,8 +396,6 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
     if z != lz:
         op.commandlist.append(Path.Command("G0", {"Z": z}))
 
-    lz = z
-
 
 def Execute(op, obj):
     # pylint: disable=global-statement
@@ -455,7 +453,7 @@ def Execute(op, obj):
 
         stockPath2d = convertTo2d(stockPaths)
 
-        opType = area.AdaptiveOperationType.ClearingInside
+        # opType = area.AdaptiveOperationType.ClearingInside  # Commented out per LGTM suggestion
         if obj.OperationType == "Clearing":
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ClearingOutside
@@ -725,16 +723,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.setEditorMode('removalshape', 2)  # hide
 
         FeatureExtensions.initialize_properties(obj)
-
-
-def SetupProperties():
-    setup = ["Side", "OperationType", "Tolerance", "StepOver",
-             "LiftDistance", "KeepToolDownRatio", "StockToLeave",
-             "ForceInsideOut", "FinishingProfile", "Stopped",
-             "StopProcessing", "UseHelixArcs", "AdaptiveInputState",
-             "AdaptiveOutputState", "HelixAngle", "HelixConeAngle",
-             "HelixDiameterLimit", "UseOutline"]
-    return setup
+# Eclass
 
 
 def SetupProperties():
