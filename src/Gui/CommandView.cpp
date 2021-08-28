@@ -1476,6 +1476,40 @@ void StdCmdViewRotateRight::activated(int iMsg)
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewRotateRight()");
 }
 
+//======================================================================
+// Std_ViewActions
+//===========================================================================
+//
+class StdCmdViewActions : public GroupCommand
+{
+public:
+    StdCmdViewActions()
+        :GroupCommand("Std_ViewActions")
+    {
+        sGroup = QT_TR_NOOP("View");
+        sMenuText = QT_TR_NOOP("View actions");
+        sToolTipText = QT_TR_NOOP("Standard view actions");
+        sWhatsThis = "Std_ViewActions";
+        sStatusTip = QT_TR_NOOP("Standard view actions");
+        eType = 0;
+        bCanLog = false;
+
+        addCommand(new StdCmdViewIsometric());
+
+        addCommand();
+
+        addCommand(new StdCmdViewFront(), cmds.size());
+        addCommand(new StdCmdViewTop(), cmds.size());
+        addCommand(new StdCmdViewRight(), cmds.size());
+
+        addCommand();
+
+        addCommand(new StdCmdViewRear(), cmds.size());
+        addCommand(new StdCmdViewBottom(), cmds.size());
+        addCommand(new StdCmdViewLeft(), cmds.size());
+    };
+    virtual const char* className() const { return "StdCmdViewActions"; }
+};
 
 //===========================================================================
 // Std_ViewFitAll
@@ -3794,6 +3828,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdViewFitSelection());
     rcCmdMgr.addCommand(new StdCmdViewRotateLeft());
     rcCmdMgr.addCommand(new StdCmdViewRotateRight());
+    rcCmdMgr.addCommand(new StdCmdViewActions());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
