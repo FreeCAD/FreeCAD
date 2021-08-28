@@ -1106,16 +1106,18 @@ class gridTracker(Tracker):
                 self.textpos1.translation.setValue((-bound+self.space,-border+self.space,z))
                 self.textpos2.translation.setValue((-bound-self.space,-bound+self.space,z))
                 # human from BIM workbench
-                loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
-                try:
-                    import BimProject
-                    hpts = BimProject.getHuman(loc)
-                except Exception:
-                    # BIM not installed
-                    pass
-                else:
-                    mpts.extend([tuple(p) for p in hpts])
-                    midx.append(len(hpts))
+                param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+                if param.GetBool("gridShowHuman", True):
+                    try:
+                        import BimProject
+                        loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
+                        hpts = BimProject.getHuman(loc)
+                        mpts.extend([tuple(p) for p in hpts])
+                        midx.append(len(hpts))                
+                    except Exception:
+                        # BIM not installed
+                        pass
+
             else:
                 self.text1.string = " "
                 self.text2.string = " "
