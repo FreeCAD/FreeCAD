@@ -83,9 +83,10 @@ PRECISION = 4
 
 RAPID_MOVES = ['G0', 'G00']
 
-G0XY_FEEDRATE = 1000
-G0Z_UP_FEEDRATE = 250
-G0Z_DOWN_FEEDRATE = 150
+G0XY_FEEDRATE = 800
+G0Z_UP_FEEDRATE = 150
+G0Z_DOWN_FEEDRATE = 100
+
 SAFEZ = 5
 CLEARZ = 3
 ATTENTIONZ = 20
@@ -627,4 +628,3 @@ def parse(pathobj, data_stats, checkbounds):
 
 
 print(__name__ + " gcode postprocessor loaded.")
-
