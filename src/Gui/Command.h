@@ -330,6 +330,7 @@ protected:
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
+    void printConflictingAccelerators() const;
     //@}
 
 public:
@@ -871,6 +872,14 @@ public:
 
     void addCommandMode(const char* sContext, const char* sName);
     void updateCommands(const char* sContext, int mode);
+
+    /** 
+     * Returns a pointer to a conflicting command, or nullptr if there is no conflict.
+     * In the case of multiple conflicts, only the first is returned. 
+     * \param accel The accelerator to check
+     * \param ignore (optional) A command to ignore matches with
+     */
+    const Command* checkAcceleratorForConflicts(const char* accel, const Command *ignore = nullptr) const;
 
 private:
     /// Destroys all commands in the manager and empties the list.
