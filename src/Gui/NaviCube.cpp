@@ -234,7 +234,7 @@ enum {
     SHAPE_SQUARE, SHAPE_EDGE, SHAPE_CORNER
 };
 
-class NaviCubeShared {
+class NaviCubeShared : public std::enable_shared_from_this<NaviCubeShared> {
 public:
 	NaviCubeShared()
         : m_labels {
@@ -332,6 +332,9 @@ public:
 	vector<ColorInfo> m_colors;
 
     QMenu m_Menu;
+    QPointer<QDialog> m_DlgColors;
+    QPointer<QDialog> m_DlgLabels;
+    QPointer<QFontDialog> m_DlgFont;
 };
 
 int NaviCubeShared::m_CubeWidgetSize;
@@ -361,6 +364,7 @@ private:
 	SbRotation setView(float ,float) const;
 	SbRotation rotateView(SbRotation, int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
 	void rotateView(const SbRotation&);
+	void handleMenu();
 
 public:
 	Gui::View3DInventorViewer* m_View3DInventorViewer;
@@ -1835,9 +1839,17 @@ void NaviCube::setLabels(QWidget *parent)
 
 void NaviCubeShared::setLabels(QWidget *parent)
 {
+    if (m_DlgLabels) {
+        m_DlgLabels->setParent(parent);
+        m_DlgLabels->show();
+        return;
+    }
+
     auto layout = new QVBoxLayout;
     layout->setSizeConstraint(QLayout::SetFixedSize);
-    QDialog dlg(parent);
+    m_DlgLabels = new QDialog(parent);
+    QDialog &dlg = *m_DlgLabels;
+    dlg.setAttribute(Qt::WA_DeleteOnClose);
     dlg.setLayout(layout);
     dlg.setWindowTitle(QObject::tr("Navigation Cube Labels"));
     auto grid = new QGridLayout;
@@ -1873,15 +1885,24 @@ void NaviCubeShared::setLabels(QWidget *parent)
     grid->addWidget(fontButton, row++, 0, 1, 2);
     QObject::connect(fontButton, &QPushButton::clicked, [this, &dlg, fontButton]() {
         QFont curFont(getLabelFont());
-        QFontDialog fontDlg(curFont, &dlg);
-        QObject::connect(&fontDlg, &QFontDialog::currentFontChanged, [this, fontButton](const QFont &f) {
-            setLabelFont(f);
-            fontButton->setFont(getLabelFont());
-        });
-        if (fontDlg.exec() == QDialog::Rejected) {
-            setLabelFont(curFont);
-            fontButton->setFont(curFont);
+        QFontDialog *fontDlg;
+        if (this->m_DlgFont) {
+            fontDlg = this->m_DlgFont;
+            fontDlg->setCurrentFont(curFont);
+        } else {
+            this->m_DlgFont = fontDlg = new QFontDialog(curFont, &dlg);
+            QObject::connect(fontDlg, &QFontDialog::currentFontChanged, [this, fontButton](const QFont &f) {
+                setLabelFont(f);
+                fontButton->setFont(getLabelFont());
+            });
+            QObject::connect(fontDlg, &QFontDialog::finished, [this, curFont, fontButton](int result) {
+                if (result == QDialog::Rejected) {
+                    setLabelFont(curFont);
+                    fontButton->setFont(curFont);
+                }
+            });
         }
+        fontDlg->show();
     });
 
     auto checkbox = new QCheckBox(QObject::tr("Auto size"));
@@ -1905,18 +1926,23 @@ void NaviCubeShared::setLabels(QWidget *parent)
             fontButton->setFont(f);
         });
 
-    if (dlg.exec() == QDialog::Rejected) {
-        int i=0;
-        for (auto &info : m_labels) {
-            if (labels[i].empty())
-                m_hGrp->RemoveASCII(info.name);
-            else
-                m_hGrp->SetASCII(info.name, labels[i].c_str());
-            ++i;
+    auto self = this->shared_from_this();
+    QObject::connect(&dlg, &QDialog::finished, [self, labels, font, autoSize](int result) {
+        if (result == QDialog::Rejected) {
+            int i=0;
+            for (auto &info : self->m_labels) {
+                if (labels[i].empty())
+                    self->m_hGrp->RemoveASCII(info.name);
+                else
+                    self->m_hGrp->SetASCII(info.name, labels[i].c_str());
+                ++i;
+            }
+            self->setLabelFont(font);
+            self->m_hGrp->SetBool("FontAutoSize", autoSize);
         }
-        setLabelFont(font);
-        m_hGrp->SetBool("FontAutoSize", autoSize);
-    }
+    });
+
+    m_DlgLabels->show();
 }
 
 void NaviCube::setColors(QWidget *parent)
@@ -1926,7 +1952,14 @@ void NaviCube::setColors(QWidget *parent)
 
 void NaviCubeShared::setColors(QWidget *parent)
 {
-    QDialog dlg(parent);
+    if (m_DlgColors) {
+        m_DlgColors->setParent(parent);
+        m_DlgColors->show();
+        return;
+    }
+
+    m_DlgColors = new QDialog(parent);
+    QDialog &dlg = *m_DlgColors;
     auto layout = new QVBoxLayout;
     layout->setSizeConstraint(QLayout::SetFixedSize);
     dlg.setLayout(layout);
@@ -1952,11 +1985,15 @@ void NaviCubeShared::setColors(QWidget *parent)
         grid->addWidget(button, row, 1);
         ++row;
     }
-    if (dlg.exec() == QDialog::Rejected) {
-        int i=0;
-        for (auto &info : m_colors)
-            m_hGrp->SetUnsigned(info.name, colors[i++].rgba()) ;
-    }
+    auto self = this->shared_from_this();
+    QObject::connect(&dlg, &QDialog::finished, [self, colors](int result) {
+        if (result == QDialog::Rejected) {
+            int i=0;
+            for (auto &info : self->m_colors)
+                self->m_hGrp->SetUnsigned(info.name, colors[i++].rgba());
+        }
+    });
+    m_DlgColors->show();
 }
 
 QFont NaviCubeShared::getLabelFont()
