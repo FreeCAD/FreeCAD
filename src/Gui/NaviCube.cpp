@@ -310,7 +310,7 @@ public:
 	vector<Vector2f> m_TextureCoordArray;
 	vector<Vector3f> m_VertexArray;
 	map<int,GLuint> m_Textures;
-	vector<std::unique_ptr<Face>> m_Faces;
+	vector<Face> m_Faces;
 	vector<int> m_Buttons;
 	vector<std::unique_ptr<QOpenGLTexture>> m_glTextures;
 
@@ -699,7 +699,7 @@ void NaviCubeShared::addFace(const Vector3f& x, const Vector3f& z, int frontTex,
 	// TEX_TOP 			frontTex,
 	// TEX_FRONT_FACE	pickTex,
 	// TEX_TOP 			pickId
-	Face* FaceFront = new Face(
+	m_Faces.emplace_back(
 		m_IndexArray.size(),
 		4,
 		m_Textures[pickTex],
@@ -708,10 +708,9 @@ void NaviCubeShared::addFace(const Vector3f& x, const Vector3f& z, int frontTex,
 		pickTex == TEX_EDGE_FACE ? m_EdgeFaceColor :
             (pickTex == TEX_CORNER_FACE ? m_CornerFaceColor : m_FrontFaceColor),
 		1);
-	m_Faces.emplace_back(FaceFront);
 
 	if (text) {
-		Face* FaceText = new Face(
+		m_Faces.emplace_back(
 			m_IndexArray.size(),
 			4,
 			m_Textures[frontTex],
@@ -719,8 +718,6 @@ void NaviCubeShared::addFace(const Vector3f& x, const Vector3f& z, int frontTex,
 			m_Textures[pickTex],
 			m_TextColor,
 			2);
-		m_Faces.emplace_back(FaceText);
-
 	}
 
 	for (int i = 0; i < 4; i++)
@@ -1086,25 +1083,60 @@ bool NaviCubeShared::drawNaviCube(SoCamera *cam, bool pickMode, int hiliteId) {
 	// Draw the cube faces
 	if (pickMode) {
         for (auto &f : m_Faces) {
-			glColor3ub(f->m_PickId, 0, 0);
-			glBindTexture(GL_TEXTURE_2D, f->m_PickTextureId);
-			glDrawElements(GL_TRIANGLE_FAN, f->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[f->m_FirstVertex]);
+			glColor3ub(f.m_PickId, 0, 0);
+			glBindTexture(GL_TEXTURE_2D, f.m_PickTextureId);
+			glDrawElements(GL_TRIANGLE_FAN, f.m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[f.m_FirstVertex]);
 		}
 	}
 	else {
 		for (int pass = 0; pass < 3 ; pass++) {
             for (auto &f : m_Faces) {
-				//if (pickMode) { // pick should not be drawn in tree passes
-				//	glColor3ub(f->m_PickId, 0, 0);
-				//	glBindTexture(GL_TEXTURE_2D, f->m_PickTextureId);
-				//} else {
-					if (pass != f->m_RenderPass)
-						continue;
-					QColor& c = (hiliteId == f->m_PickId) && (pass < 2) ? m_HiliteColor : f->m_Color;
-					glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
-					glBindTexture(GL_TEXTURE_2D, f->m_TextureId);
-				//}
-				glDrawElements(GL_TRIANGLE_FAN, f->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[f->m_FirstVertex]);
+                if (pass != f.m_RenderPass)
+                    continue;
+                QColor& c = (hiliteId == f.m_PickId) && (pass < 2) ? m_HiliteColor : f.m_Color;
+                glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
+                glBindTexture(GL_TEXTURE_2D, f.m_TextureId);
+                
+                if (f.m_TextureId == f.m_PickTextureId) {
+                    glDrawElements(GL_TRIANGLE_FAN, f.m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[f.m_FirstVertex]);
+                    continue;
+                }
+
+                // We are rendering a text label here. Checks the orientation
+                // and flip the texture to make it more readable.
+
+                int idx = f.m_FirstVertex;
+                const Vector3f &mv1 = m_VertexArray[m_IndexArray[idx]];
+                const Vector3f &mv2 = m_VertexArray[m_IndexArray[idx+1]];
+                const Vector3f &mv3 = m_VertexArray[m_IndexArray[idx+2]];
+                const Vector3f &mv4 = m_VertexArray[m_IndexArray[idx+3]];
+                SbVec3f v1, v2, v4;
+                mx.multVecMatrix(SbVec3f(mv1[0], mv1[1], mv1[2]), v1);
+                mx.multVecMatrix(SbVec3f(mv2[0], mv2[1], mv2[2]), v2);
+                mx.multVecMatrix(SbVec3f(mv4[0], mv4[1], mv4[2]), v4);
+
+                // The face vertex goes like this
+                // v4------v3
+                // |        |
+                // |        |
+                // v1------v2
+                // We apply the model view matrix to the vertexes and flips
+                // texture in u (aka x) axis if v1.x > v2.x, and v (aka y)
+                // axis if v1.y > v4.y
+                float u = v1[0] - v2[0] < 0.001f ? 1.0f : -1.0f;
+                float v = v1[1] - v4[1] < 0.001f ? 1.0f : -1.0f;
+
+                const Vector2f &t1 = m_TextureCoordArray[m_IndexArray[idx]];
+                const Vector2f &t2 = m_TextureCoordArray[m_IndexArray[idx+1]];
+                const Vector2f &t3 = m_TextureCoordArray[m_IndexArray[idx+2]];
+                const Vector2f &t4 = m_TextureCoordArray[m_IndexArray[idx+3]];
+
+                glBegin(GL_TRIANGLE_FAN);
+                glTexCoord2f(u*t1[0], v*t1[1]); glVertex3f(mv1[0], mv1[1], mv1[2]);
+                glTexCoord2f(u*t2[0], v*t2[1]); glVertex3f(mv2[0], mv2[1], mv2[2]);
+                glTexCoord2f(u*t3[0], v*t3[1]); glVertex3f(mv3[0], mv3[1], mv3[2]);
+                glTexCoord2f(u*t4[0], v*t4[1]); glVertex3f(mv4[0], mv4[1], mv4[2]);
+                glEnd();
 			}
 		}
 	}
