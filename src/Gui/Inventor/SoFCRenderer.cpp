@@ -1437,6 +1437,8 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     if (r > 120 && r < 140) r = 180; else r = 255 - r;
     if (g > 120 && g < 140) g = 180; else g = 255 - g;
     if (b > 120 && b < 140) b = 180; else b = 255 - b;
+    if (r+g+b < 10)
+      r = g = b = 50;
     glColor4ub(r, g, b, a);
   }
 
