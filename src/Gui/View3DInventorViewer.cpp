@@ -456,6 +456,8 @@ struct View3DInventorViewer::Private
     SoRayPickAction         pickAction;
     SoGetMatrixAction       pickMatrixAction;
 
+    boost::signals2::scoped_connection connDocChange;
+
     Private(View3DInventorViewer *owner)
         :owner(owner)
         ,tmpPath(new SoTempPath(10))
@@ -983,7 +985,7 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
             onSelectionChanged(Chng);
         }
 
-        pcDocument->getDocument()->signalChanged.connect(boost::bind(
+        _pimpl->connDocChange = pcDocument->getDocument()->signalChanged.connect(boost::bind(
                     &View3DInventorViewer::slotChangeDocument, this, bp::_1, bp::_2));
     }
 }
