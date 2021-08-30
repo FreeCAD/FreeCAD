@@ -26,6 +26,7 @@
 
 import six
 import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,re
+import urllib.parse
 from . import TranslationTexts
 from PySide import QtCore,QtGui
 
@@ -248,7 +249,7 @@ def buildCard(filename,method,arg=None):
                 infostring += "\n\n" + encode(finfo[5])
             if size:
                 result += '<li class="icon">'
-                result += '<a href="'+method+arg+'" title="'+infostring+'">'
+                result += '<a href="'+method+urllib.parse.quote(arg)+'" title="'+infostring+'">'
                 result += '<img src="file:///'+image.replace('\\','/')+'" alt="'+encode(basename)+'">'
                 result += '<div class="caption">'
                 result += '<h4>'+encode(basename)+'</h4>'
@@ -425,7 +426,7 @@ def handle():
                     SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="+str(dn)+"_"))
                 SECTION_CUSTOM += "</ul>"
                 # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
-                HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
+                HTML = HTML.replace("id=\"customtip\" class","id=\"customtip\" style=\"display:none;\" class")
                 dn += 1
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
