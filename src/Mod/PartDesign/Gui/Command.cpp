@@ -2716,8 +2716,11 @@ CmdPartDesignSplit::CmdPartDesignSplit()
 
 void CmdPartDesignSplit::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    App::SubObjectT objT;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(objT);
     if (!pcActiveBody) return;
+    auto topParent = objT.getObject();
+    const std::string &parentSub = objT.getSubName();
 
     openCommand("Create Split");
     std::string FeatName = getUniqueObjectName("Split",pcActiveBody);
@@ -2732,7 +2735,38 @@ void CmdPartDesignSplit::activated(int iMsg)
         break;
     }
 
-    Gui::cmdAppObject(Feat, std::ostringstream() <<"Tools = FreeCADGui.Selection.getSelection()");
+    auto sels = Gui::Selection().getSelectionT("*", 0);
+    for (auto it = sels.begin(); it != sels.end();) {
+        auto &sel = *it;
+        if (topParent) {
+            std::string sub = sel.getSubName();
+            if (sub.empty()) {
+                ++it;
+                continue;
+            }
+            auto link = sel.getObject();
+            auto psub = parentSub;
+            topParent->resolveRelativeLink(psub,link,sub);
+            if (!link) {
+                FC_WARN("Failed to resolve relative link "
+                        << sel.getSubObjectFullName() << " v.s. "
+                        << objT.getSubObjectFullName());
+                it = sels.erase(it);
+                continue;
+            }
+            sel = App::SubObjectT(link, sub.c_str());
+        }
+        sel = Part::SubShapeBinder::import(sel, objT, false, true, true, true);
+        ++it;
+    }
+
+    std::ostringstream ss;
+    for (auto &sel : sels) {
+        if (auto sobj = sel.getSubObject()) {
+            ss << sobj->getFullName(true) << ", ";
+        }
+    }
+    Gui::cmdAppObject(Feat, std::ostringstream() << "Tools = [" << ss.str() << "]");
     for(auto tool : static_cast<PartDesign::Split*>(Feat)->Tools.getValues())
         Gui::cmdAppObject(tool, std::ostringstream() <<"Visibility = False");
     finishFeature(this, Feat, nullptr, false, true);
