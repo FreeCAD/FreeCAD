@@ -9223,7 +9223,7 @@ std::pair<std::string,std::string> SketchObject::getElementName(
         index.toString(ret.second);
         return ret;
     }
-
+        
     if(hasSketchMarker(mapped))
         return Part2DObject::getElementName(name,type);
 
@@ -9295,7 +9295,7 @@ Data::IndexedName SketchObject::checkSubName(const char *sub) const{
     if(!sub) return Data::IndexedName();
     const char *subname = Data::ComplexGeoData::isMappedElement(sub);
     if(!subname)  {
-        return Data::IndexedName(sub, types, false);
+        return Data::IndexedName(sub, types, true);
     }
     if(!subname[0]) {
         FC_ERR("invalid subname " << sub);
