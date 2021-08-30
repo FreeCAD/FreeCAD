@@ -1062,7 +1062,7 @@ void GroupCommand::setup(Action *pcAction) {
         const char *statustip = cmd->getStatusTip();
         if (!statustip || '\0' == *statustip)
             statustip = tooltip;
-        pcAction->setToolTip(QCoreApplication::translate(context,tooltip));
+        recreateTooltip(context, pcAction);
         pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
     }
 }
