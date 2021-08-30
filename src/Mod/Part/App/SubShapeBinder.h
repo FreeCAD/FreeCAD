@@ -92,7 +92,8 @@ public:
                                   const App::SubObjectT &editObj,
                                   bool importWholeObject = true,
                                   bool noSubObject = false,
-                                  bool compatible = false);
+                                  bool compatible = false,
+                                  bool noSubElement = false);
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;

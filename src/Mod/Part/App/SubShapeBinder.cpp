@@ -1132,12 +1132,18 @@ SubShapeBinder::import(const App::SubObjectT &feature,
                        const App::SubObjectT &editObjT,
                        bool importWholeObject,
                        bool noSubObject,
-                       bool compatible)
+                       bool compatible,
+                       bool noSubElement)
 {
     App::DocumentObject *editObj = nullptr;
     App::DocumentObject *container = nullptr;
     App::DocumentObject *topParent = nullptr;
     std::string subname;
+
+    if (noSubElement)
+        noSubObject = true;
+    if (noSubObject || noSubElement)
+        importWholeObject = false;
 
     editObj = editObjT.getSubObject();
     if (!editObj)
@@ -1178,14 +1184,11 @@ SubShapeBinder::import(const App::SubObjectT &feature,
                 "Cyclic reference to: " << feature.getSubObjectFullName());
     auto link = feature.getObject();
 
+    const char *featName = "Import";
     App::SubObjectT resolved;
     if (!container)
         resolved = feature;
     else {
-        if (Part::BodyBase::findBodyOf(sobj) == container
-                || App::Part::getPartOfObject(sobj) == container)
-            return App::SubObjectT(sobj, feature.getElementName());
-
         std::string linkSub = feature.getSubName();
         topParent->resolveRelativeLink(subname, link, linkSub);
         if (!link)
@@ -1197,8 +1200,10 @@ SubShapeBinder::import(const App::SubObjectT &feature,
         resolved = App::SubObjectT(link, linkSub.c_str());
         if (Part::BodyBase::findBodyOf(link) == container
                 || App::Part::getPartOfObject(link) == container) {
-            if (!noSubObject || !resolved.hasSubObject())
+            if ((!noSubObject || !resolved.hasSubObject())
+                    && (!noSubElement || !resolved.hasSubElement()))
                 return resolved;
+            featName = "Binder";
         }
     }
 
@@ -1272,7 +1277,7 @@ SubShapeBinder::import(const App::SubObjectT &feature,
 
     auto binder = static_cast<Part::SubShapeBinder*>(
             doc->addObject(compatible ?
-                "PartDesign::SubShapeBinder" : "Part::SubShapeBinder", "Import"));
+                "PartDesign::SubShapeBinder" : "Part::SubShapeBinder", featName));
     Cleaner guard(binder);
     binder->Visibility.setValue(false);
     if (group)
