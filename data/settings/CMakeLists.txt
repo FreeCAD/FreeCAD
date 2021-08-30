@@ -2,6 +2,7 @@
 SET(Conf_Files 
     LargeFontIcon.FCParam
     VerticalToolBars.FCParam
+    VerticalSplit.FCParam
     OverlayDark.FCParam
     OverlayLight.FCParam
     DisplaySettings.FCParam

@@ -8,12 +8,13 @@
       <FCParamGroup Name="Preferences">
         <FCParamGroup Name="MainWindow">
           <FCText Name="GlobalToolBarArea">Left</FCText>
-          <FCText Name="DefaultToolBarArea">Left</FCText>
+          <FCText Name="DefaultToolBarArea">Right</FCText>
         </FCParamGroup>
       </FCParamGroup>
     </FCParamGroup>
-    <FCText Name="Name">Vertical toolbars</FCText>
-    <FCText Name="ToolTip">Move most of toolbars to left.
+    <FCText Name="Name">Vertical split toolbars</FCText>
+    <FCText Name="ToolTip">Move workbench toolbars to right.
+Move global toolbars to left.
 Expand workbench ComboBox as TabBar.</FCText>
   </FCParamGroup>
 
