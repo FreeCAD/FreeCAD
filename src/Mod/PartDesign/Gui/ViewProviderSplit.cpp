@@ -154,3 +154,22 @@ bool ViewProviderSplit::onDelete(const std::vector<std::string> &) {
     }
     return true;
 }
+
+bool ViewProviderSplit::getDetailPath(
+        const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
+{
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Split>(getObject());
+    if (feat && !Data::ComplexGeoData::isElementName(subname)) {
+        if (auto dot = strchr(subname ? subname : "", '.')) {
+            std::string sub(subname, dot-subname+1);
+            auto sobj = feat->getSubObject(sub.c_str());
+            const auto &solids = feat->Solids.getValues();
+            if (std::find(solids.begin(), solids.end(), sobj) != solids.end()) {
+                // bypass PartDesignGui::ViewProvider::getDetailPath() handling
+                return PartGui::ViewProviderPart::getDetailPath(subname, path, append, det);
+            }
+        }
+    }
+    return inherited::getDetailPath(subname, path, append, det);
+}
+

@@ -29,6 +29,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderSplit : public ViewProvider
 {
+    typedef ViewProvider inherited;
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderSplit);
 
 public:
@@ -54,6 +55,8 @@ public:
 
     virtual std::vector<App::DocumentObject*> _claimChildren(void) const override;
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
+
+    virtual bool getDetailPath(const char *subname, SoFullPath *path, bool append, SoDetail *&det) const override;
 
 private:
     Gui::CoinPtr<SoGroup> pcGroupChildren;
