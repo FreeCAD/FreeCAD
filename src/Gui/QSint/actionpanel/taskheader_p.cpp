@@ -258,8 +258,25 @@ void TaskHeader::mouseReleaseEvent ( QMouseEvent * event )
   }
 }
 
+static bool _KeyTranslate;
+
+bool TaskHeader::isKeyTranslateEnabled()
+{
+  return _KeyTranslate;
+}
+
+void TaskHeader::enableKeyTranslate(bool enable)
+{
+  _KeyTranslate = enable;
+}
+
 void TaskHeader::keyPressEvent ( QKeyEvent * event )
 {
+  if (!isKeyTranslateEnabled()) {
+    BaseClass::keyPressEvent(event);
+    return;
+  }
+
   switch (event->key())
   {
     case Qt::Key_Down:
@@ -284,6 +301,11 @@ void TaskHeader::keyPressEvent ( QKeyEvent * event )
 
 void TaskHeader::keyReleaseEvent ( QKeyEvent * event )
 {
+  if (!isKeyTranslateEnabled()) {
+    BaseClass::keyPressEvent(event);
+    return;
+  }
+
   switch (event->key())
   {
     case Qt::Key_Down:

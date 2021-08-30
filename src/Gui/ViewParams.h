@@ -362,6 +362,7 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Force single side lighting on solid. This can help visualizing invalid\n" \
                                        "solid shapes with flipped normals.")) \
     FC_VIEW_PARAM2(DefaultFontSize, int , Int, 0,  "") \
+    FC_VIEW_PARAM2(EnableTaskPanelKeyTranslate, bool, Bool, false, "") \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

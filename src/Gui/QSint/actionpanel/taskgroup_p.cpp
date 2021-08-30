@@ -6,6 +6,7 @@
  ***************************************************************************/
 
 #include "taskgroup_p.h"
+#include "taskheader_p.h"
 
 #include <QVariant>
 #include <QKeyEvent>
@@ -102,6 +103,11 @@ void TaskGroup::paintEvent ( QPaintEvent * event )
 
 void TaskGroup::keyPressEvent ( QKeyEvent * event )
 {
+  if (!TaskHeader::isKeyTranslateEnabled()) {
+    BaseClass::keyPressEvent(event);
+    return;
+  }
+
   switch (event->key())
   {
     case Qt::Key_Down:
@@ -127,6 +133,11 @@ void TaskGroup::keyPressEvent ( QKeyEvent * event )
 
 void TaskGroup::keyReleaseEvent ( QKeyEvent * event )
 {
+  if (!TaskHeader::isKeyTranslateEnabled()) {
+    BaseClass::keyPressEvent(event);
+    return;
+  }
+
   switch (event->key())
   {
     case Qt::Key_Down:

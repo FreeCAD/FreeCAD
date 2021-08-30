@@ -34,6 +34,9 @@ public:
 
   void setScheme(ActionPanelScheme *scheme);
 
+  static void enableKeyTranslate(bool);
+  static bool isKeyTranslateEnabled();
+
 Q_SIGNALS:
   void activated();
 
