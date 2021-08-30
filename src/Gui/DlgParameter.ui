@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>683</width>
+    <width>702</width>
     <height>558</height>
    </rect>
   </property>
@@ -157,7 +157,7 @@ This will overwrite the current configuration.</string>
      <item>
       <widget class="QPushButton" name="btnReset">
        <property name="toolTip">
-        <string>Clear the current configuration and restart the application.</string>
+        <string>Clear the current configuration.</string>
        </property>
        <property name="text">
         <string>Reset</string>

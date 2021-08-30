@@ -171,7 +171,7 @@ void DlgParameterImp::on_btnCopy_clicked()
             name, curParamManager->GetSerializeFileName());
     if (auto h = copyParameters())
         h->copyTo(manager);
-    ui->parameterSet->addItem(tr(name.c_str()), QByteArray(name.c_str()));
+    ui->parameterSet->addItem(QString::fromUtf8(name.c_str()), QByteArray(name.c_str()));
     ui->parameterSet->setCurrentIndex(ui->parameterSet->count()-1);
 }
 
@@ -456,6 +456,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
             && rcParMngr != &App::GetApplication().GetSystemParameter();
     ui->parameterSet->setEditable(false);
     ui->btnRename->setEnabled(editable);
+    ui->btnRemove->setEnabled(editable);
     ui->checkBoxPreset->setEnabled(editable);
     ui->btnToolTip->setEnabled(editable);
 
@@ -701,7 +702,7 @@ void DlgParameterImp::on_btnAdd_clicked()
         return;
     std::string name = QFileInfo(file).completeBaseName().toUtf8().constData();
     App::GetApplication().AddParameterSet(name, file.toUtf8().constData());
-    ui->parameterSet->addItem(tr(name.c_str()), QByteArray(name.c_str()));
+    ui->parameterSet->addItem(QString::fromUtf8(name.c_str()), QByteArray(name.c_str()));
     ui->parameterSet->setCurrentIndex(ui->parameterSet->count()-1);
 }
 
@@ -741,21 +742,19 @@ void DlgParameterImp::populate()
         // for now ignore system parameters because they are nowhere used
         if (it->second == &App::GetApplication().GetSystemParameter())
             continue;
-        QString name;
-        QString tooltip;
         if (it->second == &App::GetApplication().GetUserParameter()) {
-            name = tr(it->first.c_str());
-            tooltip = tr("Application configuration");
-        } else {
-            name = QString::fromUtf8(
-                    it->second->GetASCII("Name", it->first.c_str()).c_str());
-            tooltip = QString::fromUtf8(it->second->GetASCII("ToolTip").c_str());
-            QString t = QString::fromUtf8(it->second->GetSerializeFileName().c_str());
-            if (t.size()) {
-                if (tooltip.size())
-                    tooltip += QStringLiteral("\n\n");
-                tooltip += t;
-            }
+            ui->parameterSet->insertItem(0, tr("<Application Settings>"),
+                        QVariant(QByteArray(it->first.c_str())));
+            continue;
+        }
+        QString name = QString::fromUtf8(
+                it->second->GetASCII("Name", it->first.c_str()).c_str());
+        QString tooltip = QString::fromUtf8(it->second->GetASCII("ToolTip").c_str());
+        QString t = QString::fromUtf8(it->second->GetSerializeFileName().c_str());
+        if (t.size()) {
+            if (tooltip.size())
+                tooltip += QStringLiteral("\n\n");
+            tooltip += t;
         }
         ui->parameterSet->addItem(name, QVariant(QByteArray(it->first.c_str())));
         ui->parameterSet->setItemData(ui->parameterSet->count()-1, tooltip, Qt::ToolTipRole);
