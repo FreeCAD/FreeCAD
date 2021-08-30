@@ -205,6 +205,8 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
     if (hGrp->GetBool("Perspective", false))
         onMsg("PerspectiveCamera", nullptr);
+    else
+        onMsg("OrthographicCamera", nullptr);
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
