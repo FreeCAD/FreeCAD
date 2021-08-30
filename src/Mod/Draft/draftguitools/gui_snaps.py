@@ -112,8 +112,8 @@ class Draft_Snap_Base():
 
     def Activated(self):
         _log("GuiCommand: {}".format(self.command_name))
-        _msg("{}".format(16*"-"))
-        _msg("GuiCommand: {}".format(self.command_name))
+        #_msg("{}".format(16*"-"))
+        #_msg("GuiCommand: {}".format(self.command_name))
 
 
 class Draft_Snap_Lock(Draft_Snap_Base):
