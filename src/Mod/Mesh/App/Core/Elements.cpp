@@ -988,6 +988,12 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
     rclPt0.x = isectpt1[0]; rclPt0.y = isectpt1[1]; rclPt0.z = isectpt1[2];
     rclPt1.x = isectpt2[0]; rclPt1.y = isectpt2[1]; rclPt1.z = isectpt2[2];
 
+    // Note: tri_tri_intersect_with_isection() does not return line of
+    // intersection when triangles are coplanar. See tritritest.h:18 and 658.
+    // So rclPt* may be garbage values and we cannot continue.
+    if (coplanar)
+        return 2; // equivalent to rclPt0 != rclPt1
+
     // With extremely acute-angled triangles it may happen that the algorithm
     // claims an intersection but the intersection points are far outside the
     // model. So, a plausibility check is to verify that the intersection points
