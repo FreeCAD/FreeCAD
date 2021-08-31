@@ -46,6 +46,7 @@
 # include <Geom_TrimmedCurve.hxx>
 # include <Geom_OffsetCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <ProjLib_Plane.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -6825,6 +6826,28 @@ bool SketchObject::evaluateSupport(void)
     return true;
 }
 
+static void getParameterRange(const TopoDS_Edge &edge,
+                              const BRepAdaptor_Curve &curve,
+                              gp_Pnt &firstPoint,
+                              gp_Pnt &lastPoint,
+                              double &firstParameter,
+                              double &lastParameter)
+{
+    // The reason of this function is because the first/last parameter reported
+    // from some curve does not really corresponds to the first/last vertex of
+    // the edge. I can only guess this is because the curve (in some cases) is
+    // actually computed on demaond from surface (in BRepAdaptor_Curve maybe).
+    // And in the process, there is something off in tolerance causing the
+    // derived parameter not matching the value corresponding to the position of
+    // the actual vertex.
+    firstPoint = BRep_Tool::Pnt(TopExp::FirstVertex(edge));
+    lastPoint = BRep_Tool::Pnt(TopExp::LastVertex(edge));
+    GeomAPI_ProjectPointOnCurve pfirst(firstPoint, curve.Curve().Curve());
+    GeomAPI_ProjectPointOnCurve plast(lastPoint, curve.Curve().Curve());
+    firstParameter = pfirst.LowerDistanceParameter();
+    lastParameter = plast.LowerDistanceParameter();
+}
+
 void SketchObject::rebuildExternalGeometry(bool defining)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
@@ -6983,6 +7006,9 @@ void SketchObject::rebuildExternalGeometry(bool defining)
             case TopAbs_EDGE: {
                 const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
                 BRepAdaptor_Curve curve(edge);
+                gp_Pnt firstPoint, lastPoint;
+                double firstParam, lastParam;
+                getParameterRange(edge, curve, firstPoint, lastPoint, firstParam, lastParam);
                 if (Part::GeomCurve::isLinear(curve.Curve().Curve())) {
                     geos.emplace_back(projectLine(curve, gPlane, invPlm));
                 }
@@ -6992,8 +7018,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                     if (vec1.IsParallel(vec2, Precision::Confusion())) {
                         gp_Circ circle = curve.Circle();
                         gp_Pnt cnt = circle.Location();
-                        gp_Pnt beg = curve.Value(curve.FirstParameter());
-                        gp_Pnt end = curve.Value(curve.LastParameter());
 
                         GeomAPI_ProjectPointOnSurf proj(cnt,gPlane);
                         cnt = proj.NearestPoint();
@@ -7001,7 +7025,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         cnt.Transform(mov);
                         circle.Transform(mov);
 
-                        if (beg.SquareDistance(end) < Precision::Confusion()) {
+                        if (firstPoint.SquareDistance(lastPoint) < Precision::Confusion()) {
                             Part::GeomCircle* gCircle = new Part::GeomCircle();
                             gCircle->setRadius(circle.Radius());
                             gCircle->setCenter(Base::Vector3d(cnt.X(),cnt.Y(),cnt.Z()));
@@ -7012,8 +7036,9 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         else {
                             Part::GeomArcOfCircle* gArc = new Part::GeomArcOfCircle();
                             Handle(Geom_Curve) hCircle = new Geom_Circle(circle);
-                            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCircle, curve.FirstParameter(),
-                                                                                    curve.LastParameter());
+
+                            Handle(Geom_TrimmedCurve) tCurve = 
+                                new Geom_TrimmedCurve(hCircle, firstParam, lastParam);
                             gArc->setHandle(tCurve);
                             GeometryFacade::setConstruction(gArc, true);
                             geos.emplace_back(gArc);
@@ -7045,12 +7070,12 @@ void SketchObject::rebuildExternalGeometry(bool defining)
 
                             if (!curve.IsClosed()) {  // arc of circle
 
-                                gp_Pnt pntF = curve.Value(curve.FirstParameter());  // start point of arc of circle
-                                gp_Pnt pntL = curve.Value(curve.LastParameter());  // end point of arc of circle
+                                gp_Pnt pntF = firstPoint;  // start point of arc of circle
+                                gp_Pnt pntL = lastPoint;  // end point of arc of circle
 
                                 double alpha = dirOrientation.AngleWithRef(curve.Circle().XAxis().Direction(), curve.Circle().Axis().Direction());
 
-                                double baseAngle = curve.FirstParameter();
+                                double baseAngle = firstParam;
 
                                 int tours = 0;
                                 double startAngle = baseAngle + alpha;
@@ -7062,7 +7087,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                                     startAngle = baseAngle + --tours*2.0*M_PI + alpha;
                                 }
 
-                                double endAngle = curve.LastParameter() + startAngle - baseAngle;  // apply same offset to end angle
+                                double endAngle = lastParam + startAngle - baseAngle;  // apply same offset to end angle
 
                                 if (startAngle <= 0.0) {
                                     if (endAngle <= 0.0) {
@@ -7256,12 +7281,13 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                     TopExp_Explorer xp;
                     for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
                         TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
+                        BRepAdaptor_Curve projCurve(projEdge);
+                        gp_Pnt P1, P2;
+                        double Param1, Param2;
+                        getParameterRange(projEdge, projCurve, P1, P2, Param1, Param2);
                         TopLoc_Location loc(mov);
                         projEdge.Location(loc);
-                        BRepAdaptor_Curve projCurve(projEdge);
                         if (Part::GeomCurve::isLinear(projCurve.Curve().Curve())) {
-                            gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                            gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
                             Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
                             Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
 
@@ -7281,8 +7307,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         else if (projCurve.GetType() == GeomAbs_Circle) {
                             gp_Circ c = projCurve.Circle();
                             gp_Pnt p = c.Location();
-                            gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                            gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
                             if (P1.SquareDistance(P2) < Precision::Confusion()) {
                                 Part::GeomCircle* circle = new Part::GeomCircle();
@@ -7295,8 +7319,8 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                             else {
                                 Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
                                 Handle(Geom_Curve) curve = new Geom_Circle(c);
-                                Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
-                                                                                        projCurve.LastParameter());
+                                Handle(Geom_TrimmedCurve) tCurve =
+                                    new Geom_TrimmedCurve(curve, Param1, Param2);
                                 arc->setHandle(tCurve);
                                 GeometryFacade::setConstruction(arc, true);
                                 geos.emplace_back(arc);
@@ -7330,8 +7354,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         } else if (projCurve.GetType() == GeomAbs_Hyperbola) {
                             gp_Hypr e = projCurve.Hyperbola();
                             gp_Pnt p = e.Location();
-                            gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                            gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
                             gp_Dir normal = e.Axis().Direction();
                             gp_Dir xdir = e.XAxis().Direction();
@@ -7349,8 +7371,8 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                             else {
                                 Part::GeomArcOfHyperbola* aoh = new Part::GeomArcOfHyperbola();
                                 Handle(Geom_Curve) curve = new Geom_Hyperbola(e);
-                                Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
-                                                                                        projCurve.LastParameter());
+                                Handle(Geom_TrimmedCurve) tCurve =
+                                    new Geom_TrimmedCurve(curve, Param1, Param2);
                                 aoh->setHandle(tCurve);
                                 GeometryFacade::setConstruction(aoh, true);
                                 geos.emplace_back(aoh);
@@ -7358,8 +7380,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         } else if (projCurve.GetType() == GeomAbs_Parabola) {
                             gp_Parab e = projCurve.Parabola();
                             gp_Pnt p = e.Location();
-                            gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                            gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
                             gp_Dir normal = e.Axis().Direction();
                             gp_Dir xdir = e.XAxis().Direction();
@@ -7376,8 +7396,8 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                             else {
                                 Part::GeomArcOfParabola* aop = new Part::GeomArcOfParabola();
                                 Handle(Geom_Curve) curve = new Geom_Parabola(e);
-                                Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
-                                                                                        projCurve.LastParameter());
+                                Handle(Geom_TrimmedCurve) tCurve =
+                                    new Geom_TrimmedCurve(curve, Param1, Param2);
                                 aop->setHandle(tCurve);
                                 GeometryFacade::setConstruction(aop, true);
                                 geos.emplace_back(aop);
@@ -7386,8 +7406,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         else if (projCurve.GetType() == GeomAbs_Ellipse) {
                             gp_Elips e = projCurve.Ellipse();
                             gp_Pnt p = e.Location();
-                            gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                            gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
                             //gp_Dir normal = e.Axis().Direction();
                             gp_Dir normal = gp_Dir(0,0,1);
@@ -7403,8 +7421,8 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                             else {
                                 Part::GeomArcOfEllipse* aoe = new Part::GeomArcOfEllipse();
                                 Handle(Geom_Curve) curve = new Geom_Ellipse(e);
-                                Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
-                                                                                        projCurve.LastParameter());
+                                Handle(Geom_TrimmedCurve) tCurve =
+                                    new Geom_TrimmedCurve(curve, Param1, Param2);
                                 aoe->setHandle(tCurve);
                                 GeometryFacade::setConstruction(aoe, true);
                                 geos.emplace_back(aoe);
