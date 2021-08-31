@@ -354,32 +354,6 @@ will be used or black.</string>
       <string>Preview color for editing</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="3" column="1">
-       <widget class="Gui::PrefColorButton" name="DressUpColor">
-        <property name="toolTip">
-         <string>The default color for new shapes</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>PreviewDressColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Part</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_13">
-        <property name="minimumSize">
-         <size>
-          <width>182</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Subtractive color</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_14">
         <property name="minimumSize">
@@ -390,6 +364,19 @@ will be used or black.</string>
         </property>
         <property name="text">
          <string>Dress up color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Intersecting color</string>
         </property>
        </widget>
       </item>
@@ -419,16 +406,16 @@ will be used or black.</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="Gui::PrefColorButton" name="SubtractiveColor">
-        <property name="toolTip">
-         <string>The default color for new shapes</string>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
         </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>PreviewIntersectColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Part</cstring>
+        <property name="text">
+         <string>Subtractive color</string>
         </property>
        </widget>
       </item>
@@ -445,16 +432,29 @@ will be used or black.</string>
         </property>
        </spacer>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_15">
-        <property name="minimumSize">
-         <size>
-          <width>182</width>
-          <height>0</height>
-         </size>
+      <item row="1" column="1">
+       <widget class="Gui::PrefColorButton" name="SubtractiveColor">
+        <property name="toolTip">
+         <string>The default color for new shapes</string>
         </property>
-        <property name="text">
-         <string>Intersecting color</string>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreviewSubColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefColorButton" name="DressUpColor">
+        <property name="toolTip">
+         <string>The default color for new shapes</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreviewDressColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
         </property>
        </widget>
       </item>
@@ -464,7 +464,7 @@ will be used or black.</string>
          <string>The default color for new shapes</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>PreviewSubColor</cstring>
+         <cstring>PreviewIntersectColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Part</cstring>
@@ -491,9 +491,9 @@ will be used or black.</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefSpinBox</class>
@@ -501,13 +501,13 @@ will be used or black.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
