@@ -674,25 +674,25 @@ void DlgExpressionInput::setupColors()
                            hasStyleSheet, isDarkStyle, this->hasTextColor, this->hasTextBackgroundColor,
                            qRgba(255, 255, 255, 255), qRgba(28, 28, 28, 179), //dark colors
                            qRgba(0, 0, 0, 228), qRgba(255, 255, 255, 200), //light colors
-                           &this->textColor(), &this->textBackgroundColor());
+                           this->textColor(), this->textBackgroundColor());
 
     this->logColorStyle = colorPriority(userLogColor, defaultLogColor, 
                           hasStyleSheet, isDarkStyle, this->hasLogColor, this->hasLogBackgroundColor,
                           qRgba(96, 205, 255, 179), qRgba(28, 28, 28, 179), //dark colors
                           qRgba(0, 95, 183, 200), qRgba(255, 255, 255, 200), //light colors
-                          &this->logColor(), &this->logBackgroundColor());
+                          this->logColor(), this->logBackgroundColor());
 
     this->warningColorStyle = colorPriority(userWarningColor, defaultWarningColor, 
                               hasStyleSheet, isDarkStyle, this->hasWarningColor, this->hasWarningBackgroundColor,
                               qRgba(252, 225, 0, 179), qRgba(28, 28, 28, 179), //dark colors
                               qRgba(157, 93, 0, 200), qRgba(255, 255, 255, 200), //light colors
-                              &this->warningColor(), &this->warningBackgroundColor());
+                              this->warningColor(), this->warningBackgroundColor());
 
     this->errorColorStyle = colorPriority(userErrorColor, defaultErrorColor, 
                             hasStyleSheet, isDarkStyle, this->hasErrorColor, this->hasErrorBackgroundColor,
                             qRgba(255, 153, 164, 179), qRgba(28, 28, 28, 179), //dark colors
                             qRgba(198, 43, 28, 200), qRgba(255, 255, 255, 200), //light colors
-                            &this->errorColor(), &this->errorBackgroundColor());
+                            this->errorColor(), this->errorBackgroundColor());
 
     //Logic to decide the border and background colors of the checkboxes if  no system background is on
     //Needed for OSes that do not support top level transparent windows.
@@ -722,7 +722,7 @@ QString DlgExpressionInput::colorPriority(QRgb userColor, QRgb fcDefaultColor,
                                           bool hasSsColor, bool hasSsBackgroundColor,
                                           QRgb darkOverrideColor, QRgb darkOverrideBackgroundColor,
                                           QRgb lightOverrideColor, QRgb lightOverrideBackgroundColor,
-                                          const QColor *styleSheetColor, const QColor *styleSheetBackgroundColor)
+                                          const QColor &styleSheetColor, const QColor &styleSheetBackgroundColor)
 {
 
     QColor color = QColor::fromRgba(fcDefaultColor);
@@ -733,14 +733,14 @@ QString DlgExpressionInput::colorPriority(QRgb userColor, QRgb fcDefaultColor,
     //When a style sheet is used without explicit support, override with readable colors
     //Otherwhise return nothing and let the style sheet author do its job.
     else if (hasStyleSheet) {
-        color = hasSsColor ? *styleSheetColor : QColor::fromRgba(isDarkStyle ? 
+        color = hasSsColor ? styleSheetColor : QColor::fromRgba(isDarkStyle ? 
             darkOverrideColor : lightOverrideColor);
     }
 
     QColor backgroundColor = QColor::fromRgba(qRgba(255, 255, 255, 200));
     //Backgrounds are treated separately since there is no way currently for the enduser to change them through UI
     if (hasStyleSheet) {
-        backgroundColor = hasSsBackgroundColor ? *styleSheetBackgroundColor : QColor::fromRgba(isDarkStyle ?
+        backgroundColor = hasSsBackgroundColor ? styleSheetBackgroundColor : QColor::fromRgba(isDarkStyle ?
             darkOverrideBackgroundColor : lightOverrideBackgroundColor);
     }
 

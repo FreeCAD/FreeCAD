@@ -200,7 +200,7 @@ private:
                           bool hasSsColor, bool hasSsBackgroundColor,
                           QRgb darkOverrideColor, QRgb darkOverrideBackgroundColor,
                           QRgb lightOverrideColor, QRgb lightOverrideBackgroundColor,
-                          const QColor *styleSheetColor, const QColor* styleSheetBackgroundColor);
+                          const QColor &styleSheetColor, const QColor &styleSheetBackgroundColor);
 };
 
 class ProxyWidget : public QWidget
