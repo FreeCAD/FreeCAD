@@ -129,6 +129,7 @@
 #include <algorithm>
 #include <iostream>
 
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Eigen;
 using namespace std;
@@ -287,7 +288,7 @@ public:
 	GLuint createButtonTex(int button, bool stroke = true);
 	GLuint createMenuTex(bool);
 
-    void deinit();
+    void deinit(QOpenGLContext *ctx = nullptr);
 
 public:
 	static int m_CubeWidgetSize;
@@ -295,6 +296,8 @@ public:
     // With QPainter render hints, over sample is not really need. Resizing
     // texture just make it look worse.
 	int m_OverSample = 1;
+
+    QOpenGLContext *m_Context = nullptr;
 
 	QColor m_TextColor;
 	QColor m_HiliteColor;
@@ -430,6 +433,7 @@ NaviCubeImplementation::NaviCubeImplementation(Gui::View3DInventorViewer* viewer
 
 NaviCubeImplementation::~NaviCubeImplementation() {
 	m_hGrp->Detach(this);
+    m_Shared->deinit(QOpenGLContext::currentContext());
 }
 
 void NaviCubeShared::getParams()
@@ -441,10 +445,20 @@ void NaviCubeShared::getParams()
     deinit();
 }
 
-void NaviCubeShared::deinit()
+void NaviCubeShared::deinit(QOpenGLContext *ctx)
 {
-	if (m_PickingFramebuffer) {
-		delete m_PickingFramebuffer;
+    // QOpenGLTexture insists on being destoryed only under the original
+    // context that created itself, or else just refuse to delete even if the
+    // context is being destoryed (which is kind of absurd IMO). So we'll have
+    // to remember the original context, and deinit it here and let it be
+    // recreated in another context.
+    if (ctx && ctx != m_Context)
+        return;
+
+    m_Context = nullptr;
+
+    if (m_PickingFramebuffer) {
+        delete m_PickingFramebuffer;
         m_PickingFramebuffer = nullptr;
     }
     m_glTextures.clear();
@@ -729,7 +743,11 @@ void NaviCubeShared::addFace(const Vector3f& x, const Vector3f& z, int frontTex,
 }
 
 bool NaviCubeShared::initNaviCube() {
-    if (m_PickingFramebuffer)
+    if (m_Context)
+        return false;
+
+    m_Context = QOpenGLContext::currentContext();
+    if (!m_Context)
         return false;
 
     Vector3f x(1, 0, 0);
