@@ -1144,9 +1144,14 @@ bool NaviCubeShared::drawNaviCube(SoCamera *cam, bool pickMode, int hiliteId) {
                 // v1------v2
                 // We apply the model view matrix to the vertexes and flips
                 // texture in u (aka x) axis if v1.x > v2.x, and v (aka y)
-                // axis if v1.y > v4.y
-                float u = v1[0] - v2[0] < 0.001f ? 1.0f : -1.0f;
-                float v = v1[1] - v4[1] < 0.001f ? 1.0f : -1.0f;
+                // axis if v1.y > v4.y. Note that u and v must flip together or
+                // else we'll have a mirror, which is impossible since we don't
+                // do backface rendering
+                float uv;
+                if (v1[0] - v2[0] > 0.001f && v1[1] - v4[1] > 0.001f)
+                    uv = -1.0f;
+                else
+                    uv = 1.0f;
 
                 const Vector2f &t1 = m_TextureCoordArray[m_IndexArray[idx]];
                 const Vector2f &t2 = m_TextureCoordArray[m_IndexArray[idx+1]];
@@ -1154,10 +1159,10 @@ bool NaviCubeShared::drawNaviCube(SoCamera *cam, bool pickMode, int hiliteId) {
                 const Vector2f &t4 = m_TextureCoordArray[m_IndexArray[idx+3]];
 
                 glBegin(GL_TRIANGLE_FAN);
-                glTexCoord2f(u*t1[0], v*t1[1]); glVertex3f(mv1[0], mv1[1], mv1[2]);
-                glTexCoord2f(u*t2[0], v*t2[1]); glVertex3f(mv2[0], mv2[1], mv2[2]);
-                glTexCoord2f(u*t3[0], v*t3[1]); glVertex3f(mv3[0], mv3[1], mv3[2]);
-                glTexCoord2f(u*t4[0], v*t4[1]); glVertex3f(mv4[0], mv4[1], mv4[2]);
+                glTexCoord2f(uv*t1[0], uv*t1[1]); glVertex3f(mv1[0], mv1[1], mv1[2]);
+                glTexCoord2f(uv*t2[0], uv*t2[1]); glVertex3f(mv2[0], mv2[1], mv2[2]);
+                glTexCoord2f(uv*t3[0], uv*t3[1]); glVertex3f(mv3[0], mv3[1], mv3[2]);
+                glTexCoord2f(uv*t4[0], uv*t4[1]); glVertex3f(mv4[0], mv4[1], mv4[2]);
                 glEnd();
 			}
 		}
