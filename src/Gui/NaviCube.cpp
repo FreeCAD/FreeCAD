@@ -96,6 +96,7 @@
 #include <Base/Rotation.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <App/Document.h>
 
@@ -318,6 +319,7 @@ public:
 	vector<std::unique_ptr<QOpenGLTexture>> m_glTextures;
 
     ParameterGrp::handle m_hGrp;
+    bool m_Saving = false;
 
     struct LabelInfo {
         const char *title;
@@ -472,7 +474,8 @@ void NaviCubeShared::deinit(QOpenGLContext *ctx)
 
 void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType &, ParameterGrp::MessageType)
 {
-    timer.start(200);
+    if (!m_Shared->m_Saving)
+        timer.start(200);
 }
 
 GLuint NaviCubeShared::createCubeFaceTex(float gap, const char* text, int shape) {
@@ -1357,13 +1360,9 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             m_CubeWidgetOffsetY = m_CubeWidgetPosY - m_CubeWidgetSize*1.1 / 2;
             break;
         }
-        // Save the offset only if the user adjust the navicube with an empty document
-		if (m_View3DInventorViewer->getDocument() 
-            && m_View3DInventorViewer->getDocument()->getDocument()->getObjects().empty())
-        {
-            m_hGrp->SetInt("OffsetX", m_CubeWidgetOffsetX);
-            m_hGrp->SetInt("OffsetY", m_CubeWidgetOffsetY);
-        }
+        Base::StateLocker guard(m_Shared->m_Saving);
+        m_hGrp->SetInt("OffsetX", m_CubeWidgetOffsetX);
+        m_hGrp->SetInt("OffsetY", m_CubeWidgetOffsetY);
     } else {
         // get the curent view
         SbMatrix ViewRotMatrix;
