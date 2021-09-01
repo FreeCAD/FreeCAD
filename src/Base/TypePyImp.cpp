@@ -216,26 +216,29 @@ PyObject* TypePy::createInstance (PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(getBaseTypePtr()->createInstance());
-    if (!base) {
-        Py_Return;
-    }
+    Py::String name(getBaseTypePtr()->getName());
+    Py::TupleN tuple(name);
 
-    return createPyObject(base);
+    return createInstanceByName(tuple.ptr());
 }
 
 PyObject* TypePy::createInstanceByName (PyObject *args)
 {
-    const char* type;
+    const char* name;
     PyObject* load = Py_False;
-    if (!PyArg_ParseTuple(args, "s|O!", &type, &PyBool_Type, &load))
+    if (!PyArg_ParseTuple(args, "s|O!", &name, &PyBool_Type, &load))
         return nullptr;
 
-    Base::BaseClass* base = static_cast<Base::BaseClass*>
-                                (Base::Type::createInstanceByName(type, PyObject_IsTrue(load) ? true : false));
-    if (!base) {
+    bool bLoad = PyObject_IsTrue(load) ? true : false;
+    Base::Type type = Base::Type::getTypeIfDerivedFrom(name, Base::BaseClass::getClassTypeId(), bLoad);
+    if (type.isBad())
         Py_Return;
-    }
+
+    void* typeInstance = type.createInstance();
+    if (!typeInstance)
+        Py_Return;
+
+    Base::BaseClass* base = static_cast<Base::BaseClass*>(typeInstance);
 
     return createPyObject(base);
 }
