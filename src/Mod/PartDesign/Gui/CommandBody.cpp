@@ -702,7 +702,19 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
 void CmdPartDesignDuplicateSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+
+    for (auto sel : Gui::Selection().getSelectionT()) {
+        auto obj = sel.getSubObject();
+        if (!obj || !PartDesign::Body::isAllowed(obj->getTypeId())
+                 || !pcActiveBody
+                 || pcActiveBody != PartDesign::Body::findBodyOf(obj))
+        {
+            doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
+            return;
+        }
+    }
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
