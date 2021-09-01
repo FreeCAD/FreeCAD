@@ -30,6 +30,7 @@
 # include <QTextCursor>
 # include <QPlainTextEdit>
 # include <QToolTip>
+# include <QDesktopWidget>
 #endif
 
 #include <CXX/Objects.hxx>
@@ -77,8 +78,12 @@ private:
 using namespace Gui;
 
 CallTipsList::CallTipsList(QPlainTextEdit* parent)
-  :  QListWidget(parent), textEdit(parent), cursorPos(0), validObject(true), doCallCompletion(false)
+  :  QListWidget(nullptr), textEdit(parent), cursorPos(0), validObject(true), doCallCompletion(false)
 {
+    this->setParent(0, Qt::Popup);
+    this->setFocusPolicy(Qt::NoFocus);
+    this->setFocusProxy(textEdit);
+
     // make the user assume that the widget is active
     QPalette pal = parent->palette();
     pal.setColor(QPalette::Inactive, QPalette::Highlight, pal.color(QPalette::Active, QPalette::Highlight));
@@ -579,7 +584,8 @@ void CallTipsList::showTips(const QString& line)
     // get the minimum width and height of the box
     int h = 0;
     int w = 0;
-    for (int i = 0; i < count(); ++i) {
+    // Hard code maximum visible item to 7, maybe parameterize it.
+    for (int i = 0, c = std::min(7, count()); i < c; ++i) {
         QRect r = visualItemRect(item(i));
         w = qMax(w, r.width());
         h += r.height();
@@ -593,23 +599,27 @@ void CallTipsList::showTips(const QString& line)
     QTextCursor cursor = textEdit->textCursor();
     this->cursorPos = cursor.position();
     QRect rect = textEdit->cursorRect(cursor);
-    int posX = rect.x();
-    int posY = rect.y();
-    int boxH = h;
 
-    // Decide whether to show downstairs or upstairs
-    if (posY > textEdit->viewport()->height()/2) {
-        h = qMin(qMin(h,posY), 250);
-        if (h < boxH)
-            w += textEdit->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-        setGeometry(posX,posY-h, w, h);
+    const QRect screen = QApplication::desktop()->availableGeometry(textEdit);
+    QPoint pos = textEdit->mapToGlobal(rect.topLeft());
+
+    if (w > screen.width())
+        w = screen.width();
+    if ((pos.x() + w) > (screen.x() + screen.width()))
+        pos.setX(screen.x() + screen.width() - w);
+    if (pos.x() < screen.x())
+        pos.setX(screen.x());
+
+    int top = pos.y() - screen.top() + 2;
+    int bottom = screen.bottom() - pos.y();
+    h = qMax(h, this->minimumHeight());
+    if (h > bottom) {
+        h = qMin(qMax(top, bottom), h);
+
+        if (top > bottom)
+            pos.setY(pos.y() - h + 2);
     }
-    else {
-        h = qMin(qMin(h,textEdit->viewport()->height()-fontMetrics().height()-posY), 250);
-        if (h < boxH)
-            w += textEdit->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-        setGeometry(posX, posY+fontMetrics().height(), w, h);
-    }
+    setGeometry(pos.x(), pos.y(), w, h);
 
     setCurrentRow(0);
     show();
@@ -642,32 +652,33 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
         if (label->windowFlags() & Qt::ToolTip && event->type() == QEvent::Timer)
             return true;
     }
-    if (isVisible() && watched == textEdit->viewport()) {
-        if (event->type() == QEvent::MouseButtonPress)
-            hide();
+    if (isVisible() && event->type() == QEvent::MouseButtonPress && !this->underMouse()) {
+        this->hide();
+        return true;
     }
-    else if (isVisible() && watched == textEdit) {
+    else if (isVisible() && (watched == textEdit || watched == this)) {
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = (QKeyEvent*)event;
-            if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
-                keyPressEvent(ke);
-                return true;
+            if (watched == textEdit) {
+                if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
+                    keyPressEvent(ke);
+                    return true;
+                }
+                else if (ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
+                    keyPressEvent(ke);
+                    return true;
+                }
+                else if ((ke->key() == Qt::Key_Minus) && (ke->modifiers() & Qt::ShiftModifier)) {
+                    // do nothing here, but this check is needed to ignore underscore
+                    // which in Qt 4.8 gives Key_Minus instead of Key_Underscore
+                }
             }
-            else if (ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
-                keyPressEvent(ke);
-                return true;
-            }
-            else if (ke->key() == Qt::Key_Escape) {
+            if (ke->key() == Qt::Key_Escape) {
                 hide();
                 return true;
             }
-            else if ((ke->key() == Qt::Key_Minus) && (ke->modifiers() & Qt::ShiftModifier)) {
-                // do nothing here, but this check is needed to ignore underscore
-                // which in Qt 4.8 gives Key_Minus instead of Key_Underscore
-            }
             else if (this->hideKeys.indexOf(ke->key()) > -1) {
                 itemActivated(currentItem());
-                return false;
             }
             else if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
                 itemActivated(currentItem());
@@ -681,7 +692,6 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
             else if (this->compKeys.indexOf(ke->key()) > -1) {
                 itemActivated(currentItem());
-                return false;
             }
             else if (ke->key() == Qt::Key_Shift || ke->key() == Qt::Key_Control ||
                      ke->key() == Qt::Key_Meta || ke->key() == Qt::Key_Alt ||
@@ -689,8 +699,12 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
                 // filter these meta keys to avoid to call keyboardSearch()
                 return true;
             }
+            if (watched == this) {
+                qApp->sendEvent(textEdit, event);
+                return true;
+            }
         }
-        else if (event->type() == QEvent::KeyRelease) {
+        else if (watched == textEdit && event->type() == QEvent::KeyRelease) {
             QKeyEvent* ke = (QKeyEvent*)event;
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down ||
                 ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
@@ -706,6 +720,8 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
                 }
                 return true;
             }
+            qApp->sendEvent(textEdit, event);
+            return true;
         }
         else if (event->type() == QEvent::FocusOut) {
             if (!hasFocus())
