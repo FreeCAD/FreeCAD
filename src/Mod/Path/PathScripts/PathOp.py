@@ -494,7 +494,10 @@ class ObjectOp(object):
     def setDefaultValues(self, obj):
         """setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead."""
-        job = PathUtils.addToJob(obj)
+        if self.job:
+            job = self.job
+        else:
+            job = PathUtils.addToJob(obj)
 
         obj.Active = True
 

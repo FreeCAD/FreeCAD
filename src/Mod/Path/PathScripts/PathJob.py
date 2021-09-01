@@ -102,6 +102,7 @@ Notification = NotificationClass()
 
 
 class ObjectJob:
+
     def __init__(self, obj, models, templateFile=None):
         self.obj = obj
         obj.addProperty(
