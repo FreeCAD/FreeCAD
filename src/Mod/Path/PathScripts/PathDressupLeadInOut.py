@@ -434,7 +434,6 @@ class ObjectDressup:
         # Add last layer
         if len(queue) > 0:
             layers.append(queue)
-            queue = []
 
         # Go through each layer and add leadIn/Out
         idx = 0
