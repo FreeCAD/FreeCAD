@@ -1432,7 +1432,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     # Method to add temporary debug object
     def _addDebugObject(self, objName, objShape):
         if self.isDebug:
-            newDocObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "tmp_" + objName)
+            newDocObj = FreeCAD.ActiveDocument.addObject(
+                "Part::Feature", "tmp_" + objName
+            )
             newDocObj.Shape = objShape
             newDocObj.purgeTouched()
             self.tmpGrp.addObject(newDocObj)

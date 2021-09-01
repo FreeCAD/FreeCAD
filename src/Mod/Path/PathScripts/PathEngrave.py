@@ -173,7 +173,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns an Engrave operation.'''
+    """Create(name) ... Creates and returns an Engrave operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectEngrave(obj, name, parentJob)
