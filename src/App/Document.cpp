@@ -3853,19 +3853,19 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
                                      bool isNew, const char* viewType, bool isPartial)
 {
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
-
-    string ObjectName;
-    if (!base)
-        return 0;
-    if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        delete base;
+    Base::Type type = Base::Type::getTypeIfDerivedFrom(sType, App::DocumentObject::getClassTypeId(), true);
+    if (type.isBad()) {
         std::stringstream str;
         str << "'" << sType << "' is not a document object type";
         throw Base::TypeError(str.str());
     }
 
-    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(base);
+    void* typeInstance = type.createInstance();
+    if (!typeInstance)
+        return nullptr;
+
+    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(typeInstance);
+
     pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!
@@ -3877,6 +3877,8 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     }
 
     // get Unique name
+    string ObjectName;
+
     if (pObjectName && pObjectName[0] != '\0')
         ObjectName = getUniqueObjectName(pObjectName);
     else
@@ -3933,9 +3935,8 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
 std::vector<DocumentObject *> Document::addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew)
 {
-    Base::Type::importModule(sType);
-    Base::Type type = Base::Type::fromName(sType);
-    if (!type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    Base::Type type = Base::Type::getTypeIfDerivedFrom(sType, App::DocumentObject::getClassTypeId(), true);
+    if (type.isBad()) {
         std::stringstream str;
         str << "'" << sType << "' is not a document object type";
         throw Base::TypeError(str.str());
@@ -3945,6 +3946,11 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
     objects.resize(objectNames.size());
     std::generate(objects.begin(), objects.end(),
                   [&]{ return static_cast<App::DocumentObject*>(type.createInstance()); });
+    // the type instance could be a null pointer, it is enough to check the first element
+    if (!objects.empty() && !objects[0]) {
+        objects.clear();
+        return objects;
+    }
 
     // get all existing object names
     std::vector<std::string> reservedNames;

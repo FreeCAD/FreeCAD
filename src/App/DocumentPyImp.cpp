@@ -218,77 +218,73 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
                 kwlist, &sType,&sName,&obj,&view,&attach,&sViewType))
         return NULL;
 
-    DocumentObject *pcFtr = 0;
+    DocumentObject *pcFtr = nullptr;
 
     if (!obj || !PyObject_IsTrue(attach)) {
         pcFtr = getDocumentPtr()->addObject(sType,sName,true,sViewType);
     }
     else {
-        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
-        if (base) {
-            if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-                delete base;
-                std::stringstream str;
-                str << "'" << sType << "' is not a document object type";
-                throw Base::TypeError(str.str());
-            }
-            pcFtr = static_cast<DocumentObject*>(base);
+        Base::Type type = Base::Type::getTypeIfDerivedFrom(sType, DocumentObject::getClassTypeId(), true);
+        if (type.isBad()) {
+            std::stringstream str;
+            str << "'" << sType << "' is not a document object type";
+            throw Base::TypeError(str.str());
         }
+        pcFtr = static_cast<DocumentObject*>(type.createInstance());
     }
-    if (pcFtr) {
-        // Allows to hide the handling with Proxy in client python code
-        if (obj) {
-            try {
-                // the python binding class to the document object
-                Py::Object pyftr = Py::asObject(pcFtr->getPyObject());
-                // 'pyobj' is the python class with the implementation for DocumentObject
-                Py::Object pyobj(obj);
-                if (pyobj.hasAttr("__object__")) {
-                    pyobj.setAttr("__object__", pyftr);
-                }
-                pyftr.setAttr("Proxy", pyobj);
-
-                if (PyObject_IsTrue(attach)) {
-                    getDocumentPtr()->addObject(pcFtr,sName);
-
-                    try {
-                        Py::Callable method(pyobj.getAttr("attach"));
-                        if (!method.isNone()) {
-                            Py::TupleN arg(pyftr);
-                            method.apply(arg);
-                        }
-                    }
-                    catch (Py::Exception&) {
-                        Base::PyException e;
-                        e.ReportException();
-                    }
-                }
-
-                // if a document class is set we also need a view provider defined which must be
-                // something different to None
-                Py::Object pyvp;
-                if (view)
-                    pyvp = Py::Object(view);
-                if (pyvp.isNone())
-                    pyvp = Py::Int(1);
-                // 'pyvp' is the python class with the implementation for ViewProvider
-                if (pyvp.hasAttr("__vobject__")) {
-                    pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
-                }
-                pyftr.getAttr("ViewObject").setAttr("Proxy", pyvp);
-                return Py::new_reference_to(pyftr);
-            }
-            catch (Py::Exception& e) {
-                e.clear();
-            }
-        }
-        return pcFtr->getPyObject();
-    }
-    else {
+    // the type instance could be a null pointer
+    if (!pcFtr) {
         std::stringstream str;
         str << "No document object found of type '" << sType << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
+    // Allows to hide the handling with Proxy in client python code
+    if (obj) {
+        try {
+            // the python binding class to the document object
+            Py::Object pyftr = Py::asObject(pcFtr->getPyObject());
+            // 'pyobj' is the python class with the implementation for DocumentObject
+            Py::Object pyobj(obj);
+            if (pyobj.hasAttr("__object__")) {
+                pyobj.setAttr("__object__", pyftr);
+            }
+            pyftr.setAttr("Proxy", pyobj);
+
+            if (PyObject_IsTrue(attach)) {
+                getDocumentPtr()->addObject(pcFtr,sName);
+
+                try {
+                    Py::Callable method(pyobj.getAttr("attach"));
+                    if (!method.isNone()) {
+                        Py::TupleN arg(pyftr);
+                        method.apply(arg);
+                    }
+                }
+                catch (Py::Exception&) {
+                    Base::PyException e;
+                    e.ReportException();
+                }
+            }
+
+            // if a document class is set we also need a view provider defined which must be
+            // something different to None
+            Py::Object pyvp;
+            if (view)
+                pyvp = Py::Object(view);
+            if (pyvp.isNone())
+                pyvp = Py::Int(1);
+            // 'pyvp' is the python class with the implementation for ViewProvider
+            if (pyvp.hasAttr("__vobject__")) {
+                pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
+            }
+            pyftr.getAttr("ViewObject").setAttr("Proxy", pyvp);
+            return Py::new_reference_to(pyftr);
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+        }
+    }
+    return pcFtr->getPyObject();
 }
 
 PyObject*  DocumentPy::removeObject(PyObject *args)
@@ -611,15 +607,11 @@ PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
                 kwlist, &sType, &sName, &sLabel))
         return nullptr;
 
-    Base::Type type = Base::Type::fromName(sType);
-    if (type == Base::Type::badType()) {
-        PyErr_Format(PyExc_TypeError, "'%s' is not a valid type", sType);
-        return nullptr;
-    }
-
-    if (!type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        PyErr_Format(PyExc_TypeError, "Type '%s' does not inherit from 'App::DocumentObject'", sType);
-        return nullptr;
+    Base::Type type = Base::Type::getTypeIfDerivedFrom(sType, App::DocumentObject::getClassTypeId(), true);
+    if (type.isBad()) {
+        std::stringstream str;
+        str << "'" << sType << "' is not a document object type";
+        throw Base::TypeError(str.str());
     }
 
     std::vector<DocumentObject*> res;
