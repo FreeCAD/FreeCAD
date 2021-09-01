@@ -697,7 +697,8 @@ ParameterGrp::handle DlgParameterImp::copyParameters()
 void DlgParameterImp::on_btnAdd_clicked()
 {
     QString file = FileDialog::getOpenFileName( this,
-            tr("Add Configuration"), QString(), QString::fromLatin1("XML (*.FCParam)"));
+            tr("Add Configuration"), QString(),
+            QString::fromLatin1("XML (*.FCParam);;%1 (*.*)").arg(tr("All files")));
     if (file.isEmpty())
         return;
     std::string name = QFileInfo(file).completeBaseName().toUtf8().constData();
@@ -1393,7 +1394,7 @@ void DlgParameterImp::doImportOrMerge(ParameterGrp *hGrp, bool merge)
 {
     QString file = FileDialog::getOpenFileName( this,
             merge ? tr("Merge parameter from file") : tr("Import parameter from file"),
-            QString(), QString::fromLatin1("XML (*.FCParam)"));
+            QString(), QString::fromLatin1("XML (*.FCParam);;%1 (*.*)").arg(tr("All files")));
     if ( file.isEmpty() )
         return;
 
