@@ -51,20 +51,20 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-FeatureTool         = 0x0001     # ToolController
-FeatureDepths       = 0x0002     # FinalDepth, StartDepth
-FeatureHeights      = 0x0004     # ClearanceHeight, SafeHeight
-FeatureStartPoint   = 0x0008     # StartPoint
-FeatureFinishDepth  = 0x0010     # FinishDepth
-FeatureStepDown     = 0x0020     # StepDown
-FeatureNoFinalDepth = 0x0040     # edit or not edit FinalDepth
-FeatureBaseVertexes = 0x0100     # Base
-FeatureBaseEdges    = 0x0200     # Base
-FeatureBaseFaces    = 0x0400     # Base
-FeatureBasePanels   = 0x0800     # Base
-FeatureLocations    = 0x1000     # Locations
-FeatureCoolant      = 0x2000     # Coolant
-FeatureDiameters    = 0x4000     # Turning Diameters
+FeatureTool = 0x0001  # ToolController
+FeatureDepths = 0x0002  # FinalDepth, StartDepth
+FeatureHeights = 0x0004  # ClearanceHeight, SafeHeight
+FeatureStartPoint = 0x0008  # StartPoint
+FeatureFinishDepth = 0x0010  # FinishDepth
+FeatureStepDown = 0x0020  # StepDown
+FeatureNoFinalDepth = 0x0040  # edit or not edit FinalDepth
+FeatureBaseVertexes = 0x0100  # Base
+FeatureBaseEdges = 0x0200  # Base
+FeatureBaseFaces = 0x0400  # Base
+FeatureBasePanels = 0x0800  # Base
+FeatureLocations = 0x1000  # Locations
+FeatureCoolant = 0x2000  # Coolant
+FeatureDiameters = 0x4000  # Turning Diameters
 
 FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges
 
@@ -338,7 +338,7 @@ class ObjectOp(object):
 
         self.initOperation(obj)
 
-        if not hasattr(obj, 'DoNotSetDefaultValues') or not obj.DoNotSetDefaultValues:
+        if not hasattr(obj, "DoNotSetDefaultValues") or not obj.DoNotSetDefaultValues:
             if parentJob:
                 self.job = PathUtils.addToJob(obj, jobname=parentJob.Name)
             job = self.setDefaultValues(obj)
@@ -494,7 +494,10 @@ class ObjectOp(object):
     def setDefaultValues(self, obj):
         """setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead."""
-        job = PathUtils.addToJob(obj)
+        if self.job:
+            job = self.job
+        else:
+            job = PathUtils.addToJob(obj)
 
         obj.Active = True
 
