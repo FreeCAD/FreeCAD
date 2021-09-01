@@ -191,3 +191,153 @@
       #    return True
       #filteredProxyModel = FilterProxyModel()
       #filteredProxyModel.setSourceModel(mdl)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  #mdl = QtCore.QStringListModel(['aaa', 'aab', 'aac', 'bxy', 'bac'])
+  #sbx = SearchBox(mdl, 10, None)
+  #sbx.show()
+
+  # Inspired by https://stackoverflow.com/a/7767999/324969
+  #class SearchQCompleter(QtGui.QCompleter):
+  #  def __init__(self, model, itemDelegate):
+  #    super(SearchQCompleter, self).__init__()
+  #    super(SearchQCompleter, self).setModel(QtCore.QIdentityProxyModel())
+  #    #https://stackoverflow.com/a/65930408/324969
+  #    super(SearchQCompleter, self).popup().setItemDelegate(itemDelegate)
+  #    self.setModel(model)
+  #  
+  #  def setModel(self, itemGroups):
+  #    self.itemGroups = itemGroups
+  #    self.filterModel('')
+  #  
+  #  def filterModel(self, userInput):
+  #    def matches(s):
+  #      return userInput.lower() in s.lower()
+  #    def filterGroup(group):
+  #      if matches(group['text']):
+  #        # If a group matches, include the entire subtree (might need to disable this if it causes too much noise)
+  #        return group
+  #      else:
+  #        subitems = filterGroups(group['subitems'])
+  #        if len(subitems) > 0 or matches(group['text']):
+  #          return { 'text': group['text'], 'icon': group['icon'], 'action': group['action'], 'subitems': subitems }
+  #        else:
+  #          return None
+  #    def filterGroups(groups):
+  #      groups = (filterGroup(group) for group in groups)
+  #      return [group for group in groups if group is not None]
+  #    def addGroups(filteredGroups, depth=0):
+  #      for group in filteredGroups:
+  #        mdl.appendRow([QtGui.QStandardItem(group['icon'] or QtGui.QIcon(), group['text']),
+  #                       QtGui.QStandardItem(str(depth)),
+  #                       QtGui.QStandardItem(group['action'])])
+  #        addGroups(group['subitems'], depth+1)
+  #    mdl = QtGui.QStandardItemModel()
+  #    mdl.appendColumn([])
+  #    addGroups(filterGroups(itemGroups))
+  #
+  #    print('setSourceModel for userInput ' + repr(userInput) + ' with ' + str(mdl.rowCount()) + ' rows.')
+  #    self.model().setSourceModel(mdl)
+  #    # https://stackoverflow.com/a/65930408/324969
+  #  
+  #  # the splitPath(self, path) method is called every time the input string changes, before
+  #  # drawing the completion list, we latch onto this method to also update the model to contain
+  #  # the appropriate results, as given by the custom filterAcceptsRow method above.
+  #  def splitPath(self, path):
+  #    self.filterModel(path)
+  #    # Pretend that the user endered the empty string, so that all items from the filteredProxyModel match.
+  #    return ''
+  #
+  #class SearchBox(QtGui.QLineEdit):
+  #  resultSelected = QtCore.Signal(int, str)
+  #  def __init__(self, itemGroups):
+  #    super(SearchBox, self).__init__()
+  #    qom = SearchQCompleter(itemGroups, IndentedItemDelegate())
+  #    qom.setMaxVisibleItems(20)
+  #    #qom.setCompletionMode(QtGui.QCompleter.CompletionMode.PopupCompletion)
+  #    # Thanks to https://saurabhg.com/programming/search-box-using-qlineedit/ for indicating a few useful options
+  #    ico = QtGui.QIcon(':/icons/help-browser.svg')
+  #    #ico = QtGui.QIcon(':/icons/WhatsThis.svg')
+  #    self.addAction(ico, QtGui.QLineEdit.LeadingPosition)
+  #    self.setClearButtonEnabled(True)
+  #    self.setPlaceholderText('Search tools, prefs & tree')
+  #    self.setFixedWidth(200)
+  #    # Signals & slots for enter / click
+  #    def completerActivated(index):
+  #      print('fooooooooooooo')
+  #      print(qom.model().rowCount(), index.row())
+  #      # TODO: run the action!
+  #      result = str(qom.model().data(index.siblingAtColumn(1)))
+  #      print('res='+result)
+  #      self.clear()
+  #      self.completer().setCompletionPrefix('')
+  #      self.resultSelected.emit(str(index), result)
+  #    def returnPressed():
+  #      #self.clear()
+  #      #self.completer().setCompletionPrefix('')
+  #      pass
+  #      #text = sea.text()
+  #      #self.clear()
+  #      #self.resultSelected.emit('text returnPressed' + text)
+  #    self.returnPressed.connect(returnPressed)
+  #    #QtCore.QObject.connect(self.completer(), QtCore.SIGNAL('activated(QModelIndex)'), completerActivated) #, QtCore.Qt.ConnectionType.QueuedConnection)
+  #    qom.activated.connect(completerActivated, QtCore.Qt.ConnectionType.DirectConnection) #, QtCore.Qt.ConnectionType.QueuedConnection)
+  #    #self.completer().activated.connect(returnPressedOrCompleterActivated)
+  #    def textChanged():
+  #      print('textChanged')
+  #      # Workaround: Clear completion prefix and still show the completion box when doing backspace after typing a single character
+  #      if self.text() == '':
+  #        self.completer().setCompletionPrefix(self.text())
+  #        self.completer().complete()
+  #    self.textChanged.connect(textChanged)
+  #    QtCore.QObject.connect(qom.popup(), QtCore.SIGNAL('clicked(QModelIndex)'), lambda x: print(x))
+  #    self.setCompleter(qom)
+  #  def focusInEvent(self, e):
+  #    super(SearchBox, self).focusInEvent(e)
+  #    self.completer().setCompletionPrefix(self.text())
+  #    self.completer().complete()
+  #    self.completer().setCurrentRow(1) # Does not work
+  #    #d=QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_Down, QtCore.Qt.NoModifier)
+  #    #QtCore.QCoreApplication.postEvent(self, d)
+  #  def mousePressEvent(self, e):
+  #    super(SearchBox, self).mousePressEvent(e)
+  #    self.completer().setCompletionPrefix(self.text())
+  #    self.completer().complete()
+  #    self.completer().setCurrentRow(1) # Does not work
+  #    #d=QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_Down, QtCore.Qt.NoModifier)
+  #    #QtCore.QCoreApplication.postEvent(self, d)
+  #
+
+                #sim.appendRow([QtGui.QStandardItem(icon, 't:' + text), QtGui.QStandardItem('tool')])
+
+                      #all_actions.append(mac.trigger)
+
+                      #print('whaaaat', str(len(all_actions)))
+
+                #all_actions.append(tbt.actions().trigger)
+                #global lalala
+                #lalala=tbt
+                #print('whuuuut', str(len(all_actions)))
+
+                #viu = mw.findChildren(QtGui.QToolBar, 'View')[0]
+                #tbt = viu.findChildren(QtGui.QToolButton)
+                #men = tbt[3].menu()
+                #acs = men.actions()          # QtGui.QAction list
+                #act = tbt[2].defaultAction() # QtGui.QAction
+                #act.trigger()
