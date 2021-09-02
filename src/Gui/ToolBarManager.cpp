@@ -443,16 +443,23 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbar = it->second;
             toolbars.erase(it);
         }
-        if (!toolbar)
+        if (!toolbar) {
             toolbar = createToolBar(name);
+            QByteArray n(name.toLatin1());
+            if (hPref->GetBool(n, true) != hPref->GetBool(n, false)) {
+                // Make sure we remember the toolbar so that we can pre-create
+                // it the next time the application is launched
+                Base::ConnectionBlocker block(connParam);
+                hPref->SetBool(n, true);
+            }
+        }
 
         bool toolbar_added = toolbar->windowTitle().isEmpty();
 
         // setup the toolbar
         setup(item, toolbar);
         if (toolbar->actions().isEmpty()) {
-            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                FC_WARN("Empty toolbar " << name.toLatin1().constData());
+            FC_LOG("Empty toolbar " << name.toLatin1().constData());
             continue;
         }
 
