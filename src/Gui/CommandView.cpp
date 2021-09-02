@@ -655,6 +655,7 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
+    pcAction->setIsMode(true);
     applyCommandData(this->className(), pcAction);
 
     QAction* a0 = pcAction->addAction(QString());
