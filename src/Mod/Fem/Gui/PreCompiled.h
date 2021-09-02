@@ -25,6 +25,7 @@
 #define FEMGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
+#include <limits>
 
 // Importing of App classes
 #ifdef FC_OS_WIN32

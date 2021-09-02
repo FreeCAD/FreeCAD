@@ -25,6 +25,7 @@
 #define FEM_PRECOMPILED_H
 
 #include <FCConfig.h>
+#include <limits>
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
