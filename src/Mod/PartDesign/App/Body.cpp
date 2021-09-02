@@ -508,6 +508,16 @@ App::DocumentObjectExecReturn *Body::execute(void)
     Part::BodyBase::execute();
 
     App::DocumentObject* tip = Tip.getValue();
+    if (!tip) {
+        const auto &objs = Group.getValues();
+        for (auto rit = objs.rbegin(); rit != objs.rend(); ++rit) {
+            if (isSolidFeature(*rit)) {
+                Tip.setValue(*rit);
+                tip = *rit;
+                break;
+            }
+        }
+    }
 
     Part::TopoShape tipShape;
     if ( tip ) {
