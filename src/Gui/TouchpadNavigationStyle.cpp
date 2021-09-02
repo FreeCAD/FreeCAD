@@ -294,6 +294,11 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         (this->shiftdown ? SHIFTDOWN : 0) |
         (this->altdown ? ALTDOWN : 0);
 
+    if (QApplication::queryKeyboardModifiers() & Qt::MetaModifier) {
+        // Use meta modifier as an escape
+        combo &= ~(SHIFTDOWN|ALTDOWN|CTRLDOWN);
+    }
+
     switch (combo) {
     case 0:
         if (curmode == NavigationStyle::SPINNING) { break; }
