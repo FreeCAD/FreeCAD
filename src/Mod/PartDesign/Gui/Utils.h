@@ -26,6 +26,7 @@
 #include <Gui/ActiveObjectList.h>
 
 class QListWidget;
+class QGridLayout;
 
 /** \file PartDesign/Gui/Utils.h
  *  This file contains some utility function used over PartDesignGui module
@@ -126,7 +127,7 @@ class MonitorProxy: public QObject
     Q_OBJECT
 
 public:
-    void addCheckBox(QWidget * parent, int index = 0);
+    QGridLayout *addCheckBox(QWidget * parent, int index = 0);
     
 protected Q_SLOTS:
     void onPreview(bool);
@@ -135,7 +136,7 @@ protected Q_SLOTS:
     void onEditTimer();
 };
 
-void addTaskCheckBox(QWidget * widget, int index = 0);
+QGridLayout *addTaskCheckBox(QWidget * widget, int index = 0);
 
 void fitViewWithDelay(int);
 

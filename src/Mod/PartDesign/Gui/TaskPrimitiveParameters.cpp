@@ -63,7 +63,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     this->groupLayout()->addWidget(proxy);
 
     PartDesignGui::addTaskCheckBox(proxy);
-    this->addNewSolidCheckBox(qobject_cast<QBoxLayout*>(proxy->layout()));
+    this->addOperationCombo(qobject_cast<QBoxLayout*>(proxy->layout()));
 
     _refresh();
     refresh();

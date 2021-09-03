@@ -65,6 +65,9 @@ TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed *TransformedV
     ui->buttonOK->hide();
     ui->checkBoxUpdateView->setEnabled(true);
 
+    ui->labelOccurrences->hide();
+    ui->spinOccurrences->hide();
+
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }

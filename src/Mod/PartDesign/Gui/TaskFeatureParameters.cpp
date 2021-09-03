@@ -243,7 +243,7 @@ void TaskFeatureParameters::setupTransaction()
         transactionID = tid;
 }
 
-void TaskFeatureParameters::addNewSolidCheckBox(QBoxLayout *layout)
+void TaskFeatureParameters::addOperationCombo(QBoxLayout *layout)
 {
     if (!vp || !vp->getObject() || !layout)
         return;

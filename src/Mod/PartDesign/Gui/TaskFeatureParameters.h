@@ -61,7 +61,7 @@ public:
 
     void recomputeFeature(bool delay=true);
 
-    void addNewSolidCheckBox(QBoxLayout *layout);
+    void addOperationCombo(QBoxLayout *layout);
     void addUpdateViewCheckBox(QBoxLayout *layout);
     virtual const char *updateViewParameter() const;
 

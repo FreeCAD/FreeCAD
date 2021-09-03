@@ -29,6 +29,8 @@
 # include <QCheckBox>
 # include <QSplitter>
 # include <QHeaderView>
+# include <QHBoxLayout>
+# include <QGridLayout>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
@@ -275,17 +277,17 @@ void TaskTransformedParameters::setupUI() {
 
     auto layout = qobject_cast<QBoxLayout*>(proxy->layout());
     assert(layout);
-    layout->insertWidget(0,checkBoxParallel);
-    layout->insertWidget(0,checkBoxSubTransform);
-    layout->insertWidget(0,checkBoxNewSolid);
 
-    PartDesignGui::addTaskCheckBox(proxy);
+    auto grid = PartDesignGui::addTaskCheckBox(proxy);
+    grid->addWidget(checkBoxParallel, 1, 1);
+    grid->addWidget(checkBoxNewSolid, 2, 0);
+    grid->addWidget(checkBoxSubTransform, 2, 1);
 
     splitter = new QSplitter(Qt::Vertical, this);
     splitter->addWidget(labelMessage);
     splitter->addWidget(linkEditor);
     splitter->addWidget(proxy);
-    proxy->setMinimumHeight(defaultMinimumHeight);
+    proxy->setMinimumHeight(proxy->minimumHeight() + defaultMinimumHeight);
 
     this->groupLayout()->addWidget(splitter);
 

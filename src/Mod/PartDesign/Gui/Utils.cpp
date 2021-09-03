@@ -1265,39 +1265,38 @@ void beforeEdit(App::DocumentObject *obj)
     _MonitorInstance->beforeEdit(obj);
 }
 
-void MonitorProxy::addCheckBox(QWidget * widget, int index)
+QGridLayout *MonitorProxy::addCheckBox(QWidget * widget, int index)
 {
     QBoxLayout * layout = qobject_cast<QBoxLayout*>(widget->layout());
-    if (!layout) {
-        FC_WARN("unknown widget layout");
-        return;
-    }
+    assert(layout);
 
     QCheckBox *checkbox;
 
-    checkbox = new QCheckBox(widget);
-    checkbox->setText(tr("Show on top"));
-    checkbox->setToolTip(tr("Show the editing feature always on top"));
-    checkbox->setChecked(PartGui::PartParams::EditOnTop());
-    connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onShowOnTop(bool)));
-    layout->insertWidget(index, checkbox);
+    QGridLayout *grid = new QGridLayout;
 
-    QHBoxLayout * hlayout = new QHBoxLayout;
     checkbox = new QCheckBox(widget);
     checkbox->setText(tr("Show preview"));
     checkbox->setToolTip(tr("Show base feature with preview shape"));
     checkbox->setChecked(PartGui::PartParams::PreviewOnEdit());
     connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onPreview(bool)));
-    hlayout->addWidget(checkbox);
+    grid->addWidget(checkbox, 0, 0);
 
     checkbox = new QCheckBox(widget);
     checkbox->setText(tr("Transparent preview"));
     checkbox->setToolTip(tr("Show preview shape with transarency"));
     checkbox->setChecked(PartGui::PartParams::PreviewWithTransparency());
     connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onPreviewTransparency(bool)));
-    hlayout->addWidget(checkbox);
+    grid->addWidget(checkbox, 0, 1);
 
-    layout->insertLayout(index, hlayout);
+    checkbox = new QCheckBox(widget);
+    checkbox->setText(tr("Show on top"));
+    checkbox->setToolTip(tr("Show the editing feature always on top"));
+    checkbox->setChecked(PartGui::PartParams::EditOnTop());
+    connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onShowOnTop(bool)));
+    grid->addWidget(checkbox, 1, 0);
+
+    layout->insertLayout(index, grid);
+    return grid;
 }
 
 void MonitorProxy::onPreview(bool checked)
@@ -1355,11 +1354,11 @@ void MonitorProxy::onEditTimer()
     }
 }
 
-void addTaskCheckBox(QWidget * widget, int index)
+QGridLayout *addTaskCheckBox(QWidget * widget, int index)
 {
     initMonitor();
     _MonitorInstance->hasEditCheckBox = true;
-    _MonitorInstance->proxy.addCheckBox(widget, index);
+    return _MonitorInstance->proxy.addCheckBox(widget, index);
 }
 
 void showObjectOnTop(const App::SubObjectT &objT)
