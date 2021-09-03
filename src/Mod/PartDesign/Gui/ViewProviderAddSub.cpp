@@ -183,12 +183,12 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
             }
         }
 
-        if (p == &feat->BaseFeature || p == &feat->Placement) {
-            Base::Matrix4D matrix;
+        if (p == &feat->BaseFeature || p == &feat->Placement || p == &feat->AddSubShape) {
+            Base::Matrix4D matrix = feat->AddSubShape.getShape().getTransform();
             auto base = Base::freecad_dynamic_cast<Part::Feature>(
                     feat->BaseFeature.getValue());
             if (base)
-                matrix = base->Placement.getValue().inverse().toMatrix()
+                matrix *= base->Placement.getValue().inverse().toMatrix()
                          * feat->Placement.getValue().toMatrix();
             previewTransform->setMatrix(convert(matrix));
         }
