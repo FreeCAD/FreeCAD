@@ -1,3 +1,5 @@
+set(CMAKE_AUTOMOC TRUE)
+
 if(MSVC)
     add_definitions(-DFCGuiPath -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
