@@ -69,6 +69,7 @@
           <FCBool Name="DockOverlayCheckNaviCube" Value="1"/>
           <FCBool Name="DockOverlayActivateOnHover" Value="0"/>
           <FCBool Name="Gradient" Value="0"/>
+          <FCBool Name="Simple" Value="1"/>
           <FCUInt Name="BackgroundColor" Value="4008636159"/>
         </FCParamGroup>
       </FCParamGroup>
