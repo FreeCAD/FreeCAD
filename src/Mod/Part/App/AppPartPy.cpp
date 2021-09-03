@@ -2485,10 +2485,11 @@ private:
         PyObject *pyobj;
         PyObject *pyeditobj;
         PyObject *wholeobj = Py_True;
-        PyObject *nosobj = Py_False;
-        static char* kwd_list[] = {"obj", "editObj", "wholeObject", "noSubObject", 0};
+        PyObject *nosobj = Py_True;
+        PyObject *noelement = Py_False;
+        static char* kwd_list[] = {"obj", "editObj", "wholeObject", "noSubObject", "noSubElement", 0};
         if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "OO|OO", kwd_list,
-                &pyobj, &pyeditobj, &wholeobj, &nosobj))
+                &pyobj, &pyeditobj, &wholeobj, &nosobj, &noelement))
             throw Py::Exception();
 
         PY_TRY {
@@ -2501,6 +2502,8 @@ private:
             auto res = SubShapeBinder::import(objT,
                                               editObjT,
                                               PyObject_IsTrue(wholeobj),
+                                              PyObject_IsTrue(noelement),
+                                              false,
                                               PyObject_IsTrue(nosobj));
             return Py::asObject(res.getPyObject());
         } _PY_CATCH_OCC(throw Py::Exception())

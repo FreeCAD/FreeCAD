@@ -231,7 +231,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                 sel = App::SubObjectT(link, sub.c_str());
             }
 
-            sel = Part::SubShapeBinder::import(sel, editObjT, true);
+            sel = Part::SubShapeBinder::import(sel, editObjT);
             ++it;
         }
 
@@ -656,7 +656,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
     PartDesignGui::getBody(bodyT, false);
     if (reference.getObjectName().size())
-        reference = Part::SubShapeBinder::import(reference, bodyT, true);
+        reference = Part::SubShapeBinder::import(reference, bodyT);
 
     // create Sketch on Face or Plane
     std::string FeatName = getUniqueObjectName("Sketch",pcActiveBody);
@@ -2756,7 +2756,7 @@ void CmdPartDesignSplit::activated(int iMsg)
             }
             sel = App::SubObjectT(link, sub.c_str());
         }
-        sel = Part::SubShapeBinder::import(sel, objT, false, true, true, true);
+        sel = Part::SubShapeBinder::import(sel, objT, false, true, true);
         ++it;
     }
 

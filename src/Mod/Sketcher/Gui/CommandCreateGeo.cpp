@@ -6111,7 +6111,7 @@ public:
                             ss << geoId << ',';
                         ss << ']';
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                "attachExternal(%s, Part.importExternalObject(%s, %s, noSubObject=True))",
+                                "attachExternal(%s, Part.importExternalObject(%s, %s))",
                                 ss.str(),
                                 msg.pOriginalMsg ?
                                     msg.pOriginalMsg->Object.getSubObjectPython() :
@@ -6121,7 +6121,7 @@ public:
                         Gui::Command::openCommand(
                                 QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                "addExternal(Part.importExternalObject(%s, %s, noSubObject=True),%s)",
+                                "addExternal(Part.importExternalObject(%s, %s),%s)",
                                 msg.pOriginalMsg ?
                                     msg.pOriginalMsg->Object.getSubObjectPython() :
                                     msg.Object.getSubObjectPython(),

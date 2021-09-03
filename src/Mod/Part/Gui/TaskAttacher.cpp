@@ -473,7 +473,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
                 sel.setSubName(sel.getSubNameNoElement());
 
             if (editObjT.getSubObject())
-                sel = Part::SubShapeBinder::import(sel, editObjT, true);
+                sel = Part::SubShapeBinder::import(sel, editObjT);
             selObj = sel.getSubObject();
             auto selElement = sel.getOldElementName();
 
@@ -786,7 +786,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
             while (auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(objs.front()))
                 objs.insert(objs.begin(), grp);
             App::SubObjectT objT(objs, subElement.c_str());
-            objT = Part::SubShapeBinder::import(objT, editObjT, true);
+            objT = Part::SubShapeBinder::import(objT, editObjT);
             obj = objT.getObject();
             subElement = objT.getSubName();
         }

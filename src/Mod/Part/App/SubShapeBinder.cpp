@@ -1131,19 +1131,19 @@ App::SubObjectT
 SubShapeBinder::import(const App::SubObjectT &feature, 
                        const App::SubObjectT &editObjT,
                        bool importWholeObject,
-                       bool noSubObject,
+                       bool noSubElement,
                        bool compatible,
-                       bool noSubElement)
+                       bool noSubObject)
 {
     App::DocumentObject *editObj = nullptr;
     App::DocumentObject *container = nullptr;
     App::DocumentObject *topParent = nullptr;
     std::string subname;
 
-    if (noSubElement)
+    if (noSubElement) {
         noSubObject = true;
-    if (noSubObject || noSubElement)
         importWholeObject = false;
+    }
 
     editObj = editObjT.getSubObject();
     if (!editObj)
@@ -1200,9 +1200,8 @@ SubShapeBinder::import(const App::SubObjectT &feature,
         resolved = App::SubObjectT(link, linkSub.c_str());
         if (Part::BodyBase::findBodyOf(link) == container
                 || App::Part::getPartOfObject(link) == container) {
-            if ((!noSubObject || !resolved.hasSubObject())
-                    && (!noSubElement || !resolved.hasSubElement()))
-                return resolved;
+            if (!noSubElement || !resolved.hasSubElement())
+                return App::SubObjectT(sobj, feature.getElementName());
             featName = "Binder";
         }
     }
