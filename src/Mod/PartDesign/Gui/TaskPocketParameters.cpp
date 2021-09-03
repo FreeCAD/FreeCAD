@@ -342,8 +342,9 @@ void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (refText.length() > 0) {
             ui->lineFaceName->blockSignals(true);
             ui->lineFaceName->setText(refText);
-            ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
-            ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
+            QStringList list(refText.split(QLatin1Char(':')));
+            ui->lineFaceName->setProperty("FeatureName", list[0].toLatin1());
+            ui->lineFaceName->setProperty("FaceName", list.size()>1 ? list[1].toLatin1() : QByteArray());
             ui->lineFaceName->blockSignals(false);
             // Turn off reference selection mode
             onButtonFace(false);

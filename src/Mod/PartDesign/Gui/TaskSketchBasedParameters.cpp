@@ -260,40 +260,26 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
         return QString();
     }
 
-    std::string subname = msg.pSubName;
-    QString refStr;
-
-    std::vector<std::string> upToFaces;
+    App::SubObjectT objT = msg.pOriginalMsg ? msg.pOriginalMsg->Object : msg.Object;
 
     // Remove subname for planes and datum features
-    if (PartDesign::Feature::isDatum(selObj)) {
-        subname = "";
-        refStr = QString::fromLatin1(selObj->getNameInDocument());
-    } else if (boost::starts_with(subname, "Face")) {
-        int faceId = std::atoi(&subname[4]);
-        if (faceId > 0) {
-            refStr = QString::fromLatin1("%1:%2%3").arg(
-                    QString::fromLatin1(selObj->getNameInDocument()),
-                    QObject::tr("Face"),
-                    QString::number(faceId));
-            upToFaces.push_back(subname);
-        }
-    }
+    if (PartDesign::Feature::isDatum(selObj))
+        objT.setSubName(objT.getSubNameNoElement());
 
-    if (refStr.isEmpty()) {
-        if (subname.size()) {
-            refStr = QString::fromLatin1("%1:%2").arg(
-                    QString::fromLatin1(selObj->getNameInDocument()),
-                    QString::fromLatin1(subname.c_str()));
-            upToFaces.push_back(subname);
+    objT = PartDesignGui::importExternalObject(objT);
+    if (auto sobj = objT.getSubObject()) {
+        pcSketchBased->UpToFace.setValue(sobj, {objT.getOldElementName()});
+        recomputeFeature();
+        auto subElement = objT.getOldElementName();
+        if (subElement.size()) {
+            return QString::fromLatin1("%1:%2").arg(
+                    QString::fromLatin1(sobj->getNameInDocument()),
+                    QString::fromLatin1(subElement.c_str()));
         } else
-            refStr = QString::fromLatin1(selObj->getNameInDocument());
+            return QString::fromLatin1(sobj->getNameInDocument());
     }
 
-    pcSketchBased->UpToFace.setValue(selObj, upToFaces);
-    recomputeFeature();
-
-    return refStr;
+    return QString();
 }
 
 void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle) {
@@ -400,7 +386,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
     if (o.isEmpty())
         return QString();
 
-    return QString::fromLatin1("(App.getDocument(\"%1\").%2, [\"%3\"])")
+    return QString::fromLatin1("(App.getDocument(\"%1\").getObject(\"%2\"), [\"%3\"])")
             .arg(QString::fromLatin1(doc->getName()), o, sub);
 }
 
