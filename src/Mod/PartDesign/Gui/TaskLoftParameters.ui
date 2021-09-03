@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>299</height>
+    <height>335</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,6 +57,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxSplitProfile">
+     <property name="text">
+      <string>Split profile</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">

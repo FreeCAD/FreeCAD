@@ -171,6 +171,16 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    if (LoftView) {
+        PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(LoftView->getObject());
+        ui->checkBoxRuled->setToolTip(QApplication::translate(
+                    "Property", pcLoft->Ruled.getDocumentation()));
+        ui->checkBoxClosed->setToolTip(QApplication::translate(
+                    "Property", pcLoft->Closed.getDocumentation()));
+        ui->checkBoxSplitProfile->setToolTip(QApplication::translate(
+                    "Property", pcLoft->SplitProfile.getDocumentation()));
+    }
+
     ui->profileBaseEdit->installEventFilter(this);
     ui->profileBaseEdit->setMouseTracking(true);
     ui->listWidgetReferences->installEventFilter(this);
@@ -186,6 +196,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
             this, SLOT(onRuled(bool)));
     connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
             this, SLOT(onClosed(bool)));
+    connect(ui->checkBoxSplitProfile, SIGNAL(toggled(bool)),
+            this, SLOT(onSplitProfile(bool)));
     connect(ui->listWidgetReferences, SIGNAL(itemEntered(QListWidgetItem*)),
             this, SLOT(onItemEntered(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemSelectionChanged()),
@@ -270,6 +282,7 @@ void TaskLoftParameters::refresh()
     // get options
     ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
+    ui->checkBoxSplitProfile->setChecked(loft->SplitProfile.getValue());
 
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
@@ -429,6 +442,18 @@ void TaskLoftParameters::onRuled(bool val) {
     try {
         setupTransaction();
         static_cast<PartDesign::Loft*>(vp->getObject())->Ruled.setValue(val);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
+}
+
+void TaskLoftParameters::onSplitProfile(bool val) {
+    if (!vp)
+        return;
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Loft*>(vp->getObject())->SplitProfile.setValue(val);
         recomputeFeature();
     } catch (Base::Exception &e) {
         e.ReportException();

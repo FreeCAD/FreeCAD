@@ -43,6 +43,7 @@ public:
     App::PropertyLinkList Sections;
     App::PropertyBool     Ruled;
     App::PropertyBool     Closed;    
+    App::PropertyBool     SplitProfile;    
 
     /** @name methods override feature */
     //@{

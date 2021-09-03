@@ -59,6 +59,9 @@ Loft::Loft()
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Create ruled surface");
     ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
+    ADD_PROPERTY_TYPE(SplitProfile,(false),"Loft",App::Prop_None,
+            "In case of profile with multiple faces, split profile\n"
+            "and build each shell independently before fusing.");
 }
 
 short Loft::mustExecute() const
@@ -118,69 +121,82 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 wiresections[i++].push_back(wire);
         }
 
-        //build all shells
-        std::vector<TopoShape> shells;
-        for(auto& wires : wiresections) {
-            
-            BRepOffsetAPI_ThruSections mkTS(false, Ruled.getValue(), Precision::Confusion());
+        TopoShape result(0,hasher);
+        std::vector<TopoShape> shapes;
 
-            for(auto& wire : wires)   {
-                wire.move(invObjLoc);
-                mkTS.AddWire(TopoDS::Wire(wire.getShape()));
+        if (SplitProfile.getValue()) {
+            for (auto &wires : wiresections) {
+                for(auto& wire : wires)
+                    wire.move(invObjLoc);
+                shapes.push_back(TopoShape(0, hasher).makELoft(
+                            wires, true, Ruled.getValue(), Closed.getValue()));
+                shapes.back().makESolid(shapes.back());
+            }
+        } else {
+            //build all shells
+            std::vector<TopoShape> shells;
+            for(auto& wires : wiresections) {
+                
+                BRepOffsetAPI_ThruSections mkTS(false, Ruled.getValue(), Precision::Confusion());
+
+                for(auto& wire : wires)   {
+                    wire.move(invObjLoc);
+                    mkTS.AddWire(TopoDS::Wire(wire.getShape()));
+                }
+
+                mkTS.Build();
+                if (!mkTS.IsDone())
+                    return new App::DocumentObjectExecReturn("Loft could not be built");
+
+                shells.push_back(TopoShape(0,hasher).makEShape(mkTS,wires));
             }
 
-            mkTS.Build();
-            if (!mkTS.IsDone())
-                return new App::DocumentObjectExecReturn("Loft could not be built");
+            //build the top and bottom face, sew the shell and build the final solid
+            auto front = getVerifiedFace();
+            if (front.isNull())
+                return new App::DocumentObjectExecReturn("Loft: Creating a face from sketch failed");
+            front.move(invObjLoc);
+            std::vector<TopoShape> backwires;
+            for(auto& wires : wiresections)
+                backwires.push_back(wires.back());
+            
+            auto back = TopoShape(0,hasher).makEFace(backwires,0,"Part::FaceMakerCheese");
+            
+            BRepBuilderAPI_Sewing sewer;
+            sewer.SetTolerance(Precision::Confusion());
+            sewer.Add(front.getShape());
+            sewer.Add(back.getShape());
+            for(auto& s : shells)
+                sewer.Add(s.getShape());      
+            
+            sewer.Perform();
 
-            //build the shell use simulate to get the top and bottom wires in an easy way
-            shells.push_back(TopoShape(0,hasher).makEShape(mkTS,wires));
+            shells.push_back(front);
+            shells.push_back(back);
+            result = result.makEShape(sewer,shells);
+            if(!result.countSubShapes(TopAbs_SHELL))
+                return new App::DocumentObjectExecReturn("Loft: Failed to create shell");
+            shapes = result.getSubTopoShapes(TopAbs_SHELL);
+
+            for (auto &s : shapes) {
+                //build the solid
+                s = s.makESolid();
+                BRepClass3d_SolidClassifier SC(s.getShape());
+                SC.PerformInfinitePoint(Precision::Confusion());
+                if ( SC.State() == TopAbs_IN)
+                    s.setShape(s.getShape().Reversed(),false);
+            }
         }
 
-        //build the top and bottom face, sew the shell and build the final solid
-        auto front = getVerifiedFace();
-        if (front.isNull())
-            return new App::DocumentObjectExecReturn("Loft: Creating a face from sketch failed");
-        front.move(invObjLoc);
-        std::vector<TopoShape> backwires;
-        for(auto& wires : wiresections)
-            backwires.push_back(wires.back());
-        
-        auto back = TopoShape(0,hasher).makEFace(backwires,0,"Part::FaceMakerCheese");
-        
-        BRepBuilderAPI_Sewing sewer;
-        sewer.SetTolerance(Precision::Confusion());
-        sewer.Add(front.getShape());
-        sewer.Add(back.getShape());
-        for(auto& s : shells)
-            sewer.Add(s.getShape());      
-        
-        sewer.Perform();
-
-        TopoShape result(0,hasher);
-        shells.push_back(front);
-        shells.push_back(back);
-        result = result.makEShape(sewer,shells);
-        if(result.isNull() || result.getShape().ShapeType()!=TopAbs_SHELL)
-            return new App::DocumentObjectExecReturn("Loft: Failed to create shell");
-
-        //build the solid
-        BRepBuilderAPI_MakeSolid mkSolid;
-        mkSolid.Add(TopoDS::Shell(result.getShape()));
-        if(!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn("Loft: Result is not a solid");
-        
-        result = result.makESolid();
-        BRepClass3d_SolidClassifier SC(result.getShape());
-        SC.PerformInfinitePoint(Precision::Confusion());
-        if ( SC.State() == TopAbs_IN) {
-            result.setShape(result.getShape().Reversed(),false);
-        }
-
-        AddSubShape.setValue(result);
+        AddSubShape.setValue(result.makECompound(shapes, nullptr, false));
         if (isRecomputePaused())
             return App::DocumentObject::StdReturn;
         
+        if (shapes.size() > 1)
+            result.makEFuse(shapes);
+        else
+            result = shapes.front();
+            
         result.Tag = -getID();
         
         if(base.isNull()) {

@@ -63,6 +63,7 @@ private Q_SLOTS:
     void onRefButtonAdd(bool);
     void onClosed(bool);
     void onRuled(bool);
+    void onSplitProfile(bool);
     void onDeleteSection();
     void indexesMoved();
     void onItemEntered(QListWidgetItem *);
