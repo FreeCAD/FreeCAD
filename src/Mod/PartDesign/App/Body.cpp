@@ -728,13 +728,14 @@ Body::getRelation(const App::DocumentObject *obj, const App::DocumentObject *oth
 
     if (isSolidFeature(obj)) {
         auto feature = Base::freecad_dynamic_cast<const PartDesign::Feature>(obj);
+        std::set<App::DocumentObject*> objset; // to prevent live-lock in case there is cycle
         while (feature) {
             auto base = feature->BaseFeature.getValue();
             if (base == other)
                 return RelationSibling;
             if (!base)
                 break;
-            if (!isSolidFeature(base))
+            if (!isSolidFeature(base) || !objset.insert(base).second)
                 break;
             feature = Base::freecad_dynamic_cast<PartDesign::Feature>(base);
         }
