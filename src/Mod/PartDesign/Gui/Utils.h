@@ -137,6 +137,8 @@ protected Q_SLOTS:
 
 void addTaskCheckBox(QWidget * widget, int index = 0);
 
+void fitViewWithDelay(int);
+
 } /* PartDesignGui */
 
 #endif /* end of include guard: UTILS_H_CS5LK2ZQ */

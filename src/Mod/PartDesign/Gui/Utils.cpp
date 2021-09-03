@@ -671,6 +671,10 @@ class Monitor
 public:
     Monitor()
     {
+        fitViewTimer.setSingleShot(true);
+        QObject::connect(&fitViewTimer, &QTimer::timeout, [](){
+            Gui::Application::Instance->commandManager().runCommandByName("Std_ViewFitSelection");
+        });
         editTimer.setSingleShot(true);
         proxy.connect(&editTimer, SIGNAL(timeout()), &proxy, SLOT(onEditTimer()));
 
@@ -1241,6 +1245,7 @@ public:
 
     MonitorProxy proxy;
     QTimer editTimer;
+    QTimer fitViewTimer;
     bool hasEditCheckBox = false;
     bool editPreview = false;
 
@@ -1507,6 +1512,12 @@ void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
         last.emplace_back(link, "");
         showObjectOnTop(last.back());
     }
+}
+
+void fitViewWithDelay(int delay)
+{
+    initMonitor();
+    _MonitorInstance->fitViewTimer.start(delay);
 }
 
 } /* PartDesignGui */
