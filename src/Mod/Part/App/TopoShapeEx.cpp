@@ -1811,8 +1811,14 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
     TopoShape uptoface(_uptoface);
     TopoShape base(_base);
-    if (base.isNull() && !uptoface.isNull())
-        base.makEPrism(uptoface, direction);
+    bool cutBase = false;
+    if (!uptoface.isNull() && !base.findShape(uptoface.getShape())) {
+        // It seems that OCC insists the 'up to face' must be somehow related to
+        // the base shape. So if this is not the case, we make our own base
+        // using the 'up to face' by extrusion, and later on cut it out.
+        cutBase = true;
+        base.makEPrism(uptoface, -direction);
+    }
 
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
@@ -1914,8 +1920,11 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
     mapper.init(src, res);
     this->makESHAPE(res,mapper,{src},op);
 
-    if (_base.isNull())
+    if (cutBase) {
         this->makECut({*this, base});
+        if (!_base.isNull())
+            this->makEFuse({*this, _base});
+    }
     return *this;
 }
 
