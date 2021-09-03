@@ -50,6 +50,9 @@
 # include <BRepIntCurveSurface_Inter.hxx>
 # include <IntCurveSurface_IntersectionPoint.hxx>
 # include <gce_MakeDir.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 #endif
 
 #include <boost/range.hpp>
@@ -72,6 +75,8 @@ typedef boost::iterator_range<const char*> CharRange;
 #include <App/Link.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/MappedElement.h>
+#include <App/OriginFeature.h>
+#include <App/Placement.h>
 
 #include "PartPyCXX.h"
 #include "PartFeature.h"
@@ -636,7 +641,62 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 Py_DECREF(pyobj);
                 return shape;
             }
+        } else {
+            if (linked->isDerivedFrom(App::Line::getClassTypeId())) {
+                static TopoDS_Shape _shape;
+                if (_shape.IsNull()) {
+                    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0,0,0), gp_Dir(1,0,0)));
+                    _shape = builder.Shape();
+                    _shape.Infinite(Standard_True);
+                }
+                shape = TopoShape(tag, hasher, _shape);
+            } else if (linked->isDerivedFrom(App::Plane::getClassTypeId())) {
+                static TopoDS_Shape _shape;
+                if (_shape.IsNull()) {
+                    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
+                    _shape = builder.Shape();
+                    _shape.Infinite(Standard_True);
+                }
+                shape = TopoShape(tag, hasher, _shape);
+            } else if (linked->isDerivedFrom(App::Placement::getClassTypeId())) {
+                auto element = Data::ComplexGeoData::findElementName(subname);
+                if (element) {
+                    if (boost::iequals("x", element) || boost::iequals("x-axis", element)
+                            || boost::iequals("y", element) || boost::iequals("y-axis", element)
+                            || boost::iequals("z", element) || boost::iequals("z-axis", element)) {
+                        static TopoDS_Shape _shape;
+                        if (_shape.IsNull()) {
+                            BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
+                            _shape = builder.Shape();
+                            _shape.Infinite(Standard_True);
+                        }
+                        shape = TopoShape(tag, hasher, _shape);
+                    } else if (boost::iequals("o", element) || boost::iequals("origin", element)) {
+                        static TopoDS_Shape _shape;
+                        if (_shape.IsNull()) {
+                            BRepBuilderAPI_MakeVertex builder(gp_Pnt(0,0,0));
+                            _shape = builder.Shape();
+                            _shape.Infinite(Standard_True);
+                        }
+                        shape = TopoShape(tag, hasher, _shape);
+                    }
+                }
+                if (shape.isNull()) {
+                    static TopoDS_Shape _shape;
+                    if (_shape.IsNull()) {
+                        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
+                        _shape = builder.Shape();
+                        _shape.Infinite(Standard_True);
+                    }
+                    shape = TopoShape(tag, hasher, _shape);
+                }
+            }
+            if (!shape.isNull()) {
+                shape.transformShape(mat * linkMat,false,true);
+                return shape;
+            }
         }
+
 
         Py_XDECREF(pyobj);
     }

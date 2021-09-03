@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Placement.h>
 
 #include "Placement.h"
@@ -50,6 +51,26 @@ Placement::~Placement(void)
 }
 
 
+DocumentObject *Placement::getSubObject(const char *subname, PyObject **,
+        Base::Matrix4D *mat, bool transform, int) const
+{
+    if (transform && mat) {
+        auto pla = this->GeoFeature::Placement.getValue();
+        if (subname) {
+            Base::Placement offset;
+            Base::Vector3d normal(0,0,1);
+            if (boost::iequals("x", subname) || boost::iequals("x-axis", subname)
+                    || boost::iequals("yz", subname) || boost::iequals("yz-plane", subname))
+                offset.setRotation(Base::Rotation(normal, Base::Vector3d(1,0,0)));
+            else if (boost::iequals("y", subname) || boost::iequals("y-axis", subname)
+                    || boost::iequals("xz", subname) || boost::iequals("xz-plane", subname))
+                offset.setRotation(Base::Rotation(normal, Base::Vector3d(0,1,0)));
+            pla = offset * pla;
+        }
+        *mat *= pla.toMatrix();
+    }
+    return const_cast<Placement*>(this);
+}
 
 // Python feature ---------------------------------------------------------
 namespace App {

@@ -63,6 +63,8 @@ public:
       return "Gui::ViewProviderPlacement";
   }
 
+  virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0,
+            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
 };
 typedef App::FeaturePythonT<App::Placement> PlacementPython;
