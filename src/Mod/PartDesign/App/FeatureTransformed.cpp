@@ -246,7 +246,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     bool canSkipFirst = true;
     auto baseObj = getBaseObject(true);
     if (NewSolid.getValue() || !baseObj) 
-        canSkipFirst = false;
+        canSkipFirst = forceSkipFirst;
     else {
         support = getBaseShape(true, false, false);
         if (support.isNull())
@@ -265,7 +265,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     support = feature->getBaseShape(true, false, false);
                     if (baseObj)
                         this->Placement.setValue(baseObj->Placement.getValue());
-                    canSkipFirst = false;
+                    canSkipFirst = forceSkipFirst;
                 }
                 break;
             }
@@ -500,7 +500,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 lastop = op;
                 buildShape();
             }
-            std::vector<gp_Trsf>::const_iterator t = transformations.begin();
+            std::vector<gp_Trsf>::const_iterator t = transformations.begin() + idx;
             for (; t != transformations.end(); ++t,++idx) {
                 ss.str("");
                 if (idx)
@@ -514,7 +514,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         // Skip first transformation in case we do not transform the
                         // first instance (i.e. original feature belongs to the same
                         // sibling group)
-                        addsub.emplace_back(shapeCopy, op);
                         continue; 
                     }
                     switch(op) {
@@ -528,10 +527,12 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         intsectShapes.push_back(shapeCopy);
                         break;
                     }
-                }catch(Standard_Failure &) {
+                }catch(Standard_Failure &e) {
                     rejected.emplace_back(shape,std::vector<gp_Trsf>(t,t+1));
                     std::string msg("Transformation failed ");
                     msg += sub;
+                    if (e.GetMessageString() != NULL)
+                        msg += std::string(": ") + e.GetMessageString();
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 }
             }
@@ -558,7 +559,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         trsf_it_vec v_transformations;
         std::vector<TopoDS_Shape> v_transformedShapes;*/
 
-        std::vector<gp_Trsf>::const_iterator t = transformations.begin();
+        std::vector<gp_Trsf>::const_iterator t = transformations.begin() + idx;
         for (; t != transformations.end(); ++t,++idx) {
             auto shapeCopy = CopyShape.getValue()?shape.makECopy():shape;
             if (shapeCopy.isNull())
@@ -568,7 +569,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 // Skip first transformation in case we do not transform the
                 // first instance (i.e. original feature belongs to the same
                 // sibling group)
-                addsub.emplace_back(shapeCopy, op);
                 continue; 
             }
             if (idx) {
@@ -577,9 +577,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             }
             try {
                 shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str());
-            }catch(Standard_Failure &) {
+            }catch(Standard_Failure &e) {
                 std::string msg("Transformation failed ");
                 msg += sub;
+                if (e.GetMessageString() != NULL)
+                    msg += std::string(": ") + e.GetMessageString();
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
 
@@ -637,7 +639,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 rejected.emplace_back(shape,std::vector<gp_Trsf>(t,t+1));
                 std::string msg("Transformation: Intersection check failed");
                 if (e.GetMessageString() != NULL)
-                    msg += std::string(": '") + e.GetMessageString() + "'";
+                    msg += std::string(": ") + e.GetMessageString();
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
         }

@@ -46,6 +46,7 @@ Scaled::Scaled()
 {
     ADD_PROPERTY(Factor,(2.0));
     ADD_PROPERTY(Occurrences,(2));
+    forceSkipFirst = true;
 }
 
 short Scaled::mustExecute() const

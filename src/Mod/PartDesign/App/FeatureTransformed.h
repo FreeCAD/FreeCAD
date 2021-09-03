@@ -113,6 +113,7 @@ protected:
     virtual void setupObject ();
 
     rejectedMap rejected;
+    bool forceSkipFirst = false;
 };
 
 } //namespace PartDesign
