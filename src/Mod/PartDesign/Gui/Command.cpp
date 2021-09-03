@@ -915,7 +915,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         }
 
         //for additive and subtractive lofts allow the user to preselect the sections
-        if (which.compare("AdditiveLoft") == 0 || which.compare("SubtractiveLoft") == 0) {
+        if (which.compare("Loft") == 0) {
             std::ostringstream ss;
             int count = 0;
             ss << "Sections = [";
@@ -933,7 +933,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                 Gui::cmdAppObject(Feat, ss << "]");
         }
         // for additive and subtractive pipes allow the user to preselect the spines
-        else if (which.compare("AdditivePipe") == 0 || which.compare("SubtractivePipe") == 0) {
+        else if (which.compare("Pipe") == 0) {
             if (sels.size() > 1) {
                 //treat additional selected object as spine
                 App::DocumentObject *spine = nullptr;
@@ -996,7 +996,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         func(static_cast<Part::Feature*>(feature), Feat);
     };
 
-
+#if 0
     // in case of subtractive types, check that there is something to subtract from
     if ((which.find("Subtractive") != std::string::npos)  ||
         (which.compare("Groove") == 0) ||
@@ -1012,7 +1012,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             return;
         }
     }
-
+#endif
 
     if (!sels.empty()) {
         App::SubObjectT ref;
@@ -1471,7 +1471,7 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         finishProfileBased(cmd, sketch, Feat);
     };
 
-    prepareProfileBased(pcActiveBody, this, "AdditivePipe", worker);
+    prepareProfileBased(pcActiveBody, this, "Pipe", worker);
 }
 
 bool CmdPartDesignAdditivePipe::isActive(void)
@@ -1520,7 +1520,7 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         finishProfileBased(cmd, sketch, Feat);
     };
 
-    prepareProfileBased(pcActiveBody, this, "SubtractivePipe", worker);
+    prepareProfileBased(pcActiveBody, this, "Pipe", worker);
 }
 
 bool CmdPartDesignSubtractivePipe::isActive(void)
@@ -1572,7 +1572,7 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
         finishProfileBased(cmd, sketch, Feat);
     };
 
-    prepareProfileBased(pcActiveBody, this, "AdditiveLoft", worker);
+    prepareProfileBased(pcActiveBody, this, "Loft", worker);
 }
 
 bool CmdPartDesignAdditiveLoft::isActive(void)
@@ -1621,7 +1621,7 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
         finishProfileBased(cmd, sketch, Feat);
     };
 
-    prepareProfileBased(pcActiveBody, this, "SubtractiveLoft", worker);
+    prepareProfileBased(pcActiveBody, this, "Loft", worker);
 }
 
 bool CmdPartDesignSubtractiveLoft::isActive(void)
@@ -1687,7 +1687,7 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
         cmd->adjustCameraPosition();
     };
 
-    prepareProfileBased(pcActiveBody, this, "AdditiveHelix", worker);
+    prepareProfileBased(pcActiveBody, this, "Helix", worker);
 }
 
 bool CmdPartDesignAdditiveHelix::isActive(void)
@@ -1744,7 +1744,7 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
         cmd->adjustCameraPosition();
     };
 
-    prepareProfileBased(pcActiveBody, this, "SubtractiveHelix", worker);
+    prepareProfileBased(pcActiveBody, this, "Helix", worker);
 }
 
 bool CmdPartDesignSubtractiveHelix::isActive(void)
