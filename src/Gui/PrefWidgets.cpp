@@ -43,11 +43,62 @@
 using Base::Console;
 using namespace Gui;
 
+namespace {
+
+class PrefParam: public ParameterGrp::ObserverType {
+public:
+  PrefParam() {
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences");
+    _AutoSave = hGrp->GetBool("AutoSave", true);
+    hGrp->Attach(this);
+  }
+
+  ~PrefParam() {
+    hGrp->Detach(this);
+  }
+
+  void OnChange(Base::Subject<const char*> &, const char * sReason) {
+    if (boost::equals(sReason, "AutoSave")) {
+      _AutoSave = hGrp->GetBool("AutoSave", true);
+      for (auto entry : _entries)
+        entry->setAutoSave(_AutoSave);
+    }
+  }
+
+  static void addEntry(PrefWidget *entry) {
+    instance()->_entries.insert(entry);
+  }
+
+  static void removeEntry(PrefWidget *entry) {
+    instance()->_entries.erase(entry);
+  }
+
+  static bool AutoSave() {
+    return instance()->_AutoSave;
+  }
+
+  static PrefParam *instance() {
+    static PrefParam *_instance;
+    if (!_instance)
+      _instance = new PrefParam;
+    return _instance;
+  }
+
+private:
+  ParameterGrp::handle hGrp;
+  bool _AutoSave;
+  std::set<PrefWidget*> _entries;
+};
+
+}// anonymous namespace
+
 /** Constructs a preference widget.
  */
 PrefWidget::PrefWidget()
  : WindowParameter("")
 {
+  PrefParam::addEntry(this);
 }
 
 /**
@@ -55,6 +106,7 @@ PrefWidget::PrefWidget()
  */
 PrefWidget::~PrefWidget()
 {
+  PrefParam::removeEntry(this);
   if (getWindowParameter().isValid())
     getWindowParameter()->Detach(this);
   if (m_EntryHandle)
@@ -422,10 +474,16 @@ PrefSpinBox::PrefSpinBox ( QWidget * parent )
   : IntSpinBox(parent), PrefWidget()
 {
     LineEditStyle::setup(lineEdit());
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefSpinBox::~PrefSpinBox()
 {
+}
+
+void PrefSpinBox::setAutoSave(bool enable)
+{
+    autoSave(enable, this, QOverload<int>::of(&PrefSpinBox::valueChanged));
 }
 
 void PrefSpinBox::setEntryName( const QByteArray& name )
@@ -484,10 +542,16 @@ PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
   : DoubleSpinBox(parent), PrefWidget()
 {
     LineEditStyle::setup(lineEdit());
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox()
 {
+}
+
+void PrefDoubleSpinBox::setAutoSave(bool enable)
+{
+    autoSave(enable, this, QOverload<double>::of(&PrefDoubleSpinBox::valueChanged));
 }
 
 void PrefDoubleSpinBox::setEntryName( const QByteArray& name )
@@ -546,10 +610,16 @@ PrefLineEdit::PrefLineEdit ( QWidget * parent )
   : QLineEdit(parent), PrefWidget()
 {
     LineEditStyle::setup(this);
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefLineEdit::~PrefLineEdit()
 {
+}
+
+void PrefLineEdit::setAutoSave(bool enable)
+{
+    autoSave(enable, this, &PrefLineEdit::editingFinished);
 }
 
 void PrefLineEdit::restorePreferences()
@@ -581,10 +651,16 @@ void PrefLineEdit::savePreferences()
 PrefFileChooser::PrefFileChooser ( QWidget * parent )
   : FileChooser(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefFileChooser::~PrefFileChooser()
 {
+}
+
+void PrefFileChooser::setAutoSave(bool enable)
+{
+    autoSave(enable, this, &PrefFileChooser::fileNameSelected);
 }
 
 void PrefFileChooser::restorePreferences()
@@ -615,10 +691,16 @@ void PrefFileChooser::savePreferences()
 PrefComboBox::PrefComboBox ( QWidget * parent )
   : QComboBox(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefComboBox::~PrefComboBox()
 {
+}
+
+void PrefComboBox::setAutoSave(bool enable)
+{
+    autoSave(enable, this, QOverload<int>::of(&PrefComboBox::currentIndexChanged));
 }
 
 void PrefComboBox::restorePreferences()
@@ -649,10 +731,16 @@ void PrefComboBox::savePreferences()
 PrefCheckBox::PrefCheckBox ( QWidget * parent )
   : QCheckBox(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefCheckBox::~PrefCheckBox()
 {
+}
+
+void PrefCheckBox::setAutoSave(bool enable)
+{
+    autoSave(enable, this, &PrefCheckBox::toggled);
 }
 
 void PrefCheckBox::restorePreferences()
@@ -683,10 +771,16 @@ void PrefCheckBox::savePreferences()
 PrefRadioButton::PrefRadioButton ( QWidget * parent )
   : QRadioButton(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefRadioButton::~PrefRadioButton()
 {
+}
+
+void PrefRadioButton::setAutoSave(bool enable)
+{
+    autoSave(enable, this, &PrefRadioButton::toggled);
 }
 
 void PrefRadioButton::restorePreferences()
@@ -717,10 +811,16 @@ void PrefRadioButton::savePreferences()
 PrefSlider::PrefSlider ( QWidget * parent )
   : QSlider(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefSlider::~PrefSlider()
 {
+}
+
+void PrefSlider::setAutoSave(bool enable)
+{
+    autoSave(enable, this, &PrefSlider::valueChanged);
 }
 
 void PrefSlider::restorePreferences()
@@ -751,10 +851,17 @@ void PrefSlider::savePreferences()
 PrefColorButton::PrefColorButton ( QWidget * parent )
   : ColorButton(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefColorButton::~PrefColorButton()
 {
+}
+
+void PrefColorButton::setAutoSave(bool enable)
+{
+    setAutoChangeColor(enable);
+    autoSave(enable, this, &PrefColorButton::changed);
 }
 
 void PrefColorButton::restorePreferences()
@@ -801,10 +908,16 @@ void PrefColorButton::savePreferences()
 PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
   : QuantitySpinBox(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefUnitSpinBox::~PrefUnitSpinBox()
 {
+}
+
+void PrefUnitSpinBox::setAutoSave(bool enable)
+{
+    autoSave(enable, this, QOverload<double>::of(&PrefUnitSpinBox::valueChanged));
 }
 
 void PrefUnitSpinBox::setEntryName( const QByteArray& name )
@@ -1048,10 +1161,16 @@ void PrefQuantitySpinBox::setParamGrpPath( const QByteArray& path )
 PrefFontBox::PrefFontBox ( QWidget * parent )
   : QFontComboBox(parent), PrefWidget()
 {
+    setAutoSave(PrefParam::AutoSave());
 }
 
 PrefFontBox::~PrefFontBox()
 {
+}
+
+void PrefFontBox::setAutoSave(bool enable)
+{
+    autoSave(enable, this, &PrefFontBox::currentFontChanged);
 }
 
 void PrefFontBox::restorePreferences()

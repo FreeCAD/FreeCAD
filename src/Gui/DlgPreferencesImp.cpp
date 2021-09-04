@@ -85,6 +85,15 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     // if the static page manipulation functions are called while the dialog is showing
     // it can update its content.
     DlgPreferencesImp::_activeDialog = this;
+
+    auto manager = new ParameterManager;
+    manager->CreateDocument();
+    hBackup = manager;
+    App::GetApplication().GetUserParameter().copyTo(hBackup);
+    connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
+        [this](ParameterGrp*, ParameterGrp::ParamType, const char*, const char*) {
+            this->paramTouched = true;
+        });
 }
 
 /**
@@ -281,7 +290,7 @@ void DlgPreferencesImp::closeEvent(QCloseEvent *e)
 
 void DlgPreferencesImp::reject()
 {
-    if (hBackup) {
+    if (hBackup && paramTouched) {
         int res = QMessageBox::question(this, tr("Revert changes"),
                 tr("Do you want to revert back to previous settings before exit?"),
                 QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
@@ -399,13 +408,6 @@ void DlgPreferencesImp::reloadPages()
 
 void DlgPreferencesImp::applyChanges()
 {
-    if (!hBackup) {
-        auto manager = new ParameterManager;
-        manager->CreateDocument();
-        hBackup = manager;
-        App::GetApplication().GetUserParameter().copyTo(hBackup);
-    }
-
     // Checks if any of the classes that represent several pages of settings
     // (DlgSettings*.*) implement checkSettings() method.  If any of them do,
     // call it to validate if user input is correct.  If something fails (i.e.,

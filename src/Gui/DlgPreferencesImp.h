@@ -155,8 +155,11 @@ private:
     std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
     bool geometryRestored = false;
+    bool paramTouched = false;
     QSize savedSize;
     QPoint savedPos;
+
+    boost::signals2::scoped_connection connParam;
 
     ParameterGrp::handle hBackup;
 

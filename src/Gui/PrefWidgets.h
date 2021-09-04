@@ -24,12 +24,14 @@
 #ifndef GUI_PREFWIDGETS_H
 #define GUI_PREFWIDGETS_H
 
+#include <memory>
 #include <QVector>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QRadioButton>
 #include <QFontComboBox>
 #include <QFont>
+#include <QTimer>
 #include <Base/Parameter.h>
 #include "Widgets.h"
 #include "Window.h"
@@ -105,6 +107,28 @@ public:
   void restoreSubEntries();
   void saveSubEntries();
 
+  virtual void setAutoSave(bool enable) = 0;
+
+  template<class F, class O>
+  void autoSave(bool enable, O *o, F f, int delay=100) {
+    if (conn) {
+      QObject::disconnect(conn);
+      if (!enable)
+          return;
+    }
+    if (delay) {
+      if (!timer) {
+          timer.reset(new QTimer);
+          timer->setSingleShot(true);
+          QObject::connect(timer.get(), &QTimer::timeout, [this](){onSave();});
+      }
+      conn = QObject::connect(o, f, [this, delay](){
+        timer->start(delay);
+      });
+    } else
+      conn = QObject::connect(o, f, [this](){onSave();});
+  }
+
 protected:
   /** Restores the preferences
    * Must be reimplemented in any subclasses.
@@ -141,6 +165,9 @@ private:
 
   // friends
   friend class Gui::WidgetFactoryInst;
+
+  QMetaObject::Connection conn;
+  std::unique_ptr<QTimer> timer;
 };
 
 /** The PrefSpinBox class.
@@ -160,6 +187,7 @@ public:
   virtual ~PrefSpinBox();
 
   virtual void setEntryName( const QByteArray& name );
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -185,6 +213,7 @@ public:
   virtual ~PrefDoubleSpinBox();
 
   virtual void setEntryName( const QByteArray& name );
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -207,6 +236,7 @@ class GuiExport PrefLineEdit : public QLineEdit, public PrefWidget
 public:
   PrefLineEdit ( QWidget * parent = 0 );
   virtual ~PrefLineEdit();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -228,6 +258,7 @@ class GuiExport PrefFileChooser : public FileChooser, public PrefWidget
 public:
   PrefFileChooser ( QWidget * parent = 0 );
   virtual ~PrefFileChooser();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -249,6 +280,7 @@ class GuiExport PrefComboBox : public QComboBox, public PrefWidget
 public:
   PrefComboBox ( QWidget * parent = 0 );
   virtual ~PrefComboBox();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -270,6 +302,7 @@ class GuiExport PrefCheckBox : public QCheckBox, public PrefWidget
 public:
   PrefCheckBox ( QWidget * parent = 0 );
   virtual ~PrefCheckBox();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -291,6 +324,7 @@ class GuiExport PrefRadioButton : public QRadioButton, public PrefWidget
 public:
   PrefRadioButton ( QWidget * parent = 0 );
   virtual ~PrefRadioButton();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -312,6 +346,7 @@ class GuiExport PrefSlider : public QSlider, public PrefWidget
 public:
   PrefSlider ( QWidget * parent = 0 );
   virtual ~PrefSlider();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -333,6 +368,7 @@ class GuiExport PrefColorButton : public ColorButton, public PrefWidget
 public:
   PrefColorButton ( QWidget * parent = 0 );
   virtual ~PrefColorButton();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
@@ -357,6 +393,7 @@ public:
     virtual ~PrefUnitSpinBox();
 
     virtual void setEntryName( const QByteArray& name );
+    virtual void setAutoSave(bool enable);
 
 protected:
     // restore from/save to parameters
@@ -421,6 +458,7 @@ class GuiExport PrefFontBox : public QFontComboBox, public PrefWidget
 public:
   PrefFontBox ( QWidget * parent = 0 );
   virtual ~PrefFontBox();
+  virtual void setAutoSave(bool enable);
 
 protected:
   // restore from/save to parameters
