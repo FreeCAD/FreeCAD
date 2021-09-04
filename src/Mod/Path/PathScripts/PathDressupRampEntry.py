@@ -109,12 +109,18 @@ class ObjectDressup:
             return
         if not obj.Base.Path:
             return
+
+        if not obj.Base.Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            return
+
         if obj.Angle >= 90:
             obj.Angle = 89.9
         elif obj.Angle <= 0:
             obj.Angle = 0.1
 
-        if hasattr(obj, 'UseStartDepth'):
+        if hasattr(obj, "UseStartDepth"):
             self.ignoreAboveEnabled = obj.UseStartDepth
             self.ignoreAbove = obj.DressupStartDepth
         else:
