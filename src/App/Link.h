@@ -385,6 +385,8 @@ public:
 
     bool isLinkedToConfigurableObject() const;
 
+    void monitorOnChangeCopyObjects(const std::vector<App::DocumentObject*> &objs);
+
     /// Check if the linked object is a copy on change
     bool isLinkMutated() const;
 
@@ -419,6 +421,7 @@ protected:
     bool hasOldSubElement;
 
     std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
+    std::vector<boost::signals2::scoped_connection> copyOnChangeSrcConns;
     bool hasCopyOnChange;
 
     mutable bool checkingProperty = false;

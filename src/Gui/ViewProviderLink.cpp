@@ -2807,6 +2807,17 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 }
                 for (auto obj : sels)
                     ext->setOnChangeCopyObject(obj, true, applyAll);
+                if (!applyAll)
+                    ext->monitorOnChangeCopyObjects(ext->getOnChangeCopyObjects());
+                else {
+                    std::set<App::LinkBaseExtension*> exts;
+                    for (auto o : App::Document::getDependencyList(objs)) {
+                        if (auto ext = o->getExtensionByType<App::LinkBaseExtension>(true))
+                            exts.insert(ext);
+                    }
+                    for (auto ext : exts)
+                        ext->monitorOnChangeCopyObjects(ext->getOnChangeCopyObjects());
+                }
                 Command::updateActive();
             } catch (Base::Exception &e) {
                 e.ReportException();

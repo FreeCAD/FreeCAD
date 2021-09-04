@@ -369,7 +369,7 @@ LinkBaseExtension::getOnChangeCopyObjects(
     auto parent = getContainer();
     if (!src)
         src = getLinkCopyOnChangeSourceValue();
-    if (!src)
+    if (!src || getLinkCopyOnChangeValue() == CopyOnChangeDisabled)
         return {};
 
     auto res = Document::getDependencyList({src}, Document::DepSort);
@@ -474,7 +474,10 @@ void LinkBaseExtension::syncCopyOnChange()
         }
     }
 
-    auto copiedObjs = parent->getDocument()->copyObject(getOnChangeCopyObjects());
+    auto srcObjs = getOnChangeCopyObjects();
+    monitorOnChangeCopyObjects(srcObjs);
+
+    auto copiedObjs = parent->getDocument()->copyObject(srcObjs);
     if(copiedObjs.empty())
         return;
 
@@ -494,7 +497,7 @@ void LinkBaseExtension::syncCopyOnChange()
 
     if (copyOnChangeGroup) {
         // The order of the copied objects is in dependency order (because of
-        // getCopyOnChangeObjects()). We reverse it here so that we can later
+        // getOnChangeCopyObjects()). We reverse it here so that we can later
         // on delete it in reverse order to avoid error (because some parent
         // objects may want to delete their own children).
         std::reverse(copiedObjs.begin(), copiedObjs.end());
@@ -595,6 +598,7 @@ bool LinkBaseExtension::isCopyOnChangeProperty(DocumentObject *obj, const App::P
 
 void LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, bool checkSource) {
     copyOnChangeConns.clear();
+    copyOnChangeSrcConns.clear();
 
     auto linked = getTrueLinkedObject(false);
     if(!linked || getLinkCopyOnChangeValue()==CopyOnChangeDisabled)
@@ -774,6 +778,8 @@ App::DocumentObject *LinkBaseExtension::makeCopyOnChange() {
     if(objs.empty())
         return nullptr;
 
+    monitorOnChangeCopyObjects(srcobjs);
+
     linked = objs.back();
     linked->Visibility.setValue(false);
 
@@ -793,7 +799,7 @@ App::DocumentObject *LinkBaseExtension::makeCopyOnChange() {
         prop->setValue(group);
 
         // The order of othe copied bjects is in dependency order (because of
-        // getCopyOnChangeObjects()). We reverse it here so that we can later
+        // getOnChangeCopyObjects()). We reverse it here so that we can later
         // on delete it in reverse order to avoid error (because some parent
         // objects may want to delete their own children).
         std::reverse(objs.begin(), objs.end());
@@ -801,6 +807,24 @@ App::DocumentObject *LinkBaseExtension::makeCopyOnChange() {
     }
 
     return linked;
+}
+
+void LinkBaseExtension::monitorOnChangeCopyObjects(
+        const std::vector<App::DocumentObject*> &objs)
+{
+    copyOnChangeSrcConns.clear();
+    if (getLinkCopyOnChangeValue() == CopyOnChangeDisabled)
+        return;
+    for(auto obj : objs) {
+        obj->setStatus(App::ObjectStatus::TouchOnColorChange, true);
+        copyOnChangeSrcConns.push_back(obj->signalChanged.connect(
+            [this](const DocumentObject &, const Property &) {
+                if (auto prop = this->getLinkCopyOnChangeTouchedProperty()) {
+                    if (this->getLinkCopyOnChangeValue() != CopyOnChangeDisabled)
+                        prop->setValue(true);
+                }
+            }));
+    }
 }
 
 App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
@@ -2053,6 +2077,9 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
 
     if (_LinkVersion.getValue() == 0)
         _LinkVersion.setValue(1);
+
+    if (getLinkCopyOnChangeValue() != CopyOnChangeDisabled)
+        monitorOnChangeCopyObjects(getOnChangeCopyObjects());
 }
 
 void LinkBaseExtension::_handleChangedPropertyName(

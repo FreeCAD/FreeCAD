@@ -66,6 +66,7 @@ enum ObjectStatus {
     RecomputeExtension = 19, // mark the object to recompute its extensions
     ViewProviderAttached = 20, // indicate if a view provider is attached to this object
     ObjEditing = 21, // indicate the object is current being edited
+    TouchOnColorChange = 22, // inform view provider touch object on color change
 };
 
 /** Return object for feature execution
