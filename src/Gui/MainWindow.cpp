@@ -203,6 +203,7 @@ struct MainWindowP
     int screen = -1;
     boost::signals2::scoped_connection connParam;
     ParameterGrp::handle hGrp;
+    bool _restoring = false;
 
     void restoreWindowState(const QByteArray &);
 };
@@ -330,6 +331,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->restoreStateTimer.setSingleShot(true);
     connect(&d->restoreStateTimer, &QTimer::timeout, [this](){
         d->restoreWindowState(QByteArray::fromBase64(d->hGrp->GetASCII("MainWindowState").c_str()));
+        ToolBarManager::getInstance()->restoreState();
         OverlayManager::instance()->reload(OverlayManager::ReloadResume);
     });
 
@@ -1647,10 +1649,17 @@ void MainWindow::loadWindowSettings()
     OverlayManager::instance()->restore();
 }
 
+bool MainWindow::isRestoringWindowState() const
+{
+    return d->_restoring;
+}
+
 void MainWindowP::restoreWindowState(const QByteArray &windowState)
 {
     if (windowState.isEmpty())
         return;
+
+    Base::StateLocker guard(_restoring);
 
     // tmp. disable the report window to suppress some bothering warnings
     if (Base::Console().IsMsgTypeEnabled("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn)) {

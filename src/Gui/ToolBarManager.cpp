@@ -586,6 +586,8 @@ void ToolBarManager::restoreState()
             setToolBarVisible(toolbar, hPref->GetBool(toolbarName, toolbar->isVisible()));
             toolbar->setMovable(hMovable->GetBool(toolbarName, movable));
         }
+        else
+            setToolBarVisible(toolbar, false);
     }
     restored = true;
 }
@@ -663,7 +665,7 @@ void ToolBarManager::onToggleToolBar(bool visible)
         setToolBarVisible(toolbar, false);
         return;
     }
-    if (!restored)
+    if (!restored || getMainWindow()->isRestoringWindowState())
         return;
 
     bool enabled = visible;

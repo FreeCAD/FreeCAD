@@ -248,6 +248,8 @@ public Q_SLOTS:
 
     void showMessage (const QString & message, int timeout = 0);
 
+    bool isRestoringWindowState() const;
+
 protected:
     /**
      * This method checks if the main window can be closed by checking all open documents and views.
