@@ -708,24 +708,22 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
         selectionModel()->setCurrentIndex(contextIndex, QItemSelectionModel::NoUpdate);
     }
 
-    std::unordered_set<App::Property*> props;
+    std::set<App::DocumentObjectT> props;
     for(auto index : sels) {
         auto item = static_cast<PropertyItem*>(index.internalPointer());
         if(item->isSeparator())
             continue;
         for(auto parent=item;parent;parent=parent->parent()) {
-            const auto &ps = parent->getPropertyData();
-            if(ps.size()) {
-                props.insert(ps.begin(),ps.end());
-                break;
-            }
+            for (auto prop : parent->getPropertyData())
+                props.emplace(prop);
         }
     }
 
     if(props.size() == 1) {
         auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
-        auto prop = *props.begin();
+        auto prop = props.begin()->getProperty();
         if(item->isBound() 
+            && prop
             && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
             && !prop->isReadOnly() 
             && !prop->testStatus(App::Property::Immutable)
@@ -738,14 +736,16 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
         }
     }
 
+    auto action = menu.addAction(tr("Add property"));
+    action->setData(QVariant(MA_AddProp));
+    hiddenActions.push_back(action);
+
     std::map<int, bool> flags;
     if(props.size()) {
-        auto action = menu.addAction(tr("Add property"));
-        action->setData(QVariant(MA_AddProp));
-        hiddenActions.push_back(action);
         unsigned count = 0;
-        for(auto prop : props) {
-            if(prop->testStatus(App::Property::PropDynamic)
+        for(auto &propT : props) {
+            auto prop = propT.getProperty();
+            if(prop && prop->testStatus(App::Property::PropDynamic)
                     && !boost::starts_with(prop->getName(),prop->getGroup()))
             {
                 ++count;
@@ -762,7 +762,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
     bool canRemove = !props.empty();
     unsigned long propType = 0;
     unsigned long propStatus = 0xffffffff;
-    for(auto prop : props) {
+    for(auto &propT : props) {
+        auto prop = propT.getProperty();
+        if (!prop)
+            continue;
         propType |= prop->getType();
         propStatus &= prop->getStatus();
         if(!prop->testStatus(App::Property::PropDynamic)
@@ -811,16 +814,19 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
         _ACTION_SETUP(Touched);
         _ACTION_SETUP(EvalOnRestore);
         _ACTION_SETUP(CopyOnChange);
-        if ((*props.begin())->isDerivedFrom(App::PropertyMaterial::getClassTypeId()))
-            _ACTION_SETUP(MaterialEdit);
+        if (auto prop = props.begin()->getProperty()) {
+            if (prop->isDerivedFrom(App::PropertyMaterial::getClassTypeId()))
+                _ACTION_SETUP(MaterialEdit);
+        }
     }
 
     if (!PropertyView::showAll()) {
         for (auto action : hiddenActions)
             action->setVisible(false);
     }
-    auto action = menu.exec(pos);
+    action = menu.exec(pos);
     if (action) {
+        sels = selectedIndexes();
         switch(action->data().toInt()) {
         case MA_Print: {
             std::set<App::Property*> propSet;
@@ -850,8 +856,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
             if(sels.size() == 1)
                 containers.insert(sels[0].pObject);
             else {
-                for(auto prop : props)
-                    containers.insert(prop->getContainer());
+                for(auto &propT : props) {
+                    if (auto prop = propT.getProperty())
+                        containers.insert(prop->getContainer());
+                }
             }
             Gui::Dialog::DlgAddProperty dlg(
                     Gui::getMainWindow(),std::move(containers));
@@ -859,8 +867,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
             break;
         }
         case MA_EditPropGroup: {
+            auto prop = props.begin()->getProperty();
+            if (!prop)
+                break;
             // This operation is not undoable yet.
-            const char *groupName = (*props.begin())->getGroup();
+            const char *groupName = prop->getGroup();
             if(!groupName)
                 groupName = "Base";
             QString res = QInputDialog::getText(Gui::getMainWindow(),
@@ -868,17 +879,20 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
                     QLineEdit::Normal, QString::fromUtf8(groupName));
             if(res.size()) {
                 std::string group = res.toUtf8().constData();
-                for(auto prop : props)
-                    prop->getContainer()->changeDynamicProperty(prop,group.c_str(),0);
+                for(auto &propT : props) {
+                    if (auto prop = propT.getProperty())
+                        prop->getContainer()->changeDynamicProperty(prop,group.c_str(),0);
+                }
                 buildUp(PropertyModel::PropertyList(propList),checkDocument);
             }
             break;
         }
         case MA_RemoveProp: {
             App::AutoTransaction committer("Remove property");
-            for(auto prop : props) {
+            for(auto &propT : props) {
                 try {
-                    prop->getContainer()->removeDynamicProperty(prop->getName());
+                    if (auto prop = propT.getProperty())
+                        prop->getContainer()->removeDynamicProperty(prop->getName());
                 }catch(Base::Exception &e) {
                     e.ReportException();
                 }
@@ -897,8 +911,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
         switch(it->first) {
 #define ACTION_CHECK(_name) \
         case MA_##_name:\
-            for(auto prop : props) \
-                prop->setStatus(App::Property::_name,action->isChecked());\
+            for(auto &propT : props) {\
+                if (auto prop = propT.getProperty()) \
+                    prop->setStatus(App::Property::_name,action->isChecked());\
+            }\
             break
         ACTION_CHECK(Transient);
         ACTION_CHECK(ReadOnly);
@@ -908,11 +924,13 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
         ACTION_CHECK(CopyOnChange);
         ACTION_CHECK(MaterialEdit);
         case MA_Touched:
-            for(auto prop : props) {
-                if(action->isChecked())
-                    prop->touch();
-                else
-                    prop->purgeTouched();
+            for(auto &propT : props) {
+                if (auto prop = propT.getProperty()) {
+                    if(action->isChecked())
+                        prop->touch();
+                    else
+                        prop->purgeTouched();
+                }
             }
             break;
         default:
