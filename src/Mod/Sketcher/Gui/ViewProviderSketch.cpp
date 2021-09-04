@@ -72,6 +72,7 @@
 # include <QTextStream>
 # include <QKeyEvent>
 # include <QDesktopWidget>
+# include <QTimer>
 
 # include <boost_bind_bind.hpp>
 # include <boost/scoped_ptr.hpp>
@@ -186,7 +187,8 @@ SbVec2s ViewProviderSketch::newCursorPos;
 
 /// Data structure while editing the sketch
 struct EditData {
-    EditData():
+    EditData(ViewProviderSketch *master):
+    master(master),
     sketchHandler(0),
     buttonPress(false),
     handleEscapeButton(false),
@@ -232,7 +234,25 @@ struct EditData {
     EditCurvesDrawStyle(0),
     ConstraintDrawStyle(0),
     InformationDrawStyle(0)
-    {}
+    {
+        hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hView->Attach(master);
+        hPart = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+        hPart->Attach(master);
+
+        timer.setSingleShot(true);
+        QObject::connect(&timer, &QTimer::timeout, [master]() {
+            master->initParams();
+            master->updateInventorNodeSizes();
+            master->rebuildConstraintsVisual();
+            master->draw();
+        });
+    }
+
+    ~EditData() {
+        hView->Detach(master);
+        hPart->Detach(master);
+    }
 
     void removeSelectEdge(int GeoId)
     {
@@ -242,6 +262,10 @@ struct EditData {
                 this->SelCurveMap.erase(it);
         }
     }
+
+    ViewProviderSketch *master;
+    ParameterGrp::handle hView;
+    ParameterGrp::handle hPart;
 
     // pointer to the active handler for new sketch objects
     DrawSketchHandler *sketchHandler;
@@ -333,6 +357,8 @@ struct EditData {
     SoDrawStyle * EditCurvesDrawStyle;
     SoDrawStyle * ConstraintDrawStyle;
     SoDrawStyle * InformationDrawStyle;
+
+    QTimer timer;
 };
 
 
@@ -437,14 +463,12 @@ ViewProviderSketch::ViewProviderSketch()
 
     //rubberband selection
     rubberband = new Gui::Rubberband();
-
-    subscribeToParameters();
 }
 
 ViewProviderSketch::~ViewProviderSketch()
 {
+    delete edit;
     delete rubberband;
-    unsubscribeToParameters();
 }
 
 void ViewProviderSketch::setSketchMode(SketchMode mode)
@@ -4153,29 +4177,38 @@ float ViewProviderSketch::getScaleFactor()
 void ViewProviderSketch::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
     (void) rCaller;
-    //ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-    if (strcmp(sReason, "ViewScalingFactor") == 0   ||
-        strcmp(sReason, "MarkerSize") == 0          ||
-        strcmp(sReason, "EditSketcherFontSize") == 0 ) {
-        if(edit) { // only if in edit mode, if not it gets updated when entering edit mode
-            initItemsSizes();
-            updateInventorNodeSizes();
-            rebuildConstraintsVisual();
-            draw();
-        }
-    }
-}
-
-void ViewProviderSketch::subscribeToParameters()
-{
-     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-     hGrp->Attach(this);
-}
-
-void ViewProviderSketch::unsubscribeToParameters()
-{
-     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-     hGrp->Detach(this);
+    static std::unordered_set<const char *, App::CStringHasher, App::CStringHasher> dict = {
+        "SegmentsPerGeometry",
+        "ViewScalingFactor",
+        "MarkerSize",
+        "EditSketcherFontSize",
+        "EditedVertexColor",
+        "EditedEdgeColor",
+        "GridLinePattern",
+        "CreateLineColor",
+        "ConstructionColor",
+        "InternalAlignedGeoColor",
+        "FullyConstraintElementColor",
+        "FullyConstraintConstructionElementColor",
+        "FullyConstraintInternalAlignmentColor",
+        "FullyConstraintConstructionPointColor",
+        "FullyConstraintElementColor",
+        "InvalidSketchColor",
+        "FullyConstrainedColor",
+        "ConstrainedDimColor",
+        "ConstrainedIcoColor",
+        "NonDrivingConstrDimColor",
+        "ExprBasedConstrDimColor",
+        "DeactivatedConstrDimColor",
+        "ExternalColor",
+        "FrozenColor",
+        "DetachedColor",
+        "MissingColor",
+        "HighlightColor",
+        "SelectionColor",
+    };
+    if(edit && dict.count(sReason))
+        edit->timer.start(100);
 }
 
 void ViewProviderSketch::updateInventorNodeSizes()
@@ -4190,7 +4223,7 @@ void ViewProviderSketch::updateInventorNodeSizes()
     edit->InformationDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
 }
 
-void ViewProviderSketch::initItemsSizes()
+void ViewProviderSketch::initParams()
 {
     //Add scaling to Constraint icons
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -4235,6 +4268,106 @@ void ViewProviderSketch::initItemsSizes()
         // -> If we correct the value here in addition, we would get two times a resize
         edit->MarkerSize = markersize;
     }
+
+    float transparency;
+
+    // set the point color
+    unsigned long color = (unsigned long)(VertexColor.getPackedValue());
+    color = hGrp->GetUnsigned("EditedVertexColor", color);
+    VertexColor.setPackedValue((uint32_t)color, transparency);
+    // set the curve color
+    color = (unsigned long)(CurveColor.getPackedValue());
+    color = hGrp->GetUnsigned("EditedEdgeColor", color);
+    CurveColor.setPackedValue((uint32_t)color, transparency);
+    // set the create line (curve) color
+    color = (unsigned long)(CreateCurveColor.getPackedValue());
+    color = hGrp->GetUnsigned("CreateLineColor", color);
+    CreateCurveColor.setPackedValue((uint32_t)color, transparency);
+    // set the construction curve color
+    color = (unsigned long)(CurveDraftColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstructionColor", color);
+    CurveDraftColor.setPackedValue((uint32_t)color, transparency);
+    // set the internal alignment geometry color
+    color = (unsigned long)(InternalAlignedGeoColor.getPackedValue());
+    color = hGrp->GetUnsigned("InternalAlignedGeoColor", color);
+    InternalAlignedGeoColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for a fully constrained element
+    color = (unsigned long)(FullyConstraintElementColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintElementColor", color);
+    FullyConstraintElementColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for fully constrained construction element
+    color = (unsigned long)(FullyConstraintConstructionElementColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintConstructionElementColor", color);
+    FullyConstraintConstructionElementColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for fully constrained internal alignment element
+    color = (unsigned long)(FullyConstraintInternalAlignmentColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintInternalAlignmentColor", color);
+    FullyConstraintInternalAlignmentColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for fully constrained construction points
+    color = (unsigned long)(FullyConstraintConstructionPointColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintConstructionPointColor", color);
+    FullyConstraintConstructionPointColor.setPackedValue((uint32_t)color, transparency);
+    // set fullyconstraint element color
+    color = (unsigned long)(FullyConstraintElementColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintElementColor", color);
+    FullyConstraintElementColor.setPackedValue((uint32_t)color, transparency);
+    // set the cross lines color
+    //CrossColorV.setPackedValue((uint32_t)color, transparency);
+    //CrossColorH.setPackedValue((uint32_t)color, transparency);
+    // set invalid sketch color
+    color = (unsigned long)(InvalidSketchColor.getPackedValue());
+    color = hGrp->GetUnsigned("InvalidSketchColor", color);
+    InvalidSketchColor.setPackedValue((uint32_t)color, transparency);
+    // set the fully constrained color
+    color = (unsigned long)(FullyConstrainedColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstrainedColor", color);
+    FullyConstrainedColor.setPackedValue((uint32_t)color, transparency);
+    // set the constraint dimension color
+    color = (unsigned long)(ConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstrainedDimColor", color);
+    ConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set the constraint color
+    color = (unsigned long)(ConstrIcoColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstrainedIcoColor", color);
+    ConstrIcoColor.setPackedValue((uint32_t)color, transparency);
+    // set non-driving constraint color
+    color = (unsigned long)(NonDrivingConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("NonDrivingConstrDimColor", color);
+    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set expression based constraint color
+    color = (unsigned long)(ExprBasedConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("ExprBasedConstrDimColor", color);
+    ExprBasedConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set expression based constraint color
+    color = (unsigned long)(DeactivatedConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
+    DeactivatedConstrDimColor.setPackedValue((uint32_t)color, transparency);
+
+    // set the external geometry color
+    color = (unsigned long)(CurveExternalColor.getPackedValue());
+    color = hGrp->GetUnsigned("ExternalColor", color);
+    CurveExternalColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(CurveFrozenColor.getPackedValue());
+    color = hGrp->GetUnsigned("FrozenColor", color);
+    CurveFrozenColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(CurveDetachedColor.getPackedValue());
+    color = hGrp->GetUnsigned("DetachedColor", color);
+    CurveDetachedColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(CurveMissingColor.getPackedValue());
+    color = hGrp->GetUnsigned("MissingColor", color);
+    CurveMissingColor.setPackedValue((uint32_t)color, transparency);
+
+    // set the highlight color
+    unsigned long highlight = (unsigned long)(PreselectColor.getPackedValue());
+    highlight = hGrp->GetUnsigned("HighlightColor", highlight);
+    PreselectColor.setPackedValue((uint32_t)highlight, transparency);
+    // set the selection color
+    highlight = (unsigned long)(SelectColor.getPackedValue());
+    highlight = hGrp->GetUnsigned("SelectionColor", highlight);
+    SelectColor.setPackedValue((uint32_t)highlight, transparency);
 }
 
 void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer /*=true*/)
@@ -6704,10 +6837,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     // create the container for the additional edit data
     assert(!edit);
-    edit = new EditData();
+    edit = new EditData(this);
 
     // Init icon, font and marker sizes
-    initItemsSizes();
+    initParams();
 
     ParameterGrp::handle hSketch = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     edit->handleEscapeButton = !hSketch->GetBool("LeaveSketchWithEscape", true);
@@ -6760,107 +6893,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     TightGrid.setValue(false);
 
     ViewProvider2DObjectGrid::setEdit(ModNum); // notify to handle grid according to edit mode property
-
-    float transparency;
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    // set the point color
-    unsigned long color = (unsigned long)(VertexColor.getPackedValue());
-    color = hGrp->GetUnsigned("EditedVertexColor", color);
-    VertexColor.setPackedValue((uint32_t)color, transparency);
-    // set the curve color
-    color = (unsigned long)(CurveColor.getPackedValue());
-    color = hGrp->GetUnsigned("EditedEdgeColor", color);
-    CurveColor.setPackedValue((uint32_t)color, transparency);
-    // set the create line (curve) color
-    color = (unsigned long)(CreateCurveColor.getPackedValue());
-    color = hGrp->GetUnsigned("CreateLineColor", color);
-    CreateCurveColor.setPackedValue((uint32_t)color, transparency);
-    // set the construction curve color
-    color = (unsigned long)(CurveDraftColor.getPackedValue());
-    color = hGrp->GetUnsigned("ConstructionColor", color);
-    CurveDraftColor.setPackedValue((uint32_t)color, transparency);
-    // set the internal alignment geometry color
-    color = (unsigned long)(InternalAlignedGeoColor.getPackedValue());
-    color = hGrp->GetUnsigned("InternalAlignedGeoColor", color);
-    InternalAlignedGeoColor.setPackedValue((uint32_t)color, transparency);
-    // set the color for a fully constrained element
-    color = (unsigned long)(FullyConstraintElementColor.getPackedValue());
-    color = hGrp->GetUnsigned("FullyConstraintElementColor", color);
-    FullyConstraintElementColor.setPackedValue((uint32_t)color, transparency);
-    // set the color for fully constrained construction element
-    color = (unsigned long)(FullyConstraintConstructionElementColor.getPackedValue());
-    color = hGrp->GetUnsigned("FullyConstraintConstructionElementColor", color);
-    FullyConstraintConstructionElementColor.setPackedValue((uint32_t)color, transparency);
-    // set the color for fully constrained internal alignment element
-    color = (unsigned long)(FullyConstraintInternalAlignmentColor.getPackedValue());
-    color = hGrp->GetUnsigned("FullyConstraintInternalAlignmentColor", color);
-    FullyConstraintInternalAlignmentColor.setPackedValue((uint32_t)color, transparency);
-    // set the color for fully constrained construction points
-    color = (unsigned long)(FullyConstraintConstructionPointColor.getPackedValue());
-    color = hGrp->GetUnsigned("FullyConstraintConstructionPointColor", color);
-    FullyConstraintConstructionPointColor.setPackedValue((uint32_t)color, transparency);
-    // set fullyconstraint element color
-    color = (unsigned long)(FullyConstraintElementColor.getPackedValue());
-    color = hGrp->GetUnsigned("FullyConstraintElementColor", color);
-    FullyConstraintElementColor.setPackedValue((uint32_t)color, transparency);
-    // set the cross lines color
-    //CrossColorV.setPackedValue((uint32_t)color, transparency);
-    //CrossColorH.setPackedValue((uint32_t)color, transparency);
-    // set invalid sketch color
-    color = (unsigned long)(InvalidSketchColor.getPackedValue());
-    color = hGrp->GetUnsigned("InvalidSketchColor", color);
-    InvalidSketchColor.setPackedValue((uint32_t)color, transparency);
-    // set the fully constrained color
-    color = (unsigned long)(FullyConstrainedColor.getPackedValue());
-    color = hGrp->GetUnsigned("FullyConstrainedColor", color);
-    FullyConstrainedColor.setPackedValue((uint32_t)color, transparency);
-    // set the constraint dimension color
-    color = (unsigned long)(ConstrDimColor.getPackedValue());
-    color = hGrp->GetUnsigned("ConstrainedDimColor", color);
-    ConstrDimColor.setPackedValue((uint32_t)color, transparency);
-    // set the constraint color
-    color = (unsigned long)(ConstrIcoColor.getPackedValue());
-    color = hGrp->GetUnsigned("ConstrainedIcoColor", color);
-    ConstrIcoColor.setPackedValue((uint32_t)color, transparency);
-    // set non-driving constraint color
-    color = (unsigned long)(NonDrivingConstrDimColor.getPackedValue());
-    color = hGrp->GetUnsigned("NonDrivingConstrDimColor", color);
-    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);
-    // set expression based constraint color
-    color = (unsigned long)(ExprBasedConstrDimColor.getPackedValue());
-    color = hGrp->GetUnsigned("ExprBasedConstrDimColor", color);
-    ExprBasedConstrDimColor.setPackedValue((uint32_t)color, transparency);
-    // set expression based constraint color
-    color = (unsigned long)(DeactivatedConstrDimColor.getPackedValue());
-    color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
-    DeactivatedConstrDimColor.setPackedValue((uint32_t)color, transparency);
-
-    // set the external geometry color
-    color = (unsigned long)(CurveExternalColor.getPackedValue());
-    color = hGrp->GetUnsigned("ExternalColor", color);
-    CurveExternalColor.setPackedValue((uint32_t)color, transparency);
-
-    color = (unsigned long)(CurveFrozenColor.getPackedValue());
-    color = hGrp->GetUnsigned("FrozenColor", color);
-    CurveFrozenColor.setPackedValue((uint32_t)color, transparency);
-
-    color = (unsigned long)(CurveDetachedColor.getPackedValue());
-    color = hGrp->GetUnsigned("DetachedColor", color);
-    CurveDetachedColor.setPackedValue((uint32_t)color, transparency);
-
-    color = (unsigned long)(CurveMissingColor.getPackedValue());
-    color = hGrp->GetUnsigned("MissingColor", color);
-    CurveMissingColor.setPackedValue((uint32_t)color, transparency);
-
-    // set the highlight color
-    unsigned long highlight = (unsigned long)(PreselectColor.getPackedValue());
-    highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-    PreselectColor.setPackedValue((uint32_t)highlight, transparency);
-    // set the selection color
-    highlight = (unsigned long)(SelectColor.getPackedValue());
-    highlight = hGrp->GetUnsigned("SelectionColor", highlight);
-    SelectColor.setPackedValue((uint32_t)highlight, transparency);
 
     // start the edit dialog
     if (sketchDlg)

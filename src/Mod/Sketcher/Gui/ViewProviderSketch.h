@@ -323,12 +323,8 @@ protected:
     boost::signals2::connection connectRedoDocument;
     boost::signals2::connection connectSolverUpdate;
 
-    /// set icon & font sizes
-    void initItemsSizes();
-    /// subscribe to parameter groups as an observer
-    void subscribeToParameters();
-    /// unsubscribe to parameter groups as an observer
-    void unsubscribeToParameters();
+    /// set color, icon & font sizes
+    void initParams();
     /// updates the sizes of the edit mode inventor node
     void updateInventorNodeSizes();
 

@@ -223,8 +223,6 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
     }
 }
 
-
-
 /* TRANSLATOR SketcherGui::SketcherSettingsColors */
 
 SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
