@@ -1200,7 +1200,8 @@ SubShapeBinder::import(const App::SubObjectT &feature,
         resolved = App::SubObjectT(link, linkSub.c_str());
         if (Part::BodyBase::findBodyOf(link) == container
                 || App::Part::getPartOfObject(link) == container) {
-            if (!noSubElement || !resolved.hasSubElement())
+            if (!noSubElement || !resolved.hasSubElement()
+                    || !noSubObject || !resolved.hasSubObject())
                 return App::SubObjectT(sobj, feature.getElementName());
             featName = "Binder";
         }
