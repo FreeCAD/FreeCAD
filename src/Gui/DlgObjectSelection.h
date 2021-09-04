@@ -45,10 +45,14 @@ private Q_SLOTS:
     void onItemChanged(QTreeWidgetItem * item, int);
     void onItemSelectionChanged();
     void onDepSelectionChanged();
+    void onUseOriginalsBtnClicked();
 
 private:
     QTreeWidgetItem *createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
     App::DocumentObject *objFromItem(QTreeWidgetItem *item);
+    QPushButton *useOriginalsBtn;
+    std::vector<App::DocumentObject*> originalSelections;
+    bool returnOriginals = false;
 
 private:
     struct Info {
