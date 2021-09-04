@@ -869,6 +869,12 @@ void Document::beforeDelete() {
         v.second->parentSet.clear();
         v.second->beforeDelete();
     }
+
+    d->_isClosing = true;
+    std::list<Gui::BaseView*> temp = d->baseViews;
+    for(std::list<Gui::BaseView*>::iterator it=temp.begin();it!=temp.end();++it)
+        (*it)->deleteSelf();
+    d->baseViews.clear();
 }
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
