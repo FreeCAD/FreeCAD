@@ -25,6 +25,8 @@
 # include <QMessageBox>
 #endif
 
+#include <QCompleter>
+
 #include "ui_DlgAddProperty.h"
 
 #include <Base/Tools.h>
@@ -46,6 +48,14 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
   , ui(new Ui_DlgAddProperty)
 {
     ui->setupUi(this);
+    ui->comboType->setEditable(true);
+    ui->comboType->setInsertPolicy(QComboBox::NoInsert);
+    auto completer = ui->comboType->completer();
+    completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setFilterMode(Qt::MatchContains);
+    ui->comboType->setFocus();
+    ui->comboType->lineEdit()->selectAll();
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/PropertyView");
