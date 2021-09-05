@@ -50,6 +50,7 @@
         <file>icons/Path_Profile_Edges.svg</file>
         <file>icons/Path_Profile_Face.svg</file>
         <file>icons/Path_Profile.svg</file>
+        <file>icons/Path_Profile2.svg</file>
         <file>icons/Path_Sanity.svg</file>
         <file>icons/Path_SelectLoop.svg</file>
         <file>icons/Path_SetupSheet.svg</file>
@@ -104,12 +105,16 @@
         <file>panels/PageBaseLocationEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
         <file>panels/PageDiametersEdit.ui</file>
+        <file>panels/PageExtensionsEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageHeightsDepthsEdit.ui</file>
+        <file>panels/PageOpClearingEdit.ui</file>
         <file>panels/PageOpCustomEdit.ui</file>
         <file>panels/PageOpDeburrEdit.ui</file>
         <file>panels/PageOpDrillingEdit.ui</file>
         <file>panels/PageOpEngraveEdit.ui</file>
         <file>panels/PageOpHelixEdit.ui</file>
+        <file>panels/PageOpPerimeterEdit.ui</file>
         <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProbeEdit.ui</file>

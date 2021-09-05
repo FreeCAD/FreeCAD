@@ -144,7 +144,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             # extrude all faces up to StartDepth and those are the removal shapes
             extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
-            self.removalshapes = [(face.removeSplitter().extrude(extent), False) for face in self.horizontal]
+            self.removalshapes = [(face.removeSplitter().extrude(extent), False, 'pathPocketShape') for face in self.horizontal]
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
@@ -156,7 +156,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
                 body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
                 self.bodies.append(body)
-                self.removalshapes.append((self.stock.Shape.cut(body), False))
+                self.removalshapes.append((self.stock.Shape.cut(body), False, 'pathPocketShape'))
 
         # Tessellate all working faces
         # for (shape, hole) in self.removalshapes:

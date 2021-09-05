@@ -37,6 +37,7 @@ from PathTests.TestPathPreferences import TestPathPreferences
 from PathTests.TestPathPropertyBag import TestPathPropertyBag
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathStock import TestPathStock
+from PathTests.TestPathStrategies import TestPathStrategies
 from PathTests.TestPathThreadMilling import TestPathThreadMilling
 from PathTests.TestPathTool import TestPathTool
 from PathTests.TestPathToolBit import TestPathToolBit
@@ -62,6 +63,7 @@ False if TestPathPreferences.__name__ else True
 False if TestPathPropertyBag.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathStock.__name__ else True
+False if TestPathStrategies.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathTool.__name__ else True
 False if TestPathToolBit.__name__ else True

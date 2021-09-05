@@ -105,6 +105,7 @@ SET(PathScripts_SRCS
     PathScripts/PathPropertyEditor.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
+    PathScripts/PathSelectionProcessing.py
     PathScripts/PathSetupSheet.py
     PathScripts/PathSetupSheetGui.py
     PathScripts/PathSetupSheetOpPrototype.py
@@ -118,6 +119,7 @@ SET(PathScripts_SRCS
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
     PathScripts/PathSurfaceSupport.py
+    PathScripts/PathTaskPanelGui.py
     PathScripts/PathThreadMilling.py
     PathScripts/PathThreadMillingGui.py
     PathScripts/PathToolBit.py
@@ -162,6 +164,33 @@ SET(PathScripts_post_SRCS
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
     PathScripts/post/uccnc_post.py
+)
+
+SET(PathScripts_strategies_SRCS
+    PathScripts/strategies/__init__.py
+    PathScripts/strategies/PathStrategyClearing.py
+    PathScripts/strategies/PathStrategyProfile.py
+)
+
+SET(PathScripts_operations_SRCS
+    PathScripts/operations/__init__.py
+    PathScripts/operations/PathClearing.py
+    PathScripts/operations/PathClearingGui.py
+    PathScripts/operations/PathOp2.py
+    PathScripts/operations/PathOpGui2.py
+    PathScripts/operations/PathPerimeter.py
+    PathScripts/operations/PathPerimeterGui.py
+)
+
+SET(PathScripts_taskpanels_SRCS
+    PathScripts/taskpanels/__init__.py
+    PathScripts/taskpanels/PathTaskPanel.py
+    PathScripts/taskpanels/PathTaskPanelPage.py
+    PathScripts/taskpanels/PathTaskPanelBaseGeometryPage.py
+    PathScripts/taskpanels/PathTaskPanelBaseLocationPage.py
+    PathScripts/taskpanels/PathTaskPanelHeightsDepthsPage.py
+    PathScripts/taskpanels/PathTaskPanelDiametersPage.py
+    PathScripts/taskpanels/PathTaskPanelExtensionPage.py
 )
 
 SET(Tools_SRCS
@@ -220,6 +249,7 @@ SET(PathTests_SRCS
     PathTests/TestPathPropertyBag.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
+    PathTests/TestPathStrategies.py
     PathTests/TestPathThreadMilling.py
     PathTests/TestPathTool.py
     PathTests/TestPathToolBit.py
@@ -235,6 +265,7 @@ SET(PathTests_SRCS
 
 SET(PathImages_Ops
     Images/Ops/chamfer.svg
+    Images/Ops/Path-DepthsAndHeights.gif
 )
 
 SET(PathImages_Tools
@@ -260,6 +291,9 @@ SET(Path_Data
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${PathScripts_operations_SRCS}
+    ${PathScripts_taskpanels_SRCS}
+    ${PathScripts_strategies_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
@@ -311,6 +345,27 @@ INSTALL(
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${PathScripts_strategies_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/strategies
+)
+
+INSTALL(
+    FILES
+        ${PathScripts_operations_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/operations
+)
+
+INSTALL(
+    FILES
+        ${PathScripts_taskpanels_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/taskpanels
 )
 
 INSTALL(

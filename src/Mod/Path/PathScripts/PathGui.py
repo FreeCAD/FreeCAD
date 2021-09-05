@@ -25,6 +25,7 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PySide
+from pivy import coin
 
 
 __title__ = "Path UI helper and utility functions"
@@ -163,3 +164,61 @@ class QuantitySpinBox:
             if prop == self.prop:
                 return exp
         return None
+
+
+class PreviewShape(object):
+    """class PreviewShape(shape, color=(0.25, 0.5, 0.75), transparency=0.6)...
+    This class creates a Coin3D object that is ready to be added to the current
+    scenegraph."""
+
+    def __init__(self, shape, color=(0.25, 0.5, 0.75), transparency=0.6):
+        self.shape = shape
+        self.color = color
+
+        sep = coin.SoSeparator()
+        pos = coin.SoTranslation()
+        mat = coin.SoMaterial()
+        crd = coin.SoCoordinate3()
+        fce = coin.SoFaceSet()
+        hnt = coin.SoShapeHints()
+
+        allPolys = list()
+        numVert = list()
+        cnt = 0
+        # Need to add type check for incoming shape: Solid, Shell, Face, Wire, Edge, etc...
+        for f in shape.Faces:
+            cnt += 1
+            pCnt = 0
+            for w in f.Wires:
+                # poly = [p for p in w.discretize(Deflection=0.01)][:-1]
+                poly = [p for p in w.discretize(Deflection=0.01)]
+                pCnt += len(poly)
+                allPolys.extend(poly)
+            numVert.append(pCnt)
+        points = [(p.x, p.y, p.z) for p in allPolys]
+
+        crd.point.setValues(points)
+        fce.numVertices.setValues(tuple(numVert))
+
+        mat.diffuseColor = color
+        mat.transparency = transparency
+        
+        hnt.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
+        hnt.vertexOrdering = coin.SoShapeHints.CLOCKWISE
+
+        sep.addChild(pos)
+        sep.addChild(mat)
+        sep.addChild(hnt)
+        sep.addChild(crd)
+        sep.addChild(fce)
+
+        switch = coin.SoSwitch()
+        switch.addChild(sep)
+        switch.whichChild = coin.SO_SWITCH_NONE
+
+        self.material = mat
+
+        self.switch = switch
+        self.root = switch
+        self.switch.whichChild = coin.SO_SWITCH_ALL
+# Eclass

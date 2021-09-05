@@ -22,6 +22,7 @@
 # pylint: disable=unused-import
 
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 
 LOGLEVEL = False
 
@@ -33,10 +34,11 @@ else:
 
 Processed = False
 
+
 def Startup():
-    global Processed # pylint: disable=global-statement
+    global Processed  # pylint: disable=global-statement
     if not Processed:
-        PathLog.debug('Initializing PathGui')
+        PathLog.debug("Initializing PathGui")
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
         from PathScripts import PathComment
@@ -63,19 +65,23 @@ def Startup():
         from PathScripts import PathProbeGui
         from PathScripts import PathProfileGui
         from PathScripts import PathPropertyBagGui
-        from PathScripts import PathSanity
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
-        from PathScripts import PathSlotGui
         from PathScripts import PathStop
-        from PathScripts import PathThreadMillingGui
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryEditor
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathUtilsGui
         from PathScripts import PathVcarveGui
+
+        if PathPreferences.experimentalFeaturesEnabled():
+            from PathScripts import PathSanity
+            from PathScripts import PathThreadMillingGui
+            from PathScripts.operations import PathClearingGui
+            from PathScripts.operations import PathPerimeterGui
+            from PathScripts import PathSlotGui
         Processed = True
     else:
-        PathLog.debug('Skipping PathGui initialisation')
+        PathLog.debug("Skipping PathGui initialisation")

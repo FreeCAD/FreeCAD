@@ -216,7 +216,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             tup = env, False, 'pathMillFace'
 
         self.removalshapes.append(tup)
-        obj.removalshape = self.removalshapes[0][0]  # save removal shape
+        obj.removalshape = Part.makeCompound([tup[0] for tup in self.removalshapes])
 
         return self.removalshapes
 
