@@ -593,19 +593,23 @@ void TreeParams::onIconSizeChanged() {
 
 void TreeParams::onFontSizeChanged() {
     int fontSize = TreeParams::FontSize();
-    if (fontSize <= 0)
-        fontSize = getMainWindow()->font().pointSize();
+    if (fontSize <= 0) {
+        fontSize = ViewParams::DefaultFontSize();
+        if (fontSize <= 0)
+            fontSize = ViewParams::appDefaultFontSize();
+    }
     for(auto tree : TreeWidget::Instances) {
         QFont font = tree->font();
-        font.setPointSize(fontSize);
+        font.setPointSize(std::max(8,fontSize));
         tree->setFont(font);
     }
 }
 
 void TreeParams::onItemSpacingChanged()
 {
-    for(auto tree : TreeWidget::Instances)
-        tree->update();
+    for(auto tree : TreeWidget::Instances) {
+        tree->scheduleDelayedItemsLayout();
+    }
 }
 
 void TreeParams::onItemBackgroundChanged()
@@ -911,8 +915,7 @@ QSize TreeWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option, const
 {
     QSize size = QStyledItemDelegate::sizeHint(option, index);
     int spacing = std::max(0,TreeParams::ItemSpacing());
-    if (TreeParams::IconSize() > 16)
-        size.setHeight(TreeParams::IconSize() + spacing);
+    size.setHeight(size.height() + spacing);
     return size;
 }
 
@@ -1799,26 +1802,26 @@ void TreeWidget::setIconHeight(int height)
     if (_TreeIconSize == height)
         return;
 
-    if (TreeParams::IconSize() > 0)
-        height = TreeParams::IconSize();
     _TreeIconSize = height;
+    if (_TreeIconSize <= 0)
+        _TreeIconSize = std::max(10, iconSize());
 
     for(auto tree : Instances)
-        tree->setIconSize(QSize(height, height));
+        tree->setIconSize(QSize(_TreeIconSize, _TreeIconSize));
 }
 
 int TreeWidget::iconSize() {
-    if (_TreeIconSize == 0)
-        _TreeIconSize = TreeParams::IconSize();
-
+    static int defaultSize;
+    if (defaultSize == 0) {
+        auto tree = instance();
+        if(tree)
+            defaultSize = tree->viewOptions().decorationSize.width();
+        else
+            defaultSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
+    }
     if (_TreeIconSize > 0)
-        return _TreeIconSize;
-
-    auto tree = instance();
-    if(tree)
-        return tree->viewOptions().decorationSize.width();
-    else
-        return QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
+        return std::max(10, _TreeIconSize);
+    return defaultSize;
 }
 
 TreeWidget *TreeWidget::instance() {
