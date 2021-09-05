@@ -84,7 +84,7 @@ def _bbox_tostr(v):
 
 def _pla_tostr(pla):
     angles = pla.Rotation.toEuler()
-    return 'Pos(%s), Yaw-Pitch-Roll(%.*f, %.*f, %.*f)' \
+    return 'Pos%s, Yaw-Pitch-Roll(%.*f, %.*f, %.*f)' \
             % (_vec_tostr(pla.Base),
                _Decimals, angles[0],
                _Decimals, angles[1],
