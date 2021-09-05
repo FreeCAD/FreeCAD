@@ -525,10 +525,10 @@ bounding box size of the 3D object that is currently displayed.</string>
            <double>0.100000000000000</double>
           </property>
           <property name="prefPath" stdset="0">
-           <string>View</string>
+           <cstring>View</cstring>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>PreSelectionDelay</string>
+           <cstring>PreSelectionDelay</cstring>
           </property>
          </widget>
         </item>
@@ -656,10 +656,10 @@ bounding box size of the 3D object that is currently displayed.</string>
          <string>Apply to existing views</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ApplyCameraTypeToAll</string>
+         <cstring>ApplyCameraTypeToAll</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>View</string>
+         <cstring>View</cstring>
         </property>
        </widget>
       </item>

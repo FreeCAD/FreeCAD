@@ -111,22 +111,27 @@ public:
 
   template<class F, class O>
   void autoSave(bool enable, O *o, F f, int delay=100) {
-    if (conn) {
-      QObject::disconnect(conn);
+    if (m_Conn) {
+      QObject::disconnect(m_Conn);
       if (!enable)
           return;
     }
     if (delay) {
-      if (!timer) {
-          timer.reset(new QTimer);
-          timer->setSingleShot(true);
-          QObject::connect(timer.get(), &QTimer::timeout, [this](){onSave();});
+      if (!m_Timer) {
+          m_Timer.reset(new QTimer);
+          m_Timer->setSingleShot(true);
+          QObject::connect(m_Timer.get(), &QTimer::timeout, [this](){onSave();});
       }
-      conn = QObject::connect(o, f, [this, delay](){
-        timer->start(delay);
+      m_Conn = QObject::connect(o, f, [this, delay](){
+        if (!m_Busy && m_Restored)
+            m_Timer->start(delay);
       });
-    } else
-      conn = QObject::connect(o, f, [this](){onSave();});
+    } else {
+      m_Conn = QObject::connect(o, f, [this](){
+        if (!m_Busy && m_Restored)
+            onSave();
+      });
+    }
   }
 
 protected:
@@ -166,8 +171,12 @@ private:
   // friends
   friend class Gui::WidgetFactoryInst;
 
-  QMetaObject::Connection conn;
-  std::unique_ptr<QTimer> timer;
+  QMetaObject::Connection m_Conn;
+  std::unique_ptr<QTimer> m_Timer;
+  bool m_Busy = false;
+
+protected:
+  bool m_Restored = false;
 };
 
 /** The PrefSpinBox class.
@@ -194,6 +203,9 @@ protected:
   void restorePreferences();
   void savePreferences();
   void contextMenuEvent(QContextMenuEvent *event);
+
+private:
+  int m_Default;
 };
 
 /** The PrefDoubleSpinBox class.
@@ -220,6 +232,9 @@ protected:
   void restorePreferences();
   void savePreferences();
   void contextMenuEvent(QContextMenuEvent *event);
+
+private:
+  double m_Default;
 };
 
 /**
@@ -242,6 +257,9 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  QString m_Default;
 };
 
 /**
@@ -264,11 +282,23 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  QString m_Default;
 };
 
 /**
  * The PrefComboBox class.
  * \author Werner Mayer
+ *
+ * The PrefComboBox supports restoring/saving variant type of item data. You
+ * can add a property named 'prefType' with the type you want. If not such
+ * property is found, the class defaults to restore/save the item index.
+ *
+ * Note that there is special handling for 'prefType' of QString, which means
+ * to restore/save the item text. This allows the combox to be editable, and
+ * accepts user entered value. Use QByteArray if you want to restore/save a
+ * non translatable string stored as item data.
  */
 class GuiExport PrefComboBox : public QComboBox, public PrefWidget
 {
@@ -286,6 +316,11 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  QVariant m_Default;
+  int m_DefaultIndex;
+  QString m_DefaultText;
 };
 
 /**
@@ -308,6 +343,9 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  bool m_Default;
 };
 
 /**
@@ -330,6 +368,9 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  bool m_Default;
 };
 
 /**
@@ -352,6 +393,9 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  int m_Default;
 };
 
 /**
@@ -374,6 +418,9 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  QColor m_Default;
 };
 
 /** The PrefUnitSpinBox class.
@@ -400,6 +447,9 @@ protected:
     void restorePreferences();
     void savePreferences();
     void contextMenuEvent(QContextMenuEvent *event);
+
+private:
+  double m_Default;
 };
 
 class PrefQuantitySpinBoxPrivate;
@@ -464,6 +514,9 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+
+private:
+  QFont m_Default;
 };
 
 } // namespace Gui

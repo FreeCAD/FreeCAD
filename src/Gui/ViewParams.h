@@ -368,6 +368,7 @@ public:
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
     static const _ctype &get##_name() { return instance()->_##_name; }\
     static const _ctype &_name() { return instance()->_##_name; }\
+    static _ctype default##_name() { return _def; }\
     static void remove##_name() {instance()->handle->Remove##_type(#_name);}\
     static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void update##_name(ViewParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
@@ -377,6 +378,7 @@ public:
 #define FC_VIEW_PARAM2(_name,_ctype,_type,_def,_doc) \
     static const _ctype &get##_name() { return instance()->_##_name; }\
     static const _ctype &_name() { return instance()->_##_name; }\
+    static _ctype default##_name() { return _def; }\
     static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void remove##_name() {instance()->handle->Remove##_type(#_name);}\
     void on##_name##Changed();\
@@ -394,6 +396,8 @@ public:
     static bool highlightIndicesOnFullSelect() {
         return getShowSelectionOnTop() && getPartialHighlightOnFullSelect();
     }
+
+    static int appDefaultFontSize();
 
     static void useRenderer(bool enable);
     static bool isUsingRenderer();

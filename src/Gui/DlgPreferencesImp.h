@@ -133,6 +133,7 @@ protected:
     void paintEvent(QPaintEvent *ev);
     void restoreGeometry();
     void closeEvent(QCloseEvent *);
+    bool eventFilter(QObject *, QEvent *);
 
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
@@ -147,6 +148,7 @@ private:
     void applyChanges();
     void restoreDefaults();
     void reloadPages();
+    void adjustListBox();
     //@}
 
 private:

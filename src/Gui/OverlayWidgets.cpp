@@ -3817,7 +3817,7 @@ public:
 
     void reload(OverlayManager::ReloadMode mode) {
         if (mode == OverlayManager::ReloadResume)
-            mode = OverlayManager::ReloadPending;
+            curReloadMode = mode = OverlayManager::ReloadPending;
         if (mode == OverlayManager::ReloadPending) {
             if (curReloadMode != OverlayManager::ReloadPause) {
                 FC_LOG("reload pending");

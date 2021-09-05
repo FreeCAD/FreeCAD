@@ -520,10 +520,10 @@ activate the oppsite setting here.</string>
          <string>Do not use native file dialog for opening and saving</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>DontUseNativeDialog</string>
+         <cstring>DontUseNativeDialog</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Dialog</string>
+         <cstring>Dialog</cstring>
         </property>
        </widget>
       </item>

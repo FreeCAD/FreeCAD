@@ -244,10 +244,10 @@ it inside the Placement property.</string>
          <string>Use legacy importer</string>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>UseLegacyImporter</string>
+         <cstring>UseLegacyImporter</cstring>
         </property>
        </widget>
       </item>

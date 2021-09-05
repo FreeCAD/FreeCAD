@@ -108,7 +108,7 @@ public:
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM2(FontSize,int,Int,0, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM2(ItemSpacing,int,Int,2, \
+    FC_TREE_PARAM2(ItemSpacing,int,Int,0, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM2(ItemBackground,unsigned long,Unsigned,0, \
        QT_TRANSLATE_NOOP("TreeParams", "Tree view item background. Only effecitve in overlay."))\
@@ -131,6 +131,8 @@ public:
         { return instance()->_##_name; }\
     static const _ctype & _name () \
         { return instance()->_##_name; }\
+    static _ctype default##_name() \
+        { return _def; }\
     static void set##_name(const _ctype &_v) \
         { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void update##_name(TreeParams *self) \
@@ -145,6 +147,8 @@ public:
         { return instance()->_##_name; }\
     static void set##_name(const _ctype &_v) \
         { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static _ctype default##_name() \
+        { return _def; }\
     void on##_name##Changed();\
     static void update##_name(TreeParams *self) { \
         auto _v = self->handle->Get##_type(#_name,_def); \

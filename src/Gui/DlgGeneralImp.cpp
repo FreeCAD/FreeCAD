@@ -70,16 +70,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         menuText[text] = *it;
     }
 
-    ui->toolbarArea->addItem(tr("Top"), QByteArray("Top"));
-    ui->toolbarArea->addItem(tr("Left"), QByteArray("Left"));
-    ui->toolbarArea->addItem(tr("Right"), QByteArray("Right"));
-    ui->toolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
-
-    ui->globalToolbarArea->addItem(tr("Top"), QByteArray("Top"));
-    ui->globalToolbarArea->addItem(tr("Left"), QByteArray("Left"));
-    ui->globalToolbarArea->addItem(tr("Right"), QByteArray("Right"));
-    ui->globalToolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
-
     {   // add special workbench to selection
         QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
         QString key = QString::fromLatin1("<last>");
@@ -98,11 +88,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
             ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
     }
 
-    ui->treeIconSize->setValue(TreeParams::IconSize());
-    ui->treeFontSize->setValue(TreeParams::FontSize());
-    ui->treeItemSpacing->setValue(TreeParams::ItemSpacing());
-    ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
-    ui->checkPopUpWindow->setChecked(ViewParams::getCheckWidgetPlacementOnRestore());
 }
 
 /**
@@ -133,78 +118,7 @@ void DlgGeneralImp::saveSettings()
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                           SetASCII("AutoloadModule", startWbName.toLatin1());
 
-    ui->RecentFiles->onSave();
-    ui->SplashScreen->onSave();
-    ui->PythonWordWrap->onSave();
-
     setRecentFileSize();
-
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    QString lang = QLocale::languageToString(QLocale().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
-    QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
-    if (current != language) {
-        hGrp->SetASCII("Language", current.constData());
-        // Translator::instance()->activateLanguage(current.constData());
-    }
-
-    QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());
-    int pixel = size.toInt();
-    hGrp->SetInt("ToolbarIconSize", pixel);
-    // getMainWindow()->setIconSize(QSize(pixel,pixel));
-
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool treeView=false, propertyView=false, comboView=true;
-    switch(ui->treeMode->currentIndex()) {
-    case 1:
-        treeView = true;
-        propertyView = true;
-        comboView = false;
-        break;
-    case 2:
-        treeView = true;
-        comboView = true;
-        propertyView = true;
-        break;
-    }
-
-    if(propertyView != hGrp->GetGroup("PropertyView")->GetBool("Enabled",false)
-            || treeView != hGrp->GetGroup("TreeView")->GetBool("Enabled",false)
-            || comboView != hGrp->GetGroup("ComboView")->GetBool("Enabled",true))
-    {
-        hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
-        hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
-        hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
-        // getMainWindow()->initDockWindows(true);
-    }
-
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
-
-    QVariant sheet = ui->StyleSheets->itemData(ui->StyleSheets->currentIndex());
-    hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
-
-    // Most of the UI settings is now actively monitored by class AppStyleMonitor
-    //
-    // Application::Instance->setStyleSheet(sheet.toString(), ui->tiledBackground->isChecked());
-
-    sheet = ui->OverlayStyleSheets->itemData(ui->OverlayStyleSheets->currentIndex());
-    hGrp->SetASCII("OverlayActiveStyleSheet", (const char*)sheet.toByteArray());
-
-    sheet = ui->MenuStyleSheets->itemData(ui->MenuStyleSheets->currentIndex());
-    hGrp->SetASCII("MenuStyleSheet", (const char*)sheet.toByteArray());
-
-    hGrp->SetASCII("DefaultToolBarArea",
-            ui->toolbarArea->itemData(ui->toolbarArea->currentIndex()).toByteArray());
-    hGrp->SetASCII("GlobalToolBarArea",
-            ui->globalToolbarArea->itemData(ui->globalToolbarArea->currentIndex()).toByteArray());
-
-    TreeParams::setIconSize(ui->treeIconSize->value());
-    TreeParams::setFontSize(ui->treeFontSize->value());
-    TreeParams::setItemSpacing(ui->treeItemSpacing->value());
-    ViewParams::setCommandHistorySize(ui->CmdHistorySize->value());
-    ViewParams::setCheckWidgetPlacementOnRestore(ui->checkPopUpWindow->isChecked());
-    ViewParams::setDefaultFontSize(ui->appFontSize->value());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -215,14 +129,11 @@ void DlgGeneralImp::loadSettings()
     QString startWbName = QLatin1String(start.c_str());
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
 
-    ui->RecentFiles->onRestore();
-    ui->SplashScreen->onRestore();
-    ui->PythonWordWrap->onRestore();
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
 
     // search for the language files
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString langToStr = QLocale::languageToString(QLocale().language());
-    QByteArray language = hGrp->GetASCII("Language", langToStr.toLatin1()).c_str();
+    QByteArray language = langToStr.toLatin1();
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
@@ -247,7 +158,6 @@ void DlgGeneralImp::loadSettings()
             ui->Languages->setCurrentIndex(index);
         }
     }
-
     QAbstractItemModel* model = ui->Languages->model();
     if (model)
         model->sort(0);
@@ -263,6 +173,10 @@ void DlgGeneralImp::loadSettings()
         index = ui->toolbarIconSize->findData(QVariant(current));
     }
     ui->toolbarIconSize->setCurrentIndex(index);
+    QObject::connect(ui->toolbarIconSize, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        [this, hGrp](){
+            hGrp->SetInt("ToolbarIconSize", ui->toolbarIconSize->currentData().toInt());
+        });
 
     ui->treeMode->addItem(tr("Combo View"));
     ui->treeMode->addItem(tr("TreeView and PropertyView"));
@@ -277,10 +191,33 @@ void DlgGeneralImp::loadSettings()
         index = comboView?2:1;
     }
     ui->treeMode->setCurrentIndex(index);
+    QObject::connect(ui->treeMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        [this, hGrp](int value) {
+            bool treeView=false, propertyView=false, comboView=true;
+            switch(value) {
+            case 1:
+                treeView = true;
+                propertyView = true;
+                comboView = false;
+                break;
+            case 2:
+                treeView = true;
+                comboView = true;
+                propertyView = true;
+                break;
+            }
+
+            if(propertyView != hGrp->GetGroup("PropertyView")->GetBool("Enabled",false)
+                    || treeView != hGrp->GetGroup("TreeView")->GetBool("Enabled",false)
+                    || comboView != hGrp->GetGroup("ComboView")->GetBool("Enabled",true))
+            {
+                hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
+                hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
+                hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
+            }
+        });
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
-
     auto populateStylesheets = 
     [hGrp](const char *key, const char *path, QComboBox *combo, const char *def) {
         // List all .qss/.css files
@@ -330,30 +267,46 @@ void DlgGeneralImp::loadSettings()
         }
 
         if (index > -1) combo->setCurrentIndex(index);
+        QObject::connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            [combo, key, hGrp](){
+                hGrp->SetASCII(key, combo->currentData().toByteArray().constData());
+            });
     };
 
     populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
     populateStylesheets("MenuStyleSheet", "qssm", ui->MenuStyleSheets, "Auto");
 
-    int area = ui->toolbarArea->findData(
-            QByteArray(hGrp->GetASCII("DefaultToolBarArea", "Top").c_str()));
-    if (area < 0)
-        area = 0;
-    ui->toolbarArea->setCurrentIndex(area);
+    ui->toolbarArea->addItem(tr("Top"), QByteArray("Top"));
+    ui->toolbarArea->addItem(tr("Left"), QByteArray("Left"));
+    ui->toolbarArea->addItem(tr("Right"), QByteArray("Right"));
+    ui->toolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
 
-    area = ui->globalToolbarArea->findData(
-            QByteArray(hGrp->GetASCII("GlobalToolBarArea", "Top").c_str()));
-    if (area < 0)
-        area = 0;
-    ui->globalToolbarArea->setCurrentIndex(area);
+    ui->globalToolbarArea->addItem(tr("Top"), QByteArray("Top"));
+    ui->globalToolbarArea->addItem(tr("Left"), QByteArray("Left"));
+    ui->globalToolbarArea->addItem(tr("Right"), QByteArray("Right"));
+    ui->globalToolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
 
-    ui->treeIconSize->setValue(TreeParams::IconSize());
-    ui->treeFontSize->setValue(TreeParams::FontSize());
-    ui->treeItemSpacing->setValue(TreeParams::ItemSpacing());
-    ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
-    ui->checkPopUpWindow->setChecked(ViewParams::getCheckWidgetPlacementOnRestore());
-    ui->appFontSize->setValue(ViewParams::getDefaultFontSize());
+    ui->tiledBackground->onRestore();
+    ui->Languages->onRestore();
+    ui->toolbarArea->onRestore();
+    ui->globalToolbarArea->onRestore();
+    ui->treeIconSize->onRestore();
+    ui->treeFontSize->onRestore();;
+
+    ui->treeItemSpacing->setValue(TreeParams::defaultItemSpacing());
+    ui->treeItemSpacing->onRestore();
+
+    ui->appFontSize->onRestore();
+    ui->RecentFiles->onRestore();
+    ui->SplashScreen->onRestore();
+    ui->PythonWordWrap->onRestore();
+
+    ui->CmdHistorySize->setValue(ViewParams::defaultCommandHistorySize());
+    ui->CmdHistorySize->onRestore();
+
+    ui->checkPopUpWindow->setChecked(ViewParams::defaultCheckWidgetPlacementOnRestore());
+    ui->checkPopUpWindow->onRestore();
 }
 
 void DlgGeneralImp::changeEvent(QEvent *e)

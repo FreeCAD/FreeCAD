@@ -29,6 +29,7 @@
 #include "Document.h"
 #include "ViewProvider.h"
 #include "ViewParams.h"
+#include "TreeParams.h"
 #include "Selection.h"
 #include "OverlayWidgets.h"
 #include "Widgets.h"
@@ -144,15 +145,22 @@ void ViewParams::useRenderer(bool enable)
         instance()->setRenderCache(3);
 }
 
-void ViewParams::onDefaultFontSizeChanged() {
+int ViewParams::appDefaultFontSize() {
     static int defaultSize;
     if (!defaultSize) {
         QFont font;
         defaultSize = font.pointSize();
     }
+    return defaultSize;
+}
+
+void ViewParams::onDefaultFontSizeChanged() {
+    int defaultSize = appDefaultFontSize();
     int fontSize = instance()->getDefaultFontSize();
     if (fontSize <= 0)
         fontSize = defaultSize;
+    else if (fontSize < 8)
+        fontSize = 8;
     QFont font = QApplication::font();
     if (font.pointSize() != fontSize) {
         font.setPointSize(fontSize);
@@ -161,6 +169,9 @@ void ViewParams::onDefaultFontSizeChanged() {
         for (auto w : QApplication::allWidgets())
             QApplication::sendEvent(w, &e);
     }
+
+    if (TreeParams::FontSize() <= 0)
+        TreeParams::instance()->onFontSizeChanged();
 }
 
 void ViewParams::onEnableTaskPanelKeyTranslateChanged() {

@@ -35,10 +35,10 @@
          <string>Map face colors</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>MapFaceColor</string>
+         <cstring>MapFaceColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Part</string>
+         <cstring>Mod/Part</cstring>
         </property>
        </widget>
       </item>
@@ -48,10 +48,10 @@
          <string>Map edge colors</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>MapLineColor</string>
+         <cstring>MapLineColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Part</string>
+         <cstring>Mod/Part</cstring>
         </property>
        </widget>
       </item>
@@ -61,10 +61,10 @@
          <string>Map vertex colors</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>MapPointColor</string>
+         <cstring>MapPointColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Part</string>
+         <cstring>Mod/Part</cstring>
         </property>
        </widget>
       </item>
@@ -74,10 +74,10 @@
          <string>Map transparencies</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>MapTransparency</string>
+         <cstring>MapTransparency</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Part</string>
+         <cstring>Mod/Part</cstring>
         </property>
        </widget>
       </item>
@@ -157,10 +157,10 @@
            <double>100.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>MinimumDeviation</string>
+           <cstring>MinimumDeviation</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>Mod/Part</string>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
@@ -221,10 +221,10 @@
            <string>Override document settings</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>OverrideTessellation</string>
+           <cstring>OverrideTessellation</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>Mod/Part</string>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
@@ -250,10 +250,10 @@
            <double>1.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>MinimumAngularDeflection</string>
+           <cstring>MinimumAngularDeflection</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>Mod/Part</string>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>

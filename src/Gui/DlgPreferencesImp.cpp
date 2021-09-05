@@ -33,6 +33,8 @@
 # include <QScrollArea>
 # include <QScrollBar>
 # include <QMoveEvent>
+# include <QComboBox>
+# include <QSpinBox>
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
@@ -72,7 +74,6 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
       invalidParameter(false)
 {
     ui->setupUi(this);
-    ui->listBox->setGridSize(QSize(108, 75));
 
     connect(ui->buttonBox,  SIGNAL (helpRequested()),
             getMainWindow(), SLOT (whatsThis()));
@@ -119,6 +120,24 @@ void DlgPreferencesImp::setupPages()
 
     // show the first group
     ui->listBox->setCurrentRow(0);
+
+    // Since preference pages often require scrolling up and down to access.
+    // Using wheel focus in any input field may cause accidental change of
+    // value while scrolling.
+    for(auto child : findChildren<QWidget*>()) {
+        if (child == ui->listBox)
+            continue;
+        if (qobject_cast<QScrollArea*>(child))
+            continue;
+        if (child->focusPolicy() == Qt::WheelFocus
+                && !qobject_cast<QAbstractItemView*>(child))
+            child->setFocusPolicy(Qt::StrongFocus);
+        // It's not enough for some widget. We must use a eventFilter
+        // to actively filter out wheel event if not in focus.
+        if (qobject_cast<QComboBox*>(child)
+                || qobject_cast<QAbstractSpinBox*>(child))
+            child->installEventFilter(this);
+    }
 }
 
 /**
@@ -482,19 +501,25 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
     QDialog::resizeEvent(ev);
 }
 
+void DlgPreferencesImp::adjustListBox()
+{
+    int width = 0;
+    for (int i=0, c=ui->listBox->count(); i<c; ++i) {
+        width = std::max(width,
+                ui->listBox->visualItemRect(ui->listBox->item(i)).width());
+    }
+    width += style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 10;
+    ui->listBox->setFixedWidth(width);
+    ui->listBox->setGridSize(QSize(width, 75));
+}
+
 void DlgPreferencesImp::restoreGeometry()
 {
     if (geometryRestored)
         return;
     geometryRestored = true;
 
-    int width = 0;
-    for (int i=0, c=ui->listBox->count(); i<c; ++i) {
-        width = std::max(width,
-                ui->listBox->visualItemRect(ui->listBox->item(i)).width());
-    }
-    width += style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 5;
-    ui->listBox->setFixedWidth(width);
+    adjustListBox();
 
     std::string geometry = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/General")->GetASCII(
@@ -514,6 +539,30 @@ void DlgPreferencesImp::restoreGeometry()
     }
 }
 
+bool DlgPreferencesImp::eventFilter(QObject *o, QEvent *ev)
+{
+    if (o->isWidgetType()) {
+        auto widget = static_cast<QWidget*>(o);
+        switch(ev->type()) {
+        case QEvent::Wheel:
+            if (!widget->hasFocus()) {
+                ev->setAccepted(false);
+                return true;
+            }
+            break;
+        case QEvent::FocusIn:
+            widget->setFocusPolicy(Qt::WheelFocus);
+            break;
+        case QEvent::FocusOut:
+            widget->setFocusPolicy(Qt::StrongFocus);
+            break;
+        default:
+            break;
+        }
+    }
+    return QDialog::eventFilter(o, ev);
+}
+
 void DlgPreferencesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -523,6 +572,8 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
+                if (auto scrollarea = qobject_cast<QScrollArea*>(page))
+                    page = scrollarea->widget();
                 tabWidget->setTabText(j, page->windowTitle());
             }
         }
@@ -532,6 +583,7 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             QByteArray group = item->data(GroupNameRole).toByteArray();
             item->setText(QObject::tr(group.constData()));
         }
+        adjustListBox();
     } else {
         QWidget::changeEvent(e);
     }
