@@ -324,9 +324,6 @@ Gui--TipLabel,
 QToolTip {
     color: #1e1e1e;
     background-color: #80b4b4b4;
-    /*opacity: 90%; doesn't correctly work */
-    padding: 4px;
-    border-radius: 3px; /* has no effect */
 }
 
 
