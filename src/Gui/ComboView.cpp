@@ -94,8 +94,10 @@ void ComboView::setShowModel(bool showModel)
 {
     setWindowTitle(showModel ? tr("Combo View") : tr("Task View"));
     if (showModel) {
-        if(tree)
+        if(tree) {
+            tabs->setCurrentIndex(0);
             return;
+        }
         // splitter between tree and property view
         QSplitter *splitter = new QSplitter();
         splitter->setOrientation(Qt::Vertical);
@@ -124,6 +126,8 @@ void ComboView::setShowModel(bool showModel)
         }
 
         connect(splitter, SIGNAL(splitterMoved(int, int)), this, SLOT(onSplitterMoved()));
+
+        tabs->setCurrentIndex(0);
 
     } else if (modelIndex >= 0) {
         tabs->removeTab(modelIndex);
