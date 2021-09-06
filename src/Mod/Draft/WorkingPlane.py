@@ -642,18 +642,21 @@ class Plane:
         --------
         alignToFace, alignToCurve
         """
-        import FreeCADGui
-        sex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name)
+        import FreeCADGui, Part
+        sex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name, 0)
         if len(sex) == 0:
             return False
         elif len(sex) == 1:
-            if (not sex[0].Object.isDerivedFrom("Part::Feature")
-                    or not sex[0].Object.Shape):
-                return False
-            return (self.alignToFace(sex[0].Object.Shape, offset)
-                    or (len(sex[0].SubObjects) == 1
-                        and self.alignToFace(sex[0].SubObjects[0], offset))
-                    or self.alignToCurve(sex[0].Object.Shape, offset))
+            if sex[0].SubElementNames:
+                if len(sex[0].SubElementNames) > 1:
+                    return False
+                shape = Part.getShape(sex[0].Object, sex[0].SubElements[0],
+                        needSubElement = True)
+            else:
+                shape = Part.getShape(sex[0].Object)
+
+            return self.alignToFace(shape, offset) \
+                    or self.alignToCurve(shape, offset)
         else:
             # len(sex) > 2, look for point and line, three points, etc.
             return False

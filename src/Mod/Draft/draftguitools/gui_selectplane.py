@@ -127,6 +127,7 @@ class Draft_SelectPlane:
 
         # Try to find a WP from the current selection
         if self.handle():
+            self.finish()
             return
 
         # Try another method
@@ -183,62 +184,38 @@ class Draft_SelectPlane:
 
     def handle(self):
         """Build a working plane. Return True if successful."""
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1:
-            sel = sel[0]
-            if hasattr(sel.Object, 'TypeId') and sel.Object.TypeId == 'App::Part':
-                self.setPlaneFromObjPlacement(sel.Object)
+        objs = []
+        import Part
+        for sel in FreeCADGui.Selection.getSelectionEx('', 0):
+            for sub in sel.SubElementNames:
+                objs.append(Part.getShape(sel.Object, sub, needSubElement=True, retType=2))
+        if len(objs) == 1:
+            shape, matrix, obj = objs[0]
+            pla = FreeCAD.Placement(matrix)
+            if hasattr(obj, 'TypeId') and obj.TypeId == 'App::Part':
+                self.setPlaneFromObjPlacement(obj, pla)
                 return True
-            elif Draft.getType(sel.Object) == "Axis":
-                FreeCAD.DraftWorkingPlane.alignToEdges(sel.Object.Shape.Edges)
+            elif Draft.getType(obj) == "Axis":
+                FreeCAD.DraftWorkingPlane.alignToEdges(shape.Edges)
                 self.display(FreeCAD.DraftWorkingPlane.axis)
                 return True
-            elif Draft.getType(sel.Object) in ("WorkingPlaneProxy", "BuildingPart"):
-                self.setPlaneOnWPProxy(sel.Object)
+            elif Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart"):
+                self.setPlaneOnWPProxy(obj, pla)
                 return True
-            elif Draft.getType(sel.Object) == "SectionPlane":
-                self.setPlaneFromObjPlacement(sel.Object)
+            elif Draft.getType(obj) == "SectionPlane":
+                self.setPlaneFromObjPlacement(obj, pla)
                 return True
-            elif sel.HasSubObjects:
-                if len(sel.SubElementNames) == 1:
-                    # look for a face or a plane
-                    if "Face" in sel.SubElementNames[0]:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0], self.getOffset())
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-                    elif sel.SubElementNames[0] == "Plane":
-                        FreeCAD.DraftWorkingPlane.setFromPlacement(sel.Object.Placement, rebase=True)
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-                elif len(sel.SubElementNames) == 3:
-                    # look for 3 points
-                    if ("Vertex" in sel.SubElementNames[0]) \
-                    and ("Vertex" in sel.SubElementNames[1]) \
-                    and ("Vertex" in sel.SubElementNames[2]):
-                        FreeCAD.DraftWorkingPlane.alignTo3Points(sel.SubObjects[0].Point,
-                                                                 sel.SubObjects[1].Point,
-                                                                 sel.SubObjects[2].Point,
-                                                                 self.getOffset())
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-            elif sel.Object.isDerivedFrom("Part::Feature"):
-                if sel.Object.Shape:
-                    if len(sel.Object.Shape.Faces) == 1:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.Object.Shape.Faces[0], self.getOffset())
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-            elif hasattr(sel.Object, 'Placement'):
-                self.setPlaneFromObjPlacement(sel.Object)
+            elif FreeCAD.DraftWorkingPlane.alignToFace(shape, self.getOffset()):
+                self.display(FreeCAD.DraftWorkingPlane.axis)
                 return True
-
-        elif sel:
-            # look for 3 points
+            else:
+                self.setPlaneFromObjPlacement(obj, pla)
+                return True
+        elif len(objs) >= 3:
             subs = []
-            import Part
-            for s in sel:
-                for so in s.SubObjects:
-                    if isinstance(so, Part.Vertex):
-                        subs.append(so)
+            for so,_,_ in objs:
+                if isinstance(so, Part.Vertex):
+                    subs.append(so)
             if len(subs) == 3:
                 FreeCAD.DraftWorkingPlane.alignTo3Points(subs[0].Point,
                                                          subs[1].Point,
@@ -248,12 +225,13 @@ class Draft_SelectPlane:
                 return True
         return False
 
-    def setPlaneFromObjPlacement(self, obj):
+    def setPlaneFromObjPlacement(self, obj, pla=None):
         """Called by handle(): set the working plane according to an object placement."""
-        if hasattr(obj, 'getGlobalPlacement'):
-            pl = obj.getGlobalPlacement()
-        else:
-            pl = obj.Placement
+        if pla is None:
+            if hasattr(obj, 'getGlobalPlacement'):
+                pl = obj.getGlobalPlacement()
+            else:
+                pl = obj.Placement
         FreeCAD.DraftWorkingPlane.setFromPlacement(pl, rebase=True)
         FreeCAD.DraftWorkingPlane.weak = False
         self.display(FreeCAD.DraftWorkingPlane.axis,obj.ViewObject.Icon)
@@ -263,10 +241,12 @@ class Draft_SelectPlane:
         _msg(m + " " + obj.Label + ".\n")
         return True
 
-    def setPlaneOnWPProxy(self, obj):
+    def setPlaneOnWPProxy(self, obj, pla = None):
         """Called by handle(): set the working plane according to a WorkingPlaneProxy or a BuildingPart.
         This method also apply the clipping view according to object properties.
         """
+        if pla is None:
+            pla = obj.Placement
         FreeCAD.DraftWorkingPlane.setFromPlacement(obj.Placement, rebase=True)
         FreeCAD.DraftWorkingPlane.weak = False
         if hasattr(obj.ViewObject, "AutoWorkingPlane"):
