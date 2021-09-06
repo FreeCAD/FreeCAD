@@ -82,13 +82,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // toolattributes
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Tools: centerlines and threading");
-//    *toolattrib << "TechDraw_MyCommand";
-    *toolattrib << "TechDraw_ToolCircleCenterLines";
-    *toolattrib << "TechDraw_ToolThreadHoleSide";
-    *toolattrib << "TechDraw_ToolThreadBoltSide";
-    *toolattrib << "TechDraw_ToolThreadHoleBottom";
-    *toolattrib << "TechDraw_ToolThreadBoltBottom";
+    toolattrib->setCommand("Extensions: centerlines and threading");
+    *toolattrib << "TechDraw_ExtensionCircleCenterLines";
+    *toolattrib << "TechDraw_ExtensionThreadHoleSide";
+    *toolattrib << "TechDraw_ExtensionThreadBoltSide";
+    *toolattrib << "TechDraw_ExtensionThreadHoleBottom";
+    *toolattrib << "TechDraw_ExtensionThreadBoltBottom";
 
     // annotations
     Gui::MenuItem* annotations = new Gui::MenuItem;
@@ -200,12 +199,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
     attribs->setCommand("TechDraw Toolattributes");
-//    *attribs << "TechDraw_MyCommand";
-    *attribs << "TechDraw_ToolCircleCenterLines";
-    *attribs << "TechDraw_ToolThreadHoleSide";
-    *attribs << "TechDraw_ToolThreadBoltSide";
-    *attribs << "TechDraw_ToolThreadHoleBottom";
-    *attribs << "TechDraw_ToolThreadBoltBottom";
+    *attribs << "TechDraw_ExtensionCircleCenterLines";
+    *attribs << "TechDraw_ExtensionThreadHoleSide";
+    *attribs << "TechDraw_ExtensionThreadBoltSide";
+    *attribs << "TechDraw_ExtensionThreadHoleBottom";
+    *attribs << "TechDraw_ExtensionThreadBoltBottom";
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
@@ -283,12 +281,11 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
     attribs->setCommand("TechDraw Toolattributes");
-//    *attribs << "TechDraw_MyCommand";
-    *attribs << "TechDraw_ToolCircleCenterLines";
-    *attribs << "TechDraw_ToolThreadHoleSide";
-    *attribs << "TechDraw_ToolThreadBoltSide";
-    *attribs << "TechDraw_ToolThreadHoleBottom";
-    *attribs << "TechDraw_ToolThreadBoltBottom";
+    *attribs << "TechDraw_ExtensionCircleCenterLines";
+    *attribs << "TechDraw_ExtensionThreadHoleSide";
+    *attribs << "TechDraw_ExtensionThreadBoltSide";
+    *attribs << "TechDraw_ExtensionThreadHoleBottom";
+    *attribs << "TechDraw_ExtensionThreadBoltBottom";
 
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
