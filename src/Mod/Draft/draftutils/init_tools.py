@@ -45,7 +45,7 @@ def get_draft_drawing_commands():
             "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle",
             "Draft_Polygon", "Draft_BSpline", "Draft_BezierTools",
             "Draft_Point", "Draft_Facebinder",
-            "Draft_ShapeString"]
+            "Draft_ShapeString","Draft_Hatch"]
 
 
 def get_draft_annotation_commands():

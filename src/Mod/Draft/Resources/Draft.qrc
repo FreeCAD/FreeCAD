@@ -107,6 +107,7 @@
         <file>icons/Snap_Special.svg</file>
         <file>icons/Snap_WorkingPlane.svg</file>
         <file>icons/Draft_NewLayer.svg</file>
+        <file>icons/Draft_Hatch.svg</file>
         <file>patterns/aluminium.svg</file>
         <file>patterns/brick01.svg</file>
         <file>patterns/concrete.svg</file>
@@ -184,5 +185,6 @@
         <file>ui/TaskShapeString.ui</file>
         <file>ui/dialog_AnnotationStyleEditor.ui</file>
         <file>ui/TaskPanel_SetStyle.ui</file>
+        <file>ui/dialogHatch.ui</file>
     </qresource>
 </RCC> 
