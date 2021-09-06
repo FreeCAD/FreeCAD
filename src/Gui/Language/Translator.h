@@ -73,6 +73,9 @@ public:
     /** Adds a path where localization files can be found */
     void addPath(const QString& path);
 
+protected:
+    virtual bool eventFilter(QObject *, QEvent *);
+
 private:
     Translator();
     ~Translator();
