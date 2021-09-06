@@ -71,7 +71,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
                     "or removes them from any group.")
 
         d = {'Pixmap': 'Draft_AddToGroup',
-             'Accel':"M",
+             'Accel':"M,G",
              'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup",
                                            "Move to group"),
              'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup",
