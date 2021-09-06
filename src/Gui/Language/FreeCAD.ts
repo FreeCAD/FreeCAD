@@ -277,6 +277,25 @@
     </message>
 </context>
 <context>
+    <name>EditMode</name>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cutting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ExpressionLabel</name>
     <message>
         <source>Enter an expression...</source>
@@ -4604,6 +4623,15 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Partial</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Use Original Selections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::DlgTreeWidget</name>
@@ -8660,6 +8688,17 @@ Physical path: </source>
     </message>
     <message>
         <source>Start the units calculator</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+        <source>Edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines behavior when editing an object from tree</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
