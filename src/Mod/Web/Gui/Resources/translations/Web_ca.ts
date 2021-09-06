@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation type="unfinished">Set URL</translation>
+      <translation>Estableix l'URL</translation>
     </message>
   </context>
   <context>
@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="718"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="713"/>
       <source>Browser</source>
       <translation>Navegador</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="547"/>
+      <location filename="../../BrowserView.cpp" line="528"/>
       <source>File does not exist!</source>
       <translation>El fitxer no existeix!</translation>
     </message>
@@ -142,18 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="538"/>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="516"/>
+      <location filename="../../BrowserView.cpp" line="521"/>
+      <location filename="../../BrowserView.cpp" line="524"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="521"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+      <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Cerqueu a la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="689"/>
+      <location filename="../../BrowserView.cpp" line="524"/>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Hi ha hagut greus errors en carregar l'arxiu. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Guardar el projecte molt probablement resulti en pèrdua de dades.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="684"/>
       <source>Loading %1...</source>
       <translation>Carregant 1%...</translation>
     </message>
@@ -161,19 +167,19 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="300"/>
+      <location filename="../../BrowserView.cpp" line="288"/>
       <source>Open in External Browser</source>
       <translation>Obrir en un Navegador Extern</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="292"/>
       <source>Open in new window</source>
       <translation>Obrir en una finestra nova</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="336"/>
+      <location filename="../../BrowserView.cpp" line="324"/>
       <source>View source</source>
-      <translation type="unfinished">View source</translation>
+      <translation>Visualitza la font</translation>
     </message>
   </context>
   <context>

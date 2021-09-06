@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014-2015 Nathan Miller    <Nathan.A.Mill[at]gmail.com> *
- *                           Balázs Bámer                                  *
+ *   Copyright (c) 2014-2015 Nathan Miller <Nathan.A.Mill[at]gmail.com>    *
+ *   Copyright (c) 2014-2015 Balázs Bámer                                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -63,7 +63,6 @@
 #include <App/PropertyLinks.h>
 #include "Mod/Part/App/PartFeature.h"
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //===========================================================================
 // CmdSurfaceCut THIS IS THE SURFACE CUT COMMAND
@@ -76,11 +75,12 @@ CmdSurfaceCut::CmdSurfaceCut()
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Surface Cut function");
-    sToolTipText  = QT_TR_NOOP("Cuts a Shape with another Shape.\nReturns a modified version of the first shape");
+    sToolTipText  = QT_TR_NOOP("Cuts a shape with another Shape.\n"
+                               "It returns a modified version of the first shape");
     sWhatsThis    = "Surface_Cut";
-    sStatusTip    = QT_TR_NOOP("Surface Cut function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Surface_Cut";
-    sAccel        = "CTRL+H";
+    // sAccel        = "CTRL+H";
 }
 
 void CmdSurfaceCut::activated(int iMsg)
@@ -113,7 +113,7 @@ void CmdSurfaceCut::activated(int iMsg)
     std::string BaseName  = Sel[0].getFeatName();
     std::string ToolName  = Sel[1].getFeatName();
 
-    openCommand("Part Cut");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
@@ -134,8 +134,10 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Filling...");
-    sToolTipText  = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
-    sStatusTip    = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from a series of picked boundary edges.\n"
+                               "Additionally, the surface may be constrained by non-boundary edges\n"
+                               "and non-boundary vertices.");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Surface_Filling";
     sPixmap       = "Surface_Filling";
 }
@@ -145,7 +147,7 @@ void CmdSurfaceFilling::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Surface");
 
-    openCommand("Create surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
     doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Filling\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
@@ -166,10 +168,10 @@ CmdSurfaceGeomFillSurface::CmdSurfaceGeomFillSurface()
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Fill boundary curves");
-    sToolTipText  = QT_TR_NOOP("Creates a surface from two, three or four boundary edges");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from two, three or four boundary edges.");
     sWhatsThis    = "Surface_GeomFillSurface";
     sStatusTip    = sToolTipText;
-    sPixmap       = "BSplineSurf";
+    sPixmap       = "Surface_GeomFillSurface";
 }
 
 bool CmdSurfaceGeomFillSurface::isActive(void)
@@ -182,7 +184,7 @@ void CmdSurfaceGeomFillSurface::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Surface");
 
-    openCommand("Create surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
     doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::GeomFillSurface\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
@@ -196,9 +198,11 @@ CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
     sAppModule    = "MeshPart";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Curve on mesh...");
-    sToolTipText  = QT_TR_NOOP("Curve on mesh");
+    sToolTipText  = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
+                               "This command only works with a 'mesh' object.");
     sWhatsThis    = "Surface_CurveOnMesh";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Surface_CurveOnMesh";
 }
 
 void CmdSurfaceCurveOnMesh::activated(int)
@@ -229,9 +233,11 @@ CmdSurfaceExtendFace::CmdSurfaceExtendFace()
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Extend face");
-    sToolTipText  = QT_TR_NOOP("Extend face");
+    sToolTipText  = QT_TR_NOOP("Extrapolates the selected face or surface at its boundaries\n"
+                               "with its local U and V parameters.");
     sWhatsThis    = "Surface_ExtendFace";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Surface_ExtendFace";
 }
 
 void CmdSurfaceExtendFace::activated(int)
@@ -240,7 +246,7 @@ void CmdSurfaceExtendFace::activated(int)
     if (faceFilter.match()) {
         const std::vector<std::string> &sub = faceFilter.Result[0][0].getSubNames();
         if (sub.size() == 1) {
-            openCommand("Extend surface");
+            openCommand(QT_TRANSLATE_NOOP("Command", "Extend surface"));
             std::string FeatName = getUniqueObjectName("Surface");
             std::string supportString = faceFilter.Result[0][0].getAsPropertyLinkSubString();
             doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")", FeatName.c_str());
@@ -261,13 +267,44 @@ bool CmdSurfaceExtendFace::isActive(void)
     return Gui::Selection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
 }
 
+DEF_STD_CMD_A(CmdSurfaceSections)
+
+CmdSurfaceSections::CmdSurfaceSections()
+  :Command("Surface_Sections")
+{
+    sAppModule    = "Surface";
+    sGroup        = QT_TR_NOOP("Surface");
+    sMenuText     = QT_TR_NOOP("Sections...");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from a series of sectional edges.");
+    sStatusTip    = sToolTipText;
+    sWhatsThis    = "Surface_Sections";
+    sPixmap       = "Surface_Sections";
+}
+
+void CmdSurfaceSections::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::string FeatName = getUniqueObjectName("Surface");
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
+    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Sections\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
+}
+
+bool CmdSurfaceSections::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-/*  rcCmdMgr.addCommand(new CmdSurfaceFilling());
-    rcCmdMgr.addCommand(new CmdSurfaceCut());*/
+/*
+    rcCmdMgr.addCommand(new CmdSurfaceCut());
+*/
     rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
-    rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
+    rcCmdMgr.addCommand(new CmdSurfaceSections());
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
+    rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
 }

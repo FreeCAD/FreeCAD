@@ -24,8 +24,8 @@
 #ifndef BASE_SWAP_H
 #define BASE_SWAP_H
 
-#define LOW_ENDIAN	(unsigned short) 0x4949 
-#define HIGH_ENDIAN	(unsigned short) 0x4D4D 
+#define LOW_ENDIAN	(unsigned short) 0x4949
+#define HIGH_ENDIAN	(unsigned short) 0x4D4D
 
 
 namespace Base {
@@ -35,7 +35,7 @@ namespace Base {
  * dependent on the architecture.
  */
 
-/** Returns machine type (low endian, high endian ) */
+/** Returns machine type (low endian, high endian) */
 unsigned short SwapOrder (void);
 
 void SwapVar (char&);
@@ -61,4 +61,4 @@ void SwapEndian(T& v)
 } // namespace Base
 
 
-#endif // BASE_SWAP_H 
+#endif // BASE_SWAP_H

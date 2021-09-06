@@ -10,7 +10,8 @@
       Namespace="Part"
       FatherInclude="Base/PyObjectBase.h"
       FatherNamespace="Base"
-      Constructor="true">
+      Constructor="true"
+      Delete="true">
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
 			<UserDocu>Describes a portion of a circle</UserDocu>

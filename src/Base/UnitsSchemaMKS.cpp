@@ -143,20 +143,6 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1.0;
         }
     }
-    else if (unit == Unit::Volume) {
-        if (UnitValue < 1000000.0) {// smaller than 10 cubic cm
-            unitString = QString::fromLatin1("mm^3");
-            factor = 1.0;
-        }
-        else if (UnitValue < 1000000000000000000.0) {
-            unitString = QString::fromLatin1("m^3");
-            factor = 1000000000.0;
-        }
-        else { // bigger then 1 cubic kilometer
-            unitString = QString::fromLatin1("km^3");
-            factor = 1000000000000000000.0;
-        }
-    }
     else if (unit == Unit::Acceleration) {
         unitString = QString::fromLatin1("m/s^2");
         factor = 1000.0;
@@ -183,6 +169,25 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 0.001;
         }
     }
+    else if ((unit == Unit::Stiffness)) {
+        if (UnitValue < 1){// mN/m is the smallest
+            unitString = QString::fromLatin1("mN/m");
+            factor = 1e-3;
+        }
+        if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("N/m");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("kN/m");
+            factor = 1e3;
+        }
+        else {
+            unitString = QString::fromLatin1("MN/m");
+            factor = 1e6;
+            
+        }
+    }
     else if (unit == Unit::ThermalConductivity) {
         if (UnitValue > 1000000) {
             unitString = QString::fromLatin1("W/mm/K");
@@ -200,6 +205,16 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         }
         else {
             unitString = QString::fromLatin1("m/m/K");
+            factor = 1.0;
+        }
+    }
+    else if (unit == Unit::VolumetricThermalExpansionCoefficient) {
+        if (UnitValue < 0.001) {
+            unitString = QString::fromUtf8("mm^3/m^3/K");
+            factor = 1e-9;
+        }
+        else {
+            unitString = QString::fromLatin1("m^3/m^3/K");
             factor = 1.0;
         }
     }
@@ -309,6 +324,24 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         else {
             unitString = QString::fromLatin1("MOhm");
             factor = 1e12;
+        }
+    }
+    else if (unit == Unit::ElectricalConductivity) {
+        if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("mS/m");
+            factor = 1e-12;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("S/m");
+            factor = 1e-9;
+        }
+        else if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("kS/m");
+            factor = 1e-6;
+        }
+        else {
+            unitString = QString::fromLatin1("MS/m");
+            factor = 1e-3;
         }
     }
     else if (unit == Unit::ElectricalCapacitance) {
@@ -422,6 +455,10 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
     else if (unit == Unit::DynamicViscosity) {
         unitString = QString::fromLatin1("kg/(m*s)");
         factor = 0.001;
+    }
+    else if (unit == Unit::KinematicViscosity) {
+        unitString = QString::fromLatin1("m^2/s)");
+        factor = 1e6;
     }
     else {
         // default action for all cases without special treatment:

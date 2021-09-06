@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -28,7 +28,7 @@
 
 #include <QColorDialog>
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "ui_TaskElementColors.h"
@@ -52,6 +52,7 @@
 FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 class ElementColors::Private: public Gui::SelectionGate
 {
@@ -76,7 +77,7 @@ public:
     std::string editSub;
     std::string editElement;
 
-    Private(ViewProviderDocumentObject* vp, const char *element="") 
+    Private(ViewProviderDocumentObject* vp, const char *element="")
         : ui(new Ui_TaskElementColors()), vp(vp),editElement(element)
     {
         vpDoc = vp->getDocument();
@@ -105,7 +106,12 @@ public:
     }
 
     ~Private() {
-        vpParent->OnTopWhenSelected.setValue(onTopMode);
+        try {
+            vpParent->OnTopWhenSelected.setValue(onTopMode);
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
     }
 
     bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) {
@@ -161,7 +167,7 @@ public:
             c.setRgbF(color.r,color.g,color.b,1.0-color.a);
             px.fill(c);
             QListWidgetItem* item = new QListWidgetItem(QIcon(px),
-                    QString::fromLatin1(Data::ComplexGeoData::oldElementName(v.first.c_str()).c_str()), 
+                    QString::fromLatin1(Data::ComplexGeoData::oldElementName(v.first.c_str()).c_str()),
                     ui->elementList);
             item->setData(Qt::UserRole,c);
             item->setData(Qt::UserRole+1,QString::fromLatin1(v.first.c_str()));
@@ -239,7 +245,7 @@ public:
         item->setIcon(QIcon(px));
         apply();
     }
-        
+
     void onSelectionChanged(const SelectionChanges &msg) {
         // no object selected in the combobox or no sub-element was selected
         if (busy)
@@ -257,7 +263,7 @@ public:
                    boost::starts_with(msg.pSubName,editSub))
                 {
                     for(auto item : ui->elementList->findItems(
-                                QString::fromLatin1(msg.pSubName-editSub.size()),0))
+                                QString::fromLatin1(msg.pSubName-editSub.size()), Qt::MatchExactly))
                         item->setSelected(msg.Type==SelectionChanges::AddSelection);
                 }
             }
@@ -272,7 +278,7 @@ public:
         busy = true;
         std::map<std::string,int> sels;
         for(auto &sel : Selection().getSelectionEx(
-                    editDoc.c_str(),App::DocumentObject::getClassTypeId(),0)) 
+                    editDoc.c_str(),App::DocumentObject::getClassTypeId(),0))
         {
             if(sel.getFeatName()!=editObj) continue;
             for(auto &sub : sel.getSubNames()) {
@@ -317,15 +323,15 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
         ("User parameter:BaseApp/Preferences/View");
     d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
     d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop",true));
-    if(d->ui->onTop->isChecked()) 
+    if(d->ui->onTop->isChecked())
         d->vpParent->OnTopWhenSelected.setValue(3);
 
     Selection().addSelectionGate(d,0);
 
     d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&ElementColors::slotDeleteDocument, this, _1));
+        (&ElementColors::slotDeleteDocument, this, bp::_1));
     d->connectDelObj = Application::Instance->signalDeletedObject.connect(boost::bind
-        (&ElementColors::slotDeleteObject, this, _1));
+        (&ElementColors::slotDeleteObject, this, bp::_1));
 
     d->populate();
 }

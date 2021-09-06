@@ -4,125 +4,143 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Arvioi sylinteri</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Taso...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Approximate a plane</source>
       <translation>Lähentää tasoa</translation>
     </message>
   </context>
   <context>
-    <name>CmdApproxSphere</name>
+    <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="257"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
-      <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <location filename="../../Command.cpp" line="325"/>
+      <source>Polynomial surface</source>
+      <translation>Polynomin pinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="326"/>
+      <source>Approximate a polynomial surface</source>
+      <translation>Arvioi polynomin pinta</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSphere</name>
+    <message>
+      <location filename="../../Command.cpp" line="277"/>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="278"/>
+      <source>Sphere</source>
+      <translation>Pallo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Arvioi pallo</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="74"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Arvioi B-käyräpinta...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Arvioi B-käyrän pallon pinta</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="490"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="491"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Tee lankapiirros verkkorajasta...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="417"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Luo lankapiirros verkkorajoista</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="481"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>Poisson-jakauma...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>Poisson pinnan rekonstruointi</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="379"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Verkkopinnan segmentointi...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="381"/>
       <source>Create mesh segments</source>
       <translation>Luo verkkopinnan lohkoja</translation>
     </message>
@@ -130,56 +148,104 @@
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Osista saatu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Luo verkkopinnan segmenttejä komponenteista</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Käsintehty segmentointi...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="413"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Luo verkkopinnan segmentit manuaalisesti</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="590"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="591"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Strukturoidut pistepilvet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Rakenteellisten pistepilvien kolmiomittaus</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Fit plane</source>
+      <translation>Sovita taso</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="221"/>
+      <source>Fit cylinder</source>
+      <translation>Sovita sylinteri</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Fit sphere</source>
+      <translation>Sovita pallo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="335"/>
+      <source>Fit polynomial surface</source>
+      <translation>Sovita polynomin pinta</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>View triangulation</source>
+      <translation>Näytä kolmiomittaus</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <source>Placement</source>
+      <translation>Sijainti</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <source>Fit B-Spline</source>
+      <translation>Sovita B-käyrä</translation>
+    </message>
+    <message>
+      <location filename="../../Poisson.cpp" line="101"/>
+      <source>Poisson reconstruction</source>
+      <translation>Poisson pinnan rekonstruointi</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <source>Segmentation</source>
+      <translation>Segmentaatio</translation>
     </message>
   </context>
   <context>
@@ -187,29 +253,29 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Sovita B-käyrän pinta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>u-suunta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>Astetta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="55"/>
       <location filename="../../FitBSplineSurface.ui" line="122"/>
       <source>Control points</source>
-      <translation type="unfinished">Control points</translation>
+      <translation>Tarkastuspisteet</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>v-suunta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -219,12 +285,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>Iteraatiot</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>Koon kerroin</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
@@ -234,43 +300,49 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="227"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Kokonaispaino</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="256"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Kaltevuuden pituus</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="285"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Taivutusenergia</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="314"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Kaarevuuden vaihtelu</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Käyttäjän määrittelemät u/v suunnat</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="359"/>
+      <source>Create placement</source>
+      <translation>Luo sijoittelu</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="146"/>
+      <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="147"/>
+      <location filename="../../FitBSplineSurface.cpp" line="208"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Valitse yksi paikkaobjekti saadaksesi paikallisen suunnan.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="174"/>
+      <location filename="../../FitBSplineSurface.cpp" line="167"/>
+      <location filename="../../FitBSplineSurface.cpp" line="235"/>
       <source>Input error</source>
       <translation>Syötteen virhe</translation>
     </message>
@@ -280,27 +352,27 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Poisson-jakauma</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Muuttujat</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="26"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Oktreen syvyys</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Ratkaisun jako</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Näytteet solmua kohti</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="108"/>
@@ -311,24 +383,28 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="495"/>
+      <location filename="../../Command.cpp" line="90"/>
+      <source>Please select a point cloud or mesh.</source>
+      <translation>Ole hyvä ja valitse pistepilvi tai verkkopinta.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>Valitse yksi pistepilvi.</translation>
     </message>
   </context>
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Näkymän kolmiomittaus epäonnistui</translation>
     </message>
   </context>
   <context>
@@ -341,7 +417,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="27"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Luo yhdiste</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="34"/>
@@ -356,12 +432,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="53"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>Kaarteen toleranssi</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="70"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Etäisyys koneeseen</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="87"/>
@@ -371,7 +447,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>Luo verkkopinta käyttämättömistä kolmioista</translation>
     </message>
   </context>
   <context>
@@ -379,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Käsintehty segmentointi</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -423,24 +499,75 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
+      <source>Plane</source>
+      <translation>Taso</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="128"/>
+      <location filename="../../SegmentationManual.ui" line="181"/>
+      <location filename="../../SegmentationManual.ui" line="234"/>
+      <source>Tolerance</source>
+      <translation>Toleranssi</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="148"/>
+      <location filename="../../SegmentationManual.ui" line="201"/>
+      <location filename="../../SegmentationManual.ui" line="254"/>
+      <source>Minimum number of faces</source>
+      <translation>Pintojen vähimmäismäärä</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="165"/>
+      <location filename="../../SegmentationManual.ui" line="218"/>
+      <location filename="../../SegmentationManual.ui" line="271"/>
+      <source>Detect</source>
+      <translation>Tunnista</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="175"/>
+      <source>Cylinder</source>
+      <translation>Lieriö</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="228"/>
+      <source>Sphere</source>
+      <translation>Pallo</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
       <translation>Alueen asetukset</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="128"/>
+      <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
       <translation>Ota huomioon vain kolmiot jotka ovat näkyvissä</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="138"/>
+      <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
       <translation>Ota huomioon vain kolmiot joiden normaalit ovat näyttöön päin</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="310"/>
+      <source>Segmentation</source>
+      <translation>Segmentaatio</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="316"/>
+      <source>Cut segment from mesh</source>
+      <translation>Leikkaa segmentti verkkopinnasta</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="326"/>
+      <source>Hide segment</source>
+      <translation>Piilota segmentti</translation>
     </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="185"/>
+      <location filename="../../SegmentationManual.cpp" line="310"/>
       <source>Create</source>
       <translation>Luo</translation>
     </message>

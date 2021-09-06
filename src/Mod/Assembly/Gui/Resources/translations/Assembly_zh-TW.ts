@@ -4,7 +4,7 @@
   <context>
     <name>AssemblyGui::TaskAssemblyConstraints</name>
     <message>
-      <location filename="../../TaskAssemblyConstraints.cpp" line="53"/>
+      <location filename="../../TaskAssemblyConstraints.cpp" line="52"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
@@ -304,8 +304,8 @@
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;修正其旋轉和轉移中的第一個幾何形狀. 請注意, 這個修正僅適用於直接父組件. 如果堆疊組件，則父組件將不會固定在另一個內部.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>

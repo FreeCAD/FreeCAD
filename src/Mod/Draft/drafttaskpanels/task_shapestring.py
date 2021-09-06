@@ -1,8 +1,3 @@
-"""Provide the task panel for the Draft ShapeString tool."""
-## @package task_shapestring
-# \ingroup DRAFT
-# \brief Provide the task panel for the Draft ShapeString tool.
-
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -26,20 +21,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the task panel code for the Draft ShapeString tool."""
+## @package task_shapestring
+# \ingroup drafttaskpanels
+# \brief Provides the task panel code for the Draft ShapeString tool.
+
+## \addtogroup drafttaskpanels
+# @{
 import sys
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
 import DraftVecUtils
-import DraftTools
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+import draftguitools.gui_tool_utils as gui_tool_utils
+
+from FreeCAD import Units as U
 from draftutils.translate import translate
 from draftutils.messages import _msg, _err
-
-_Quantity = App.Units.Quantity
-
 
 # So the resource file doesn't trigger errors from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -60,7 +62,7 @@ class ShapeStringTaskPanel:
         self.task = loader.load(uiFile)
         layout.addWidget(self.task)
 
-        qStart = _Quantity(0.0, App.Units.Length)
+        qStart = U.Quantity(0.0, U.Length)
         self.task.sbX.setProperty('rawValue', qStart.Value)
         self.task.sbX.setProperty('unit', qStart.getUserPreferred()[2])
         self.task.sbY.setProperty('rawValue', qStart.Value)
@@ -101,7 +103,7 @@ class ShapeStringTaskPanel:
             if arg["Key"] == "ESCAPE":
                 self.reject()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            self.point,ctrlPoint,info = DraftTools.getPoint(self.sourceCmd, arg, noTracker=True)
+            self.point,ctrlPoint,info = gui_tool_utils.getPoint(self.sourceCmd, arg, noTracker=True)
             if not self.pointPicked:
                 self.setPoint(self.point)
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -124,11 +126,11 @@ class ShapeStringTaskPanel:
             String = dquote + self.task.leString.text() + dquote
         FFile = dquote + str(self.fileSpec) + dquote
 
-        Size = str(_Quantity(self.task.sbHeight.text()).Value)
+        Size = str(U.Quantity(self.task.sbHeight.text()).Value)
         Tracking = str(0.0)
-        x = _Quantity(self.task.sbX.text()).Value
-        y = _Quantity(self.task.sbY.text()).Value
-        z = _Quantity(self.task.sbZ.text()).Value
+        x = U.Quantity(self.task.sbX.text()).Value
+        y = U.Quantity(self.task.sbY.text()).Value
+        z = U.Quantity(self.task.sbZ.text()).Value
         ssBase = App.Vector(x, y, z)
         # this try block is almost identical to the one in DraftTools
         try:
@@ -188,3 +190,5 @@ class ShapeStringTaskPanel:
         self.sourceCmd.creator.finish(self.sourceCmd)
         self.platWinDialog("Restore")
         return True
+
+## @}

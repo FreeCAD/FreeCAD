@@ -602,7 +602,7 @@ def find(vector, vlist):
     return None
 
 
-def closest(vector, vlist):
+def closest(vector, vlist, return_length=False):
     """Find the closest point to one point in a list of points (vectors).
 
     The scalar distance between the original point and one point in the list
@@ -611,15 +611,24 @@ def closest(vector, vlist):
 
     Parameters
     ----------
-    vector : Base::Vector3
-        The tested point (or vector).
-    vlist : list
-        A list of points (or vectors).
+    vector: Base::Vector3
+        The tested point or vector.
+
+    vlist: list
+        A list of points or vectors.
+
+    return_length: bool, optional
+        It defaults to `False`.
+        If it is `True`, the value of the smallest distance will be returned.
 
     Returns
     -------
     int
         The index of the list where the closest point is found.
+
+    int, float
+        If `return_length` is `True`, it returns both the index
+        and the length to the closest point.
     """
     typecheck([(vector, Vector), (vlist, list)], "closest")
 
@@ -628,11 +637,15 @@ def closest(vector, vlist):
     dist = 9999999999999999
     index = None
     for i, v in enumerate(vlist):
-        d = vector.sub(v).Length
+        d = (vector - v).Length
         if d < dist:
             dist = d
             index = i
-    return index
+
+    if return_length:
+        return index, dist
+    else:
+        return index
 
 
 def isColinear(vlist):
@@ -703,8 +716,9 @@ def isColinear(vlist):
     return True
 
 
-def rounded(v):
-    """Return a vector rounded to the `precision` in the parameter database.
+def rounded(v,d=None):
+    """Return a vector rounded to the `precision` in the parameter database
+    or to the given decimals value
 
     Each of the components of the vector is rounded to the decimal
     precision set in the parameter database.
@@ -713,6 +727,7 @@ def rounded(v):
     ----------
     v : Base::Vector3
         The input vector.
+    d : (Optional) the number of decimals to round to
 
     Returns
     -------
@@ -722,6 +737,8 @@ def rounded(v):
         in the parameter database.
     """
     p = precision()
+    if d:
+        p = d
     return Vector(round(v.x, p), round(v.y, p), round(v.z, p))
 
 
@@ -811,5 +828,77 @@ def removeDoubles(vlist):
     # Add the last element
     nlist.append(vlist[-1])
     return nlist
+
+def get_spherical_coords(x, y, z):
+    """Get the Spherical coordinates of the vector represented
+    by Cartesian coordinates (x, y, z).
+
+    Parameters
+    ----------
+    vector : Base::Vector3
+        The input vector.
+
+    Returns
+    -------
+    tuple of float
+        Tuple (radius, theta, phi) with the Spherical coordinates.
+        Radius is the radial coordinate, theta the polar angle and
+        phi the azimuthal angle in radians.
+
+    Notes
+    -----
+    The vector (0, 0, 0) has undefined values for theta and phi, while
+    points on the z axis has undefined value for phi. The following
+    conventions are used (useful in DraftToolBar methods):
+    (0, 0, 0) -> (0, pi/2, 0)
+    (0, 0, z) -> (radius, theta, 0)
+    """
+
+    v = Vector(x,y,z)
+    x_axis = Vector(1,0,0)
+    z_axis = Vector(0,0,1)
+    y_axis = Vector(0,1,0)
+    rad = v.Length
+
+    if not bool(round(rad, precision())):
+        return (0, math.pi/2, 0)
+
+    theta = v.getAngle(z_axis)
+    v.projectToPlane(Vector(0,0,0), z_axis)
+    phi = v.getAngle(x_axis)
+    if math.isnan(phi):
+        return (rad, theta, 0)
+    # projected vector is on 3rd or 4th quadrant
+    if v.dot(Vector(y_axis)) < 0:
+        phi = -1*phi
+
+    return (rad, theta, phi)
+
+
+def get_cartesian_coords(radius, theta, phi):
+    """Get the three-dimensional Cartesian coordinates of the vector
+    represented by Spherical coordinates (radius, theta, phi).
+
+    Parameters
+    ----------
+    radius : float, int
+        Radial coordinate of the vector.
+    theta : float, int
+        Polar coordinate of the vector in radians.
+    phi : float, int
+        Azimuthal coordinate of the vector in radians.
+
+    Returns
+    -------
+    tuple of float :
+        Tuple (x, y, z) with the Cartesian coordinates.
+    """
+
+    x = radius*math.sin(theta)*math.cos(phi)
+    y = radius*math.sin(theta)*math.sin(phi)
+    z = radius*math.cos(theta)
+
+    return (x, y, z)
+
 
 ##  @}

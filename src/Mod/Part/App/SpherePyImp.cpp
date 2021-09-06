@@ -181,16 +181,6 @@ void SpherePy::setAxis(Py::Object arg)
     }
 }
 
-PyObject *SpherePy::uIso(PyObject *args)
-{
-    return GeometrySurfacePy::uIso(args);
-}
-
-PyObject *SpherePy::vIso(PyObject *args)
-{
-    return GeometrySurfacePy::vIso(args);
-}
-
 PyObject *SpherePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

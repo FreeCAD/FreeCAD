@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,17 +32,10 @@
 
 using namespace Path;
 
-#if PY_MAJOR_VERSION >= 3
-#  define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
-#  define PYINT_TYPE                PyLong_Type
-#  define PYINT_FROMLONG(l)         PyLong_FromLong(l)
-#  define PYINT_ASLONG(o)           PyLong_AsLong(o)
-#else
-#  define PYSTRING_FROMSTRING(str)  PyString_FromString(str)
-#  define PYINT_TYPE                PyInt_Type
-#  define PYINT_FROMLONG(l)         PyInt_FromLong(l)
-#  define PYINT_ASLONG(o)           PyInt_AsLong(o)
-#endif
+#define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
+#define PYINT_TYPE                PyLong_Type
+#define PYINT_FROMLONG(l)         PyLong_FromLong(l)
+#define PYINT_ASLONG(o)           PyLong_AsLong(o)
 
 
 // returns a string which represents the object e.g. when printed in python
@@ -277,12 +270,12 @@ PyObject* ToolPy::getToolTypes(PyObject * args)
 {
     if (PyArg_ParseTuple(args, "")) {
         std::vector<std::string> toolTypes = Tool::ToolTypes();
-        PyObject *list = PyList_New(0);
+        Py::List list;
         for(unsigned i = 0; i != toolTypes.size(); i++) {
 
-            PyList_Append(list, PYSTRING_FROMSTRING(toolTypes[i].c_str()));
+            list.append(Py::asObject(PYSTRING_FROMSTRING(toolTypes[i].c_str())));
         }
-        return list;
+        return Py::new_reference_to(list);
     }
     throw Py::TypeError("This method accepts no argument");
 }
@@ -291,12 +284,12 @@ PyObject* ToolPy::getToolMaterials(PyObject * args)
 {
     if (PyArg_ParseTuple(args, "")) {
         std::vector<std::string> toolMaterials = Tool::ToolMaterials();
-        PyObject *list = PyList_New(0);
+        Py::List list;;
         for(unsigned i = 0; i != toolMaterials.size(); i++) {
 
-            PyList_Append(list, PYSTRING_FROMSTRING(toolMaterials[i].c_str()));
+            list.append(Py::asObject(PYSTRING_FROMSTRING(toolMaterials[i].c_str())));
         }
-        return list;
+        return Py::new_reference_to(list);
     }
     throw Py::TypeError("This method accepts no argument");
 }

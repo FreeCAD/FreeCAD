@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -9,52 +10,112 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
-
-# to run the examples copy the code:
-"""
-from femexamples.manager import *
-run_all()
-
-from femexamples.manager import *
-doc = run_boxanalysisstatic()
-doc = run_boxanalysisfrequency()
-doc = run_ccx_cantileverfaceload()
-doc = run_ccx_cantilevernodeload()
-doc = run_ccx_cantileverprescribeddisplacement()
-doc = setup_cantileverhexa20faceload()
-doc = run_constraint_contact_shell_shell()
-doc = run_constraint_contact_solid_solid()
-doc = run_constraint_tie()
-doc = run_material_nl_platewithhole()
-doc = run_material_multiple_twoboxes()
-doc = run_rcwall2d()
-doc = run_thermomech_bimetall()
-doc = run_thermomech_flow1d()
-doc = run_thermomech_spine()
-
-doc = run_ccx_cantilevernodeload("calculix")
-doc = run_ccx_cantilevernodeload("ccxtools")
-doc = run_ccx_cantilevernodeload("z88")
-
-"""
-
-
 import FreeCAD
 
 
-def run_analysis(doc, base_name, filepath=""):
+# ************************************************************************************************
+# setup and run examples by Python
+
+# TODO: use method from examples gui to collect all examples in run_all method
+# FreeCAD Gui update between the examples would makes sense too
+
+"""
+# setup all examples
+from femexamples.manager import *
+setup_all()
+
+
+# run all examples
+from femexamples.manager import *
+run_all()
+
+
+# one special example
+from femexamples.manager import run_example as run
+
+doc = run("boxanalysis_static")
+doc = run("boxanalysis_frequency")
+
+"""
+
+
+def run_all():
+    run_example("boxanalysis_frequency", run_solver=True)
+    run_example("boxanalysis_static", run_solver=True)
+    run_example("buckling_lateraltorsionalbuckling", run_solver=True)
+    run_example("buckling_platebuckling", run_solver=True)
+    run_example("ccx_buckling_flexuralbuckling", run_solver=True)
+    run_example("ccx_cantilever_faceload", run_solver=True)
+    run_example("ccx_cantilever_hexa20faceload", run_solver=True)
+    run_example("ccx_cantilever_nodeload", run_solver=True)
+    run_example("ccx_cantilever_prescribeddisplacement", run_solver=True)
+    run_example("constraint_contact_shell_shell", run_solver=True)
+    run_example("constraint_contact_solid_solid", run_solver=True)
+    run_example("constraint_section_print", run_solver=True)
+    run_example("constraint_selfweight_cantilever", run_solver=True)
+    run_example("constraint_tie", run_solver=True)
+    run_example("constraint_transform_beam_hinged", run_solver=True)
+    run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam", run_solver=True)
+    run_example("equation_electrostatics_capacitance_two_balls", run_solver=True)
+    run_example("equation_electrostatics_electricforce_elmer_nongui6", run_solver=True)
+    run_example("frequency_beamsimple", run_solver=True)
+    run_example("material_multiple_bendingbeam_fiveboxes", run_solver=True)
+    run_example("material_multiple_bendingbeam_fivefaces", run_solver=True)
+    run_example("material_multiple_tensionrod_twoboxes", run_solver=True)
+    run_example("material_nl_platewithhole", run_solver=True)
+    run_example("rc_wall_2d", run_solver=True)
+    run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
+    run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
+    run_example("thermomech_bimetall", run_solver=True)
+    run_example("thermomech_flow1d", run_solver=True)
+    run_example("thermomech_spine", run_solver=True)
+
+
+def setup_all():
+    run_example("boxanalysis_frequency")
+    run_example("boxanalysis_static")
+    run_example("buckling_lateraltorsionalbuckling")
+    run_example("buckling_platebuckling")
+    run_example("ccx_buckling_flexuralbuckling")
+    run_example("ccx_cantilever_faceload")
+    run_example("ccx_cantilever_hexa20faceload")
+    run_example("ccx_cantilever_nodeload")
+    run_example("ccx_cantilever_prescribeddisplacement")
+    run_example("constraint_contact_shell_shell")
+    run_example("constraint_contact_solid_solid")
+    run_example("constraint_section_print")
+    run_example("constraint_selfweight_cantilever")
+    run_example("constraint_tie")
+    run_example("constraint_transform_beam_hinged")
+    run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam")
+    run_example("equation_electrostatics_capacitance_two_balls")
+    run_example("equation_electrostatics_electricforce_elmer_nongui6")
+    run_example("frequency_beamsimple")
+    run_example("material_multiple_bendingbeam_fiveboxes")
+    run_example("material_multiple_bendingbeam_fivefaces")
+    run_example("material_multiple_tensionrod_twoboxes")
+    run_example("material_nl_platewithhole")
+    run_example("rc_wall_2d")
+    run_example("square_pipe_end_twisted_edgeforces")
+    run_example("square_pipe_end_twisted_nodeforces")
+    run_example("thermomech_bimetall")
+    run_example("thermomech_flow1d")
+    run_example("thermomech_spine")
+
+
+def run_analysis(doc, base_name, filepath="", run_solver=False):
 
     from os.path import join, exists
     from os import makedirs
@@ -72,18 +133,15 @@ def run_analysis(doc, base_name, filepath=""):
     if not exists(filepath):
         makedirs(filepath)
 
-    # find solver
-    # ATM we only support one solver, search for a frame work solver and run it
+    # find the first solver
+    # thus ATM only one solver per analysis is supported
+    from femtools.femutils import is_derived_from
     for m in doc.Analysis.Group:
-        from femtools.femutils import is_derived_from
-        if (
-            is_derived_from(m, "Fem::FemSolverObjectPython")
-            and m.Proxy.Type != "Fem::FemSolverCalculixCcxTools"
-        ):
+        if is_derived_from(m, "Fem::FemSolverObjectPython"):
             solver = m
             break
 
-    # we need a file name for the besides dir to work
+    # a file name is needed for the besides dir to work
     save_fc_file = join(filepath, (base_name + ".FCStd"))
     FreeCAD.Console.PrintMessage(
         "Save FreeCAD file for {} analysis to {}\n.".format(base_name, save_fc_file)
@@ -96,248 +154,74 @@ def run_analysis(doc, base_name, filepath=""):
 
     # run analysis
     from femsolver.run import run_fem_solver
-    run_fem_solver(solver, working_dir)
+    if run_solver is True:
+        run_fem_solver(solver, working_dir)
 
     # save doc once again with results
     doc.save()
 
 
-def run_boxanalysisstatic(solver=None, base_name=None):
+def run_example(example, solver=None, base_name=None, run_solver=False):
 
-    from .boxanalysis import setup_static as setup
-    doc = setup()
+    from importlib import import_module
+    module = import_module("femexamples." + example)
+    if not hasattr(module, "setup"):
+        FreeCAD.Console.PrintError("Setup method not found in {}\n".format(example))
+        return None
+
+    if solver is None:
+        doc = getattr(module, "setup")()
+    else:
+        doc = getattr(module, "setup")(solvertype=solver)
 
     if base_name is None:
-        base_name = "Box_Static_Analysis"
+        base_name = example
         if solver is not None:
             base_name += "_" + solver
-    run_analysis(doc, base_name)
+    run_analysis(doc, base_name, run_solver=run_solver)
     doc.recompute()
 
     return doc
 
 
-def run_boxanalysisfrequency(solver=None, base_name=None):
-
-    from .boxanalysis import setup_frequency as setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Box_Frequency_Analysis"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
+# ************************************************************************************************
+# helper used from examples
+def init_doc(doc=None):
+    if doc is None:
+        doc = FreeCAD.newDocument()
     return doc
 
 
-def run_ccx_cantileverfaceload(solver=None, base_name=None):
-
-    from .ccx_cantilever_std import setup_cantileverfaceload as setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "CantilverFaceLoad"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_ccx_cantilevernodeload(solver=None, base_name=None):
-
-    from .ccx_cantilever_std import setup_cantilevernodeload as setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "CantileverNodeLoad"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
-
-    from .ccx_cantilever_std import setup_cantileverprescribeddisplacement as setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "CantileverPrescribedDisplacement"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def setup_cantileverhexa20faceload(solver=None, base_name=None):
-
-    from .ccx_cantilever_std import setup_cantileverhexa20faceload as setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "CantilverHexa20FaceLoad"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_constraint_contact_shell_shell(solver=None, base_name=None):
-
-    from .constraint_contact_shell_shell import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Constraint_Contact_Shell_Shell"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_constraint_contact_solid_solid(solver=None, base_name=None):
-
-    from .constraint_contact_solid_solid import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Constraint_Contact_Solid_Solid"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_constraint_tie(solver=None, base_name=None):
-
-    from .constraint_tie import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Constraint_Tie"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_material_multiple_twoboxes(solver=None, base_name=None):
-
-    from .material_multiple_twoboxes import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Multimaterial_Two-Boxes"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_material_nl_platewithhole(solver=None, base_name=None):
-
-    from .material_nl_platewithhole import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Nonlinear_material_plate_with_hole"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_rcwall2d(solver=None, base_name=None):
-
-    from .rc_wall_2d import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "RC_FIB_Wall_2D"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_thermomech_bimetall(solver=None, base_name=None):
-
-    from .thermomech_bimetall import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Thermomech_Bimetall"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_thermomech_flow1d(solver=None, base_name=None):
-
-    from .thermomech_flow1d import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Thermomech_Spine"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_thermomech_spine(solver=None, base_name=None):
-
-    from .thermomech_spine import setup
-    doc = setup()
-
-    if base_name is None:
-        base_name = "Thermomech_Spine"
-        if solver is not None:
-            base_name += "_" + solver
-    run_analysis(doc, base_name)
-    doc.recompute()
-
-    return doc
-
-
-def run_all():
-    run_boxanalysisstatic()
-    run_boxanalysisfrequency()
-    run_ccx_cantileverfaceload()
-    run_ccx_cantilevernodeload()
-    run_ccx_cantileverprescribeddisplacement()
-    run_constraint_contact_shell_shell()
-    run_constraint_contact_solid_solid()
-    run_material_nl_platewithhole()
-    run_material_multiple_twoboxes()
-    run_rcwall2d()
-    run_thermomech_bimetall()
-    run_thermomech_flow1d()
-    run_thermomech_spine()
+def get_meshname():
+    # needs to be "Mesh" to work with unit tests
+    return "Mesh"
+
+
+def get_header(information):
+    return """{name}
+
+{information}""".format(name=information["name"], information=print_info_dict(information))
+
+
+def print_info_dict(information):
+    the_text = ""
+    for k, v in information.items():
+        value_text = ""
+        if isinstance(v, list):
+            for j in v:
+                value_text += "{}, ".format(j)
+            value_text = value_text.rstrip(", ")
+        else:
+            value_text = v
+        the_text += "{} --> {}\n".format(k, value_text)
+    # print(the_text)
+    return the_text
+
+
+def add_explanation_obj(doc, the_text):
+    text_obj = doc.addObject("App::TextDocument", "Explanation_Report")
+    text_obj.Text = the_text
+    text_obj.setPropertyStatus("Text", "ReadOnly")  # set property editor readonly
+    if FreeCAD.GuiUp:
+        text_obj.ViewObject.ReadOnly = True  # set editor view readonly
+    return text_obj

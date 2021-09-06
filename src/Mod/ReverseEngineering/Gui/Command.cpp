@@ -55,6 +55,7 @@
 #include <Base/Builder3D.h>
 #include <Base/CoordinateSystem.h>
 #include <Base/Converter.h>
+#include <Base/Tools.h>
 
 #include "../App/ApproxSurface.h"
 #include "FitBSplineSurface.h"
@@ -186,7 +187,7 @@ void CmdApproxPlane::activated(int)
                 << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
                 << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;
 
-            openCommand("Fit plane");
+            openCommand(QT_TRANSLATE_NOOP("Command", "Fit plane"));
             runCommand(Gui::Command::Doc, str.str().c_str());
             commitCommand();
             updateActive();
@@ -217,14 +218,28 @@ CmdApproxCylinder::CmdApproxCylinder()
 void CmdApproxCylinder::activated(int)
 {
     std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
-    openCommand("Fit cylinder");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fit cylinder"));
     for (auto it : sel) {
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
         MeshCore::CylinderFit fit;
         fit.AddPoints(kernel.GetPoints());
+
+        // get normals
+        {
+            std::vector<unsigned long> facets(kernel.CountFacets());
+            std::generate(facets.begin(), facets.end(), Base::iotaGen<unsigned long>(0));
+            std::vector<Base::Vector3f> normals = kernel.GetFacetNormals(facets);
+            Base::Vector3f base = fit.GetGravity();
+            Base::Vector3f axis = fit.GetInitialAxisFromNormals(normals);
+            fit.SetInitialValues(base, axis);
+        }
+
         if (fit.Fit() < FLOAT_MAX) {
-            Base::Vector3f base = fit.GetBase();
+            Base::Vector3f base, top;
+            fit.GetBounding(base, top);
+            float height = Base::Distance(base, top);
+
             Base::Rotation rot;
             rot.setValue(Base::Vector3d(0,0,1), Base::convertTo<Base::Vector3d>(fit.GetAxis()));
             double q0, q1, q2, q3;
@@ -234,6 +249,7 @@ void CmdApproxCylinder::activated(int)
             str << "from FreeCAD import Base" << std::endl;
             str << "App.ActiveDocument.addObject('Part::Cylinder','Cylinder_fit')" << std::endl;
             str << "App.ActiveDocument.ActiveObject.Radius = " << fit.GetRadius() << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Height = " << height << std::endl;
             str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
                 << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
                 << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;
@@ -268,7 +284,7 @@ CmdApproxSphere::CmdApproxSphere()
 void CmdApproxSphere::activated(int)
 {
     std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
-    openCommand("Fit sphere");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fit sphere"));
     for (auto it : sel) {
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
@@ -316,7 +332,7 @@ void CmdApproxPolynomial::activated(int)
 {
     std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
     App::Document* doc = App::GetApplication().getActiveDocument();
-    openCommand("Fit polynomial surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fit polynomial surface"));
     for (auto it : sel) {
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
@@ -582,7 +598,7 @@ void CmdViewTriangulation::activated(int)
 {
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Structured::getClassTypeId());
     addModule(App,"ReverseEngineering");
-    openCommand("View triangulation");
+    openCommand(QT_TRANSLATE_NOOP("Command", "View triangulation"));
     try {
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
             App::DocumentObjectT objT(*it);

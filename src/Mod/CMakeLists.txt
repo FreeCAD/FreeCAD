@@ -110,10 +110,6 @@ if(BUILD_SANDBOX)
     add_subdirectory(Sandbox)
 endif(BUILD_SANDBOX)
 
-if(BUILD_SHIP)
-  add_subdirectory(Ship)
-endif(BUILD_SHIP)
-
 if(BUILD_OPENSCAD)
   add_subdirectory(OpenSCAD)
 endif(BUILD_OPENSCAD)

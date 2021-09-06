@@ -37,7 +37,7 @@ class Ui_Segmentation;
 class MeshGuiExport Segmentation : public QWidget
 {
 public:
-    Segmentation(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    Segmentation(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Segmentation();
     void accept();
 

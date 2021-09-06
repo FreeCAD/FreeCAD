@@ -31,22 +31,22 @@ class QToolBox;
 namespace Gui
 {
 
-namespace DockWnd 
+namespace DockWnd
 {
 
 /** The ToolBox class provides a column of tabbed widget items.
- * A toolbox is a widget that displays a column of tabs one above the other, with the current item displayed 
- * below the current tab. Every tab has an index position within the column of tabs. A tab's item is a QWidget. 
+ * A toolbox is a widget that displays a column of tabs one above the other, with the current item displayed
+ * below the current tab. Every tab has an index position within the column of tabs. A tab's item is a QWidget.
  *
  * Each item has an itemLabel(), an optional icon, itemIconSet(), an optional itemToolTip(), and a widget.
- * The item's attributes can be changed with setItemLabel(), setItemIconSet() and setItemToolTip(). 
+ * The item's attributes can be changed with setItemLabel(), setItemIconSet() and setItemToolTip().
  *
- * Items are added using addItem(), or inserted at particular positions using insertItem(). The total number of 
- * items is given by count(). Items can be deleted with delete, or removed from the toolbox with removeItem(). 
- * Combining removeItem() and insertItem() allows to move items to different positions. 
+ * Items are added using addItem(), or inserted at particular positions using insertItem(). The total number of
+ * items is given by count(). Items can be deleted with delete, or removed from the toolbox with removeItem().
+ * Combining removeItem() and insertItem() allows to move items to different positions.
  *
- * The current item widget is returned by currentItem() and set with setCurrentItem(). If you prefer you can 
- * work in terms of indexes using currentIndex(), setCurrentIndex(), indexOf() and item(). 
+ * The current item widget is returned by currentItem() and set with setCurrentItem(). If you prefer you can
+ * work in terms of indexes using currentIndex(), setCurrentIndex(), indexOf() and item().
  *
  * The currentChanged() signal is emitted when the current item is changed.
  *
@@ -74,13 +74,13 @@ public:
 
   void setItemText ( int index, const QString & label );
   QString itemText ( int index ) const;
-  
+
   void setItemIcon ( int index, const QIcon & iconSet );
   QIcon itemIcon ( int index ) const;
-  
+
   void setItemToolTip ( int index, const QString & toolTip );
   QString itemToolTip ( int index ) const;
-  
+
   QWidget * currentWidget () const;
 
   int currentIndex () const;
@@ -96,7 +96,7 @@ protected:
   void changeEvent(QEvent *e);
 
 Q_SIGNALS:
-  /** This signal is emitted when the current item changed. 
+  /** This signal is emitted when the current item changed.
    * The new current item's index is passed in index, or -1 if there is no current item.
    */
   void currentChanged ( int index );

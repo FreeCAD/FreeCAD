@@ -30,6 +30,8 @@
 #include <QMessageBox>
 #include <QStyleOptionButton>
 #include <QStylePainter>
+#include <QToolTip>
+#include <cfloat>
 
 #include "customwidgets.h"
 
@@ -523,79 +525,590 @@ void InputField::setHistorySize(int i)
 
 // --------------------------------------------------------------------
 
-QuantitySpinBox::QuantitySpinBox (QWidget * parent)
-  : QAbstractSpinBox(parent),
-    Value(0),
-    Maximum(INT_MAX),
-    Minimum(-INT_MAX),
-    StepSize(1.0)
+namespace Base {
+
+Unit::Unit()
 {
+
+}
+
+Unit::Unit(const QString& u)
+    : unit(u)
+{
+
+}
+
+bool Unit::isEmpty() const
+{
+    return unit.isEmpty();
+}
+
+bool Unit::operator ==(const Unit& that)
+{
+    return this->unit == that.unit;
+}
+
+bool Unit::operator !=(const Unit& that)
+{
+    return this->unit != that.unit;
+}
+
+const QString& Unit::getString() const
+{
+    return unit;
+}
+
+int QuantityFormat::defaultDenominator = 8; // for 1/8"
+
+
+QuantityFormat::QuantityFormat()
+  : option(OmitGroupSeparator | RejectGroupSeparator)
+  , format(Fixed)
+  , precision(4)
+  , denominator(defaultDenominator)
+{
+}
+
+Quantity::Quantity()
+    : value(0)
+    , unit()
+{
+
+}
+
+Quantity::Quantity(double v, const Unit& u)
+    : value(v)
+    , unit(u)
+{
+
+}
+
+Quantity Quantity::parse(const QString& str)
+{
+    bool ok;
+    QString txt = str;
+    QString unit;
+    while (!txt.isEmpty() && txt[txt.length()-1].isLetter()) {
+        unit.prepend(txt[txt.length()-1]);
+        txt.chop(1);
+    }
+
+    double v = QLocale::system().toDouble(txt, &ok);
+    //if (!ok && !txt.isEmpty())
+    //    throw Base::Exception();
+    return Quantity(v, Unit(unit));
+}
+
+void Quantity::setValue(double v)
+{
+    value = v;
+}
+
+double Quantity::getValue() const
+{
+    return value;
+}
+
+void Quantity::setUnit(const Unit& u)
+{
+    unit = u;
+}
+
+Unit Quantity::getUnit() const
+{
+    return unit;
+}
+
+QString Quantity::getUserString() const
+{
+    QLocale Lc;
+    const QuantityFormat& format = getFormat();
+    if (format.option != QuantityFormat::None) {
+        uint opt = static_cast<uint>(format.option);
+        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
+    }
+
+    QString Ln = Lc.toString(value, format.toFormat(), format.precision);
+    return QString::fromUtf8("%1 %2").arg(Ln, unit.getString());
+}
+
+QString Quantity::getUserString(double& factor, QString& unitString) const
+{
+    factor = 1;
+    unitString = unit.getString();
+
+    QLocale Lc;
+    const QuantityFormat& format = getFormat();
+    if (format.option != QuantityFormat::None) {
+        uint opt = static_cast<uint>(format.option);
+        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
+    }
+
+    QString Ln = Lc.toString(value, format.toFormat(), format.precision);
+    return QString::fromUtf8("%1 %2").arg(Ln, unit.getString());
+}
+
+}
+
+namespace Gui {
+
+class QuantitySpinBoxPrivate
+{
+public:
+    QuantitySpinBoxPrivate() :
+      validInput(true),
+      pendingEmit(false),
+      unitValue(0),
+      maximum(INT_MAX),
+      minimum(-INT_MAX),
+      singleStep(1.0)
+    {
+    }
+    ~QuantitySpinBoxPrivate()
+    {
+    }
+
+    QString stripped(const QString &t, int *pos) const
+    {
+        QString text = t;
+        const int s = text.size();
+        text = text.trimmed();
+        if (pos)
+            (*pos) -= (s - text.size());
+        return text;
+    }
+
+    bool validate(QString& input, Base::Quantity& result) const
+    {
+        bool success = false;
+        QString tmp = input;
+        int pos = 0;
+        QValidator::State state;
+        Base::Quantity res = validateAndInterpret(tmp, pos, state);
+        res.setFormat(quantity.getFormat());
+        if (state == QValidator::Acceptable) {
+            success = true;
+            result = res;
+            input = tmp;
+        }
+        else if (state == QValidator::Intermediate) {
+            tmp = tmp.trimmed();
+            tmp += QLatin1Char(' ');
+            tmp += unitStr;
+            Base::Quantity res2 = validateAndInterpret(tmp, pos, state);
+            res2.setFormat(quantity.getFormat());
+            if (state == QValidator::Acceptable) {
+                success = true;
+                result = res2;
+                input = tmp;
+            }
+        }
+
+        return success;
+    }
+    Base::Quantity validateAndInterpret(QString& input, int& pos, QValidator::State& state) const
+    {
+        Base::Quantity res;
+        const double max = this->maximum;
+        const double min = this->minimum;
+
+        QString copy = input;
+
+        int len = copy.size();
+
+        const bool plus = max >= 0;
+        const bool minus = min <= 0;
+
+        switch (len) {
+        case 0:
+            state = max != min ? QValidator::Intermediate : QValidator::Invalid;
+            goto end;
+        case 1:
+            if (copy.at(0) == locale.decimalPoint()) {
+                state = QValidator::Intermediate;
+                copy.prepend(QLatin1Char('0'));
+                pos++;
+                len++;
+                goto end;
+            }
+            else if (copy.at(0) == QLatin1Char('+')) {
+                // the quantity parser doesn't allow numbers of the form '+1.0'
+                state = QValidator::Invalid;
+                goto end;
+            }
+            else if (copy.at(0) == QLatin1Char('-')) {
+                if (minus)
+                    state = QValidator::Intermediate;
+                else
+                    state = QValidator::Invalid;
+                goto end;
+            }
+            break;
+        case 2:
+            if (copy.at(1) == locale.decimalPoint()
+                && (plus && copy.at(0) == QLatin1Char('+'))) {
+                state = QValidator::Intermediate;
+                goto end;
+            }
+            if (copy.at(1) == locale.decimalPoint()
+                && (minus && copy.at(0) == QLatin1Char('-'))) {
+                state = QValidator::Intermediate;
+                copy.insert(1, QLatin1Char('0'));
+                pos++;
+                len++;
+                goto end;
+            }
+            break;
+        default: break;
+        }
+
+        {
+            if (copy.at(0) == locale.groupSeparator()) {
+                state = QValidator::Invalid;
+                goto end;
+            }
+            else if (len > 1) {
+                bool decOccurred = false;
+                for (int i = 0; i<copy.size(); i++) {
+                    if (copy.at(i) == locale.decimalPoint()) {
+                        // Disallow multiple decimal points within the same numeric substring
+                        if (decOccurred) {
+                            state = QValidator::Invalid;
+                            goto end;
+                        }
+                        decOccurred = true;
+                    }
+                    // Reset decOcurred if non-numeric character found
+                    else if (!(copy.at(i) == locale.groupSeparator() || copy.at(i).isDigit())) {
+                        decOccurred = false;
+                    }
+                }
+            }
+
+            bool ok = false;
+            double value = min;
+
+            if (locale.negativeSign() != QLatin1Char('-'))
+                copy.replace(locale.negativeSign(), QLatin1Char('-'));
+            if (locale.positiveSign() != QLatin1Char('+'))
+                copy.replace(locale.positiveSign(), QLatin1Char('+'));
+
+            try {
+                QString copy2 = copy;
+                copy2.remove(locale.groupSeparator());
+
+                res = Base::Quantity::parse(copy2);
+                value = res.getValue();
+                ok = true;
+            }
+            catch (Base::Exception&) {
+            }
+
+            if (!ok) {
+                // input may not be finished
+                state = QValidator::Intermediate;
+            }
+            else if (value >= min && value <= max) {
+                if (copy.endsWith(locale.decimalPoint())) {
+                    // input shouldn't end with a decimal point
+                    state = QValidator::Intermediate;
+                }
+                else if (res.getUnit().isEmpty() && !this->unit.isEmpty()) {
+                    // if not dimensionless the input should have a dimension
+                    state = QValidator::Intermediate;
+                }
+                else if (res.getUnit() != this->unit) {
+                    state = QValidator::Invalid;
+                }
+                else {
+                    state = QValidator::Acceptable;
+                }
+            }
+            else if (max == min) { // when max and min is the same the only non-Invalid input is max (or min)
+                state = QValidator::Invalid;
+            }
+            else {
+                if ((value >= 0 && value > max) || (value < 0 && value < min)) {
+                    state = QValidator::Invalid;
+                }
+                else {
+                    state = QValidator::Intermediate;
+                }
+            }
+        }
+end:
+        if (state != QValidator::Acceptable) {
+            res.setValue(max > 0 ? min : max);
+        }
+
+        input = copy;
+        return res;
+    }
+
+    QLocale locale;
+    bool validInput;
+    bool pendingEmit;
+    QString validStr;
+    Base::Quantity quantity;
+    Base::Quantity cached;
+    Base::Unit unit;
+    double unitValue;
+    QString unitStr;
+    double maximum;
+    double minimum;
+    double singleStep;
+};
+}
+
+QuantitySpinBox::QuantitySpinBox(QWidget *parent)
+    : QAbstractSpinBox(parent),
+      d_ptr(new QuantitySpinBoxPrivate())
+{
+    d_ptr->locale = locale();
+    this->setContextMenuPolicy(Qt::DefaultContextMenu);
+    QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
+                     this, SLOT(userInput(QString)));
+    QObject::connect(this, SIGNAL(editingFinished()),
+                     this, SLOT(handlePendingEmit()));
 }
 
 QuantitySpinBox::~QuantitySpinBox()
 {
 }
 
-/// sets the field with a quantity
-void QuantitySpinBox::setValue(double quant)
+void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 {
-    Value = quant;
-    lineEdit()->setText(QString("%1 %2").arg(Value).arg(UnitStr));
+    QAbstractSpinBox::resizeEvent(event);
 }
 
-/// sets the field with a quantity
-double QuantitySpinBox::value() const
+void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
 {
-    return Value;
+    QAbstractSpinBox::keyPressEvent(event);
 }
 
-/// get the value of the singleStep property
-double QuantitySpinBox::singleStep(void)const
+
+void QuantitySpinBox::updateText(const Base::Quantity &quant)
 {
-    return StepSize;
+    Q_D(QuantitySpinBox);
+
+    double dFactor;
+    QString txt = getUserString(quant, dFactor, d->unitStr);
+    d->unitValue = quant.getValue()/dFactor;
+    lineEdit()->setText(txt);
+    handlePendingEmit();
 }
 
-/// set the value of the singleStep property 
-void QuantitySpinBox::setSingleStep(double s)
+Base::Quantity QuantitySpinBox::value() const
 {
-    StepSize = s;
+    Q_D(const QuantitySpinBox);
+    return d->quantity;
 }
 
-/// get the value of the maximum property
-double QuantitySpinBox::maximum(void)const
+double QuantitySpinBox::rawValue() const
 {
-    return Maximum;
+    Q_D(const QuantitySpinBox);
+    return d->quantity.getValue();
 }
 
-/// set the value of the maximum property 
-void QuantitySpinBox::setMaximum(double m)
+void QuantitySpinBox::setValue(const Base::Quantity& value)
 {
-    Maximum = m;
+    Q_D(QuantitySpinBox);
+    d->quantity = value;
+    // check limits
+    if (d->quantity.getValue() > d->maximum)
+        d->quantity.setValue(d->maximum);
+    if (d->quantity.getValue() < d->minimum)
+        d->quantity.setValue(d->minimum);
+
+    d->unit = value.getUnit();
+
+    updateText(value);
 }
 
-/// get the value of the minimum property
-double QuantitySpinBox::minimum(void)const
+void QuantitySpinBox::setValue(double value)
 {
-    return Minimum;
+    Q_D(QuantitySpinBox);
+    setValue(Base::Quantity(value, d->unit));
 }
 
-/// set the value of the minimum property 
-void QuantitySpinBox::setMinimum(double m)
+bool QuantitySpinBox::hasValidInput() const
 {
-    Minimum = m;
+    Q_D(const QuantitySpinBox);
+    return d->validInput;
+}
+
+// Gets called after call of 'validateAndInterpret'
+void QuantitySpinBox::userInput(const QString & text)
+{
+    Q_D(QuantitySpinBox);
+
+    d->pendingEmit = true;
+
+    QString tmp = text;
+    Base::Quantity res;
+    if (d->validate(tmp, res)) {
+        d->validStr = tmp;
+        d->validInput = true;
+    }
+    else {
+        d->validInput = false;
+        return;
+    }
+
+    if (keyboardTracking()) {
+        d->cached = res;
+        handlePendingEmit();
+    }
+    else {
+        d->cached = res;
+    }
+}
+
+void QuantitySpinBox::handlePendingEmit()
+{
+    updateFromCache(true);
+}
+
+void QuantitySpinBox::updateFromCache(bool notify)
+{
+    Q_D(QuantitySpinBox);
+    if (d->pendingEmit) {
+        double factor;
+        const Base::Quantity& res = d->cached;
+        QString text = getUserString(res, factor, d->unitStr);
+        d->unitValue = res.getValue() / factor;
+        d->quantity = res;
+
+        // signaling
+        if (notify) {
+            d->pendingEmit = false;
+            valueChanged(res);
+            valueChanged(res.getValue());
+            textChanged(text);
+        }
+    }
+}
+
+Base::Unit QuantitySpinBox::unit() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->unit;
+}
+
+void QuantitySpinBox::setUnit(const Base::Unit &unit)
+{
+    Q_D(QuantitySpinBox);
+
+    d->unit = unit;
+    d->quantity.setUnit(unit);
+    updateText(d->quantity);
+}
+
+void QuantitySpinBox::setUnitText(const QString& str)
+{
+    try {
+        Base::Quantity quant = Base::Quantity::parse(str);
+        setUnit(quant.getUnit());
+    }
+    catch (const Base::Exception&) {
+    }
+}
+
+QString QuantitySpinBox::unitText(void)
+{
+    Q_D(QuantitySpinBox);
+    return d->unitStr;
+}
+
+double QuantitySpinBox::singleStep() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->singleStep;
+}
+
+void QuantitySpinBox::setSingleStep(double value)
+{
+    Q_D(QuantitySpinBox);
+
+    if (value >= 0) {
+        d->singleStep = value;
+    }
+}
+
+double QuantitySpinBox::minimum() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->minimum;
+}
+
+void QuantitySpinBox::setMinimum(double minimum)
+{
+    Q_D(QuantitySpinBox);
+    d->minimum = minimum;
+}
+
+double QuantitySpinBox::maximum() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->maximum;
+}
+
+void QuantitySpinBox::setMaximum(double maximum)
+{
+    Q_D(QuantitySpinBox);
+    d->maximum = maximum;
+}
+
+void QuantitySpinBox::setRange(double minimum, double maximum)
+{
+    Q_D(QuantitySpinBox);
+    d->minimum = minimum;
+    d->maximum = maximum;
+}
+
+int QuantitySpinBox::decimals() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->quantity.getFormat().precision;
+}
+
+void QuantitySpinBox::setDecimals(int v)
+{
+    Q_D(QuantitySpinBox);
+    Base::QuantityFormat f = d->quantity.getFormat();
+    f.precision = v;
+    d->quantity.setFormat(f);
+    updateText(d->quantity);
+}
+
+void QuantitySpinBox::clearSchema()
+{
+    Q_D(QuantitySpinBox);
+    updateText(d->quantity);
+}
+
+QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
+{
+    return val.getUserString(factor, unitString);
+}
+
+QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
+{
+    return val.getUserString();
 }
 
 QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 {
-    if (isReadOnly())
+    Q_D(const QuantitySpinBox);
+    if (isReadOnly()/* || !d->validInput*/)
         return StepNone;
     if (wrapping())
         return StepEnabled(StepUpEnabled | StepDownEnabled);
     StepEnabled ret = StepNone;
-    if (Value < Maximum) {
+    if (d->quantity.getValue() < d->maximum) {
         ret |= StepUpEnabled;
     }
-    if (Value > Minimum) {
+    if (d->quantity.getValue() > d->minimum) {
         ret |= StepDownEnabled;
     }
     return ret;
@@ -603,26 +1116,183 @@ QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 
 void QuantitySpinBox::stepBy(int steps)
 {
-    double step = StepSize * steps;
-    double val = Value + step;
-    if (val > Maximum)
-        val = Maximum;
-    else if (val < Minimum)
-        val = Minimum;
+    Q_D(QuantitySpinBox);
+    updateFromCache(false);
 
-    lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(UnitStr));
+    double step = d->singleStep * steps;
+    double val = d->unitValue + step;
+    if (val > d->maximum)
+        val = d->maximum;
+    else if (val < d->minimum)
+        val = d->minimum;
+
+    lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
+    updateFromCache(true);
     update();
+    selectNumber();
 }
 
-void QuantitySpinBox::setUnitText(QString str)
+QSize QuantitySpinBox::sizeHint() const
 {
-    UnitStr = str;
-    lineEdit()->setText(QString("%1 %2").arg(Value).arg(UnitStr));
+    return QAbstractSpinBox::sizeHint();
 }
 
-QString QuantitySpinBox::unitText(void)
+QSize QuantitySpinBox::minimumSizeHint() const
 {
-    return UnitStr;
+    return QAbstractSpinBox::minimumSizeHint();
+}
+
+void QuantitySpinBox::showEvent(QShowEvent * event)
+{
+    Q_D(QuantitySpinBox);
+
+    QAbstractSpinBox::showEvent(event);
+
+    bool selected = lineEdit()->hasSelectedText();
+    updateText(d->quantity);
+    if (selected)
+        selectNumber();
+}
+
+void QuantitySpinBox::hideEvent(QHideEvent * event)
+{
+    handlePendingEmit();
+    QAbstractSpinBox::hideEvent(event);
+}
+
+void QuantitySpinBox::closeEvent(QCloseEvent * event)
+{
+    handlePendingEmit();
+    QAbstractSpinBox::closeEvent(event);
+}
+
+bool QuantitySpinBox::event(QEvent * event)
+{
+    // issue #0004059: Tooltips for Gui::QuantitySpinBox not showing
+    // Here we must not try to show the tooltip of the icon label
+    // because it would override a custom tooltip set to this widget.
+    //
+    // We could also check if the text of this tooltip is empty but
+    // it will fail in cases where the widget is embedded into the
+    // property editor and the corresponding item has set a tooltip.
+    // Instead of showing the item's tooltip it will again show the
+    // tooltip of the icon label.
+#if 0
+    if (event->type() == QEvent::ToolTip) {
+        if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
+            QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
+
+            QToolTip::showText( helpEvent->globalPos(), Base::Tools::fromStdString(getExpression()->toString()), this);
+            event->accept();
+            return true;
+        }
+    }
+#endif
+
+    return QAbstractSpinBox::event(event);
+}
+
+void QuantitySpinBox::focusInEvent(QFocusEvent * event)
+{
+    bool hasSel = lineEdit()->hasSelectedText();
+    QAbstractSpinBox::focusInEvent(event);
+
+    if (event->reason() == Qt::TabFocusReason ||
+        event->reason() == Qt::BacktabFocusReason  ||
+        event->reason() == Qt::ShortcutFocusReason) {
+
+        if (!hasSel)
+            selectNumber();
+    }
+}
+
+void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
+{
+    Q_D(QuantitySpinBox);
+
+    int pos = 0;
+    QString text = lineEdit()->text();
+    QValidator::State state;
+    d->validateAndInterpret(text, pos, state);
+    if (state != QValidator::Acceptable) {
+        lineEdit()->setText(d->validStr);
+    }
+
+    handlePendingEmit();
+
+    QToolTip::hideText();
+    QAbstractSpinBox::focusOutEvent(event);
+}
+
+void QuantitySpinBox::clear()
+{
+    QAbstractSpinBox::clear();
+}
+
+void QuantitySpinBox::selectNumber()
+{
+    QString str = lineEdit()->text();
+    unsigned int i = 0;
+
+    QChar d = locale().decimalPoint();
+    QChar g = locale().groupSeparator();
+    QChar n = locale().negativeSign();
+
+    for (QString::iterator it = str.begin(); it != str.end(); ++it) {
+        if (it->isDigit())
+            i++;
+        else if (*it == d)
+            i++;
+        else if (*it == g)
+            i++;
+        else if (*it == n)
+            i++;
+        else // any non-number character
+            break;
+    }
+
+    lineEdit()->setSelection(0, i);
+}
+
+QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
+{
+    double factor;
+    QString unitStr;
+    QString str = getUserString(value, factor, unitStr);
+    if (qAbs(value.getValue()) >= 1000.0) {
+        str.remove(locale().groupSeparator());
+    }
+    return str;
+}
+
+Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
+{
+    Q_D(const QuantitySpinBox);
+
+    QString copy = text;
+    int pos = lineEdit()->cursorPosition();
+    QValidator::State state = QValidator::Acceptable;
+    Base::Quantity quant = d->validateAndInterpret(copy, pos, state);
+    if (state != QValidator::Acceptable) {
+        fixup(copy);
+        quant = d->validateAndInterpret(copy, pos, state);
+    }
+
+    return quant;
+}
+
+QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
+{
+    Q_D(const QuantitySpinBox);
+
+    QValidator::State state;
+    d->validateAndInterpret(text, pos, state);
+    return state;
+}
+
+void QuantitySpinBox::fixup(QString &input) const
+{
+    input.remove(locale().groupSeparator());
 }
 
 // ------------------------------------------------------------------------------
@@ -652,6 +1322,37 @@ void PrefUnitSpinBox::setEntryName ( const QByteArray& name )
 }
 
 void PrefUnitSpinBox::setParamGrpPath ( const QByteArray& name )
+{
+    m_sPrefGrp = name;
+}
+
+// --------------------------------------------------------------------
+
+PrefQuantitySpinBox::PrefQuantitySpinBox(QWidget* parent)
+    : QuantitySpinBox(parent)
+{
+}
+
+PrefQuantitySpinBox::~PrefQuantitySpinBox()
+{
+}
+
+QByteArray PrefQuantitySpinBox::entryName() const
+{
+    return m_sPrefName;
+}
+
+QByteArray PrefQuantitySpinBox::paramGrpPath() const
+{
+    return m_sPrefGrp;
+}
+
+void PrefQuantitySpinBox::setEntryName(const QByteArray& name)
+{
+    m_sPrefName = name;
+}
+
+void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
@@ -925,6 +1626,18 @@ void UIntSpinBox::updateValidator()
 
 // --------------------------------------------------------------------
 
+IntSpinBox::IntSpinBox(QWidget* parent)
+  : QSpinBox(parent)
+{
+}
+
+IntSpinBox::~IntSpinBox()
+{
+
+}
+
+// --------------------------------------------------------------------
+
 PrefSpinBox::PrefSpinBox ( QWidget * parent )
   : QSpinBox(parent)
 {
@@ -952,6 +1665,17 @@ void PrefSpinBox::setEntryName ( const QByteArray& name )
 void PrefSpinBox::setParamGrpPath ( const QByteArray& name )
 {
     m_sPrefGrp = name;
+}
+
+// --------------------------------------------------------------------
+
+DoubleSpinBox::DoubleSpinBox(QWidget* parent)
+  : QDoubleSpinBox(parent)
+{
+}
+
+DoubleSpinBox::~DoubleSpinBox()
+{
 }
 
 // --------------------------------------------------------------------

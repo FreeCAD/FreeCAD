@@ -42,6 +42,7 @@
 # include <Geom2dAPI_InterCurveCurve.hxx>
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <GeomAPI.hxx>
+# include <GeomAdaptor.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -977,7 +978,7 @@ AttachEngine3D* AttachEngine3D::copy() const
     return p;
 }
 
-Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     const eMapMode mmode = this->mapMode;
     if (mmode == mmDeactivated)
@@ -1627,7 +1628,7 @@ AttachEnginePlane *AttachEnginePlane::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePlane::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePlane::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     //re-use Attacher3d
     Base::Placement plm;
@@ -1691,7 +1692,7 @@ AttachEngineLine *AttachEngineLine::copy() const
     return p;
 }
 
-Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -1960,7 +1961,7 @@ AttachEnginePoint *AttachEnginePoint::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -2107,9 +2108,35 @@ gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& 
 
         // edge and face
         if (!edge.IsNull() && !face.IsNull()) {
+
             BRepAdaptor_Curve crv(TopoDS::Edge(edge));
+
+            GeomAdaptor_Curve typedcrv;
+            try {
+                // Important note about BRepIntCurveSurface_Inter and GeomAdaptor_Curve
+                //
+                // A GeomAdaptor_Curve obtained directly from BRepAdaptor_Curve will lose the information
+                // about Location/orientation of the edge.
+                //
+                // That's why GeomAdaptor::MakeCurve() is used to create a new geometry with the
+                // transformation applied.
+                typedcrv.Load(GeomAdaptor::MakeCurve(crv));
+            }
+            catch (const Standard_DomainError&) {
+                Handle(Geom_Curve) curve = crv.Curve().Curve();
+                if (curve.IsNull()) {
+                    // Can this ever happen?
+                    typedcrv = crv.Curve();
+                }
+                else {
+                    curve = Handle(Geom_Curve)::DownCast(curve->Copy());
+                    curve->Transform(crv.Trsf());
+                    typedcrv.Load(curve);
+                }
+            }
+
             BRepIntCurveSurface_Inter intCS;
-            intCS.Init(face, crv.Curve(), Precision::Confusion());
+            intCS.Init(face, typedcrv, Precision::Confusion());
             std::vector<gp_Pnt> points;
             for (; intCS.More(); intCS.Next()) {
                 gp_Pnt pnt = intCS.Pnt();

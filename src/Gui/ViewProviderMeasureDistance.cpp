@@ -59,7 +59,7 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderMeasureDistance, Gui::ViewProviderDocumentObject)
 
 
-ViewProviderMeasureDistance::ViewProviderMeasureDistance() 
+ViewProviderMeasureDistance::ViewProviderMeasureDistance()
 {
     ADD_PROPERTY(TextColor,(1.0f,1.0f,1.0f));
     ADD_PROPERTY(LineColor,(1.0f,1.0f,1.0f));
@@ -171,7 +171,7 @@ void ViewProviderMeasureDistance::attach(App::DocumentObject* pcObject)
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
     SoMarkerSet* points = new SoMarkerSet();
-    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", 
+    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
             ViewParams::instance()->getMarkerSize());
     points->numPoints=2;
     lineSep->addChild(points);
@@ -265,7 +265,7 @@ int PointMarker::countPoints() const
 void PointMarker::customEvent(QEvent*)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    doc->openCommand("Measure distance");
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Measure distance"));
     App::DocumentObject* obj = doc->getDocument()->addObject
         (App::MeasureDistance::getClassTypeId().getName(),"Distance");
 

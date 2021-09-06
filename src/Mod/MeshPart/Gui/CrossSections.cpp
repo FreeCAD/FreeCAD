@@ -36,7 +36,7 @@
 # include <QKeyEvent>
 # include <QMessageBox>
 # include <QtConcurrentMap>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Python.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -63,6 +63,7 @@
 #include <Base/UnitsApi.h>
 
 using namespace MeshPartGui;
+namespace bp = boost::placeholders;
 
 namespace MeshPartGui {
 class ViewProviderCrossSections : public Gui::ViewProvider
@@ -274,7 +275,7 @@ void CrossSections::apply()
 
         MeshCrossSection cs(kernel, grid, a, b, c, connectEdges, eps);
         QFuture< std::list<TopoDS_Wire> > future = QtConcurrent::mapped
-            (d, boost::bind(&MeshCrossSection::section, &cs, _1));
+            (d, boost::bind(&MeshCrossSection::section, &cs, bp::_1));
         future.waitForFinished();
 
         TopoDS_Compound comp;
@@ -584,7 +585,7 @@ TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
 {
     widget = new CrossSections(bb);
     taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_CrossSections"),
+        Gui::BitmapFactory().pixmap("Mesh_CrossSections"),
         widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

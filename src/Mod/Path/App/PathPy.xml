@@ -78,6 +78,11 @@ deletes the command found at the given position or from the end of the path</Use
                 <UserDocu>returns a copy of this path</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getCycleTime" Const="true">
+            <Documentation>
+                <UserDocu>return the cycle time estimation for this path in s</UserDocu>
+            </Documentation>
+        </Methode>
         <!--<ClassDeclarations>
             bool touched;
         </ClassDeclarations>-->

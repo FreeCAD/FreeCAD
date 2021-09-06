@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QElapsedTimer>
 # include <QGenericReturnArgument>
 # include <QKeyEvent>
 # include <QMessageBox>
@@ -34,7 +35,11 @@
 # include <QTimer>
 #endif
 
+#include <QWindow>
+
+
 #include "ProgressBar.h"
+#include "ProgressDialog.h"
 #include "MainWindow.h"
 #include "WaitCursor.h"
 
@@ -46,9 +51,9 @@ struct SequencerBarPrivate
 {
     ProgressBar* bar;
     WaitCursor* waitCursor;
-    QTime measureTime;
-    QTime progressTime;
-    QTime checkAbortTime;
+    QElapsedTimer measureTime;
+    QElapsedTimer progressTime;
+    QElapsedTimer checkAbortTime;
     QString text;
     bool guiThread;
 };
@@ -62,9 +67,17 @@ struct ProgressBarPrivate
     bool isModalDialog(QObject* o) const
     {
         QWidget* parent = qobject_cast<QWidget*>(o);
+        if (!parent) {
+            QWindow* window = qobject_cast<QWindow*>(o);
+            if (window)
+                parent = QWidget::find(window->winId());
+        }
         while (parent) {
             QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
             if (dlg && dlg->isModal())
+                return true;
+            QProgressDialog* pd = qobject_cast<QProgressDialog*>(parent);
+            if (pd)
                 return true;
             parent = parent->parentWidget();
         }
@@ -213,7 +226,15 @@ void SequencerBar::nextStep(bool canAbort)
 
 void SequencerBar::setProgress(size_t step)
 {
-    d->bar->show();
+    QThread* currentThread = QThread::currentThread();
+    QThread* thr = d->bar->thread(); // this is the main thread
+    if (thr != currentThread) {
+        QMetaObject::invokeMethod(d->bar, "show", Qt::QueuedConnection);
+    }
+    else {
+        d->bar->show();
+    }
+
     setValue((int)step);
 }
 
@@ -498,17 +519,25 @@ void ProgressBar::enterControlEvents(bool grab)
 
     // Make sure that we get the key events, otherwise the Inventor viewer usurps the key events
     // This also disables accelerators.
+#if defined(Q_OS_LINUX)
+    Q_UNUSED(grab)
+#else
     if (grab)
         grabKeyboard();
+#endif
 }
 
 void ProgressBar::leaveControlEvents(bool release)
 {
     qApp->removeEventFilter(this);
 
+#if defined(Q_OS_LINUX)
+    Q_UNUSED(release)
+#else
     // release the keyboard again
     if (release)
         releaseKeyboard();
+#endif
 }
 
 #ifdef QT_WINEXTRAS_LIB
@@ -576,7 +605,8 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         case QEvent::NativeGesture:
         case QEvent::ContextMenu:
             {
-                return true;
+                if (!d->isModalDialog(o))
+                    return true;
             }   break;
 
         // special case if the main window's close button was pressed
@@ -593,10 +623,10 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         // do a system beep and ignore the event
         case QEvent::MouseButtonPress:
             {
-                if (d->isModalDialog(o))
-                    return false;
-                QApplication::beep();
-                return true;
+                if (!d->isModalDialog(o)) {
+                    QApplication::beep();
+                    return true;
+                }
             }   break;
 
         default:

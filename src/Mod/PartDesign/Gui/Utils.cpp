@@ -35,6 +35,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderPart.h>
@@ -85,8 +86,10 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         subname += obj->getNameInDocument();
         subname += '.';
     }
-    _FCMD_OBJ_DOC_CMD(Gui,parent,"setEdit(" << Gui::Command::getObjectCmd(parent) 
-            << ",0,'" << subname << "')");
+
+    Gui::cmdGuiDocument(parent, std::ostringstream() << "setEdit("
+                                                     << Gui::Command::getObjectCmd(parent)
+                                                     << ", 0, '" << subname << "')");
     return true;
 }
 
@@ -440,7 +443,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
         auto prim = static_cast<PartDesign::ProfileBased*>(feat);
         auto sk = prim->getVerifiedSketch(true);
 
-        if (!isFeatureMovable(static_cast<App::DocumentObject*>(sk)))
+        if (!isFeatureMovable(sk))
             return false;
 
         if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
@@ -450,19 +453,19 @@ bool isFeatureMovable(App::DocumentObject* const feat)
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
             App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            if (axis && !isFeatureMovable(axis))
                 return false;
         }
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
-            App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            App::DocumentObject* spine = prop->getValue();
+            if (spine && !isFeatureMovable(spine))
                 return false;
         }
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
-            App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            App::DocumentObject* auxSpine = prop->getValue();
+            if (auxSpine && !isFeatureMovable(auxSpine))
                 return false;
         }
 

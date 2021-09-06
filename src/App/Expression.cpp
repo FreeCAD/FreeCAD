@@ -31,6 +31,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/io/ios_state.hpp>
 
 #include <Base/Console.h>
 #include "Base/Exception.h"
@@ -350,23 +351,25 @@ static inline bool definitelyLessThan(T a, T b)
 
 static inline int essentiallyInteger(double a, long &l, int &i) {
     double intpart;
-    if(std::modf(a,&intpart) == 0.0) {
-        if(intpart<0.0) {
-            if(intpart >= INT_MIN) {
-                i = (int)intpart;
+    if (std::modf(a,&intpart) == 0.0) {
+        if (intpart<0.0) {
+            if (intpart >= INT_MIN) {
+                i = static_cast<int>(intpart);
                 l = i;
                 return 1;
             }
-            if(intpart >= LONG_MIN) {
-                l = (long)intpart;
+            if (intpart >= LONG_MIN) {
+                l = static_cast<long>(intpart);
                 return 2;
             }
-        }else if(intpart <= INT_MAX) {
-            i = (int)intpart;
+        }
+        else if (intpart <= INT_MAX) {
+            i = static_cast<int>(intpart);
             l = i;
             return 1;
-        }else if(intpart <= LONG_MAX) {
-            l = (int)intpart;
+        }
+        else if (intpart <= static_cast<double>(LONG_MAX)) {
+            l = static_cast<int>(intpart);
             return 2;
         }
     }
@@ -375,14 +378,15 @@ static inline int essentiallyInteger(double a, long &l, int &i) {
 
 static inline bool essentiallyInteger(double a, long &l) {
     double intpart;
-    if(std::modf(a,&intpart) == 0.0) {
-        if(intpart<0.0) {
-            if(intpart >= LONG_MIN) {
-                l = (long)intpart;
+    if (std::modf(a,&intpart) == 0.0) {
+        if (intpart<0.0) {
+            if (intpart >= LONG_MIN) {
+                l = static_cast<long>(intpart);
                 return true;
             }
-        }else if(intpart <= LONG_MAX) {
-            l = (long)intpart;
+        }
+        else if (intpart <= static_cast<double>(LONG_MAX)) {
+            l = static_cast<long>(intpart);
             return true;
         }
     }
@@ -441,17 +445,8 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     else if (is_type(value,typeid(float)))
         return Py::Float(cast<float>(value));
     else if (is_type(value,typeid(int)))
-#if PY_MAJOR_VERSION < 3
-        return Py::Int(cast<int>(value));
-#else
         return Py::Long(cast<int>(value));
-#endif
     else if (is_type(value,typeid(long))) {
-#if PY_MAJOR_VERSION < 3
-        long l = cast<long>(value);
-        if(std::abs(l)<=INT_MAX)
-            return Py::Int(int(l));
-#endif
         return Py::Long(cast<long>(value));
     } else if (is_type(value,typeid(bool)))
         return Py::Boolean(cast<bool>(value));
@@ -486,23 +481,8 @@ App::any pyObjectToAny(Py::Object value, bool check) {
     }
     if (PyFloat_Check(pyvalue))
         return App::any(PyFloat_AsDouble(pyvalue));
-#if PY_MAJOR_VERSION < 3
-    if (PyInt_Check(pyvalue))
-        return App::any(PyInt_AsLong(pyvalue));
-#endif
     if (PyLong_Check(pyvalue))
         return App::any(PyLong_AsLong(pyvalue));
-#if PY_MAJOR_VERSION < 3
-    else if (PyString_Check(pyvalue))
-        return App::any(std::string(PyString_AsString(pyvalue)));
-    else if (PyUnicode_Check(pyvalue)) {
-        PyObject * s = PyUnicode_AsUTF8String(pyvalue);
-        if(!s)
-            FC_THROWM(Base::ValueError,"Invalid unicode string");
-        Py::Object o(s,true);
-        return App::any(std::string(PyString_AsString(s)));
-    }
-#else
     else if (PyUnicode_Check(pyvalue)) {
         const char* value = PyUnicode_AsUTF8(pyvalue);
         if (!value) {
@@ -510,7 +490,6 @@ App::any pyObjectToAny(Py::Object value, bool check) {
         }
         return App::any(std::string(value));
     }
-#endif
     else {
         return App::any(pyObjectWrap(pyvalue));
     }
@@ -521,10 +500,6 @@ bool pyToQuantity(Quantity &q, const Py::Object &pyobj) {
         q = *static_cast<Base::QuantityPy*>(*pyobj)->getQuantityPtr();
     else if (PyFloat_Check(*pyobj))
         q = Quantity(PyFloat_AsDouble(*pyobj));
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(*pyobj))
-        q = Quantity(PyInt_AsLong(*pyobj));
-#endif
     else if (PyLong_Check(*pyobj))
         q = Quantity(PyLong_AsLong(*pyobj));
     else
@@ -552,9 +527,6 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
     int i;
     switch(essentiallyInteger(v,l,i)) {
     case 1:
-#if PY_MAJOR_VERSION < 3
-        return Py::Int(i);
-#endif
     case 2:
         return Py::Long(l);
     default:
@@ -827,18 +799,21 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
 
 void Expression::Component::del(const Expression *owner, Py::Object &pyobj) const {
     try {
-        if(!e1 && !e2 && !e3) {
+        if (!e1 && !e2 && !e3) {
             comp.del(pyobj);
-        } if(!comp.isRange() && !e2 && !e3) {
+        }
+        else if (!comp.isRange() && !e2 && !e3) {
             auto index = e1->getPyValue();
-            if(pyobj.isMapping())
+            if (pyobj.isMapping()) {
                 Py::Mapping(pyobj).delItem(index);
+            }
             else {
                 Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
-                if(PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
+                if (PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
                     throw Py::Exception();
             }
-        }else{
+        }
+        else {
             Py::Object v1,v2,v3;
             if(e1) v1 = e1->getPyValue();
             if(e2) v2 = e2->getPyValue();
@@ -846,13 +821,14 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
             PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
                                       e2?v2.ptr():nullptr,
                                       e3?v3.ptr():nullptr);
-            if(!s)
+            if (!s)
                 throw Py::Exception();
             Py::Object slice(s,true);
-            if(PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
+            if (PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
                 throw Py::Exception();
         }
-    }catch(Py::Exception &) {
+    }
+    catch(Py::Exception &) {
         EXPR_PY_THROW(owner);
     }
 }
@@ -1355,6 +1331,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
     // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
     // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
+    boost::io::ios_flags_saver ifs(ss);
     ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << getValue();
 
     /* Trim of any extra spaces */
@@ -1470,30 +1447,6 @@ static Py::Object calc(const Expression *expr, int op,
     BINARY_OP(DIV,TrueDivide)
     case OperatorExpression::ADD: {
         PyObject *res;
-#if PY_MAJOR_VERSION < 3
-        if (PyString_CheckExact(*l) && PyString_CheckExact(*r)) {
-            Py_ssize_t v_len = PyString_GET_SIZE(*l);
-            Py_ssize_t w_len = PyString_GET_SIZE(*r);
-            Py_ssize_t new_len = v_len + w_len;
-            if (new_len < 0)
-                __EXPR_THROW(OverflowError, "strings are too large to concat", expr);
-
-            if (l.ptr()->ob_refcnt==1 && !PyString_CHECK_INTERNED(l.ptr())) {
-                res = Py::new_reference_to(l);
-                // Must make sure ob_refcnt is still 1
-                l = Py::Object();
-                if (_PyString_Resize(&res, new_len) != 0)
-                    EXPR_PY_THROW(expr);
-                memcpy(PyString_AS_STRING(res) + v_len, PyString_AS_STRING(*r), w_len);
-            }else{
-                res = Py::new_reference_to(l);
-                l = Py::Object();
-                PyString_Concat(&res,*r);
-                if(!res) EXPR_PY_THROW(expr);
-            }
-            return Py::asObject(res);
-        }
-#else
         if (PyUnicode_CheckExact(*l) && PyUnicode_CheckExact(*r)) {
             if(inplace) {
                 res = Py::new_reference_to(l);
@@ -1507,7 +1460,6 @@ static Py::Object calc(const Expression *expr, int op,
             if(!res) EXPR_PY_THROW(expr);
             return Py::asObject(res);
         }
-#endif
         _BINARY_OP(Add);
     }
     case OperatorExpression::POW: {
@@ -1521,15 +1473,9 @@ static Py::Object calc(const Expression *expr, int op,
     }
     case OperatorExpression::MOD: {
         PyObject *res;
-#if PY_MAJOR_VERSION < 3
-        if (PyString_CheckExact(l.ptr()) &&
-                (!PyString_Check(r.ptr()) || PyString_CheckExact(r.ptr())))
-            res = PyString_Format(l.ptr(), r.ptr());
-#else
         if (PyUnicode_CheckExact(l.ptr()) &&
                 (!PyUnicode_Check(r.ptr()) || PyUnicode_CheckExact(r.ptr())))
             res = PyUnicode_Format(l.ptr(), r.ptr());
-#endif
         else if(inplace)
             res = PyNumber_InPlaceRemainder(l.ptr(),r.ptr());
         else
@@ -1763,66 +1709,12 @@ bool OperatorExpression::isRightAssociative() const
 
 TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression)
 
-FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::vector<Expression *> _args)
+FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::string &&name, std::vector<Expression *> _args)
     : UnitExpression(_owner)
     , f(_f)
+    , fname(std::move(name))
     , args(_args)
 {
-    switch (f) {
-    case ACOS:
-    case ASIN:
-    case ATAN:
-    case ABS:
-    case EXP:
-    case LOG:
-    case LOG10:
-    case SIN:
-    case SINH:
-    case TAN:
-    case TANH:
-    case SQRT:
-    case COS:
-    case COSH:
-    case ROUND:
-    case TRUNC:
-    case CEIL:
-    case FLOOR:
-    case MINVERT:
-        if (args.size() != 1)
-            EXPR_THROW("Invalid number of arguments: exactly one required.");
-        break;
-    case MOD:
-    case ATAN2:
-    case POW:
-        if (args.size() != 2)
-            EXPR_THROW("Invalid number of arguments: exactly two required.");
-        break;
-    case HYPOT:
-    case CATH:
-        if (args.size() < 2 || args.size() > 3)
-            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
-        break;
-    case STDDEV:
-    case SUM:
-    case AVERAGE:
-    case COUNT:
-    case MIN:
-    case MAX:
-    case CREATE:
-    case MSCALE:
-        if (args.size() == 0)
-            EXPR_THROW("Invalid number of arguments: at least one required.");
-        break;
-    case LIST:
-    case TUPLE:
-        break;
-    case NONE:
-    case AGGREGATES:
-    case LAST:
-    default:
-        EXPR_THROW("Unknown function");
-        break;
-    }
 }
 
 FunctionExpression::~FunctionExpression()
@@ -1859,6 +1751,7 @@ bool FunctionExpression::isTouched() const
 class Collector {
 public:
     Collector() : first(true) { }
+    virtual ~Collector() {}
     virtual void collect(Quantity value) {
         if (first)
             q.setUnit(value.getUnit());
@@ -2095,7 +1988,6 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
     if (f == MINVERT) {
         Py::Object pyobj = args[0]->getPyValue();
-        Py::Tuple args;
         if (PyObject_TypeCheck(pyobj.ptr(),&Base::MatrixPy::Type)) {
             auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
             if (fabs(m.determinant()) <= DBL_EPSILON)
@@ -2389,7 +2281,7 @@ Expression *FunctionExpression::simplify() const
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, a);
+        return new FunctionExpression(owner, f, std::string(fname), a);
 }
 
 /**
@@ -2470,7 +2362,7 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
     case CREATE:
         ss << "create("; break;;
     default:
-        assert(0);
+        ss << fname << "("; break;;
     }
     for (size_t i = 0; i < args.size(); ++i) {
         ss << args[i]->toString(persistent);
@@ -2495,7 +2387,7 @@ Expression *FunctionExpression::_copy() const
         a.push_back((*i)->copy());
         ++i;
     }
-    return new FunctionExpression(owner, f, a);
+    return new FunctionExpression(owner, f, std::string(fname), a);
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
@@ -2514,7 +2406,7 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression)
 
-VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier _var)
+VariableExpression::VariableExpression(const DocumentObject *_owner, const ObjectIdentifier& _var)
     : UnitExpression(_owner)
     , var(_var)
 {
@@ -3042,7 +2934,7 @@ Range RangeExpression::getRange() const
 {
     auto c1 = stringToAddress(begin.c_str(),true);
     auto c2 = stringToAddress(end.c_str(),true);
-    if(c1.isValid() && c1.isValid())
+    if(c1.isValid() && c2.isValid())
         return Range(c1,c2);
 
     Base::PyGILStateLocker lock;
@@ -3303,16 +3195,16 @@ static void initParser(const App::DocumentObject *owner)
     }
 }
 
-std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &str)
+std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    std::vector<boost::tuple<int, int, std::string> > result;
+    std::vector<std::tuple<int, int, std::string> > result;
     int token;
 
     column = 0;
     try {
         while ( (token  = ExpressionParserlex()) != 0)
-            result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+            result.push_back(std::make_tuple(token, ExpressionParser::last_column, yytext));
     }
     catch (...) {
         // Ignore all exceptions

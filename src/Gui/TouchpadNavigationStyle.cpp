@@ -36,8 +36,6 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
-
 #include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -157,11 +155,11 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->setViewing(true);
             break;
         case SoKeyboardEvent::PAGE_UP:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
             processed = true;
             break;
         case SoKeyboardEvent::PAGE_DOWN:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
             processed = true;
             break;
         default:
@@ -227,8 +225,8 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockrecenter = true;
             if (!viewer->isEditing()) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events 
-                if (this->currentmode != NavigationStyle::ZOOMING && 
+                // the canvas doesn't get any release events
+                if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {
@@ -247,14 +245,6 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed = true;
             }
             this->button2down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON4:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-            processed = true;
-            break;
-        case SoMouseButtonEvent::BUTTON5:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-            processed = true;
             break;
         default:
             break;
@@ -320,6 +310,12 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::IDLE;
         break;
     case SHIFTDOWN:
+        // Shift + left mouse click enables dragging.
+        // If the mouse is released the event should not be forwarded to the base
+        // class that eventually performs a selection.
+        if (newmode == NavigationStyle::DRAGGING) {
+            processed = true;
+        }
         newmode = NavigationStyle::PANNING;
         break;
     case ALTDOWN:
@@ -330,6 +326,12 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     case CTRLDOWN|SHIFTDOWN:
     case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
+        // Left mouse button doesn't change the zoom
+        // behaviour but when pressing or releasing it then do not forward the
+        // event to the base class that eventually performs a selection.
+        if (newmode == NavigationStyle::ZOOMING) {
+            processed = true;
+        }
         newmode = NavigationStyle::ZOOMING;
         break;
     default:

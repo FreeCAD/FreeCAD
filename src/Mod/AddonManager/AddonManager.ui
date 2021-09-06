@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Addons manager</string>
+   <string>Addon Manager</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
@@ -154,7 +154,7 @@
      <item>
       <widget class="QPushButton" name="buttonClose">
        <property name="toolTip">
-        <string>Close the addons manager</string>
+        <string>Close the Addon Manager</string>
        </property>
        <property name="text">
         <string>Close</string>

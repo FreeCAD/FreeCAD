@@ -36,6 +36,7 @@
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
+#include <TopoDS_Face.hxx>
 
 namespace TechDraw {
 
@@ -132,8 +133,9 @@ typedef std::vector<BaseGeom *> BaseGeomPtrVector;        //obs?
 class TechDrawExport Circle: public BaseGeom
 {
     public:
-        Circle(const TopoDS_Edge &e);
         Circle(void);
+        Circle(const TopoDS_Edge &e);
+        Circle(Base::Vector3d center, double radius);
         ~Circle() = default;
 
     public:
@@ -149,7 +151,8 @@ class TechDrawExport Circle: public BaseGeom
 class TechDrawExport Ellipse: public BaseGeom
 {
     public:
-        Ellipse(const TopoDS_Edge &e);
+    Ellipse(const TopoDS_Edge &e);
+    Ellipse(Base::Vector3d c, double mnr,  double mjr);
         ~Ellipse() = default;
 
     public:
@@ -187,6 +190,7 @@ class TechDrawExport AOC: public Circle
 {
     public:
         AOC(const TopoDS_Edge &e);
+        AOC(Base::Vector3d c, double r, double s, double e);
         AOC(void);
         ~AOC() = default;
 
@@ -279,6 +283,8 @@ class TechDrawExport Wire
         Wire(const TopoDS_Wire &w);
         ~Wire();
 
+        TopoDS_Wire toOccWire(void) const;
+        void dump(std::string s);
         std::vector<BaseGeom *> geoms;
 };
 
@@ -288,7 +294,7 @@ class TechDrawExport Face
     public:
         Face() = default;
         ~Face();
-
+        TopoDS_Face toOccFace(void) const;
         std::vector<Wire *> wires;
 };
 

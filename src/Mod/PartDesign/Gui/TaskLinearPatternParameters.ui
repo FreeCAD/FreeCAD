@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>270</width>
-    <height>366</height>
+    <height>339</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetFeatures"/>
+    <widget class="QListWidget" name="listWidgetFeatures">
+     <property name="toolTip">
+      <string>List can be reordered by dragging</string>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -72,11 +79,14 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinLength" native="true">
+      <widget class="Gui::QuantitySpinBox" name="spinLength">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>100.000000000000000</double>
        </property>
       </widget>
@@ -93,7 +103,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::UIntSpinBox" name="spinOccurrences" native="true"/>
+      <widget class="Gui::UIntSpinBox" name="spinOccurrences"/>
      </item>
     </layout>
    </item>
@@ -118,19 +128,6 @@
      </property>
     </widget>
    </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -141,11 +138,44 @@
   </customwidget>
   <customwidget>
    <class>Gui::UIntSpinBox</class>
-   <extends>QWidget</extends>
-   <header location="global">Gui/SpinBox.h</header>
+   <extends>QSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonAddFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonRemoveFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>70</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>198</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRemoveFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonAddFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>198</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>70</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

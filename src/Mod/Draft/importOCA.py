@@ -488,5 +488,5 @@ def export(exportList, filename):
     # closing
     oca.close()
     FCC.PrintMessage(translate("importOCA",
-                               "successfully exported ")
-                     + filename + "\n")
+                               "successfully exported")
+                     + " " + filename + "\n")

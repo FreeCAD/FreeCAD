@@ -32,7 +32,7 @@ __url__ = "http://www.freecadweb.org"
 This script retrieves the contents of a wiki site from a pages list
 """
 
-import sys, os, re, tempfile, getopt
+import os, re
 from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
@@ -60,15 +60,13 @@ FOLDER = "./localwiki"
 LISTFILE = "wikifiles.txt"
 URL = DEFAULTURL
 wikiindex = "/wiki/index.php?title="
+imageprefix = "/wiki/"
 defaultfile = "<html><head><link type='text/css' href='wiki.css' rel='stylesheet'></head><body>&nbsp;</body></html>"
 css = """/* Basic CSS for offline wiki rendering */
 
 body {
   font-family: Fira Sans,Arial,Helvetica,sans-serif;
-  font-size: 14px;
   text-align: justify;
-  /*background: #fff;
-  color: #000;*/
   max-width: 800px;
   }
 
@@ -99,7 +97,6 @@ li {
 
 pre, .mw-code {
   text-align: left;
-  /*background: #eee;*/
   padding: 5px 5px 5px 20px;
   font-family: mono;
   border-radius: 2px;
@@ -131,7 +128,6 @@ a:hover {
   text-align: left;
   width: 190px;
   float: right;
-  /*background: #eee;*/
   margin-top: 10px;
   border-radius: 2px;
   }
@@ -140,7 +136,7 @@ a:hover {
   margin-left: 15px;
   padding: 10px;
   }
-#mw-navigation {
+#mw-navigation, .mw-jump-link, .docnav, .NavFrame {
   display:none; /*TODO remove on next build (included below)*/
  }
 """
@@ -163,12 +159,12 @@ def crawl():
     for l in lfile: locallist.append(l.replace("\n",""))
     lfile.close()
     todolist = locallist[:]
-    print ("getting",len(todolist),"files...")
+    print ("getting ",len(todolist)," files...")
     count = 1
-    indexpages = get(INDEX)
+    get(INDEX)
     while todolist:
         targetpage = todolist.pop()
-        if VERBOSE: print (count, ": Fetching ", targetpage)
+        if VERBOSE: print (count,(3-len(str(count)))*" ", ": Fetching ", targetpage)
         get(targetpage)
         count += 1
     if VERBOSE: print ("Fetched ", count, " pages")
@@ -176,7 +172,7 @@ def crawl():
     return 0
 
 def get(page):
-    "downloads a single page, returns the other pages it links to"
+    "downloads a single page"
     localpage = page
     if "Command_Reference" in localpage:
         localpage = localpage.replace("Category:","")
@@ -192,7 +188,7 @@ def get(page):
         html = cleanimagelinks(html)
         output(html,page)
     else:
-        if VERBOSE: print ("    skipping",page)
+        if VERBOSE: print ("       skipping ",page)
 
 def getlinks(html):
     "returns a list of wikipage links in html file"
@@ -243,7 +239,7 @@ def cleanhtml(html):
     html = re.compile('<div id="mw-navigation.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<table id="toc.*?</table>').sub('',html) # removing toc
     html = re.compile('width=\"100%\" style=\"float: right; width: 230px; margin-left: 1em\"').sub('',html) # removing command box styling
-    html = re.compile('<div class="docnav.*?</div>Wlinebreak</div>').sub('',html) # removing docnav
+    #html = re.compile('<div class="docnav.*?</div>Wlinebreak</div>').sub('',html) # removing docnav
     html = re.compile('<div class="mw-pt-translate-header.*?</div>').sub('',html) # removing translations links
     if not GETTRANSLATIONS:
         html = re.compile('<div class="languages.*?</div>').sub('',html) # removing translations links
@@ -280,7 +276,7 @@ def cleanimagelinks(html,links=None):
 
 def fetchpage(page):
     "retrieves given page from the wiki"
-    print ("    fetching: ",page)
+    print ("       downloading: ",URL + wikiindex + page)
     failcount = 0
     while failcount < MAXFAIL:
         try:
@@ -300,21 +296,21 @@ def fetchimage(imagelink):
         failcount = 0
         while failcount < MAXFAIL:
             try:
-                if VERBOSE: print ("    fetching " + filename)
-                data = (urlopen(URL + imagelink).read())
+                if VERBOSE: print ("       downloading " + URL + imageprefix + imagelink)
+                data = (urlopen(URL + imageprefix + imagelink)).read()
                 path = local(filename,image=True)
                 file = open(path,'wb')
                 file.write(data)
                 file.close()
-            except:
+            except Exception:
                 failcount += 1
             else:
                 processed.append(filename)
-                if VERBOSE: print ("    saving",local(filename,image=True))
+                if VERBOSE: print ("       saving ",local(filename,image=True))
                 return
         print ('Error: unable to fetch file ' + filename)
     else:
-        if VERBOSE: print ("    skipping",filename)
+        if VERBOSE: print ("       skipping ",filename)
 
 def local(page,image=False):
     "returns a local path for a given page/image"
@@ -349,7 +345,7 @@ def output(html,page):
         filename = filename.replace("&pagefrom=","+")
         filename = filename.replace("#mw-pages","")
         filename = filename.replace(".html.html",".html")
-    print ("    saving",filename)
+    print ("       saving ",filename)
     file = open(filename,'wb')
     file.write(html)
     file.close()

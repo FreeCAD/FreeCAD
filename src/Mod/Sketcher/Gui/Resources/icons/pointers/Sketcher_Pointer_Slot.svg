@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="64" height="64" id="svg12" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <defs id="defs16" />
+  <g style="fill:none;stroke:#cc0000;stroke-width:2" id="g6">
+    <path d="m45,35c14,0 14,20 0,20h-20c-14,0-14-20 0-20z" id="path2" />
+    <circle cx="25" cy="45" r="3" id="circle4" />
+  </g>
+  <g style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter" id="g10">
+    <path d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9" id="path8" />
+  </g>
+</svg>

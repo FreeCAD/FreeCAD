@@ -84,20 +84,20 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    if(!obj)
+    if (!(obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
         return new App::DocumentObjectExecReturn("No shape linked.");
 
     // if no explicit sub-shape is selected use the whole part
     const std::vector<std::string>& element = link.getSubValues();
     if (element.empty()) {
-        shape = Feature::getShape(obj);
+        shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
         return nullptr;
     }
     else if (element.size() != 1) {
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
     }
 
-    const Part::TopoShape& part = Feature::getTopoShape(obj);
+    const Part::TopoShape& part = static_cast<Part::Feature*>(obj)->Shape.getValue();
     if (!part.getShape().IsNull()) {
         if (!element[0].empty()) {
             shape = part.getSubShape(element[0].c_str());
@@ -714,6 +714,7 @@ App::DocumentObjectExecReturn* Reverse::execute(void)
         TopoDS_Shape myShape = source->Shape.getValue();
         if (!myShape.IsNull())
             this->Shape.setValue(myShape.Reversed());
+        this->Placement.setValue(source->Placement.getValue());
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure & e) {

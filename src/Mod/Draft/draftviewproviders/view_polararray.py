@@ -1,9 +1,3 @@
-"""This module provides the view provider code for Draft PolarArray.
-"""
-## @package polararray
-# \ingroup DRAFT
-# \brief This module provides the view provider code for Draft PolarArray.
-
 # ***************************************************************************
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -26,19 +20,32 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the viewprovider code for the polar Array object.
 
-import Draft
+Currently unused.
+"""
+## @package view_polararray
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the polar Array object.
+
+## \addtogroup draftviewproviders
+# @{
 import Draft_rc
-ViewProviderDraftArray = Draft._ViewProviderDraftArray
 
-# So the resource file doesn't trigger errors from code checkers (flake8)
+from draftviewproviders.view_array import ViewProviderDraftArray
+
+# The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
 
 
 class ViewProviderPolarArray(ViewProviderDraftArray):
+    """View provider for the polar array object, currently unused."""
 
     def __init__(self, vobj):
-        super().__init__(self, vobj)
+        super().__init__(vobj)
 
     def getIcon(self):
+        """Set the icon in the tree view."""
         return ":/icons/Draft_PolarArray"
+
+## @}

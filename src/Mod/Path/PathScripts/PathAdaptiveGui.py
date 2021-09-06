@@ -1,5 +1,7 @@
-# /**************************************************************************
-# *   Copyright (c) Kresimir Tusek         (kresimir.tusek@gmail.com) 2018  *
+# -*- coding: utf-8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
+# *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This library is free software; you can redistribute it and/or         *
@@ -17,11 +19,12 @@
 # *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
 # *   Suite 330, Boston, MA  02111-1307, USA                                *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 import PathScripts.PathOpGui as PathOpGui
 from PySide import QtCore, QtGui
 import PathScripts.PathAdaptive as PathAdaptive
+import PathScripts.PathFeatureExtensionsGui as PathFeatureExtensionsGui
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -76,12 +79,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # helix angle
         form.HelixAngle = QtGui.QDoubleSpinBox()
-        form.HelixAngle.setMinimum(0.1)
-        form.HelixAngle.setMaximum(90)
-        form.HelixAngle.setSingleStep(0.1)
+        form.HelixAngle.setMinimum(1)
+        form.HelixAngle.setMaximum(89)
+        form.HelixAngle.setSingleStep(1)
         form.HelixAngle.setValue(5)
         form.HelixAngle.setToolTip("Angle of the helix ramp entry")
         formLayout.addRow(QtGui.QLabel("Helix Ramp Angle"), form.HelixAngle)
+
+        # helix cone angle
+        form.HelixConeAngle = QtGui.QDoubleSpinBox()
+        form.HelixConeAngle.setMinimum(0)
+        form.HelixConeAngle.setMaximum(6)
+        form.HelixConeAngle.setSingleStep(1)
+        form.HelixConeAngle.setValue(0)
+        form.HelixConeAngle.setToolTip("Angle of the helix entry cone")
+        formLayout.addRow(QtGui.QLabel("Helix Cone Angle"), form.HelixConeAngle)
 
         # helix diam. limit
         form.HelixDiameterLimit = QtGui.QDoubleSpinBox()
@@ -124,6 +136,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.ForceInsideOut.setChecked(True)
         formLayout.addRow(QtGui.QLabel("Force Clearing Inside-Out"), form.ForceInsideOut)
 
+        # Finishing profile
+        form.FinishingProfile = QtGui.QCheckBox()
+        form.FinishingProfile.setChecked(True)
+        formLayout.addRow(QtGui.QLabel("Finishing Profile"), form.FinishingProfile)
+
+        # Use outline checkbox
+        form.useOutline = QtGui.QCheckBox()
+        form.useOutline.setChecked(False)
+        formLayout.addRow(QtGui.QLabel("Use outline"), form.useOutline)
+
         layout.addLayout(formLayout)
 
         # stop button
@@ -144,6 +166,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.StepOver.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
+        signals.append(self.form.HelixConeAngle.valueChanged)
         signals.append(self.form.HelixDiameterLimit.valueChanged)
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
@@ -152,6 +175,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # signals.append(self.form.ProcessHoles.stateChanged)
         signals.append(self.form.ForceInsideOut.stateChanged)
+        signals.append(self.form.FinishingProfile.stateChanged)
+        signals.append(self.form.useOutline.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 
@@ -161,6 +186,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.StepOver.setValue(obj.StepOver)
         self.form.Tolerance.setValue(int(obj.Tolerance * 100))
         self.form.HelixAngle.setValue(obj.HelixAngle)
+        self.form.HelixConeAngle.setValue(obj.HelixConeAngle)
         self.form.HelixDiameterLimit.setValue(obj.HelixDiameterLimit)
         self.form.LiftDistance.setValue(obj.LiftDistance)
         if hasattr(obj, 'KeepToolDownRatio'):
@@ -171,6 +197,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # self.form.ProcessHoles.setChecked(obj.ProcessHoles)
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
+        self.form.FinishingProfile.setChecked(obj.FinishingProfile)
+        self.form.useOutline.setChecked(obj.UseOutline)
         self.setupToolController(obj, self.form.ToolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
@@ -189,6 +217,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.StepOver = self.form.StepOver.value()
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
         obj.HelixAngle = self.form.HelixAngle.value()
+        obj.HelixConeAngle = self.form.HelixConeAngle.value()
         obj.HelixDiameterLimit = self.form.HelixDiameterLimit.value()
         obj.LiftDistance = self.form.LiftDistance.value()
 
@@ -199,6 +228,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StockToLeave = self.form.StockToLeave.value()
 
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
+        obj.FinishingProfile = self.form.FinishingProfile.isChecked()
+        obj.UseOutline = self.form.useOutline.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
         if(obj.Stopped):
             self.form.StopButton.setChecked(False)  # reset the button
@@ -211,7 +242,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.setEditorMode('StopProcessing', 2)  # hide this property
         obj.setEditorMode('Stopped', 2)  # hide this property
 
+    def taskPanelBaseLocationPage(self, obj, features):
+        if not hasattr(self, 'extensionsPanel'):
+            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features) # pylint: disable=attribute-defined-outside-init
+        return self.extensionsPanel
 
-Command = PathOpGui.SetupOperation('Adaptive', PathAdaptive.Create, TaskPanelOpPage,
-                                   'Path-Adaptive', QtCore.QT_TRANSLATE_NOOP("PathAdaptive", "Adaptive"),
-                                   QtCore.QT_TRANSLATE_NOOP("PathPocket", "Adaptive clearing and profiling"))
+
+Command = PathOpGui.SetupOperation('Adaptive',
+        PathAdaptive.Create,
+        TaskPanelOpPage,
+        'Path_Adaptive',
+        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling"),
+        PathAdaptive.SetupProperties)

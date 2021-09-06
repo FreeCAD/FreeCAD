@@ -29,6 +29,10 @@ class QMainWindow;
 
 #include <IOKit/IOKitLib.h>
 #include <ConnexionClientAPI.h>
+extern int16_t SetConnexionHandlers(ConnexionMessageHandlerProc messageHandler,
+                                    ConnexionAddedHandlerProc addedHandler,
+                                    ConnexionRemovedHandlerProc removedHandler,
+                                    bool useSeparateThread) __attribute__((weak_import));
 // Note that InstallConnexionHandlers will be replaced with
 // SetConnexionHandlers "in the future".
 extern OSErr InstallConnexionHandlers(ConnexionMessageHandlerProc messageHandler,
@@ -37,8 +41,17 @@ extern OSErr InstallConnexionHandlers(ConnexionMessageHandlerProc messageHandler
                                       __attribute__((weak_import));
 extern UInt16 RegisterConnexionClient(UInt32 signature, UInt8 *name, UInt16 mode,
                                       UInt32 mask) __attribute__((weak_import));
+extern void SetConnexionClientMask(uint16_t clientID, uint32_t mask)
+                                   __attribute__((weak_import));
+extern void SetConnexionClientButtonMask(uint16_t clientID, uint32_t buttonMask)
+                                         __attribute__((weak_import));
 extern void UnregisterConnexionClient(UInt16 clientID) __attribute__((weak_import));
 extern void CleanupConnexionHandlers(void) __attribute__((weak_import));
+
+extern int16_t ConnexionControl(uint32_t message, int32_t param, int32_t *result);
+extern int16_t ConnexionClientControl(uint16_t clientID, uint32_t message, int32_t param, int32_t *result);
+extern int16_t ConnexionGetCurrentDevicePrefs(uint32_t deviceID, ConnexionDevicePrefs *prefs);
+extern int16_t ConnexionSetButtonLabels(uint8_t *labels, uint16_t size);
 
 namespace Gui
 {
@@ -49,7 +62,7 @@ namespace Gui
 	Q_OBJECT
 	public:
 		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent() override final;
+		~GuiNativeEvent() override;
 		void initSpaceball(QMainWindow *window) override final;
 	private:
 		GuiNativeEvent();

@@ -51,6 +51,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/Sketcher/App/Constraint.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -183,7 +184,8 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                     const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
                     if(!coincidents.empty()) {
-                        ext = coincidents.begin()->first < 0; // the keys are ordered, so if the first is negative, it is coincident with external
+                        // the keys are ordered, so if the first is negative, it is coincident with external
+                        ext = coincidents.begin()->first < 0;
 
                         std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
@@ -235,53 +237,20 @@ char cursor_crosshair_color[12];
 
 void DrawSketchHandler::setCrosshairColor()
 {
+    unsigned long color = getCrosshairColor();
+    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
+}
+
+unsigned long DrawSketchHandler::getCrosshairColor()
+{
     unsigned long color = 0xFFFFFFFF; // white
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     color = hGrp->GetUnsigned("CursorCrosshairColor", color);
     // from rgba to rgb
     color = (color >> 8) & 0xFFFFFF;
-    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
+    return color;
 }
-
-/* XPM */
-static const char *cursor_createline[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+...............###.......",
-"......+...............#.#.......",
-"......+...............###.......",
-"......+..............#..........",
-"......+.............#...........",
-"....................#...........",
-"...................#............",
-"..................#.............",
-"..................#.............",
-".................#..............",
-"................#...............",
-"................#...............",
-"...............#................",
-"..............#.................",
-"..............#.................",
-".............#..................",
-"..........###...................",
-"..........#.#...................",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerLine: public DrawSketchHandler
 {
@@ -297,8 +266,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createline),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Line");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -349,7 +317,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch line");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                           EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                           geometryCreationMode==Construction?"True":"False");
@@ -362,7 +330,7 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
+            bool avoidredundant = sketchgui->AvoidRedundant.getValue()  && sketchgui->Autoconstraints.getValue();
 
             if(avoidredundant)
                 removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
@@ -451,50 +419,19 @@ bool CmdSketcherCreateLine::isActive(void)
 
 /* Create Box =======================================================*/
 
-/* XPM */
-static const char *cursor_createbox[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"................................",
-"..........................###...",
-"...........################.#...",
-"...........#..............###...",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"..........###..............#....",
-"..........#.################....",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerBox: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerBox():Mode(STATUS_SEEK_First),EditCurve(5){}
+    enum ConstructionMethod {
+        Diagonal,
+        CenterAndCorner
+    };
+
+    DrawSketchHandlerBox(ConstructionMethod constrMethod = Diagonal):   Mode(STATUS_SEEK_First),
+                                                                        EditCurve(5),
+                                                                        constructionMethod(constrMethod){}
     virtual ~DrawSketchHandlerBox(){}
+
     /// mode table
     enum BoxMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -504,8 +441,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createbox),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Box");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -519,20 +455,38 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            float dx = onSketchPos.x - EditCurve[0].x;
-            float dy = onSketchPos.y - EditCurve[0].y;
-            SbString text;
-            text.sprintf(" (%.1f x %.1f)", dx, dy);
-            setPositionText(onSketchPos, text);
+            if(constructionMethod == Diagonal) {
+                float dx = onSketchPos.x - EditCurve[0].x;
+                float dy = onSketchPos.y - EditCurve[0].y;
+                SbString text;
+                text.sprintf(" (%.1f x %.1f)", dx, dy);
+                setPositionText(onSketchPos, text);
 
-            EditCurve[2] = onSketchPos;
-            EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
-            EditCurve[3] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
+                EditCurve[2] = onSketchPos;
+                EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
+                EditCurve[3] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
+
+            }
+            else if (constructionMethod == CenterAndCorner) {
+                float dx = onSketchPos.x - center.x;
+                float dy = onSketchPos.y - center.y;
+                SbString text;
+                text.sprintf(" (%.1f x %.1f)", dx, dy);
+                setPositionText(onSketchPos, text);
+
+                EditCurve[0] = center - (onSketchPos - center);
+                EditCurve[1] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
+                EditCurve[2] = onSketchPos;
+                EditCurve[3] = Base::Vector2d(onSketchPos.x,EditCurve[0].y);
+                EditCurve[4] = EditCurve[0];
+            }
+
             sketchgui->drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.0,0.0))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
+
         }
         applyCursor();
     }
@@ -540,16 +494,33 @@ public:
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
-            EditCurve[0] = onSketchPos;
-            EditCurve[4] = onSketchPos;
+            if(constructionMethod == Diagonal) {
+                EditCurve[0] = onSketchPos;
+                EditCurve[4] = onSketchPos;
+            }
+            else if (constructionMethod == CenterAndCorner) {
+                center = onSketchPos;
+            }
+
             Mode = STATUS_SEEK_Second;
         }
         else {
-            EditCurve[2] = onSketchPos;
-            EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
-            EditCurve[3] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
-            sketchgui->drawEdit(EditCurve);
-            Mode = STATUS_End;
+            if(constructionMethod == Diagonal) {
+                EditCurve[2] = onSketchPos;
+                EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
+                EditCurve[3] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
+                sketchgui->drawEdit(EditCurve);
+                Mode = STATUS_End;
+            }
+            else if (constructionMethod == CenterAndCorner) {
+                EditCurve[0] = center - (onSketchPos - center);
+                EditCurve[1] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
+                EditCurve[2] = onSketchPos;
+                EditCurve[3] = Base::Vector2d(onSketchPos.x,EditCurve[0].y);
+                EditCurve[4] = EditCurve[0];
+                sketchgui->drawEdit(EditCurve);
+                Mode = STATUS_End;
+            }
         }
         return true;
     }
@@ -563,57 +534,116 @@ public:
             int firstCurve = getHighestCurveIndex() + 1;
 
             try {
-                Gui::Command::openCommand("Add sketch box");
-                Gui::Command::doCommand(Gui::Command::Doc,
-                    "geoList = []\n"
-                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "%s.addGeometry(geoList,%s)\n"
-                    "conList = []\n"
-                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                    "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                    "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                    "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                    "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                    "%s.addConstraint(conList)\n",
-                    EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y, // line 1
-                    EditCurve[1].x,EditCurve[1].y,EditCurve[2].x,EditCurve[2].y, // line 2
-                    EditCurve[2].x,EditCurve[2].y,EditCurve[3].x,EditCurve[3].y, // line 3
-                    EditCurve[3].x,EditCurve[3].y,EditCurve[0].x,EditCurve[0].y, // line 4
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
-                    geometryCreationMode==Construction?"True":"False", // geometry as construction or not
-                    firstCurve,firstCurve+1, // coincident1
-                    firstCurve+1,firstCurve+2, // coincident2
-                    firstCurve+2,firstCurve+3, // coincident3
-                    firstCurve+3,firstCurve, // coincident4
-                    firstCurve, // horizontal1
-                    firstCurve+2, // horizontal2
-                    firstCurve+1, // vertical1
-                    firstCurve+3, // vertical2
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                if(constructionMethod == Diagonal) {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "geoList = []\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "%s.addGeometry(geoList,%s)\n"
+                        "conList = []\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                        "%s.addConstraint(conList)\n",
+                        EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y, // line 1
+                        EditCurve[1].x,EditCurve[1].y,EditCurve[2].x,EditCurve[2].y, // line 2
+                        EditCurve[2].x,EditCurve[2].y,EditCurve[3].x,EditCurve[3].y, // line 3
+                        EditCurve[3].x,EditCurve[3].y,EditCurve[0].x,EditCurve[0].y, // line 4
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                        geometryCreationMode==Construction?"True":"False", // geometry as construction or not
+                        firstCurve,firstCurve+1, // coincident1
+                        firstCurve+1,firstCurve+2, // coincident2
+                        firstCurve+2,firstCurve+3, // coincident3
+                        firstCurve+3,firstCurve, // coincident4
+                        firstCurve, // horizontal1
+                        firstCurve+2, // horizontal2
+                        firstCurve+1, // vertical1
+                        firstCurve+3, // vertical2
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
-                Gui::Command::commitCommand();
+                        Gui::Command::commitCommand();
+                }
+                else if (constructionMethod == CenterAndCorner) {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add centered sketch box"));
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "geoList = []\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                        "%s.addGeometry(geoList,%s)\n"
+                        "conList = []\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                        "conList.append(Sketcher.Constraint('Symmetric',%i,2,%i,1,%i,1))\n"
+                        "%s.addConstraint(conList)\n",
+                        EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y, // line 1
+                        EditCurve[1].x,EditCurve[1].y,EditCurve[2].x,EditCurve[2].y, // line 2
+                        EditCurve[2].x,EditCurve[2].y,EditCurve[3].x,EditCurve[3].y, // line 3
+                        EditCurve[3].x,EditCurve[3].y,EditCurve[0].x,EditCurve[0].y, // line 4
+                        center.x,center.y,                                           // center point
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                        geometryCreationMode==Construction?"True":"False", // geometry as construction or not
+                        firstCurve,firstCurve+1, // coincident1
+                        firstCurve+1,firstCurve+2, // coincident2
+                        firstCurve+2,firstCurve+3, // coincident3
+                        firstCurve+3,firstCurve, // coincident4
+                        firstCurve+1, // horizontal1
+                        firstCurve+3, // horizontal2
+                        firstCurve, // vertical1
+                        firstCurve+2, // vertical2
+                        firstCurve+1, firstCurve, firstCurve + 4, // Symmetric
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+
+                        Gui::Command::commitCommand();
+                }
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Failed to add box: %s\n", e.what());
                 Gui::Command::abortCommand();
             }
 
-            // add auto constraints at the start of the first side
-            if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::start);
-                sugConstr1.clear();
-            }
+            if(constructionMethod == Diagonal) {
+                // add auto constraints at the start of the first side
+                if (sugConstr1.size() > 0) {
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::start);
+                    sugConstr1.clear();
+                }
 
-            // add auto constraints at the end of the second side
-            if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
-                sugConstr2.clear();
+                // add auto constraints at the end of the second side
+                if (sugConstr2.size() > 0) {
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
+                    sugConstr2.clear();
+                }
+
+            }
+            else if (constructionMethod == CenterAndCorner) {
+                // add auto constraints at the start of the first side
+                if (sugConstr1.size() > 0) {
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
+                    sugConstr1.clear();
+                }
+
+                // add auto constraints at the end of the second side
+                if (sugConstr2.size() > 0) {
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 3, Sketcher::end);
+                    sugConstr2.clear();
+                }
             }
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
@@ -644,6 +674,8 @@ protected:
     BoxMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
+    ConstructionMethod constructionMethod;
+    Base::Vector2d center;
 };
 
 DEF_STD_CMD_AU(CmdSketcherCreateRectangle)
@@ -665,7 +697,7 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
 void CmdSketcherCreateRectangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBox() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBox(DrawSketchHandlerBox::Diagonal) );
 }
 
 void CmdSketcherCreateRectangle::updateAction(int mode)
@@ -687,47 +719,483 @@ bool CmdSketcherCreateRectangle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+DEF_STD_CMD_AU(CmdSketcherCreateRectangleCenter)
+
+CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
+  : Command("Sketcher_CreateRectangle_Center")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create centered rectangle");
+    sToolTipText    = QT_TR_NOOP("Create a centered rectangle in the sketch");
+    sWhatsThis      = "Sketcher_CreateRectangle_Center";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateRectangle_Center";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateRectangleCenter::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBox(DrawSketchHandlerBox::CenterAndCorner) );
+}
+
+void CmdSketcherCreateRectangleCenter::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
+        break;
+    case Construction:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
+        break;
+    }
+}
+
+bool CmdSketcherCreateRectangleCenter::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+/* Create rounded oblong =======================================================*/
+
+class DrawSketchHandlerOblong : public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerOblong()
+        : Mode(STATUS_SEEK_First)
+        , lengthX(0), lengthY(0), radius(0), signX(1), signY(1)
+        , EditCurve(37)
+    {
+    }
+    virtual ~DrawSketchHandlerOblong() {}
+    /// mode table
+    enum BoxMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_End
+    };
+
+    virtual void activated(ViewProviderSketch*)
+    {
+        setCrosshairCursor("Sketcher_Pointer_Oblong");
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+
+        if (Mode == STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
+                renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }
+        }
+        else if (Mode == STATUS_SEEK_Second) {
+            float distanceX = onSketchPos.x - StartPos.x;
+            float distanceY = onSketchPos.y - StartPos.y;
+
+            lengthX = distanceX; lengthY = distanceY;
+            signX = Base::sgn(distanceX);
+            signY = Base::sgn(distanceY);
+            if (fabs(distanceX) > fabs(distanceY)) {
+                radius = fabs(distanceY) / 4; // we use a fourth of the smaller distance as default radius
+            }
+            else {
+                radius = fabs(distanceX) / 4;
+            }
+
+            // we draw the lines with 36 segments, 8 for each arc and 4 lines
+            // draw the arcs
+            for (int i = 0; i < 8; i++) {
+                // calculate the x,y positions forming the the arc
+                double angle = i * M_PI / 16.0;
+                double x_i = -radius * sin(angle);
+                double y_i = -radius * cos(angle);
+                // we are drawing clockwise starting with the arc that is besides StartPos
+                if (signX == signY) {
+                    EditCurve[i] = Base::Vector2d(StartPos.x + signX * (radius + x_i), StartPos.y + signY * (radius + y_i));
+                    EditCurve[9 + i] = Base::Vector2d(StartPos.x + signY * (radius + y_i), StartPos.y + lengthY - signX * (radius + x_i));
+                    EditCurve[18 + i] = Base::Vector2d(StartPos.x + lengthX - signX * (radius + x_i), StartPos.y + lengthY - signY * (radius + y_i));
+                    EditCurve[27 + i] = Base::Vector2d(StartPos.x + lengthX - signY * (radius + y_i), StartPos.y + signX * (radius + x_i));
+                }
+                else {
+                    EditCurve[i] = Base::Vector2d(StartPos.x - signY * (radius + y_i), StartPos.y - signX * (radius + x_i));
+                    EditCurve[9 + i] = Base::Vector2d(StartPos.x + lengthX - signX * (radius + x_i), StartPos.y + signY * (radius + y_i));
+                    EditCurve[18 + i] = Base::Vector2d(StartPos.x + lengthX + signY * (radius + y_i), StartPos.y + lengthY + signX * (radius + x_i));
+                    EditCurve[27 + i] = Base::Vector2d(StartPos.x + signX * (radius + x_i), StartPos.y + lengthY - signY * (radius + y_i));
+                }
+            }
+            // draw the lines
+            if (signX == signY) {
+                EditCurve[8] = Base::Vector2d(StartPos.x, StartPos.y + (signY * radius));
+                EditCurve[17] = Base::Vector2d(StartPos.x + (signX * radius), StartPos.y + lengthY);
+                EditCurve[26] = Base::Vector2d(StartPos.x + lengthX, StartPos.y + lengthY - (signY * radius));
+                EditCurve[35] = Base::Vector2d(StartPos.x + lengthX - (signX * radius), StartPos.y);
+            }
+            else {
+                EditCurve[8] = Base::Vector2d(StartPos.x + (signX * radius), StartPos.y);
+                EditCurve[17] = Base::Vector2d(StartPos.x + lengthX, StartPos.y + (signY * radius));
+                EditCurve[26] = Base::Vector2d(StartPos.x + lengthX - (signX * radius), StartPos.y + lengthY);
+                EditCurve[35] = Base::Vector2d(StartPos.x, StartPos.y + lengthY - (signY * radius));
+            }
+            // close the curve
+            EditCurve[36] = EditCurve[0];
+
+            SbString text;
+            text.sprintf(" (%.1fR %.1fX %.1fY)", radius, lengthX, lengthY);
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
+                renderSuggestConstraintsCursor(sugConstr2);
+                return;
+            }
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_First) {
+            StartPos = onSketchPos;
+            Mode = STATUS_SEEK_Second;
+        }
+        else {
+            EndPos = onSketchPos;
+            Mode = STATUS_End;
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        if (Mode == STATUS_End) {
+            unsetCursor();
+            resetPositionText();
+
+            int firstCurve = getHighestCurveIndex() + 1;
+            // add the geometry to the sketch
+            // first determine the angles for the first arc
+            double start = 0;
+            double end = M_PI / 2;
+            if (signX > 0 && signY > 0) {
+                start = -2 * end;
+                end = -1 * end;
+            }
+            else if (signX > 0 && signY < 0) {
+                start = end;
+                end = 2 * end;
+            }
+            else if (signX < 0 && signY > 0) {
+                start = -1 * end;
+                end = 0;
+            }
+
+            try {
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add rounded rectangle"));
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    // syntax for arcs: Part.ArcOfCircle(Part.Circle(center, axis, radius), startangle, endangle)
+                    "geoList = []\n"
+                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f, %f, 0), App.Vector(%f, %f, 0)))\n"
+                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f, %f, 0), App.Vector(%f, %f, 0)))\n"
+                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f, %f, 0), App.Vector(%f, %f, 0)))\n"
+                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f, %f, 0), App.Vector(%f, %f, 0)))\n"
+                    "%s.addGeometry(geoList, %s)\n"
+                    "conList = []\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 2))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 2))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 2))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 2))\n"
+                    "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                    "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                    "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                    "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                    "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                    "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                    "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                    "%s.addConstraint(conList)\n",
+                    StartPos.x + (signX * radius), StartPos.y + (signY * radius), // center of the  arc 1
+                    radius,
+                    start, end,                 // start and end angle of arc1
+                    EditCurve[8].x, EditCurve[8].y, EditCurve[9].x, EditCurve[9].y, // line 1
+                    signX == signY ? StartPos.x + (signX * radius) : StartPos.x + lengthX - (signX * radius), // center of the arc 2
+                    signX == signY ? StartPos.y + lengthY - (signY * radius) : StartPos.y + (signY * radius),
+                    radius,
+                    // start and end angle of arc 2
+                    // the logic is that end is start + M_PI / 2 and start is the previous end - M_PI
+                    end - M_PI,
+                    end - 0.5 * M_PI,
+                    EditCurve[17].x, EditCurve[17].y, EditCurve[18].x, EditCurve[18].y, // line 2
+                    StartPos.x + lengthX - (signX * radius), StartPos.y + lengthY - (signY * radius),  // center of the arc 3
+                    radius,
+                    end - 1.5 * M_PI,
+                    end - M_PI,
+                    EditCurve[26].x, EditCurve[26].y, EditCurve[27].x, EditCurve[27].y, // line 3
+                    signX == signY ? StartPos.x + lengthX - (signX * radius) : StartPos.x + (signX * radius), // center of the arc 4
+                    signX == signY ? StartPos.y + (signY * radius) : StartPos.y + lengthY - (signY * radius),
+                    radius,
+                    end - 2 * M_PI,
+                    end - 1.5 * M_PI,
+                    EditCurve[35].x, EditCurve[35].y, EditCurve[36].x, EditCurve[36].y, // line 4
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                    geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                    firstCurve, firstCurve + 1,     // tangent 1
+                    firstCurve + 1, firstCurve + 2, // tangent 2
+                    firstCurve + 2, firstCurve + 3, // tangent 3
+                    firstCurve + 3, firstCurve + 4, // tangent 4
+                    firstCurve + 4, firstCurve + 5, // tangent 5
+                    firstCurve + 5, firstCurve + 6, // tangent 6
+                    firstCurve + 6, firstCurve + 7, // tangent 7
+                    firstCurve + 7, firstCurve,     // tangent 8
+                    signX == signY ? firstCurve + 3 : firstCurve + 1, // horizontal constraint
+                    signX == signY ? firstCurve + 7 : firstCurve + 5, // horizontal constraint
+                    signX == signY ? firstCurve + 1 : firstCurve + 3, // vertical constraint
+                    signX == signY ? firstCurve + 5 : firstCurve + 7, // vertical constraint
+                    firstCurve, firstCurve + 2,     // equal  1
+                    firstCurve + 2, firstCurve + 4, // equal  2
+                    firstCurve + 4, firstCurve + 6, // equal  3
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+
+                // now add construction geometry - two points used to take suggested constraints
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "geoList = []\n"
+                    "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
+                    "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
+                    "%s.addGeometry(geoList, True)\n" // geometry as construction
+                    "conList = []\n"
+                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                    "%s.addConstraint(conList)\n",
+                    StartPos.x, StartPos.y, // point at StartPos
+                    EndPos.x, EndPos.y,     // point at EndPos
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                    firstCurve + 8, firstCurve + 1, // point on object constraint
+                    firstCurve + 8, firstCurve + 7, // point on object constraint
+                    firstCurve + 9, firstCurve + 3, // point on object constraint
+                    firstCurve + 9, firstCurve + 5, // point on object constraint
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+
+                Gui::Command::commitCommand();
+
+                // add auto constraints at the StartPos auxiliary point
+                if (sugConstr1.size() > 0) {
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 1, Sketcher::start);
+                    sugConstr1.clear();
+                }
+
+                // add auto constraints at the EndPos auxiliary point
+                if (sugConstr2.size() > 0) {
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::start);
+                    sugConstr2.clear();
+                }
+
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("Failed to add rounded rectangle: %s\n", e.what());
+                Gui::Command::abortCommand();
+
+                tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+            }
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
+
+            if (continuousMode) {
+                // This code enables the continuous creation mode.
+                Mode = STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(37);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else {
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            }
+        }
+        return true;
+    }
+protected:
+    BoxMode Mode;
+    Base::Vector2d StartPos, EndPos;
+    double lengthX, lengthY, radius;
+    float signX, signY;
+    std::vector<Base::Vector2d> EditCurve;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+};
+
+DEF_STD_CMD_AU(CmdSketcherCreateOblong)
+
+CmdSketcherCreateOblong::CmdSketcherCreateOblong()
+    : Command("Sketcher_CreateOblong")
+{
+    sAppModule = "Sketcher";
+    sGroup = QT_TR_NOOP("Sketcher");
+    sMenuText = QT_TR_NOOP("Create rounded rectangle");
+    sToolTipText = QT_TR_NOOP("Create a rounded rectangle in the sketch");
+    sWhatsThis = "Sketcher_CreateOblong";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateOblong";
+    sAccel = "";
+    eType = ForEdit;
+}
+
+void CmdSketcherCreateOblong::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOblong());
+}
+
+void CmdSketcherCreateOblong::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
+        break;
+    case Construction:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
+        break;
+    }
+}
+
+bool CmdSketcherCreateOblong::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/* Rectangles Comp command =========================================*/
+
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateRectangles)
+
+CmdSketcherCompCreateRectangles::CmdSketcherCompCreateRectangles()
+    : Command("Sketcher_CompCreateRectangles")
+{
+    sAppModule = "Sketcher";
+    sGroup = QT_TR_NOOP("Sketcher");
+    sMenuText = QT_TR_NOOP("Create rectangles");
+    sToolTipText = QT_TR_NOOP("Creates a rectangle in the sketch");
+    sWhatsThis = "Sketcher_CompCreateRectangles";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
+}
+
+void CmdSketcherCompCreateRectangles::activated(int iMsg)
+{
+    if (iMsg == 0)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBox(DrawSketchHandlerBox::Diagonal));
+    else if (iMsg == 1)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBox(DrawSketchHandlerBox::CenterAndCorner));
+    else if (iMsg == 2)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOblong());
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdSketcherCompCreateRectangles::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* arc1 = pcAction->addAction(QString());
+    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
+    QAction* arc2 = pcAction->addAction(QString());
+    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
+    QAction* arc3 = pcAction->addAction(QString());
+    arc3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(arc1->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateRectangles::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+    case Normal:
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    case Construction:
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    }
+}
+
+void CmdSketcherCompCreateRectangles::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* rectangle1 = a[0];
+    rectangle1->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Rectangle"));
+    rectangle1->setToolTip(QApplication::translate("Sketcher_CreateRectangle", "Create a rectangle"));
+    rectangle1->setStatusTip(rectangle1->toolTip());
+    QAction* rectangle2 = a[1];
+    rectangle2->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Centered rectangle"));
+    rectangle2->setToolTip(QApplication::translate("Sketcher_CreateRectangle_Center", "Create a centered rectangle"));
+    rectangle2->setStatusTip(rectangle2->toolTip());
+    QAction* rectangle3 = a[2];
+    rectangle3->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Rounded rectangle"));
+    rectangle3->setToolTip(QApplication::translate("Sketcher_CreateOblong", "Create a rounded rectangle"));
+    rectangle3->setStatusTip(rectangle3->toolTip());
+}
+
+bool CmdSketcherCompCreateRectangles::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
 
 // ======================================================================================
-
-/* XPM */
-static const char *cursor_createlineset[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+...............###.......",
-"......+...............#.#.......",
-"......+...............###.......",
-"......+..............#..#.......",
-"......+.............#....#......",
-"....................#....#......",
-"...................#......#.....",
-"..................#.......#.....",
-"..................#........#....",
-".................#.........#....",
-"................#..........###..",
-"................#..........#.#..",
-"......#........#...........###..",
-".......#......#.................",
-"........#.....#.................",
-".........#...#..................",
-"..........###...................",
-"..........#.#...................",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
@@ -858,8 +1326,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createlineset),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -1091,7 +1558,7 @@ public:
                 // issue the geometry
                 try {
                     // open the transaction
-                    Gui::Command::openCommand("Add line to sketch wire");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add line to sketch wire"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                         EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                         geometryCreationMode==Construction?"True":"False");
@@ -1111,7 +1578,7 @@ public:
                 }
 
                 try {
-                    Gui::Command::openCommand("Add arc to sketch wire");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add arc to sketch wire"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                         "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                         CenterPoint.x, CenterPoint.y, std::abs(arcRadius),
@@ -1167,7 +1634,7 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
+            bool avoidredundant = sketchgui->AvoidRedundant.getValue()  && sketchgui->Autoconstraints.getValue();
 
             if (Mode == STATUS_Close) {
 
@@ -1417,45 +1884,6 @@ bool CmdSketcherCreatePolyline::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createarc[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+...........###...........",
-"......+...........#.#...........",
-"......+...........###...........",
-"......+..............##.........",
-"......+...............##........",
-".......................#........",
-"+++++...+++++...........#.......",
-"........................##......",
-"......+..................#......",
-"......+..................#......",
-"......+...................#.....",
-"......+...................#.....",
-"......+...................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-".........................#......",
-".........................#......",
-"........................#.......",
-"........................#.......",
-"...###.................#........",
-"...#.#................#.........",
-"...###...............#..........",
-"......##...........##...........",
-".......###.......##.............",
-"..........#######...............",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerArc : public DrawSketchHandler
 {
 public:
@@ -1479,8 +1907,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarc),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Arc");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -1594,7 +2021,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch arc");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, sqrt(rx*rx + ry*ry),
@@ -1686,45 +2113,6 @@ bool CmdSketcherCreateArc::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_create3pointarc[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+...........###...........",
-"......+...........#.#...........",
-"......+...........###...........",
-"......+..............##.........",
-"......+...............##........",
-".......................#........",
-"+++++...+++++...........#.......",
-"........................##......",
-"......+..................#......",
-"......+..................#......",
-"......+...................#.....",
-"......+...................#.....",
-"......+...................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-".........................#......",
-".......................###......",
-".......................#.#......",
-".......................###......",
-"...###.................#........",
-"...#.#................#.........",
-"...###...............#..........",
-"......##...........##...........",
-".......###.......##.............",
-"..........#######...............",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandler3PointArc : public DrawSketchHandler
 {
 public:
@@ -1747,8 +2135,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_create3pointarc),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -1903,7 +2290,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch arc");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, radius,
@@ -2095,45 +2482,6 @@ bool CmdSketcherCompCreateArc::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createcircle[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+........#######..........",
-"......+......##.......##........",
-"......+.....#...........#.......",
-"......+....#.............#......",
-"......+...#...............#.....",
-".........#.................#....",
-"........#...................#...",
-"........#...................#...",
-".......#.....................#..",
-".......#.....................#..",
-".......#.........###.........#..",
-".......#.........#.#.........#..",
-".......#.........###.........#..",
-".......#.....................#..",
-".......#.....................#..",
-"........#...................#...",
-"........#...................#...",
-".........#.................#....",
-"..........#...............#.....",
-"...........#.............#......",
-"............#...........#.......",
-".............##.......##........",
-"...............#######..........",
-"................................"};
-
 class DrawSketchHandlerCircle : public DrawSketchHandler
 {
 public:
@@ -2148,8 +2496,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createcircle),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Circle");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -2212,7 +2559,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           EditCurve[0].x, EditCurve[0].y,
@@ -2294,46 +2641,6 @@ bool CmdSketcherCreateCircle::isActive(void)
 }
 // ======================================================================================
 
-/**
- * @brief Creates a 32x32 pixel XPM image for the mouse cursor when making an ellipse
- */
-static const char *cursor_createellipse[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+..............#####......",
-"..................###.....#.....",
-"...............###.......##.....",
-".............##..........##.....",
-"...........##............##.....",
-"..........##.....###....##......",
-".........##.....#.#.....#.......",
-"........##.....###....##........",
-"........##...........##.........",
-".......##..........###..........",
-"......##........####............",
-"......#.....####................",
-"......######....................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 /**
  * @brief This class handles user interaction to draw and save the ellipse
@@ -2407,8 +2714,7 @@ public:
      */
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createellipse),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
             mode = STATUS_SEEK_CENTROID;
@@ -3012,7 +3318,7 @@ private:
         int currentgeoid = getHighestCurveIndex(); // index of the ellipse we just created
 
         try {
-            Gui::Command::openCommand("Add sketch ellipse");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch ellipse"));
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Ellipse"
                                     "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                                     periapsis.x, periapsis.y,
@@ -3159,45 +3465,6 @@ bool CmdSketcherCreateEllipseBy3Points::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-/* XPM */
-static const char *cursor_createarcofellipse[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+................##.......",
-"......+..............##.........",
-"......+............##...........",
-"......+...........##............",
-"................##..............",
-"...............##...............",
-"..............##................",
-".............###................",
-"............##.........###......",
-"...........##.........#.#.......",
-"...........##.........###.......",
-"..........##....................",
-".........##.....................",
-"........##......................",
-"........##......................",
-"........##......................",
-"........#.....####..............",
-"........######..................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerArcOfEllipse : public DrawSketchHandler
 {
 public:
@@ -3219,8 +3486,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarcofellipse),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfEllipse");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -3421,7 +3687,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand("Add sketch arc of ellipse");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfEllipse"
                     "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%f,%f),%s)",
@@ -3511,7 +3777,7 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
     sToolTipText    = QT_TR_NOOP("Create an arc of ellipse in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfEllipse";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Elliptical_Arc";
+    sPixmap         = "Sketcher_CreateElliptical_Arc";
     eType           = ForEdit;
 }
 
@@ -3525,45 +3791,6 @@ bool CmdSketcherCreateArcOfEllipse::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
-
-/* XPM */
-static const char *cursor_createarcofhyperbola[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+................##.......",
-"......+..............##.........",
-"......+............##...........",
-"......+...........##............",
-"................##..............",
-"...............##...............",
-"..............##................",
-".............###................",
-"..###.......##..................",
-".#.#.......##...................",
-"..###......##...................",
-"..........##....................",
-".........##.....................",
-"........##......................",
-"........##......................",
-"........##......................",
-"........#.....####..............",
-"........######..................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerArcOfHyperbola : public DrawSketchHandler
 {
@@ -3587,8 +3814,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarcofhyperbola),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfHyperbola");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -3799,7 +4025,7 @@ public:
 
             try {
 
-                Gui::Command::openCommand("Add sketch arc of hyperbola");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
 
                 //Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it to balance
                 //the intrinsic focus1, in order to balance out the intrinsic invisible focus1 when AOE is
@@ -3894,7 +4120,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     sToolTipText    = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfHyperbola";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Hyperbolic_Arc";
+    sPixmap         = "Sketcher_CreateHyperbolic_Arc";
     eType           = ForEdit;
 }
 
@@ -3907,45 +4133,6 @@ bool CmdSketcherCreateArcOfHyperbola::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
-
-/* XPM */
-static const char *cursor_createarcofparabola[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+................##.......",
-"......+..............##.........",
-"......+............##...........",
-"......+...........##............",
-"................##..............",
-"...............##...............",
-"..............##................",
-".............###................",
-"............##......###.........",
-"...........##......#.#..........",
-"...........##.....###...........",
-"..........##....................",
-".........##.....................",
-"........##......................",
-"........##......................",
-"........##......................",
-"........#.....####..............",
-"........######..................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerArcOfParabola : public DrawSketchHandler
 {
@@ -3971,8 +4158,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarcofparabola),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -4141,7 +4327,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand("Add sketch arc of Parabola");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of Parabola"));
 
                 //Add arc of parabola
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfParabola"
@@ -4232,7 +4418,7 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
     sToolTipText    = QT_TR_NOOP("Create an arc of parabola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfParabola";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Parabolic_Arc";
+    sPixmap         = "Sketcher_CreateParabolic_Arc";
     eType           = ForEdit;
 }
 
@@ -4309,13 +4495,13 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     ellipseBy3Points->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
 
     QAction* arcofellipse = pcAction->addAction(QString());
-    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
+    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
 
     QAction* arcofhyperbola = pcAction->addAction(QString());
-    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
+    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
 
     QAction* arcofparabola = pcAction->addAction(QString());
-    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
+    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
 
     _pcAction = pcAction;
     languageChange();
@@ -4340,17 +4526,17 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
     case Normal:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
-        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
-        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_Constr"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc_Constr"));
-        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc_Constr"));
-        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -4370,21 +4556,21 @@ void CmdSketcherCompCreateConic::languageChange()
     ellipseByCenter->setToolTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
     ellipseByCenter->setStatusTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
     QAction* ellipseBy3Points = a[1];
-    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by Periapsis, apoapsis, minor radius"));
+    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by periapsis, apoapsis, minor radius"));
     ellipseBy3Points->setToolTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
     ellipseBy3Points->setStatusTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
     QAction* arcofellipse = a[2];
     arcofellipse->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of ellipse by center, major radius, endpoints"));
-    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
-    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
+    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, and endpoints"));
+    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, and endpoints"));
     QAction* arcofhyperbola = a[3];
     arcofhyperbola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of hyperbola by center, major radius, endpoints"));
-    arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));
-    arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));
+    arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, and endpoints"));
+    arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, and endpoints"));
     QAction* arcofparabola = a[4];
     arcofparabola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of parabola by focus, vertex, endpoints"));
-    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));
-    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));
+    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, and endpoints"));
+    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, and endpoints"));
 }
 
 bool CmdSketcherCompCreateConic::isActive(void)
@@ -4393,45 +4579,6 @@ bool CmdSketcherCompCreateConic::isActive(void)
 }
 
 // ======================================================================================
-
-/* XPM */
-static const char *cursor_createbspline[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+...............###.......",
-"......+...............#.#.......",
-"......+...............###.......",
-"......+..............#..#.......",
-"......+.............#....#......",
-"....................#.+..#......",
-"..................+#+..+..#...+.",
-"................++#.....+.#..+..",
-"......+........+..#......++#+...",
-".......+......+..#.........#....",
-"........++..++..#..........###..",
-"..........++....#..........#.#..",
-"......#........#...........###..",
-".......#......#.................",
-"........#.....#.................",
-".........#...#..................",
-"..........###...................",
-"..........#.#...................",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
@@ -4458,8 +4605,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createbspline),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -4504,7 +4650,7 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
 
-                Gui::Command::openCommand("Add Pole circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
@@ -4565,36 +4711,15 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
 
-                //Gui::Command::openCommand("Add Pole circle");
+                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
-                double guess = (EditCurve[1]-EditCurve[0]).Length()/6;
-
-                auto normalize = [](double guess) {
-                    double units=1.0;
-
-                    while (guess >= 10.0) {
-                        guess /= 10.0;
-                        units*=10.0;
-                    }
-
-                    while (guess < 1.0) {
-                        guess *= 10.0;
-                        units/=10.0;
-                    }
-
-                    return round(guess)*units;
-
-                };
-
-                guess = normalize(guess);
-
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                       EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
 
                 if(EditCurve.size() == 2) {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                          FirstPoleGeoId, guess );
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                                          FirstPoleGeoId, 1.0 ); // First pole defaults to 1.0 weight
                 }
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
@@ -4657,7 +4782,7 @@ public:
 
             try {
 
-                //Gui::Command::openCommand("Add B-spline curve");
+                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
                 /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
                     "(%s,%s),"
@@ -5000,45 +5125,6 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_create3pointcircle[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+........#######..........",
-"......+......##.......##........",
-"......+.....#...........#.......",
-"......+....#.............#......",
-"......+...#...............#.....",
-".........#.................#....",
-".......###.................###..",
-".......#.#.................#.#..",
-".......###.................###..",
-".......#.....................#..",
-".......#.........###.........#..",
-".......#.........#.#.........#..",
-".......#.........###.........#..",
-".......#.....................#..",
-".......#.....................#..",
-"........#...................#...",
-"........#...................#...",
-".........#.................#....",
-"..........#...............#.....",
-"...........#.............#......",
-"............#...........#.......",
-".............##..###..##........",
-"...............###.###..........",
-".................###............"};
-
 class DrawSketchHandler3PointCircle : public DrawSketchHandler
 {
 public:
@@ -5055,8 +5141,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_create3pointcircle),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -5065,11 +5150,7 @@ public:
             setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
-                // Disable tangent snap on 1st point
-                if (sugConstr1.back().Type == Sketcher::Tangent)
-                    sugConstr1.pop_back();
-                else
-                    renderSuggestConstraintsCursor(sugConstr1);
+                renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
@@ -5103,16 +5184,12 @@ public:
                 if (Mode == STATUS_SEEK_Second) {
                     if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                         AutoConstraint::CURVE)) {
-                        // Disable tangent snap on 2nd point
-                        if (sugConstr2.back().Type == Sketcher::Tangent)
-                            sugConstr2.pop_back();
-                        else
-                            renderSuggestConstraintsCursor(sugConstr2);
+                        renderSuggestConstraintsCursor(sugConstr2);
                         return;
                     }
                 }
                 else {
-                    if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
+                    if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f),
                                         AutoConstraint::CURVE)) {
                         renderSuggestConstraintsCursor(sugConstr3);
                         return;
@@ -5160,7 +5237,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           CenterPoint.x, CenterPoint.y,
@@ -5351,45 +5428,6 @@ bool CmdSketcherCompCreateCircle::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createpoint[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"................................",
-"................................",
-".................++++...........",
-"................++++++..........",
-"...............++++++++.........",
-"...............++++++++.........",
-"...............++++++++.........",
-"...............++++++++.........",
-"................++++++..........",
-".................++++...........",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerPoint: public DrawSketchHandler
 {
 public:
@@ -5398,8 +5436,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createpoint),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Point");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -5427,7 +5464,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch point");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                           EditPoint.x,EditPoint.y);
 
@@ -5551,7 +5588,6 @@ bool CmdSketcherCreateDraftLine::isActive(void)
     return false;
 }
 
-
 // ======================================================================================
 
 namespace SketcherGui {
@@ -5596,54 +5632,20 @@ namespace SketcherGui {
     };
 }
 
-
-/* XPM */
-static const char *cursor_createfillet[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+..*......................",
-".........*......................",
-".........*......................",
-".........*......................",
-".........*......................",
-".........*......................",
-".........*.........***..........",
-".........*.........*.*..........",
-".........*.........***..........",
-".........*......................",
-".........*......................",
-"..........*.....................",
-"..........*.....................",
-"...........*....................",
-"............*...................",
-".............*..................",
-"..............*.................",
-"...............**...............",
-".................**************.",
-"................................"};
-
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerFillet() : Mode(STATUS_SEEK_First), firstCurve(0) {}
+    enum FilletType {
+        SimpleFillet,
+        ConstraintPreservingFillet
+    };
+
+    DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
     }
+
     enum SelectMode{
         STATUS_SEEK_First,
         STATUS_SEEK_Second
@@ -5653,8 +5655,7 @@ public:
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createfillet),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -5688,7 +5689,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=geom1->Construction && geom2->Construction;
+                    construction=Sketcher::GeometryFacade::getConstruction(geom1) && Sketcher::GeometryFacade::getConstruction(geom2);
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
@@ -5711,8 +5712,10 @@ public:
                 int currentgeoid= getHighestCurveIndex();
                 // create fillet at point
                 try {
-                    Gui::Command::openCommand("Create fillet");
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f)", GeoId, PosId, radius);
+                    bool pointFillet = (filletType == 1);
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, PosId, radius, "True",
+                        pointFillet ? "True":"False");
 
                     if (construction) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid+1);
@@ -5771,7 +5774,7 @@ public:
                         if (radius < 0)
                             return false;
 
-                        construction=lineSeg1->Construction && lineSeg2->Construction;
+                        construction=Sketcher::GeometryFacade::getConstruction(lineSeg1) && Sketcher::GeometryFacade::getConstruction(lineSeg2);
                     }
                     else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
@@ -5779,7 +5782,7 @@ public:
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=geo1->Construction && geo2->Construction;
+                        construction=Sketcher::GeometryFacade::getConstruction(geo1) && Sketcher::GeometryFacade::getConstruction(geo2);
                     }
 
 
@@ -5787,11 +5790,13 @@ public:
 
                     // create fillet between lines
                     try {
-                        Gui::Command::openCommand("Create fillet");
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
+                        bool pointFillet = (filletType == 1);
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s)",
                                   firstCurve, secondCurve,
                                   firstPos.x, firstPos.y,
-                                  secondPos.x, secondPos.y, radius);
+                                  secondPos.x, secondPos.y, radius,
+                                  "True", pointFillet ? "True":"False");
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::CADKernelError& e) {
@@ -5832,6 +5837,7 @@ public:
     }
 
 protected:
+    int filletType;
     SelectMode Mode;
     int firstCurve;
     Base::Vector2d firstPos;
@@ -5856,7 +5862,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet());
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
 }
 
 bool CmdSketcherCreateFillet::isActive(void)
@@ -5864,6 +5870,135 @@ bool CmdSketcherCreateFillet::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+// ======================================================================================
+
+DEF_STD_CMD_A(CmdSketcherCreatePointFillet)
+
+CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
+  : Command("Sketcher_CreatePointFillet")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create corner-preserving fillet");
+    sToolTipText    = QT_TR_NOOP("Fillet that preserves intersection point and most constraints");
+    sWhatsThis      = "Sketcher_CreatePointFillet";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateFillet";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreatePointFillet::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+}
+
+bool CmdSketcherCreatePointFillet::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateFillets'
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateFillets)
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
+  : Command("Sketcher_CompCreateFillets")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Fillets");
+    sToolTipText    = QT_TR_NOOP("Create a fillet between two lines");
+    sWhatsThis      = "Sketcher_CompCreateFillets";
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+/**
+ * @brief Instantiates the fillet handler when the fillet command activated
+ * @param int iMsg
+ */
+void CmdSketcherCompCreateFillets::activated(int iMsg)
+{
+    if (iMsg == 0) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
+    } else if (iMsg == 1) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+    } else {
+        return;
+    }
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateFillets::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* oldFillet = pcAction->addAction(QString());
+    oldFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+
+    QAction* pointFillet = pcAction->addAction(QString());
+    pointFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateFillets::updateAction(int mode)
+{
+    Q_UNUSED(mode);
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+    getAction()->setIcon(a[index]->icon());
+}
+
+void CmdSketcherCompCreateFillets::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* oldFillet = a[0];
+    oldFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Sketch fillet"));
+    oldFillet->setToolTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    oldFillet->setStatusTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    QAction* pointFillet = a[1];
+    pointFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Constraint-preserving sketch fillet"));
+    pointFillet->setToolTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
+    pointFillet->setStatusTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
+}
+
+bool CmdSketcherCompCreateFillets::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
 
 // ======================================================================================
 
@@ -5887,58 +6022,20 @@ namespace SketcherGui {
                 int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                    geom->getTypeId() == Part::GeomCircle::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomEllipse::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                )
-                    return true;
+                if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())   ||
+                    geom->getTypeId() == Part::GeomCircle::getClassTypeId()                     ||
+                    geom->getTypeId() == Part::GeomEllipse::getClassTypeId()                    ||
+                    geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
+                ) {
+                    // We do not trim internal geometry of complex geometries
+                    if( Sketcher::GeometryFacade::isInternalType(geom, Sketcher::InternalType::None))
+                        return true;
+                }
             }
             return  false;
         }
     };
 }
-
-
-/* XPM */
-static const char *cursor_trimming[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+......................*..",
-"......+....................**...",
-"......+...................**....",
-".*..............................",
-"..*.....................*.......",
-"...*..................**........",
-".....*...............**.........",
-"......*.........................",
-".......*..........*.............",
-".........*......**..............",
-"..........*....**...............",
-"...........****.................",
-"............*.*.................",
-"............***.................",
-"..........*....*................",
-".........*.......*..............",
-".......*..........*.............",
-"......*............*............",
-"....*................*..........",
-"...*..................*.........",
-".*.....................*........",
-".........................*......"};
 
 class DrawSketchHandlerTrimming: public DrawSketchHandler
 {
@@ -5954,13 +6051,46 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_trimming),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Trimming");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
+
+        int GeoId = sketchgui->getPreselectCurve();
+
+        if (GeoId > -1) {
+            auto sk = static_cast<Sketcher::SketchObject *>(sketchgui->getObject());
+            int GeoId1, GeoId2;
+            Base::Vector3d intersect1, intersect2;
+            if(sk->seekTrimPoints(GeoId, Base::Vector3d(onSketchPos.x,onSketchPos.y,0),
+                                  GeoId1, intersect1,
+                                  GeoId2, intersect2)) {
+
+                EditMarkers.resize(0);
+
+                if(GeoId1 != Sketcher::Constraint::GeoUndef)
+                    EditMarkers.emplace_back(intersect1.x, intersect1.y);
+                else {
+                    auto start = sk->getPoint(GeoId, Sketcher::start);
+                    EditMarkers.emplace_back(start.x, start.y);
+                }
+
+                if(GeoId2 != Sketcher::Constraint::GeoUndef)
+                    EditMarkers.emplace_back(intersect2.x, intersect2.y);
+                else {
+                    auto end = sk->getPoint(GeoId, Sketcher::end);
+                    EditMarkers.emplace_back( end.x, end.y);
+                }
+
+                sketchgui->drawEditMarkers(EditMarkers, 2); // maker augmented by two sizes (see supported marker sizes)
+            }
+        }
+        else {
+            EditMarkers.resize(0);
+            sketchgui->drawEditMarkers(EditMarkers, 2);
+        }
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
@@ -5974,13 +6104,12 @@ public:
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomCircle::getClassTypeId()      ||
-                geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())   ||
+                geom->getTypeId() == Part::GeomCircle::getClassTypeId()                     ||
+                geom->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+                geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
                 try {
-                    Gui::Command::openCommand("Trim edge");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "trim(%d,App.Vector(%f,%f,0))",
                               GeoId, onSketchPos.x, onSketchPos.y);
                     Gui::Command::commitCommand();
@@ -5991,12 +6120,17 @@ public:
                     Gui::Command::abortCommand();
                 }
             }
+
+            EditMarkers.resize(0);
+            sketchgui->drawEditMarkers(EditMarkers);
         }
         else // exit the trimming tool if the user clicked on empty space
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
 
         return true;
     }
+private:
+    std::vector<Base::Vector2d> EditMarkers;
 };
 
 DEF_STD_CMD_A(CmdSketcherTrimming)
@@ -6068,45 +6202,6 @@ namespace SketcherGui {
     };
 }
 
-/* XPM */
-static const char *cursor_extension[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+..........****...........",
-"..................***...........",
-".................*.**...........",
-"................*...*...........",
-"................................",
-"..............*.................",
-".............*..................",
-"................................",
-"...........*....................",
-"..........*.....................",
-"................................",
-"........*.......................",
-".......*........................",
-"......*.........................",
-"...***..........................",
-"...***..........................",
-"....**..........................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerExtend: public DrawSketchHandler
 {
 public:
@@ -6135,8 +6230,7 @@ public:
         Gui::Selection().rmvSelectionGate();
         filterGate = new ExtendSelection(sketchgui->getObject());
         Gui::Selection().addSelectionGate(filterGate);
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_extension),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Extension");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -6291,7 +6385,7 @@ public:
             }
         } else if (Mode == STATUS_SEEK_Second) {
             try {
-                Gui::Command::openCommand("Extend edge");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend edge"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "extend(%d, %f, %d)\n", // GeoId, increment, PointPos
                     BaseGeoId, Increment, ExtendFromStart ? Sketcher::start : Sketcher::end);
                 Gui::Command::commitCommand();
@@ -6381,6 +6475,125 @@ bool CmdSketcherExtend::isActive(void)
 }
 
 
+// ======================================================================================
+
+namespace SketcherGui {
+    class SplittingSelection : public Gui::SelectionFilterGate
+    {
+        App::DocumentObject* object;
+    public:
+        SplittingSelection(App::DocumentObject* obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        {}
+
+        bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
+        {
+            if (pObj != this->object)
+                return false;
+            if (!sSubName || sSubName[0] == '\0')
+                return false;
+            std::string element(sSubName);
+            if (element.substr(0,4) == "Edge") {
+                int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
+                Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
+                const Part::Geometry *geom = Sketch->getGeometry(GeoId);
+                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                    || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
+                    || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                    return true;
+                }
+            }
+            return  false;
+        }
+    };
+}
+
+class DrawSketchHandlerSplitting: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerSplitting() {}
+    virtual ~DrawSketchHandlerSplitting()
+    {
+        Gui::Selection().rmvSelectionGate();
+    }
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Splitting");
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        int GeoId = sketchgui->getPreselectCurve();
+        if (GeoId >= 0) {
+            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                try {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "split(%d,App.Vector(%f,%f,0))",
+                              GeoId, onSketchPos.x, onSketchPos.y);
+                    Gui::Command::commitCommand();
+                    tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("Failed to split edge: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
+            }
+        }
+        else {
+            sketchgui->purgeHandler();
+        }
+
+        return true;
+    }
+};
+
+DEF_STD_CMD_A(CmdSketcherSplit)
+
+//TODO: fix the translations for this
+CmdSketcherSplit::CmdSketcherSplit()
+  : Command("Sketcher_Split")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Split edge");
+    sToolTipText    = QT_TR_NOOP("Splits an edge into two while preserving constraints");
+    sWhatsThis      = "Sketcher_Split";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Split";
+    sAccel          = "T,S";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSplit::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSplitting());
+}
+
+bool CmdSketcherSplit::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
 namespace SketcherGui {
     class ExternalSelection : public Gui::SelectionFilterGate
     {
@@ -6441,46 +6654,6 @@ namespace SketcherGui {
     };
 }
 
-
-/* XPM */
-static const char *cursor_external[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+....***************......",
-".........**...............***...",
-"........**................***...",
-".......**................**.*...",
-"......*.................*...*...",
-"....**................**....*...",
-"...**................**.....*...",
-"..**................**......*...",
-"..******************........*...",
-"..*................*........*...",
-"..*................*........*...",
-"..*................*........*...",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"................................",
-"................................"};
-
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
 public:
@@ -6503,8 +6676,7 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_external),7,7);
+        setCrosshairCursor("Sketcher_Pointer_External");
     }
 
     virtual void deactivated(ViewProviderSketch *sketchgui)
@@ -6548,7 +6720,7 @@ public:
                 (subName.size() > 6 && subName.substr(0,6) == "Vertex") ||
                 (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
-                    Gui::Command::openCommand("Add external geometry");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addExternal(\"%s\",\"%s\")",
                               msg.pObjectName, msg.pSubName);
                     Gui::Command::commitCommand();
@@ -6666,45 +6838,6 @@ namespace SketcherGui {
 }
 
 
-/* XPM */
-static const char *cursor_carboncopy[]={
-    "32 32 3 1",
-    cursor_crosshair_color,
-    "* c red",
-    ". c None",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "................................",
-    "+++++...+++++...................",
-    "................................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+....+++++++++++++++......",
-    ".........++*..............+++...",
-    "........++.*..............++*...",
-    ".......++..*.............++.*...",
-    "......+....*............+...*...",
-    "....++.....*..........++....*...",
-    "...++......*.........++.....*...",
-    "..++.......*........++......*...",
-    "..++++++++++++++++++........*...",
-    "..*........*.......*........*...",
-    "..*........*.......*........*...",
-    "..*.......+++++++++*++++++++*...",
-    "..*.....++.........*.......++...",
-    "..*....++..........*......++....",
-    "..*...+............*.....+......",
-    "..*.++.............*...++.......",
-    "..*++..............*..++........",
-    "..*+...............*.++.........",
-    "..++++++++++++++++++............",
-    "................................"};
-
     class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
     {
     public:
@@ -6727,8 +6860,7 @@ static const char *cursor_carboncopy[]={
             Gui::Selection().clearSelection();
             Gui::Selection().rmvSelectionGate();
             Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
-            setCrosshairColor();
-            setCursor(QPixmap(cursor_carboncopy),7,7);
+            setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
         }
 
         virtual void deactivated(ViewProviderSketch *sketchgui)
@@ -6769,7 +6901,7 @@ static const char *cursor_carboncopy[]={
                 if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 
                     try {
-                        Gui::Command::openCommand("Add carbon copy");
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
                                               msg.pObjectName, geometryCreationMode==Construction?"True":"False");
 
@@ -6801,7 +6933,7 @@ static const char *cursor_carboncopy[]={
     {
         sAppModule      = "Sketcher";
         sGroup          = QT_TR_NOOP("Sketcher");
-        sMenuText       = QT_TR_NOOP("CarbonCopy");
+        sMenuText       = QT_TR_NOOP("Carbon copy");
         sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
         sWhatsThis      = "Sketcher_CarbonCopy";
         sStatusTip      = sToolTipText;
@@ -6836,57 +6968,19 @@ static const char *cursor_carboncopy[]={
     }
 
 
-/* Create Slot =======================================================*/
-
-/* XPM */
-static const char *cursor_creatslot[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"................................",
-"..........................###...",
-"........###################.##..",
-".......#..................###.#.",
-"......#........................#",
-".....#.........................#",
-"....#.....###..................#",
-"....#.....#.#..................#",
-".....#....###.................#.",
-"......#.......................#.",
-".......#.....................#..",
-"........#####################...",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-class DrawSketchHandlerSlot: public DrawSketchHandler
+/**
+ * Create Slot
+ */
+class DrawSketchHandlerSlot : public DrawSketchHandler
 {
 public:
     DrawSketchHandlerSlot()
-      : Mode(STATUS_SEEK_First)
-      , lx(0), ly(0), r(0), a(0)
-      , EditCurve(36)
+        : Mode(STATUS_SEEK_First)
+        , dx(0), dy(0), r(0)
+        , EditCurve(35)
     {
     }
-    virtual ~DrawSketchHandlerSlot(){}
+    virtual ~DrawSketchHandlerSlot() {}
     /// mode table
     enum BoxMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -6894,58 +6988,65 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
+    virtual void activated(ViewProviderSketch*)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_creatslot),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Slot");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
 
-        if (Mode==STATUS_SEEK_First) {
+        if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
-        else if (Mode==STATUS_SEEK_Second) {
-            float dx = onSketchPos.x - StartPos.x;
-            float dy = onSketchPos.y - StartPos.y;
+        else if (Mode == STATUS_SEEK_Second) {
+            dx = onSketchPos.x - StartPos.x;
+            dy = onSketchPos.y - StartPos.y;
 
-            lx=0;ly=0;a=0;
+            double a = 0;
             double rev = 0;
             if (fabs(dx) > fabs(dy)) {
-                lx = dx;
-                r = dy;
+                r = fabs(dx) / 4;
                 rev = Base::sgn(dx);
             }
             else {
-                ly = dy;
-                r = dx;
+                r = fabs(dy) / 4;
                 a = 8;
                 rev = Base::sgn(dy);
             }
 
-            for (int i=0; i < 17; i++) {
-                double angle = (i+a)*M_PI/16.0;
-                double rx = -fabs(r)* rev * sin(angle) ;
-                double ry = fabs(r) * rev *cos(angle) ;
+            // draw the arcs with each 16 segments
+            for (int i = 0; i < 17; i++) {
+                // first get the position at the arc
+                // if a is 0, the end points of the arc are at the y-axis, if it is 8, they are on the x-axis
+                double angle = (i + a) * M_PI / 16.0;
+                double rx = -r * rev * sin(angle);
+                double ry = r * rev * cos(angle);
+                // now apply the rotation matrix according to the angle between StartPos and onSketchPos
+                if (!(dx == 0 || dy == 0)) {
+                    double rotAngle = atan(dy / dx);
+                    if (a > 0)
+                        rotAngle = -atan(dx / dy);
+                    double rxRot = rx * cos(rotAngle) - ry * sin(rotAngle);
+                    double ryRot = rx * sin(rotAngle) + ry * cos(rotAngle);
+                    rx = rxRot;
+                    ry = ryRot;
+                }
                 EditCurve[i] = Base::Vector2d(StartPos.x + rx, StartPos.y + ry);
-                EditCurve[18+i] = Base::Vector2d(StartPos.x - rx+lx, StartPos.y - ry+ly);
+                EditCurve[17 + i] = Base::Vector2d(StartPos.x + dx - rx, StartPos.y + dy - ry);
             }
-            EditCurve[17] = EditCurve[16] + Base::Vector2d(lx,ly);
-            EditCurve[35] = EditCurve[0] ;
-            //EditCurve[34] = EditCurve[0];
+            EditCurve[34] = EditCurve[0];
 
             SbString text;
-            text.sprintf(" (%.1fR %.1fL)", r,lx);
+            text.sprintf(" (%.1fR %.1fL)", r, sqrt(dx * dx + dy * dy));
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
-                                   AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -6955,7 +7056,7 @@ public:
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
-        if (Mode==STATUS_SEEK_First){
+        if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
             Mode = STATUS_SEEK_Second;
         }
@@ -6968,99 +7069,106 @@ public:
     virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
-        if (Mode==STATUS_End){
+        if (Mode == STATUS_End) {
             unsetCursor();
             resetPositionText();
 
             int firstCurve = getHighestCurveIndex() + 1;
             // add the geometry to the sketch
+            // first determine the rotation angle for the first arc
             double start, end;
-            if(fabs(lx)>fabs(ly)){
-                start = M_PI/2;
-                end = -M_PI/2;
-            }else{
-                start = 0;
-                end = M_PI;
+            if (fabs(dx) > fabs(dy)) {
+                if (dx > 0) {
+                    start = 0.5 * M_PI;
+                    end = 1.5 * M_PI;
+                }
+                else {
+                    start = 1.5 * M_PI;
+                    end = 0.5 * M_PI;
+                }
             }
-            if(ly>0 || lx <0){
-                double temp = start;
-                start = end;
-                end = temp;
+            else {
+                if (dy > 0) {
+                    start = -M_PI;
+                    end = 0;
+                }
+                else {
+                    start = 0;
+                    end = -M_PI;
+                }
             }
 
             try {
-                Gui::Command::openCommand("Add slot");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
-                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))\n"
-                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))\n"
-                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "%s.addGeometry(geoList,%s)\n"
+                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                    "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f ,0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f, %f, 0), App.Vector(%f, %f, 0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f, %f, 0), App.Vector(%f, %f, 0)))\n"
+                    "%s.addGeometry(geoList, %s)\n"
                     "conList = []\n"
-                    "conList.append(Sketcher.Constraint('Tangent',%i,1,%i,1))\n"
-                    "conList.append(Sketcher.Constraint('Tangent',%i,2,%i,1))\n"
-                    "conList.append(Sketcher.Constraint('Tangent',%i,2,%i,1))\n"
-                    "conList.append(Sketcher.Constraint('Tangent',%i,2,%i,2))\n"
-                    "conList.append(Sketcher.Constraint('%s',%i))\n"
-                    "conList.append(Sketcher.Constraint('Equal',%i,%i))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
+                    "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
                     "%s.addConstraint(conList)\n",
-                    StartPos.x,StartPos.y,  // center of the  arc1
-                    fabs(r),                  // radius arc1
-                    start,end,                 // start and end angle of arc1
-                    StartPos.x+lx,StartPos.y+ly,    // center of the arc2
-                    fabs(r),                          // radius arc2
-                    end,start,                         // start and end angle of arc2
-                    EditCurve[16].x,EditCurve[16].y,EditCurve[17].x,EditCurve[17].y, // line1
-                    EditCurve[0].x,EditCurve[0].y,EditCurve[34].x,EditCurve[34].y, // line2
+                    StartPos.x, StartPos.y,           // center of the arc1
+                    r,                                // radius arc1
+                    start, end,                       // start and end angle of arc1
+                    StartPos.x + dx, StartPos.y + dy, // center of the arc2
+                    r,                                // radius arc2
+                    end, end + M_PI,                  // start and end angle of arc2
+                    EditCurve[16].x, EditCurve[16].y, EditCurve[17].x, EditCurve[17].y, // line1
+                    EditCurve[33].x, EditCurve[33].y, EditCurve[34].x, EditCurve[34].y, // line2
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
-                    geometryCreationMode==Construction?"True":"False", // geometry as construction or not
-                    firstCurve,firstCurve+3, // tangent1
-                    firstCurve,firstCurve+2, // tangent2
-                    firstCurve+2,firstCurve+1, // tangent3
-                    firstCurve+3,firstCurve+1, // tangent4
-                    (fabs(lx)>fabs(ly))?"Horizontal":"Vertical", firstCurve+2, // vertical or horizontal constraint
-                    firstCurve,firstCurve+1, // equal constraint
+                    geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                    firstCurve, firstCurve + 2,     // tangent1
+                    firstCurve + 2, firstCurve + 1, // tangent2
+                    firstCurve + 1, firstCurve + 3, // tangent3
+                    firstCurve + 3, firstCurve,     // tangent4
+                    firstCurve, firstCurve + 1,     // equal constraint
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 Gui::Command::commitCommand();
 
-                // add auto constraints at the start of the first side
+                // add auto constraints at the center of the first arc
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3, Sketcher::mid);
                     sugConstr1.clear();
                 }
 
-                // add auto constraints at the end of the second side
+                // add auto constraints at the center of the second arc
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::mid);
                     sugConstr2.clear();
                 }
 
-                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Failed to add slot: %s\n", e.what());
                 Gui::Command::abortCommand();
 
-                tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
             }
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
-            if(continuousMode){
+            if (continuousMode) {
                 // This code enables the continuous creation mode.
-                Mode=STATUS_SEEK_First;
+                Mode = STATUS_SEEK_First;
                 EditCurve.clear();
                 sketchgui->drawEdit(EditCurve);
-                EditCurve.resize(36);
+                EditCurve.resize(35);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
                 * in continuous creation mode because the
                 * handler is destroyed by the quit() method on pressing the
                 * right button of the mouse */
             }
-            else{
+            else {
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
         }
@@ -7069,7 +7177,7 @@ public:
 protected:
     BoxMode Mode;
     Base::Vector2d StartPos;
-    double lx,ly,r,a;
+    double dx, dy, r;
     std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
@@ -7077,23 +7185,23 @@ protected:
 DEF_STD_CMD_AU(CmdSketcherCreateSlot)
 
 CmdSketcherCreateSlot::CmdSketcherCreateSlot()
-  : Command("Sketcher_CreateSlot")
+    : Command("Sketcher_CreateSlot")
 {
-    sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Create slot");
-    sToolTipText    = QT_TR_NOOP("Create a slot in the sketch");
-    sWhatsThis      = "Sketcher_CreateSlot";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateSlot";
-    sAccel          = "";
-    eType           = ForEdit;
+    sAppModule = "Sketcher";
+    sGroup = QT_TR_NOOP("Sketcher");
+    sMenuText = QT_TR_NOOP("Create slot");
+    sToolTipText = QT_TR_NOOP("Create a slot in the sketch");
+    sWhatsThis = "Sketcher_CreateSlot";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateSlot";
+    sAccel = "";
+    eType = ForEdit;
 }
 
 void CmdSketcherCreateSlot::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerSlot() );
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSlot());
 }
 
 void CmdSketcherCreateSlot::updateAction(int mode)
@@ -7115,47 +7223,7 @@ bool CmdSketcherCreateSlot::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-
 /* Create Regular Polygon ==============================================*/
-
-/* XPM */
-static const char *cursor_createregularpolygon[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+................###......",
-"......+.......##########.##.....",
-".............#.........###......",
-"............#.............#.....",
-"...........#...............#....",
-"...........#...............#....",
-"..........#.................#...",
-".........#...................#..",
-".........#...................#..",
-"........#.........###.........#.",
-".......#..........#.#..........#",
-"........#.........###.........#.",
-".........#...................#..",
-".........#...................#..",
-"..........#.................#...",
-"...........#...............#....",
-"...........#...............#....",
-"............#.............#.....",
-".............#...........#......",
-"..............###########.......",
-"................................"};
 
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
@@ -7179,8 +7247,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createregularpolygon),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -7242,7 +7309,7 @@ public:
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
-            Gui::Command::openCommand("Add hexagon");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add hexagon"));
 
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,
@@ -7649,7 +7716,7 @@ void CmdSketcherCompCreateRegularPolygon::languageChange()
     octagon->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
     octagon->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
     QAction* regular = a[6];
-    regular->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Regular Polygon"));
+    regular->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Regular polygon"));
     regular->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
     regular->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
 }
@@ -7682,6 +7749,8 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
+    rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
+    rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateTriangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateSquare());
@@ -7690,12 +7759,16 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateHeptagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateOctagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateRectangles());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePointFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExtend());
+    rcCmdMgr.addCommand(new CmdSketcherSplit());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }

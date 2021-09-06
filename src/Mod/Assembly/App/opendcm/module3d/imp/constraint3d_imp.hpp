@@ -67,10 +67,10 @@ namespace dcm {
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-boost::shared_ptr<Derived> Module3D<Typelist, ID>::type<Sys>::Constraint3D_base<Derived>::clone(Sys& newSys) {
+std::shared_ptr<Derived> Module3D<Typelist, ID>::type<Sys>::Constraint3D_base<Derived>::clone(Sys& newSys) {
 
     //copy the standart stuff
-    boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
+    std::shared_ptr<Derived> np = std::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
     np->m_system = &newSys;
     //copy the internals
     np->content = CBase::content->clone();

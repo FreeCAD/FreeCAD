@@ -54,15 +54,17 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
-#include<Mod/TechDraw/App/DrawPage.h>
+#include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskDetail.h"
 #include "ViewProviderViewPart.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
 
@@ -79,17 +81,15 @@ const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
 
 ViewProviderViewPart::ViewProviderViewPart()
 {
-    sPixmap = "TechDraw_Tree_View";
+    sPixmap = "TechDraw_TreeView";
 
     static const char *group = "Lines";
     static const char *dgroup = "Decoration";
     static const char *hgroup = "Highlight";
 
     //default line weights
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
     double weight = lg->getWeight("Thick");
     ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
@@ -104,7 +104,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
     delete lg;                            //Coverity CID 174664
 
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
 
     double defScale = hGrp->GetFloat("CenterMarkScale",0.50);
@@ -118,9 +118,8 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
-    int defLineStyle = hGrp->GetInt("SectionLine", 2);
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (defLineStyle), dgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None, 
                         "Set section line style if applicable");
     ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None, 
                         "Set section line color if applicable");
@@ -178,9 +177,9 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm != nullptr) {
-        sPixmap = "TechDraw_Tree_Multi";
+        sPixmap = "TechDraw_TreeMulti";
     } else if (dvd != nullptr) {
-        sPixmap = "actions/techdraw-DetailView";
+        sPixmap = "actions/TechDraw_DetailView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);
@@ -388,11 +387,7 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
 
 App::Color ViewProviderViewPart::prefSectionColor(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("SectionColor", 0x00FF0000));
-    return fcColor;
+    return PreferencesGui::sectionLineColor();
 }
 
 App::Color ViewProviderViewPart::prefHighlightColor(void)

@@ -1,0 +1,9 @@
+#ifndef FREECAD_SIGNALS2_HPP_WORKAROUND
+#define FREECAD_SIGNALS2_HPP_WORKAROUND
+
+// Workaround for boost >= 1.74
+#define BOOST_ALLOW_DEPRECATED_HEADERS
+#include <boost/signals2.hpp>
+#undef BOOST_ALLOW_DEPRECATED_HEADERS
+
+#endif // #ifndef FREECAD_SIGNALS2_HPP_WORKAROUND

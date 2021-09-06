@@ -25,9 +25,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/signals2/connection.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #endif
 
@@ -56,13 +56,14 @@
 #include "ViewProviderDrawingView.h"
 
 using namespace TechDrawGui;
+namespace bp = boost::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
 //    Base::Console().Message("VPDV::VPDV\n");
-    sPixmap = "TechDraw_Tree_View";
+    sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
     ADD_PROPERTY_TYPE(KeepLabel ,(false),group,App::Prop_None,"Keep Label on Page even if toggled off");
@@ -82,7 +83,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 //    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
-    auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, _1);
+    auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, bp::_1);
     auto feature = getViewObject();
     if (feature != nullptr) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
@@ -184,13 +185,15 @@ QGIView* ViewProviderDrawingView::getQView(void)
         TechDraw::DrawView* dv = getViewObject();
         if (dv) {
             Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-            Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-            ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-            if (dvp) {
-                if (dvp->getMDIViewPage()) {
-                    if (dvp->getMDIViewPage()->getQGVPage()) {
-                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
-                                               getQGVPage()->findQViewForDocObj(getViewObject()));
+            if (guiDoc != nullptr) {
+                Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+                ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+                if (dvp) {
+                    if (dvp->getMDIViewPage()) {
+                        if (dvp->getMDIViewPage()->getQGVPage()) {
+                            qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
+                                                   getQGVPage()->findQViewForDocObj(getViewObject()));
+                        }
                     }
                 }
             }
@@ -249,10 +252,12 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {
     MDIViewPage* result = nullptr;
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage()); //if not in page.views, !@#$%
-    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-    if (dvp) {
-        result = dvp->getMDIViewPage();
+    if (guiDoc != nullptr) {
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+        ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+        if (dvp) {
+            result = dvp->getMDIViewPage();
+        }
     }
     return result;
 }

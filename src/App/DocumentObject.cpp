@@ -42,7 +42,7 @@
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
@@ -108,12 +108,31 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
     // set/unset the execution bit
     Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
-    return this->execute();
+
+    // mark the object to recompute its extensions
+    this->setStatus(App::RecomputeExtension, true);
+
+    auto ret = this->execute();
+    if (ret == StdReturn) {
+        // most feature classes don't call the execute() method of its base class
+        // so execute the extensions now
+        if (this->testStatus(App::RecomputeExtension)) {
+            ret = executeExtensions();
+        }
+    }
+
+    return ret;
 }
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
-    //call all extensions
+    return executeExtensions();
+}
+
+App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
+{
+    //execute extensions but stop on error
+    this->setStatus(App::RecomputeExtension, false); // reset the flag
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector) {
         auto ret = ext->extensionExecute();
@@ -663,7 +682,7 @@ bool DocumentObject::removeDynamicProperty(const char* name)
     }
 
     for (auto it : removeExpr) {
-        ExpressionEngine.setValue(it, boost::shared_ptr<Expression>());
+        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
     }
 
     return TransactionalObject::removeDynamicProperty(name);
@@ -699,7 +718,7 @@ void DocumentObject::onChanged(const Property* prop)
         return;
 
     if(!GetApplication().isRestoring() && 
-       prop && !prop->testStatus(Property::PartialTrigger) &&
+       !prop->testStatus(Property::PartialTrigger) &&
        getDocument() && 
        getDocument()->testStatus(Document::PartialDoc))
     {
@@ -893,7 +912,7 @@ void DocumentObject::Save (Base::Writer &writer) const
  * @param expr Expression tree
  */
 
-void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr)
+void DocumentObject::setExpression(const ObjectIdentifier &path, std::shared_ptr<Expression> expr)
 {
     ExpressionEngine.setValue(path, expr);
 }
@@ -934,6 +953,11 @@ void DocumentObject::onDocumentRestored()
         ext->onExtendedDocumentRestored();
     if(Visibility.testStatus(Property::Output))
         Visibility.setStatus(Property::NoModify,true);
+}
+
+void DocumentObject::onUndoRedoFinished()
+{
+
 }
 
 void DocumentObject::onSettingDocument()

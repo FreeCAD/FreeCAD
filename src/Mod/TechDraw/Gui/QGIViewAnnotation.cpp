@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2014 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,6 +52,8 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Gui/Widgets.h>
+
 
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include "Rez.h"
@@ -161,14 +163,14 @@ void QGIViewAnnotation::drawAnnotation()
     //TODO: there is still a bug here.  entering "'" works, save and restore works, but edit after
     //      save and restore brings "\'" back into text.  manually deleting the "\" fixes it until the next
     //      save/restore/edit cycle.
-    //      a guess is that the editor for propertyStringList is too enthusiastic about substituting. 
+    //      a guess is that the editor for propertyStringList is too enthusiastic about substituting.
     //      the substituting might be necessary for using the strings in Python.
-    //      &apos; doesn't seem to help in this case.  
+    //      &apos; doesn't seem to help in this case.
 
         std::string u8String = Base::Tools::escapedUnicodeToUtf8(*it); //from \x??\x?? to real utf8
         std::string apos = std::regex_replace((u8String), std::regex("\\\\"), "");  //remove doubles.
         apos = std::regex_replace((apos), std::regex("\\'"), "'");  //replace escaped apos
-        //"less than" symbol chops off line.  need to use html sub. 
+        //"less than" symbol chops off line.  need to use html sub.
         std::string lt   = std::regex_replace((apos), std::regex("<"), "&lt;");
         ss << lt;
     }
@@ -189,4 +191,54 @@ void QGIViewAnnotation::rotateView(void)
     m_textItem->setRotation(-rot);
 }
 
+void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    Q_UNUSED(event);
 
+    TechDraw::DrawViewAnnotation *annotation = dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject());
+    if (annotation == nullptr) {
+        return;
+    }
+
+    const std::vector<std::string> &values = annotation->Text.getValues();
+    QString text;
+    if (values.size() > 0) {
+        text = QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(values[0]).c_str());
+
+        for (unsigned int i = 1; i < values.size(); ++i) {
+            text += QChar::fromLatin1('\n');
+            text += QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(values[i]).c_str());
+        }
+    }
+
+    QDialog dialog(0);
+    dialog.setWindowTitle(tr("Text"));
+
+    Gui::PropertyListEditor editor(&dialog);
+    editor.setPlainText(text);
+
+    QDialogButtonBox buttonBox(&dialog);
+    buttonBox.setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+    QVBoxLayout boxLayout(&dialog);
+    boxLayout.addWidget(&editor);
+    boxLayout.addWidget(&buttonBox);
+
+    connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+    if (dialog.exec() == QDialog::Accepted) {
+        QString newText = editor.toPlainText();
+        if (newText != text) {
+            QStringList list = newText.split(QChar::fromLatin1('\n'));
+            std::vector<std::string> newValues;
+
+            for (int i = 0; i < list.size(); ++i) {
+                newValues.push_back(Base::Tools::escapedUnicodeFromUtf8(list[i].toStdString().c_str()));
+            }
+
+            App::GetApplication().setActiveTransaction("Set Annotation Text");
+            annotation->Text.setValues(newValues);
+            App::GetApplication().closeActiveTransaction();
+        }
+    }
+}

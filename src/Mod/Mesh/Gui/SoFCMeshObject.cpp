@@ -167,7 +167,7 @@ private:
 
 // Defines all required member variables and functions for a
 // single-value field
-SO_SFIELD_SOURCE(SoSFMeshObject, const Mesh::MeshObject*, const Mesh::MeshObject*)
+SO_SFIELD_SOURCE(SoSFMeshObject, Base::Reference<const Mesh::MeshObject>, Base::Reference<const Mesh::MeshObject>)
 
 
 void SoSFMeshObject::initClass()

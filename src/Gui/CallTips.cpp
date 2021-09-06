@@ -143,7 +143,8 @@ void CallTipsList::keyboardSearch(const QString& wordPrefix)
         }
     }
 
-    setItemSelected(currentItem(), false);
+    if (currentItem())
+        currentItem()->setSelected(false);
 }
 
 void CallTipsList::validateCursor()
@@ -235,11 +236,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         PyObject* eval = 0;
         if (PyCode_Check(code)) {
-#if PY_MAJOR_VERSION >= 3
             eval = PyEval_EvalCode(code, dict.ptr(), dict.ptr());
-#else
-            eval = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(code), dict.ptr(), dict.ptr());
-#endif
         }
         Py_DECREF(code);
         if (!eval) {
@@ -275,14 +272,6 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         else if (PyObject_IsSubclass(type.ptr(), typeobj.o) == 1) {
             obj = type;
         }
-#if PY_MAJOR_VERSION < 3
-        else if (PyInstance_Check(obj.ptr())) {
-            // instances of old style classes
-            PyInstanceObject* inst = reinterpret_cast<PyInstanceObject*>(obj.ptr());
-            PyObject* classobj = reinterpret_cast<PyObject*>(inst->in_class);
-            obj = Py::Object(classobj);
-        }
-#endif
         else if (PyObject_IsInstance(obj.ptr(), basetype.o) == 1) {
             // New style class which can be a module, type, list, tuple, int, float, ...
             // Make sure it's not a type object
@@ -522,7 +511,7 @@ void CallTipsList::showTips(const QString& line)
         addItem(it.key());
         QListWidgetItem *item = this->item(this->count()-1);
         item->setData(Qt::ToolTipRole, QVariant(it.value().description));
-        item->setData(Qt::UserRole, qVariantFromValue( it.value() )); //< store full CallTip data
+        item->setData(Qt::UserRole, QVariant::fromValue( it.value() )); //< store full CallTip data
         switch (it.value().type)
         {
         case CallTip::Module:
@@ -696,7 +685,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
 void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 {
     hide();
-    if (!isItemSelected(item)) return;
+    if (!item->isSelected()) return;
 
     QString text = item->text();
     QTextCursor cursor = textEdit->textCursor();

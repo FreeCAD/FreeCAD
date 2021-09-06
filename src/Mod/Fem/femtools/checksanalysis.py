@@ -24,20 +24,21 @@
 
 __title__ = "Analysis Checks"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
 import FreeCAD
 
+from FreeCAD import Units
+
 from . import femutils
 from femsolver.calculix.solver import ANALYSIS_TYPES
 
 
-def check_analysismember(analysis, solver, mesh, member):
-    FreeCAD.Console.PrintMessage("Check prerequisites.\n")
-    from FreeCAD import Units
+def check_member_for_solver_calculix(analysis, solver, mesh, member):
+
     message = ""
 
     # solver
@@ -60,7 +61,7 @@ def check_analysismember(analysis, solver, mesh, member):
                 "Solver is set to nonlinear materials, "
                 "but there is no nonlinear material in the analysis.\n"
             )
-        if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools" \
+        if solver.Proxy.Type == "Fem::SolverCcxTools" \
                 and solver.GeometricalNonlinearity != "nonlinear":
             # nonlinear geometry --> should be set
             # https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
@@ -71,7 +72,7 @@ def check_analysismember(analysis, solver, mesh, member):
 
     # mesh
     if not mesh:
-        message += "No mesh object defined in the analysis\n"
+        message += "No mesh object defined in the analysis.\n"
     if mesh:
         if mesh.FemMesh.VolumeCount == 0 \
                 and mesh.FemMesh.FaceCount > 0 \
@@ -96,12 +97,12 @@ def check_analysismember(analysis, solver, mesh, member):
                 and mesh.FemMesh.EdgeCount == 0:
             message += (
                 "FEM mesh has neither volume nor shell or edge elements. "
-                "Provide a FEM mesh with elements!\n"
+                "Provide a FEM mesh with elements.\n"
             )
 
     # material linear and nonlinear
     if not member.mats_linear:
-        message += "No material object defined in the analysis\n"
+        message += "No material object defined in the analysis.\n"
     has_no_references = False
     for m in member.mats_linear:
         if len(m["Object"].References) == 0:
@@ -267,6 +268,17 @@ def check_analysismember(analysis, solver, mesh, member):
                     "{} doesn't references exactly two needed faces.\n"
                     .format(c["Object"].Name)
                 )
+    # sectionprint
+    if member.cons_sectionprint:
+        for c in member.cons_sectionprint:
+            items = 0
+            for reference in c["Object"].References:
+                items += len(reference[1])
+            if items != 1:
+                message += (
+                    "{} doesn't reference exactly one needed face.\n"
+                    .format(c["Object"].Name)
+                )
     # transform
     if member.cons_transform:
         for c in member.cons_transform:
@@ -325,6 +337,14 @@ def check_analysismember(analysis, solver, mesh, member):
             if mesh.FemMesh.EdgeCount == 0:
                 message += (
                     "Beam sections defined but FEM mesh has no edge elements.\n"
+                )
+            if not (
+                hasattr(mesh, "Shape")
+                or hasattr(mesh, "Part")
+            ):
+                message += (
+                    "Mesh without geometry link. "
+                    "The mesh needs to know his geometry for the beam rotations.\n"
                 )
         if len(member.geos_beamrotation) > 1:
             message += (

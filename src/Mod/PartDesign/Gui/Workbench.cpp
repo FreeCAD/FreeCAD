@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <QMessageBox>
 #endif
 
@@ -46,12 +46,27 @@
 #include "WorkflowManager.h"
 
 using namespace PartDesignGui;
+namespace bp = boost::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "Part Design");
+    qApp->translate("Workbench", "&Sketch");
+    //
+    qApp->translate("Workbench", "&Part Design");
+    qApp->translate("Workbench", "Create a datum");
+    qApp->translate("Workbench", "Create an additive feature");
+    qApp->translate("Workbench", "Create a subtractive feature");
+    qApp->translate("Workbench", "Apply a pattern");
+    qApp->translate("Workbench", "Apply a dress-up feature");
+    qApp->translate("Workbench", "Sprocket...");
+    qApp->translate("Workbench", "Involute gear...");
+    qApp->translate("Workbench", "Shaft design wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
+    //
+    qApp->translate("Workbench", "Measure");
+    qApp->translate("Workbench", "Part Design Helper");
+    qApp->translate("Workbench", "Part Design Modeling");
 #endif
 
 /// @namespace PartDesignGui @class Workbench
@@ -402,6 +417,8 @@ void Workbench::activated()
         "PartDesign_SubtractivePipe",
         "PartDesign_AdditiveLoft",
         "PartDesign_SubtractiveLoft",
+        "PartDesign_AdditiveHelix",
+        "PartDesign_SubtractiveHelix",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -433,22 +450,22 @@ void Workbench::activated()
         Gui::Control().showTaskView();
 
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
-    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
-    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, _1));
-    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
-    App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
+    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
+    App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
     // Watch out for objects being added to the active document, so that we can add them to the body
-    //App::GetApplication().signalNewObject.connect(boost::bind(&Workbench::slotNewObject, this, _1));
+    //App::GetApplication().signalNewObject.connect(boost::bind(&Workbench::slotNewObject, this, bp::_1));
 }
 
 void Workbench::deactivated()
 {
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
-    Gui::Application::Instance->signalActiveDocument.disconnect(boost::bind(&Workbench::slotActiveDocument, this, _1));
-    App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, _1));
-    App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
-    App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
-    //App::GetApplication().signalNewObject.disconnect(boost::bind(&Workbench::slotNewObject, this, _1));
+    Gui::Application::Instance->signalActiveDocument.disconnect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
+    App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
+    App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
+    App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
+    //App::GetApplication().signalNewObject.disconnect(boost::bind(&Workbench::slotNewObject, this, bp::_1));
 
     removeTaskWatcher();
     // reset the active Body
@@ -463,56 +480,107 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    // add another top level menu left besides the Part Design menu for the Sketcher commands
+    Gui::MenuItem* sketch = new Gui::MenuItem;
+    root->insertItem(item, sketch);
+    sketch->setCommand("&Sketch");
+
+    *sketch << "PartDesign_NewSketch"
+            << "Sketcher_LeaveSketch"
+            << "Sketcher_ViewSketch"
+            << "Sketcher_MapSketch"
+            << "Sketcher_ReorientSketch"
+            << "Sketcher_ValidateSketch";
+
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
+
+    // datums
+    Gui::MenuItem* datums = new Gui::MenuItem;
+    datums->setCommand("Create a datum");
+
+    *datums << "PartDesign_Point"
+            << "PartDesign_Line"
+            << "PartDesign_Plane";
+
+    // additives
+    Gui::MenuItem* additives = new Gui::MenuItem;
+    additives->setCommand("Create an additive feature");
+
+    *additives << "PartDesign_Pad"
+               << "PartDesign_Revolution"
+               << "PartDesign_AdditiveLoft"
+               << "PartDesign_AdditivePipe"
+               << "PartDesign_AdditiveHelix";
+
+    // subtractives
+    Gui::MenuItem* subtractives = new Gui::MenuItem;
+    subtractives->setCommand("Create a subtractive feature");
+
+    *subtractives << "PartDesign_Pocket"
+                  << "PartDesign_Hole"
+                  << "PartDesign_Groove"
+                  << "PartDesign_SubtractiveLoft"
+                  << "PartDesign_SubtractivePipe"
+                  << "PartDesign_SubtractiveHelix";
+
+    // transformations
+    Gui::MenuItem* transformations = new Gui::MenuItem;
+    transformations->setCommand("Apply a pattern");
+
+    *transformations << "PartDesign_Mirrored"
+                     << "PartDesign_LinearPattern"
+                     << "PartDesign_PolarPattern"
+                     << "PartDesign_MultiTransform";
+//                     << "PartDesign_Scaled"
+
+    // dressups
+    Gui::MenuItem* dressups = new Gui::MenuItem;
+    dressups->setCommand("Apply a dress-up feature");
+
+    *dressups << "PartDesign_Fillet"
+              << "PartDesign_Chamfer"
+              << "PartDesign_Draft"
+              << "PartDesign_Thickness";
+
     *part << "PartDesign_Body"
-          << "PartDesign_NewSketch"
-          << "Sketcher_LeaveSketch"
-          << "Sketcher_ViewSketch"
-          << "Sketcher_MapSketch"
-          << "Sketcher_ReorientSketch"
-          << "Sketcher_ValidateSketch"
           << "Separator"
-          << "PartDesign_Point"
-          << "PartDesign_Line"
-          << "PartDesign_Plane"
+          << datums
           << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
-          << "PartDesign_Pad"
-          << "PartDesign_Revolution"
-          << "PartDesign_AdditiveLoft"
-          << "PartDesign_AdditivePipe"
+          << additives
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
-          << "PartDesign_Pocket"
-          << "PartDesign_Hole"
-          << "PartDesign_Groove"
-          << "PartDesign_SubtractiveLoft"
-          << "PartDesign_SubtractivePipe"
+          << subtractives
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
-          << "PartDesign_Mirrored"
-          << "PartDesign_LinearPattern"
-          << "PartDesign_PolarPattern"
-//          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform"
+          << transformations
           << "Separator"
-          << "PartDesign_Fillet"
-          << "PartDesign_Chamfer"
-          << "PartDesign_Draft"
-          << "PartDesign_Thickness"
+          << dressups
           << "Separator"
           << "PartDesign_Boolean"
           << "Separator"
-          //<< "PartDesign_Hole"
           << "PartDesign_Migrate"
           << "PartDesign_Sprocket"
           << "PartDesign_InvoluteGear";
 
+    // use Part's measure features also for PartDesign
+    Gui::MenuItem* measure = new Gui::MenuItem;
+    root->insertItem(item, measure);
+    measure->setCommand("Measure");
+
+    *measure << "Part_Measure_Linear"
+             << "Part_Measure_Angular"
+             << "Separator"
+             << "Part_Measure_Refresh"
+             << "Part_Measure_Clear_All"
+             << "Part_Measure_Toggle_All"
+             << "Part_Measure_Toggle_3D"
+             << "Part_Measure_Toggle_Delta";
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
@@ -537,6 +605,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Helper");
+
     *part << "PartDesign_Body"
           << "PartDesign_NewSketch"
           << "Sketcher_EditSketch"
@@ -552,10 +621,12 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling");
+
     *part << "PartDesign_Pad"
           << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
           << "PartDesign_AdditivePipe"
+          << "PartDesign_AdditiveHelix"
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"
@@ -563,6 +634,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Groove"
           << "PartDesign_SubtractiveLoft"
           << "PartDesign_SubtractivePipe"
+          << "PartDesign_SubtractiveHelix"
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
           << "PartDesign_Mirrored"
@@ -577,6 +649,19 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Thickness"
           << "Separator"
           << "PartDesign_Boolean";
+
+    // use Part's measure features also for PartDesign
+    Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
+    measure->setCommand("Measure");
+
+    *measure << "Part_Measure_Linear"
+             << "Part_Measure_Angular"
+             << "Separator"
+             << "Part_Measure_Refresh"
+             << "Part_Measure_Clear_All"
+             << "Part_Measure_Toggle_All"
+             << "Part_Measure_Toggle_3D"
+             << "Part_Measure_Toggle_Delta";
 
     return root;
 }

@@ -250,11 +250,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
-#else
-            Py::Int val(*it);
-#endif
             m(index++) = (int)val;
         }
 
@@ -801,6 +797,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
     PyObject* obj;
     Standard_Integer degMin=3;
     Standard_Integer degMax=8;
+    Standard_Integer segMax=8;
     char* continuity = "C2";
     double tol3d = 1e-3;
     char* parType = "ChordLength";
@@ -809,15 +806,46 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
     double weight2 = 0;
     double weight3 = 0;
 
-    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
-                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", NULL};
+    // Approximate this curve with a given continuity and degree
+    static char* kwds_reapprox[] = {"MaxDegree", "MaxSegments", "Continuity", "Tolerance", nullptr};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "i|isd", kwds_reapprox,
+                                    &tol3d, &degMax, &segMax, &continuity)) {
 
+        GeomAbs_Shape c;
+        std::string str = continuity;
+        if (str == "C0")
+            c = GeomAbs_C0;
+        else if (str == "G1")
+            c = GeomAbs_G1;
+        else if (str == "C1")
+            c = GeomAbs_C1;
+        else if (str == "G2")
+            c = GeomAbs_G2;
+        else if (str == "C2")
+            c = GeomAbs_C2;
+        else if (str == "C3")
+            c = GeomAbs_C3;
+        else if (str == "CN")
+            c = GeomAbs_CN;
+        else
+            c = GeomAbs_C2;
+
+        bool ok = this->getGeomBSplineCurvePtr()->approximate(tol3d, segMax, degMax, c);
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+
+    // Approximate a list of points
+    //
+    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
+                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", nullptr};
+
+    PyErr_Clear();
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
                                      &obj, &degMax,
                                      &continuity, &tol3d, &degMin,
                                      &parType, &par,
                                      &weight1, &weight2, &weight3))
-        return 0;
+        return nullptr;
 
     try {
         Py::Sequence list(obj);
@@ -1221,11 +1249,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Py::Sequence multssq(mults);
             Standard_Integer index = 1;
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
-#if PY_MAJOR_VERSION >= 3
                 Py::Long mult(*it);
-#else
-                Py::Int mult(*it);
-#endif
                 if (index < occmults.Length() || PyObject_Not(periodic)) {
                     sum_of_mults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
                 }

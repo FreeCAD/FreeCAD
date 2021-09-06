@@ -34,14 +34,15 @@
 #include "TaskPadParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "TaskSketchBasedParameters.h"
@@ -53,11 +54,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
 TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
-    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad",tr("Pad parameters"))
+    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad", tr("Pad parameters"))
+    , ui(new Ui_TaskPadParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPadParameters();
     ui->setupUi(proxy);
 #if QT_VERSION >= 0x040700
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
@@ -74,6 +75,11 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     Base::Quantity l = pcPad->Length.getQuantityValue();
     Base::Quantity l2 = pcPad->Length2.getQuantityValue();
+    bool alongCustom = pcPad->AlongSketchNormal.getValue();
+    bool useCustom = pcPad->UseCustomVector.getValue();
+    double xs = pcPad->Direction.getValue().x;
+    double ys = pcPad->Direction.getValue().y;
+    double zs = pcPad->Direction.getValue().z;
     Base::Quantity off = pcPad->Offset.getQuantityValue();
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
@@ -88,14 +94,32 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
             faceId = std::atoi(&upToFace[4]);
     }
 
+    // set decimals for the direction edits
+    // do this here before the edits are filed to avoid rounding mistakes
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->XDirectionEdit->setDecimals(UserDecimals);
+    ui->YDirectionEdit->setDecimals(UserDecimals);
+    ui->ZDirectionEdit->setDecimals(UserDecimals);
+
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
+    ui->checkBoxDirection->setChecked(useCustom);
+    onDirectionToggled(useCustom);
+    ui->checkBoxAlongDirection->setChecked(alongCustom);
+    ui->XDirectionEdit->setValue(xs);
+    ui->YDirectionEdit->setValue(ys);
+    ui->ZDirectionEdit->setValue(zs);
     ui->offsetEdit->setValue(off);
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
+    ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.x")));
+    ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.y")));
+    ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.z")));
+    ui->offsetEdit->bind(pcPad->Offset);
+
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
@@ -117,7 +141,6 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
         ui->lineFaceName->clear();
         ui->lineFaceName->setProperty("FeatureName", QVariant());
     }
-
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
 
     ui->changeMode->clear();
@@ -134,6 +157,16 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
             this, SLOT(onLengthChanged(double)));
     connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onLength2Changed(double)));
+    connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onAlongSketchNormalChanged(bool)));
+    connect(ui->checkBoxDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onDirectionToggled(bool)));
+    connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onXDirectionEditChanged(double)));
+    connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onYDirectionEditChanged(double)));
+    connect(ui->ZDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onZDirectionEditChanged(double)));
     connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
@@ -167,60 +200,75 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
 void TaskPadParameters::updateUI(int index)
 {
     // disable/hide everything unless we are sure we don't need it
-    bool isLengthEditVisable  = false;
-    bool isLengthEdit2Visable = false;
-    bool isOffsetEditVisable  = false;
-    bool isMidplateEnabled    = false;
+    // exception: the direction parameters are in any case visible
+    bool isLengthEditVisible  = false;
+    bool isLengthEdit2Visible = false;
+    bool isOffsetEditVisible  = false;
+    bool isMidplaneEnabled    = false;
+    bool isMidplaneVisible    = false;
     bool isReversedEnabled    = false;
+    bool isReversedVisible    = false;
     bool isFaceEditEnabled    = false;
 
     // dimension
     if (index == 0) {
-        isLengthEditVisable = true;
+        isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        isMidplateEnabled = true;
+        isMidplaneEnabled = !ui->checkBoxReversed->isChecked();
+        isMidplaneVisible = true;
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
+        isReversedVisible = true;
     }
     // up to first/last
     else if (index == 1 || index == 2) {
-        isOffsetEditVisable  = true;
+        isOffsetEditVisible = true;
         isReversedEnabled = true;
+        isReversedVisible = true;
     }
     // up to face
     else if (index == 3) {
-        isOffsetEditVisable  = true;
-        isFaceEditEnabled    = true;
+        isOffsetEditVisible = true;
+        isFaceEditEnabled   = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
+        isReversedEnabled = true;
+        isReversedVisible = true;
     }
     // two dimensions
     else {
-        isLengthEditVisable = true;
-        isLengthEdit2Visable = true;
+        isLengthEditVisible  = true;
+        isLengthEdit2Visible = true;
+        isMidplaneEnabled    = !ui->checkBoxReversed->isChecked();
+        isMidplaneVisible    = true;
+        isReversedEnabled    = !ui->checkBoxMidplane->isChecked();
+        isReversedVisible    = true;
     }
 
-    ui->lengthEdit->setVisible( isLengthEditVisable );
-    ui->lengthEdit->setEnabled( isLengthEditVisable );
-    ui->labelLength->setVisible( isLengthEditVisable );
+    ui->lengthEdit->setVisible( isLengthEditVisible );
+    ui->lengthEdit->setEnabled( isLengthEditVisible );
+    ui->labelLength->setVisible( isLengthEditVisible );
+    ui->checkBoxAlongDirection->setVisible( isLengthEditVisible );
 
-    ui->offsetEdit->setVisible( isOffsetEditVisable );
-    ui->offsetEdit->setEnabled( isOffsetEditVisable );
-    ui->labelOffset->setVisible( isOffsetEditVisable );
+    ui->offsetEdit->setVisible( isOffsetEditVisible );
+    ui->offsetEdit->setEnabled( isOffsetEditVisible );
+    ui->labelOffset->setVisible( isOffsetEditVisible );
 
-    ui->checkBoxMidplane->setEnabled( isMidplateEnabled );
+    ui->checkBoxMidplane->setEnabled( isMidplaneEnabled );
+    ui->checkBoxMidplane->setVisible( isMidplaneVisible );
 
     ui->checkBoxReversed->setEnabled( isReversedEnabled );
+    ui->checkBoxReversed->setVisible( isReversedVisible );
 
-    ui->lengthEdit2->setVisible( isLengthEdit2Visable );
-    ui->lengthEdit2->setEnabled( isLengthEdit2Visable );
-    ui->labelLength2->setVisible( isLengthEdit2Visable );
+    ui->lengthEdit2->setVisible( isLengthEdit2Visible );
+    ui->lengthEdit2->setEnabled( isLengthEdit2Visible );
+    ui->labelLength2->setVisible( isLengthEdit2Visible );
 
     ui->buttonFace->setEnabled( isFaceEditEnabled );
     ui->lineFaceName->setEnabled( isFaceEditEnabled );
@@ -271,6 +319,74 @@ void TaskPadParameters::onLength2Changed(double len)
     recomputeFeature();
 }
 
+void TaskPadParameters::onAlongSketchNormalChanged(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->AlongSketchNormal.setValue(on);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onDirectionToggled(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->UseCustomVector.setValue(on);
+    // dis/enable length direction
+    ui->checkBoxAlongDirection->setEnabled(on);
+    if (on) {
+        ui->groupBoxDirection->show();
+    } else {
+        ui->checkBoxAlongDirection->setChecked(!on);
+        ui->groupBoxDirection->hide();
+    }
+    recomputeFeature();
+    // the calculation of the sketch's normal vector is done in FeaturePad.cpp
+    // if this vector was used for the recomputation we must fill the direction
+    // vector edit fields. Therefore update
+    updateDirectionEdits();
+}
+
+void TaskPadParameters::onXDirectionEditChanged(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Direction.setValue(len, pcPad->Direction.getValue().y, pcPad->Direction.getValue().z);
+    recomputeFeature();
+    // checking for case of a null vector is done in FeaturePad.cpp
+    // if there was a null vector, the normal vector of the sketch is used.
+    // therefore the vector component edits must be updated
+    updateDirectionEdits();
+}
+
+void TaskPadParameters::onYDirectionEditChanged(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Direction.setValue(pcPad->Direction.getValue().x, len, pcPad->Direction.getValue().z);
+    recomputeFeature();
+    updateDirectionEdits();
+}
+
+void TaskPadParameters::onZDirectionEditChanged(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Direction.setValue(pcPad->Direction.getValue().x, pcPad->Direction.getValue().y, len);
+    recomputeFeature();
+    updateDirectionEdits();
+}
+
+void TaskPadParameters::updateDirectionEdits(void)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    // we don't want to execute the onChanged edits, but just update their contents
+    ui->XDirectionEdit->blockSignals(true);
+    ui->YDirectionEdit->blockSignals(true);
+    ui->ZDirectionEdit->blockSignals(true);
+    ui->XDirectionEdit->setValue(pcPad->Direction.getValue().x);
+    ui->YDirectionEdit->setValue(pcPad->Direction.getValue().y);
+    ui->ZDirectionEdit->setValue(pcPad->Direction.getValue().z);
+    ui->XDirectionEdit->blockSignals(false);
+    ui->YDirectionEdit->blockSignals(false);
+    ui->ZDirectionEdit->blockSignals(false);
+}
+
 void TaskPadParameters::onOffsetChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
@@ -282,6 +398,7 @@ void TaskPadParameters::onMidplaneChanged(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Midplane.setValue(on);
+    // reversed is not sensible when midplane
     ui->checkBoxReversed->setEnabled(!on);
     recomputeFeature();
 }
@@ -290,6 +407,8 @@ void TaskPadParameters::onReversedChanged(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Reversed.setValue(on);
+    // midplane is not sensible when reversed
+    ui->checkBoxMidplane->setEnabled(!on);
     recomputeFeature();
 }
 
@@ -318,6 +437,7 @@ void TaskPadParameters::onButtonFace(const bool pressed)
 {
     this->blockConnection(!pressed);
 
+    // only faces are allowed
     TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
 
     // Update button if onButtonFace() is called explicitly
@@ -359,6 +479,31 @@ double TaskPadParameters::getLength2(void) const
     return ui->lengthEdit2->value().getValue();
 }
 
+bool   TaskPadParameters::getAlongSketchNormal(void) const
+{
+    return ui->checkBoxAlongDirection->isChecked();
+}
+
+bool   TaskPadParameters::getCustom(void) const
+{
+    return ui->checkBoxDirection->isChecked();
+}
+
+double TaskPadParameters::getXDirection(void) const
+{
+    return ui->XDirectionEdit->value();
+}
+
+double TaskPadParameters::getYDirection(void) const
+{
+    return ui->YDirectionEdit->value();
+}
+
+double TaskPadParameters::getZDirection(void) const
+{
+    return ui->ZDirectionEdit->value();
+}
+
 double TaskPadParameters::getOffset(void) const
 {
     return ui->offsetEdit->value().getValue();
@@ -394,7 +539,6 @@ QString TaskPadParameters::getFaceName(void) const
 
 TaskPadParameters::~TaskPadParameters()
 {
-    delete ui;
 }
 
 void TaskPadParameters::changeEvent(QEvent *e)
@@ -403,6 +547,9 @@ void TaskPadParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->lengthEdit->blockSignals(true);
         ui->lengthEdit2->blockSignals(true);
+        ui->XDirectionEdit->blockSignals(true);
+        ui->YDirectionEdit->blockSignals(true);
+        ui->ZDirectionEdit->blockSignals(true);
         ui->offsetEdit->blockSignals(true);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
@@ -442,6 +589,9 @@ void TaskPadParameters::changeEvent(QEvent *e)
 
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);
+        ui->XDirectionEdit->blockSignals(false);
+        ui->YDirectionEdit->blockSignals(false);
+        ui->ZDirectionEdit->blockSignals(false);
         ui->offsetEdit->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
@@ -462,10 +612,12 @@ void TaskPadParameters::apply()
 
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
-
+    FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "Direction = ("
+        << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
+    FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = getFaceName();
-
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
     FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
     FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));

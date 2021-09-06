@@ -63,6 +63,13 @@ PyObject *TopoShapeVertexPy::PyMake(struct _typeobject *, PyObject *, PyObject *
 // constructor method
 int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Vertex
+        getTopoShapePtr()->setShape(TopoDS_Vertex());
+        return 0;
+    }
+
+    PyErr_Clear();
     double x=0.0,y=0.0,z=0.0;
     PyObject *object;
     bool success = false;
@@ -187,7 +194,9 @@ Py::Object TopoShapeVertexPy::getPoint(void) const
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
         gp_Pnt p = BRep_Tool::Pnt(v);
-        return Py::asObject(new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z())));
+        Base::PyObjectBase* pnt = new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z()));
+        pnt->setNotTracking();
+        return Py::asObject(pnt);
     }
     catch (Standard_Failure& e) {
 

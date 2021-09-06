@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -98,7 +98,7 @@ public:
 
     void setSpans(App::CellAddress address, int rows, int columns);
 
-    void clear(App::CellAddress address);
+    void clear(App::CellAddress address, bool toClearAlias=true);
 
     void clear();
 
@@ -126,15 +126,17 @@ public:
 
     bool isDirty() const { return dirty.size() > 0; }
 
-    void moveCell(App::CellAddress currPos, App::CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renames);
-
     void pasteCells(const std::map<App::CellAddress, std::string> &cells, int rowOffset, int colOffset);
 
     void insertRows(int row, int count);
 
+    std::vector<App::CellAddress> getRows(int row, int count) const;
+
     void removeRows(int row, int count);
 
     void insertColumns(int col, int count);
+
+    std::vector<App::CellAddress> getColumns(int column, int count) const;
 
     void removeColumns(int col, int count);
 
@@ -182,6 +184,7 @@ protected:
 private:
 
     PropertySheet(const PropertySheet & other);
+    PropertySheet& operator= (const PropertySheet&);
 
     /* friends */
 
@@ -214,6 +217,12 @@ private:
 
     /*! Owner of this property */
     Sheet * owner;
+
+    void clearAlias(App::CellAddress address);
+
+    void moveAlias(App::CellAddress currPos, App::CellAddress newPos);
+
+    void moveCell(App::CellAddress currPos, App::CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renames);
 
     /*
      * Cell dependency tracking

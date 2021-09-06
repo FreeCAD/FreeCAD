@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editare</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Import</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Ştergeţi</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Lipește expresii</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Creează un grup cu legătură</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Creează o legătură</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Creează o sub-legătură</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importă legături</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importă toate legăturile</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Inserează cotă</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Inserează un document text</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Adaugă o componentă</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Adaugă un grup</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Amplasare</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformare</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Transformarea legăturii</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Măsoară distanţa</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -179,11 +254,11 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Elimină</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation type="unfinished">Revert to last calculated value (as constant)</translation>
+      <translation>Revenire la ultima valoare calculată (ca și constantă)</translation>
     </message>
   </context>
   <context>
@@ -199,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Nume fișier</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Introduceți o expresie...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expresie: </translation>
     </message>
   </context>
   <context>
@@ -391,14 +477,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Dimensiune cuvânt</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Contributii</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD ar fi nicăieri fără eforturile lor:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licenţă</translation>
     </message>
@@ -417,6 +495,29 @@ while doing a left or right click and move the mouse up or down</translation>
       <source>License</source>
       <translation>Licenţă</translation>
     </message>
+    <message>
+      <source>Collection</source>
+      <translation>Colecție</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Contributii</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD nu ar fi posibil fără contribuțiile</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Persoane</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organizaţii</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
@@ -427,6 +528,14 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Out Of Range</source>
       <translation>Valoare incorecta</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -591,7 +700,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Adăugaţi o proprietate</translation>
     </message>
     <message>
       <source>Type</source>
@@ -606,16 +715,28 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Nume</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Documentul</translation>
+      <source>Verbose description of the new property.</source>
+      <translation>Descrierea detaliată a noii proprietăți.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation type="unfinished">Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</translation>
+      <source>Documentation</source>
+      <translation>Documentaţie</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation type="unfinished">Append group name</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation>Folosiți că prefix, pentru numele proprietății, numele grupului sub forma 'Nume_Grup' pentru a evita conflictele cu alte proprietăți existente.
+În acest caz, prefixul va fi micșorat automat când este afișat în editorul proprietății.
+Cu toate acestea, proprietatea este încă utilizată într-un script cu numele complet, cum ar fi 'obj.Nume_Grup'.
+
+În cazul în care acest lucru nu este bifat, atunci proprietatea trebuie să fie desemnată în mod unic și este accesată ca „obj.Nume”.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>Prefixul numelui de grup</translation>
     </message>
   </context>
   <context>
@@ -1002,6 +1123,10 @@ while doing a left or right click and move the mouse up or down</translation>
       <source>Global</source>
       <translation>Global</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>Modulul %1 nu a fost încărcat</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1040,16 +1165,16 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Butoane</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Șterge</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Imprimare - referinta</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Butoane Spaceball</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Reinițializare</translation>
     </message>
   </context>
   <context>
@@ -1261,40 +1386,44 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation> </translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation type="unfinished">Code lines will be numbered </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>Apăsarea tastei &lt;Tab&gt; va insera indentația conform dimensiunii definite</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Rasterul tabulatorului (câte spații)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>Câte spații vor fi inserate la apăsarea tastei &lt;Tab&gt;</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>Apăsarea tastei &lt;Tab&gt; va insera un tabulator cu dimensiunea definită a tab-ului</translation>
     </message>
     <message>
       <source>Display items</source>
-      <translation type="unfinished">Display items</translation>
+      <translation>Afişare elemente</translation>
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>Dimensiunea fontului pentru tipul de cod selectat</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
-      <translation type="unfinished">Color and font settings will be applied to selected type</translation>
+      <translation>Setările de culoare și font vor fi aplicate tipului selectat</translation>
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>Familia de fonturi care va fi folosită pentru tipul de cod selectat</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Culoare:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Liniile de cod vor fi numerotate</translation>
     </message>
   </context>
   <context>
@@ -1353,31 +1482,31 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>Limba interfeței pentru utilizator a aplicației</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Câte fişiere trebuie afișate în lista de fişiere recente</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Fundalul ferestrei principale va consta din dale cu o imagine specială.
+Vezi Wiki FreeCAD pentru detalii despre imagine.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Foaie de stil despre cum va arăta interfața utilizatorului</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>Alegeți preferința dumneavoastră pentru dimensiunea pictogramelor din bara de instrumente. Puteți ajusta
+acest lucru în funcție de dimensiunea ecranului sau de gustul personal</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Vizualizare tip arbore:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1385,31 +1514,31 @@ this according to your screen size or personal taste</translation>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>Personalizați modul în care este afișată vizualizarea arborelui în panou (este necesară repornirea).
 
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</translation>
+'ComboView': combinați vizualizarea arborelui și a proprietății într-un singur panou.
+'TreeView și PropertyView': vizualizare arborele împărțit și vizualizare proprietate în panou separat.
+'Ambele': păstrați toate cele trei panouri și puteți avea două seturi de vizualizare a arborelui și a proprietății.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>Un ecran de pornire este o mică fereastră de încărcare care este afișată
+atunci când FreeCAD este lansat. În cazul în care această opțiune este bifată, FreeCAD va afișa
+ecranul de pornire</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Alegeți ce banc de lucru va fi activat și afișat
+după lansarea FreeCAD</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <translation>Cuvintele vor fi împachetate când depășesc
+spațiul orizontal disponibil în consola Python</translation>
     </message>
   </context>
   <context>
@@ -1444,11 +1573,11 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation type="unfinished">TreeView and PropertyView</translation>
+      <translation>VedereArbore și VedereProprietăți</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>Ambele</translation>
     </message>
   </context>
   <context>
@@ -1525,7 +1654,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Bară de instrumente</translation>
     </message>
   </context>
   <context>
@@ -1609,45 +1738,45 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Nu mai arăta din nou</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Walkthrough ghidat</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+      <translation>Acesta vă va ghida în configurarea acestui macro într-o bară de instrumente globală particularizată. Instrucțiunile vor fi scrise în roșu în interiorul dialogului.
 
-Note: your changes will be applied when you next switch workbenches
+Notă: modificările dvs. vor fi aplicate la schimbarea următoare a bancului de lucru
 </translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>Walkthrough, dialog 1 din 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>Instrucțiuni walkthrough: Completați câmpurile lipsă (opțional) apoi apăsați „Adăugați”, apoi Închide</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>Walkthrough, dialog 1 din 1</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+      <translation>Walkthrough, dialog 2 din 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>Instrucțiuni walkthrough: Apasă butonul săgeată dreapta (-&gt;), apoi Închide.</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Instrucțiuni walkthrough: Apasă butonul Nou, apoi săgeată dreapta (-&gt;), apoi Închide.</translation>
     </message>
   </context>
   <context>
@@ -1807,7 +1936,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>Sortat</translation>
+    </message>
+    <message>
+      <source>Quick search</source>
+      <translation>Căutare rapidă</translation>
+    </message>
+    <message>
+      <source>Type in a group name to find it</source>
+      <translation>Scrie un nume de grup pentru a-l găsi</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Căutare grupuri</translation>
     </message>
   </context>
   <context>
@@ -1886,6 +2027,10 @@ Specify another directory, please.</source>
     <message>
       <source>System parameter</source>
       <translation>Parametru de sistem</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Căutare grupuri</translation>
     </message>
   </context>
   <context>
@@ -1980,6 +2125,10 @@ Specify another directory, please.</source>
       <source>Open in browser</source>
       <translation>Deschide în navigator</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Versiune program:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2052,15 +2201,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</translation>
+      <translation>Filtrare după tip</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
-      <translation type="unfinished">Sync sub-object selection</translation>
+      <translation>Sincronizează selecția sub-obiectului</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -2069,6 +2214,10 @@ Specify another directory, please.</source>
     <message>
       <source>Clear</source>
       <translation>Șterge</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Dacă este activată, selecția din vizualizarea 3D va fi sincronizată cu ierarhia completă a obiectului.</translation>
     </message>
   </context>
   <context>
@@ -2131,53 +2280,99 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Log messages will be recorded</source>
-      <translation type="unfinished">Log messages will be recorded</translation>
+      <translation>Jurnalul de mesaje va fi înregistrat</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
-      <translation type="unfinished">Warnings will be recorded</translation>
+      <translation>Avertismentele vor fi înregistrate</translation>
     </message>
     <message>
       <source>Error messages will be recorded</source>
-      <translation type="unfinished">Error messages will be recorded</translation>
+      <translation>Mesajele de eroare vor fi înregistrate</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation type="unfinished">When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</translation>
+      <translation>Când a apărut o eroare, fereastra de vizualizare raport va devini vizibilă
+pe ecran în timpul afișării erorii</translation>
     </message>
     <message>
-      <source>Show report view on warning or error</source>
-      <translation type="unfinished">Show report view on warning or error</translation>
+      <source>Show report view on error</source>
+      <translation>Arată vizualizarea raportului pentru eroare</translation>
+    </message>
+    <message>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation>Când a apărut un avertisment, fereastra Vizualizare Raport va deveni vizibilă
+pe ecran în timpul afișării avertismentului</translation>
+    </message>
+    <message>
+      <source>Show report view on warning</source>
+      <translation>Arată Vizualizare Raport pentru avertismente</translation>
+    </message>
+    <message>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation>Când a apărut un mesaj normal, fereastra Vizualizare Raport va deveni vizibilă
+pe ecran în timp ce afișează mesajul</translation>
+    </message>
+    <message>
+      <source>Show report view on normal message</source>
+      <translation>Arată rapoarte pentru mesajele normale</translation>
+    </message>
+    <message>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation>Când a apărut un mesaj de jurnal, fereastra Vizualizare Raport va deveni vizibilă
+pe ecran în timp ce afișează mesajul de jurnal</translation>
+    </message>
+    <message>
+      <source>Show report view on log message</source>
+      <translation>Arată rapoarte pentru mesajele de jurnal</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation type="unfinished">Font color for normal messages in Report view panel</translation>
+      <translation>Culoarea font-ului pentru mesajele normale în fereastra de Vizualizare Rapoarte</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
-      <translation type="unfinished">Font color for log messages in Report view panel</translation>
+      <translation>Culoarea font-ului pentru mesajele de jurnal în fereastra de Vizualizare Rapoarte</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
-      <translation type="unfinished">Font color for warning messages in Report view panel</translation>
+      <translation>Culoarea font-ului pentru mesajele de avertizare în panoul de vizualizare Rapoarte</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation type="unfinished">Font color for error messages in Report view panel</translation>
+      <translation>Culoarea font-ului pentru mesajele de eroare în panoul de vizualizare Rapoarte</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python output will be redirected
-from Python console to Report view panel</translation>
+      <translation>Mesajele interne Python vor fi redirecționate
+din consola Python către panoul de vizualizare Rapoarte</translation>
     </message>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python error messages will be redirected
-from Python console to Report view panel</translation>
+      <translation>Mesajele de eroare interne Python vor fi redirecționate
+din consola Python către panoul de vizualizare Rapoarte</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation>Include ora pentru fiecare raport</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation>Include ora pentru fiecare înregistrare</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation>Mesajele normale vor fi înregistrate</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation>Înregistrează mesajele normale</translation>
     </message>
   </context>
   <context>
@@ -2226,10 +2421,6 @@ from Python console to Report view panel</translation>
       <translation>Vizualizare 3D</translation>
     </message>
     <message>
-      <source>3D View settings</source>
-      <translation>Setările de vizualizării 3D</translation>
-    </message>
-    <message>
       <source>Show coordinate system in the corner</source>
       <translation>Arată sistemul de coordonate în colţ</translation>
     </message>
@@ -2238,60 +2429,12 @@ from Python console to Report view panel</translation>
       <translation>Arată contorul de cadre pe secundă</translation>
     </message>
     <message>
-      <source>Enable animation</source>
-      <translation>Activează animaţia</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes:</source>
-      <translation>Distanţa dintre ochi pentru modurile stereo:</translation>
-    </message>
-    <message>
       <source>Camera type</source>
       <translation>Tipul camerei video</translation>
     </message>
     <message>
       <source/>
       <translation> </translation>
-    </message>
-    <message>
-      <source>3D Navigation</source>
-      <translation>Navigare 3D</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>Mouse...</translation>
-    </message>
-    <message>
-      <source>Intensity of backlight</source>
-      <translation>Intensitatea luminii de fundal</translation>
-    </message>
-    <message>
-      <source>Enable backlight color</source>
-      <translation>Activeaza lumina de fundal</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>Stil de rotație</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>Placa turnantă</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>Trackball</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>Inverseaza zoom-ul</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>Mareste la pozitia cursorului</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>Factor de marire</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -2326,76 +2469,36 @@ from Python console to Report view panel</translation>
       <translation>Redar&amp;e din perspectivă</translation>
     </message>
     <message>
-      <source>Show navigation cube</source>
-      <translation>Arată NaviCube</translation>
-    </message>
-    <message>
-      <source>Corner</source>
-      <translation>Colţ</translation>
-    </message>
-    <message>
-      <source>Top left</source>
-      <translation>Stânga sus</translation>
-    </message>
-    <message>
-      <source>Top right</source>
-      <translation>Dreapta sus</translation>
-    </message>
-    <message>
-      <source>Bottom left</source>
-      <translation>Stânga jos</translation>
-    </message>
-    <message>
-      <source>Bottom right</source>
-      <translation>Dreapta jos</translation>
-    </message>
-    <message>
-      <source>New Document Camera Orientation</source>
-      <translation>Orienteaza- te spre un nou document al camerei</translation>
-    </message>
-    <message>
-      <source>Disable touchscreen tilt gesture</source>
-      <translation>Dezactivaţi inclinarea prin gest a ecranului tactil</translation>
-    </message>
-    <message>
       <source>Marker size:</source>
       <translation>Dimensiune marcator:</translation>
     </message>
     <message>
+      <source>General</source>
+      <translation>General</translation>
+    </message>
+    <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation type="unfinished">Main coordinate system will always be shown in
-lower right corner within opened files</translation>
-    </message>
-    <message>
-      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation type="unfinished">If checked, application will remember which workbench is active for each tab of the viewport</translation>
-    </message>
-    <message>
-      <source>Remember active workbench by tab</source>
-      <translation type="unfinished">Remember active workbench by tab</translation>
+      <translation>Sistemul principal de coordonate va fi întotdeauna afișat în
+colțul din dreapta jos în cadrul fișierelor deschise</translation>
     </message>
     <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation type="unfinished">Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</translation>
+      <translation>Timpul necesar pentru ultima operațiune și rata de cadre rezultată
+vor fi afișate în colțul din stânga jos în fișierele deschise</translation>
     </message>
     <message>
-      <source>Navigation cube will always be shown in opened files </source>
-      <translation type="unfinished">Navigation cube will always be shown in opened files </translation>
+      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
+      <translation>Dacă bifaţi, aplicaţia va reţine care banc de lucru este activ pentru fiecare filă din vizualizare</translation>
     </message>
     <message>
-      <source>Steps by turn</source>
-      <translation type="unfinished">Steps by turn</translation>
+      <source>Remember active workbench by tab</source>
+      <translation>Memorează bancul de lucru activ în fiecare filă</translation>
     </message>
     <message>
-      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
-    </message>
-    <message>
-      <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <source>Rendering</source>
+      <translation>Randare</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2408,24 +2511,24 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+      <translation>Dacă este selectat vor fi folosite obiecte Vertex Buffer Objects (VBO).
+Un VBO este o funcție OpenGL care oferă metode de încărcare
+a datelor vertex (poziție, vector normal, culoare etc.) pe cardul grafic.
+VBOs oferă câștiguri substanțiale de performanță deoarece datele rezidă
+în memoria grafică și nu în memoria sistemului, astfel
+pot fi redate direct de GPU. 
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Notă: Uneori, această caracteristică poate duce la o serie de probleme
+diferite, de la anomalii grafice până la erori de defecțiune GPU. Amintiţi-vă să
+raportaţi această setare ca activată atunci când căutaţi suport pe forumurile FreeCAD</translation>
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Utilizaţi OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>Cache-ul de randare</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2449,117 +2552,105 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>Distribuit</translation>
     </message>
     <message>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>Centralizat</translation>
     </message>
     <message>
-      <source>Enable animated rotations</source>
-      <translation type="unfinished">Enable animated rotations</translation>
+      <source>Transparent objects:</source>
+      <translation>Obiecte transparente:</translation>
     </message>
     <message>
-      <source>List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
+      <source>Render types of transparent objects</source>
+      <translation type="unfinished">Render types of transparent objects</translation>
     </message>
     <message>
-      <source>Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</translation>
+      <source>One pass</source>
+      <translation>O trecere</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used </translation>
-    </message>
-    <message>
-      <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
-    </message>
-    <message>
-      <source>New document scale</source>
-      <translation type="unfinished">New document scale</translation>
-    </message>
-    <message>
-      <source>Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</source>
-      <translation type="unfinished">Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
-    </message>
-    <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
-    </message>
-    <message>
-      <source>Direction of zoom operations will be inverted</source>
-      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
-    </message>
-    <message>
-      <source>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
-    </message>
-    <message>
-      <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
+      <source>Backface pass</source>
+      <translation>Trecere pe verso</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
-      <translation type="unfinished">Size of vertices in the Sketcher workbench</translation>
+      <translation>Mărimea nodurilor în atelierul de lucru Sketcher</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes</source>
+      <translation>Distanța dintre ochi pentru modurile stereo</translation>
+    </message>
+    <message>
+      <source>Backlight is enabled with the defined color</source>
+      <translation>Lumina de fundal este activată având culoarea definită</translation>
+    </message>
+    <message>
+      <source>Backlight color</source>
+      <translation>Culoarea luminii de fundal</translation>
+    </message>
+    <message>
+      <source>Intensity</source>
+      <translation>Intensitate</translation>
+    </message>
+    <message>
+      <source>Intensity of the backlight</source>
+      <translation>Intensitatea luminii de fundal</translation>
+    </message>
+    <message>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Obiectele vor fi proiectate în proiecții ortografice</translation>
+    </message>
+    <message>
+      <source>Objects will appear in a perspective projection</source>
+      <translation>Obiectele vor apărea într-o proiecție de perspectivă</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Selectionați raza (px) :</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Zona pentru selecția elementelor în vizualizarea 3D.
+Valoare mai mare ușurează selecția elementelor, dar poate face imposibilă selectarea unor elemente micuțe.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Utilizaţi OpenGL software</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
+bounding box size of the 3D object that is currently displayed.</source>
       <translation type="unfinished">Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </translation>
-    </message>
-    <message>
-      <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
-    </message>
-    <message>
-      <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
-    </message>
-    <message>
-      <source>Backlight is enabled with the defined color</source>
-      <translation type="unfinished">Backlight is enabled with the defined color</translation>
-    </message>
-    <message>
-      <source>Objects will be projected in orthographic projection</source>
-      <translation type="unfinished">Objects will be projected in orthographic projection</translation>
-    </message>
-    <message>
-      <source>Objects will appear in a perspective projection</source>
-      <translation type="unfinished">Objects will appear in a perspective projection</translation>
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -2595,46 +2686,6 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
-    </message>
-    <message>
-      <source>Isometric</source>
-      <translation>Izometrică</translation>
-    </message>
-    <message>
-      <source>Dimetric</source>
-      <translation>Dimetric</translation>
-    </message>
-    <message>
-      <source>Trimetric</source>
-      <translation>Trimetric</translation>
-    </message>
-    <message>
-      <source>Top</source>
-      <translation>Partea de sus</translation>
-    </message>
-    <message>
-      <source>Front</source>
-      <translation>Din față</translation>
-    </message>
-    <message>
-      <source>Left</source>
-      <translation>Stanga</translation>
-    </message>
-    <message>
-      <source>Right</source>
-      <translation>Dreapta</translation>
-    </message>
-    <message>
-      <source>Rear</source>
-      <translation>Din spate</translation>
-    </message>
-    <message>
-      <source>Bottom</source>
-      <translation>Partea de jos</translation>
-    </message>
-    <message>
-      <source>Custom</source>
-      <translation>Personalizat</translation>
     </message>
   </context>
   <context>
@@ -2852,36 +2903,36 @@ bounding box size of the 3D object that is currently displayed. </translation>
       <translation>Adăugați logo programului la miniatura générată</translation>
     </message>
     <message>
-      <source>Compression level for FCStd files</source>
-      <translation type="unfinished">Compression level for FCStd files</translation>
-    </message>
-    <message>
-      <source>How many Undo/Redo steps should be recorded</source>
-      <translation type="unfinished">How many Undo/Redo steps should be recorded</translation>
-    </message>
-    <message>
       <source>The application will create a new document when started</source>
-      <translation type="unfinished">The application will create a new document when started</translation>
+      <translation>Aplicația va crea un nou document la pornire</translation>
+    </message>
+    <message>
+      <source>Compression level for FCStd files</source>
+      <translation>Nivel de compresie pentru fișierele FCStd</translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation type="unfinished">All changes in documents are stored so that they can be undone/redone</translation>
+      <translation>Toate modificările în documente sunt stocate astfel încât să poată fi anulate/refăcute</translation>
+    </message>
+    <message>
+      <source>How many Undo/Redo steps should be recorded</source>
+      <translation>Câți pași Undo/Redo trebuie înregistrați</translation>
     </message>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Permite utilizatorului să anuleze recalcularea documentului apăsând ESC.
+Această caracteristică poate crește ușor timpul de recalculare.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>Permite abandonarea recalculării</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation type="unfinished">If there is a recovery file available the application will
-automatically run a file recovery when it is started.</translation>
+      <translation>Dacă există un fişier de recuperare disponibil, aplicaţia va
+rula automat un fişier de recuperare la pornire.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
@@ -2892,8 +2943,28 @@ automatically run a file recovery when it is started.</translation>
       <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
     </message>
     <message>
+      <source>Size</source>
+      <translation>Dimensiune</translation>
+    </message>
+    <message>
+      <source>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</source>
+      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</translation>
+    </message>
+    <message>
+      <source>The program logo will be added to the thumbnail</source>
+      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+    </message>
+    <message>
       <source>How many backup files will be kept when saving document</source>
       <translation type="unfinished">How many backup files will be kept when saving document</translation>
+    </message>
+    <message>
+      <source>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</source>
+      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
@@ -2901,29 +2972,23 @@ automatically run a file recovery when it is started.</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
-    </message>
-    <message>
-      <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>Formatul datei</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
       <translation type="unfinished">Allow objects to have same label/name</translation>
     </message>
     <message>
-      <source>Enable partial loading of external linked document. When enabled, only
-the referenced objects and their dependencies will be loaded when a linked
-document is auto opened together with the main document.
+      <source>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
-icon in the tree view to reload it in full.
-         </source>
-      <translation type="unfinished">Enable partial loading of external linked document. When enabled, only
-the referenced objects and their dependencies will be loaded when a linked
-document is auto opened together with the main document.
+icon in the tree view to fully reload it.</source>
+      <translation type="unfinished">Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
-icon in the tree view to reload it in full.
-         </translation>
+icon in the tree view to fully reload it.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
@@ -2943,46 +3008,46 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation type="unfinished">Default company name to use for new files</translation>
+      <translation>Numele companiei implicit ce va fi folosit pentru fişiere noi</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>Licența implicită pentru documentele noi</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation type="unfinished">Creative Commons Attribution</translation>
+      <translation>Atribuire Creative Commons</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+      <translation>Atribuire Creative Commons - Partajare în Condiții Identice</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+      <translation>Atribuire Creative Commons - FărăDerivate</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+      <translation>Atribuire Creative Commons - Necomercial</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Atribuire Creative Commons - Necomercial - Partajare în Condiții Identice</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Atribuire Creative Commons - Necomercial - FărăDerivate</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
-      <translation type="unfinished">URL describing more about the license</translation>
+      <translation>URL care descrie mai multe despre licență</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
       <source>The format of the date to use.</source>
-      <translation type="unfinished">The format of the date to use.</translation>
+      <translation>Formatul datei ce va fi utilizat.</translation>
     </message>
     <message>
       <source>Default</source>
@@ -2990,7 +3055,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Format</translation>
     </message>
   </context>
   <context>
@@ -3180,7 +3245,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creation method:</source>
-      <translation type="unfinished">Creation method:</translation>
+      <translation>Metoda de creere:</translation>
     </message>
   </context>
   <context>
@@ -3201,9 +3266,59 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation type="unfinished">Framebuffer (as is)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation type="unfinished">Pixel buffer</translation>
+      <source>Unloaded Workbenches</source>
+      <translation type="unfinished">Unloaded Workbenches</translation>
+    </message>
+    <message>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Banc de lucru</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3275,6 +3390,286 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>The directory in which the application will search for macros</source>
       <translation type="unfinished">The directory in which the application will search for macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsNavigation</name>
+    <message>
+      <source>Navigation</source>
+      <translation>Navigare</translation>
+    </message>
+    <message>
+      <source>Navigation cube</source>
+      <translation>Cub de navigare</translation>
+    </message>
+    <message>
+      <source>Steps by turn</source>
+      <translation type="unfinished">Steps by turn</translation>
+    </message>
+    <message>
+      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
+      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Colţ</translation>
+    </message>
+    <message>
+      <source>Corner where navigation cube is shown</source>
+      <translation type="unfinished">Corner where navigation cube is shown</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Stânga sus</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Dreapta sus</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Stânga jos</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Dreapta jos</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>Navigare 3D</translation>
+    </message>
+    <message>
+      <source>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</source>
+      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>Mouse...</translation>
+    </message>
+    <message>
+      <source>Navigation settings set</source>
+      <translation type="unfinished">Navigation settings set</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>Stil de rotație</translation>
+    </message>
+    <message>
+      <source>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</source>
+      <translation type="unfinished">Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>Placa turnantă</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>Trackball</translation>
+    </message>
+    <message>
+      <source>New document scale</source>
+      <translation>Scara documentelor noi</translation>
+    </message>
+    <message>
+      <source>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</source>
+      <translation type="unfinished">Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Enable animated rotations</source>
+      <translation>Activează rotaţiile animate</translation>
+    </message>
+    <message>
+      <source>Enable animation</source>
+      <translation>Activează animaţia</translation>
+    </message>
+    <message>
+      <source>Zoom operations will be performed at position of mouse pointer</source>
+      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Mareste la pozitia cursorului</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Factor de marire</translation>
+    </message>
+    <message>
+      <source>Direction of zoom operations will be inverted</source>
+      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>Inverseaza zoom-ul</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Dezactivaţi inclinarea prin gest a ecranului tactil</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrică</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetric</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetric</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Partea de sus</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Din față</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Stanga</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Dreapta</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Din spate</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Partea de jos</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Personalizat</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Orientarea implicită a camerei</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Orientarea implicită a camerei la crearea unui nou document sau la selectarea vizualizării de bază</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Modul de rotație</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Centrul ferestrei</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Trageți la cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Centrul obiectului</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Se rotește la cea mai apropiată stare posibilă când dați click pe o față de cub</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Rotire la cel mai apropiat</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Dimensiune Cub</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Dimensiunea cubului de navigare</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Cât de mult va fi mărit.
+Pasul de mărire de '1' înseamnă un factor de 7,5 pentru fiecare pas de mărire.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Selecţie</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Comutare automată la vizualizarea 3D care conține elementul selectat</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
     </message>
   </context>
   <context>
@@ -3373,11 +3768,15 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+      <translation>Construcție SUA (ft-in/sqft/cft)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <translation>Imperial pentru Construcții Civile (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -3415,10 +3814,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Culoare simplă</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Selectionați raza (px) :</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Obiectul de editat</translation>
     </message>
@@ -3428,29 +3823,35 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
-      <translation type="unfinished">Enable preselection and highlight by specified color</translation>
+      <translation>Activează preselecția și evidențierea folosind culoarea specificată</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+      <translation>Activează evidenţierea selecţiei şi utilizează culoarea specificată</translation>
     </message>
     <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
+      <source>Background color for the model view</source>
+      <translation>Culoare de fundal pentru vizualizarea modelului</translation>
+    </message>
+    <message>
+      <source>Background will have selected color</source>
+      <translation>Fundalul va avea culoarea selectată</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>Gradientul de culoare va avea culoarea selectată drept culoarea de mijloc</translation>
     </message>
     <message>
-      <source>Background for parts will have selected color gradient</source>
-      <translation type="unfinished">Background for parts will have selected color gradient</translation>
+      <source>Bottom color</source>
+      <translation>Culoarea de jos</translation>
     </message>
     <message>
-      <source>Background for parts will have selected color</source>
-      <translation type="unfinished">Background for parts will have selected color</translation>
+      <source>Background will have selected color gradient</source>
+      <translation>Fundal va avea gradientul de culoare selectat</translation>
+    </message>
+    <message>
+      <source>Top color</source>
+      <translation>Culoarea de sus</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -3500,21 +3901,21 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Input the source value and unit</source>
-      <translation type="unfinished">Input the source value and unit</translation>
+      <translation>Introduceți valoarea sursei și unitatea de măsură</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
-      <translation type="unfinished">Input here the unit for the result</translation>
+      <translation>Introduceți aici unitatea de măsură pentru rezultat</translation>
     </message>
     <message>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Rezultat</translation>
     </message>
     <message>
       <source>List of last used calculations 
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
-To add a calculation press Return in the value input field</translation>
+      <translation>Lista ultimelor calcule utilizate 
+Pentru a adăuga un calcul apăsați Enter în câmpul de introducere a valorii</translation>
     </message>
     <message>
       <source>Quantity</source>
@@ -3554,12 +3955,12 @@ The preference system is the one set in the general preferences.</translation>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation type="unfinished">unknown unit: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation type="unfinished">unit mismatch</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -4258,11 +4659,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>State</source>
-      <translation type="unfinished">State</translation>
+      <translation>Stare</translation>
     </message>
     <message>
       <source>Hierarchy</source>
-      <translation type="unfinished">Hierarchy</translation>
+      <translation>Ierarhie</translation>
     </message>
     <message>
       <source>Selected</source>
@@ -4270,7 +4671,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Partial</source>
-      <translation type="unfinished">Partial</translation>
+      <translation>Parţial</translation>
     </message>
   </context>
   <context>
@@ -4313,18 +4714,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Logare</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Avertizare</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Eroare</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Opţiuni</translation>
     </message>
@@ -4355,6 +4744,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Fişierele de Text simplu</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation>Afișează tipul mesajelor</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation>Mesaje normale</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation>Avertismente</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation>Erori</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -4448,7 +4861,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Lista obiectelor alese</translation>
     </message>
   </context>
   <context>
@@ -4516,6 +4929,20 @@ Doriți să salvați modificările?</translation>
     <message>
       <source>PDF file</source>
       <translation>Fişier PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Potrivire exactă</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Potrivire exactă</translation>
     </message>
   </context>
   <context>
@@ -4992,23 +5419,27 @@ Cum doresti sa continuam?</translation>
     </message>
     <message>
       <source>property</source>
-      <translation type="unfinished">property</translation>
+      <translation>proprietate</translation>
     </message>
     <message>
       <source>Show all</source>
-      <translation type="unfinished">Show all</translation>
+      <translation>Arată tot</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Adăugaţi o proprietate</translation>
     </message>
     <message>
       <source>Remove property</source>
-      <translation type="unfinished">Remove property</translation>
+      <translation>Eliminați proprietatea</translation>
     </message>
     <message>
       <source>Expression...</source>
-      <translation type="unfinished">Expression...</translation>
+      <translation>Expresie...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Auto extindere</translation>
     </message>
   </context>
   <context>
@@ -5119,11 +5550,11 @@ Doriți să ieşiți fără a salva datele dumneavoastră?</translation>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Salvează istoric</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
-      <translation type="unfinished">Saves Python history across %1 sessions</translation>
+      <translation>Salvează istoricul Python de-a lungul a %1 sesiuni</translation>
     </message>
   </context>
   <context>
@@ -5142,6 +5573,21 @@ Doriți să ieşiți fără a salva datele dumneavoastră?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Deschide fişierul %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Fișier nu a fost găsit</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Fișierul '%1' nu poate fi deschis.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Rulează macro %1 (Shift+click pentru editare): %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5279,18 +5725,18 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation type="unfinished">Translation Increment:</translation>
+      <translation>Increment la translație:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation type="unfinished">Rotation Increment:</translation>
+      <translation>Increment la rotație:</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskElementColors</name>
     <message>
       <source>Set element color</source>
-      <translation type="unfinished">Set element color</translation>
+      <translation>Setare culoare element</translation>
     </message>
     <message>
       <source>TextLabel</source>
@@ -5298,7 +5744,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>Recalculare după salvare</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -5310,19 +5756,19 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Remove all</source>
-      <translation type="unfinished">Remove all</translation>
+      <translation>Elimină tot</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Ascunde</translation>
     </message>
     <message>
       <source>Box select</source>
-      <translation type="unfinished">Box select</translation>
+      <translation>Selectare cu dreptunghi</translation>
     </message>
     <message>
       <source>On-top when selected</source>
-      <translation type="unfinished">On-top when selected</translation>
+      <translation>Deasupra când este selectat</translation>
     </message>
   </context>
   <context>
@@ -5407,6 +5853,10 @@ Doriţi să specificaţi un alt director?</translation>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Dacă nu salvați, schimbările vor fi pierdute.</translation>
     </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Editare text</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
@@ -5463,7 +5913,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Korean</source>
-      <translation type="unfinished">Korean</translation>
+      <translation>Coreeană</translation>
     </message>
     <message>
       <source>Russian</source>
@@ -5483,7 +5933,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
-      <translation type="unfinished">Portuguese, Brazilian</translation>
+      <translation>Portugheză, Braziliană</translation>
     </message>
     <message>
       <source>Portuguese</source>
@@ -5535,43 +5985,43 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Basque</source>
-      <translation type="unfinished">Basque</translation>
+      <translation>Bască</translation>
     </message>
     <message>
       <source>Catalan</source>
-      <translation type="unfinished">Catalan</translation>
+      <translation>Catalană</translation>
     </message>
     <message>
       <source>Galician</source>
-      <translation type="unfinished">Galician</translation>
+      <translation>Galiciană</translation>
     </message>
     <message>
       <source>Kabyle</source>
-      <translation type="unfinished">Kabyle</translation>
+      <translation>Kabyle</translation>
     </message>
     <message>
       <source>Filipino</source>
-      <translation type="unfinished">Filipino</translation>
+      <translation>Filipineză</translation>
     </message>
     <message>
       <source>Indonesian</source>
-      <translation type="unfinished">Indonesian</translation>
+      <translation>Indoneziană</translation>
     </message>
     <message>
       <source>Lithuanian</source>
-      <translation type="unfinished">Lithuanian</translation>
+      <translation>Lituaniană</translation>
     </message>
     <message>
       <source>Valencian</source>
-      <translation type="unfinished">Valencian</translation>
+      <translation>Valenciană</translation>
     </message>
     <message>
       <source>Arabic</source>
-      <translation type="unfinished">Arabic</translation>
+      <translation>Arabă</translation>
     </message>
     <message>
       <source>Vietnamese</source>
-      <translation type="unfinished">Vietnamese</translation>
+      <translation>Vietnameză</translation>
     </message>
   </context>
   <context>
@@ -5656,11 +6106,11 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Search...</source>
-      <translation type="unfinished">Search...</translation>
+      <translation>Caută...</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation type="unfinished">Search for objects</translation>
+      <translation>Caută obiecte</translation>
     </message>
     <message>
       <source>Description</source>
@@ -5668,7 +6118,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Show hidden items</source>
-      <translation type="unfinished">Show hidden items</translation>
+      <translation>Arată elementele ascunse</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
@@ -5676,7 +6126,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Hide item</source>
-      <translation type="unfinished">Hide item</translation>
+      <translation>Ascunde element</translation>
     </message>
     <message>
       <source>Hide the item in tree</source>
@@ -5713,6 +6163,25 @@ Doriţi să specificaţi un alt director?</translation>
     <message>
       <source>Recompute the selected object</source>
       <translation type="unfinished">Recompute the selected object</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation>Vectori</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation>Tabel</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -6293,11 +6762,11 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Toggle active part</source>
-      <translation type="unfinished">Toggle active part</translation>
+      <translation>Comută piesa activă</translation>
     </message>
     <message>
       <source>Edit text</source>
-      <translation type="unfinished">Edit text</translation>
+      <translation>Editare text</translation>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
@@ -6305,23 +6774,23 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Ștergerea a eșuat</translation>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Eroare de dependență</translation>
     </message>
     <message>
       <source>Copy selected</source>
-      <translation type="unfinished">Copy selected</translation>
+      <translation>Copiază selecția</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Copiază documentul activ</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Copiază toate documentele</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6383,7 +6852,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Nume invalid</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
@@ -6397,7 +6866,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Adăugaţi o proprietate</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
@@ -6405,7 +6874,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>Salvează fișierele dependente</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
@@ -6416,8 +6885,8 @@ underscore, and must not start with a digit.</translation>
       <translation type="unfinished">Failed to save document</translation>
     </message>
     <message>
-      <source>Documents contains cyclic dependices. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependices. Do you still want to save them?</translation>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6441,19 +6910,79 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>Doriți să salvați modificările documentului înainte de închidere?</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
-      <translation type="unfinished">Apply answer to all</translation>
+      <translation>Aplică răspunsul tuturor</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>Drag &amp; drop eșuat</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>Suprascrie culorile...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Cale fizică identică detectată. Poate cauza o suprascriere nedorită a documentului existent!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Vă rog să verificați vizualizarea Raport pentru mai multe...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Cale: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Cale fizică identică</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Eroare</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Au existat erori în timpul încărcării fişierului. Unele date s-ar putea să fi fost modificate sau să se nu recupereze deloc. Uitați-vă în raportul vizualizării pentru mai multe informaţii specifice despre obiectele implicate.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Au existat erori grave în timpul încărcării fișierului. Unele date ar fi putut fi modificate sau nu au fost recuperate deloc. Salvarea proiectului va duce cel mai probabil la pierderea datelor.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Banc de lucru</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Cale fizică: </translation>
     </message>
   </context>
   <context>
@@ -6711,6 +7240,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Instrumente</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Graficul de dependenta...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Arata graficul de dependenta pentru obiecte din documentul activ</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6825,6 +7369,10 @@ Choose 'Abort' to abort</translation>
       <source>Draw style</source>
       <translation>Stil de desenare</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation>Schimbă stilul de desenare al obiectelor</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6857,7 +7405,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Activates or Deactivates the selected object's edit mode</source>
-      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
+      <translation>Activează sau Dezactivează modul Editare al obiectelor selectate</translation>
     </message>
   </context>
   <context>
@@ -6879,23 +7427,8 @@ Choose 'Abort' to abort</translation>
       <translation>Nici o selecţie</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Mai intai selectati obiectele pe care doriti să le exportati.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Instrumente</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Graficul de dependenta...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Arata graficul de dependenta pentru obiecte din documentul activ</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Selectați obiectele de exportat înainte de a alege Export.</translation>
     </message>
   </context>
   <context>
@@ -6906,7 +7439,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>Acțiunile expresiei</translation>
     </message>
   </context>
   <context>
@@ -6922,6 +7455,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Recalculare caracteristică sau document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Ajutor</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Donați</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Donează pentru dezvoltarea FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -7102,7 +7650,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Link actions</source>
-      <translation type="unfinished">Link actions</translation>
+      <translation>Legați acțiunile</translation>
     </message>
   </context>
   <context>
@@ -7113,11 +7661,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Importă legături</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
-      <translation type="unfinished">Import selected external link(s)</translation>
+      <translation>Importă legăturile externe selectate</translation>
     </message>
   </context>
   <context>
@@ -7128,11 +7676,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Importă toate legăturile</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
-      <translation type="unfinished">Import all links of the active document</translation>
+      <translation>Importă toate Legăturile documentului activ</translation>
     </message>
   </context>
   <context>
@@ -7143,11 +7691,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Creează o legătură</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>Creați o legătură către obiectul(ele) selectat(e)</translation>
     </message>
   </context>
   <context>
@@ -7158,11 +7706,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Creează un grup cu legătură</translation>
     </message>
     <message>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>Creează un grup de legături</translation>
     </message>
   </context>
   <context>
@@ -7173,11 +7721,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Creează o sub-legătură</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
-      <translation type="unfinished">Create a sub-object or sub-element link</translation>
+      <translation>Creaţi un sub-obiect sau un sub-element legătură</translation>
     </message>
   </context>
   <context>
@@ -7188,11 +7736,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Replace with link</source>
-      <translation type="unfinished">Replace with link</translation>
+      <translation>Înlocuiește cu o legătură</translation>
     </message>
     <message>
       <source>Replace the selected object(s) with link</source>
-      <translation type="unfinished">Replace the selected object(s) with link</translation>
+      <translation>Înlocuiți obiectul(ele) selectat(e) cu o legătură</translation>
     </message>
   </context>
   <context>
@@ -7203,11 +7751,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Link navigation</source>
-      <translation type="unfinished">Link navigation</translation>
+      <translation>Navigare la legătură</translation>
     </message>
     <message>
       <source>Link navigation actions</source>
-      <translation type="unfinished">Link navigation actions</translation>
+      <translation>Acțiuni de navigare la legătură</translation>
     </message>
   </context>
   <context>
@@ -7218,11 +7766,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Select all links</source>
-      <translation type="unfinished">Select all links</translation>
+      <translation>Selectează toate legăturile</translation>
     </message>
     <message>
       <source>Select all links to the current selected object</source>
-      <translation type="unfinished">Select all links to the current selected object</translation>
+      <translation>Selectați toate legăturile către obiectul curent selectat</translation>
     </message>
   </context>
   <context>
@@ -7233,11 +7781,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Go to linked object</source>
-      <translation type="unfinished">Go to linked object</translation>
+      <translation>Mergi la obiectul legat</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the linked object and switch to its owner document</translation>
+      <translation>Selectați obiectul legat și comutați la documentul proprietar</translation>
     </message>
   </context>
   <context>
@@ -7248,11 +7796,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation type="unfinished">Go to the deepest linked object</translation>
+      <translation>Mergi la cel mai profund obiect legat</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the deepest linked object and switch to its owner document</translation>
+      <translation>Selectați cel mai profund obiect legat și comutați la documentul proprietar</translation>
     </message>
   </context>
   <context>
@@ -7263,7 +7811,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Anularea legăturii</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -7278,7 +7826,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation type="unfinished">Attach to remote debugger...</translation>
+      <translation>Atașează la depanator la distanță...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
@@ -7658,6 +8206,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macrocomandă</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -7785,11 +8348,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>&amp;Înapoi</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
-      <translation type="unfinished">Go back to previous selection</translation>
+      <translation>Înapoi la selecția anterioară</translation>
     </message>
   </context>
   <context>
@@ -7800,11 +8363,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>&amp;Casetă de încadrare</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>Arată caseta de încadrare a selecției</translation>
     </message>
   </context>
   <context>
@@ -7815,7 +8378,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation type="unfinished">&amp;Forward</translation>
+      <translation>&amp;Înainte</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
@@ -7860,11 +8423,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Send to Python Console</source>
-      <translation type="unfinished">&amp;Send to Python Console</translation>
+      <translation>&amp;Trimite la Consola Python</translation>
     </message>
     <message>
       <source>Sends the selected object to the Python console</source>
-      <translation type="unfinished">Sends the selected object to the Python console</translation>
+      <translation>Trimite obiectul selectat la consola Python</translation>
     </message>
   </context>
   <context>
@@ -7935,7 +8498,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Add text document</source>
-      <translation type="unfinished">Add text document</translation>
+      <translation>Adăugă un document text</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
@@ -8344,6 +8907,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vedere standard</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -8479,6 +9057,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vedere standard</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8521,6 +9114,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vedere standard</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>
@@ -8816,7 +9424,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+      <translation>Comutare automată la vizualizarea 3D care conține elementul selectat</translation>
     </message>
   </context>
   <context>
@@ -8940,16 +9548,19 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Dependențe obiect</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Graficul de dependenta</translation>
     </message>
   </context>
   <context>
@@ -9025,13 +9636,6 @@ Do you want to save the document now?</translation>
     </message>
   </context>
   <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Graficul de dependenta</translation>
-    </message>
-  </context>
-  <context>
     <name>Std_Group</name>
     <message>
       <source>Group</source>
@@ -9092,22 +9696,22 @@ Do you still want to proceed?</translation>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation type="unfinished">Perspective</translation>
+      <translation>Perspectivă</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation type="unfinished">Set View to Perspective mode</translation>
+      <translation>Setați vizualizarea în modul Perspectivă</translation>
     </message>
   </context>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation type="unfinished">Zoom to fit</translation>
+      <translation>Mărire pentru a se potrivi</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation type="unfinished">Zoom so that model fills the view</translation>
+      <translation>Mărire astfel încât modelul umple vizualizarea</translation>
     </message>
   </context>
   <context>

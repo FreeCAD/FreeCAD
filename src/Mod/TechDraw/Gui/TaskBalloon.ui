@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>307</width>
-    <height>229</height>
+    <height>279</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="inputValue">
+      <widget class="QLineEdit" name="leText">
        <property name="toolTip">
         <string>Text to be displayed</string>
        </property>
@@ -54,7 +54,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Fontsize:</string>
+        <string>Font Size:</string>
        </property>
       </widget>
      </item>
@@ -92,12 +92,12 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Shape:</string>
+        <string>Bubble Shape:</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QComboBox" name="comboSymbol">
+      <widget class="QComboBox" name="comboBubbleShape">
        <property name="toolTip">
         <string>Shape of the balloon bubble</string>
        </property>
@@ -174,7 +174,7 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="Gui::QuantitySpinBox" name="inputScale">
+      <widget class="Gui::QuantitySpinBox" name="qsbShapeScale">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -182,7 +182,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Scale factor for the 'Shape'</string>
+        <string>Bubble shape scale factor</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -206,20 +206,79 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QComboBox" name="comboEndType">
+      <widget class="QComboBox" name="comboEndSymbol">
        <property name="toolTip">
         <string>End symbol for the balloon line</string>
        </property>
       </widget>
      </item>
      <item row="6" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>End Symbol Scale:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbSymbolScale">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>End symbol scale factor</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Line Visible:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QComboBox" name="comboLineVisible">
+       <property name="toolTip">
+        <string>Whether the leader line is visible or not</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>False</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>True</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="8" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
         <string>Line Width:</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="8" column="1">
       <widget class="Gui::QuantitySpinBox" name="qsbLineWidth">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -250,15 +309,15 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="0">
+     <item row="9" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Leader Kink Length:</string>
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbBalloonKink">
+     <item row="9" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbKinkLength">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>

@@ -116,7 +116,7 @@ public:
             "currently):\n"
             "\n"
             "    meshFromShape(Shape, Fineness, SecondOrder=0,\n"
-            "                         Optimize=1, AllowQuad=0)\n"
+            "                         Optimize=1, AllowQuad=0, MaxLength=0, MinLength=0)\n"
             "    meshFromShape(Shape, GrowthRate=0, SegPerEdge=0,\n"
             "                  SegPerRadius=0, SecondOrder=0, Optimize=1,\n"
             "                  AllowQuad=0)\n"
@@ -421,7 +421,7 @@ private:
         Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
         std::vector<unsigned long> segm;
         segm.reserve(list.size());
-        for (unsigned int i=0; i<list.size(); i++) {
+        for (Py_ssize_t i=0; i<list.size(); i++) {
             segm.push_back((long)Py::Long(list[i]));
         }
 
@@ -576,28 +576,30 @@ private:
         }
 
 #if defined (HAVE_NETGEN)
-        static char* kwds_fineness[] = {"Shape", "Fineness", "SecondOrder", "Optimize", "AllowQuad",NULL};
+        static char* kwds_fineness[] = {"Shape", "Fineness", "SecondOrder", "Optimize", "AllowQuad", "MinLength", "MaxLength", NULL};
         PyErr_Clear();
         int fineness=0, secondOrder=0, optimize=1, allowquad=0;
-        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!i|iii", kwds_fineness,
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!i|iiidd", kwds_fineness,
                                         &(Part::TopoShapePy::Type), &shape, &fineness,
-                                        &secondOrder, &optimize, &allowquad)) {
+                                        &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setFineness(fineness);
             mesher.setSecondOrder(secondOrder != 0);
             mesher.setOptimize(optimize != 0);
             mesher.setQuadAllowed(allowquad != 0);
+            mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 
-        static char* kwds_user[] = {"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius", "SecondOrder", "Optimize", "AllowQuad",NULL};
+        static char* kwds_user[] = {"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius", "SecondOrder",
+                                    "Optimize", "AllowQuad", "MinLength", "MaxLength", NULL };
         PyErr_Clear();
         double growthRate=0, nbSegPerEdge=0, nbSegPerRadius=0;
-        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|dddiii", kwds_user,
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|dddiiidd", kwds_user,
                                         &(Part::TopoShapePy::Type), &shape,
                                         &growthRate, &nbSegPerEdge, &nbSegPerRadius,
-                                        &secondOrder, &optimize, &allowquad)) {
+                                        &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setGrowthRate(growthRate);
@@ -606,6 +608,7 @@ private:
             mesher.setSecondOrder(secondOrder != 0);
             mesher.setOptimize(optimize != 0);
             mesher.setQuadAllowed(allowquad != 0);
+            mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 #endif

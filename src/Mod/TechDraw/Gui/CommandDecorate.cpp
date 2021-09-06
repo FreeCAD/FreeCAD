@@ -59,9 +59,11 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
+#include "TaskHatch.h"
 //#include "TaskLeaderLine.h"
 //#include "TaskRichAnno.h"
 #include "ViewProviderGeomHatch.h"
+#include "ViewProviderHatch.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -71,124 +73,6 @@ using namespace std;
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
 
-////===========================================================================
-//// TechDraw_Leader
-////===========================================================================
-
-//DEF_STD_CMD_A(CmdTechDrawLeaderLine)
-
-//CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
-//  : Command("TechDraw_LeaderLine")
-//{
-//    sAppModule      = "TechDraw";
-//    sGroup          = QT_TR_NOOP("TechDraw");
-//    sMenuText       = QT_TR_NOOP("Add a line to a view");
-//    sToolTipText    = QT_TR_NOOP("Add a line to a view");
-//    sWhatsThis      = "TechDraw_LeaderLine";
-//    sStatusTip      = sToolTipText;
-//    sPixmap         = "actions/techdraw-LeaderLine";
-//}
-
-//void CmdTechDrawLeaderLine::activated(int iMsg)
-//{
-//    Q_UNUSED(iMsg);
-
-//    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-//    if (dlg != nullptr) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-//            QObject::tr("Close active task dialog and try again."));
-//        return;
-//    }
-
-//    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-//    if (!page) {
-//        return;
-//    }
-
-//    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-//    TechDraw::DrawView* baseFeat = nullptr;
-//    if (!selection.empty()) {
-//        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
-//        if( baseFeat == nullptr ) {
-//            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-//                                 QObject::tr("Can not attach leader.  No base View selected."));
-//            return;
-//        }
-//    } else {
-//            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-//                                 QObject::tr("You must select a base View for the line."));
-//            return;
-//    }
-
-//    Gui::Control().showDialog(new TechDrawGui::TaskDlgLeaderLine(baseFeat,
-//                                                    page));
-//}
-
-//bool CmdTechDrawLeaderLine::isActive(void)
-//{
-//    bool havePage = DrawGuiUtil::needPage(this);
-//    bool haveView = DrawGuiUtil::needView(this, false);
-//    return (havePage && haveView);
-//}
-
-////===========================================================================
-//// TechDraw_RichTextAnnotation
-////===========================================================================
-
-//DEF_STD_CMD_A(CmdTechDrawRichTextAnnotation)
-
-//CmdTechDrawRichTextAnnotation::CmdTechDrawRichTextAnnotation()
-//  : Command("TechDraw_RichTextAnnotation")
-//{
-//    sAppModule      = "TechDraw";
-//    sGroup          = QT_TR_NOOP("TechDraw");
-//    sMenuText       = QT_TR_NOOP("Add Rich Text Annotation");
-//    sToolTipText    = sMenuText;
-//    sWhatsThis      = "TechDraw_RichTextAnnotation";
-//    sStatusTip      = sToolTipText;
-//    sPixmap         = "actions/techdraw-RichTextAnnotation";
-//}
-
-//void CmdTechDrawRichTextAnnotation::activated(int iMsg)
-//{
-//    Q_UNUSED(iMsg);
-//    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-//    if (dlg != nullptr) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-//            QObject::tr("Close active task dialog and try again."));
-//        return;
-//    }
-
-//    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-//    if (!page) {
-//        return;
-//    }
-
-//    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-//    TechDraw::DrawView* baseFeat = nullptr;
-//    if (!selection.empty()) {
-//        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
-////        if( baseFeat == nullptr ) {
-////            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-////                                 QObject::tr("Can not attach leader.  No base View selected."));
-////            return;
-////        }
-////    } else {
-////            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-////                                 QObject::tr("You must select a base View for the line."));
-////            return;
-//    }
-
-//    Gui::Control().showDialog(new TaskDlgRichAnno(baseFeat,
-//                                                  page));
-//}
-
-//bool CmdTechDrawRichTextAnnotation::isActive(void)
-//{
-//    bool havePage = DrawGuiUtil::needPage(this);
-//    bool haveView = DrawGuiUtil::needView(this, false);
-//    return (havePage && haveView);
-//}
 
 //===========================================================================
 // TechDraw_Hatch
@@ -205,7 +89,7 @@ CmdTechDrawHatch::CmdTechDrawHatch()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-hatch";
+    sPixmap         = "actions/TechDraw_Hatch";
 }
 
 void CmdTechDrawHatch::activated(int iMsg)
@@ -246,7 +130,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         }
     }
 
-    openCommand("Create Hatch");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
     if (removeOld) {
         std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
         for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
@@ -281,8 +165,18 @@ void CmdTechDrawHatch::activated(int iMsg)
     auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
     hatch->Source.setValue(partFeat, subNames);
 
+    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(hatch);
+    TechDrawGui::ViewProviderHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderHatch*>(vp);
+    if (!hvp) {
+        Base::Console().Log("ERROR - CommandDecorate - Hatch has no ViewProvider\n");
+        return;
+    }
+
     //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
+
+    // dialog to fill in hatch values
+    Gui::Control().showDialog(new TaskDlgHatch(hatch, hvp, true));
 
     commitCommand();
 
@@ -312,11 +206,11 @@ CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to a Face");
+    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to Face");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-GeometricHatch";
+    sPixmap         = "actions/TechDraw_GeometricHatch";
 }
 
 void CmdTechDrawGeometricHatch::activated(int iMsg)
@@ -339,7 +233,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     std::stringstream featLabel;
     featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
-    openCommand("Create GeomHatch");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawGeomHatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
 
@@ -353,8 +247,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     }
 
     // dialog to fill in hatch values
-    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp,true));
-
+    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch, hvp, true));
 
     commitCommand();
 
@@ -401,14 +294,14 @@ void CmdTechDrawImage::activated(int iMsg)
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
-        QString::null,
+        QString(),
         QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
 
     if (!fileName.isEmpty())
     {
         std::string FeatName = getUniqueObjectName("Image");
         fileName = Base::Tools::escapeEncodeFilename(fileName);
-        openCommand("Create Image");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());
         doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());

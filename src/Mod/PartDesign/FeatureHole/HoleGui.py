@@ -57,6 +57,7 @@ class HoleGui:
             return
         if selection[0].DocumentName != doc.Name:
             QtGui.QMessageBox.critical(mw, "Wrong document", "Please select a face in the active document")
+            return
         # Note: For some reason setting the Support property here breaks all sorts of things.
         #       It is done in TaskHole.updateUI() instead
 
@@ -64,6 +65,7 @@ class HoleGui:
         body = FreeCADGui.activeView().getActiveObject("pdbody");
         if body is None:
             QtGui.QMessageBox.critical(mw, "No active body", "Please create a body or make a body active")
+            return
     
         feature = doc.addObject("Part::FeaturePython","Hole")
         hole = Hole(feature)

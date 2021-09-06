@@ -15,10 +15,10 @@
 #   License along with FCGear; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
-from math import cos, sin, pi, acos, asin, atan, sqrt
+from math import acos
 
 import FreeCAD, Part
-from FreeCAD import Base, Console
+from FreeCAD import Base
 from . import sprocket
 rotate = sprocket.rotate
 
@@ -29,9 +29,9 @@ def makeSprocket(P, N, Dr):
     w = FCWireBuilder()
     sprocket.CreateSprocket(w, P, N, Dr)
     sprocketw = Part.Wire([o.toShape() for o in w.wire])
-    sprocket = doc.addObject("Part::Feature", "Sprocket")
-    sprocket.Shape = sprocketw
-    return sprocket
+    sprocketf = doc.addObject("Part::Feature", "Sprocket")
+    sprocketf.Shape = sprocketw
+    return sprocketf
 
 class FCWireBuilder(object):
     """A helper class to prepare a Part.Wire object"""

@@ -301,7 +301,7 @@ float PlaneFit::GetDistanceToPlane(const Base::Vector3f &rcPoint) const
 float PlaneFit::GetStdDeviation() const
 {
     // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
     // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
@@ -320,7 +320,7 @@ float PlaneFit::GetStdDeviation() const
     }
 
     fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 float PlaneFit::GetSignedStdDeviation() const
@@ -938,20 +938,20 @@ struct LMCylinderFunctor
     Eigen::MatrixXd measuredValues;
 
     // Compute 'm' errors, one for each data point, for the given parameter values in 'x'
-    int operator()(const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
+    int operator()(const Eigen::VectorXd &xvec, Eigen::VectorXd &fvec) const
     {
-        // 'x' has dimensions n x 1
+        // 'xvec' has dimensions n x 1
         // It contains the current estimates for the parameters.
 
         // 'fvec' has dimensions m x 1
         // It will contain the error for each data point.
-        double aParam = x(0); // dir_x
-        double bParam = x(1); // dir_y
-        double cParam = x(2); // dir_z
-        double dParam = x(3); // cnt_x
-        double eParam = x(4); // cnt_y
-        double fParam = x(5); // cnt_z
-        double gParam = x(6); // radius
+        double aParam = xvec(0); // dir_x
+        double bParam = xvec(1); // dir_y
+        double cParam = xvec(2); // dir_z
+        double dParam = xvec(3); // cnt_x
+        double eParam = xvec(4); // cnt_y
+        double fParam = xvec(5); // cnt_z
+        double gParam = xvec(6); // radius
 
         // use distance functions (fvec(i)) for cylinders as defined in the paper:
         // Least-Squares Fitting Algorithms of the NIST Algorithm Testing System
@@ -1027,11 +1027,79 @@ CylinderFit::CylinderFit()
   : _vBase(0,0,0)
   , _vAxis(0,0,1)
   , _fRadius(0)
+  , _initialGuess(false)
 {
 }
 
 CylinderFit::~CylinderFit()
 {
+}
+
+Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
+{
+#if 0
+    int nc = 0;
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
+    for (int i = 0; i < (int)n.size()-1; ++i) {
+        for (int j = i+1; j < (int)n.size(); ++j) {
+            Base::Vector3f cross = n[i] % n[j];
+            if (cross.Sqr() > 1.0e-6) {
+                cross.Normalize();
+                x += cross.x;
+                y += cross.y;
+                z += cross.z;
+                ++nc;
+            }
+        }
+    }
+
+    if (nc > 0) {
+        x /= (double)nc;
+        y /= (double)nc;
+        z /= (double)nc;
+        Base::Vector3f axis(x,y,z);
+        axis.Normalize();
+        return axis;
+    }
+
+    PlaneFit planeFit;
+    planeFit.AddPoints(n);
+    planeFit.Fit();
+    return planeFit.GetNormal();
+#endif
+
+    // Like a plane fit where the base is at (0,0,0)
+    double sxx,sxy,sxz,syy,syz,szz;
+    sxx = sxy = sxz = syy = syz = szz = 0.0;
+
+    for (std::vector<Base::Vector3f>::const_iterator it = n.begin(); it != n.end(); ++it) {
+        sxx += double(it->x * it->x); sxy += double(it->x * it->y);
+        sxz += double(it->x * it->z); syy += double(it->y * it->y);
+        syz += double(it->y * it->z); szz += double(it->z * it->z);
+    }
+
+    Eigen::Matrix3d covMat = Eigen::Matrix3d::Zero();
+    covMat(0,0) = sxx;
+    covMat(1,1) = syy;
+    covMat(2,2) = szz;
+    covMat(0,1) = sxy; covMat(1,0) = sxy;
+    covMat(0,2) = sxz; covMat(2,0) = sxz;
+    covMat(1,2) = syz; covMat(2,1) = syz;
+    Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eig(covMat);
+    Eigen::Vector3d w = eig.eigenvectors().col(0);
+
+    Base::Vector3f normal;
+    normal.Set(w.x(), w.y(), w.z());
+    return normal;
+}
+
+void CylinderFit::SetInitialValues(const Base::Vector3f& b, const Base::Vector3f& n)
+{
+    _vBase = b;
+    _vAxis = n;
+    _initialGuess = true;
 }
 
 float CylinderFit::Fit()
@@ -1041,34 +1109,19 @@ float CylinderFit::Fit()
     _bIsFitted = true;
 
 #if 1
-    std::vector<Wm4::Vector3d> input;
-    std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
-                   [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
-
-    Wm4::Vector3d cnt, axis;
-    double radius, height;
-    Wm4::CylinderFit3<double> fit(input.size(), input.data(), cnt, axis, radius, height, false);
-    _vBase = Base::convertTo<Base::Vector3f>(cnt);
-    _vAxis = Base::convertTo<Base::Vector3f>(axis);
-    _fRadius = float(radius);
-
-    _fLastResult = double(fit);
-
-#if defined(_DEBUG)
-    Base::Console().Message("   WildMagic Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f\n",
-        _vBase.x, _vBase.y, _vBase.z, _vAxis.x, _vAxis.y, _vAxis.z, _fRadius, GetStdDeviation());
-#endif
-
+    // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
-    //cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
+    if (_initialGuess)
+        cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
 
     float result = cylFit.Fit();
     if (result < FLOAT_MAX) {
         Base::Vector3d base = cylFit.GetBase();
         Base::Vector3d dir = cylFit.GetAxis();
-#if defined(_DEBUG)
-        Base::Console().Message("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
+
+#if defined(FC_DEBUG)
+        Base::Console().Log("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
             base.x, base.y, base.z, dir.x, dir.y, dir.z, cylFit.GetRadius(), cylFit.GetStdDeviation(), cylFit.GetNumIterations());
 #endif
         _vBase = Base::convertTo<Base::Vector3f>(base);
@@ -1161,7 +1214,7 @@ float CylinderFit::GetDistanceToCylinder(const Base::Vector3f &rcPoint) const
 float CylinderFit::GetStdDeviation() const
 {
     // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
     // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
@@ -1180,7 +1233,30 @@ float CylinderFit::GetStdDeviation() const
     }
 
     fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+}
+
+void CylinderFit::GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const
+{
+    float distMin = FLT_MAX;
+    float distMax = FLT_MIN;
+
+    std::list<Base::Vector3f>::const_iterator cIt;
+    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
+        float dist = cIt->DistanceToPlane(_vBase, _vAxis);
+        if (dist < distMin) {
+            distMin = dist;
+            bottom = *cIt;
+        }
+        if (dist > distMax) {
+            distMax = dist;
+            top = *cIt;
+        }
+    }
+
+    // Project the points onto the cylinder axis
+    bottom = bottom.Perpendicular(_vBase, _vAxis);
+    top = top.Perpendicular(_vBase, _vAxis);
 }
 
 void CylinderFit::ProjectToCylinder()
@@ -1300,7 +1376,7 @@ float SphereFit::GetDistanceToSphere(const Base::Vector3f& rcPoint) const
 float SphereFit::GetStdDeviation() const
 {
     // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
     // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
@@ -1319,7 +1395,7 @@ float SphereFit::GetStdDeviation() const
     }
 
     fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void SphereFit::ProjectToSphere()

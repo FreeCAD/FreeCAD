@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Lorenz Hüdepohl <dev@stellardeath.org>             *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +34,7 @@ from PySide import QtCore
 
 __title__ = "Path Helix Drill Operation"
 __author__ = "Lorenz Hüdepohl"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of Helix Drill operation"
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2016"
@@ -53,7 +51,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... enable features supported by Helix.'''
-        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels
+        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... create helix specific properties.'''
@@ -65,11 +63,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         obj.addProperty("App::PropertyLength", "StepOver", "Helix Drill", translate("PathHelix", "Radius increment (must be smaller than tool diameter)"))
         obj.addProperty("App::PropertyLength", "StartRadius", "Helix Drill", translate("PathHelix", "Starting Radius"))
-
-        # Rotation related properties
-        if not hasattr(obj, 'EnableRotation'):
-            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
-            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, 'StartRadius'):
@@ -211,30 +204,21 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StartSide = "Inside"
         obj.StepOver = 100
 
-        # Initial setting for EnableRotation is taken from Job SetupSheet
-        # User may override on per-operation basis as needed.
-        parentJob = findParentJob(obj)  # PathUtils.findParentJob(obj)
-        if hasattr(parentJob.SetupSheet, 'SetupEnableRotation'):
-            obj.EnableRotation = parentJob.SetupSheet.SetupEnableRotation
-        else:
-            obj.EnableRotation = 'Off'
-
 
 def SetupProperties():
     setup = []
     setup.append("Direction")
     setup.append("StartSide")
     setup.append("StepOver")
-    setup.append("EnableRotation")
     setup.append("StartRadius")
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Helix operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectHelix(obj, name)
+    obj.Proxy = ObjectHelix(obj, name, parentJob)
     if obj.Proxy:
         obj.Proxy.findAllHoles(obj)
     return obj

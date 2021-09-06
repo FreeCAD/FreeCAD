@@ -32,7 +32,7 @@
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>
 #include "Constraint.h"
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/unordered/unordered_map.hpp>
 
 namespace Base {
@@ -62,7 +62,7 @@ public:
 
     virtual void setSize(int newSize) override;
     virtual int getSize(void) const override;
-    
+
     const char* getEditorName(void) const override {
         return "SketcherGui::PropertyConstraintListItem";
     }
@@ -99,11 +99,11 @@ public:
            returns null. This must be checked by the caller.
     */
     const Constraint *operator[] (const int idx) const {
-        return invalidGeometry ? 0 : _lValueList[idx];
+        return (invalidGeometry || invalidIndices) ? 0 : _lValueList[idx];
     }
 
     const std::vector<Constraint*> &getValues(void) const {
-        return invalidGeometry ? _emptyValueList : _lValueList;
+        return (invalidGeometry || invalidIndices) ? _emptyValueList : _lValueList;
     }
     const std::vector<Constraint*> &getValuesForce(void) const {//to suppress check for invalid geometry, to be used for sketch repairing.
         return  _lValueList;
@@ -121,8 +121,10 @@ public:
     virtual unsigned int getMemSize(void) const override;
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
-    void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
+    bool checkGeometry(const std::vector<Part::Geometry *> &GeoList);
     bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
+
+    bool checkConstraintIndices(int geomax, int geomin);
 
     /// Return status of geometry for better error reporting
     bool hasInvalidGeometry() const { return invalidGeometry; }
@@ -161,6 +163,8 @@ private:
 
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;
+    bool restoreFromTransaction;
+    bool invalidIndices;
 
     void applyValues(std::vector<Constraint*>&&);
     void applyValidGeometryKeys(const std::vector<unsigned int> &keys);

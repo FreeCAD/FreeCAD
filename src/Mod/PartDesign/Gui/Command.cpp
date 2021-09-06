@@ -55,17 +55,20 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
+
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "ViewProvider.h"
 #include "ViewProviderBody.h"
 
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
@@ -123,7 +126,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             support.removeValue(pcActiveBody);
 
             auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-            if(!Feat) return;
+            if (!Feat) return;
 
             //test if current selection fits a mode.
             if (support.getSize() > 0) {
@@ -296,7 +299,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     }
 
     if (bEditSelected) {
-        openCommand("Edit ShapeBinder");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Edit ShapeBinder"));
         PartDesignGui::setEdit(support.getValue());
     } else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
@@ -305,7 +308,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         std::string FeatName = getUniqueObjectName("ShapeBinder",pcActiveBody);
 
-        openCommand("Create ShapeBinder");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create ShapeBinder"));
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::ShapeBinder','" << FeatName << "')");
 
         // remove the body from links in case it's selected as
@@ -313,7 +316,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
         support.removeValue(pcActiveBody);
 
         auto Feat = pcActiveBody->getObject(FeatName.c_str());
-        if(!Feat) return;
+        if (!Feat) return;
 
         //test if current selection fits a mode.
         if (support.getSize() > 0) {
@@ -352,79 +355,58 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    PartDesign::SubShapeBinder *binder = 0;
-    App::DocumentObject *binderParent = 0;
-    std::string binderSub;
+    App::DocumentObject *parent = 0;
+    std::string parentSub;
     std::map<App::DocumentObject *, std::vector<std::string> > values;
-    for(auto &sel : Gui::Selection().getCompleteSelection(0)) {
-        if(!sel.pObject) continue;
-        if(!binder) {
-            const char *dot = sel.SubName?strrchr(sel.SubName,'.'):0;
-            if(!dot || dot[1]==0) {
-                auto sobj = sel.pObject->getSubObject(sel.SubName);
-                if(!sobj) continue;
-                binder = dynamic_cast<PartDesign::SubShapeBinder*>(sobj->getLinkedObject(true));
-                if(binder) {
-                    binderParent = sel.pObject;
-                    if(sel.SubName)
-                        binderSub = sel.SubName;
-                    continue;
-                }
-            }
-        }
+    for (auto &sel : Gui::Selection().getCompleteSelection(0)) {
+        if (!sel.pObject) continue;
         auto &subs = values[sel.pObject];
-        if(sel.SubName && sel.SubName[0])
+        if (sel.SubName && sel.SubName[0])
             subs.emplace_back(sel.SubName);
     }
 
-    PartDesign::Body *pcActiveBody = 0;
     std::string FeatName;
-    if(!binder) {
-        pcActiveBody = PartDesignGui::getBody(false,true,true,&binderParent,&binderSub);
-        FeatName = getUniqueObjectName("Binder",pcActiveBody);
-    }
-    if(binderParent && binderParent!=binder) {
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(false,true,true,&parent,&parentSub);
+    FeatName = getUniqueObjectName("Binder",pcActiveBody);
+    if (parent) {
         decltype(values) links;
-        for(auto &v : values) {
+        for (auto &v : values) {
             App::DocumentObject *obj = v.first;
-            if(obj != binderParent) {
+            if (obj != parent) {
                 auto &subs = links[obj];
                 subs.insert(subs.end(),v.second.begin(),v.second.end());
                 continue;
             }
-            for(auto &sub : v.second) {
+            for (auto &sub : v.second) {
                 auto link = obj;
-                auto linkSub = binderSub;
-                binderParent->resolveRelativeLink(linkSub,link,sub);
-                if(link && link != pcActiveBody)
+                auto linkSub = parentSub;
+                parent->resolveRelativeLink(linkSub,link,sub);
+                if (link && link != pcActiveBody)
                     links[link].push_back(sub);
             }
         }
         values = std::move(links);
     }
-        
+
+    PartDesign::SubShapeBinder *binder = 0;
     try {
-        if (binder)
-            openCommand("Change SubShapeBinder");
-        else {
-            openCommand("Create SubShapeBinder");
-            if(pcActiveBody) {
-                FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
-                binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
-            } else {
-                doCommand(Command::Doc,
-                        "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
-                binder = dynamic_cast<PartDesign::SubShapeBinder*>(
-                        App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
-            }
-            if(!binder) return;
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create SubShapeBinder"));
+        if (pcActiveBody) {
+            FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
+        } else {
+            doCommand(Command::Doc,
+                    "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(
+                    App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
         }
+        if (!binder) return;
         binder->setLinks(std::move(values));
         updateActive();
         commitCommand();
-    }catch(Base::Exception &e) {
+    } catch (Base::Exception &e) {
         e.ReportException();
-        QMessageBox::critical(Gui::getMainWindow(), 
+        QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
         abortCommand();
     }
@@ -462,7 +444,7 @@ void CmdPartDesignClone::activated(int iMsg)
         // put the clone into its own new body.
         // This also fixes bug #3447 because the clone is a PD feature and thus
         // requires a body where it is part of.
-        openCommand("Create Clone");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
         auto obj = objs[0];
         std::string FeatName = getUniqueObjectName("Clone",obj);
         std::string BodyName = getUniqueObjectName("Body",obj);
@@ -634,7 +616,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             supportString = faceSelObject.getAsPropertyLinkSubString();
         }
         else {
-            obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            obj = PlaneFilter.Result[0][0].getObject();
             supportString = getObjectCmd(obj,"(",",'')");
         }
 
@@ -656,9 +638,9 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 if (result == QDialog::DialogCode::Rejected)
                     return;
                 else if (!dlg.radioXRef->isChecked()) {
-                    openCommand("Make copy");
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
                     std::string sub;
-                    if(FaceFilter.match())
+                    if (FaceFilter.match())
                         sub = FaceFilter.Result[0][0].getSubNames()[0];
                     auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub, dlg.radioIndependent->isChecked());
 
@@ -667,7 +649,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     else if (pcActivePart)
                         pcActivePart->addObject(copy);
 
-                    if(PlaneFilter.match())
+                    if (PlaneFilter.match())
                         supportString = getObjectCmd(copy,"(",",'')");
                     else
                         //it is ensured that only a single face is selected, hence it must always be Face1 of the shapebinder
@@ -680,7 +662,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // create Sketch on Face or Plane
         std::string FeatName = getUniqueObjectName("Sketch",pcActiveBody);
 
-        openCommand("Create a Sketch on Face");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
         FCMD_OBJ_CMD(pcActiveBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat,"Support = " << supportString);
@@ -701,7 +683,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
 
         // Start command early, so undo will undo any Body creation
-        Gui::Command::openCommand("Create a new Sketch");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
         if (shouldMakeBody) {
             pcActiveBody = PartDesignGui::makeBody(doc);
             if ( !pcActiveBody ) {
@@ -749,11 +731,8 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     if ( ( geoGroup && geoGroup->hasObject ( plane, true ) ) ||
                            !App::GeoFeatureGroupExtension::getGroupOfObject ( plane ) ) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
-                    } else if (pcActiveBody) {
+                    } else {
                         status.push_back ( PartDesignGui::TaskFeaturePick::notInBody );
-                    } else { // if we are outside a body count it as valid
-                        validPlaneCount++;
-                        status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
                     }
                 }
             }
@@ -841,11 +820,11 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 }
             }
 
-            if(dlg)
+            if (dlg)
                 Gui::Control().closeDialog();
 
             Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
+            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
         }
     }
 }
@@ -882,10 +861,10 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
         cmd->updateActive();
 
     auto base = dynamic_cast<PartDesign::Feature*>(Feat);
-    if(base)
+    if (base)
         base = dynamic_cast<PartDesign::Feature*>(base->getBaseObject(true));
     App::DocumentObject *obj = base;
-    if(!obj)
+    if (!obj)
         obj = pcActiveBody;
 
     // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
@@ -935,9 +914,9 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
         } else if (!pcActiveBody->hasObject(*s)) {
             // Check whether this plane belongs to a body of the same part
             PartDesign::Body* b = PartDesign::Body::findBodyOf(*s);
-            if(!b)
+            if (!b)
                 status.push_back(PartDesignGui::TaskFeaturePick::notInBody);
-            else if(pcActivePart && pcActivePart->hasObject(b, true))
+            else if (pcActivePart && pcActivePart->hasObject(b, true))
                 status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
             else
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
@@ -1018,25 +997,92 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::" << which << "','" << FeatName << "')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-        
+
         auto objCmd = Gui::Command::getObjectCmd(feature);
         if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty()) {
             FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
         }
         else {
             std::ostringstream ss;
-            for(auto &s : subs)
+            for (auto &s : subs)
                 ss << "'" << s << "',";
-            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");   
-        }         
+            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");
+        }
+
+        //for additive and subtractive lofts allow the user to preselect the sections
+        if (which.compare("AdditiveLoft") == 0 || which.compare("SubtractiveLoft") == 0) {
+            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+            if (selection.size() > 1) { //treat additional selected objects as sections
+                for (std::vector<Gui::SelectionObject>::size_type ii = 1; ii < selection.size(); ii++) {
+                    if (selection[ii].getObject()->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                        auto objCmdSection = Gui::Command::getObjectCmd(selection[ii].getObject());
+                        FCMD_OBJ_CMD(Feat, "Sections += [" << objCmdSection << "]");
+                    }
+                }
+            }
+        }
+
+        // for additive and subtractive pipes allow the user to preselect the spines
+        if (which.compare("AdditivePipe") == 0 || which.compare("SubtractivePipe") == 0) {
+            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+            if (selection.size() == 2) { //treat additional selected object as spine
+                std::vector <string> subnames = selection[1].getSubNames();
+                auto objCmdSpine = Gui::Command::getObjectCmd(selection[1].getObject());
+                if (selection[1].getObject()->isDerivedFrom(Part::Part2DObject::getClassTypeId()) && subnames.empty()) {
+                    FCMD_OBJ_CMD(Feat,"Spine = " << objCmdSpine);
+                }
+                else {
+                    std::ostringstream ss;
+                    for(auto &s : subnames) {
+                        if (s.find("Edge") != std::string::npos)
+                            ss << "'" << s << "',";
+                    }
+                    FCMD_OBJ_CMD(Feat,"Spine = (" << objCmdSpine << ", [" << ss.str() << "])");
+                }
+            }
+        }
 
         func(static_cast<Part::Feature*>(feature), Feat);
     };
 
+
+    // in case of subtractive types, check that there is something to subtract from
+    if ((which.find("Subtractive") != std::string::npos)  ||
+        (which.compare("Groove") == 0) ||
+        (which.compare("Pocket") == 0)) {
+
+        if (!pcActiveBody->isSolid()) {
+            QMessageBox msgBox;
+            msgBox.setText(QObject::tr("Cannot use this command as there is no solid to subtract from."));
+            msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature before attempting a subtractive command."));
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            msgBox.exec();
+            return;
+        }
+    }
+
+
     //if a profile is selected we can make our life easy and fast
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty()) {
-        base_worker(selection.front().getObject(), selection.front().getSubNames());
+        bool onlyAllowed = true;
+        for (auto it = selection.begin(); it!=selection.end(); ++it){
+            if (PartDesign::Body::findBodyOf((*it).getObject()) != pcActiveBody) {  // the selected objects must belong to the body
+                onlyAllowed = false;
+                break;
+            }
+        }
+        if (!onlyAllowed) {
+            QMessageBox msgBox;
+            msgBox.setText(QObject::tr("Cannot use selected object. Selected object must belong to the active body"));
+            msgBox.setInformativeText(QObject::tr("Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body."));
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            msgBox.exec();
+        } else {
+            base_worker(selection.front().getObject(), selection.front().getSubNames());
+        }
         return;
     }
 
@@ -1063,7 +1109,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
     auto accepter = [=](const std::vector<App::DocumentObject*>& features) -> bool {
 
-        if(features.empty())
+        if (features.empty())
             return false;
 
         return true;
@@ -1106,7 +1152,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             return;
 
         if (!dlg.radioXRef->isChecked()) {
-            Gui::Command::openCommand("Make copy");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
             auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
             auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
             if (oBody)
@@ -1138,13 +1184,14 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                 return;
         }
 
-        if(dlg)
+        if (dlg)
             Gui::Control().closeDialog();
 
         Gui::Selection().clearSelection();
-        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker);
-        if (!bNoSketchWasSelected && extReference)
-            pickDlg->showExternal(true);
+        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker, true);
+        // Logically dead code because 'bNoSketchWasSelected' must be true
+        //if (!bNoSketchWasSelected && extReference)
+        //    pickDlg->showExternal(true);
 
         Gui::Control().showDialog(pickDlg);
     }
@@ -1161,7 +1208,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
 void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, App::DocumentObject *Feat)
 {
-    if(sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         FCMD_OBJ_HIDE(sketch);
     finishFeature(cmd, Feat);
 }
@@ -1296,7 +1343,7 @@ void CmdPartDesignHole::activated(int iMsg)
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
 
-        if(!Feat) return;
+        if (!Feat) return;
 
         finishProfileBased(cmd, sketch, Feat);
         cmd->adjustCameraPosition();
@@ -1408,7 +1455,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         else {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = ("<<getObjectCmd(pcActiveBody->getOrigin()->getY())<<",[''])");
         }
-        
+
         FCMD_OBJ_CMD(Feat,"Angle = 360.0");
 
         try {
@@ -1435,7 +1482,7 @@ bool CmdPartDesignGroove::isActive(void)
 }
 
 //===========================================================================
-// PartDesign_Additive_Pipe
+// PartDesign_AdditivePipe
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignAdditivePipe)
 
@@ -1448,7 +1495,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
     sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Additive_Pipe";
+    sPixmap       = "PartDesign_AdditivePipe";
 }
 
 void CmdPartDesignAdditivePipe::activated(int iMsg)
@@ -1485,7 +1532,7 @@ bool CmdPartDesignAdditivePipe::isActive(void)
 
 
 //===========================================================================
-// PartDesign_Subtractive_Pipe
+// PartDesign_SubtractivePipe
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignSubtractivePipe)
 
@@ -1498,7 +1545,7 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
     sWhatsThis    = "PartDesign_SubtractivePipe";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Subtractive_Pipe";
+    sPixmap       = "PartDesign_SubtractivePipe";
 }
 
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
@@ -1535,7 +1582,7 @@ bool CmdPartDesignSubtractivePipe::isActive(void)
 
 
 //===========================================================================
-// PartDesign_Additive_Loft
+// PartDesign_AdditiveLoft
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignAdditiveLoft)
 
@@ -1548,7 +1595,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections");
     sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Additive_Loft";
+    sPixmap       = "PartDesign_AdditiveLoft";
 }
 
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
@@ -1585,7 +1632,7 @@ bool CmdPartDesignAdditiveLoft::isActive(void)
 
 
 //===========================================================================
-// PartDesign_Subtractive_Loft
+// PartDesign_SubtractiveLoft
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignSubtractiveLoft)
 
@@ -1598,7 +1645,7 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections and remove it from the body");
     sWhatsThis    = "PartDesign_SubtractiveLoft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Subtractive_Loft";
+    sPixmap       = "PartDesign_SubtractiveLoft";
 }
 
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
@@ -1634,6 +1681,132 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_AdditiveHelix
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignAdditiveHelix)
+
+CmdPartDesignAdditiveHelix::CmdPartDesignAdditiveHelix()
+  : Command("PartDesign_AdditiveHelix")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Additive helix");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix");
+    sWhatsThis    = "PartDesign_AdditiveHelix";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_AdditiveHelix";
+}
+
+void CmdPartDesignAdditiveHelix::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
+
+        if (!Feat) return;
+
+        // specific parameters for helix
+        Gui::Command::updateActive();
+
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
+        }
+        else {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])");
+        }
+
+        finishProfileBased(cmd, sketch, Feat);
+
+        // If the initial helix creation fails then it leaves the base object invisible which makes things
+        // more difficult for the user.
+        // To avoid this the base object will be made tmp. visible again.
+        if (Feat->isError()) {
+            App::DocumentObject* base = static_cast<PartDesign::Feature*>(Feat)->BaseFeature.getValue();
+            if (base) {
+                PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(base));
+                if (view)
+                    view->makeTemporaryVisible(true);
+            }
+        }
+
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(pcActiveBody, this, "AdditiveHelix", worker);
+}
+
+bool CmdPartDesignAdditiveHelix::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//===========================================================================
+// PartDesign_SubtractiveHelix
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignSubtractiveHelix)
+
+CmdPartDesignSubtractiveHelix::CmdPartDesignSubtractiveHelix()
+  : Command("PartDesign_SubtractiveHelix")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Subtractive helix");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix and remove it from the body");
+    sWhatsThis    = "PartDesign_SubtractiveHelix";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_SubtractiveHelix";
+}
+
+void CmdPartDesignSubtractiveHelix::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
+
+        if (!Feat) return;
+
+        // specific parameters for helix
+        Gui::Command::updateActive();
+
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
+        }
+        else {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])");
+        }
+
+        finishProfileBased(cmd, sketch, Feat);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(pcActiveBody, this, "SubtractiveHelix", worker);
+}
+
+bool CmdPartDesignSubtractiveHelix::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // Common utility functions for Dressup features
 //===========================================================================
 
@@ -1654,16 +1827,16 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face or body."));
+            QObject::tr("Select an edge, face, or body."));
         return false;
     } else if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face or body from a single body."));
+            QObject::tr("Select an edge, face, or body from a single body."));
         return false;
     }
     else if (pcActiveBody != PartDesignGui::getBodyFor(selection[0].getObject(), false)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
-            QObject::tr("Select an edge, face or body from an active body."));
+            QObject::tr("Select an edge, face, or body from an active body."));
         return false;
     }
 
@@ -1702,7 +1875,7 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
 
     std::ostringstream str;
     str << '(' << Gui::Command::getObjectCmd(base) << ",[";
-    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
+    for (std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
         str << "'" << *it << "',";
     }
     str << "])";
@@ -1710,13 +1883,22 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(),base);
 
     auto body = PartDesignGui::getBodyFor(base,false);
-    if(!body) return;
+    if (!body) return;
     cmd->openCommand((std::string("Make ") + which).c_str());
     FCMD_OBJ_CMD(body,"newObject('PartDesign::"<<which<<"','"<<FeatName<<"')");
     auto Feat = body->getDocument()->getObject(FeatName.c_str());
     FCMD_OBJ_CMD(Feat,"Base = " << str.str());
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     finishFeature(cmd, Feat, base);
+
+    App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
+    if (baseFeature) {
+        PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+        // in case there is an error, for example when a fillet is larger than the available space
+        // display the base feature to avoid that the user sees nothing
+        if (view && Feat->isError())
+            view->Visibility.setValue(true);
+    }
 }
 
 void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
@@ -1823,7 +2005,7 @@ void CmdPartDesignDraft::activated(int iMsg)
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
             // Check for valid face types
             TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
             BRepAdaptor_Surface sf(face);
@@ -1879,7 +2061,7 @@ void CmdPartDesignThickness::activated(int iMsg)
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if(aSubName.size() > 4 && aSubName.substr(0,4) != "Face") {
+        if (aSubName.size() > 4 && aSubName.substr(0,4) != "Face") {
             // empty name or any other sub-element
             SubNames.erase(SubNames.begin()+i);
         }
@@ -1899,13 +2081,13 @@ bool CmdPartDesignThickness::isActive(void)
 //===========================================================================
 
 void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
-                        boost::function<void(App::DocumentObject *, std::vector<App::DocumentObject*>)> func)
+    boost::function<void(App::DocumentObject*, std::vector<App::DocumentObject*>)> func)
 {
-    std::string FeatName = cmd->getUniqueObjectName(which.c_str(),pcActiveBody);
+    std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
-    auto accepter = [=](std::vector<App::DocumentObject*> features) -> bool{
+    auto accepter = [=](std::vector<App::DocumentObject*> features) -> bool {
 
-        if(features.empty())
+        if (features.empty())
             return false;
 
         return true;
@@ -1913,8 +2095,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 
     auto worker = [=](std::vector<App::DocumentObject*> features) {
         std::stringstream str;
-        str << cmd->getObjectCmd(FeatName.c_str(),pcActiveBody->getDocument()) << ".Originals = [";
-        for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
+        str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
+        for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it) {
             str << cmd->getObjectCmd(*it) << ",";
         }
         str << "]";
@@ -1922,7 +2104,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         std::string msg("Make ");
         msg += which;
         Gui::Command::openCommand(msg.c_str());
-        FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::"<<which<<"','"<<FeatName<<"')");
+        FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::" << which << "','" << FeatName << "')");
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
@@ -1934,7 +2116,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         func(Feat, features);
 
         // Set the tip of the body
-        FCMD_OBJ_CMD(pcActiveBody,"Tip = " << Gui::Command::getObjectCmd(Feat));
+        FCMD_OBJ_CMD(pcActiveBody, "Tip = " << Gui::Command::getObjectCmd(Feat));
         Gui::Command::updateActive();
     };
 
@@ -1950,8 +2132,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
             for (unsigned i = 0; i < features.size(); i++)
                 status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
 
-            Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-            PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
+            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+            PartDesignGui::TaskDlgFeaturePick* pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
             if (dlg && !pickDlg) {
                 QMessageBox msgBox;
                 msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -1965,32 +2147,28 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
                     return;
             }
 
-            if(dlg)
+            if (dlg)
                 Gui::Control().closeDialog();
 
             Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker));
+            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker, false));
             return;
-        } else if(features.empty()) {
+        } else if (features.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
                 QObject::tr("Please create a feature first."));
             return;
         }
     }
-    if (features.size() > 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Multiple Features Selected"),
-            QObject::tr("Please select only one feature first."));
-        return;
-    }
-    else {
-        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
-        if (pcActiveBody != PartDesignGui::getBodyFor(features[0], false)) {
+
+    PartDesign::Body* activeBody = PartDesignGui::getBody(true);
+    for (std::size_t i = 0; i < features.size(); i++) {
+        if (activeBody != PartDesignGui::getBodyFor(features[i], false)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
                 QObject::tr("Please select only one feature in an active body."));
             return;
         }
-        worker(features);
     }
+    worker(features);
 }
 
 void finishTransformed(Gui::Command* cmd, App::DocumentObject *Feat)
@@ -2035,16 +2213,16 @@ void CmdPartDesignMirrored::activated(int iMsg)
             return;
 
         bool direction = false;
-        if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(sketch)<<", ['V_Axis'])");
                 direction = true;
             }
         }
-        if(!direction) {
+        if (!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if(body) {                
+            if (body) {
                 FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(body->getOrigin()->getXY())<<", [''])");
             }
         }
@@ -2097,16 +2275,16 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
             return;
 
         bool direction = false;
-        if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(sketch)<<", ['H_Axis'])");
                 direction = true;
             }
         }
-        if(!direction) {
+        if (!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if(body) {                
+            if (body) {
                 FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getX())<<",[''])");
             }
         }
@@ -2161,16 +2339,16 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
             return;
 
         bool direction = false;
-        if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(sketch)<<",['N_Axis'])");
                 direction = true;
             }
         }
-        if(!direction) {
+        if (!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if(body) {                
+            if (body) {
                 FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getZ())<<",[''])");
             }
         }
@@ -2296,7 +2474,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         if (prevFeature != NULL)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
 
-        openCommand("Convert to MultiTransform feature");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Convert to MultiTransform feature"));
 
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         rcCmdMgr.runCommandByName("PartDesign_MoveTip");
@@ -2309,7 +2487,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         // #0003509
 #if 0
         // Remove the Transformed feature from the Body
-        if(pcActiveBody)
+        if (pcActiveBody)
             FCMD_OBJ_CMD(pcActiveBody,"removeObject("<<getObjectCmd(trFeat)<<")");
 #endif
 
@@ -2387,11 +2565,11 @@ void CmdPartDesignBoolean::activated(int iMsg)
 
     Gui::SelectionFilter BodyFilter("SELECT Part::Feature COUNT 1..");
 
-    openCommand("Create Boolean");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Boolean"));
     std::string FeatName = getUniqueObjectName("Boolean",pcActiveBody);
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Boolean','"<<FeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    
+
     // If we don't add an object to the boolean group then don't update the body
     // as otherwise this will fail and it will be marked as invalid
     bool updateDocument = false;
@@ -2400,7 +2578,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
         std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
         for (; i != BodyFilter.Result.end(); i++) {
             for (std::vector<Gui::SelectionObject>::iterator j = i->begin(); j != i->end(); j++) {
-                if(j->getObject() != pcActiveBody)
+                if (j->getObject() != pcActiveBody)
                     bodies.push_back(j->getObject());
             }
         }
@@ -2450,6 +2628,8 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignSubtractivePipe);
     rcCmdMgr.addCommand(new CmdPartDesignAdditiveLoft);
     rcCmdMgr.addCommand(new CmdPartDesignSubtractiveLoft);
+    rcCmdMgr.addCommand(new CmdPartDesignAdditiveHelix);
+    rcCmdMgr.addCommand(new CmdPartDesignSubtractiveHelix);
 
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     rcCmdMgr.addCommand(new CmdPartDesignDraft());

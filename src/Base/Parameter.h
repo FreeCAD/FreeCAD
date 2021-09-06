@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
- /** 
+ /**
  * \file Parameter.h
  * \brief The classes defined here are used to interface with the XML-based
  * FreeCAD config files: user.cfg and system.cfg files. It can parse, get,
@@ -132,6 +132,8 @@ public:
     typedef Base::Reference<ParameterGrp> handle;
     /// remove a sub group from this group
     void RemoveGrp(const char* Name);
+    /// rename a sub group from this group
+    bool RenameGrp(const char* OldName, const char* NewName);
     /// clears everything in this group (all types)
     void Clear(void);
     //@}

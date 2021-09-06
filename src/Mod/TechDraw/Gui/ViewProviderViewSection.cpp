@@ -48,9 +48,10 @@
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
+#include "PreferencesGui.h"
 #include "TaskSectionView.h"
-
 #include "ViewProviderViewSection.h"
 
 using namespace TechDrawGui;
@@ -64,7 +65,7 @@ ViewProviderViewSection::ViewProviderViewSection()
 {
     static const char *sgroup = "Cut Surface";
     static const char *hgroup = "Surface Hatch";
-    sPixmap = "TechDraw_Tree_Section";
+    sPixmap = "TechDraw_TreeSection";
     //ShowCutSurface is obsolete - use CutSurfaceDisplay
     ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_Hidden,"Show/hide the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),sgroup,App::Prop_None,"The color to shade the cut surface");
@@ -185,7 +186,7 @@ void ViewProviderViewSection::getParameters(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color cutColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
+    App::Color cutColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xD3D3D3FF));
     CutSurfaceColor.setValue(cutColor);
 
 //    App::Color hatchColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionHatchColor", 0x00000000));

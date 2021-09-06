@@ -35,6 +35,7 @@
 #include "FeatureFillet.h"
 #include <Base/Exception.h>
 
+#include <Precision.hxx>
 
 using namespace Part;
 
@@ -73,6 +74,18 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
+
+        //shapefix re #4285
+        //https://www.forum.freecadweb.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
+        TopoShape* ts = new TopoShape(shape);
+        double minTol = 2.0 * Precision::Confusion();
+        double maxTol = 4.0 * Precision::Confusion();
+        bool rc = ts->fix(Precision::Confusion(), minTol, maxTol);
+        if (rc) {
+            shape = ts->getShape();
+        }
+        delete ts;
+
         ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, baseShape);
         this->Shape.setValue(shape);
 

@@ -164,6 +164,7 @@ public Q_SLOTS:
 
 protected:
     void draw() override;
+    void drawBalloon(bool dragged = false);
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
@@ -179,11 +180,11 @@ protected:
     double m_lineWidth;
     bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
-    QPointF *oldLabelCenter;
     QGIView *parent;           //used to create edit dialog
 
     TechDraw::DrawView* getSourceView() const;
     bool m_dragInProgress;
+    bool m_originDragged = false;
     bool m_ctrl;
     Base::Vector3d m_saveOffset;
 

@@ -4,107 +4,125 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria Wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Przybliżenie cylindra</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Płaszczyzna...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Approximate a plane</source>
       <translation>Aproksymuj płaszczyznę</translation>
     </message>
   </context>
   <context>
+    <name>CmdApproxPolynomial</name>
+    <message>
+      <location filename="../../Command.cpp" line="324"/>
+      <source>Reverse Engineering</source>
+      <translation>Inżynieria wsteczna</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="325"/>
+      <source>Polynomial surface</source>
+      <translation>Powierzchnia wielomianowa</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="326"/>
+      <source>Approximate a polynomial surface</source>
+      <translation>Przybliżenie powierzchni B-splajnu</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="257"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Sphere</source>
-      <translation>Kula</translation>
+      <translation>Sfera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Przybliżenie sfery</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="74"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Przybliżona powierzchnia B-splajnu...</translation>
+      <translation>Przybliżona powierzchnia krzywej złożonej ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Przybliżenie powierzchni B-splajnu</translation>
+      <translation>Przybliżona powierzchnia krzywej złożonej</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="490"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="491"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Linia łamana z obwiedni siatki...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="417"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Utwórz linię łamaną z obwiedni siatki</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="481"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <translation>Rozkład Poissona ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Poisson surface reconstruction</source>
       <translation>Rekonstrukcja powierzchni Poissona</translation>
     </message>
@@ -112,74 +130,122 @@
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="379"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Segmentacja siatki...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="381"/>
       <source>Create mesh segments</source>
-      <translation>Tworzenie segmentów siatki</translation>
+      <translation>Tworzy segmenty siatki</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Z komponentów</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Utwórz segmenty siatki z komponentów</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Segmentacja samodzielna...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="413"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Utwórz samodzielnie segmenty siatki</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="590"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="591"/>
       <source>Structured point clouds</source>
       <translation>Strukturalne chmury punktów</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Triangulacja strukturalnych chmur punktów</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Fit plane</source>
+      <translation>Dopasuj do płaszczyzny</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="221"/>
+      <source>Fit cylinder</source>
+      <translation>Dopasuj walec</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Fit sphere</source>
+      <translation>Dopasuj sferę</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="335"/>
+      <source>Fit polynomial surface</source>
+      <translation>Dopasuj powierzchnię wielomianową</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>View triangulation</source>
+      <translation>Widok triangulacji</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <source>Placement</source>
+      <translation>Umiejscowienie</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <source>Fit B-Spline</source>
+      <translation>Dopasuj krzywą złożoną</translation>
+    </message>
+    <message>
+      <location filename="../../Poisson.cpp" line="101"/>
+      <source>Poisson reconstruction</source>
+      <translation>Rekonstrukcja powierzchni Poissona</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <source>Segmentation</source>
+      <translation>Segmentacja</translation>
     </message>
   </context>
   <context>
@@ -187,12 +253,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>Dopasuj powierzchnie B-spline</translation>
+      <translation>Dopasuj powierzchnie krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>u-Direction</source>
-      <translation>u-Direction</translation>
+      <translation>Kierunek - U</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
@@ -209,7 +275,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>v-Direction</source>
-      <translation>v-Direction</translation>
+      <translation>Kierunek - V</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -254,23 +320,29 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
-      <translation>Użytkownik zdefiniował kierunki u/v</translation>
+      <translation>Kierunki U / V zdefiniowane przez użytkownika</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="359"/>
+      <source>Create placement</source>
+      <translation>Utwórz umiejscowienie</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="146"/>
+      <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Wrong selection</source>
       <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="147"/>
+      <location filename="../../FitBSplineSurface.cpp" line="208"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Proszę wybrać pojedynczy obiekt miejsca końcowego, aby uzyskać lokalną orientację.</translation>
+      <translation>Proszę wybrać pojedynczy obiekt, aby poznać orientację lokalną.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="174"/>
+      <location filename="../../FitBSplineSurface.cpp" line="167"/>
+      <location filename="../../FitBSplineSurface.cpp" line="235"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -280,7 +352,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation>Poisson</translation>
+      <translation>Rozkład Poissona</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -295,7 +367,7 @@
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation>Podział solvera</translation>
+      <translation>Podział solwera</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
@@ -311,14 +383,18 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Wrong selection</source>
       <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="495"/>
+      <location filename="../../Command.cpp" line="90"/>
+      <source>Please select a point cloud or mesh.</source>
+      <translation>Proszę wybrać chmurę punktów lub siatkę.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Please select a single point cloud.</source>
       <translation>Proszę wybrać pojedynczą chmurę punktów.</translation>
     </message>
@@ -326,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>View triangulation failed</source>
       <translation>Triangulacja widoku nie powiodła się</translation>
     </message>
@@ -341,37 +417,37 @@
     <message>
       <location filename="../../Segmentation.ui" line="27"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Utwórz kształt złożony</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="34"/>
       <source>Smooth mesh</source>
-      <translation>Wygładzenie siatki</translation>
+      <translation>Wygładź siatę</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="44"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="53"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>Tolerancja krzywizny</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="70"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Odległość do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="87"/>
       <source>Minimum number of faces</source>
-      <translation>Minimalna liczba powierzchni</translation>
+      <translation>Minimalna liczba płaszczyzn</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>Utwórz siatkę z nieużywanych trójkątów</translation>
     </message>
   </context>
   <context>
@@ -379,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Segmentacja samodzielna</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -394,7 +470,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="48"/>
       <source>Region</source>
-      <translation>region</translation>
+      <translation>Obszar</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="55"/>
@@ -409,7 +485,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="82"/>
       <source>&lt; faces than</source>
-      <translation>&lt;powierzchnie niż</translation>
+      <translation>&lt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="89"/>
@@ -423,24 +499,75 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
-      <source>Region options</source>
-      <translation>Opcje</translation>
+      <source>Plane</source>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>
+      <location filename="../../SegmentationManual.ui" line="181"/>
+      <location filename="../../SegmentationManual.ui" line="234"/>
+      <source>Tolerance</source>
+      <translation>Tolerancja</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="148"/>
+      <location filename="../../SegmentationManual.ui" line="201"/>
+      <location filename="../../SegmentationManual.ui" line="254"/>
+      <source>Minimum number of faces</source>
+      <translation>Minimalna liczba płaszczyzn</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="165"/>
+      <location filename="../../SegmentationManual.ui" line="218"/>
+      <location filename="../../SegmentationManual.ui" line="271"/>
+      <source>Detect</source>
+      <translation>Wykryj</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="175"/>
+      <source>Cylinder</source>
+      <translation>Walec</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="228"/>
+      <source>Sphere</source>
+      <translation>Sfera</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="281"/>
+      <source>Region options</source>
+      <translation>opcje regionalne</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
       <translation>Akceptuj tylko widoczne trójkąty</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="138"/>
+      <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
       <translation>Akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="310"/>
+      <source>Segmentation</source>
+      <translation>Segmentacja</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="316"/>
+      <source>Cut segment from mesh</source>
+      <translation>Wytnij segment z siatki</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="326"/>
+      <source>Hide segment</source>
+      <translation>Ukryj segment</translation>
     </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="185"/>
+      <location filename="../../SegmentationManual.cpp" line="310"/>
       <source>Create</source>
       <translation>Utwórz</translation>
     </message>
@@ -450,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
   </context>
 </TS>

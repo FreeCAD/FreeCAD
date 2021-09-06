@@ -27,6 +27,7 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include "ViewProviderDatum.h"
 
+class SoCoordinate3;
 class SoFont;
 class SoTranslation;
 

@@ -217,6 +217,7 @@ public:
     void setPoint(unsigned long, const Base::Vector3d& v);
     void smooth(int iterations, float d_max);
     void decimate(float fTolerance, float fReduction);
+    void decimate(int targetSize);
     Base::Vector3d getPointNormal(unsigned long) const;
     std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
@@ -282,6 +283,10 @@ public:
     void removeDuplicatedPoints();
     void removeDuplicatedFacets();
     bool hasNonManifolds() const;
+    bool hasInvalidNeighbourhood() const;
+    bool hasPointsOutOfRange() const;
+    bool hasFacetsOutOfRange() const;
+    bool hasCorruptedFacets() const;
     void removeNonManifolds();
     void removeNonManifoldPoints();
     bool hasSelfIntersections() const;

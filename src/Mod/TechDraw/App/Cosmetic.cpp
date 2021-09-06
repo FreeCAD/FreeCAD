@@ -39,6 +39,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Matrix.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -54,6 +55,8 @@
 #include <Mod/TechDraw/App/CosmeticVertexPy.h>
 
 #include "DrawUtil.h"
+#include "Preferences.h"
+#include "LineGroup.h"
 #include "GeometryObject.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
@@ -105,10 +108,8 @@ std::string LineFormat::toString(void) const
 //static preference getters.
 double LineFormat::getDefEdgeWidth()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
     double width = lg->getWeight("Graphic");
     delete lg; 
@@ -117,11 +118,7 @@ double LineFormat::getDefEdgeWidth()
 
 App::Color LineFormat::getDefEdgeColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));  //black
-    return fcColor;
+    return Preferences::normalColor();
 }
 
 int LineFormat::getDefEdgeStyle()
@@ -139,15 +136,11 @@ TYPESYSTEM_SOURCE(TechDraw::CosmeticVertex, Base::Persistence)
 CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
 {
     point(Base::Vector3d(0.0, 0.0, 0.0));
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
-
     permaPoint = Base::Vector3d(0.0, 0.0, 0.0);
     linkGeom = -1;
-    color = fcColor;
-    size  = 3.0;
+    color = Preferences::vertexColor();
+    size  = Preferences::vertexScale() * 
+            LineGroup::getDefaultWidth("Thick", Preferences::lineGroup());
     style = 1;
     visible = true;
     hlrVisible = true;
@@ -172,16 +165,11 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
 
 CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0xff000000));
-
     permaPoint = loc;
     linkGeom = -1;
-    color = fcColor;
-    //TODO: size = hGrp->getFloat("VertexSize",30.0);
-    size  = 30.0;
+    color = Preferences::vertexColor();
+    size  = Preferences::vertexScale() * 
+            LineGroup::getDefaultWidth("Thick", Preferences::lineGroup());
     style = 1;        //TODO: implement styled vertexes
     visible = true;
     hlrVisible = true;
@@ -333,10 +321,13 @@ CosmeticVertex* CosmeticVertex::clone(void) const
 
 PyObject* CosmeticVertex::getPyObject(void)
 {
-//    return new CosmeticVertexPy(new CosmeticVertex(this->copy()));  //shouldn't this be clone?
-    PyObject* result = new CosmeticVertexPy(this->clone());
-    return result;
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new CosmeticVertexPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
+
 
 void CosmeticVertex::dump(const char* title)
 {
@@ -352,17 +343,19 @@ TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge,Base::Persistence)
 CosmeticEdge::CosmeticEdge()
 {
 //    Base::Console().Message("CE::CE()\n");
+    permaRadius = 0.0;
     m_geometry = new TechDraw::BaseGeom();
     initialize();
 }
 
-//TODO: set permaStart/permaEnd in ctors. Need scale. 
 CosmeticEdge::CosmeticEdge(CosmeticEdge* ce)
 {
 //    Base::Console().Message("CE::CE(ce)\n");
     TechDraw::BaseGeom* newGeom = ce->m_geometry->copy();
+    //these endpoints are already YInverted
     permaStart = ce->permaStart;
-    permaEnd   = ce->permaEnd;      
+    permaEnd   = ce->permaEnd;
+    permaRadius = ce->permaRadius; 
     m_geometry = newGeom;
     m_format   = ce->m_format;
     initialize();
@@ -386,8 +379,16 @@ CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
 {
 //    Base::Console().Message("CE::CE(TopoDS_Edge)\n");
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
+    if ((m_geometry->geomType == TechDraw::GeomType::CIRCLE) ||
+        (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) ) {
+       TechDraw::Circle* circ = static_cast<TechDraw::Circle*>(m_geometry);
+       permaStart  = circ->center;
+       permaEnd    = circ->center;
+       permaRadius = circ->radius;
+    } 
     initialize();
 }
 
@@ -397,6 +398,13 @@ CosmeticEdge::CosmeticEdge(TechDraw::BaseGeom* g)
     m_geometry = g;
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
+    if ((g->geomType == TechDraw::GeomType::CIRCLE) ||
+       (g->geomType == TechDraw::GeomType::ARCOFCIRCLE)) {
+       TechDraw::Circle* circ = static_cast<TechDraw::Circle*>(g);
+       permaStart  = circ->center;
+       permaEnd    = circ->center;
+       permaRadius = circ->radius;
+    } 
     initialize();
 }
 
@@ -416,13 +424,6 @@ void CosmeticEdge::initialize(void)
 
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
-}
-
-void CosmeticEdge::unscaleEnds(double scale)
-{
-    permaStart = permaStart / scale;
-    permaEnd   = permaEnd   / scale;
-    permaRadius = permaRadius / scale;
 }
 
 TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
@@ -512,17 +513,24 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         gen->Restore(reader);
         gen->occEdge = GeometryUtils::edgeFromGeneric(gen);
         m_geometry = (TechDraw::BaseGeom*) gen;
-        
+        permaStart = gen->getStartPoint();
+        permaEnd   = gen->getEndPoint();
     } else if (gType == TechDraw::GeomType::CIRCLE) {
         TechDraw::Circle* circ = new TechDraw::Circle();
         circ->Restore(reader);
         circ->occEdge = GeometryUtils::edgeFromCircle(circ);
         m_geometry = (TechDraw::BaseGeom*) circ;
+        permaRadius = circ->radius;
+        permaStart  = circ->center;
+        permaEnd    = circ->center;
     } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOC* aoc = new TechDraw::AOC();
         aoc->Restore(reader);
         aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
         m_geometry = (TechDraw::BaseGeom*) aoc;
+        permaStart = aoc->startPnt;
+        permaEnd   = aoc->endPnt;
+        permaRadius = aoc->radius;
     } else {
         Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", gType);
     }
@@ -582,8 +590,13 @@ CosmeticEdge* CosmeticEdge::clone(void) const
 
 PyObject* CosmeticEdge::getPyObject(void)
 {
-    return new CosmeticEdgePy(this->clone());
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new CosmeticEdgePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
+
 
 //*********************************************************
 
@@ -965,6 +978,24 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     return result;
 }
 
+bool CenterLine::Circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
+{
+    // the determinant of this matrix calculates the area of a triangle, see
+    // https://en.wikipedia.org/wiki/Triangle#Using_coordinates
+    // a 3x3 matrix would also do the job, but FC supports only 4x4 matrixes
+    Base::Matrix4D CircMatrix(
+        A.x, A.y, 1, 0,
+        B.x, B.y, 1, 0,
+        C.x, C.y, 1, 0,
+        0, 0, 0, 1);
+
+    // the sign delivers the dicrection of travel along the triangle edges
+    if (CircMatrix.determinant() > 0)
+        return true;
+    else
+        return false;
+}
+
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawViewPart* partFeat,
                                                       std::vector<std::string> edgeNames, 
                                                       int mode, double ext,
@@ -972,6 +1003,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
                                                       double rotate, bool flip)
                                                       
 {
+    Q_UNUSED(flip)
+
 //    Base::Console().Message("CL::calc2Lines() - mode: %d flip: %d edgeNames: %d\n", mode, flip, edgeNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (edgeNames.empty()) {
@@ -1006,17 +1039,23 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     Base::Vector3d l2p1 = edges.back()->getStartPoint();
     Base::Vector3d l2p2 = edges.back()->getEndPoint();
 
-    if (flip) {             //reverse line 2
-        Base::Vector3d temp;
-        temp = l2p1;
-        l2p1 = l2p2;
-        l2p2 = temp;
+    // The centerline is drawn using the midpoints of the two lines that connect l1p1-l2p1 and l1p2-l2p2.
+    // However, we don't know which point should be l1p1 to get a geometrically correct result, see
+    // https://wiki.freecadweb.org/File:TD-CenterLineFlip.png for an illustration of the problem.
+    // Thus we test this by a circulation test, see this post for a brief explanation:
+    // https://forum.freecadweb.org/viewtopic.php?p=505733#p505615
+    if (Circulation(l1p1, l1p2, l2p1) != Circulation(l1p2, l2p2, l2p1)) {
+        Base::Vector3d temp; // reverse line 1
+        temp = l1p1;
+        l1p1 = l1p2;
+        l1p2 = temp;
     }
 
     Base::Vector3d p1 = (l1p1 + l2p1) / 2.0;
     Base::Vector3d p2   = (l1p2 + l2p2) / 2.0;
     Base::Vector3d mid = (p1 + p2) / 2.0;
 
+    //orientation
     if (mode == 0) {           //Vertical
             p1.x = mid.x;
             p2.x = mid.x;
@@ -1434,8 +1473,13 @@ CenterLine *CenterLine::clone(void) const
 
 PyObject* CenterLine::getPyObject(void)
 {
-    return new CenterLinePy(this->clone());
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new CenterLinePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
+
 
 void CenterLine::setShifts(double h, double v)
 {
@@ -1630,7 +1674,11 @@ GeomFormat* GeomFormat::copy(void) const
 
 PyObject* GeomFormat::getPyObject(void)
 {
-    return new GeomFormatPy(new GeomFormat(this->copy()));
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new GeomFormatPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 bool CosmeticVertex::restoreCosmetic(void)
@@ -1640,5 +1688,4 @@ bool CosmeticVertex::restoreCosmetic(void)
     bool result = hGrp->GetBool("restoreCosmetic", true);
     return result;
 }
-
 

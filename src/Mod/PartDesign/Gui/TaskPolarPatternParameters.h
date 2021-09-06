@@ -58,6 +58,7 @@ public:
     virtual ~TaskPolarPatternParameters();
 
     void apply();
+
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onAxisChanged(int num);
@@ -81,12 +82,13 @@ protected:
     unsigned getOccurrences(void) const;
 
 private:
+    void connectSignals();
     void setupUI();
     void updateUI();
     void kickUpdateViewTimer() const;
 
 private:
-    Ui_TaskPolarPatternParameters* ui;
+    std::unique_ptr<Ui_TaskPolarPatternParameters> ui;
     QTimer* updateViewTimer;
 
     ComboLinks axesLinks;

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="TopoShapePy" 
-      Name="TopoShapeSolidPy" 
-      Twin="TopoShape" 
-      TwinPointer="TopoShape" 
-      Include="Mod/Part/App/TopoShape.h" 
-      Namespace="Part" 
+  <PythonExport
+      Father="TopoShapePy"
+      Name="TopoShapeSolidPy"
+      Twin="TopoShape"
+      TwinPointer="TopoShape"
+      Include="Mod/Part/App/TopoShape.h"
+      Namespace="Part"
       FatherInclude="Mod/Part/App/TopoShapePy.h"
       FatherNamespace="Part"
       Constructor="true">
-	  <Documentation>
+      <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
       <UserDocu>Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created.</UserDocu>
     </Documentation>
@@ -31,43 +31,43 @@ absolute Cartesian coordinate system.</UserDocu>
     </Attribute>
     <Attribute Name="MatrixOfInertia" ReadOnly="true">
       <Documentation>
-        <UserDocu>Returns the matrix of inertia. It is a symmetrical matrix. 
-The coefficients of the matrix are the quadratic moments of 
-inertia. 
+        <UserDocu>Returns the matrix of inertia. It is a symmetrical matrix.
+The coefficients of the matrix are the quadratic moments of
+inertia.
 
- | Ixx Ixy Ixz 0 | 
- | Ixy Iyy Iyz 0 | 
- | Ixz Iyz Izz 0 | 
- | 0   0   0   1 | 
+ | Ixx Ixy Ixz 0 |
+ | Ixy Iyy Iyz 0 |
+ | Ixz Iyz Izz 0 |
+ | 0   0   0   1 |
 
-The moments of inertia are denoted by Ixx, Iyy, Izz. 
-The products of inertia are denoted by Ixy, Ixz, Iyz. 
-The matrix of inertia is returned in the central coordinate 
-system (G, Gx, Gy, Gz) where G is the centre of mass of the 
-system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
-Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
+The moments of inertia are denoted by Ixx, Iyy, Izz.
+The products of inertia are denoted by Ixy, Ixz, Iyz.
+The matrix of inertia is returned in the central coordinate
+system (G, Gx, Gy, Gz) where G is the centre of mass of the
+system and Gx, Gy, Gz the directions parallel to the X(1,0,0)
+Y(0,1,0) Z(0,0,1) directions of the absolute cartesian
 coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="MatrixOfInertia" Type="Object"/>
     </Attribute>
     <Attribute Name="StaticMoments" ReadOnly="true">
       <Documentation>
-        <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the 
- current system; i.e. the moments of inertia about the 
+        <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the
+ current system; i.e. the moments of inertia about the
  three axes of the Cartesian coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="StaticMoments" Type="Object"/>
     </Attribute>
     <Attribute Name="PrincipalProperties" ReadOnly="true">
       <Documentation>
-        <UserDocu>Computes the principal properties of inertia of the current system. 
- There is always a set of axes for which the products 
- of inertia of a geometric system are equal to 0; i.e. the 
- matrix of inertia of the system is diagonal. These axes 
- are the principal axes of inertia. Their origin is 
- coincident with the center of mass of the system. The 
- associated moments are called the principal moments of inertia. 
- This function computes the eigen values and the 
+        <UserDocu>Computes the principal properties of inertia of the current system.
+ There is always a set of axes for which the products
+ of inertia of a geometric system are equal to 0; i.e. the
+ matrix of inertia of the system is diagonal. These axes
+ are the principal axes of inertia. Their origin is
+ coincident with the center of mass of the system. The
+ associated moments are called the principal moments of inertia.
+ This function computes the eigen values and the
  eigen vectors of the matrix of inertia of the system.</UserDocu>
       </Documentation>
       <Parameter Name="PrincipalProperties" Type="Dict"/>
@@ -83,22 +83,28 @@ shape if the solid has no shells</UserDocu>
     <Methode Name="getMomentOfInertia" Const="true">
       <Documentation>
         <UserDocu>computes the moment of inertia of the material system about the axis A.
-mySolid.getMomentOfInertia( point, direction )</UserDocu>
+getMomentOfInertia(point,direction) -> Float
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getRadiusOfGyration" Const="true">
       <Documentation>
         <UserDocu>Returns the radius of gyration of the current system about the axis A.
-mySolid.getRadiusOfGyration( point, direction )</UserDocu>
+getRadiusOfGyration(point,direction) -> Float
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="offsetFaces" Const="true">
       <Documentation>
         <UserDocu>Extrude single faces of the solid.
-Example:
-solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
+offsetFaces(facesTuple, offset) -> Solid
+or
+offsetFaces(dict) -> Solid
+--
 Example:
 solid.offsetFaces((solid.Faces[0],solid.Faces[1]), 1.5)
+
+solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
         </UserDocu>
       </Documentation>
     </Methode>

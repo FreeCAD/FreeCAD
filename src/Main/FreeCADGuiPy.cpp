@@ -39,6 +39,7 @@
 #elif defined(Q_WS_X11)
 #include <QX11EmbedWidget>
 #endif
+#include <thread>
 // FreeCAD Base header
 #include <CXX/WrapPython.h>
 #include <Base/Exception.h>
@@ -51,23 +52,26 @@
 #include <Gui/SoFCDB.h>
 #include <Gui/Quarter/Quarter.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
+
+static bool _isSetupWithoutGui = false;
 
 static
 QWidget* setupMainWindow();
 
-class GUIThread : public QThread
-{
+class QtApplication : public QApplication {
 public:
-    GUIThread()
-    {
+    QtApplication(int &argc, char **argv)
+        : QApplication(argc, argv) {
     }
-    void run()
-    {
-        static int argc = 0;
-        static char **argv = {0};
-        QApplication app(argc, argv);
-        if (setupMainWindow()) {
-            app.exec();
+    bool notify (QObject * receiver, QEvent * event) {
+        try {
+            return QApplication::notify(receiver, event);
+        }
+        catch (const Base::SystemExitException& e) {
+            exit(e.getExitCode());
+            return true;
         }
     }
 };
@@ -86,17 +90,37 @@ FilterProc(int nCode, WPARAM wParam, LPARAM lParam) {
 static PyObject *
 FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 {
+    if (_isSetupWithoutGui) {
+        PyErr_SetString(PyExc_RuntimeError, "Cannot call showMainWindow() after calling setupWithoutGUI()\n");
+        return nullptr;
+    }
+
     PyObject* inThread = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread))
         return NULL;
 
-    static GUIThread* thr = 0;
+    static bool thr = false;
     if (!qApp) {
-        if (PyObject_IsTrue(inThread)) {
-            if (!thr) thr = new GUIThread();
-            thr->start();
+        if (PyObject_IsTrue(inThread) && !thr) {
+            thr = true;
+            std::thread t([]() {
+                static int argc = 0;
+                static char **argv = {0};
+                QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+                // This only works well if the QApplication is the very first created instance
+                // of a QObject. Otherwise the application lives in a different thread than the
+                // main thread which will cause hazardous behaviour.
+                QtApplication app(argc, argv);
+                if (setupMainWindow()) {
+                    app.exec();
+                }
+            });
+            t.detach();
         }
         else {
+            // In order to get Jupiter notebook integration working we must create a direct instance
+            // of QApplication. Not even a sub-class can be used because otherwise PySide2 wraps it
+            // with a QtCore.QCoreApplication which will raise an exception in ipykernel
 #if defined(Q_OS_WIN)
             static int argc = 0;
             static char **argv = {0};
@@ -124,6 +148,14 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
             PyErr_SetString(PyExc_RuntimeError, "Cannot create main window\n");
             return NULL;
         }
+    }
+
+    // if successful then enable Console logger
+    Base::ILogger *console = Base::Console().Get("Console");
+    if (console) {
+        console->bMsg = true;
+        console->bWrn = true;
+        console->bErr = true;
     }
 
     Py_INCREF(Py_None);
@@ -159,6 +191,7 @@ FreeCADGui_setupWithoutGUI(PyObject * /*self*/, PyObject *args)
 
     if (!Gui::Application::Instance) {
         static Gui::Application *app = new Gui::Application(false);
+        _isSetupWithoutGui = true;
         Q_UNUSED(app);
     }
     else {
@@ -169,7 +202,8 @@ FreeCADGui_setupWithoutGUI(PyObject * /*self*/, PyObject *args)
     if (!SoDB::isInitialized()) {
         // init the Inventor subsystem
         SoDB::init();
-        SIM::Coin3D::Quarter::Quarter::init();
+        SoNodeKit::init();
+        SoInteraction::init();
     }
     if (!Gui::SoFCDB::isInitialized()) {
         Gui::SoFCDB::init();
@@ -226,7 +260,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
     return Py_None;
 }
 
-struct PyMethodDef FreeCADGui_methods[] = { 
+struct PyMethodDef FreeCADGui_methods[] = {
     {"showMainWindow",FreeCADGui_showMainWindow,METH_VARARGS,
      "showMainWindow() -- Show the main window\n"
      "If no main window does exist one gets created"},
@@ -260,7 +294,6 @@ QWidget* setupMainWindow()
         Base::PyGILStateLocker lock;
         PyObject* input = PySys_GetObject("stdin");
         Gui::MainWindow *mw = new Gui::MainWindow();
-        mw->setAttribute(Qt::WA_DeleteOnClose);
         hasMainWindow = true;
 
         QIcon icon = qApp->windowIcon();
@@ -344,7 +377,6 @@ PyMOD_INIT_FUNC(FreeCADGui)
         // is started in command mode
         if (Base::Type::fromName("Gui::BaseView").isBad())
             Gui::Application::initApplication();
-#if PY_MAJOR_VERSION >= 3
         static struct PyModuleDef FreeCADGuiModuleDef = {
             PyModuleDef_HEAD_INIT,
             "FreeCADGui", "FreeCAD GUI module\n", -1,
@@ -353,9 +385,6 @@ PyMOD_INIT_FUNC(FreeCADGui)
         };
         PyObject* module = PyModule_Create(&FreeCADGuiModuleDef);
         return module;
-#else
-        Py_InitModule3("FreeCADGui", FreeCADGui_methods, "FreeCAD GUI module\n");
-#endif
     }
     catch (const Base::Exception& e) {
         PyErr_Format(PyExc_ImportError, "%s\n", e.what());
@@ -363,8 +392,6 @@ PyMOD_INIT_FUNC(FreeCADGui)
     catch (...) {
         PyErr_SetString(PyExc_ImportError, "Unknown runtime error occurred");
     }
-#if PY_MAJOR_VERSION >= 3
     return 0;
-#endif
 }
 

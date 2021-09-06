@@ -71,7 +71,7 @@ namespace Gui
             void on_SliderSpin_sliderReleased();
             void on_ButtonDefaultSpNavMotions_clicked();
             void on_ButtonCalibrate_clicked();
-            
+
         protected:
             void changeEvent(QEvent *e);
 

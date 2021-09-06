@@ -59,6 +59,11 @@ public:
      */
     void SetApproximations(double radius, const Base::Vector3d &base, const Base::Vector3d &axis);
     /**
+     * Set approximations before calling Fit(). This version computes the radius
+	 * using the given axis and the existing surface points.
+     */
+	void SetApproximations(const Base::Vector3d &base, const Base::Vector3d &axis);
+    /**
 	 * Set iteration convergence criteria for the fit if special values are needed.
 	 * The default values set in the constructor are suitable for most uses
      */
@@ -107,6 +112,18 @@ protected:
 	 * Checks initial parameter values and defines the best solution direction to use
      */
 	void findBestSolDirection(SolutionD &solDir);
+    /**
+	 * Compute the mean X-value of all of the points (observed/input surface points)
+     */
+	double meanXObs();
+    /**
+	 * Compute the mean Y-value of all of the points (observed/input surface points)
+     */
+	double meanYObs();
+    /**
+	 * Compute the mean Z-value of all of the points (observed/input surface points)
+     */
+	double meanZObs();
    /**
 	 * Set up the normal equations
      */

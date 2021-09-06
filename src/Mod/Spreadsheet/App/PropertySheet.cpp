@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,7 +28,7 @@
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/assign.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/regex.hpp>
 #include <Base/Console.h>
 #include <App/Document.h>
@@ -49,6 +49,7 @@ FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
+namespace bp = boost::placeholders;
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyExpressionContainer)
 
@@ -587,7 +588,17 @@ void PropertySheet::setSpans(CellAddress address, int rows, int columns)
     nonNullCellAt(address)->setSpans(rows, columns);
 }
 
-void PropertySheet::clear(CellAddress address)
+void PropertySheet::clearAlias(CellAddress address)
+{
+    // Remove alias if it exists
+    std::map<CellAddress, std::string>::iterator j = aliasProp.find(address);
+    if (j != aliasProp.end()) {
+        revAliasProp.erase(j->second);
+        aliasProp.erase(j);
+    }
+}
+
+void PropertySheet::clear(CellAddress address, bool toClearAlias)
 {
     std::map<CellAddress, Cell*>::iterator i = data.find(address);
 
@@ -606,16 +617,22 @@ void PropertySheet::clear(CellAddress address)
     // Mark as dirty
     dirty.insert(i->first);
 
-    // Remove alias if it exists
-    std::map<CellAddress, std::string>::iterator j = aliasProp.find(address);
-    if (j != aliasProp.end()) {
-        revAliasProp.erase(j->second);
-        aliasProp.erase(j);
-    }
+    if (toClearAlias)
+        clearAlias(address);
 
     // Erase from internal struct
     data.erase(i);
     signaller.tryInvoke();
+}
+
+void PropertySheet::moveAlias(CellAddress currPos, CellAddress newPos)
+{
+    std::map<CellAddress, std::string>::iterator j = aliasProp.find(currPos);
+    if (j != aliasProp.end()) {
+        aliasProp[newPos] = j->second;
+        revAliasProp[j->second] = newPos;
+        aliasProp.erase(currPos);
+    }
 }
 
 void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> & renames)
@@ -625,8 +642,10 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
 
     AtomicPropertyChange signaller(*this);
 
-    if (j != data.end())
-        clear(newPos);
+    if (j != data.end()) {
+        // do not clear alias because we have moved them already
+        clear(newPos, false);
+    }
 
     if (i != data.end()) {
         Cell * cell = i->second;
@@ -637,12 +656,6 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
 
         // Remove merged cell data
         splitCell(currPos);
-
-        std::string alias;
-        if(cell->getAlias(alias)) {
-            owner->aliasRemoved(currPos, alias);
-            cell->setAlias("");
-        }
 
         // Remove from old
         removeDependencies(currPos);
@@ -663,9 +676,6 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
 
         addDependencies(newPos);
 
-        if(alias.size())
-            cell->setAlias(alias);
-        
         setDirty(newPos);
 
         renames[ObjectIdentifier(owner, currPos.toString())] = ObjectIdentifier(owner, newPos.toString());
@@ -682,12 +692,19 @@ void PropertySheet::insertRows(int row, int count)
     boost::copy( data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, _1, _2));
+    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, bp::_1, bp::_2));
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this, 
             CellAddress(row, CellAddress::MAX_COLUMNS), count, 0);
 
     AtomicPropertyChange signaller(*this);
+
+    // move all the aliases first so dependencies can be calculated correctly
+    for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
+        if (i->row() >= row)
+            moveAlias(*i, CellAddress(i->row() + count, i->col()));
+    }
+
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -724,6 +741,18 @@ bool PropertySheet::rowSortFunc(const CellAddress & a, const CellAddress & b) {
         return false;
 }
 
+std::vector<CellAddress> PropertySheet::getRows(int row, int count) const
+{
+    std::vector<CellAddress> keys;
+
+    for (const auto &i : data) {
+        auto key = i.first;
+        if (key.row() >= row && key.row() < row + count)
+            keys.push_back(key);
+    }
+    return keys;
+}
+
 void PropertySheet::removeRows(int row, int count)
 {
     std::vector<CellAddress> keys;
@@ -733,12 +762,21 @@ void PropertySheet::removeRows(int row, int count)
     boost::copy(data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, _1, _2));
+    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, bp::_1, bp::_2));
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this, 
             CellAddress(row + count - 1, CellAddress::MAX_COLUMNS), -count, 0);
 
     AtomicPropertyChange signaller(*this);
+
+    // move all the aliases first so dependencies can be calculated correctly
+    for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
+        if (i->row() >= row && i->row() < row + count)
+            clearAlias(*i);
+        else if (i->row() >= row + count)
+            moveAlias(*i, CellAddress(i->row() - count, i->col()));
+    }
+
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -755,7 +793,7 @@ void PropertySheet::removeRows(int row, int count)
         }
 
         if (i->row() >= row && i->row() < row + count)
-            clear(*i);
+            clear(*i, false);  // aliases were cleared earlier
         else if (i->row() >= row + count)
             moveCell(*i, CellAddress(i->row() - count, i->col()), renames);
     }
@@ -780,6 +818,13 @@ void PropertySheet::insertColumns(int col, int count)
             CellAddress(CellAddress::MAX_ROWS, col), 0, count);
 
     AtomicPropertyChange signaller(*this);
+
+    // move all the aliases first so dependencies can be calculated correctly
+    for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
+        if (i->col() >= col)
+            moveAlias(*i, CellAddress(i->row(), i->col() + count));
+    }
+
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -816,6 +861,18 @@ bool PropertySheet::colSortFunc(const CellAddress & a, const CellAddress & b) {
         return false;
 }
 
+std::vector<CellAddress> PropertySheet::getColumns(int column, int count) const
+{
+    std::vector<CellAddress> keys;
+
+    for (const auto &i : data) {
+        auto key = i.first;
+        if (key.col() >= column && key.col() < column + count)
+            keys.push_back(key);
+    }
+    return keys;
+}
+
 void PropertySheet::removeColumns(int col, int count)
 {
     std::vector<CellAddress> keys;
@@ -825,12 +882,21 @@ void PropertySheet::removeColumns(int col, int count)
     boost::copy(data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::colSortFunc, this, _1, _2));
+    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::colSortFunc, this, bp::_1, bp::_2));
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this, 
             CellAddress(CellAddress::MAX_ROWS, col + count - 1), 0, -count);
 
     AtomicPropertyChange signaller(*this);
+
+    // move all the aliases first so dependencies can be calculated correctly
+    for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
+        if (i->col() >= col && i->col() < col + count)
+            clearAlias(*i);
+        else if (i->col() >= col + count)
+            moveAlias(*i, CellAddress(i->row(), i->col() - count));
+    }
+
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -847,7 +913,7 @@ void PropertySheet::removeColumns(int col, int count)
         }
 
         if (i->col() >= col && i->col() < col + count)
-            clear(*i);
+            clear(*i, false);  // aliases were cleared earlier
         else if (i->col() >= col + count)
             moveCell(*i, CellAddress(i->row(), i->col() - count), renames);
     }
@@ -1129,7 +1195,7 @@ void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App:
 
 void PropertySheet::onAddDep(App::DocumentObject *obj) {
     depConnections[obj] = obj->signalChanged.connect(boost::bind(
-                &PropertySheet::slotChangedObject, this, _1, _2));
+                &PropertySheet::slotChangedObject, this, bp::_1, bp::_2));
 }
 
 void PropertySheet::onRemoveDep(App::DocumentObject *obj) {

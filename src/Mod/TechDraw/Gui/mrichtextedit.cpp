@@ -54,13 +54,22 @@
 
 #include <App/Application.h>
 
+#include "PreferencesGui.h"
 #include "mrichtextedit.h"
+
+using namespace TechDrawGui;
+using namespace TechDraw;
 
 MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
     setupUi(this);
     m_lastBlockList = 0;
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     f_textedit->setTabStopWidth(40);
-    setDefFontSize(getDefFontSizeNum());
+#else
+    f_textedit->setTabStopDistance(40);
+#endif
+//    setDefFontSize(getDefFontSizeNum());
+    setDefFontSize(TechDrawGui::PreferencesGui::labelFontSizePX());
     m_defFont = getDefFont().family();
     f_textedit->setFont(getDefFont());
 
@@ -93,7 +102,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
                         << tr("Heading 3")
                         << tr("Heading 4")
                         << tr("Monospace")
-                        << tr(" ");
+                        << QString::fromUtf8(" ");
     f_paragraph->addItems(m_paragraphItems);
 
     connect(f_paragraph, SIGNAL(activated(int)),
@@ -308,6 +317,15 @@ void MRichTextEdit::focusInEvent(QFocusEvent *) {
     f_textedit->setFocus(Qt::TabFocusReason);
 }
 
+void MRichTextEdit::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Return && event->modifiers() == Qt::ControlModifier) {
+        onSave();
+        return;
+    }
+
+    QWidget::keyPressEvent(event);
+}
+
 
 void MRichTextEdit::textUnderline() {
     QTextCharFormat fmt;
@@ -346,7 +364,8 @@ void MRichTextEdit::textLink(bool checked) {
         QString newUrl = QInputDialog::getText(this, tr("Create a link"),
                                         tr("Link URL:"), QLineEdit::Normal,
                                         url,
-                                        &ok);
+                                        &ok,
+                                        Qt::MSWindowsFixedSizeDialogHint);
         if (ok) {
             fmt.setAnchor(true);
             fmt.setAnchorHref(newUrl);
@@ -750,9 +769,7 @@ void MRichTextEdit::setDefFontSize(int fs)
 int MRichTextEdit::getDefFontSizeNum(void)
 {
 //    Base::Console().Message("MRTE::getDefFontSizeNum()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 5.0);   // this is mm, not pts!
+    double fontSize = TechDraw::Preferences::dimFontSizeMM();
 
     //this conversion is only approximate. the factor changes for different fonts.
 //    double mmToPts = 2.83;  //theoretical value
@@ -777,10 +794,7 @@ void MRichTextEdit::setDefFont(QString f)
 
 QFont MRichTextEdit::getDefFont(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    QString family = Base::Tools::fromStdString(fontName);
+    QString family = Base::Tools::fromStdString(Preferences::labelFont());
     m_defFont = family;
     QFont result;
     result.setFamily(family);

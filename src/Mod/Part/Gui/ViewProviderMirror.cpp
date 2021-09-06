@@ -63,7 +63,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 
 ViewProviderMirror::ViewProviderMirror()
 {
-    sPixmap = "Part_Mirror.svg";
+    sPixmap = "Part_Mirror";
     pcEditNode = new SoSeparator();
     pcEditNode->ref();
 }
@@ -196,7 +196,7 @@ bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 void ViewProviderMirror::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand("Edit Mirror");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
 }
 
 void ViewProviderMirror::dragFinishCallback(void *, SoDragger *)
@@ -252,21 +252,23 @@ void ViewProviderFillet::updateData(const App::Property* prop)
             TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
             TopExp::MapShapes(fillShape, TopAbs_FACE, fillMap);
 
-            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
-            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            std::vector<App::Color> colFill;
-            colFill.resize(fillMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
-            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
+            auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
+            if (vpBase) {
+                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
+                std::vector<App::Color> colFill;
+                colFill.resize(fillMap.Extent(), vpBase->ShapeColor.getValue());
+                applyTransparency(vpBase->Transparency.getValue(),colBase);
 
-            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                applyColor(hist[0], colBase, colFill);
-            }
-            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
-                colBase.resize(baseMap.Extent(), colBase[0]);
-                applyColor(hist[0], colBase, colFill);
-            }
+                if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
+                    applyColor(hist[0], colBase, colFill);
+                }
+                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                    colBase.resize(baseMap.Extent(), colBase[0]);
+                    applyColor(hist[0], colBase, colFill);
+                }
 
-            this->DiffuseColor.setValues(colFill);
+                this->DiffuseColor.setValues(colFill);
+            }
         }
     }
 }

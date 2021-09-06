@@ -137,7 +137,7 @@ protected:
 
 public:
     CDxfRead(const char* filepath); // this opens the file
-    ~CDxfRead(); // this closes the file
+    virtual ~CDxfRead(); // this closes the file
 
     bool Failed(){return m_fail;}
     void DoRead(const bool ignore_errors = false); // this reads the file and calls the following functions

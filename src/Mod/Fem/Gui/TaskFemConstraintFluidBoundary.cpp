@@ -202,7 +202,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
     else {
-        Base::Console().Warning("FemAnalysis object is not activated or no FemAnalysis in the active document, mesh dimension is unknown\n");
+        Base::Console().Log("FemAnalysis object is not activated or no FemAnalysis in the active document, mesh dimension is unknown\n");
         dimension = -1;  // unknown dimension of mesh
     }
     if (pcMesh != NULL) {
@@ -872,7 +872,7 @@ TaskDlgFemConstraintFluidBoundary::TaskDlgFemConstraintFluidBoundary(ViewProvide
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintFluidBoundary(ConstraintView);;
+    this->parameter = new TaskFemConstraintFluidBoundary(ConstraintView);
 
     Content.push_back(parameter);
 }
@@ -895,7 +895,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
 
     // no need to backup pcConstraint object content, if rejected, content can be recovered by  transaction manager
     try {
-        //Gui::Command::openCommand("Fluid boundary condition changed");
+        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fluid boundary condition changed"));
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.BoundaryType = '%s'",
             name.c_str(), boundary->getBoundaryType().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Subtype = '%s'",

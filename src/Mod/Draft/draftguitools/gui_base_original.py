@@ -22,15 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Base object for most old Draft Gui Commands.
+"""Provides the base classes for most old Draft Gui Commands.
 
 This class is used by Gui Commands to set up some properties
 of the DraftToolBar, the Snapper, and the working plane.
 """
 ## @package gui_base_original
-# \ingroup DRAFT
-# \brief Provides the Base object for most old Draft Gui Commands.
+# \ingroup draftguitools
+# \brief Provides the base classes for most old Draft Gui Commands.
 
+## \addtogroup draftguitools
+# @{
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
@@ -39,7 +41,10 @@ import draftutils.gui_utils as gui_utils
 import draftutils.todo as todo
 import draftguitools.gui_trackers as trackers
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg, _log
+
+__metaclass__ = type  # to support Python 2 use of `super()`
 
 
 class DraftTool:
@@ -132,7 +137,6 @@ class DraftTool:
         self.ui = Gui.draftToolBar
         self.featureName = name
         self.ui.sourceCmd = self
-        self.ui.setTitle(name)
         self.ui.show()
         if not noplanesetup:
             App.DraftWorkingPlane.setup()
@@ -141,14 +145,12 @@ class DraftTool:
         self.constrain = None
         self.obj = None
         self.extendedCopy = False
-        self.ui.setTitle(name)
         self.planetrack = None
         if utils.get_param("showPlaneTracker", False):
             self.planetrack = trackers.PlaneTracker()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.setTrackers()
 
-        _log("GuiCommand: {}".format(self.featureName))
         _msg("{}".format(16*"-"))
         _msg("GuiCommand: {}".format(self.featureName))
 
@@ -198,7 +200,7 @@ class DraftTool:
         Parameters
         ----------
         name: str
-            An arbitraty string that indicates the name of the operation
+            An arbitrary string that indicates the name of the operation
             to run.
 
         func: list of str
@@ -266,7 +268,7 @@ class Creator(DraftTool):
     """
 
     def __init__(self):
-        super().__init__()
+        super(Creator, self).__init__()
 
     def Activated(self, name="None", noplanesetup=False):
         """Execute when the command is called.
@@ -282,7 +284,7 @@ class Creator(DraftTool):
             If it is `False` it will set up the working plane
             by running `App.DraftWorkingPlane.setup()`.
         """
-        super().Activated(name, noplanesetup)
+        super(Creator, self).Activated(name, noplanesetup)
         if not noplanesetup:
             self.support = gui_tool_utils.get_support()
 
@@ -298,5 +300,12 @@ class Modifier(DraftTool):
     """
 
     def __init__(self):
-        super().__init__()
+        super(Modifier, self).__init__()
         self.copymode = False
+
+    def Activated(self, name="None", noplanesetup=False, is_subtool=False):
+        super(Modifier, self).Activated(name, noplanesetup, is_subtool)
+        # call DraftWorkingPlane.save to sync with
+        # DraftWorkingPlane.restore called in finish method
+        App.DraftWorkingPlane.save()
+## @}

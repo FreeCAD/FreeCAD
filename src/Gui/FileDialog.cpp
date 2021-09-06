@@ -28,6 +28,7 @@
 # include <QCompleter>
 # include <QComboBox>
 # include <QDesktopServices>
+# include <QDialogButtonBox>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
@@ -45,10 +46,11 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "BitmapFactory.h"
+#include "Tools.h"
 
 using namespace Gui;
 
-namespace Gui {
+namespace {
 bool dontUseNativeDialog()
 {
 #if defined(USE_QT_FILEDIALOG)
@@ -129,10 +131,11 @@ void FileDialog::accept()
 /**
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
  */
-QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir, 
+QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir,
                                      const QString & filter, QString * selectedFilter, Options options)
 {
     QString dirName = dir;
+    bool hasFilename = false;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
     } else {
@@ -142,14 +145,25 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             dirName += QLatin1String("/");
             dirName += fi.fileName();
         }
-    
-        // get the suffix for the filter
+        if (!fi.fileName().isEmpty()) {
+            hasFilename = true;
+        }
+
+        // get the suffix for the filter: use the selected filter if there is one,
+        // otherwise find the first valid suffix in the complete list of filters
+        const QString *filterToSearch;
+        if (selectedFilter != nullptr) {
+            filterToSearch = selectedFilter;
+        }
+        else {
+            filterToSearch = &filter;
+        }
         QRegExp rx;
         rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
-        int index = rx.indexIn(filter);
+        int index = rx.indexIn(*filterToSearch);
         if (index != -1) {
             // get the suffix with the leading dot
-            QString suffix = filter.mid(index+3, rx.matchedLength()-4);
+            QString suffix = filterToSearch->mid(index+3, rx.matchedLength()-4);
             if (fi.suffix().isEmpty())
                 dirName += suffix;
         }
@@ -159,18 +173,13 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Save as");
 
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
-    options |= QFileDialog::DontUseNativeDialog;
-#endif
-
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
-    // existing file. Hence we must extract the first matching suffix from the filter list and append it 
+    // existing file. Hence we must extract the first matching suffix from the filter list and append it
     // before showing the file dialog.
     QString file;
     if (dontUseNativeDialog()) {
         QList<QUrl> urls;
 
-#if QT_VERSION >= 0x050000
         options |= QFileDialog::DontUseNativeDialog;
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
@@ -178,14 +187,6 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-#else
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-#endif
         urls << QUrl::fromLocalFile(getWorkingDirectory());
         urls << QUrl::fromLocalFile(restoreLocation());
         urls << QUrl::fromLocalFile(QDir::currentPath());
@@ -193,17 +194,20 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         FileDialog dlg(parent);
         dlg.setWindowTitle(windowTitle);
         dlg.setSidebarUrls(urls);
-        dlg.setIconProvider(new FileIconProvider());
+        auto iconprov = std::make_unique<FileIconProvider>();
+        dlg.setIconProvider(iconprov.get());
         dlg.setFileMode(QFileDialog::AnyFile);
         dlg.setAcceptMode(QFileDialog::AcceptSave);
         dlg.setDirectory(dirName);
+        if (hasFilename)
+            dlg.selectFile(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         dlg.onSelectedFilter(dlg.selectedNameFilter());
-        dlg.setNameFilterDetailsVisible(true);
-        dlg.setConfirmOverwrite(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
+        dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
@@ -212,16 +216,14 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     }
     else {
         file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
-#if QT_VERSION >= 0x040600
         file = QDir::fromNativeSeparators(file);
-#endif
     }
 
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString::null;
+        return QString();
     }
 }
 
@@ -230,9 +232,6 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
  */
 QString FileDialog::getExistingDirectory( QWidget * parent, const QString & caption, const QString & dir, Options options )
 {
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
-    options |= QFileDialog::DontUseNativeDialog;
-#endif
     QString path = QFileDialog::getExistingDirectory(parent, caption, dir, options);
     // valid path was selected
     if ( !path.isEmpty() ) {
@@ -243,11 +242,11 @@ QString FileDialog::getExistingDirectory( QWidget * parent, const QString & capt
     return path;
 }
 
-/** 
- * This is a convenience static function that returns an existing file selected by the user. 
+/**
+ * This is a convenience static function that returns an existing file selected by the user.
  * If the user pressed Cancel, it returns a null string.
  */
-QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir, 
+QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir,
                                     const QString & filter, QString * selectedFilter, Options options)
 {
     QString dirName = dir;
@@ -259,15 +258,10 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
 
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
-    options |= QFileDialog::DontUseNativeDialog;
-#endif
-
     QString file;
     if (dontUseNativeDialog()) {
         QList<QUrl> urls;
 
-#if QT_VERSION >= 0x050000
         options |= QFileDialog::DontUseNativeDialog;
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
@@ -275,14 +269,6 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-#else
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-#endif
         urls << QUrl::fromLocalFile(getWorkingDirectory());
         urls << QUrl::fromLocalFile(restoreLocation());
         urls << QUrl::fromLocalFile(QDir::currentPath());
@@ -296,7 +282,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setNameFilterDetailsVisible(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
@@ -307,16 +293,14 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     }
     else {
         file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
-#if QT_VERSION >= 0x040600
         file = QDir::fromNativeSeparators(file);
-#endif
     }
 
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString::null;
+        return QString();
     }
 }
 
@@ -335,15 +319,10 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
 
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
-    options |= QFileDialog::DontUseNativeDialog;
-#endif
-
     QStringList files;
     if (dontUseNativeDialog()) {
         QList<QUrl> urls;
 
-#if QT_VERSION >= 0x050000
         options |= QFileDialog::DontUseNativeDialog;
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
@@ -351,14 +330,6 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
         urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-#else
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-#endif
         urls << QUrl::fromLocalFile(getWorkingDirectory());
         urls << QUrl::fromLocalFile(restoreLocation());
         urls << QUrl::fromLocalFile(QDir::currentPath());
@@ -372,7 +343,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setNameFilterDetailsVisible(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
@@ -383,11 +354,9 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     }
     else {
         files = QFileDialog::getOpenFileNames(parent, windowTitle, dirName, filter, selectedFilter, options);
-#if QT_VERSION >= 0x040600
         for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
             *it = QDir::fromNativeSeparators(*it);
         }
-#endif
     }
 
     if (!files.isEmpty()) {
@@ -462,21 +431,20 @@ void FileDialog::saveLocation(const QString& dirName)
 
 FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
   : QFileDialog( parent, fl )
+  , extensionPos(ExtensionRight)
 {
     extensionButton = new QPushButton( this );
     extensionButton->setText( tr( "Extended" ) );
 
-#if QT_VERSION >= 0x050000
     setOption(QFileDialog::DontUseNativeDialog);
-#endif
+
+    // This is an alternative to add the button to the grid layout
+    //QDialogButtonBox* box = this->findChild<QDialogButtonBox*>();
+    //box->addButton(extensionButton, QDialogButtonBox::ActionRole);
 
     //search for the grid layout and add the new button
     QGridLayout* grid = this->findChild<QGridLayout*>();
-#if QT_VERSION >= 0x040500
     grid->addWidget(extensionButton, 4, 2, Qt::AlignLeft);
-#else
-    grid->addWidget(extensionButton, 4, 5, Qt::AlignLeft);
-#endif
 
     connect(extensionButton, SIGNAL(clicked()), this, SLOT(toggleExtension()));
 }
@@ -545,22 +513,55 @@ void FileOptionsDialog::accept()
 
 void FileOptionsDialog::toggleExtension()
 {
-    QWidget* w = extension();
-    if (w)
-        showExtension(!w->isVisible());
+    if (extensionWidget) {
+        bool showIt = !extensionWidget->isVisible();
+        if (showIt) {
+            oldSize = size();
+            QSize s(extensionWidget->sizeHint()
+                   .expandedTo(extensionWidget->minimumSize())
+                   .boundedTo(extensionWidget->maximumSize()));
+            if (extensionPos == ExtensionRight) {
+                setFixedSize(width() + s.width(), height());
+            }
+            else {
+                setFixedSize(width(), height() + s.height());
+            }
+
+            extensionWidget->show();
+        }
+        else {
+            extensionWidget->hide();
+            setFixedSize(oldSize);
+        }
+    }
 }
 
 void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition pos, QWidget* w, bool show)
 {
-    if (pos == ExtensionRight) {
-        setExtension(w);
-        setOrientation(Qt::Horizontal);
+    extensionPos = pos;
+    extensionWidget = w;
+    if (extensionWidget->parentWidget() != this)
+        extensionWidget->setParent(this);
+
+    QGridLayout* grid = this->findChild<QGridLayout*>();
+
+    if (extensionPos == ExtensionRight) {
+        int cols = grid->columnCount();
+        grid->addWidget(extensionWidget, 0, cols, -1, -1);
+        setMinimumHeight(extensionWidget->height());
     }
-    else if (pos == ExtensionBottom) {
-        setExtension(w);
-        setOrientation(Qt::Vertical);
+    else if (extensionPos == ExtensionBottom) {
+        int rows = grid->rowCount();
+        grid->addWidget(extensionWidget, rows, 0, -1, -1);
+        setMinimumWidth(extensionWidget->width());
     }
 
+    // Instead of resizing the dialog we can fix the layout size.
+    // This however, doesn't work nicely when the extension widget
+    // is higher/wider than the dialog.
+    //grid->setSizeConstraint(QLayout::SetFixedSize);
+
+    oldSize = size();
     w->hide();
     if (show)
         toggleExtension();
@@ -568,7 +569,7 @@ void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition po
 
 QWidget* FileOptionsDialog::getOptionsWidget() const
 {
-    return this->extension();
+    return extensionWidget;
 }
 
 // ======================================================================
@@ -622,7 +623,7 @@ FileChooser::FileChooser ( QWidget * parent )
   : QWidget(parent)
   , md( File )
   , accMode( AcceptOpen )
-  , _filter( QString::null )
+  , _filter( QString() )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
@@ -687,7 +688,7 @@ void FileChooser::editingFinished()
     fileNameSelected(le_converted);
 }
 
-/** 
+/**
  * Sets the file name \a s.
  */
 void FileChooser::setFileName( const QString& s )
@@ -755,7 +756,7 @@ void FileChooser::setMode( FileChooser::Mode m )
 /**
  * \property FileChooser::filter
  *
- * This property holds the set filter to choose a file. This property is used only if 
+ * This property holds the set filter to choose a file. This property is used only if
  * FileChooser::Mode is set to File.
  *
  * \sa chooseFile(), filter(), setFilter().
@@ -766,7 +767,7 @@ QString FileChooser::filter() const
 }
 
 /**
- * Sets the filter for choosing a file.  
+ * Sets the filter for choosing a file.
  */
 void FileChooser::setFilter ( const QString& filter )
 {
@@ -779,8 +780,8 @@ void FileChooser::setFilter ( const QString& filter )
 void FileChooser::setButtonText( const QString& txt )
 {
     button->setText( txt );
-    int w1 = 2*button->fontMetrics().width(txt);
-    int w2 = 2*button->fontMetrics().width(QLatin1String(" ... "));
+    int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
     button->setFixedWidth( (w1 > w2 ? w1 : w2) );
 }
 
@@ -926,7 +927,7 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
         QFileInfo fi(*it);
         QString ext = fi.completeSuffix().toLower();
         std::map<std::string, std::string> filters = App::GetApplication().getExportFilters(ext.toLatin1());
-        
+
         if (filters.empty()) {
             ext = fi.suffix().toLower();
             filters = App::GetApplication().getExportFilters(ext.toLatin1());
@@ -940,7 +941,7 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
             dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
         it != filetypeHandler.end(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());
@@ -988,7 +989,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
         QFileInfo fi(*it);
         QString ext = fi.completeSuffix().toLower();
         std::map<std::string, std::string> filters = App::GetApplication().getImportFilters(ext.toLatin1());
-        
+
         if (filters.empty()) {
             ext = fi.suffix().toLower();
             filters = App::GetApplication().getImportFilters(ext.toLatin1());
@@ -1002,7 +1003,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
             dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
         it != filetypeHandler.end(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());

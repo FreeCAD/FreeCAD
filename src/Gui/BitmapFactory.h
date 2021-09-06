@@ -77,13 +77,19 @@ public:
     QPixmap pixmap(const char* name) const;
     /** Retrieves a pixmap by name and size created by an
      * scalable vector graphics (SVG).
+     *
+     * @param colorMapping - a dictionary of substitute colors.
+     * Can be used to customize icon color scheme, e.g. crosshair color
      */
-    QPixmap pixmapFromSvg(const char* name, const QSize& size) const;
+    QPixmap pixmapFromSvg(const char* name, const QSizeF& size,
+                          const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>()) const;
     /** This method is provided for convenience and does the same
      * as the method above except that it creates the pixmap from
      * a byte array.
+     * @param colorMapping - see above.
      */
-    QPixmap pixmapFromSvg(const QByteArray& contents, const QSize& size) const;
+    QPixmap pixmapFromSvg(const QByteArray& contents, const QSizeF& size,
+                          const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>()) const;
     /** Returns the names of all registered pixmaps.
     * To get the appropriate pixmaps call pixmap() for each name.
     */

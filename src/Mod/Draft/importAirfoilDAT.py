@@ -157,9 +157,9 @@ def process(doc, filename):
         with the parsed information.
     """
     # Regex to identify data rows and throw away unused metadata
-    xval = '(?P<xval>(\-|\d*)\.\d+(E\-?\d+)?)'
-    yval = '(?P<yval>\-?\s*\d*\.\d+(E\-?\d+)?)'
-    _regex = '^\s*' + xval + '\,?\s*' + yval + '\s*$'
+    xval = r'(?P<xval>(\-|\d*)\.*\d*([Ee]\-?\d+)?)'
+    yval = r'(?P<yval>\-?\s*\d*\.*\d*([Ee]\-?\d+)?)'
+    _regex = r'^\s*' + xval + r'\,?\s*' + yval + r'\s*$'
 
     regex = re.compile(_regex)
     afile = pythonopen(filename, 'r')
@@ -183,7 +183,7 @@ def process(doc, filename):
     afile.close()
 
     if len(coords) < 3:
-        print('Did not find enough coordinates\n')
+        FCC.PrintError(translate("ImportAirfoilDAT", "Did not find enough coordinates") + "\n")
         return
 
     # sometimes coords are divided in upper an lower side

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
 <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -234,6 +234,89 @@
     </message>
 </context>
 <context>
+    <name>Command</name>
+    <message>
+        <source>Merge cells</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Split cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertically center cells</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set bold text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set italic text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set underline text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set cell properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert rows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove rows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear cell(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PropertiesDialog</name>
     <message>
         <source>Cell properties</source>
@@ -331,10 +414,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cell contents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -352,6 +431,28 @@
     </message>
     <message>
         <source>Sets the Spreadsheet cell(s) background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp; Paste failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias contains invalid characters!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -437,7 +538,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Contents</source>
+        <source>&amp;Content:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Alias:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -451,24 +561,56 @@
 <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-        <source>Insert rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Insert columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Properties...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) above</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) below</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous rows</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove row(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) left</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) right</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous columns</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove column(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Объединить ячейки</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Разделить ячейку</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation type="unfinished">Left-align cell</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation type="unfinished">Center cell</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation type="unfinished">Right-align cell</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation type="unfinished">Top-align cell</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation type="unfinished">Bottom-align cell</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation type="unfinished">Vertically center cells</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation type="unfinished">Set bold text</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation type="unfinished">Set italic text</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation type="unfinished">Set underline text</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation type="unfinished">Create Spreadsheet</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation type="unfinished">Set cell properties</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation type="unfinished">Edit cell</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Вставить строки</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Удалить строки</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Вставить столбцы</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation type="unfinished">Clear cell(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation type="unfinished">Set foreground color</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation type="unfinished">Set background color</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -357,12 +440,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Таблица не поддерживает выбор диапазона при вставке.
+Пожалуйста, выберите только одну ячейку.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Скопировать и вставить не удалось</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Псевдоним содержит недопустимые символы!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Обратитесь к ячейке по псевдониму, например
+Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -381,15 +474,15 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Dark red</source>
-      <translation>Тёмно-красный</translation>
+      <translation>Бордовый</translation>
     </message>
     <message>
       <source>Green</source>
-      <translation>Зеленый</translation>
+      <translation>Лайм</translation>
     </message>
     <message>
       <source>Dark green</source>
-      <translation>Тёмно-зелёный</translation>
+      <translation>Зелёный</translation>
     </message>
     <message>
       <source>Blue</source>
@@ -405,15 +498,15 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Dark cyan</source>
-      <translation>Тёмно-голубой</translation>
+      <translation>Морской волны</translation>
     </message>
     <message>
       <source>Magenta</source>
-      <translation>Малиновый</translation>
+      <translation>Розовый</translation>
     </message>
     <message>
       <source>Dark magenta</source>
-      <translation>Тёмно-малиновый</translation>
+      <translation>Фиолетовый</translation>
     </message>
     <message>
       <source>Yellow</source>
@@ -421,7 +514,7 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Dark yellow</source>
-      <translation>Тёмно-жёлтый</translation>
+      <translation>Оливковый</translation>
     </message>
     <message>
       <source>Gray</source>
@@ -447,8 +540,18 @@ Please select one cell only.</translation>
       <translation>Форма</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Содержание</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Содержание:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Псевдоним:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Обратитесь к ячейке по псевдониму, например
+Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -461,24 +564,80 @@ Please select one cell only.</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Вставить строки</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Удалить строки</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Вставить столбцы</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Удалить столбцы</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Свойства...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Вставить %n строку выше</numerusform>
+        <numerusform>Вставить %n строки выше</numerusform>
+        <numerusform>Вставить %n строк выше</numerusform>
+        <numerusform>Вставить %n строк выше</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Вставить %n строку ниже</numerusform>
+        <numerusform>Вставить %n строки ниже</numerusform>
+        <numerusform>Вставить %n строк ниже</numerusform>
+        <numerusform>Вставить %n строк ниже</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Вставить %n строку с пропуском строк</numerusform>
+        <numerusform>Вставить %n строки с пропуском строк</numerusform>
+        <numerusform>Вставить %n строк с пропуском строк</numerusform>
+        <numerusform>Вставить %n строк с пропуском строк</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Удалить строку</numerusform>
+        <numerusform>Удалить строки</numerusform>
+        <numerusform>Удалить строки</numerusform>
+        <numerusform>Удалить строки</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Вставить %n столбец слева</numerusform>
+        <numerusform>Вставить %n столбца слева</numerusform>
+        <numerusform>Вставить %n столбцов слева</numerusform>
+        <numerusform>Вставить %n столбцов слева</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Вставить %n столбец справа</numerusform>
+        <numerusform>Вставить %n столбца справа</numerusform>
+        <numerusform>Вставить %n столбцов справа</numerusform>
+        <numerusform>Вставить %n столбцов справа</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Вставить %n столбец с пропуском столбцов</numerusform>
+        <numerusform>Вставить %n столбца с пропуском столбцов</numerusform>
+        <numerusform>Вставить %n столбцов с пропуском столбцов</numerusform>
+        <numerusform>Вставить %n столбцов с пропуском столбцов</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Удалить столбец</numerusform>
+        <numerusform>Удалить столбцы</numerusform>
+        <numerusform>Удалить столбцы</numerusform>
+        <numerusform>Удалить столбцы</numerusform>
+      </translation>
     </message>
   </context>
   <context>

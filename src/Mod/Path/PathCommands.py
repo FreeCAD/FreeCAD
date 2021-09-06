@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -42,7 +41,7 @@ else:
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 class _CommandSelectLoop:
@@ -53,7 +52,7 @@ class _CommandSelectLoop:
         self.active = False
 
     def GetResources(self):
-        return {'Pixmap': 'Path-SelectLoop',
+        return {'Pixmap': 'Path_SelectLoop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
                 'Accel': "P, L",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Complete loop selection from two edges"),
@@ -110,7 +109,7 @@ class _CommandSelectLoop:
                     QtCore.QT_TRANSLATE_NOOP('Path_SelectLoop', 'Closed loop detection failed.'))
 
     def formsPartOfALoop(self, obj, sub, names):
-        try: 
+        try:
             if names[0][0:4] != 'Edge':
                 if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
                     return True
@@ -131,7 +130,7 @@ if FreeCAD.GuiUp:
 class _ToggleOperation:
     "command definition to toggle Operation Active state"
     def GetResources(self):
-        return {'Pixmap': 'Path-OpActive',
+        return {'Pixmap': 'Path_OpActive',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
                 'Accel': "P, X",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
@@ -141,14 +140,21 @@ class _ToggleOperation:
         if bool(FreeCADGui.Selection.getSelection()) is False:
             return False
         try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(PathScripts.PathDressup.baseOp(obj).Proxy, PathScripts.PathOp.ObjectOp)
+            for sel in FreeCADGui.Selection.getSelectionEx():
+                selProxy = PathScripts.PathDressup.baseOp(sel.Object).Proxy
+                if not isinstance(selProxy, PathScripts.PathOp.ObjectOp) and \
+                    not isinstance(selProxy, PathScripts.PathArray.ObjectArray):
+                        return False
+            return True
         except(IndexError, AttributeError):
             return False
 
     def Activated(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        PathScripts.PathDressup.baseOp(obj).Active = not(PathScripts.PathDressup.baseOp(obj).Active)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            op = PathScripts.PathDressup.baseOp(sel.Object)
+            op.Active = not op.Active
+            op.ViewObject.Visibility = op.Active
+
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -159,7 +165,7 @@ if FreeCAD.GuiUp:
 class _CopyOperation:
     "the Path Copy Operation command definition"
     def GetResources(self):
-        return {'Pixmap': 'Path-OpCopy',
+        return {'Pixmap': 'Path_OpCopy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
                 'CmdType': "ForEdit"}
@@ -168,15 +174,17 @@ class _CopyOperation:
         if bool(FreeCADGui.Selection.getSelection()) is False:
             return False
         try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+            for sel in FreeCADGui.Selection.getSelectionEx():
+                if not isinstance(sel.Object.Proxy, PathScripts.PathOp.ObjectOp):
+                    return False
+            return True
         except(IndexError, AttributeError):
             return False
 
     def Activated(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        jobname = findParentJob(obj).Name
-        addToJob(FreeCAD.ActiveDocument.copyObject(obj, False), jobname)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            jobname = findParentJob(sel.Object).Name
+            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
 
 
 if FreeCAD.GuiUp:

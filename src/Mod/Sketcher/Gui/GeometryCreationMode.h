@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef SKETCHERGUI_GEOMETRYCREATIONMODE_H
+#define SKETCHERGUI_GEOMETRYCREATIONMODE_H
 
 /***** Creation Mode ************/
 namespace SketcherGui
@@ -29,3 +31,5 @@ namespace SketcherGui
         Construction
     };
 }
+
+#endif //SKETCHERGUI_GEOMETRYCREATIONMODE_H

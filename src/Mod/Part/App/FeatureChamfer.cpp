@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepFilletAPI_MakeChamfer.hxx>
+# include <Precision.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
@@ -73,6 +74,18 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
+
+        //shapefix re #4285
+        //https://www.forum.freecadweb.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
+        TopoShape* ts = new TopoShape(shape);
+        double minTol = 2.0 * Precision::Confusion();
+        double maxTol = 4.0 * Precision::Confusion();
+        bool rc = ts->fix(Precision::Confusion(), minTol, maxTol);
+        if (rc) {
+            shape = ts->getShape();
+        }
+        delete ts;
+
         ShapeHistory history = buildHistory(mkChamfer, TopAbs_FACE, shape, baseShape);
         this->Shape.setValue(shape);
 

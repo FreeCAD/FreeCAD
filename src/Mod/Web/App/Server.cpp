@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h" 
+#include "PreCompiled.h"
 
 #include <QCoreApplication>
 #include <QTcpSocket>
@@ -114,11 +114,7 @@ AppServer::AppServer(QObject* parent)
 {
 }
 
-#if QT_VERSION >=0x050000
 void AppServer::incomingConnection(qintptr socket)
-#else
-void AppServer::incomingConnection(int socket)
-#endif
 {
     QTcpSocket* s = new QTcpSocket(this);
     connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
@@ -151,6 +147,14 @@ void AppServer::customEvent(QEvent* e)
     QByteArray msg = ev->request();
     QTcpSocket* socket = ev->socket();
 
+    std::string str = runPython(msg);
+
+    socket->write(str.c_str());
+    socket->close();
+}
+
+std::string AppServer::runPython(const QByteArray& msg)
+{
     std::string str;
 
     try {
@@ -175,8 +179,7 @@ void AppServer::customEvent(QEvent* e)
         str = "Unknown exception thrown";
     }
 
-    socket->write(str.c_str());
-    socket->close();
+    return str;
 }
 
 #include "moc_Server.cpp"

@@ -80,7 +80,6 @@ PartExport extern PyObject* PartExceptionOCCDimensionError;
         str += " ";                                                 \
         if (msg) {str += msg;}                                      \
         else     {str += "No OCCT Exception Message";}              \
-        Base::Console().Error(str.c_str());                         \
         _Py_Error(R,Part::PartExceptionOCCError,str.c_str());       \
     }                                                               \
     _PY_CATCH(R)

@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Crear una hoja de cálculo nueva</translation>
+      <translation>Crear hoja de cálculo nueva</translation>
     </message>
   </context>
   <context>
@@ -24,11 +24,11 @@
     </message>
     <message>
       <source>Align bottom</source>
-      <translation>Alineación inferior</translation>
+      <translation>Alinear inferior</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Alineado inferior del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear inferior celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Alineado centrado</translation>
+      <translation>Alinear centro</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Alineado centrado del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear al centro celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -54,11 +54,11 @@
     </message>
     <message>
       <source>Align left</source>
-      <translation>Alineado izquierdo</translation>
+      <translation>Alinear izquierda</translation>
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Alineado izquierdo del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear izquierda celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -69,11 +69,11 @@
     </message>
     <message>
       <source>Align right</source>
-      <translation>Alineado derecho</translation>
+      <translation>Alinear derecha</translation>
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Alineado derecho del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear derecha celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Alineado superior del contenido de las celdas seleccionadas</translation>
+      <translation>Alineado superior en celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Alineado verticalmente centrado del contenido de las celdas seleccionadas</translation>
+      <translation>Contenido alineado verticalmente centrado en celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -163,7 +163,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Establecer alias para la celda selecionada</translation>
+      <translation>Establecer alias para celda seleccionada</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Dividir celdas previamente fusionadas</translation>
+      <translation>Dividir celdas combinadas previamente</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Establecer texto en las celdas seleccionadas en negrita</translation>
+      <translation>Establecer texto en negrita en celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Combinar celdas</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Dividir celda</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Izquierda</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Centro</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Derecha</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Superior</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Inferior</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Vertical</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Negrita</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Cursiva</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Subrayado</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Crear hoja de cálculo</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Propiedades</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Modificar</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Insertar fila</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Eliminar fila</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Insertar columnas</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Borrar</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Color de celda</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Color de fondo</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -253,7 +336,7 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alineacion</translation>
+      <translation>&amp;Alinear</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -357,12 +440,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>La hoja de cálculo no soporta la selección de rango al pegar.
+Por favor, seleccione una única celda.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Copiar &amp; Pegar ha fallado</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>¡El alias contiene caracteres no válidos!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Consulte la celda por alias, por ejemplo
+Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -447,8 +540,18 @@ Please select one cell only.</translation>
       <translation>Formulario</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Contenido</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Contenido:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Consulte la celda por alias, por ejemplo
+Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -461,24 +564,64 @@ Please select one cell only.</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Insertar fila</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Eliminar fila</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Insertar columnas</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Eliminar columnas</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propiedades...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Insertar %n fila(s) arriba</numerusform>
+        <numerusform>Insertar %n fila(s) arriba</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insertar %n fila(s) debajo</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insertar %n filas no contiguas</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Remover fila(s)</numerusform>
+        <numerusform>Remover fila(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Insertar %n columna a la izquierda</numerusform>
+        <numerusform>Insertar %n columnas a la izquierda</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Insertar %n columna a la derecha</numerusform>
+        <numerusform>Insertar %n columnas a la derecha</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insertar %n columnas no contiguas</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Remover columna(s)</numerusform>
+        <numerusform>Remover columna(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

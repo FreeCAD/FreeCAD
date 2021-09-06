@@ -95,14 +95,36 @@ void PropertyGeometryList::setValue(const Geometry* lValue)
 
 void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 {
+    auto copy = lValue;
+    for(auto &geo : copy) // copy of the individual geometry pointers
+        geo = geo->clone();
+
+    setValues(std::move(copy));
+}
+
+void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
+{
     aboutToSetValue();
-    std::vector<Geometry*> oldVals(_lValueList);
-    _lValueList.resize(lValue.size());
-    // copy all objects
-    for (unsigned int i = 0; i < lValue.size(); i++)
-        _lValueList[i] = lValue[i]->clone();
-    for (unsigned int i = 0; i < oldVals.size(); i++)
-        delete oldVals[i];
+    std::set<Geometry*> valueSet(_lValueList.begin(),_lValueList.end());
+    for(auto v : lValue)
+        valueSet.erase(v);
+    _lValueList = std::move(lValue);
+    for(auto v : valueSet)
+        delete v;
+    hasSetValue();
+}
+
+void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue)
+{
+    if(idx>=(int)_lValueList.size())
+        throw Base::IndexError("Index out of bound");
+    aboutToSetValue();
+    if(idx < 0) 
+        _lValueList.push_back(lValue.release());
+    else {
+        delete _lValueList[idx];
+        _lValueList[idx] = lValue.release();
+    }
     hasSetValue();
 }
 
@@ -204,7 +226,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     reader.readEndElement("GeometryList");
 
     // assignment
-    setValues(values);
+    setValues(std::move(values));
 }
 
 App::Property *PropertyGeometryList::Copy(void) const

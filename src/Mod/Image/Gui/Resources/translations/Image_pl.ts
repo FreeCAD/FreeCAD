@@ -2,16 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl" sourcelanguage="en">
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <source>Scale image plane</source>
+      <translation>Skaluj płaszczyznę obrazu</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Skaluje płaszczyznę obrazu poprzez określenie odległości między dwoma punktami</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>Skala płaszczyzny obrazu</translation>
+      <translation>Skaluj płaszczyznę obrazu</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>Odległość [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
@@ -40,19 +53,6 @@
     </message>
   </context>
   <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation>Skala płaszczyzny obrazu</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Skaluj płaszczyznę obrazu definiując odległość między dwoma punktami</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
       <location filename="../../Command.cpp" line="101"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Utwórz płaski obraz w przestrzeni 3D</translation>
+      <translation>Tworzy płaski obraz w przestrzeni 3D</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
-      <translation>Skaluj...</translation>
+      <translation>Skaluj ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
@@ -112,13 +112,13 @@
       <location filename="../../GLImageBox.cpp" line="332"/>
       <location filename="../../OpenGLImageBox.cpp" line="384"/>
       <source>Image pixel format</source>
-      <translation>Format piksela obrazu</translation>
+      <translation>Format pikseli w obrazie</translation>
     </message>
     <message>
       <location filename="../../GLImageBox.cpp" line="333"/>
       <location filename="../../OpenGLImageBox.cpp" line="385"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Niezdefiniowana przestrzeń kolorów do podglądu obrazu</translation>
+      <translation>Nieokreślony typ przestrzeni kolorów dla wyświetlenia obrazu</translation>
     </message>
   </context>
   <context>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="26"/>
       <source>XY-Plane</source>
-      <translation>Płaszczyzna X-Y</translation>
+      <translation>Płaszczyzna XY</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="36"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="81"/>
       <source>Offset:</source>
-      <translation>Odsunięcie:</translation>
+      <translation>Przesunięcie:</translation>
     </message>
   </context>
   <context>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
-      <translation>&amp; skala 1: 1</translation>
+      <translation>&amp;Skala 1: 1</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="119"/>
@@ -238,17 +238,17 @@
       <location filename="../../Command.cpp" line="75"/>
       <location filename="../../Command.cpp" line="122"/>
       <source>Choose an image file to open</source>
-      <translation>Wybierz plik obrazu do otwarcia</translation>
+      <translation>Wybierz plik obrazu, aby otworzyć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Error opening image</source>
-      <translation>Błąd podczas otwierania obrazu</translation>
+      <translation>Błąd podczas otwierania pliku obrazu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Nie można wczytać wybranego obrazu</translation>
+      <translation>Nie można załadować wybranego obrazu</translation>
     </message>
   </context>
   <context>

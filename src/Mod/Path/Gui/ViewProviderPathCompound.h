@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,7 +34,7 @@ class PathGuiExport ViewProviderPathCompound: public ViewProviderPath
     PROPERTY_HEADER(PathGui::ViewProviderPathCompound);
 
 public:
-        
+
     std::vector<App::DocumentObject*> claimChildren(void)const;
     virtual bool canDragObjects() const;
     virtual void dragObject(App::DocumentObject*);

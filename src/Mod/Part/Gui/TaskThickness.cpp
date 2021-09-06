@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QEventLoop>
 # include <QMessageBox>
 # include <QTextStream>
 #endif
@@ -56,7 +55,6 @@ class ThicknessWidget::Private
 {
 public:
     Ui_TaskOffset ui;
-    QEventLoop loop;
     QString text;
     std::string selection;
     Part::Thickness* thickness;
@@ -126,6 +124,7 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 ThicknessWidget::~ThicknessWidget()
 {
     delete d;
+    Gui::Selection().rmvSelectionGate();
 }
 
 Part::Thickness* ThicknessWidget::getObject() const
@@ -168,9 +167,9 @@ void ThicknessWidget::on_selfIntersection_toggled(bool on)
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }
 
-void ThicknessWidget::on_facesButton_clicked()
+void ThicknessWidget::on_facesButton_toggled(bool on)
 {
-    if (!d->loop.isRunning()) {
+    if (on) {
         QList<QWidget*> c = this->findChildren<QWidget*>();
         for (QList<QWidget*>::iterator it = c.begin(); it != c.end(); ++it)
             (*it)->setEnabled(false);
@@ -184,7 +183,6 @@ void ThicknessWidget::on_facesButton_clicked()
         Gui::Application::Instance->hideViewProvider(d->thickness);
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new Private::FaceSelection(d->thickness->Faces.getValue()));
-        d->loop.exec();
     }
     else {
         QList<QWidget*> c = this->findChildren<QWidget*>();
@@ -192,7 +190,6 @@ void ThicknessWidget::on_facesButton_clicked()
             (*it)->setEnabled(true);
         d->ui.facesButton->setText(d->text);
         d->ui.labelFaces->clear();
-        d->loop.quit();
 
         d->selection = Gui::Command::getPythonTuple
             (d->thickness->Faces.getValue()->getNameInDocument(), d->thickness->Faces.getSubValues());
@@ -222,7 +219,7 @@ void ThicknessWidget::on_updateView_toggled(bool on)
 
 bool ThicknessWidget::accept()
 {
-    if (d->loop.isRunning())
+    if (d->ui.facesButton->isChecked())
         return false;
 
     try {
@@ -253,7 +250,7 @@ bool ThicknessWidget::accept()
 
 bool ThicknessWidget::reject()
 {
-    if (d->loop.isRunning())
+    if (d->ui.facesButton->isChecked())
         return false;
 
     // save this and check if the object is still there after the

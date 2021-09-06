@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,7 +36,7 @@
 
 using namespace TechDrawGui;
 
-QGCustomImage::QGCustomImage() 
+QGCustomImage::QGCustomImage()
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
@@ -69,6 +69,15 @@ bool QGCustomImage::load(QString fileSpec)
     bool success = true;
     QPixmap px(fileSpec);
     m_px = px;
+    prepareGeometryChange();
+    setPixmap(m_px);
+    return(success);
+}
+
+bool QGCustomImage::load(QPixmap map)
+{
+    bool success = true;
+    m_px = map;
     prepareGeometryChange();
     setPixmap(m_px);
     return(success);

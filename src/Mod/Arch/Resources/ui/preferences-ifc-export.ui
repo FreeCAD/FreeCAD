@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>463</width>
-    <height>466</height>
+    <width>630</width>
+    <height>614</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,20 +17,38 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
-    <widget class="Gui::PrefCheckBox" name="checkBox_7">
-     <property name="text">
-      <string>Show this dialog when exporting</string>
+    <widget class="QGroupBox" name="group_box_0">
+     <property name="title">
+      <string>General options</string>
      </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>ifcShowDialog</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Arch</cstring>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_7">
+        <property name="text">
+         <string>Show this dialog when exporting</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcShowDialog</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -39,6 +57,54 @@
       <string>Export options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="toolTip">
+           <string>The type of objects that you wish to export:
+- Standard model: solid objects.
+- Structural analysis: wireframe model for structural calculations.
+- Standard + structural: both types of models.</string>
+          </property>
+          <property name="text">
+           <string>Export type</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>The type of objects that you wish to export:
+- Standard model: solid objects.
+- Structural analysis: wireframe model for structural calculations.
+- Standard + structural: both types of models.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcExportModel</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Standard model</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Structural analysis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Standard + structural</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox">
         <property name="toolTip">
@@ -77,7 +143,7 @@ Use this to force all objects to be exported as BREP geometry.</string>
         <property name="toolTip">
          <string>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
-If this is checked, additional calculation is done to join coplanar facets.</string>
+If this is checked, an additional calculation is done to join coplanar facets.</string>
         </property>
         <property name="text">
          <string>Join coplanar facets when triangulating</string>
@@ -283,6 +349,14 @@ A building storey is not mandatory but a common practice to have at least one in
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label">
+          <property name="toolTip">
+           <string>The units you want your IFC file to be exported to.
+
+Note that IFC files are ALWAYS written in metric units; imperial units
+are only a conversion factor applied on top of them.
+However, some BIM applications will use this factor to choose which
+unit to work with when opening the file.</string>
+          </property>
           <property name="text">
            <string>IFC file units</string>
           </property>
@@ -291,7 +365,12 @@ A building storey is not mandatory but a common practice to have at least one in
         <item>
          <widget class="Gui::PrefComboBox" name="comboBox_3">
           <property name="toolTip">
-           <string>The units you want your IFC file to be exported to. Note that IFC file are ALWAYS written in metric units. Imperial units are only a conversion applied on top of it. But some BIM applications will use this to choose which unit to work with when opening the file.</string>
+           <string>The units you want your IFC file to be exported to.
+
+Note that IFC files are ALWAYS written in metric units; imperial units
+are only a conversion factor applied on top of them.
+However, some BIM applications will use this factor to choose which
+unit to work with when opening the file.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcUnit</cstring>

@@ -65,14 +65,12 @@ using namespace Gui;
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
-              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()),
-              true,
-              parent),
-      proxy(nullptr),
-      TransformedView(TransformedView),
-      parentTask(nullptr),
-      insideMultiTransform(false),
-      blockUpdate(false)
+              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()), true, parent)
+    , proxy(nullptr)
+    , TransformedView(TransformedView)
+    , parentTask(nullptr)
+    , insideMultiTransform(false)
+    , blockUpdate(false)
 {
     selectionMode = none;
 
@@ -207,7 +205,7 @@ void TaskTransformedParameters::checkVisibility() {
     auto inset = feat->getInListEx(true);
     inset.emplace(feat);
     for(auto o : body->Group.getValues()) {
-        if(!o->Visibility.getValue() 
+        if(!o->Visibility.getValue()
                 || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             continue;
         if(inset.count(o))
@@ -362,22 +360,42 @@ App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
 
 void TaskTransformedParameters::hideObject()
 {
-    FCMD_OBJ_HIDE(getTopTransformedObject());
+    try {
+        FCMD_OBJ_HIDE(getTopTransformedObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::showObject()
 {
-    FCMD_OBJ_SHOW(getTopTransformedObject());
+    try {
+        FCMD_OBJ_SHOW(getTopTransformedObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::hideBase()
 {
-    FCMD_OBJ_HIDE(getBaseObject());
+    try {
+        FCMD_OBJ_HIDE(getBaseObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::showBase()
 {
-    FCMD_OBJ_SHOW(getBaseObject());
+    try {
+        FCMD_OBJ_SHOW(getBaseObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::exitSelectionMode()
@@ -392,12 +410,34 @@ void TaskTransformedParameters::exitSelectionMode()
     }
 }
 
-void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole)
+void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole, bool circle)
 {
     std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(
-            new ReferenceSelection(getBaseObject(), edge, face, planar,false,whole));
+            new ReferenceSelection(getBaseObject(), edge, face, planar, false, whole, circle));
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
+}
+
+void TaskTransformedParameters::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        name = index.data(Qt::UserRole).toByteArray().constData();
+        originals[i] = pcTransformed->getDocument()->getObject(name.constData());
+    }
+
+    setupTransaction();
+    pcTransformed->Originals.setValues(originals);
+    recomputeFeature();
 }
 
 //**************************************************************************

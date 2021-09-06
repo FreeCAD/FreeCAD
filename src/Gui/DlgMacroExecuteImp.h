@@ -36,15 +36,15 @@ class Ui_DlgMacroExecute;
 
 /**
  * The DlgMacroExecuteImp class implements a dialog to execute or edit a
- * recorded macro. 
+ * recorded macro.
  * \author Jürgen Riegel
  */
 class DlgMacroExecuteImp : public QDialog, public Gui::WindowParameter
-{ 
+{
     Q_OBJECT
 
 public:
-    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl =  Qt::WindowFlags() );
     ~DlgMacroExecuteImp();
 
     void accept();

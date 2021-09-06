@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importar</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Excluir</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Colar expressões</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Criar grupo de links</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Criar link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Criar sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importar links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importar todos os links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Inserir medições</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Inserir documento de texto</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Adicionar uma peça</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Adicionar um grupo</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Alinhar</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Posicionamento</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Transformar Link</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Medir distância</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -179,11 +254,11 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Limpar</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation type="unfinished">Revert to last calculated value (as constant)</translation>
+      <translation>Reverter para o último valor calculado (como constante)</translation>
     </message>
   </context>
   <context>
@@ -199,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Nome de arquivo</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Insira uma expressão...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expressão: </translation>
     </message>
   </context>
   <context>
@@ -390,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Tamanho da palavra</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Créditos</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD não chegaria em lugar nenhum sem os esforços deles:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licença</translation>
     </message>
@@ -416,6 +494,29 @@ while doing a left or right click and move the mouse up or down</source>
       <source>License</source>
       <translation>Licença</translation>
     </message>
+    <message>
+      <source>Collection</source>
+      <translation>Coleção</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Créditos</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>O FreeCAD não seria possível sem as contribuições de</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Indivíduos</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organizações</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
@@ -426,6 +527,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Fora do intervalo</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -590,7 +699,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Adicionar propriedade</translation>
     </message>
     <message>
       <source>Type</source>
@@ -605,16 +714,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Documento</translation>
+      <source>Verbose description of the new property.</source>
+      <translation>Descrição detalhada da nova propriedade.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation type="unfinished">Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</translation>
+      <source>Documentation</source>
+      <translation>Documentação</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation type="unfinished">Append group name</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation>Prefixe o nome da propriedade com o nome do grupo no formato 'Nome_Grupo' para evitar conflitos com propriedades existentes.
+Neste caso, o prefixo será automaticamente cortado quando mostrado no editor de propriedades.
+Entretanto, a propriedade ainda é usada em scripts com o nome completo, como 'obj.Nome_Grupo'.
+
+Se este campo não estiver marcado, então, a propriedade deve ser nomeada e acessada como 'obj.Nome'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>Nome do grupo de prefixos</translation>
     </message>
   </context>
   <context>
@@ -1001,6 +1122,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>Global</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 do módulo não carregado</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1039,16 +1164,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Botões</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Limpar</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Imprimir referência</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Botões do Spaceball</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Restaurar</translation>
     </message>
   </context>
   <context>
@@ -1260,40 +1385,44 @@ while doing a left or right click and move the mouse up or down</source>
       <translation> </translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation type="unfinished">Code lines will be numbered </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>Pressionar &lt;Tab&gt; irá inserir quantidade de tamanho de recuo definido</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Tabulador de raster (quantos espaços)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>Quantos espaços serão inseridos ao pressionar &lt;Tab&gt;</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>Pressionar o &lt;Tab&gt; irá inserir um tabulador com tamanho de tabulação definido</translation>
     </message>
     <message>
       <source>Display items</source>
-      <translation type="unfinished">Display items</translation>
+      <translation>Exibir itens</translation>
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>Tamanho da fonte a ser usado no tipo de código selecionado</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
-      <translation type="unfinished">Color and font settings will be applied to selected type</translation>
+      <translation>Cor e configurações de fonte serão aplicadas ao tipo selecionado</translation>
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>Família de fonte a ser usada no tipo de código selecionado</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Cor:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Linhas de código serão numeradas</translation>
     </message>
   </context>
   <context>
@@ -1352,31 +1481,30 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>Idioma da interface de usuário da aplicação</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Quantos arquivos devem ser listados na lista de arquivos recentes</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>O fundo da janela principal consistirá em blocos de uma imagem especial.
+Veja a Wiki do FreeCAD para mais detalhes sobre a imagem.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Folha de estilo de como a interface do usuário será parecida</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>Escolha sua preferência para o tamanho do ícone da barra de ferramentas. Você pode ajustar isto de acordo com o tamanho da sua tela ou gosto pessoal</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Modo de visualização em árvore:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1384,31 +1512,29 @@ this according to your screen size or personal taste</translation>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>Personalize como a exibição em árvore é exibida no painel (requer reinicialização).
 
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</translation>
+'ComboView': combine exibição em árvore e vista de propriedade em um painel.
+'TreeView e PropertyView': dividir exibição em árvore e visualização de propriedades em painel separado.
+'Ambos': mantenha todos os três painéis, e você pode ter dois conjuntos de exibição em árvore e exibição de propriedade.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>A Tela de Abertura é exibida durante o carregamento,
+na inicialização do FreeCAD. Se esta opção estiver marcada,
+a tela de abertura será exibida</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Escolhe qual bancada será ativada e exibida após o FreeCAD iniciar</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <translation>As palavras serão acomodadas se excederem o espaço horizontal do console Python</translation>
     </message>
   </context>
   <context>
@@ -1443,11 +1569,11 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation type="unfinished">TreeView and PropertyView</translation>
+      <translation>TreeView e Propriedades</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>Ambos</translation>
     </message>
   </context>
   <context>
@@ -1524,7 +1650,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Barra de ferramentas</translation>
     </message>
   </context>
   <context>
@@ -1609,45 +1735,45 @@ Talvez um erro de permissão de arquivo?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Não mostrar novamente</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Passo a passo</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+      <translation>Guia para você adicionar esta macro em uma barra de ferramentas personalizada. Siga as instruções escritas em vermelho na janela.
 
-Note: your changes will be applied when you next switch workbenches
+Obs: as mudanças serão aplicadas na próxima troca de bancada
 </translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>Passo a passo, diálogo 1 de 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>Instruções: complete os campos vazios (opcional) então clique em Adicionar e, por fim, Fechar</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>Passo a passo, diálogo 1 de 1</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+      <translation>Passo a passo, diálogo 2 de 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>Instruções: Clique na tecla seta para a direita (-&gt;), e depois Fechar.</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Instrução: Clique Novo, então clique no botão seta para a direita (-&gt;), e depois Fechar.</translation>
     </message>
   </context>
   <context>
@@ -1808,7 +1934,19 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>Ordenado</translation>
+    </message>
+    <message>
+      <source>Quick search</source>
+      <translation>Pesquisa rápida</translation>
+    </message>
+    <message>
+      <source>Type in a group name to find it</source>
+      <translation>Digite um nome de grupo para encontrá-lo</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Pesquisar grupos</translation>
     </message>
   </context>
   <context>
@@ -1887,6 +2025,10 @@ Por favor especifique outro diretório.</translation>
     <message>
       <source>System parameter</source>
       <translation>Parâmetro de sistema</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Pesquisar grupos</translation>
     </message>
   </context>
   <context>
@@ -1981,6 +2123,10 @@ Por favor especifique outro diretório.</translation>
       <source>Open in browser</source>
       <translation>Abrir no Navegador</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Versão do programa:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2053,15 +2199,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</translation>
+      <translation>Filtrar por tipo</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
-      <translation type="unfinished">Sync sub-object selection</translation>
+      <translation>Sincronizar seleção de sub-objeto</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -2070,6 +2212,10 @@ Por favor especifique outro diretório.</translation>
     <message>
       <source>Clear</source>
       <translation>Limpar</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Se habilitado, então a seleção de visualização 3D será sincronizada com hierarquia completa de objetos.</translation>
     </message>
   </context>
   <context>
@@ -2132,53 +2278,97 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
-      <translation type="unfinished">Log messages will be recorded</translation>
+      <translation>Mensagens de log serão gravadas</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
-      <translation type="unfinished">Warnings will be recorded</translation>
+      <translation>Avisos serão gravados</translation>
     </message>
     <message>
       <source>Error messages will be recorded</source>
-      <translation type="unfinished">Error messages will be recorded</translation>
+      <translation>Mensagens de erro serão gravadas</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation type="unfinished">When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</translation>
+      <translation>Quando ocorreu um erro, a caixa de diálogo Relatório torna-se visível
+na tela enquanto exibe o erro</translation>
     </message>
     <message>
-      <source>Show report view on warning or error</source>
-      <translation type="unfinished">Show report view on warning or error</translation>
+      <source>Show report view on error</source>
+      <translation>Mostrar visualização de relatório em caso de erro</translation>
+    </message>
+    <message>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation>Quando ocorre um aviso, a caixa de diálogo Visualização de Relatório torna-se visível
+na tela enquanto exibe o aviso</translation>
+    </message>
+    <message>
+      <source>Show report view on warning</source>
+      <translation>Mostrar visualização de relatório no aviso</translation>
+    </message>
+    <message>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation>Quando ocorre uma notificação, o Painel de Relatório aparece enquanto a notificação é exibida</translation>
+    </message>
+    <message>
+      <source>Show report view on normal message</source>
+      <translation>Mostrar painel de relatório em notificações</translation>
+    </message>
+    <message>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation>Quando uma mensagem de registro ocorreu, o Painel de Relatório aparece enquanto a mensagem de registro é exibida</translation>
+    </message>
+    <message>
+      <source>Show report view on log message</source>
+      <translation>Mostrar painel de relatório nas mensagens de registro</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation type="unfinished">Font color for normal messages in Report view panel</translation>
+      <translation>Cor da fonte para notificações no painel de Relatório</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
-      <translation type="unfinished">Font color for log messages in Report view panel</translation>
+      <translation>Cor da fonte para mensagens de registro no painel de Relatório</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
-      <translation type="unfinished">Font color for warning messages in Report view panel</translation>
+      <translation>Cor da fonte para mensagens de aviso no painel de Relatório</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation type="unfinished">Font color for error messages in Report view panel</translation>
+      <translation>Cor da fonte para mensagens de erro no painel de Relatório</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python output will be redirected
-from Python console to Report view panel</translation>
+      <translation>A saída interna do Python será redirecionada
+do console Python para o painel de Relatórios</translation>
     </message>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python error messages will be redirected
-from Python console to Report view panel</translation>
+      <translation>Mensagens de erro internas do Python serão redirecionadas
+do console Python para o painel de Relatórios</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation>Incluir uma marca temporal para cada relatório</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation>Incluir uma marca temporal para cada entrada</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation>Mensagens normais serão gravadas</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation>Gravar mensagens normais</translation>
     </message>
   </context>
   <context>
@@ -2227,10 +2417,6 @@ from Python console to Report view panel</translation>
       <translation>Vista 3D</translation>
     </message>
     <message>
-      <source>3D View settings</source>
-      <translation>Configurações de visualização 3D</translation>
-    </message>
-    <message>
       <source>Show coordinate system in the corner</source>
       <translation>Mostrar sistema de coordenadas no canto</translation>
     </message>
@@ -2239,60 +2425,12 @@ from Python console to Report view panel</translation>
       <translation>Mostrar contador de frames por segundo</translation>
     </message>
     <message>
-      <source>Enable animation</source>
-      <translation>Habilitar animação</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes:</source>
-      <translation>Distância entre olhos para modos estéreo:</translation>
-    </message>
-    <message>
       <source>Camera type</source>
       <translation>Tipo de câmera</translation>
     </message>
     <message>
       <source/>
       <translation> </translation>
-    </message>
-    <message>
-      <source>3D Navigation</source>
-      <translation>Navegação 3D</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>Mouse...</translation>
-    </message>
-    <message>
-      <source>Intensity of backlight</source>
-      <translation>Intensidade da luz de fundo</translation>
-    </message>
-    <message>
-      <source>Enable backlight color</source>
-      <translation>Habilitar a cor da luz de fundo</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>Estilo de orbita</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>Plataforma</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>Trackball</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>Inverter o zoom</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>Zoom no cursor</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>Etapa de zoom</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -2327,76 +2465,36 @@ from Python console to Report view panel</translation>
       <translation>Renderização de perspectiva</translation>
     </message>
     <message>
-      <source>Show navigation cube</source>
-      <translation>Mostrar cubo de navegação</translation>
-    </message>
-    <message>
-      <source>Corner</source>
-      <translation>Canto</translation>
-    </message>
-    <message>
-      <source>Top left</source>
-      <translation>Superior esquerdo</translation>
-    </message>
-    <message>
-      <source>Top right</source>
-      <translation>Superior direito</translation>
-    </message>
-    <message>
-      <source>Bottom left</source>
-      <translation>Inferior esquerdo</translation>
-    </message>
-    <message>
-      <source>Bottom right</source>
-      <translation>Inferior direito</translation>
-    </message>
-    <message>
-      <source>New Document Camera Orientation</source>
-      <translation>Nova orientação da câmera do documento</translation>
-    </message>
-    <message>
-      <source>Disable touchscreen tilt gesture</source>
-      <translation>Desativar o gesto de inclinação da tela sensível ao toque</translation>
-    </message>
-    <message>
       <source>Marker size:</source>
       <translation>Tamanho do marcador:</translation>
     </message>
     <message>
+      <source>General</source>
+      <translation>Geral</translation>
+    </message>
+    <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation type="unfinished">Main coordinate system will always be shown in
-lower right corner within opened files</translation>
-    </message>
-    <message>
-      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation type="unfinished">If checked, application will remember which workbench is active for each tab of the viewport</translation>
-    </message>
-    <message>
-      <source>Remember active workbench by tab</source>
-      <translation type="unfinished">Remember active workbench by tab</translation>
+      <translation>O sistema de coordenadas principais sempre será mostrado no
+canto inferior direito dentro dos arquivos abertos</translation>
     </message>
     <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation type="unfinished">Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</translation>
+      <translation>O tempo necessário para a última operação e a taxa de quadros 
+serão mostrados no canto inferior esquerdo nos arquivos abertos</translation>
     </message>
     <message>
-      <source>Navigation cube will always be shown in opened files </source>
-      <translation type="unfinished">Navigation cube will always be shown in opened files </translation>
+      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
+      <translation>Se marcada, a aplicação irá lembrar qual bancada de trabalho está ativa para cada guia da janela de visualização</translation>
     </message>
     <message>
-      <source>Steps by turn</source>
-      <translation type="unfinished">Steps by turn</translation>
+      <source>Remember active workbench by tab</source>
+      <translation>Lembrar da bancada ativa por aba</translation>
     </message>
     <message>
-      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
-    </message>
-    <message>
-      <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <source>Rendering</source>
+      <translation>Renderizando</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2409,24 +2507,23 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+      <translation>Quando selecionado, serão utilizados objetos da memória tampão de vértice (VBO).
+Um VBO é um recurso OpenGL que fornece métodos para carregar dados de um vértice (posição, vetor normal, cor, etc.) para a placa de vídeo.
+VBOs oferecem ganhos substanciais de desempenho porque os dados residem
+na memória gráfica em vez da memória do sistema e eles
+podem então ser processados diretamente pela GPU.
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Nota: Às vezes, este recurso pode levar a uma série de diferentes
+problemas que variam de anomalias gráficas a erros de falha da GPU. Lembre-se de
+relatar esta configuração como ativada ao buscar suporte nos fóruns do FreeCAD</translation>
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Usar OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>Cache de renderização</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2436,13 +2533,12 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>'Render Caching' é uma outra forma de dizer 'Aceleração de Renderização'.
+Existem 3 opções disponíveis para conseguir isso: 
+1) 'Auto' (padrão), deixe Coin3D decidir onde fazer o cache;
+2) 'Distribuído', ativa manualmente o cache para todos os nós raiz do provedor de vizualização;
+3) 'Centralizado', desliga manualmente o cache em todos os nós do provedor de visualização e
+apenas realiza o cache no nó raiz do gráfico da cena. Isto oferece a maior velocidade de renderização mas uma resposta mais lenta para qualquer mudança de cena.</translation>
     </message>
     <message>
       <source>Auto</source>
@@ -2450,117 +2546,104 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>Distribuído</translation>
     </message>
     <message>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>Centralizado</translation>
     </message>
     <message>
-      <source>Enable animated rotations</source>
-      <translation type="unfinished">Enable animated rotations</translation>
+      <source>Transparent objects:</source>
+      <translation>Objetos transparentes:</translation>
     </message>
     <message>
-      <source>List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
+      <source>Render types of transparent objects</source>
+      <translation>Renderizar tipos de objetos transparentes</translation>
     </message>
     <message>
-      <source>Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</translation>
+      <source>One pass</source>
+      <translation>Uma etápa</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used </translation>
-    </message>
-    <message>
-      <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
-    </message>
-    <message>
-      <source>New document scale</source>
-      <translation type="unfinished">New document scale</translation>
-    </message>
-    <message>
-      <source>Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</source>
-      <translation type="unfinished">Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
-    </message>
-    <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
-    </message>
-    <message>
-      <source>Direction of zoom operations will be inverted</source>
-      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
-    </message>
-    <message>
-      <source>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
-    </message>
-    <message>
-      <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
+      <source>Backface pass</source>
+      <translation>Etapa para as faces ocultas</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
-      <translation type="unfinished">Size of vertices in the Sketcher workbench</translation>
+      <translation>Tamanho dos vértices na bancada de esboço</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes</source>
+      <translation>Distância entre olhos para modos estéreo</translation>
+    </message>
+    <message>
+      <source>Backlight is enabled with the defined color</source>
+      <translation>A luz de fundo está habilitada com a cor definida</translation>
+    </message>
+    <message>
+      <source>Backlight color</source>
+      <translation>Cor de fundo</translation>
+    </message>
+    <message>
+      <source>Intensity</source>
+      <translation>Intensidade</translation>
+    </message>
+    <message>
+      <source>Intensity of the backlight</source>
+      <translation>Intensidade da luz de fundo</translation>
+    </message>
+    <message>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Objetos serão projetados em projeção ortográfica</translation>
+    </message>
+    <message>
+      <source>Objects will appear in a perspective projection</source>
+      <translation>Objetos aparecerão em uma projeção de perspectiva</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation>Cruzamento de eixo será exibido por padrão na abertura ou criação do arquivo</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation>Mostrar eixo do cruzamento por padrão</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Raio do Ponteiro (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Área para escolher elementos na vista 3D.
+Valores maiores facilitam a seleção mas podem impedir que objetos pequenos sejam selecionados.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Esta opção é útil para solucionar problemas gráficos e problemas com drivers.
+
+Mudar esta opção requer uma reinicialização da aplicação.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Utilizar software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Que tipo de anti-aliasing de múltiplas amostras é usado</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </translation>
-    </message>
-    <message>
-      <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
-    </message>
-    <message>
-      <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
-    </message>
-    <message>
-      <source>Backlight is enabled with the defined color</source>
-      <translation type="unfinished">Backlight is enabled with the defined color</translation>
-    </message>
-    <message>
-      <source>Objects will be projected in orthographic projection</source>
-      <translation type="unfinished">Objects will be projected in orthographic projection</translation>
-    </message>
-    <message>
-      <source>Objects will appear in a perspective projection</source>
-      <translation type="unfinished">Objects will appear in a perspective projection</translation>
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Distância entre olhos para projeção estéreo.
+O valor especificado é um fator que será multiplicado com o
+tamanho da caixa delimitadora do objeto 3D que está sendo exibido.</translation>
     </message>
   </context>
   <context>
@@ -2596,46 +2679,6 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
-    </message>
-    <message>
-      <source>Isometric</source>
-      <translation>Isométrico</translation>
-    </message>
-    <message>
-      <source>Dimetric</source>
-      <translation>Diamétrico</translation>
-    </message>
-    <message>
-      <source>Trimetric</source>
-      <translation>Trimétrico</translation>
-    </message>
-    <message>
-      <source>Top</source>
-      <translation>Topo</translation>
-    </message>
-    <message>
-      <source>Front</source>
-      <translation>Frente</translation>
-    </message>
-    <message>
-      <source>Left</source>
-      <translation>Esquerda</translation>
-    </message>
-    <message>
-      <source>Right</source>
-      <translation>Direito</translation>
-    </message>
-    <message>
-      <source>Rear</source>
-      <translation>Traseira</translation>
-    </message>
-    <message>
-      <source>Bottom</source>
-      <translation>De baixo</translation>
-    </message>
-    <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
     </message>
   </context>
   <context>
@@ -2852,137 +2895,151 @@ bounding box size of the 3D object that is currently displayed. </translation>
       <translation>Adicionar o logotipo do programa à miniatura gerada</translation>
     </message>
     <message>
-      <source>Compression level for FCStd files</source>
-      <translation type="unfinished">Compression level for FCStd files</translation>
-    </message>
-    <message>
-      <source>How many Undo/Redo steps should be recorded</source>
-      <translation type="unfinished">How many Undo/Redo steps should be recorded</translation>
-    </message>
-    <message>
       <source>The application will create a new document when started</source>
-      <translation type="unfinished">The application will create a new document when started</translation>
+      <translation>A aplicação irá criar um novo documento quando iniciada</translation>
+    </message>
+    <message>
+      <source>Compression level for FCStd files</source>
+      <translation>Nível de compressão para arquivos FCStd</translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation type="unfinished">All changes in documents are stored so that they can be undone/redone</translation>
+      <translation>Todas as alterações nos documentos são armazenadas para que possam ser desfeitas/refeitas</translation>
+    </message>
+    <message>
+      <source>How many Undo/Redo steps should be recorded</source>
+      <translation>Quantos passos de Desfazer/Refazer devem ser registrados</translation>
     </message>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Permitir que o usuário aborte o recálculo dos documentos pressionando ESC.
+Este recurso pode aumentar ligeiramente o tempo de recálculo.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>Permitir abortação de recálculo</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation type="unfinished">If there is a recovery file available the application will
-automatically run a file recovery when it is started.</translation>
+      <translation>Se houver um arquivo de recuperação disponível, a aplicação
+executará automaticamente uma recuperação de arquivo quando for iniciada.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>Com que frequência um arquivo de recuperação é escrito</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>Uma miniatura será armazenada quando o documento for salvo</translation>
     </message>
     <message>
-      <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <source>Size</source>
+      <translation>Tamanho</translation>
     </message>
     <message>
-      <source>Use date and FCBak extension</source>
-      <translation type="unfinished">Use date and FCBak extension</translation>
-    </message>
-    <message>
-      <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <source>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</source>
+      <translation>Define o tamanho da miniatura armazenada no documento.
+Tamanhos comuns são 128, 256 e 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>O logotipo do programa será adicionado à miniatura</translation>
+    </message>
+    <message>
+      <source>How many backup files will be kept when saving document</source>
+      <translation>Quantos arquivos de backup serão mantidos ao salvar o documento</translation>
+    </message>
+    <message>
+      <source>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</source>
+      <translation>Os arquivos de backup obterão a extensão '.FCbak' e os nomes de arquivos
+obterão um sufixo de data de acordo com o formato especificado</translation>
+    </message>
+    <message>
+      <source>Use date and FCBak extension</source>
+      <translation>Usar a data e a extensão FCBak</translation>
+    </message>
+    <message>
+      <source>Date format</source>
+      <translation>Formato da data</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
-      <translation type="unfinished">Allow objects to have same label/name</translation>
+      <translation>Permitir que os objetos tenham a mesma etiqueta/nome</translation>
     </message>
     <message>
-      <source>Enable partial loading of external linked document. When enabled, only
-the referenced objects and their dependencies will be loaded when a linked
-document is auto opened together with the main document.
+      <source>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
-icon in the tree view to reload it in full.
-         </source>
-      <translation type="unfinished">Enable partial loading of external linked document. When enabled, only
-the referenced objects and their dependencies will be loaded when a linked
-document is auto opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to reload it in full.
-         </translation>
+icon in the tree view to fully reload it.</source>
+      <translation>Habilitar carregamento parcial de documentos externos vinculados.
+Então somente objetos referenciados e suas dependências serão carregados
+quando um documento vinculado for aberto automaticamente com o documento principal.
+Um documento parcialmente carregado não pode ser editado. Dê um duplo clique no ícone do documento
+na arborescência para recarregá-lo completamente.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
-      <translation type="unfinished">Disable partial loading of external linked objects</translation>
+      <translation>Desativar carregamento parcial de objetos externos vinculados</translation>
     </message>
     <message>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
-      <translation type="unfinished">All documents that will be created will get the specified author name.
-Keep blank for anonymous.
-You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
+      <translation>Todos os documentos criados receberão o nome do autor especificado.
+Deixe vazio para ser anônimo.
+Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</translation>
     </message>
     <message>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
-      <translation type="unfinished">The field 'Last modified by' will be set to specified author when saving the file</translation>
+      <translation>O campo 'Última modificação por' será configurado como autor especificado ao salvar o arquivo</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation type="unfinished">Default company name to use for new files</translation>
+      <translation>O nome de empresa padrão a ser usado para novos arquivos</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>Licença padrão para novos arquivos</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation type="unfinished">Creative Commons Attribution</translation>
+      <translation>Atribuição Creative Commons (CC)</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+      <translation>Atribuição Creative Commons-Compartilhalgual</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+      <translation>Atribuição Creative Commons-SemDerivações</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+      <translation>Atribuição Creative Commons-NãoComercial</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Atribuição Creative Commons-NãoComercial-Compartilhalgual</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Atribuição Creative Commons-NãoComercial-SemDerivações</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
-      <translation type="unfinished">URL describing more about the license</translation>
+      <translation>URL descrevendo mais sobre a licença</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
       <source>The format of the date to use.</source>
-      <translation type="unfinished">The format of the date to use.</translation>
+      <translation>O formato da data a ser utilizada.</translation>
     </message>
     <message>
       <source>Default</source>
@@ -2990,7 +3047,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Formato</translation>
     </message>
   </context>
   <context>
@@ -3180,30 +3237,80 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creation method:</source>
-      <translation type="unfinished">Creation method:</translation>
+      <translation>Método de criação:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
       <source>Offscreen (New)</source>
-      <translation type="unfinished">Offscreen (New)</translation>
+      <translation>Offscreen (Novo)</translation>
     </message>
     <message>
       <source>Offscreen (Old)</source>
-      <translation type="unfinished">Offscreen (Old)</translation>
+      <translation>Offscreen (Antigo)</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
-      <translation type="unfinished">Framebuffer (custom)</translation>
+      <translation>Framebuffer (personalizado)</translation>
     </message>
     <message>
       <source>Framebuffer (as is)</source>
-      <translation type="unfinished">Framebuffer (as is)</translation>
+      <translation>Framebuffer (como é)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Bancadas não carregadas</translation>
     </message>
     <message>
-      <source>Pixel buffer</source>
-      <translation type="unfinished">Pixel buffer</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Bancada</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3258,23 +3365,303 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Variables defined by macros are created as local variables</source>
-      <translation type="unfinished">Variables defined by macros are created as local variables</translation>
+      <translation>Variáveis definidas por macros são criadas como variáveis locais</translation>
     </message>
     <message>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation type="unfinished">Commands executed by macro scripts are shown in Python console</translation>
+      <translation>Comandos executados por scripts de macro são mostrados no console do Python</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands</source>
-      <translation type="unfinished">Recorded macros will also contain user interface commands</translation>
+      <translation>Macros gravarão também comandos de interface</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation type="unfinished">Recorded macros will also contain user interface commands as comments</translation>
+      <translation>Macros gravados também conterão comandos de interface de usuário como comentários</translation>
     </message>
     <message>
       <source>The directory in which the application will search for macros</source>
-      <translation type="unfinished">The directory in which the application will search for macros</translation>
+      <translation>O diretório em que o aplicativo irá procurar por macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Menu de macros recentes</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Tamanho da lista de macros recentes</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Quantas macros devem ser mostrados na lista de macros recentes</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Contagem de atalhos</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Quantas macros recentes devem ter atalhos</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Modificadores de Teclado</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Modificadores de teclado, padrão = Ctrl+Shift+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsNavigation</name>
+    <message>
+      <source>Navigation</source>
+      <translation>Navegação</translation>
+    </message>
+    <message>
+      <source>Navigation cube</source>
+      <translation>Cubo de navegação</translation>
+    </message>
+    <message>
+      <source>Steps by turn</source>
+      <translation>Passos por turno</translation>
+    </message>
+    <message>
+      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
+      <translation>Número de passos por giro usando setas (padrão = 8: ângulo de giro = 360/8 = 45 graus)</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Canto</translation>
+    </message>
+    <message>
+      <source>Corner where navigation cube is shown</source>
+      <translation>Canto onde o cubo de navegação é mostrado</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Superior esquerdo</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Superior direito</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Inferior esquerdo</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Inferior direito</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>Navegação 3D</translation>
+    </message>
+    <message>
+      <source>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</source>
+      <translation>Mostra as configurações dos botões do mouse para cada configuração de navegação escolhida.
+Selecione um conjunto e, em seguida, pressione o botão para visualizar as referidas configurações.</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>Mouse...</translation>
+    </message>
+    <message>
+      <source>Navigation settings set</source>
+      <translation>Configurações de navegação definidas</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>Estilo de orbita</translation>
+    </message>
+    <message>
+      <source>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</source>
+      <translation>Estilo de rotação da câmera.
+Trackball: mover o mouse horizontalmente irá girar a câmera em torno do eixo y
+Turntable: a câmera será girada em torno do eixo z.</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>Plataforma</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>Trackball</translation>
+    </message>
+    <message>
+      <source>New document scale</source>
+      <translation>Escala dos novos documentos</translation>
+    </message>
+    <message>
+      <source>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</source>
+      <translation>Define o zoom da câmera para novos documentos.
+O valor é o diâmetro de uma esfera que caberia na tela.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Enable animated rotations</source>
+      <translation>Habilitar rotações animadas</translation>
+    </message>
+    <message>
+      <source>Enable animation</source>
+      <translation>Habilitar animação</translation>
+    </message>
+    <message>
+      <source>Zoom operations will be performed at position of mouse pointer</source>
+      <translation>Operações de zoom serão realizadas a partir da posição do cursor do mouse</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zoom no cursor</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Etapa de zoom</translation>
+    </message>
+    <message>
+      <source>Direction of zoom operations will be inverted</source>
+      <translation>A direção das operações de zoom será invertida</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>Inverter o zoom</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation>Impede a inclinação da vista quando estiver fazendo zoom.
+Afeta somente o estilo de navegação por gesto.
+A inclinação do mouse não está afetada por esta configuração.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Desativar o gesto de inclinação da tela sensível ao toque</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation>Rotações de câmera usarão a posição atual do cursor como centro de rotação</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrico</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Diamétrico</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimétrico</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Topo</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Frente</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Esquerda</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Direito</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Traseira</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>De baixo</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Personalizado</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Orientação padrão da câmera</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Orientação padrão da câmera ao criar um novo documento ou selecionar a vista inicial</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Modo de rotação</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Centro da janela</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Arraste no cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Centro do objeto</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Rotaciona ao estado mais próximo possível ao clicar em uma face do cubo</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Girar para o mais próximo</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Tamanho do cubo</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Tamanho do cubo de navegação</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Quanto será ampliado.
+O intervalo de ampliação '1' significa um fator de 7,5 para cada intervalo.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Seleção</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Ir automaticamente para a vista 3D que contém o item selecionado</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Expande automaticamente o item na árvore quando o objeto correspondente for selecionado na vista 3D</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Pré-selecionar o objeto na vista 3D quando o mouse passa sobre o item na árvore</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Lembrar a seleção na árvore para voltar/avançar usando os botões de navegação</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Adicionar caixas de seleção para seleção na árvore do documento</translation>
     </message>
   </context>
   <context>
@@ -3361,23 +3748,27 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation type="unfinished">Number of decimals that should be shown for numbers and dimensions</translation>
+      <translation>Número de decimais que devem ser mostrados em números e dimensões</translation>
     </message>
     <message>
       <source>Unit system that should be used for all parts the application</source>
-      <translation type="unfinished">Unit system that should be used for all parts the application</translation>
+      <translation>O sistema de unidades a ser usado em todas as partes do aplicativo</translation>
     </message>
     <message>
       <source>Minimum fractional inch to be displayed</source>
-      <translation type="unfinished">Minimum fractional inch to be displayed</translation>
+      <translation>Polegada fracionária mínima a ser exibida</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+      <translation>Construção US (ft-in/sqft/cft)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <translation>Imperial para Eng Civil (ft, ft/seg)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, seg)</translation>
     </message>
   </context>
   <context>
@@ -3415,10 +3806,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Cor simples</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Raio do Ponteiro (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Objeto sendo editado</translation>
     </message>
@@ -3428,29 +3815,35 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
-      <translation type="unfinished">Enable preselection and highlight by specified color</translation>
+      <translation>Ativar a pré-seleção e destaque por cor especificada</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+      <translation>Habilitar seleção de realce e usar cor especificada</translation>
     </message>
     <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
+      <source>Background color for the model view</source>
+      <translation>Cor de fundo para a vista 3D</translation>
+    </message>
+    <message>
+      <source>Background will have selected color</source>
+      <translation>Fundo terá a cor selecionada</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>A cor do gradiente usará a cor selecionada como cor do meio</translation>
     </message>
     <message>
-      <source>Background for parts will have selected color gradient</source>
-      <translation type="unfinished">Background for parts will have selected color gradient</translation>
+      <source>Bottom color</source>
+      <translation>Cor inferior</translation>
     </message>
     <message>
-      <source>Background for parts will have selected color</source>
-      <translation type="unfinished">Background for parts will have selected color</translation>
+      <source>Background will have selected color gradient</source>
+      <translation>O fundo terá o gradiente de cor selecionado</translation>
+    </message>
+    <message>
+      <source>Top color</source>
+      <translation>Cor superior</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -3458,11 +3851,11 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Background color for objects in tree view that are currently edited</source>
-      <translation type="unfinished">Background color for objects in tree view that are currently edited</translation>
+      <translation>Cor de fundo para objetos na árvore que estão editados</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
-      <translation type="unfinished">Background color for active containers in tree view</translation>
+      <translation>Cor de fundo para contêineres ativos na árvore</translation>
     </message>
   </context>
   <context>
@@ -3500,25 +3893,25 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Input the source value and unit</source>
-      <translation type="unfinished">Input the source value and unit</translation>
+      <translation>Insira o valor e a unidade da fonte</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
-      <translation type="unfinished">Input here the unit for the result</translation>
+      <translation>Insira aqui a unidade desejada para o resultado</translation>
     </message>
     <message>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Resultado</translation>
     </message>
     <message>
       <source>List of last used calculations 
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
-To add a calculation press Return in the value input field</translation>
+      <translation>Lista dos últimos cálculos usados 
+Para adicionar um cálculo, pressione Enter no campo de entrada de valor</translation>
     </message>
     <message>
       <source>Quantity</source>
-      <translation type="unfinished">Quantity</translation>
+      <translation>Quantidade</translation>
     </message>
     <message>
       <source>Unit system:</source>
@@ -3527,39 +3920,39 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
-      <translation type="unfinished">Unit system to be used for the Quantity
-The preference system is the one set in the general preferences.</translation>
+      <translation>Sistema de unidades a ser usado para a Quantidade
+O sistema de preferências é aquele que está configurado nas preferências gerais.</translation>
     </message>
     <message>
       <source>Decimals:</source>
-      <translation type="unfinished">Decimals:</translation>
+      <translation>Decimais:</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
-      <translation type="unfinished">Decimals for the Quantity</translation>
+      <translation>Decimais para a quantidade</translation>
     </message>
     <message>
       <source>Unit category:</source>
-      <translation type="unfinished">Unit category:</translation>
+      <translation>Categoria da unidade:</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation type="unfinished">Unit category for the Quantity</translation>
+      <translation>Categoria da unidade da quantidade</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
-      <translation type="unfinished">Copy the result into the clipboard</translation>
+      <translation>Copiar o resultado para a área de transferência</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation type="unfinished">unknown unit: </translation>
+      <source>unit mismatch</source>
+      <translation>incompatibilidade de unidade</translation>
     </message>
     <message>
-      <source>unit mismatch</source>
-      <translation type="unfinished">unit mismatch</translation>
+      <source>unknown unit:</source>
+      <translation>unidade desconhecida:</translation>
     </message>
   </context>
   <context>
@@ -3622,7 +4015,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Nota:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; As mudanças terão efeito após reiniciar a aplicação&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3939,7 +4332,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Do you really want to remove this parameter group?</source>
-      <translation type="unfinished">Do you really want to remove this parameter group?</translation>
+      <translation>Você realmente deseja remover este grupo de parâmetros?</translation>
     </message>
   </context>
   <context>
@@ -4085,31 +4478,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Em torno do eixo Y:</translation>
     </message>
     <message>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Em torno do eixo Z:</translation>
     </message>
     <message>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Em torno do eixo X:</translation>
     </message>
     <message>
       <source>Rotation around the x-axis</source>
-      <translation type="unfinished">Rotation around the x-axis</translation>
+      <translation>Rotação em torno do eixo x</translation>
     </message>
     <message>
       <source>Rotation around the y-axis</source>
-      <translation type="unfinished">Rotation around the y-axis</translation>
+      <translation>Rotação em torno do eixo y</translation>
     </message>
     <message>
       <source>Rotation around the z-axis</source>
-      <translation type="unfinished">Rotation around the z-axis</translation>
+      <translation>Rotação em torno do eixo z</translation>
     </message>
     <message>
       <source>Euler angles (xy'z'')</source>
-      <translation type="unfinished">Euler angles (xy'z'')</translation>
+      <translation>Ângulos de Euler (XY'Z")</translation>
     </message>
   </context>
   <context>
@@ -4127,11 +4520,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::RemoteDebugger</name>
     <message>
       <source>Attach to remote debugger</source>
-      <translation type="unfinished">Attach to remote debugger</translation>
+      <translation>Anexar ao depurador remoto</translation>
     </message>
     <message>
       <source>winpdb</source>
-      <translation type="unfinished">winpdb</translation>
+      <translation>winpdb</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -4139,19 +4532,19 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>VS Code</source>
-      <translation type="unfinished">VS Code</translation>
+      <translation>VS Code</translation>
     </message>
     <message>
       <source>Address:</source>
-      <translation type="unfinished">Address:</translation>
+      <translation>Endereço:</translation>
     </message>
     <message>
       <source>Port:</source>
-      <translation type="unfinished">Port:</translation>
+      <translation>Porta:</translation>
     </message>
     <message>
       <source>Redirect output</source>
-      <translation type="unfinished">Redirect output</translation>
+      <translation>Redirecionar saída</translation>
     </message>
   </context>
   <context>
@@ -4238,15 +4631,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::DlgObjectSelection</name>
     <message>
       <source>Object selection</source>
-      <translation type="unfinished">Object selection</translation>
+      <translation>Seleção de objetos</translation>
     </message>
     <message>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
+      <translation>Os objetos selecionados contêm outras dependências. Por favor, selecione quais objetos exportar. Todas as dependências são selecionadas automaticamente por padrão.</translation>
     </message>
     <message>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Dependência</translation>
     </message>
     <message>
       <source>Document</source>
@@ -4258,11 +4651,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>State</source>
-      <translation type="unfinished">State</translation>
+      <translation>Estado</translation>
     </message>
     <message>
       <source>Hierarchy</source>
-      <translation type="unfinished">Hierarchy</translation>
+      <translation>Hierarquia</translation>
     </message>
     <message>
       <source>Selected</source>
@@ -4270,7 +4663,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Partial</source>
-      <translation type="unfinished">Partial</translation>
+      <translation>Parcial</translation>
     </message>
   </context>
   <context>
@@ -4313,18 +4706,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Log</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Aviso</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Erro</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Opções</translation>
     </message>
@@ -4355,6 +4736,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Arquivos de texto sem formatação</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation>Exibir tipos de mensagem</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation>Mensagens normais</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation>Mensagens de log</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation>Advertências</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation>Erros</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation>Mostrar a janela de relatório em</translation>
     </message>
   </context>
   <context>
@@ -4448,7 +4853,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Lista de objetos escolhidos</translation>
     </message>
   </context>
   <context>
@@ -4516,6 +4921,20 @@ Deseja salvar as alterações?</translation>
     <message>
       <source>PDF file</source>
       <translation>Arquivo PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Correspondência exata</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Correspondência exata</translation>
     </message>
   </context>
   <context>
@@ -4778,13 +5197,13 @@ Deseja salvar as alterações?</translation>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>O objeto exportado contém links externos. Salve o documento pelo menos uma vez antes de exportar.</translation>
     </message>
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
+      <translation>Para vincular a objetos externos, o documento deve ser salvo pelo menos uma vez.
+Deseja salvar o documento agora?</translation>
     </message>
   </context>
   <context>
@@ -4992,23 +5411,27 @@ Deseja prosseguir?</translation>
     </message>
     <message>
       <source>property</source>
-      <translation type="unfinished">property</translation>
+      <translation>propriedade</translation>
     </message>
     <message>
       <source>Show all</source>
-      <translation type="unfinished">Show all</translation>
+      <translation>Mostrar todas</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Adicionar propriedade</translation>
     </message>
     <message>
       <source>Remove property</source>
-      <translation type="unfinished">Remove property</translation>
+      <translation>Remover propriedade</translation>
     </message>
     <message>
       <source>Expression...</source>
-      <translation type="unfinished">Expression...</translation>
+      <translation>Expressão...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Expandir automaticamente</translation>
     </message>
   </context>
   <context>
@@ -5118,11 +5541,11 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Salvar o histórico</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
-      <translation type="unfinished">Saves Python history across %1 sessions</translation>
+      <translation>Salvar histórico do Python em %1 sessões</translation>
     </message>
   </context>
   <context>
@@ -5141,6 +5564,21 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Open file %1</source>
       <translation>Abrir o arquivo %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Arquivo não encontrado</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Não é possível abrir o arquivo '%1'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Executar macro %1 (Shift+clique para editar) atalho: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5287,7 +5725,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskElementColors</name>
     <message>
       <source>Set element color</source>
-      <translation type="unfinished">Set element color</translation>
+      <translation>Definir a cor do elemento</translation>
     </message>
     <message>
       <source>TextLabel</source>
@@ -5295,7 +5733,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>Recalcular após o commit</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -5307,19 +5745,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Remove all</source>
-      <translation type="unfinished">Remove all</translation>
+      <translation>Remover todos</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Ocultar</translation>
     </message>
     <message>
       <source>Box select</source>
-      <translation type="unfinished">Box select</translation>
+      <translation>Seleção por caixa</translation>
     </message>
     <message>
       <source>On-top when selected</source>
-      <translation type="unfinished">On-top when selected</translation>
+      <translation>Acima quando selecionado</translation>
     </message>
   </context>
   <context>
@@ -5404,6 +5842,10 @@ Do you want to specify another directory?</source>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Se você não for salvar, suas alterações serão perdidas.</translation>
     </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Editar texto</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
@@ -5460,7 +5902,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Korean</source>
-      <translation type="unfinished">Korean</translation>
+      <translation>Coreano</translation>
     </message>
     <message>
       <source>Russian</source>
@@ -5480,7 +5922,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
-      <translation type="unfinished">Portuguese, Brazilian</translation>
+      <translation>Português do Brasil</translation>
     </message>
     <message>
       <source>Portuguese</source>
@@ -5532,43 +5974,43 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Basque</source>
-      <translation type="unfinished">Basque</translation>
+      <translation>Basco</translation>
     </message>
     <message>
       <source>Catalan</source>
-      <translation type="unfinished">Catalan</translation>
+      <translation>Catalão</translation>
     </message>
     <message>
       <source>Galician</source>
-      <translation type="unfinished">Galician</translation>
+      <translation>Galego</translation>
     </message>
     <message>
       <source>Kabyle</source>
-      <translation type="unfinished">Kabyle</translation>
+      <translation>Kabyle</translation>
     </message>
     <message>
       <source>Filipino</source>
-      <translation type="unfinished">Filipino</translation>
+      <translation>Filipino</translation>
     </message>
     <message>
       <source>Indonesian</source>
-      <translation type="unfinished">Indonesian</translation>
+      <translation>Indonésio</translation>
     </message>
     <message>
       <source>Lithuanian</source>
-      <translation type="unfinished">Lithuanian</translation>
+      <translation>Lituano</translation>
     </message>
     <message>
       <source>Valencian</source>
-      <translation type="unfinished">Valencian</translation>
+      <translation>Valenciano</translation>
     </message>
     <message>
       <source>Arabic</source>
-      <translation type="unfinished">Arabic</translation>
+      <translation>Árabe</translation>
     </message>
     <message>
       <source>Vietnamese</source>
-      <translation type="unfinished">Vietnamese</translation>
+      <translation>Vietnamita</translation>
     </message>
   </context>
   <context>
@@ -5665,51 +6107,70 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Show hidden items</source>
-      <translation type="unfinished">Show hidden items</translation>
+      <translation>Mostrar itens ocultos</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
-      <translation type="unfinished">Show hidden tree view items</translation>
+      <translation>Mostrar itens ocultos na árvore</translation>
     </message>
     <message>
       <source>Hide item</source>
-      <translation type="unfinished">Hide item</translation>
+      <translation>Ocultar item</translation>
     </message>
     <message>
       <source>Hide the item in tree</source>
-      <translation type="unfinished">Hide the item in tree</translation>
+      <translation>Ocultar o item na árvore</translation>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>Fechar documento</translation>
     </message>
     <message>
       <source>Close the document</source>
-      <translation type="unfinished">Close the document</translation>
+      <translation>Fechar o documento</translation>
     </message>
     <message>
       <source>Reload document</source>
-      <translation type="unfinished">Reload document</translation>
+      <translation>Recarregar documento</translation>
     </message>
     <message>
       <source>Reload a partially loaded document</source>
-      <translation type="unfinished">Reload a partially loaded document</translation>
+      <translation>Recarregar um documento parcialmente carregado</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation type="unfinished">Allow partial recomputes</translation>
+      <translation>Permitir recálculos parciais</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation type="unfinished">Enable or disable recomputating editing object when 'skip recomputation' is enabled</translation>
+      <translation>Ativar ou desativar o recálculo do objeto editado quando a opção 'pular recálculo' estiver ativada</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Recalcular o objeto</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>Recalcula o objeto selecionado</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation> (mas deve ser executado)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation>Vetores</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation>Tabela</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -6295,123 +6756,123 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>O objeto exportado contém links externos. Salve o documento pelo menos uma vez antes de exportar.</translation>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Falha ao apagar</translation>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Erro de dependência</translation>
     </message>
     <message>
       <source>Copy selected</source>
-      <translation type="unfinished">Copy selected</translation>
+      <translation>Copiar a seleção</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Copiar documento ativo</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Copiar todos os documentos</translation>
     </message>
     <message>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Colar</translation>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Erro de expressão</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
-      <translation type="unfinished">Failed to parse some of the expressions.
-Please check the Report View for more details.</translation>
+      <translation>Falha ao analisar algumas das expressões.
+Veja o painel de relatório para mais detalhes.</translation>
     </message>
     <message>
       <source>Failed to paste expressions</source>
-      <translation type="unfinished">Failed to paste expressions</translation>
+      <translation>Falha ao colar expressões</translation>
     </message>
     <message>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>Agrupamento simples</translation>
     </message>
     <message>
       <source>Group with links</source>
-      <translation type="unfinished">Group with links</translation>
+      <translation>Agrupar com links</translation>
     </message>
     <message>
       <source>Group with transform links</source>
-      <translation type="unfinished">Group with transform links</translation>
+      <translation>Grupo com vínculos de transformação</translation>
     </message>
     <message>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>Falha ao criar um grupo de vínculos</translation>
     </message>
     <message>
       <source>Create link failed</source>
-      <translation type="unfinished">Create link failed</translation>
+      <translation>Falha ao criar um vínculo</translation>
     </message>
     <message>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>Falha ao criar um vínculo relativo</translation>
     </message>
     <message>
       <source>Unlink failed</source>
-      <translation type="unfinished">Unlink failed</translation>
+      <translation>Falha ao desvincular</translation>
     </message>
     <message>
       <source>Replace link failed</source>
-      <translation type="unfinished">Replace link failed</translation>
+      <translation>A substituição de vínculo falhou</translation>
     </message>
     <message>
       <source>Failed to import links</source>
-      <translation type="unfinished">Failed to import links</translation>
+      <translation>Falha ao importar links</translation>
     </message>
     <message>
       <source>Failed to import all links</source>
-      <translation type="unfinished">Failed to import all links</translation>
+      <translation>Falha ao importar todos os vínculos</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Nome inválido</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name or group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>O nome da propriedade ou nome de grupo só deve conter números, letras,
+ou underscore e não deve começar com um número.</translation>
     </message>
     <message>
       <source>The property '%1' already exists in '%2'</source>
-      <translation type="unfinished">The property '%1' already exists in '%2'</translation>
+      <translation>A propriedade '%1' já existe em '%2'</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Adicionar propriedade</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
-      <translation type="unfinished">Failed to add property to '%1': %2</translation>
+      <translation>Falha ao adicionar uma propriedade a '%1': %2</translation>
     </message>
     <message>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>Salvar arquivos dependentes</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation type="unfinished">The file contains external dependencies. Do you want to save the dependent files, too?</translation>
+      <translation>O arquivo contém dependências externas. Deseja também salvar os arquivos dependentes?</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Falha ao salvar o documento</translation>
     </message>
     <message>
-      <source>Documents contains cyclic dependices. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependices. Do you still want to save them?</translation>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>Os documentos contêm dependências cíclicas. Deseja salvá-los mesmo assim?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6423,31 +6884,91 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation type="unfinished">There are grouped transactions in the following documents with other preceding transactions</translation>
+      <translation>Existem transações agrupadas com outras transações anteriores nos seguintes documentos</translation>
     </message>
     <message>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
-      <translation type="unfinished">Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</translation>
+      <translation>Escolha 'Sim' para reverter todas as transações anteriores.
+Escolha 'Não' para reverter apenas no documento ativo.
+Escolha 'Abortar' para cancelar</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>Deseja salvar suas alterações no documento antes de fechar?</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
-      <translation type="unfinished">Apply answer to all</translation>
+      <translation>Aplicar esta resposta a todos</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>Arrastar &amp; soltar falhou</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>Substituir cores...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Caminho físico idêntico detectado. Isso pode apagar os dados de um documento existente!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Tem certeza que deseja continuar?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Veja o painel de relatório para mais...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Documento: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Caminho: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Caminho físico idêntico</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Erro</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Houve erros ao carregar o arquivo. Alguns dados podem ter sido modificados ou não recuperados. Veja a vista de relatório para obter informações mais específicas sobre os objetos envolvidos.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Ocorreram erros graves ao carregar o arquivo. Alguns dados podem ter sido modificados ou não recuperados. Salvar o projeto provavelmente resultará em perda de dados.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Bancadas de trabalho</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Caminho físico: </translation>
     </message>
   </context>
   <context>
@@ -6469,7 +6990,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Box element selection</source>
-      <translation type="unfinished">Box element selection</translation>
+      <translation>Seleção do elementos por caixa</translation>
     </message>
   </context>
   <context>
@@ -6705,6 +7226,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Ferramentas</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Gráfico de dependência...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Exibir o gráfico de dependência de objetos no documento atual</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6819,6 +7355,10 @@ Choose 'Abort' to abort</translation>
       <source>Draw style</source>
       <translation>Estilo de desenho</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation>Mudar o estilo de representação dos objetos</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6873,23 +7413,8 @@ Choose 'Abort' to abort</translation>
       <translation>Nenhuma seleção</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Por favor, primeiro selecione os objetos que você deseja exportar.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Ferramentas</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Gráfico de dependência...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Exibir o gráfico de dependência de objetos no documento atual</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Selecione os objetos a serem exportados antes de escolher Exportar.</translation>
     </message>
   </context>
   <context>
@@ -6900,7 +7425,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>Ações de expressão</translation>
     </message>
   </context>
   <context>
@@ -6916,6 +7441,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Recalcular um objeto ou documento</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Ajuda</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Faça uma doação</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Doe para o desenvolvimento do FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -7096,7 +7636,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Link actions</source>
-      <translation type="unfinished">Link actions</translation>
+      <translation>Ações de vínculos</translation>
     </message>
   </context>
   <context>
@@ -7107,11 +7647,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Importar links</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
-      <translation type="unfinished">Import selected external link(s)</translation>
+      <translation>Importar vínculos externos selecionados</translation>
     </message>
   </context>
   <context>
@@ -7122,11 +7662,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Importar todos os links</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
-      <translation type="unfinished">Import all links of the active document</translation>
+      <translation>Importar todos os vínculos do documento ativo</translation>
     </message>
   </context>
   <context>
@@ -7137,11 +7677,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Criar link</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>Criar um vínculo para o(s) objeto(s) selecionado(s)</translation>
     </message>
   </context>
   <context>
@@ -7152,11 +7692,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Criar grupo de links</translation>
     </message>
     <message>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>Criar um grupo de vínculos</translation>
     </message>
   </context>
   <context>
@@ -7167,11 +7707,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Criar sub-link</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
-      <translation type="unfinished">Create a sub-object or sub-element link</translation>
+      <translation>Criar um vínculo para sub-objeto ou sub-elemento</translation>
     </message>
   </context>
   <context>
@@ -7182,11 +7722,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Replace with link</source>
-      <translation type="unfinished">Replace with link</translation>
+      <translation>Substituir por vínculo</translation>
     </message>
     <message>
       <source>Replace the selected object(s) with link</source>
-      <translation type="unfinished">Replace the selected object(s) with link</translation>
+      <translation>Substituir o(s) objeto(s) selecionado(s) por um vínculo</translation>
     </message>
   </context>
   <context>
@@ -7197,11 +7737,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Link navigation</source>
-      <translation type="unfinished">Link navigation</translation>
+      <translation>Navegação em vínculos</translation>
     </message>
     <message>
       <source>Link navigation actions</source>
-      <translation type="unfinished">Link navigation actions</translation>
+      <translation>Ações de navegação em vínculos</translation>
     </message>
   </context>
   <context>
@@ -7212,11 +7752,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Select all links</source>
-      <translation type="unfinished">Select all links</translation>
+      <translation>Selecionar todos os links</translation>
     </message>
     <message>
       <source>Select all links to the current selected object</source>
-      <translation type="unfinished">Select all links to the current selected object</translation>
+      <translation>Selecionar todos os vínculos para o objeto selecionado</translation>
     </message>
   </context>
   <context>
@@ -7227,11 +7767,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Go to linked object</source>
-      <translation type="unfinished">Go to linked object</translation>
+      <translation>Ir para o objeto vinculado</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the linked object and switch to its owner document</translation>
+      <translation>Seleciona o objeto vinculado e muda para o documento onde ele está inserido</translation>
     </message>
   </context>
   <context>
@@ -7242,11 +7782,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation type="unfinished">Go to the deepest linked object</translation>
+      <translation>Ir para o mais profundo objeto vinculado</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the deepest linked object and switch to its owner document</translation>
+      <translation>Seleciona o objeto mais profundo vinculado e muda para o documento onde está inserido</translation>
     </message>
   </context>
   <context>
@@ -7257,11 +7797,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Desvincular</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
+      <translation>Retirar um nível do vínculo</translation>
     </message>
   </context>
   <context>
@@ -7272,11 +7812,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation type="unfinished">Attach to remote debugger...</translation>
+      <translation>Anexar ao depurador remoto...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation type="unfinished">Attach to a remotely running debugger</translation>
+      <translation>Anexar a um depurador remoto já funcionando</translation>
     </message>
   </context>
   <context>
@@ -7652,6 +8192,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Macros recentes</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Lista de macros recentes</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -7719,11 +8274,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Save All</source>
-      <translation type="unfinished">Save All</translation>
+      <translation>Salvar Tudo</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation type="unfinished">Save all opened document</translation>
+      <translation>Salvar todos documentos abertos</translation>
     </message>
   </context>
   <context>
@@ -7779,11 +8334,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>&amp;Voltar</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
-      <translation type="unfinished">Go back to previous selection</translation>
+      <translation>Voltar para a seleção anterior</translation>
     </message>
   </context>
   <context>
@@ -7794,11 +8349,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>&amp;Caixa delimitadora</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>Mostrar caixa delimitadora da seleção</translation>
     </message>
   </context>
   <context>
@@ -7809,11 +8364,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation type="unfinished">&amp;Forward</translation>
+      <translation>&amp;Avançar</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
-      <translation type="unfinished">Repeat the backed selection</translation>
+      <translation>Repetir a seleção salva</translation>
     </message>
   </context>
   <context>
@@ -7854,11 +8409,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Send to Python Console</source>
-      <translation type="unfinished">&amp;Send to Python Console</translation>
+      <translation>&amp;Enviar para o Console Python</translation>
     </message>
     <message>
       <source>Sends the selected object to the Python console</source>
-      <translation type="unfinished">Sends the selected object to the Python console</translation>
+      <translation>Envia o objeto selecionado para o console do Python</translation>
     </message>
   </context>
   <context>
@@ -7929,11 +8484,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Add text document</source>
-      <translation type="unfinished">Add text document</translation>
+      <translation>Adicionar documento de texto</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation type="unfinished">Add text document to active document</translation>
+      <translation>Adicionar documento de texto ao documento ativo</translation>
     </message>
   </context>
   <context>
@@ -8105,11 +8660,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Collapse selected item</source>
-      <translation type="unfinished">Collapse selected item</translation>
+      <translation>Recolher item selecionado</translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
-      <translation type="unfinished">Collapse currently selected tree items</translation>
+      <translation>Recolher itens selecionados na árvore</translation>
     </message>
   </context>
   <context>
@@ -8120,11 +8675,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>Expandir item selecionado</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>Expandir itens selecionados na árvore</translation>
     </message>
   </context>
   <context>
@@ -8135,11 +8690,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Select all instances</source>
-      <translation type="unfinished">Select all instances</translation>
+      <translation>Selecionar todas as instâncias</translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>Selecionar todas as instâncias do objeto selecionado</translation>
     </message>
   </context>
   <context>
@@ -8150,11 +8705,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation type="unfinished">TreeView actions</translation>
+      <translation>Ações da árvore</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation type="unfinished">TreeView behavior options and actions</translation>
+      <translation>Opções e ações da árvore</translation>
     </message>
   </context>
   <context>
@@ -8338,6 +8893,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista padrão</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Vista inicial</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Definir como vista inicial padrão</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -8473,6 +9043,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista padrão</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Restaurar câmera salva</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Restaurar configurações salvas da câmera</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8499,7 +9084,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° counter-clockwise</translation>
+      <translation>Gire a vista por 90° no sentido anti-horário</translation>
     </message>
   </context>
   <context>
@@ -8514,7 +9099,22 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>Girar a vista por 90° no sentido horário</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista padrão</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Salvar a câmera atual</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Salvar as configurações atuais da câmera</translation>
     </message>
   </context>
   <context>
@@ -8675,22 +9275,22 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
-      <translation type="unfinished">Initiate dragging</translation>
+      <translation>Iniciar arrastamento</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation type="unfinished">Initiate dragging of current selected tree items</translation>
+      <translation>Iniciar arrastamento dos itens selecionados da árvore</translation>
     </message>
   </context>
   <context>
@@ -8701,48 +9301,48 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Multi document</source>
-      <translation type="unfinished">Multi document</translation>
+      <translation>Multi-documento</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>Pré-seleção</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+      <translation>Pré-selecionar o objeto na vista 3D quando o mouse passa sobre o item na árvore</translation>
     </message>
   </context>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Record selection</source>
-      <translation type="unfinished">Record selection</translation>
+      <translation>Gravar seleção</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+      <translation>Lembrar a seleção na árvore para voltar/avançar usando os botões de navegação</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -8761,56 +9361,56 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Documento único</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>Sincronizar posição</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation type="unfinished">Auto adjust placement on drag and drop objects across coordinate systems</translation>
+      <translation>Ajustar posicionamento automaticamente ao arrastar e soltar objetos entre sistemas de coordenadas</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Sync selection</source>
-      <translation type="unfinished">Sync selection</translation>
+      <translation>Sincronizar seleção</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+      <translation>Expande automaticamente o item na árvore quando o objeto correspondente for selecionado na vista 3D</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncView</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Árvore</translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>Sincronizar vista</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+      <translation>Ir automaticamente para a vista 3D que contém o item selecionado</translation>
     </message>
   </context>
   <context>
@@ -8928,22 +9528,25 @@ Choose 'Abort' to abort</translation>
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
+      <translation>Os seguintes objetos referenciados podem quebrar.
 
-Are you sure you want to continue?
-</translation>
-    </message>
-    <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
+Tem certeza que deseja continuar?
 </translation>
     </message>
     <message>
       <source>Object dependencies</source>
       <translation>Dependências do objeto</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Estes itens estão selecionados para exclusão, mas não estão no documento ativo.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Gráfico de dependência</translation>
     </message>
   </context>
   <context>
@@ -9014,15 +9617,8 @@ Are you sure you want to continue?
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Gráfico de dependência</translation>
+      <translation>Para vincular a objetos externos, o documento deve ser salvo pelo menos uma vez.
+Deseja salvar o documento agora?</translation>
     </message>
   </context>
   <context>
@@ -9039,10 +9635,10 @@ Do you want to save the document now?</translation>
 Please check the Report View for more details.
 
 Do you still want to proceed?</source>
-      <translation type="unfinished">The document contains dependency cycles.
-Please check the Report View for more details.
+      <translation>O documento contém ciclos de dependência.
+Veja mais detalhes no painel de relatório.
 
-Do you still want to proceed?</translation>
+Deseja prosseguir mesmo assim?</translation>
     </message>
   </context>
   <context>

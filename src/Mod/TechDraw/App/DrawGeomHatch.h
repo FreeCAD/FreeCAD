@@ -41,6 +41,7 @@ class BaseGeom;
 namespace TechDraw
 {
 class DrawViewPart;
+class DrawViewSection;
 class PATLineSpec;
 class LineSet;
 class DashSet;
@@ -74,6 +75,14 @@ public:
     std::vector<LineSet> getFaceOverlay(int i = 0);
     std::vector<LineSet> getTrimmedLines(int i = 0);
     static std::vector<LineSet> getTrimmedLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface, double scale);
+    static std::vector<LineSet> getTrimmedLines(DrawViewPart* source,
+                                                std::vector<LineSet> lineSets,
+                                                TopoDS_Face face,
+                                                double scale );
+    static std::vector<LineSet> getTrimmedLinesSection(DrawViewSection* source,
+                                                                std::vector<LineSet> lineSets,
+                                                                TopoDS_Face f,
+                                                                double scale );
 
     static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox, double scale);
     static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
@@ -92,7 +101,6 @@ protected:
 
     void makeLineSets(void);
 
-    void getParameters(void);
     std::vector<PATLineSpec> getDecodedSpecsFromFile();
     std::vector<LineSet> m_lineSets;
     std::string m_saveFile;

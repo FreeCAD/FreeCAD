@@ -39,11 +39,10 @@
 /*
 import socket
 import threading
-import SocketServer
 
 
 ip = "127.0.0.1"
-port=54880
+port = 54880
 
 def client(ip, port, message):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -51,15 +50,14 @@ def client(ip, port, message):
     try:
         sock.sendall(message)
         response = sock.recv(1024)
-        print "Received: {}".format(response)
+        print ("Received: {}".format(response))
     finally:
         sock.close()
 
 
 
-client(ip, port, "print 'Hello World 1'")
-client(ip, port, "import FreeCAD\nFreeCAD.newDocument()")
-client(ip, port, "Hello World 3\n")
+client(ip, port, b"print ('Hello World')")
+client(ip, port, b"import FreeCAD\nFreeCAD.newDocument()")
 
 */
 
@@ -71,6 +69,12 @@ public:
     {
         add_varargs_method("startServer",&Module::startServer,
             "startServer(address=127.0.0.1,port=0) -- Start a server."
+        );
+        add_varargs_method("waitForConnection",&Module::waitForConnection,
+            "waitForConnection(address=127.0.0.1,port=0,timeout=0)\n"
+            "Start a server, wait for connection and close server.\n"
+            "Its use is disadvised in a the GUI version, since it will\n"
+            "stop responding until the function returns."
         );
         add_varargs_method("registerServerFirewall",&Module::registerServerFirewall,
             "registerServerFirewall(callable(string)) -- Register a firewall."
@@ -105,6 +109,45 @@ private:
         }
         else {
             server->deleteLater();
+            std::stringstream out;
+            out << "Server failed to listen at address " << addr << " and port " << port;
+            throw Py::RuntimeError(out.str());
+        }
+    }
+
+    Py::Object waitForConnection(const Py::Tuple& args)
+    {
+        const char* addr = "127.0.0.1";
+        int port = 0;
+        int timeout = 0;
+        if (!PyArg_ParseTuple(args.ptr(), "|sii",&addr,&port, &timeout))
+            throw Py::Exception();
+        if (port > USHRT_MAX) {
+            throw Py::OverflowError("port number is greater than maximum");
+        }
+        else if (port < 0) {
+            throw Py::OverflowError("port number is lower than 0");
+        }
+
+        QTcpServer server;
+        if (server.listen(QHostAddress(QString::fromLatin1(addr)), port)) {
+            bool ok = server.waitForNewConnection(timeout);
+            QTcpSocket* socket = server.nextPendingConnection();
+            if (socket) {
+                socket->waitForReadyRead();
+                if (socket->bytesAvailable()) {
+                    QByteArray request = socket->readAll();
+                    std::string str = AppServer::runPython(request);
+                    socket->write(str.c_str());
+                    socket->waitForBytesWritten();
+                    socket->close();
+                }
+            }
+
+            server.close();
+            return Py::Boolean(ok);
+        }
+        else {
             std::stringstream out;
             out << "Server failed to listen at address " << addr << " and port " << port;
             throw Py::RuntimeError(out.str());

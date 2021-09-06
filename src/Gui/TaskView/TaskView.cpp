@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
@@ -53,6 +53,7 @@
 #endif
 
 using namespace Gui::TaskView;
+namespace bp = boost::placeholders;
 
 //**************************************************************************
 //**************************************************************************
@@ -398,16 +399,16 @@ TaskView::TaskView(QWidget *parent)
 
     connectApplicationActiveDocument = 
     App::GetApplication().signalActiveDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, _1));
+        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, bp::_1));
     connectApplicationDeleteDocument = 
     App::GetApplication().signalDeletedDocument.connect
         (boost::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
     connectApplicationUndoDocument = 
     App::GetApplication().signalUndoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, _1));
+        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, bp::_1));
     connectApplicationRedoDocument = 
     App::GetApplication().signalRedoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, _1));
+        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, bp::_1));
 }
 
 TaskView::~TaskView()
@@ -531,12 +532,22 @@ void TaskView::slotDeletedDocument()
 
 void TaskView::slotUndoDocument(const App::Document&)
 {
+    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
+        ActiveDialog->autoClosedOnTransactionChange();
+        removeDialog();
+    }
+
     if (!ActiveDialog)
         updateWatcher();
 }
 
 void TaskView::slotRedoDocument(const App::Document&)
 {
+    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
+        ActiveDialog->autoClosedOnTransactionChange();
+        removeDialog();
+    }
+
     if (!ActiveDialog)
         updateWatcher();
 }
@@ -650,6 +661,7 @@ void TaskView::removeDialog(void)
     addTaskWatcher();
     
     if (remove) {
+        remove->closed();
         remove->emitDestructionSignal();
         delete remove;
     }
@@ -774,6 +786,11 @@ void TaskView::removeTaskWatcher(void)
 
 void TaskView::accept()
 {
+    if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
+        Base::Console().Warning("ActiveDialog was null in call to TaskView::accept()\n");
+        return;
+    }
+
     // Make sure that if 'accept' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'accept' method
     ActiveDialog->setProperty("taskview_accept_or_reject", true);
@@ -785,6 +802,11 @@ void TaskView::accept()
 
 void TaskView::reject()
 {
+    if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
+        Base::Console().Warning("ActiveDialog was null in call to TaskView::reject()\n");
+        return;
+    }
+
     // Make sure that if 'reject' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'reject' method
     ActiveDialog->setProperty("taskview_accept_or_reject", true);

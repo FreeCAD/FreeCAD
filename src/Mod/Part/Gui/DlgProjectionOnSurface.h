@@ -116,7 +116,7 @@ private:
   void create_face_extrude(std::vector<SShapeStore>& iCurrentShape);
   void store_wire_in_vector(const SShapeStore& iCurrentShape, const TopoDS_Shape& iParentShape, std::vector<SShapeStore>& iStoreVec, const unsigned int iColor);
   void set_xyz_dir_spinbox(QDoubleSpinBox* icurrentSpinBox);
-  void transform_shape_to_global_postion(TopoDS_Shape& ioShape, Part::Feature* iPart);
+  void transform_shape_to_global_position(TopoDS_Shape& ioShape, Part::Feature* iPart);
 
 private:
   /** Checks if the given document is about to be closed */

@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <QCoreApplication>
@@ -36,6 +36,7 @@
 #include <App/DocumentObject.h>
 
 using namespace App;
+namespace bp = boost::placeholders;
 
 namespace App {
 
@@ -67,7 +68,7 @@ protected:
     // It is not safe to change potential object name reference at this level.
     // For example, a LinkSub with sub element name Face1 may also be some
     // object's name that may potentially be mapped. In addition, with the
-    // introduction of full quanlified SubName reference, the Sub value inside
+    // introduction of full qualified SubName reference, the Sub value inside
     // LinkSub may require customized mapping. So we move the mapping logic to
     // various link property's Restore() function.
 #if 0
@@ -127,9 +128,9 @@ private:
 MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), verbose(true), stream(0), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, _1, _2));
+        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
     connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, _1, _2));
+        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
 
     QCoreApplication* app = QCoreApplication::instance();
     if (app && app->inherits("QApplication")) {

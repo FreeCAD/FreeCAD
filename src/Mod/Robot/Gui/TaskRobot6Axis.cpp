@@ -125,7 +125,7 @@ void TaskRobot6Axis::createPlacementDlg(void)
 }
 
 
-void TaskRobot6Axis::viewTcp(const Base::Placement pos)
+void TaskRobot6Axis::viewTcp(const Base::Placement& pos)
 {
     double A,B,C;
     pos.getRotation().getYawPitchRoll(A,B,C);
@@ -141,7 +141,7 @@ void TaskRobot6Axis::viewTcp(const Base::Placement pos)
     ui->label_TCP->setText(result);
 }
 
-void TaskRobot6Axis::viewTool(const Base::Placement pos)
+void TaskRobot6Axis::viewTool(const Base::Placement& pos)
 {
     double A,B,C;
     pos.getRotation().getYawPitchRoll(A,B,C);

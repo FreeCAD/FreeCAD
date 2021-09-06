@@ -21,10 +21,8 @@
 # Modified Amritpal Singh <amrit3701@gmail.com> on 07-07-2017
 
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
-from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -43,9 +41,9 @@ else:
 #  Rebars (or Reinforcing Bars) are metallic bars placed
 #  inside concrete structures to reinforce them.
 
-__title__="FreeCAD Rebar"
+__title__  = "FreeCAD Rebar"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):
@@ -92,6 +90,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
+    obj.Mark = obj.Label
     return obj
 
 
@@ -172,9 +171,9 @@ class _Rebar(ArchComponent.Component):
         if not "Diameter" in pl:
             obj.addProperty("App::PropertyLength","Diameter","Rebar",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"))
         if not "OffsetStart" in pl:
-            obj.addProperty("App::PropertyLength","OffsetStart","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the first bar (concrete cover)."))
+            obj.addProperty("App::PropertyDistance","OffsetStart","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the first bar (concrete cover)."))
         if not "OffsetEnd" in pl:
-            obj.addProperty("App::PropertyLength","OffsetEnd","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
+            obj.addProperty("App::PropertyDistance","OffsetEnd","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
         if not "Amount" in pl:
             obj.addProperty("App::PropertyInteger","Amount","Rebar",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
         if not "Spacing" in pl:
@@ -198,6 +197,13 @@ class _Rebar(ArchComponent.Component):
         if not "TotalLength" in pl:
             obj.addProperty("App::PropertyDistance", "TotalLength", "Rebar", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"))
             obj.setEditorMode("TotalLength", 1)
+        if not "Mark" in pl:
+            obj.addProperty(
+                "App::PropertyString",
+                "Mark",
+                "Rebar",
+                QT_TRANSLATE_NOOP("App::Property", "The rebar mark"),
+            )
         self.Type = "Rebar"
 
     def onDocumentRestored(self,obj):
@@ -271,7 +277,7 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            if obj.ViewObject.RebarShape == "Stirrup":
+            if hasattr(obj, "RebarShape") and obj.RebarShape == "Stirrup":
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
@@ -411,8 +417,8 @@ class _Rebar(ArchComponent.Component):
         self.wires = []
         rot = FreeCAD.Rotation()
         if obj.Amount == 1:
-            if obj.ViewObject:
-                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+            if hasattr(obj, "RebarShape"):
+                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.RebarShape)
             else:
                 barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
             placementlist.append(barplacement)
@@ -423,14 +429,14 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            if obj.ViewObject and obj.ViewObject.RebarShape == "Stirrup":
+            if hasattr(obj, "RebarShape") and obj.RebarShape == "Stirrup":
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             for i in range(obj.Amount):
-                if obj.ViewObject:
-                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+                if hasattr(obj, "RebarShape"):
+                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.RebarShape)
                 else:
                     barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
                 placementlist.append(barplacement)
@@ -439,7 +445,7 @@ class _Rebar(ArchComponent.Component):
         # Calculate placement of bars from custom spacing.
         if spacinglist:
             placementlist[:] = []
-            if obj.ViewObject.RebarShape == "Stirrup":
+            if hasattr(obj, "RebarShape") and obj.RebarShape == "Stirrup":
                 reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
@@ -506,7 +512,15 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
     def setEdit(self, vobj, mode):
 
         if mode == 0:
-            if vobj.RebarShape:
+            if hasattr(vobj.Object, "RebarShape"):
+                try:
+                    # Import module of RebarShape
+                    module = __import__(vobj.Object.RebarShape)
+                except ImportError:
+                    FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
+                    return
+                module.editDialog(vobj)
+            elif vobj.RebarShape:
                 try:
                     # Import module of RebarShape
                     module = __import__(vobj.RebarShape)
@@ -646,6 +660,8 @@ def getLengthOfRebar(rebar):
         for geo in base.Geometry:
             length += geo.length()
         return length
+    elif base.isDerivedFrom("Part::Helix"):
+        return base.Shape.Wires[0].Length
     else:
         FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
         return None

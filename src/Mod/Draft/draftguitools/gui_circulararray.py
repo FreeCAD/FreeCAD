@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft CircularArray GuiCommand."""
+"""Provides GUI tools to create circular Array objects."""
 ## @package gui_circulararray
-# \ingroup DRAFT
-# \brief This module provides the Draft CircularArray tool.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create circular Array objects.
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -32,21 +34,22 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc  # include resources, icons, ui files
+import draftutils.todo as todo
+
 from draftutils.messages import _msg, _log
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftguitools import gui_base
 from drafttaskpanels import task_circulararray
-import draftutils.todo as todo
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
 
 
-class GuiCommandCircularArray(gui_base.GuiCommandBase):
+class CircularArray(gui_base.GuiCommandBase):
     """Gui command for the CircularArray tool."""
 
     def __init__(self):
-        super().__init__()
+        super(CircularArray, self).__init__()
         self.command_name = "Circular array"
         self.location = None
         self.mouse_event = None
@@ -58,15 +61,10 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates copies of a selected object, "
-                "and places the copies in a circular pattern.\n"
-                "The properties of the array can be further modified after "
-                "the new object is created, including turning it into "
-                "a different type of array.")
 
         d = {'Pixmap': 'Draft_CircularArray',
              'MenuText': QT_TRANSLATE_NOOP("Draft", "Circular array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft", _tip)}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates copies of the selected object, and places the copies in a radial pattern\ncreating various circular layers.\n\nThe array can be turned into an orthogonal or a polar array by changing its type.")}
         return d
 
     def Activated(self):
@@ -75,9 +73,9 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
         """
-        _log("GuiCommand: {}".format(_tr(self.command_name)))
-        _msg("{}".format(16*"-"))
-        _msg("GuiCommand: {}".format(_tr(self.command_name)))
+        _log("GuiCommand: {}".format(self.command_name))
+        #_msg("{}".format(16*"-"))
+        #_msg("GuiCommand: {}".format(self.command_name))
 
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
@@ -136,7 +134,9 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super().finish()
+            super(CircularArray, self).finish()
 
 
-Gui.addCommand('Draft_CircularArray', GuiCommandCircularArray())
+Gui.addCommand('Draft_CircularArray', CircularArray())
+
+## @}

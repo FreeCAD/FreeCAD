@@ -67,9 +67,9 @@ TaskSketcherCreateCommands::~TaskSketcherCreateCommands()
 void TaskSketcherCreateCommands::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        //ui->retranslateUi(proxy);
-    }
+    //if (e->type() == QEvent::LanguageChange) {
+    //    ui->retranslateUi(proxy);
+    //}
 }
 
 /// @cond DOXERR

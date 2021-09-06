@@ -26,7 +26,7 @@
 #include <QDialog>
 #include <Base/Unit.h>
 #include <App/ObjectIdentifier.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace Ui {
 class DlgExpressionInput;
@@ -49,12 +49,12 @@ namespace Dialog {
 class GuiExport DlgExpressionInput : public QDialog
 {
     Q_OBJECT
-    
+
 public:
-    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, boost::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
+    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
     ~DlgExpressionInput();
-    
-    boost::shared_ptr<App::Expression> getExpression() const { return expression; }
+
+    std::shared_ptr<App::Expression> getExpression() const { return expression; }
 
     bool discardedFormula() const { return discarded; }
 
@@ -62,6 +62,9 @@ public:
     void   setExpressionInputSize(int width, int height);
 
     bool eventFilter(QObject *obj, QEvent *event);
+
+public Q_SLOTS:
+    void show();
 
 protected:
     void showEvent(QShowEvent*);
@@ -74,7 +77,7 @@ private Q_SLOTS:
 
 private:
     ::Ui::DlgExpressionInput *ui;
-    boost::shared_ptr<App::Expression> expression;
+    std::shared_ptr<App::Expression> expression;
     App::ObjectIdentifier path;
     bool discarded;
     const Base::Unit impliedUnit;

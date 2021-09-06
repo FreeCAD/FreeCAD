@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
+/**************************************************************************
+*   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -34,6 +34,18 @@
 #define SIM_TESSEL_TOP		1
 #define SIM_TESSEL_BOT		2
 #define SIM_WALK_RES		0.6   // step size in pixel units (to make sure all pixels in the path are visited)
+
+struct toolShapePoint {
+  float radiusPos;
+  float heightPos;
+
+  struct less_than{
+  	bool operator()(const toolShapePoint &a, const toolShapePoint &b){
+    	return a.radiusPos < b.radiusPos;
+			}
+	};
+};
+
 struct Point3D
 {
 	Point3D() : x(0), y(0), z(0), sina(0), cosa(0) {}
@@ -63,7 +75,7 @@ inline static Point3D unit(const Point3D & a) { return a / length(a); }
 struct Triangle3D
 {
 	Triangle3D() {}
-	Triangle3D(Point3D & p1, Point3D & p2, Point3D & p3) 
+	Triangle3D(Point3D & p1, Point3D & p2, Point3D & p3)
 	{
 		points[0] = p1;
 		points[1] = p2;
@@ -77,7 +89,7 @@ struct cLineSegment
 	cLineSegment() : len(0), lenXY(0) {}
 	cLineSegment(Point3D & p1, Point3D & p2) { SetPoints(p1, p2); }
 	void SetPoints(Point3D & p1, Point3D & p2);
-	void PointAt(float dist, Point3D & retp); 
+	void PointAt(float dist, Point3D & retp);
 	Point3D pStart;
 	Point3D pDir;
 	Point3D pDirXY;
@@ -88,22 +100,15 @@ struct cLineSegment
 class cSimTool
 {
 public:
-	enum Type {
-		FLAT = 0,
-		CHAMFER,
-		ROUND
-	};
-	cSimTool() : type(FLAT), radius(0), tipAngle(0), dradius(0), chamRatio(0) {}
-	cSimTool(Type t, float rad, float tipang = 180) : type(t), radius(rad), tipAngle(tipang) { InitTool(); }
+    cSimTool(const TopoDS_Shape& toolShape, float res);
 	~cSimTool() {}
-	void InitTool();
 
-	Type type;
-	float radius;
-	float tipAngle;
-	float dradius;
-	float chamRatio;
 	float GetToolProfileAt(float pos);
+	bool isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res);
+
+	std::vector< toolShapePoint > m_toolShape;
+	float radius;
+	float length;
 };
 
 template <class T>
@@ -130,7 +135,6 @@ private:
 	T *data;
 	int height;
 };
-
 
 class cStock
 {

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -87,7 +87,7 @@ struct PathExport CAreaConfig {
     /** For saving current libarea settings */
     PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_CAREA)
 
-    /** The constructor automatically saves current setting and apply user defined ones 
+    /** The constructor automatically saves current setting and apply user defined ones
      *
      * \arg \c p user defined configurations
      * \arg \c noFitArgs if true, will override and disable arc fitting. Because
@@ -176,13 +176,13 @@ public:
 
     bool isBuilt() const;
 
-    /** Set a working plane 
+    /** Set a working plane
      *
      * \arg \c shape: a shape defining a working plane.
      *
      * The supplied shape does not need to be planar. Area will try to find planar
-     * sub-shape (face, wire or edge). If more than one planar sub-shape is found, 
-     * it will prefer the top plane parallel to XY0 plane. 
+     * sub-shape (face, wire or edge). If more than one planar sub-shape is found,
+     * it will prefer the top plane parallel to XY0 plane.
      *
      * If no working plane are set, Area will try to find a working plane from
      * the added children shape using the same algorithm
@@ -199,7 +199,7 @@ public:
      */
     TopoDS_Shape getPlane(gp_Trsf *trsf=0);
 
-    /** Add a child shape with given operation code 
+    /** Add a child shape with given operation code
      *
      * No validation is done at this point. Exception will be thrown when asking
      * for output shape, if any of the children shapes is not valid or not
@@ -217,7 +217,7 @@ public:
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
-    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), 
+    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET),
             int reoirent=0, bool from_center=false);
 
     /** Make a pocket of the combined shape
@@ -277,7 +277,7 @@ public:
         return mySections.size();
     }
 
-    /** Add a OCC wire shape to CArea 
+    /** Add a OCC wire shape to CArea
      *
      * \arg \c area: output converted curved object to here
      * \arg \c wire: input wire object
@@ -287,10 +287,10 @@ public:
      * \arg \c to_edges: if true, discretize all curves, and insert as open
      * line segments
      * */
-    static void addWire(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL, 
-            double deflection=0.01, bool to_edges=false); 
+    static void addWire(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL,
+            double deflection=0.01, bool to_edges=false);
 
-    /** Add a OCC generic shape to CArea 
+    /** Add a OCC generic shape to CArea
      *
      * \arg \c area: output converted curved object to here
      * \arg \c shape: input shape object
@@ -309,7 +309,7 @@ public:
      * */
     static int addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
             double deflection=0.01,const TopoDS_Shape *plane = NULL,
-            bool force_coplanar=true, CArea *areaOpen=NULL, bool to_edges=false, 
+            bool force_coplanar=true, CArea *areaOpen=NULL, bool to_edges=false,
             bool reorient=true);
 
     /** Convert curves in CArea into an OCC shape
@@ -319,7 +319,7 @@ public:
      * \arg \c trsf: optional transform matrix to transform the shape back into
      * its original position.
      * */
-    static TopoDS_Shape toShape(const CArea &area, bool fill, 
+    static TopoDS_Shape toShape(const CArea &area, bool fill,
             const gp_Trsf *trsf=NULL, int reoirent=0);
 
     /** Convert a single curve into an OCC wire
@@ -363,14 +363,16 @@ public:
      * \arg \c shapes: input list of shapes
      * \arg \c pstart: output start point,
      * \arg \c pend: optional output containing the ending point of the returned
-     * 
+     *
      * See #AREA_PARAMS_PATH for other arguments
      */
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
 
-    static int project(TopoDS_Shape &out, const TopoDS_Shape &in, const AreaParams *params=0);
+    static int project(TopoDS_Shape &out, const TopoDS_Shape &in,
+                       const AreaParams *params = nullptr,
+                       const TopoDS_Shape *work_plane = nullptr);
 
     static void setWireOrientation(TopoDS_Wire& wire, const gp_Dir &dir, bool ccw);
 

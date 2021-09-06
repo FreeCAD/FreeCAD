@@ -75,11 +75,11 @@ TopoDS_Shape TechDrawExport moveShape(const TopoDS_Shape &input,
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
                         const Base::Vector3d &direction);
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
-                                      const gp_Ax2 viewAxis);
+                                      const gp_Ax2 &viewAxis);
 Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape &shape,
                         const Base::Vector3d &direction);
 Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape &shape,
-                                              const gp_Ax2 cs);
+                                              const gp_Ax2& cs);
 
 gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
                                   const Base::Vector3d& direction,
@@ -113,11 +113,11 @@ public:
     void setEdgeGeometry(std::vector<BaseGeom*> newGeoms) {edgeGeom = newGeoms; }
 
     void projectShape(const TopoDS_Shape &input,
-                      const gp_Ax2 viewAxis);
+                      const gp_Ax2 &viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape &input,
-                                     const gp_Ax2 viewAxis);
+                                     const gp_Ax2 &viewAxis);
     TopoDS_Shape projectFace(const TopoDS_Shape &face,
-                             const gp_Ax2 CS);
+                             const gp_Ax2 &CS);
 
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
@@ -131,7 +131,9 @@ public:
     void setFocus(double f) { m_focus = f; }
     double getFocus(void) { return m_focus; }
     void pruneVertexGeom(Base::Vector3d center, double radius);
-    TopoDS_Shape invertGeometry(const TopoDS_Shape s);
+
+    //dupl mirrorShape???
+    static TopoDS_Shape invertGeometry(const TopoDS_Shape s);
 
     TopoDS_Shape getVisHard(void)    { return visHard; }
     TopoDS_Shape getVisOutline(void) { return visOutline; }

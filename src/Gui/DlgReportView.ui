@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>432</width>
-    <height>411</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,6 +33,25 @@
        <number>11</number>
       </property>
       <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkMessage">
+        <property name="toolTip">
+         <string>Normal messages will be recorded</string>
+        </property>
+        <property name="text">
+         <string>Record normal messages</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkMessage</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkLogging">
         <property name="toolTip">
          <string>Log messages will be recorded</string>
@@ -48,7 +67,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkWarning">
         <property name="toolTip">
          <string>Warnings will be recorded</string>
@@ -67,7 +86,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkError">
         <property name="toolTip">
          <string>Error messages will be recorded</string>
@@ -86,7 +105,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnError">
         <property name="toolTip">
          <string>When an error has occurred, the Report View dialog becomes visible
@@ -106,7 +125,7 @@ on-screen while displaying the error</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnWarning">
         <property name="toolTip">
          <string>When a warning has occurred, the Report View dialog becomes visible
@@ -126,7 +145,7 @@ on-screen while displaying the warning</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnNormalMessage">
         <property name="toolTip">
          <string>When a normal message has occurred, the Report View dialog becomes visible
@@ -146,7 +165,7 @@ on-screen while displaying the message</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnLogMessage">
         <property name="toolTip">
          <string>When a log message has occurred, the Report View dialog becomes visible
@@ -160,6 +179,25 @@ on-screen while displaying the log message</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>checkShowReportViewOnLogMessage</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportTimecode">
+        <property name="toolTip">
+         <string>Include a timecode for each report</string>
+        </property>
+        <property name="text">
+         <string>Include a timecode for each entry</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportTimecode</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>OutputWindow</cstring>
@@ -553,6 +591,7 @@ from Python console to Report view panel</string>
   <tabstop>checkShowReportViewOnError</tabstop>
   <tabstop>checkShowReportViewOnNormalMessage</tabstop>
   <tabstop>checkShowReportViewOnLogMessage</tabstop>
+  <tabstop>checkShowReportTimecode</tabstop>
   <tabstop>colorText</tabstop>
   <tabstop>colorLogging</tabstop>
   <tabstop>colorWarning</tabstop>

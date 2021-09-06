@@ -11,12 +11,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>لإضافة مراجع قم باختيارها في العرض ثلاثي الأبعاد ثم انقر فوق "إضافة".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>لإضافة مراجع قم باختيارها في العرض ثلاثي الأبعاد ثم انقر فوق "إضافة".</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="213"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>التحكم بالحلّال</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
@@ -68,6 +68,105 @@
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation type="unfinished">Geometry reference selector for a</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>إضافة</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>انقر فوق "إضافة" وحدد العناصر الهندسية لإضافتها إلى القائمة. إذا لم يتم إضافة أي شكل هندسي إلى القائمة، سيتم استخدام جميع العناصر المتبقية. يسمح باختيار العناصر الهندسية التالية: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>وضع الإختيار</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>صلب</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>محدد مرجع الشكل الهندسي لـ </translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+      <source>Select Solids</source>
+      <translation>حدد الاشكال الصلبة</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>حدد العناصر المنتمية الي الشكل الصلب التي سيتم اضافتها إلى القائمة. لإضافة الشكل الصلب انقر "إضافة".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation>حدد العناصر المنتمية الي الشكل الصلب التي سيتم اضافتها إلى القائمة. لإضافة الشكل الصلب انقر "إضافة".</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>إضافة</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>إزالة</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
@@ -77,7 +176,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>يقوم بإنشاء حاوية تحليل مع حلّال قياسي CalculiX</translation>
     </message>
   </context>
   <context>
@@ -85,12 +184,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>مستوى القطاع على وجه</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>إضافة مستوى قطاع على وجه المحدد</translation>
     </message>
   </context>
   <context>
@@ -98,7 +197,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="96"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>إزالة جميع مستويات القطاعات</translation>
     </message>
   </context>
   <context>
@@ -106,12 +205,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>تقييد مصدر حرارة الجسم</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>ينشئ مصدر حرارة الجسم المقيد FEM</translation>
     </message>
   </context>
   <context>
@@ -119,12 +218,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>تقييد القدرة الكهروستاتيكية</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>تقييد القدرة الكهروستاتيكية ل FEM مقيدة</translation>
     </message>
   </context>
   <context>
@@ -132,7 +231,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>سرعة التدفق المقيدة</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -167,19 +266,6 @@
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintTie</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
-      <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="266"/>
-      <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ElementFluid1D</name>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
@@ -190,11 +276,6 @@
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
       <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="287"/>
-      <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
     </message>
   </context>
   <context>
@@ -280,12 +361,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation type="unfinished">Fluxsolver equation</translation>
+      <translation>معادلة حلّال الفيض</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Creates a FEM equation for fluxsolver</source>
-      <translation type="unfinished">Creates a FEM equation for fluxsolver</translation>
+      <translation>يقوم بإنشاء معادلة الـ FEM(طريقة العناصر المحددة) لتدَفّق حلّال التدفّق</translation>
     </message>
   </context>
   <context>
@@ -294,11 +375,6 @@
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
       <translation type="unfinished">Fluxsolver heat</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="450"/>
-      <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
     </message>
   </context>
   <context>
@@ -320,11 +396,6 @@
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
       <translation type="unfinished">Material for fluid</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="495"/>
-      <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -357,11 +428,6 @@
       <source>Reinforced material (concrete)</source>
       <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="595"/>
-      <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
@@ -369,11 +435,6 @@
       <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Material for solid</source>
       <translation type="unfinished">Material for solid</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="616"/>
-      <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -458,11 +519,6 @@
       <source>FEM mesh from shape by Netgen</source>
       <translation type="unfinished">FEM mesh from shape by Netgen</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="838"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshRegion</name>
@@ -508,12 +564,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="708"/>
       <source>Solver CalculiX (experimental)</source>
-      <translation type="unfinished">Solver CalculiX (experimental)</translation>
+      <translation>حلّال CalculiX (تجريبي)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="710"/>
       <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX (experimental)</translation>
+      <translation>ينشئ حلّال FEM CalculiX (تجريبي)</translation>
     </message>
   </context>
   <context>
@@ -521,22 +577,22 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="679"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>حلّال CalculiX قياسي</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="681"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>ينشئ حلّال FEM قياسي CalculiX مع أدوات ccx</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>حلّال CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>ينشئ حلّال FEM CalculiX</translation>
     </message>
   </context>
   <context>
@@ -544,7 +600,7 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>التحكم بعمل الحلّال</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
@@ -558,11 +614,6 @@
       <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Solver Elmer</source>
       <translation type="unfinished">Solver Elmer</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1041"/>
-      <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -605,34 +656,6 @@
     </message>
   </context>
   <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>محدد مرجع الشكل الهندسي لـ </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
-      <source>Add</source>
-      <translation>إضافة</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
-      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
-      <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
-      <source>Solid</source>
-      <translation>صلب</translation>
-    </message>
-  </context>
-  <context>
     <name>Material_Editor</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
@@ -643,37 +666,6 @@
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
       <translation type="unfinished">Opens the FreeCAD material editor</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
-      <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
-      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>إضافة</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>إزالة</translation>
     </message>
   </context>
   <context>
@@ -813,7 +805,7 @@
     <message>
       <location filename="_CommandControlSolver.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>التحكم بعمل الحلّال</translation>
     </message>
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
@@ -994,12 +986,12 @@
     <message>
       <location filename="_CommandSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>حلّال CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>ينشئ حلّال FEM CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>

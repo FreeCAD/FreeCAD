@@ -45,10 +45,17 @@ public:
 
     virtual bool doubleClicked(void) override;
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    
+    /// deliver the icon shown in the tree view
+    /// override from ViewProvider.h
+    virtual QIcon getIcon(void) const override;
 
 protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop) override;
+    /// a second icon for the Assembly type
+    const char* aPixmap;
+
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;

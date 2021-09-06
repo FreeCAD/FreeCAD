@@ -44,6 +44,7 @@
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
+Q_DECLARE_METATYPE(QList<Base::Vector3d>)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
 Q_DECLARE_METATYPE(Base::Quantity)
@@ -463,6 +464,58 @@ private:
     PropertyFloatItem* m_x;
     PropertyFloatItem* m_y;
     PropertyFloatItem* m_z;
+};
+
+class VectorListWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    VectorListWidget (int decimals, QWidget * parent = nullptr);
+    virtual ~VectorListWidget();
+
+    QVariant value() const;
+
+public Q_SLOTS:
+    void setValue(const QVariant&);
+
+protected:
+    void showValue(const QVariant& data);
+    void resizeEvent(QResizeEvent*);
+
+private Q_SLOTS:
+    void buttonClicked();
+
+Q_SIGNALS:
+    void valueChanged(const QVariant &);
+
+private:
+    int decimals;
+    QVariant variant;
+    QLineEdit *lineEdit;
+    QPushButton *button;
+};
+
+/**
+ * Edit properties of vector list type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyVectorListItem : public PropertyItem
+{
+    Q_OBJECT
+    PROPERTYITEM_HEADER
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyVectorListItem();
 };
 
 /**
@@ -1033,13 +1086,8 @@ public:
     PropertyItemEditorFactory();
     virtual ~PropertyItemEditorFactory();
 
-#if (QT_VERSION >= 0x050300)
     virtual QWidget *createEditor(int userType, QWidget *parent) const;
     virtual QByteArray valuePropertyName(int userType) const;
-#else
-    virtual QWidget * createEditor(QVariant::Type type, QWidget * parent) const;
-    virtual QByteArray valuePropertyName (QVariant::Type type) const;
-#endif
 };
 
 } // namespace PropertyEditor

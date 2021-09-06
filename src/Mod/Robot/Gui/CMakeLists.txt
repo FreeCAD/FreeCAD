@@ -49,24 +49,6 @@ else()
     qt4_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
 endif()
 
-set(RobotGui_MOC_HDRS
-    TaskTrajectory.h
-    TaskRobot6Axis.h
-    TrajectorySimulate.h
-    TaskDlgSimulate.h
-    TaskDlgEdge2Trac.h
-    TaskDlgTrajectoryDressUp.h
-    TaskDlgTrajectoryCompound.h
-    TaskRobotMessages.h
-    TaskRobotControl.h
-    TaskEdge2TracParameter.h
-    TaskTrajectoryDressUpParameter.h
-    TaskWatcher.h
-)
-fc_wrap_cpp(RobotGui_MOC_SRCS ${RobotGui_MOC_HDRS})
-SOURCE_GROUP("Qt" FILES ${PartDesignGui_MOC_SRCS})
-
-
 SET(RobotGui_SRCS_Module
     AppRobotGui.cpp
     Resources/Robot.qrc
@@ -155,6 +137,12 @@ SET(RobotGuiIcon_SVG
 
 add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
 target_link_libraries(RobotGui ${RobotGui_LIBS})
+
+unset(_flag_found CACHE)
+check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
+if (_flag_found)
+    target_compile_options(RobotGui PRIVATE -Wno-deprecated-copy)
+endif ()
 
 
 SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)

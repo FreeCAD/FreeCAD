@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -61,6 +61,14 @@ public:
         add_varargs_method("openBrowserHTML",&Module::openBrowserHTML
         );
         add_varargs_method("openBrowserWindow",&Module::openBrowserWindow
+        );
+        add_varargs_method("open",&Module::openBrowser,
+            "open(string)\n"
+            "Load a local (X)HTML file."
+        );
+        add_varargs_method("insert",&Module::openBrowser,
+            "insert(string)\n"
+            "Load a local (X)HTML file."
         );
         initialize("This module is the WebGui module."); // register with Python
     }

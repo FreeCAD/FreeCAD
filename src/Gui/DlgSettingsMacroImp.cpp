@@ -22,18 +22,19 @@
 
 
 #include "PreCompiled.h"
-
 #include "DlgSettingsMacroImp.h"
 #include "ui_DlgSettingsMacro.h"
+#include "Action.h"
 #include "Application.h"
+#include "MainWindow.h"
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsMacroImp */
 
 /**
- *  Constructs a DlgSettingsMacroImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsMacroImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsMacroImp::DlgSettingsMacroImp( QWidget* parent )
   : PreferencePage( parent )
@@ -51,12 +52,24 @@ DlgSettingsMacroImp::DlgSettingsMacroImp( QWidget* parent )
     }
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsMacroImp::~DlgSettingsMacroImp()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+/** Sets the size of the recent macros list from the user parameters.
+ * @see RecentMacrosAction
+ * @see StdCmdRecentMacros
+ */
+void DlgSettingsMacroImp::setRecentMacroSize()
+{
+    RecentMacrosAction *recent = getMainWindow()->findChild<RecentMacrosAction *>(QLatin1String("recentMacros"));
+    if (recent) {
+        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
+        recent->resizeList(hGrp->GetInt("RecentMacros", 4));
+    }
 }
 
 void DlgSettingsMacroImp::saveSettings()
@@ -68,6 +81,10 @@ void DlgSettingsMacroImp::saveSettings()
     ui->PConsoleCheckBox->onSave();
     ui->FileLogCheckBox->onSave();
     ui->MacroPath_2->onSave();
+    ui->RecentMacros->onSave();
+    ui->ShortcutModifiers->onSave();
+    ui->ShortcutCount->onSave();
+    setRecentMacroSize();
 }
 
 void DlgSettingsMacroImp::loadSettings()
@@ -79,6 +96,9 @@ void DlgSettingsMacroImp::loadSettings()
     ui->PConsoleCheckBox->onRestore();
     ui->FileLogCheckBox->onRestore();
     ui->MacroPath_2->onRestore();
+    ui->RecentMacros->onRestore();
+    ui->ShortcutModifiers->onRestore();
+    ui->ShortcutCount->onRestore();
 }
 
 /**

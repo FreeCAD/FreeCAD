@@ -38,5 +38,12 @@
                 <UserDocu>Clear the selection</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="highlightSegments">
+            <Documentation>
+                <UserDocu>Highlights the segments of a mesh with a given list of colors.
+The number of elements of this list must be equal to the number of mesh segments.
+                </UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>

@@ -37,7 +37,7 @@ class ImageGuiExport GLImageBox : public QOpenGLWidget
 
 public:
 
-    GLImageBox(QWidget * parent = 0, Qt::WindowFlags f = 0);
+    GLImageBox(QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
     ~GLImageBox();
 
     Image::ImageBase *getImageBasePtr() { return &_image; }

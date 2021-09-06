@@ -28,10 +28,22 @@
 # include <Inventor/VRMLnodes/SoVRMLParent.h>
 # include <Inventor/SbString.h>
 # include <Inventor/nodes/SoGroup.h>
+# include <QDir>
+# include <QProcess>
+# include <QTemporaryFile>
+# include <sstream>
 #endif
+
+#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/VRMLnodes/SoVRMLNormal.h>
+#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+#include <Inventor/VRMLnodes/SoVRMLShape.h>
+#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/fields/SoMFNode.h>
 
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
@@ -56,12 +68,14 @@
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "SoFCCSysDragger.h"
+#include "SoMouseWheelEvent.h"
 
 #include "propertyeditor/PropertyItem.h"
 #include "NavigationStyle.h"
 #include "GestureNavigationStyle.h"
 #include "Flag.h"
 #include "SelectionObject.h"
+#include "View3DPy.h"
 
 using namespace Gui;
 using namespace Gui::Inventor;
@@ -125,6 +139,7 @@ void Gui::SoFCDB::init()
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();
+    SoMouseWheelEvent               ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
@@ -140,6 +155,7 @@ void Gui::SoFCDB::init()
     PropertyAngleItem               ::init();
     PropertyBoolItem                ::init();
     PropertyVectorItem              ::init();
+    PropertyVectorListItem          ::init();
     PropertyVectorDistanceItem      ::init();
     PropertyPositionItem            ::init();
     PropertyDirectionItem           ::init();
@@ -188,7 +204,7 @@ void Gui::SoFCDB::init()
 void Gui::SoFCDB::finish()
 {
     // Coin doesn't provide a mechanism to free static members of own data types.
-    // Hence, we need to define a static method e.g. 'finish()' for all new types 
+    // Hence, we need to define a static method e.g. 'finish()' for all new types
     // to invoke the private member function 'atexit_cleanup()'.
     SoFCColorBarBase                ::finish();
     SoFCColorBar                    ::finish();
@@ -209,38 +225,38 @@ void Gui::SoFCDB::finish()
     SoFCSeparator                   ::finish();
     SoFCSelectionRoot               ::finish();
     SoFCPathAnnotation              ::finish();
-    
+
     storage->unref();
     storage = nullptr;
 }
 
 // buffer acrobatics for inventor ****************************************************
-static char * buffer;
-static size_t buffer_size = 0;
+static char * static_buffer;
+static size_t static_buffer_size = 0;
 static std::string cReturnString;
 
 static void *
 buffer_realloc(void * bufptr, size_t size)
 {
-    buffer = (char *)realloc(bufptr, size);
-    buffer_size = size;
-    return buffer;
+    static_buffer = (char *)realloc(bufptr, size);
+    static_buffer_size = size;
+    return static_buffer;
 }
 
 const std::string& Gui::SoFCDB::writeNodesToString(SoNode * root)
 {
     SoOutput out;
-    buffer = (char *)malloc(1024);
-    buffer_size = 1024;
-    out.setBuffer(buffer, buffer_size, buffer_realloc);
+    static_buffer = (char *)malloc(1024);
+    static_buffer_size = 1024;
+    out.setBuffer(static_buffer, static_buffer_size, buffer_realloc);
     if (root && root->getTypeId().isDerivedFrom(SoVRMLParent::getClassTypeId()))
         out.setHeaderString("#VRML V2.0 utf8");
 
     SoWriteAction wa(&out);
     wa.apply(root);
 
-    cReturnString = buffer;
-    free(buffer);
+    cReturnString = static_buffer;
+    free(static_buffer);
     return cReturnString;
 }
 
@@ -295,7 +311,12 @@ SoNode* replaceSwitchesInSceneGraph(SoNode* node)
     return node;
 }
 
-bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
+SoNode* Gui::SoFCDB::replaceSwitches(SoNode* node)
+{
+    return replaceSwitchesInSceneGraph(node);
+}
+
+void Gui::SoFCDB::writeToVRML(SoNode* node, std::string& buffer)
 {
     SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
     noSwitches->ref();
@@ -305,15 +326,22 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
     SoToVRML2Action tovrml2;
     tovrml2.apply(noSwitches);
     SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
+
     vrmlRoot->setInstancePrefix(SbString("o"));
     vrmlRoot->ref();
-    std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
+    buffer = SoFCDB::writeNodesToString(vrmlRoot);
     vrmlRoot->unref(); // release the memory as soon as possible
 
     // restore old settings
     vrml2.setOverrideMode(false);
     vrml2.apply(noSwitches);
     noSwitches->unref();
+}
+
+bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
+{
+    std::string buffer;
+    writeToVRML(node, buffer);
 
     Base::FileInfo fi(filename);
     if (binary) {
@@ -345,6 +373,336 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
     return false;
 }
 
+bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
+{
+    std::string buffer;
+    writeToX3D(node, false, buffer);
+
+    Base::FileInfo fi(filename);
+    if (binary) {
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
+        zipios::GZIPOutputStream gzip(str);
+
+        if (gzip) {
+            gzip << buffer;
+            gzip.close();
+            return true;
+        }
+    }
+    else {
+        Base::ofstream str(fi, std::ios::out);
+
+        if (str) {
+            str << buffer;
+            str.close();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& buffer)
+{
+#if 0
+    writeToVRML(node, buffer);
+    if (buffer.empty())
+        return false;
+
+    QString filename = QDir::tempPath();
+    filename += QLatin1String("/sceneXXXXXX.wrl");
+    QTemporaryFile wrlFile(filename);
+    if (wrlFile.open()) {
+        filename = wrlFile.fileName();
+        wrlFile.write(buffer.c_str(), buffer.size());
+        wrlFile.close();
+
+        QString exe(QLatin1String("tovrmlx3d"));
+        QStringList args;
+        args << filename << QLatin1String("--encoding") << QLatin1String("xml");
+        QProcess proc;
+        proc.setEnvironment(QProcess::systemEnvironment());
+        proc.start(exe, args);
+        if (proc.waitForStarted() && proc.waitForFinished()) {
+            QByteArray x3d = proc.readAll();
+            if (x3d.isEmpty())
+                return false;
+
+            x3d.replace('\t', "  ");
+
+            if (exportViewpoints) {
+                // compute a sensible view point
+                SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
+                bboxAction.apply(node);
+                SbBox3f bbox = bboxAction.getBoundingBox();
+                SbSphere bs;
+                bs.circumscribe(bbox);
+                const SbVec3f& cnt = bs.getCenter();
+                float dist = bs.getRadius();
+
+                QString vp = QString::fromLatin1("  <Viewpoint id=\"Top\" centerOfRotation=\"%1 %2 %3\" "
+                                                 "position=\"%1 %2 %4\" orientation=\"0.000000 0.000000 1.000000 0.000000\" "
+                                                 "description=\"camera\" fieldOfView=\"0.9\"></Viewpoint>\n")
+                             .arg(cnt[0]).arg(cnt[1]).arg(cnt[2]).arg(cnt[2] + 2.0f * dist);
+                int index = x3d.indexOf("<Scene>\n");
+                if (index >= 0) {
+                    x3d.insert(index + 8, vp);
+                }
+            }
+
+            buffer = x3d.data();
+            return true;
+        }
+    }
+
+    return false;
+#else
+    SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
+    noSwitches->ref();
+    SoVRMLAction vrml2;
+    vrml2.setOverrideMode(true);
+    vrml2.apply(noSwitches);
+    SoToVRML2Action tovrml2;
+    tovrml2.apply(noSwitches);
+    SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
+
+    vrmlRoot->setInstancePrefix(SbString("o"));
+    vrmlRoot->ref();
+
+    // Search for SoVRMLIndexedFaceSet nodes and set creaseAngle to 0.5
+    {
+        SoSearchAction sa;
+        sa.setType(SoVRMLShape::getClassTypeId());
+        sa.setInterest(SoSearchAction::ALL);
+        sa.setSearchingAll(true);
+        sa.apply(vrmlRoot);
+        SoPathList& paths = sa.getPaths();
+        for (int i=0; i<paths.getLength(); i++) {
+            SoPath* path = paths[i];
+            SoVRMLShape* shape = static_cast<SoVRMLShape*>(path->getTail());
+            SoNode* geom = shape->geometry.getValue();
+            if (geom && geom->getTypeId() == SoVRMLIndexedFaceSet::getClassTypeId()) {
+                SoNode* norm = static_cast<SoVRMLIndexedFaceSet*>(geom)->normal.getValue();
+                if (norm && norm->getTypeId() == SoVRMLNormal::getClassTypeId()) {
+                    // if empty then nullify the normal field node
+                    if (static_cast<SoVRMLNormal*>(norm)->vector.getNum() == 0)
+                        static_cast<SoVRMLIndexedFaceSet*>(geom)->normal.setValue(nullptr);
+                }
+                else {
+                    static_cast<SoVRMLIndexedFaceSet*>(geom)->creaseAngle.setValue(0.5f);
+                }
+            }
+        }
+        sa.reset(); // clear the internal cache
+    }
+
+    std::stringstream out;
+    writeX3D(vrmlRoot, exportViewpoints, out);
+    buffer = out.str();
+
+    vrmlRoot->unref(); // release the memory as soon as possible
+
+    // restore old settings
+    vrml2.setOverrideMode(false);
+    vrml2.apply(noSwitches);
+    noSwitches->unref();
+
+    return true;
+#endif
+}
+
+void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
+                                 bool isRoot, int& numDEF, int spaces, std::ostream& out)
+{
+    // remove the VRML prefix from the type name
+    std::string type(node->getTypeId().getName().getString());
+    type = type.substr(4);
+
+    out << Base::blanks(spaces) << "<" << type;
+    if (node->getRefCount() > 1 && !isRoot) {
+        SbName name = node->getName();
+        std::stringstream str;
+        if (name.getLength() == 0)
+            str << "o" << numDEF++;
+        else
+            str << name.getString();
+
+        nodeMap[node] = str.str();
+        out << " DEF=\"" << str.str() << "\"";
+    }
+
+    const SoFieldData* fielddata = node->getFieldData();
+    if (fielddata) {
+        int numFieldNodes = 0;
+
+        // process non-SoSFNode and non-SoMFNode fields
+        for (int i=0; i<fielddata->getNumFields(); i++) {
+            SoField* field = fielddata->getField(node, i);
+            if (!field->isDefault()) {
+                if (!field->isOfType(SoSFNode::getClassTypeId()) &&
+                    !field->isOfType(SoMFNode::getClassTypeId())) {
+                    SbString value;
+                    field->get(value);
+                    QByteArray ba(value.getString(), value.getLength());
+                    ba.replace('\n', ' ');
+                    if (field->isOfType(SoMField::getClassTypeId())) {
+                        ba.replace('[', ' ');
+                        ba.replace(']', ' ');
+                        ba = ba.simplified();
+                    }
+
+                    out << '\n' << Base::blanks(spaces+2) << fielddata->getFieldName(i).getString() << "=\"" << ba.data() << "\" ";
+                }
+                else {
+                    numFieldNodes++;
+                }
+            }
+        }
+
+        if (numFieldNodes > 0) {
+            out << ">\n";
+        }
+        else {
+            out << "/>\n";
+        }
+
+        // process SoSFNode or SoMFNode fields
+        for (int i=0; i<fielddata->getNumFields(); i++) {
+            SoField* field = fielddata->getField(node, i);
+            if (!field->isDefault()) {
+                if (field->isOfType(SoSFNode::getClassTypeId())) {
+                    SoSFNode* sfNode = static_cast<SoSFNode*>(field);
+                    writeX3DChild(sfNode->getValue(), nodeMap, numDEF, spaces+2, out);
+                }
+                else if (field->isOfType(SoMFNode::getClassTypeId())) {
+                    SoMFNode* mfNode = static_cast<SoMFNode*>(field);
+                    for (int j=0; j<mfNode->getNum(); j++) {
+                        writeX3DChild(mfNode->getNode(j), nodeMap, numDEF, spaces+2, out);
+                    }
+                }
+            }
+        }
+
+        if (numFieldNodes > 0) {
+            out << Base::blanks(spaces) << "</" << type << ">\n";
+        }
+    }
+}
+
+void Gui::SoFCDB::writeX3DChild(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
+                                int& numDEF, int spaces, std::ostream& out)
+{
+    if (!node)
+        return;
+
+    // check if the node is already used
+    auto mapIt = nodeMap.find(node);
+    if (mapIt == nodeMap.end()) {
+        writeX3DFields(node, nodeMap, false, numDEF, spaces, out);
+    }
+    else {
+        // remove the VRML prefix from the type name
+        std::string sftype(node->getTypeId().getName().getString());
+        sftype = sftype.substr(4);
+        out << Base::blanks(spaces) << "<" << sftype << " USE=\"" << mapIt->second << "\" />\n";
+    }
+}
+
+void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostream& out)
+{
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    out << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+    out << "<X3D profile=\"Immersive\" version=\"3.2\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" "
+           "xsd:noNamespaceSchemaLocation=\"http://www.web3d.org/specifications/x3d-3.2.xsd\" width=\"1280px\"  height=\"1024px\">\n";
+    out << "  <head>\n"
+           "    <meta name=\"generator\" content=\"FreeCAD\"/>\n"
+           "    <meta name=\"author\" content=\"\"/>\n"
+           "    <meta name=\"company\" content=\"\"/>\n"
+           "  </head>\n";
+
+    std::map<SoNode*, std::string> nodeMap;
+    out << "  <Scene>\n";
+
+    // compute a sensible view point
+    SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
+    bboxAction.apply(node);
+    SbBox3f bbox = bboxAction.getBoundingBox();
+    SbSphere bs;
+    bs.circumscribe(bbox);
+    const SbVec3f& cnt = bs.getCenter();
+    float dist = 2.4f * bs.getRadius();
+    float dist3 = 0.577350f * dist; // sqrt(1/3) * dist
+
+    if (exportViewpoints) {
+        auto viewpoint = [&out](const char* text, const SbVec3f& cnt,
+                                const SbVec3f& pos, const SbRotation& rot) {
+            SbVec3f axis; float angle;
+            rot.getValue(axis, angle);
+            out << "    <Viewpoint id=\"" << text
+                << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
+                << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
+                << "\" orientation=\"" << axis[0] << " " << axis[1] << " " << axis[2] << " " << angle
+                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << "</Viewpoint>\n";
+        };
+
+        viewpoint("Iso", cnt, SbVec3f(cnt[0] + dist3, cnt[1] - dist3, cnt[2] + dist3), Camera::rotation(Camera::Isometric));
+        viewpoint("Front", cnt, SbVec3f(cnt[0], cnt[1] - dist, cnt[2]), Camera::rotation(Camera::Front));
+        viewpoint("Back", cnt, SbVec3f(cnt[0], cnt[1] + dist, cnt[2]), Camera::rotation(Camera::Rear));
+        viewpoint("Right", cnt, SbVec3f(cnt[0] + dist, cnt[1], cnt[2]), Camera::rotation(Camera::Right));
+        viewpoint("Left", cnt, SbVec3f(cnt[0] - dist, cnt[1], cnt[2]), Camera::rotation(Camera::Left));
+        viewpoint("Top", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] + dist), Camera::rotation(Camera::Top));
+        viewpoint("Bottom", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] - dist), Camera::rotation(Camera::Bottom));
+    }
+
+    int numDEF = 0;
+    writeX3DFields(node, nodeMap, true, numDEF, 4, out);
+    out << "  </Scene>\n";
+    out << "</X3D>\n";
+}
+
+bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
+{
+    std::string x3d;
+    if (!writeToX3D(node, true, x3d))
+        return false;
+
+    // remove the first two lines from the x3d output as this duplicates
+    // the xml and doctype header
+    std::size_t pos = x3d.find('\n');
+    pos = x3d.find('\n', pos + 1);
+    x3d = x3d.erase(0, pos + 1);
+
+    std::stringstream out;
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+    out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+        << "  <head>\n"
+        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> </script>\n"
+        << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
+        << "  </head>\n";
+
+    auto onclick = [&out](const char* text) {
+        out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
+    };
+
+    onclick("Iso");
+    onclick("Front");
+    onclick("Back");
+    onclick("Right");
+    onclick("Left");
+    onclick("Top");
+    onclick("Bottom");
+
+    out << x3d;
+
+    out << "</html>\n";
+
+    buffer = out.str();
+
+    return true;
+}
+
 bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
 {
     bool ret = false;
@@ -357,6 +715,25 @@ bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
             binary = true;
 
         ret = SoFCDB::writeToVRML(node, filename, binary);
+    }
+    else if (fi.hasExtension("x3d") || fi.hasExtension("x3dz")) {
+        // If 'x3dz' is set then force compression
+        if (fi.hasExtension("x3dz"))
+            binary = true;
+
+        ret = SoFCDB::writeToX3D(node, filename, binary);
+    }
+    else if (fi.hasExtension("xhtml")) {
+        std::string buffer;
+        if (SoFCDB::writeToX3DOM(node, buffer)) {
+            Base::ofstream str(Base::FileInfo(filename), std::ios::out);
+
+            if (str) {
+                str << buffer;
+                str.close();
+                ret = true;
+            }
+        }
     }
     else if (fi.hasExtension("iv")) {
         // Write Inventor in ASCII

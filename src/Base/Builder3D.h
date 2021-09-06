@@ -39,10 +39,10 @@ class Matrix4D;
  * when you program or debug an algorithm. Builder3D was made for this specific purpose.
  * This class allows you to easily build up a 3D representation of some mathematical and
  * algorithm internals. You can save this representation to a file and view it in an
- * Inventor viewer, or send it to the log. In the case of using the log and a debug 
+ * Inventor viewer, or send it to the log. In the case of using the log and a debug
  * FreeCAD the representation will be loaded into the active viewer.
  *  \par
- * The workflow goes as follows: Create the a Builder3D object and call the methods 
+ * The workflow goes as follows: Create the a Builder3D object and call the methods
  * to insert the graphical elements. After that call either saveToLog() or saveToFile().
  *  \par
  * Usage:
@@ -74,7 +74,7 @@ public:
   void addPoint(float x, float y, float z);
   /// add a vector to a point set
   void addPoint(const Vector3f &vec);
-  /// ends the points set operation 
+  /// ends the points set operation
   void endPoints(void);
   /// add a singular point (without startPoints() & endPoints() )
   void addSinglePoint(float x, float y, float z, short pointSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
@@ -306,7 +306,7 @@ public:
 
     /** @name Bounding Box handling */
     //@{
-    void addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, short lineWidth=2, 
+    void addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, short lineWidth=2,
                         float color_r=1.0,float color_g=1.0,float color_b=1.0);
     //@}
 

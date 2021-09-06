@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -31,7 +30,6 @@ import tempfile
 import os
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -51,9 +49,9 @@ if sys.version_info.major >= 3:
 #  This module provides tools to build BuildingPart objects.
 #  BuildingParts are used to group different Arch objects
 
-__title__="FreeCAD Arch BuildingPart"
+__title__  = "FreeCAD Arch BuildingPart"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 BuildingTypes = ['Undefined',
@@ -324,8 +322,8 @@ class BuildingPart(ArchIFC.IfcProduct):
     def __init__(self,obj):
 
         obj.Proxy = self
-        obj.addExtension('App::GroupExtensionPython', self)
-        #obj.addExtension('App::OriginGroupExtensionPython', self)
+        obj.addExtension('App::GroupExtensionPython')
+        #obj.addExtension('App::OriginGroupExtensionPython')
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -350,6 +348,11 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "SavedInventor" in pl:
             obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an inventor representation for this object"))
             obj.setEditorMode("SavedInventor",2)
+        if not "OnlySolids" in pl:
+            obj.addProperty("App::PropertyBool","OnlySolids","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, only solids will be collected by this object when referenced from other files"))
+            obj.OnlySolids = True
+        if not "MaterialsTable" in pl:
+            obj.addProperty("App::PropertyMap","MaterialsTable","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files"))
 
         self.Type = "BuildingPart"
 
@@ -414,17 +417,21 @@ class BuildingPart(ArchIFC.IfcProduct):
     def execute(self,obj):
 
         # gather all the child shapes into a compound
-        shapes = self.getShapes(obj)
+        shapes,materialstable = self.getShapes(obj)
         if shapes:
-            f = []
-            for s in shapes:
-                f.extend(s.Faces)
-            #print("faces before compound:",len(f))
             import Part
-            obj.Shape = Part.makeCompound(f)
-            #print("faces after compound:",len(obj.Shape.Faces))
-            #print("recomputing ",obj.Label)
+            if obj.OnlySolids:
+                f = []
+                for s in shapes:
+                    f.extend(s.Solids)
+                #print("faces before compound:",len(f))
+                obj.Shape = Part.makeCompound(f)
+                #print("faces after compound:",len(obj.Shape.Faces))
+                #print("recomputing ",obj.Label)
+            else:
+                obj.Shape = Part.makeCompound(shapes)
         obj.Area = self.getArea(obj)
+        obj.MaterialsTable = materialstable
 
     def getArea(self,obj):
 
@@ -433,9 +440,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
-                if hasattr(child,"Area") and hasattr(child,"IfcType"):
-                    # only add arch objects that have an Area property
-                    # TODO only spaces? ATM only spaces and windows have an Area property
+                if (Draft.get_type(child) in ["Space","BuildingPart"]) and hasattr(child,"IfcType"):
                     area += child.Area.Value
         return area
 
@@ -444,10 +449,22 @@ class BuildingPart(ArchIFC.IfcProduct):
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
-        for child in Draft.getGroupContents(obj):
-            if hasattr(child,'Shape'):
-                shapes.extend(child.Shape.Faces)
-        return shapes
+        solidindex = 0
+        materialstable = {}
+        for child in Draft.get_group_contents(obj):
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape') and child.Shape:
+                    shapes.append(child.Shape)
+                    for solid in child.Shape.Solids:
+                        matname = "Undefined"
+                        if hasattr(child,"Material") and child.Material:
+                            matname = child.Material.Name
+                        if matname in materialstable:
+                            materialstable[matname] = materialstable[matname]+","+str(solidindex)
+                        else:
+                            materialstable[matname] = str(solidindex)
+                        solidindex += 1
+        return shapes,materialstable
 
     def getSpaces(self,obj):
 
@@ -461,7 +478,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         return g
 
     def touchChildren(self,obj):
-        
+
         "Touches all descendents where applicable"
 
         for child in obj.Group:
@@ -472,6 +489,15 @@ class BuildingPart(ArchIFC.IfcProduct):
             elif Draft.getType(child) in ["Group","BuildingPart"]:
                 self.touchChildren(child)
 
+    def addObject(self,obj,child):
+
+        "Adds an object to the group of this BuildingPart"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
+
 
 class ViewProviderBuildingPart:
 
@@ -480,8 +506,8 @@ class ViewProviderBuildingPart:
 
     def __init__(self,vobj):
 
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
-        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython")
         vobj.Proxy = self
         self.setProperties(vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
@@ -528,7 +554,7 @@ class ViewProviderBuildingPart:
         if not "RestoreView" in pl:
             vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
         if not "DoubleClickActivates" in pl:
-            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree turns it active"))
+            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree activates it"))
 
         # inventor saving
         if not "SaveInventor" in pl:
@@ -565,7 +591,7 @@ class ViewProviderBuildingPart:
 
     def onDocumentRestored(self,vobj):
 
-        selt.setProperties(vobj)
+        self.setProperties(vobj)
 
     def getIcon(self):
 
@@ -644,14 +670,15 @@ class ViewProviderBuildingPart:
         "recursively get the colors of objects inside this BuildingPart"
 
         colors = []
-        for child in Draft.getGroupContents(obj):
-            if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
-                if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
-                    colors.extend(child.ViewObject.DiffuseColor)
-                else:
-                    c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
-                    for i in range(len(child.Shape.Faces)):
-                        colors.append(c)
+        for child in Draft.get_group_contents(obj):
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
+                    if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+                        colors.extend(child.ViewObject.DiffuseColor)
+                    else:
+                        c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
+                        for i in range(len(child.Shape.Faces)):
+                            colors.append(c)
         return colors
 
     def onChanged(self,vobj,prop):
@@ -703,7 +730,7 @@ class ViewProviderBuildingPart:
                         u = q.getUserPreferred()[2]
                     try:
                         q = q.getValueAs(u)
-                    except:
+                    except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
                     d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
                     fmt = "{0:."+ str(d) + "f}"
@@ -730,7 +757,8 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Group,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
@@ -755,7 +783,8 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Group,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "Two side"
         elif prop == "Visibility":
@@ -770,7 +799,7 @@ class ViewProviderBuildingPart:
         if self.clip:
             sg.removeChild(self.clip)
             self.clip = None
-        for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+        for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
             if hasattr(o.ViewObject,"Lighting"):
                 o.ViewObject.Lighting = "Two side"
         return True

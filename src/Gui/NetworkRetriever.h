@@ -37,7 +37,7 @@ namespace Gui {
  * file structure from a server.
  * \author Werner Mayer
  */
-class NetworkRetriever : public QObject  
+class NetworkRetriever : public QObject
 {
     Q_OBJECT
 
@@ -48,7 +48,7 @@ public:
     void setNumberOfTries( int );
     void setOutputFile( const QString& );
     void setEnableTimestamp(bool);
-    void setProxy( const QString&, const QString& = QString::null, const QString& = QString::null );
+    void setProxy( const QString&, const QString& = QString(), const QString& = QString() );
     void setEnableRecursive( bool, int = 0 );
     void setFollowRelative( bool );
     void setEnableConvert( bool );

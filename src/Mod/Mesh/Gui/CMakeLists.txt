@@ -28,29 +28,13 @@ SET(MeshGui_XML_SRCS
 )
 SOURCE_GROUP("XML" FILES ${MeshGui_XML_SRCS})
 
-set(Mesh_MOC_HDRS
-    DlgEvaluateMeshImp.h
-    DlgEvaluateSettings.h
-    DlgRegularSolidImp.h
-    DlgSettingsMeshView.h
-    DlgSettingsImportExportImp.h
-    DlgSmoothing.h
-    MeshEditor.h
-    PropertyEditorMesh.h
-    RemoveComponents.h
-    RemeshGmsh.h
-    SegmentationBestFit.h
-    Selection.h
-)
-fc_wrap_cpp(Mesh_MOC_SRCS ${Mesh_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${Mesh_MOC_SRCS})
-
 set(Dialogs_UIC_SRCS
     DlgEvaluateMesh.ui
     DlgEvaluateSettings.ui
     DlgRegularSolid.ui
     DlgSettingsMeshView.ui
     DlgSettingsImportExport.ui
+    DlgDecimating.ui
     DlgSmoothing.ui
     RemoveComponents.ui
     RemeshGmsh.ui
@@ -76,6 +60,9 @@ SET(Dialogs_SRCS
     DlgSettingsImportExport.ui
     DlgSettingsImportExportImp.cpp
     DlgSettingsImportExportImp.h
+    DlgDecimating.ui
+    DlgDecimating.cpp
+    DlgDecimating.h
     DlgSmoothing.ui
     DlgSmoothing.cpp
     DlgSmoothing.h
@@ -164,6 +151,14 @@ SET(MeshGui_SRCS
 SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg
 )
+
+# Suppress this warning for the SbMatrix class
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        SoFCIndexedFaceSet.cpp
+        ViewProvider.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
 
 add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
 target_link_libraries(MeshGui ${MeshGui_LIBS})

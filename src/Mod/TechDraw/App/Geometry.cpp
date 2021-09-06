@@ -27,14 +27,18 @@
 #include <BRepBndLib.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepAdaptor_HCurve.hxx>
 #include <BRepLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <Precision.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <gce_MakeCirc.hxx>
+#include <GC_MakeEllipse.hxx>
 #include <GC_MakeArcOfCircle.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Circ.hxx>
@@ -96,7 +100,12 @@ Wire::Wire(const TopoDS_Wire &w)
     TopExp_Explorer edges(w, TopAbs_EDGE);
     for (; edges.More(); edges.Next()) {
         const auto edge( TopoDS::Edge(edges.Current()) );
-        geoms.push_back( BaseGeom::baseFactory(edge) );
+        BaseGeom* bg = BaseGeom::baseFactory(edge);
+        if (bg != nullptr) {
+            geoms.push_back(bg);
+        } else {
+            Base::Console().Log("G::Wire - baseFactory returned null geom ptr\n");
+        }
     }
 }
 
@@ -106,6 +115,46 @@ Wire::~Wire()
         delete it;
     }
     geoms.clear();
+}
+
+TopoDS_Wire Wire::toOccWire(void) const
+{
+    TopoDS_Wire result;
+    BRepBuilderAPI_MakeWire mkWire;
+    for (auto& g: geoms) {
+        TopoDS_Edge e = g->occEdge;
+        mkWire.Add(e);
+    }
+    if (mkWire.IsDone())  {
+        result = mkWire.Wire();
+    }
+//    BRepTools::Write(result, "toOccWire.brep");
+    return result;
+}
+
+void Wire::dump(std::string s)
+{
+    BRepTools::Write(toOccWire(), s.c_str());            //debug
+}
+
+TopoDS_Face Face::toOccFace(void) const
+{
+    TopoDS_Face result;
+    //if (!wires.empty) {
+    BRepBuilderAPI_MakeFace mkFace(wires.front()->toOccWire(), true);
+    int limit = wires.size();
+    int iwire = 1;
+    for ( ; iwire < limit; iwire++) {
+//        w->dump("wireInToFace.brep");
+        TopoDS_Wire wOCC = wires.at(iwire)->toOccWire();
+        if(!wOCC.IsNull())  {
+            mkFace.Add(wOCC);
+        }
+    }
+    if (mkFace.IsDone())  {
+        result = mkFace.Face();
+    }
+    return result;
 }
 
 Face::~Face()
@@ -277,16 +326,28 @@ Base::Vector3d BaseGeom::getEndPoint()
 
 Base::Vector3d BaseGeom::getMidPoint()
 {
-    Base::Vector3d result;
-    BRepAdaptor_Curve adapt(occEdge);
-    double u = adapt.FirstParameter();
-    double v = adapt.LastParameter();
-    double range = v - u;
-    double midParm = u + (range / 2.0);
-    BRepLProp_CLProps prop(adapt,midParm,0,Precision::Confusion());
-    const gp_Pnt& pt = prop.Value();
-    result = Base::Vector3d(pt.X(),pt.Y(), pt.Z());
-    return result;
+    // Midpoint calculation - additional details here: https://forum.freecadweb.org/viewtopic.php?f=35&t=59582
+
+    BRepAdaptor_Curve curve(occEdge);
+
+    // As default, set the midpoint curve parameter value by simply averaging start point and end point values
+    double midParam = (curve.FirstParameter() + curve.LastParameter())/2.0;
+
+    // GCPnts_AbscissaPoint allows us to compute the parameter value depending on the distance along a curve.
+    // In this case we want the curve parameter value for the half of the whole curve length,
+    // thus GCPnts_AbscissaPoint::Length(curve)/2 is the distance to go from the start point.
+    GCPnts_AbscissaPoint abscissa(Precision::Confusion(), curve, GCPnts_AbscissaPoint::Length(curve)/2.0,
+                                  curve.FirstParameter());
+    if (abscissa.IsDone()) {
+        // The computation was successful - otherwise keep the average, it is better than nothing
+        midParam = abscissa.Parameter();
+    }
+
+    // Now compute coordinates of the point on curve for curve parameter value equal to midParam
+    BRepLProp_CLProps props(curve, midParam, 0, Precision::Confusion());
+    const gp_Pnt &point = props.Value();
+
+    return Base::Vector3d(point.X(), point.Y(), point.Z());
 }
 
 std::vector<Base::Vector3d> BaseGeom::getQuads()
@@ -384,17 +445,16 @@ bool BaseGeom::closed(void)
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
 {
-    BaseGeom* result = NULL;
+    std::unique_ptr<BaseGeom> result;
     if (edge.IsNull()) {
         Base::Console().Message("BG::baseFactory - input edge is NULL \n");
     }
     //weed out rubbish edges before making geometry
     if (!validateEdge(edge)) {
-        return result;
+        return nullptr;
     }
 
-    Generic *primitive = new Generic(edge);
-    result = primitive;
+    result = std::make_unique<Generic>(edge);
 
     BRepAdaptor_Curve adapt(edge);
     switch(adapt.GetType()) {
@@ -408,11 +468,9 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         //if first to last is > 1 radian? are circles parameterize by rotation angle?
         //if start and end points are close?
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              Circle *circle = new Circle(edge);
-              result = circle;
+              result = std::make_unique<Circle>(edge);
         } else {
-              AOC *aoc = new AOC(edge);
-              result = aoc;
+              result = std::make_unique<AOC>(edge);
         }
       } break;
       case GeomAbs_Ellipse: {
@@ -421,17 +479,15 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         gp_Pnt s = adapt.Value(f);
         gp_Pnt e = adapt.Value(l);
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              Ellipse *ellipse = new Ellipse(edge);
-              result = ellipse;
+              result = std::make_unique<Ellipse>(edge);
         } else {
-              AOE *aoe = new AOE(edge);
-              result = aoe;
+              result = std::make_unique<AOE>(edge);
         }
       } break;
       case GeomAbs_BezierCurve: {
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
-          result = new BezierSegment(edge);
+          result = std::make_unique<BezierSegment>(edge);
           if (edge.Orientation() == TopAbs_REVERSED) {
               result->reversed = true;
           }
@@ -439,37 +495,25 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
           //    OCC is quite happy with Degree > 3 but QtGui handles only 2,3
       } break;
       case GeomAbs_BSplineCurve: {
-        BSpline *bspline = 0;
-        Generic* gen = NULL;
-        Circle* circ = nullptr;
-        AOC*    aoc  = nullptr;
+        std::unique_ptr<BSpline> bspline;
         TopoDS_Edge circEdge;
 
         bool isArc = false;
         try {
-            bspline = new BSpline(edge);
+            bspline = std::make_unique<BSpline>(edge);
             if (bspline->isLine()) {
-                gen = new Generic(edge);
-                result = gen;
-                delete bspline;
-                bspline = nullptr;
+                result = std::make_unique<Generic>(edge);
             } else {
                 circEdge = bspline->asCircle(isArc);
                 if (!circEdge.IsNull()) {
                     if (isArc) {
-                        aoc = new AOC(circEdge);
-                        result = aoc;
-                        delete bspline;
-                        bspline = nullptr;
+                        result = std::make_unique<AOC>(circEdge);
                     } else {
-                        circ = new Circle(circEdge);
-                        result = circ;
-                        delete bspline;
-                        bspline = nullptr;
+                        result = std::make_unique<Circle>(circEdge);
                     }
                 } else {
 //                    Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
-                    result = bspline;
+                    result = std::move(bspline);
                 }
             }
             break;
@@ -477,41 +521,19 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         catch (const Standard_Failure& e) {
             Base::Console().Error("Geom::baseFactory - OCC error - %s - while making spline\n",
                               e.GetMessageString());
-            if (bspline != nullptr) {
-                delete bspline;
-                bspline = nullptr;
-            }
-            if (gen != nullptr) {
-                delete gen;
-                gen = nullptr;
-            }
             break;
         }
         catch (...) {
             Base::Console().Error("Geom::baseFactory - unknown error occurred while making spline\n");
-            if (bspline != nullptr) {
-                delete bspline;
-                bspline = nullptr;
-            }
-            if (gen != nullptr) {
-                delete gen;
-                gen = nullptr;
-            }
             break;
         } break;
       } // end bspline case
       default: {
-        primitive = new Generic(edge);
-        result = primitive;
+        result = std::make_unique<Generic>(edge);
       }  break;
     }
-
-    if ( (primitive != nullptr) &&
-       (primitive != result) ) {
-        delete primitive;
-    }
     
-    return result;
+    return result.release();
 }
 
 bool BaseGeom::validateEdge(TopoDS_Edge edge)
@@ -536,6 +558,25 @@ Ellipse::Ellipse(const TopoDS_Edge &e)
     angle = xaxis.AngleWithRef(gp_Dir(1, 0, 0), gp_Dir(0, 0, -1));
 }
 
+Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
+{
+    geomType = ELLIPSE;
+    center = c;
+    major = mjr;
+    minor = mnr;
+    angle = 0;
+
+    GC_MakeEllipse me(gp_Ax2(gp_Pnt(c.x,c.y,c.z), gp_Dir(0.0,0.0,1.0)),
+                      major, minor);
+    if (!me.IsDone()) {
+        Base::Console().Message("G:Ellipse - failed to make Ellipse\n");
+    }
+    const Handle(Geom_Ellipse) gEllipse = me.Value();
+    BRepBuilderAPI_MakeEdge mkEdge(gEllipse, 0.0, 2 * M_PI);
+    if (mkEdge.IsDone()) {
+        occEdge = mkEdge.Edge();
+    }
+}
 
 AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 {
@@ -580,6 +621,27 @@ Circle::Circle(void)
     radius = 0.0;
     center = Base::Vector3d(0.0, 0.0, 0.0);
 }
+
+Circle::Circle(Base::Vector3d c, double r)
+{
+    geomType = CIRCLE;
+    radius = r;
+    center = c;
+    gp_Pnt loc(c.x, c.y, c.z);
+    gp_Dir dir(0,0,1);
+    gp_Ax1 axis(loc, dir);
+    gp_Circ circle;
+    circle.SetAxis(axis);
+    circle.SetRadius(r);
+    double angle1 = 0.0;
+    double angle2 = 360.0;
+
+    Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
+    TopoDS_Edge edge = aMakeEdge.Edge();
+    occEdge = edge;
+}
+
 
 Circle::Circle(const TopoDS_Edge &e)
 {
@@ -657,6 +719,50 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
         reversed = true;
     }
 }
+
+AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
+{
+    geomType = ARCOFCIRCLE;
+
+    radius = r;
+    center = c;
+    gp_Pnt loc(c.x, c.y, c.z);
+    gp_Dir dir(0,0,1);
+    gp_Ax1 axis(loc, dir);
+    gp_Circ circle;
+    circle.SetAxis(axis);
+    circle.SetRadius(r);
+
+    Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, sAng*(M_PI/180), eAng*(M_PI/180));
+    TopoDS_Edge edge = aMakeEdge.Edge();
+    occEdge = edge;
+
+    BRepAdaptor_Curve adp(edge);
+
+    double f = adp.FirstParameter();
+    double l = adp.LastParameter();
+    gp_Pnt s = adp.Value(f);
+    gp_Pnt m = adp.Value((l+f)/2.0);
+    gp_Pnt ePt = adp.Value(l);           //if start == end, it isn't an arc!
+    gp_Vec v1(m,s);        //vector mid to start
+    gp_Vec v2(m,ePt);      //vector mid to end
+    gp_Vec v3(0,0,1);      //stdZ
+    double a = v3.DotCross(v1,v2);    //error if v1 = v2?
+
+    startAngle = fmod(f,2.0*M_PI);
+    endAngle = fmod(l,2.0*M_PI);
+    cw = (a < 0) ? true: false;
+    largeArc = (fabs(l-f) > M_PI) ? true : false;
+
+    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
+    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
+    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
+    if (edge.Orientation() == TopAbs_REVERSED) {
+        reversed = true;
+    }
+}
+
 
 AOC::AOC(void) : Circle()
 {

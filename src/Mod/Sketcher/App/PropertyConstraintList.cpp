@@ -57,7 +57,11 @@ TYPESYSTEM_SOURCE(Sketcher::PropertyConstraintList, App::PropertyLists)
 // Construction/Destruction
 
 
-PropertyConstraintList::PropertyConstraintList() : validGeometryKeys(0), invalidGeometry(true)
+PropertyConstraintList::PropertyConstraintList()
+  : validGeometryKeys(0)
+  , invalidGeometry(true)
+  , restoreFromTransaction(false)
+  , invalidIndices(false)
 {
 
 }
@@ -180,9 +184,8 @@ void PropertyConstraintList::setValues(const std::vector<Constraint*>& lValue)
     auto copy = lValue;
     for(auto &cstr : copy)
         cstr = cstr->clone();
-    aboutToSetValue();
-    applyValues(std::move(copy));
-    hasSetValue();
+
+    setValues(std::move(copy));
 }
 
 void PropertyConstraintList::setValues(std::vector<Constraint*>&& lValue) {
@@ -197,7 +200,7 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
     std::set<App::ObjectIdentifier> removed;
     boost::unordered_map<boost::uuids::uuid, std::size_t> newValueMap;
-    
+
     /* Check for renames */
     for (unsigned int i = 0; i < lValue.size(); i++) {
         boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(lValue[i]->tag);
@@ -218,20 +221,20 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     }
 
     /* Collect info about removed elements */
-    for(auto &v : valueMap) 
+    for(auto &v : valueMap)
         removed.insert(makePath(v.second,_lValueList[v.second]));
 
     /* Update value map with new tags from new array */
     valueMap = std::move(newValueMap);
 
     /* Signal removes first, in case renamed values below have the same names as some of the removed ones. */
-    if (removed.size() > 0)
+    if (removed.size() > 0 && !restoreFromTransaction)
         signalConstraintsRemoved(removed);
 
     /* Signal renames */
-    if (renamed.size() > 0)
+    if (renamed.size() > 0 && !restoreFromTransaction)
         signalConstraintsRenamed(renamed);
-    
+
     _lValueList = std::move(lValue);
 
     /* Clean-up; remove old values */
@@ -255,7 +258,7 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
 
     const Constraint *cstr = 0;
 
-    if (c1.isArray()) 
+    if (c1.isArray())
         cstr = _lValueList[c1.getIndex(_lValueList.size())];
     else if (c1.isSimple()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
@@ -352,6 +355,7 @@ Property *PropertyConstraintList::Copy(void) const
 
 void PropertyConstraintList::Paste(const Property &from)
 {
+    Base::StateLocker lock(restoreFromTransaction, true);
     const PropertyConstraintList& FromList = dynamic_cast<const PropertyConstraintList&>(from);
     setValues(FromList._lValueList);
 }
@@ -380,11 +384,11 @@ void PropertyConstraintList::applyValidGeometryKeys(const std::vector<unsigned i
     validGeometryKeys = keys;
 }
 
-void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &GeoList)
+bool PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &GeoList)
 {
     if (!scanGeometry(GeoList)) {
         invalidGeometry = true;
-        return;
+        return invalidGeometry;
     }
 
     //if we made it here, geometry is OK
@@ -393,6 +397,43 @@ void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &
         invalidGeometry = false;
         touch();
     }
+
+    return invalidGeometry;
+}
+
+bool PropertyConstraintList::checkConstraintIndices(int geomax, int geomin)
+{
+    int mininternalgeoid = std::numeric_limits<int>::max();
+    int maxinternalgeoid = Constraint::GeoUndef;
+
+    auto cmin = [] (int previousmin, int cindex) {
+        if( cindex == Constraint::GeoUndef )
+            return previousmin;
+
+        return ( cindex < previousmin )? cindex : previousmin;
+    };
+
+    auto cmax = [] (int previousmax, int cindex) {
+        return ( cindex > previousmax )? cindex : previousmax;
+    };
+
+    for (const auto &v : _lValueList) {
+
+        mininternalgeoid = cmin(mininternalgeoid, v->First);
+        mininternalgeoid = cmin(mininternalgeoid, v->Second);
+        mininternalgeoid = cmin(mininternalgeoid, v->Third);
+
+        maxinternalgeoid = cmax(maxinternalgeoid, v->First);
+        maxinternalgeoid = cmax(maxinternalgeoid, v->Second);
+        maxinternalgeoid = cmax(maxinternalgeoid, v->Third);
+    }
+
+    if(maxinternalgeoid > geomax || mininternalgeoid < geomin)
+        invalidIndices = true;
+    else
+        invalidIndices = false;
+
+    return invalidIndices;
 }
 
 /*!

@@ -27,15 +27,15 @@ FIND_PACKAGE(Qt5Core)
 
 IF(Qt5Core_VERSION VERSION_LESS 5.14)
   # Legacy (< 5.14)
-  FIND_PROGRAM(PYSIDE2UICBINARY NAMES python2-pyside2-uic pyside2-uic pyside2-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
-  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES pyside2-rcc pyside2-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
+  FIND_PROGRAM(PYSIDE2UICBINARY NAMES python2-pyside2-uic pyside2-uic pyside2-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyuic5 HINTS ${PYSIDE_BIN_DIR})
+  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES pyside2-rcc pyside2-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyrcc5 HINTS ${PYSIDE_BIN_DIR})
   set(UICOPTIONS "")
   set(RCCOPTIONS "")
 ELSE(Qt5Core_VERSION VERSION_LESS 5.14)
   # New (>= 5.14)
-  FIND_PROGRAM(PYSIDE2UICBINARY NAMES uic-qt5 uic)
+  FIND_PROGRAM(PYSIDE2UICBINARY NAMES uic-qt5 uic pyside2-uic)
   set(UICOPTIONS "--generator=python")
-  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES rcc-qt5 rcc)
+  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES rcc-qt5 rcc pyside2-rcc)
   set(RCCOPTIONS "--generator=python" "--compress-algo=zlib" "--compress=1")
 ENDIF(Qt5Core_VERSION VERSION_LESS 5.14)
 
@@ -55,10 +55,10 @@ MACRO(PYSIDE_WRAP_UI outfiles)
     else()
         # Especially on Open Build Service we don't want changing date like
         # pyside2-uic generates in comments at beginning., which is why
-        # we follow the tool command with in-place sed.
+        # we follow the tool command with a POSIX-friendly sed.
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
           COMMAND "${PYSIDE2UICBINARY}" ${UICOPTIONS} "${infile}" -o "${outfile}"
-          COMMAND sed -i "/^# /d" "${outfile}"
+          COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
           MAIN_DEPENDENCY "${infile}"
         )
     endif()
@@ -85,7 +85,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
         # we follow the tool command with in-place sed.
         ADD_CUSTOM_COMMAND(OUTPUT "${outfile}"
           COMMAND "${PYSIDE2RCCBINARY}" ${RCCOPTIONS} "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
-          COMMAND sed -i "/^# /d" "${outfile}"
+          COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
           MAIN_DEPENDENCY "${infile}"
         )
     endif()

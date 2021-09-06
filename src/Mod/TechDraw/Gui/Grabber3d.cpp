@@ -26,9 +26,7 @@
 
 #endif
 
-//#if QT_VERSION >= 0x050000
 //#include <QGuiApplication>
-//#endif
 
 #include <QImage>
 #include <QPixmap>
@@ -149,10 +147,10 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
     double sourceHeight = 0.0;
     double sourceAngle  = 45.0;
     if (sourceCam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        oCam = dynamic_cast<SoOrthographicCamera*>(sourceCam);
+        oCam = static_cast<SoOrthographicCamera*>(sourceCam);
         sourceHeight = oCam->height.getValue();
     } else if (sourceCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) { 
-        pCam = dynamic_cast<SoPerspectiveCamera*>(sourceCam);
+        pCam = static_cast<SoPerspectiveCamera*>(sourceCam);
         sourceAngle = pCam->heightAngle.getValue();
     }
     oCam = nullptr;
@@ -197,11 +195,11 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
     svgCam->focalDistance.setValue(sourceFocal);
     svgCam->aspectRatio.setValue(sourceAspect);
     if (svgCam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        SoOrthographicCamera* oSvgCam = dynamic_cast<SoOrthographicCamera*>(svgCam);
+        SoOrthographicCamera* oSvgCam = static_cast<SoOrthographicCamera*>(svgCam);
         double newHeight = sourceHeight * zoomFactor;
         oSvgCam->height.setValue(newHeight);
     } else if (svgCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) { 
-        SoPerspectiveCamera* vSvgCam = dynamic_cast<SoPerspectiveCamera*>(svgCam);
+        SoPerspectiveCamera* vSvgCam = static_cast<SoPerspectiveCamera*>(svgCam);
         vSvgCam->heightAngle.setValue(sourceAngle);
     }
 
@@ -317,18 +315,9 @@ double Grabber3d::getViewerScale(Gui::View3DInventorViewer* viewer)
 
     //accurate dpmm for screen is not easily acquired!
 //    double qtpxmm = 96;
-//#if QT_VERSION >=050000
 //    QScreen *screen = QGuiApplication::primaryScreen();
 //    double qtppi = screen->physicalDotsPerInch();  //~111 dpi
 //    qtpxmm       = qtppi / 25.4; 
-//#else
-////    QSize widgetSize = viewer->size();
-////    int qtDpiXLog = viewer->logicalDpiX();
-////    int qtDpiYLog = viewer->logicalDpiY();
-//    int qtDpiXPhys = viewer->physicalDpiX();
-//    int qtDpiYPhys = viewer->physicalDpiY();
-//    qtpxmm = ((qtDpiXPhys + qtDpiYPhys) / 2.0) / 25.4;
-//#endif
 
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords
@@ -361,18 +350,9 @@ double Grabber3d::getPaperScale(Gui::View3DInventorViewer* viewer,
 
     //accurate dpmm for screen is not easily acquired!
 //    double qtpxmm = 96;
-//#if QT_VERSION >=050000
 //    QScreen *screen = QGuiApplication::primaryScreen();
 //    double qtppi = screen->physicalDotsPerInch();  //~111 dpi
 //    qtpxmm       = qtppi / 25.4; 
-//#else
-////    QSize widgetSize = viewer->size();
-////    int qtDpiXLog = viewer->logicalDpiX();
-////    int qtDpiYLog = viewer->logicalDpiY();
-//    int qtDpiXPhys = viewer->physicalDpiX();
-//    int qtDpiYPhys = viewer->physicalDpiY();
-//    qtpxmm = ((qtDpiXPhys + qtDpiYPhys) / 2.0) / 25.4;
-//#endif
 
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords

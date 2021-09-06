@@ -33,18 +33,12 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="labelEdit" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="labelEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
        </property>
       </widget>
      </item>
@@ -62,12 +56,6 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
        </property>
        <property name="toolTip">
         <string>Constraint name (available for expressions)</string>
@@ -106,8 +94,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefQuantitySpinBox</class>
+   <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
    <slots>
     <signal>showFormulaDialog(bool)</signal>

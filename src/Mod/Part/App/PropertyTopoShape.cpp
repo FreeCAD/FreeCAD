@@ -146,47 +146,9 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 
 PyObject *PropertyPartShape::getPyObject(void)
 {
-    Base::PyObjectBase* prop;
-    const TopoDS_Shape& sh = _Shape.getShape();
-    if (sh.IsNull()) {
-        prop = new TopoShapePy(new TopoShape(sh));
-    }
-    else {
-        TopAbs_ShapeEnum type = sh.ShapeType();
-        switch (type)
-        {
-        case TopAbs_COMPOUND:
-            prop = new TopoShapeCompoundPy(new TopoShape(sh));
-            break;
-        case TopAbs_COMPSOLID:
-            prop = new TopoShapeCompSolidPy(new TopoShape(sh));
-            break;
-        case TopAbs_SOLID:
-            prop = new TopoShapeSolidPy(new TopoShape(sh));
-            break;
-        case TopAbs_SHELL:
-            prop = new TopoShapeShellPy(new TopoShape(sh));
-            break;
-        case TopAbs_FACE:
-            prop = new TopoShapeFacePy(new TopoShape(sh));
-            break;
-        case TopAbs_WIRE:
-            prop = new TopoShapeWirePy(new TopoShape(sh));
-            break;
-        case TopAbs_EDGE:
-            prop = new TopoShapeEdgePy(new TopoShape(sh));
-            break;
-        case TopAbs_VERTEX:
-            prop = new TopoShapeVertexPy(new TopoShape(sh));
-            break;
-        case TopAbs_SHAPE:
-        default:
-            prop = new TopoShapePy(new TopoShape(sh));
-            break;
-        }
-    }
-
-    prop->setConst();
+    Base::PyObjectBase* prop = static_cast<Base::PyObjectBase*>(_Shape.getPyObject());
+    if (prop)
+        prop->setConst();
     return prop;
 }
 
@@ -545,11 +507,7 @@ PyObject *PropertyFilletEdges::getPyObject(void)
     int index = 0;
     for (it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         Py::Tuple ent(3);
-#if PY_MAJOR_VERSION >= 3
         ent.setItem(0, Py::Long(it->edgeid));
-#else
-        ent.setItem(0, Py::Int(it->edgeid));
-#endif
         ent.setItem(1, Py::Float(it->radius1));
         ent.setItem(2, Py::Float(it->radius2));
         list[index++] = ent;
@@ -566,11 +524,7 @@ void PropertyFilletEdges::setPyObject(PyObject *value)
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         FilletElement fe;
         Py::Tuple ent(*it);
-#if PY_MAJOR_VERSION >= 3
         fe.edgeid = (int)Py::Long(ent.getItem(0));
-#else
-        fe.edgeid = (int)Py::Int(ent.getItem(0));
-#endif
         fe.radius1 = (double)Py::Float(ent.getItem(1));
         fe.radius2 = (double)Py::Float(ent.getItem(2));
         values.push_back(fe);

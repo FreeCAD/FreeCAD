@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <vtkFieldData.h>
 # include <vtkPointData.h>
 #endif
@@ -70,7 +71,7 @@ DocumentObjectExecReturn* FemPostFilter::execute(void) {
 
     if(!m_pipelines.empty() && !m_activePipeline.empty()) {
         FemPostFilter::FilterPipeline& pipe = m_pipelines[m_activePipeline];
-        if ((m_activePipeline.length() >= 13) || (m_activePipeline.length() >= 11)) {
+        if (m_activePipeline.length() >= 11) {
             std::string LineClip = m_activePipeline.substr(0,13);
             std::string PointClip = m_activePipeline.substr(0,11);
             if ((LineClip == "DataAlongLine") || (PointClip == "DataAtPoint")) {

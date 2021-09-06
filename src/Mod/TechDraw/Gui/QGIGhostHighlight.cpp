@@ -35,10 +35,12 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <qmath.h>
 #include "Rez.h"
 #include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 #include "QGIView.h"
 #include "QGIGhostHighlight.h"
 
@@ -52,7 +54,7 @@ QGIGhostHighlight::QGIGhostHighlight()
 
     //make the ghost very visible
     QFont f(QGIView::getPrefFont());
-    double fontSize = QGIView::getPrefFontSize();
+    double fontSize = Preferences::labelFontSizeMM();
     setFont(f, fontSize);
     setReference("drag");
     setStyle(Qt::SolidLine);
@@ -78,7 +80,7 @@ void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIGhostHighlight::mousePress() - %X\n", this);
     if ( (event->button() == Qt::LeftButton) && 
-        (flags() && QGraphicsItem::ItemIsMovable) ) {
+        (flags() & QGraphicsItem::ItemIsMovable) ) {
             m_dragging = true;
             event->accept();
     }

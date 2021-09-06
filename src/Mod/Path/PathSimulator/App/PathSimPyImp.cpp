@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) 2017 Shai Seger         <shaise at gmail>               *
+/**************************************************************************
+*   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -44,7 +44,7 @@ std::string PathSimPy::representation(void) const
 
 PyObject *PathSimPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PathSimPy and the Twin object 
+    // create a new instance of PathSimPy and the Twin object
     return new PathSimPy(new PathSim);
 }
 
@@ -69,13 +69,15 @@ PyObject* PathSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
 	return Py_None;
 }
 
-PyObject* PathSimPy::SetCurrentTool(PyObject * args)
+PyObject* PathSimPy::SetToolShape(PyObject * args)
 {
-	PyObject *pObjTool;
-	if (!PyArg_ParseTuple(args, "O!", &(Path::ToolPy::Type), &pObjTool))
+	PyObject *pObjToolShape;
+	float resolution;
+	if (!PyArg_ParseTuple(args, "O!f", &(Part::TopoShapePy::Type), &pObjToolShape, &resolution))
 		return 0;
 	PathSim *sim = getPathSimPtr();
-	sim->SetCurrentTool(static_cast<Path::ToolPy*>(pObjTool)->getToolPtr());
+	const TopoDS_Shape& toolShape = static_cast<Part::TopoShapePy*>(pObjToolShape)->getTopoShapePtr()->getShape();
+	sim->SetToolShape(toolShape, resolution);
 	Py_IncRef(Py_None);
 	return Py_None;
 }
@@ -133,7 +135,7 @@ PyObject *PathSimPy::getCustomAttributes(const char* /*attr*/) const
 
 int PathSimPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

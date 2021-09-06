@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include <QMenu>
 # include <QPlainTextEdit>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <Base/Type.h>

@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>Luo uusi tyhjä liikerata </translation>
+      <source>Create a new empty trajectory</source>
+      <translation type="unfinished">Create a new empty trajectory</translation>
     </message>
   </context>
   <context>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Aseta oletussuunta myöhemmille komennoille reittipisteen luontia varten</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Aseta oletusarvot nopeudelle, lisäykselle ja jatkuvuudelle myöhempien komentojen reittipisteen luontia varten</translation>
     </message>
   </context>
   <context>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>Valitse yksi Robotti asettaaksesi aloitussijainnin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="125"/>
@@ -397,13 +397,13 @@
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>Tarvitset ainakin kaksi reittipistettä reitin varrella simuloidaksesi.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
       <location filename="../../CommandExport.cpp" line="150"/>
       <source>KRL file</source>
-      <translation type="unfinished">KRL file</translation>
+      <translation>KRL- tiedosto</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="89"/>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="268"/>
       <source>Set default speed</source>
-      <translation type="unfinished">Set default speed</translation>
+      <translation>Aseta oletusnopeus</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="269"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>Aseta oletus jatkuvuudelle</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="285"/>
       <source>Set default acceleration</source>
-      <translation type="unfinished">Set default acceleration</translation>
+      <translation>Aseta oletuskiihtyvyys</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="286"/>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="164"/>
       <source>Modify</source>
-      <translation type="unfinished">Modify</translation>
+      <translation>Muokkaa</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
@@ -486,7 +486,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="82"/>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation>Siirry %1 ja kopioi tiedost %2:oon</translation>
+      <translation>Siirry %1: een ja kopioi sieltä tiedostot %2: oon</translation>
     </message>
   </context>
   <context>
@@ -603,17 +603,17 @@
       <translation>A6</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="314"/>
+      <location filename="../../TaskRobot6Axis.ui" line="313"/>
       <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
       <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="331"/>
+      <location filename="../../TaskRobot6Axis.ui" line="329"/>
       <source>Tool: (0,0,400,0,0,0)</source>
-      <translation>Tool: (0,0,400,0,0,0)</translation>
+      <translation>Työkalu: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="347"/>
+      <location filename="../../TaskRobot6Axis.ui" line="345"/>
       <source>...</source>
       <translation>...</translation>
     </message>
@@ -707,32 +707,32 @@
       <translation>1 s</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="292"/>
+      <location filename="../../TaskTrajectory.ui" line="291"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
       <translation>Pos: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="318"/>
+      <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
       <translation>Tyyppi</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="323"/>
+      <location filename="../../TaskTrajectory.ui" line="322"/>
       <source>Name</source>
       <translation>Nimi</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="328"/>
+      <location filename="../../TaskTrajectory.ui" line="327"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="333"/>
+      <location filename="../../TaskTrajectory.ui" line="332"/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="338"/>
+      <location filename="../../TaskTrajectory.ui" line="337"/>
       <source>A</source>
       <translation>A</translation>
     </message>
@@ -770,7 +770,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="61"/>
       <source>Cluster: 0</source>
-      <translation>Klusteri: 0</translation>
+      <translation>Ryhmittely: 0</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>

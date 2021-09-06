@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -99,9 +97,9 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Probing operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProbing(obj, name)
+    proxy = ObjectProbing(obj, name, parentJob)
     return obj

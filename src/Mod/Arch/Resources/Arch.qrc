@@ -17,6 +17,9 @@
         <file>icons/Arch_CloseHoles.svg</file>
         <file>icons/Arch_Component.svg</file>
         <file>icons/Arch_Component_Clone.svg</file>
+        <file>icons/Arch_Component_Tree.svg</file>
+        <file>icons/Arch_CurtainWall.svg</file>
+        <file>icons/Arch_CurtainWall_Tree.svg</file>
         <file>icons/Arch_CutLine.svg</file>
         <file>icons/Arch_CutPlane.svg</file>
         <file>icons/Arch_Equipment.svg</file>
@@ -35,6 +38,7 @@
         <file>icons/Arch_Material_Multi.svg</file>
         <file>icons/Arch_MergeWalls.svg</file>
         <file>icons/Arch_MeshToShape.svg</file>
+        <file>icons/Arch_MultipleStructures.svg</file>
         <file>icons/Arch_Nest.svg</file>
         <file>icons/Arch_Panel.svg</file>
         <file>icons/Arch_Panel_Clone.svg</file>
@@ -75,6 +79,8 @@
         <file>icons/Arch_Survey.svg</file>
         <file>icons/Arch_ToggleIfcBrepFlag.svg</file>
         <file>icons/Arch_ToggleSubs.svg</file>
+        <file>icons/Arch_Truss.svg</file>
+        <file>icons/Arch_Truss_Tree.svg</file>
         <file>icons/Arch_Wall.svg</file>
         <file>icons/Arch_Wall_Clone.svg</file>
         <file>icons/Arch_Wall_Tree.svg</file>

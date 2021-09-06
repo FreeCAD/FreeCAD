@@ -31,7 +31,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory for solving analysis</string>
+        <string>Working directory for solving analysis and gmsh meshing</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -195,7 +195,7 @@
              </widget>
             </item>
             <item>
-             <widget class="Gui::PrefFileChooser" name="le_wd_custom" native="true">
+             <widget class="Gui::PrefFileChooser" name="le_wd_custom">
               <property name="enabled">
                <bool>true</bool>
               </property>
@@ -240,6 +240,9 @@
          <layout class="QVBoxLayout" name="verticalLayout_10">
           <item>
            <widget class="Gui::PrefCheckBox" name="cb_overwrite_solver_working_directory">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="layoutDirection">
              <enum>Qt::LeftToRight</enum>
             </property>
@@ -272,8 +275,11 @@
          <layout class="QGridLayout" name="gl_2">
           <item row="0" column="0">
            <widget class="Gui::PrefCheckBox" name="cb_analysis_group_meshing">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
-             <string>Create mesh groups for analysis reference shapes</string>
+             <string>Create mesh groups for analysis reference shapes (highly experimental)</string>
             </property>
             <property name="checked">
              <bool>true</bool>

@@ -130,8 +130,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
-        import draftutils.init_draft_statusbar as dsb
-        dsb.show_draft_statusbar()
+            import draftutils.init_draft_statusbar as dsb
+            dsb.show_draft_statusbar()
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
@@ -140,8 +140,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-        import draftutils.init_draft_statusbar as dsb
-        dsb.hide_draft_statusbar()
+            import draftutils.init_draft_statusbar as dsb
+            dsb.hide_draft_statusbar()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):
@@ -155,15 +155,12 @@ class DraftWorkbench(FreeCADGui.Workbench):
                 else:
                     self.appendContextMenu("Draft", self.drawing_commands)
             else:
-                if FreeCAD.activeDraftCommand.featureName in (translate("draft", "Line"),
-                                                              translate("draft", "Wire"),
-                                                              translate("draft", "Polyline"),
-                                                              translate("draft", "BSpline"),
-                                                              translate("draft", "BezCurve"),
-                                                              translate("draft", "CubicBezCurve")):
-                    # BUG: the line subcommands are in fact listed
-                    # in the context menu, but they are de-activated
-                    # so they don't work.
+                if FreeCAD.activeDraftCommand.featureName in ("Line",
+                                                              "Wire",
+                                                              "Polyline",
+                                                              "BSpline",
+                                                              "BezCurve",
+                                                              "CubicBezCurve"):
                     self.appendContextMenu("", self.line_commands)
         else:
             if FreeCADGui.Selection.getSelection():

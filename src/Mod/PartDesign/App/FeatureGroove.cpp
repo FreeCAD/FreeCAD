@@ -55,6 +55,8 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Groove, PartDesign::ProfileBased)
 
+const App::PropertyAngle::Constraints Groove::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+
 Groove::Groove()
 {
     addSubType = FeatureAddSub::Subtractive;
@@ -62,6 +64,7 @@ Groove::Groove()
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
+    Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
 }
 
@@ -80,12 +83,13 @@ App::DocumentObjectExecReturn *Groove::execute(void)
 {
     // Validate parameters
     double angle = Angle.getValue();
-    if (angle < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Angle of groove too small");
     if (angle > 360.0)
         return new App::DocumentObjectExecReturn("Angle of groove too large");
 
     angle = Base::toRadians<double>(angle);
+    if (angle < Precision::Angular())
+        return new App::DocumentObjectExecReturn("Angle of groove too small");
+
     // Reverse angle if selected
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
@@ -103,10 +107,10 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         base = getBaseShape();
     }
     catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
-                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+                                    "  - the active Body does not contain a base shape, so there is no\n"
                                     "  material to be removed;\n"
-                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+                                    "  - the selected sketch does not belong to the active Body."));
         return new App::DocumentObjectExecReturn(text);
     }
 

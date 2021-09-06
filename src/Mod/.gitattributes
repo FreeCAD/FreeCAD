@@ -77,6 +77,7 @@ JtReader    export-ignore
 # Fem/** -text
 # Material/** -text
 # OpenSCAD/** -text
+# Path/** -text
 # Show/** -text
 # Tux/** -text
 
@@ -97,14 +98,12 @@ Mesh/** -text
 MeshPart/** -text
 Part/** -text
 PartDesign/** -text
-Path/** -text
 Plot/** -text
 Points/** -text
 Raytracing/** -text
 ReverseEngineering/** -text
 Robot/** -text
 Sandbox/** -text
-Ship/** -text
 Sketcher/** -text
 Spreadsheet/** -text
 Start/** -text

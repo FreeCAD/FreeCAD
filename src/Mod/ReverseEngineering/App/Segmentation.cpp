@@ -66,7 +66,7 @@ void Segmentation::perform(int ksearch)
     // All the objects needed
     pcl::PassThrough<PointXYZ> pass;
     pcl::NormalEstimation<PointXYZ, pcl::Normal> ne;
-    pcl::SACSegmentationFromNormals<PointXYZ, pcl::Normal> seg; 
+    pcl::SACSegmentationFromNormals<PointXYZ, pcl::Normal> seg;
     pcl::ExtractIndices<PointXYZ> extract;
     pcl::ExtractIndices<pcl::Normal> extract_normals;
     pcl::search::KdTree<PointXYZ>::Ptr tree (new pcl::search::KdTree<PointXYZ> ());

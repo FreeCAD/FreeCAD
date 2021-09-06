@@ -73,8 +73,12 @@ public:
     virtual void hide(void) override;
     /// Show the object in the view
     virtual void show(void) override;
+    /// Is called by the tree if the user double clicks on the object. It returns the string
+    /// for the transaction that will be shown in the undo/redo dialog.
+    /// If null is returned then no transaction will be opened.
+    virtual const char* getTransactionText() const override;
 
-    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
+    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *,
             const char *, const std::vector<std::string> &) const override;
 
     virtual int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
@@ -127,7 +131,7 @@ public:
     /** Return the linked view object
      *
      * This function is mainly used for GUI navigation (e.g.
-     * StdCmdLinkSelectLinked). 
+     * StdCmdLinkSelectLinked).
      *
      * @param subname: output as the subname referencing the linked object
      * @param recursive: whether to follow the link recursively
@@ -147,6 +151,9 @@ public:
     virtual bool allowOverride(const App::DocumentObject &) const {
         return false;
     }
+
+    void setShowable(bool enable);
+    bool isShowable() const;
 
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
@@ -178,7 +185,7 @@ protected:
      * is part of the same document as the object this view provider is
      * attached to for an front root of \a type.
      * Before calling this function this view provider has to be attached
-     * to an object. The method returns after the first front root node 
+     * to an object. The method returns after the first front root node
      * matches. If no front root node matches, 0 is returned.
      */
     SoNode* findFrontRootOfType(const SoType& type) const;
@@ -194,14 +201,17 @@ protected:
 
     //@}
 
+    virtual void setModeSwitch() override;
+
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
 
 private:
+    bool _Showable = true;
+
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;
-    bool _UpdatingView;
 
     friend class Document;
 };

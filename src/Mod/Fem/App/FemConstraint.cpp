@@ -58,6 +58,7 @@
 
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/OriginFeature.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
@@ -90,9 +91,14 @@ Constraint::~Constraint()
 
 App::DocumentObjectExecReturn *Constraint::execute(void)
 {
-    References.touch();
-    Scale.touch();
-    return StdReturn;
+    try {
+        References.touch();
+        Scale.touch();
+        return StdReturn;
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString(), this);
+    }
 }
 
 //OvG: Provide the ability to determine how big to draw constraint arrows etc.
@@ -123,14 +129,15 @@ void Constraint::onChanged(const App::Property* prop)
         // Extract geometry from References
         TopoDS_Shape sh;
 
+        bool execute = this->isRecomputing();
         for (std::size_t i = 0; i < Objects.size(); i++) {
             App::DocumentObject* obj = Objects[i];
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
             const Part::TopoShape& toposhape = feat->Shape.getShape();
             if (!toposhape.getShape().IsNull()) {
-                sh = toposhape.getSubShape(SubElements[i].c_str());
+                sh = toposhape.getSubShape(SubElements[i].c_str(), !execute);
 
-                if (sh.ShapeType() == TopAbs_FACE) {
+                if (!sh.IsNull() && sh.ShapeType() == TopAbs_FACE) {
                     // Get face normal in center point
                     TopoDS_Face face = TopoDS::Face(sh);
                     BRepGProp_Face props(face);
@@ -142,8 +149,7 @@ void Constraint::onChanged(const App::Property* prop)
                     normal.Normalize();
                     NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
                     // One face is enough...
-                    App::DocumentObject::onChanged(prop);
-                    return;
+                    break;
                 }
             }
         }
@@ -174,7 +180,9 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
         if (toposhape.isNull())
             return false;
 
-        sh = toposhape.getSubShape(SubElements[i].c_str());
+        sh = toposhape.getSubShape(SubElements[i].c_str(), true);
+        if (sh.IsNull())
+            return false;
 
         if (sh.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(sh);
@@ -424,6 +432,28 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
 const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direction)
 {
     App::DocumentObject* obj = direction.getValue();
+    if (!obj) {
+        return Base::Vector3d(0,0,0);
+    }
+
+    if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+        Base::Vector3d vec(1.0, 0.0, 0.0);
+        static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
+        return vec;
+    }
+
+    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        Base::Vector3d vec(0.0, 0.0, 1.0);
+        static_cast<App::Plane*>(obj)->Placement.getValue().multVec(vec, vec);
+        return vec;
+    }
+
+    if (!obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        std::stringstream str;
+        str << "Type is not a line, plane or Part object";
+        throw Base::TypeError(str.str());
+    }
+
     std::vector<std::string> names = direction.getSubValues();
     if (names.size() == 0)
         return Base::Vector3d(0,0,0);

@@ -25,12 +25,13 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPGENERAL_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPGENERAL_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawGeneral.h>
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace TechDrawGui {
+class Ui_DlgPrefsTechDrawGeneralImp;
 
-class DlgPrefsTechDrawGeneralImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDrawGeneralImp
+class DlgPrefsTechDrawGeneralImp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -42,6 +43,9 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+
+private:
+    std::unique_ptr<Ui_DlgPrefsTechDrawGeneralImp> ui;
 };
 
 } // namespace TechDrawGui

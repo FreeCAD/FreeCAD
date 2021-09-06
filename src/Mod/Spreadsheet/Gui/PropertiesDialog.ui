@@ -29,6 +29,9 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <property name="usesScrollButtons">
+      <bool>false</bool>
+     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>&amp;Color</string>
@@ -55,7 +58,7 @@
         </spacer>
        </item>
        <item row="0" column="1">
-        <widget class="QtColorPicker" name="foregroundColor" native="true"/>
+        <widget class="QtColorPicker" name="foregroundColor"/>
        </item>
        <item row="0" column="2">
         <widget class="QLabel" name="label_2">
@@ -65,7 +68,7 @@
         </widget>
        </item>
        <item row="0" column="3">
-        <widget class="QtColorPicker" name="backgroundColor" native="true"/>
+        <widget class="QtColorPicker" name="backgroundColor"/>
        </item>
        <item row="1" column="2">
         <spacer name="verticalSpacer_2">

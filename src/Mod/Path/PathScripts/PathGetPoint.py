@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -35,7 +33,7 @@ from pivy import coin
 
 __title__ = "Path GetPoint UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitrary points while the task panel is active."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -108,6 +106,10 @@ class TaskPanel:
         If start is specified the Snapper UI is closed on the first point the user enters. If start remains None, then Snapper is kept open
         until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession.'''
 
+        # there's no get point without Snapper, if it's not loaded, need to do that explicitly
+        if not hasattr(FreeCADGui, 'Snapper'):
+            import DraftTools
+
         def displayPoint(p):
             self.point = p
             self.formPoint.globalX.setProperty('rawValue', p.x)
@@ -177,6 +179,7 @@ class TaskPanel:
 
         if self.buttonBox:
             self.buttonBox.setEnabled(False)
+
         FreeCADGui.Snapper.forceGridOff=True
 
     def pointFinish(self, ok, cleanup = True):

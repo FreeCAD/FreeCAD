@@ -1,12 +1,5 @@
-# FreeCAD gui init module
-# (c) 2003 Jürgen Riegel
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
-
 #***************************************************************************
-#*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+#*   Copyright (c) 2002,2003 Jürgen Riegel <juergen.riegel@web.de>         *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -28,12 +21,21 @@
 #*                                                                         *
 #***************************************************************************/
 
+# FreeCAD gui init module
+#
+# Gathering all the information to start FreeCAD
+# This is the second one of three init scripts, the third one
+# runs when the gui is up
 
 # imports the one and only
 import FreeCAD, FreeCADGui
 
 # shortcuts
 Gui = FreeCADGui
+
+# this is to keep old code working
+Gui.listCommands = Gui.Command.listAll
+Gui.isCommandActive = lambda cmd: Gui.Command.get(cmd).isActive()
 
 # Important definitions
 class Workbench:
@@ -121,8 +123,12 @@ def InitApplications():
             if (os.path.exists(InstallFile)):
                 try:
                     # XXX: This looks scary securitywise...
-                    with open(InstallFile) as f:
-                        exec(f.read())
+                    if sys.version_info.major < 3:
+                        with open(InstallFile) as f:
+                            exec(f.read())
+                    else:
+                        with open(file=InstallFile, encoding="utf-8") as f:
+                            exec(f.read())
                 except Exception as inst:
                     Log('Init:      Initializing ' + Dir + '... failed\n')
                     Log('-'*100+'\n')
@@ -203,6 +209,8 @@ FreeCAD.addImportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
 FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript)","FreeCADGui")
 FreeCAD.addExportType("Inventor V2.1 (*.iv)","FreeCADGui")
 FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
+FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)","FreeCADGui")
+FreeCAD.addExportType("WebGL/X3D (*.xhtml)","FreeCADGui")
 #FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
 #FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
 FreeCAD.addExportType("Portable Document Format (*.pdf)","FreeCADGui")

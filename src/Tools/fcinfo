@@ -174,7 +174,7 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
 
             # Print all the contents of the document properties
             items = self.contents.items()
-            items.sort()
+            items = sorted(items)
             for key,value in items:
                 key = self.clean(key)
                 value = self.clean(value)
@@ -186,7 +186,7 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
 
         if (tag == "Document") and (self.short != 2):
             items = self.contents.items()
-            items.sort()
+            items = sorted(items)
             for key,value in items:
                 key = self.clean(key)
                 if "00000000::" in key:
@@ -213,7 +213,8 @@ if __name__ == '__main__':
         print(__doc__)
         sys.exit()
 
-    if not sys.argv[-1].lower().endswith(".fcstd"):
+    ext = sys.argv[-1].rsplit(".")[-1].lower()
+    if not ext.startswith("fcstd") and not ext.startswith("fcbak"):
         print(__doc__)
         sys.exit()
 

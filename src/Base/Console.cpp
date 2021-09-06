@@ -126,8 +126,6 @@ ConsoleSingleton::ConsoleSingleton(void)
   ,_defaultLogLevel(FC_LOGLEVEL_MSG)
 #endif
 {
-    // make sure this object is part of the main thread
-    ConsoleOutput::getInstance();
 }
 
 ConsoleSingleton::~ConsoleSingleton()
@@ -233,6 +231,11 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
 void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
 {
     connectionMode = mode;
+
+    // make sure this method gets called from the main thread
+    if (connectionMode == Queued) {
+        ConsoleOutput::getInstance();
+    }
 }
 
 /** Prints a Message
@@ -334,22 +337,6 @@ void ConsoleSingleton::Log( const char *pMsg, ... )
     {
         FC_CONSOLE_FMT(Log,Log);
     }
-}
-
-/** Delivers the time/date
- *  This method gives you a string with the actual time/date. You can
- *  use that for Log() calls to make timestamps.
- *  @return Const string with the date/time
- */
-const char* ConsoleSingleton::Time(void)
-{
-    struct tm *newtime;
-    time_t aclock;
-    time( &aclock );                 // Get time in seconds
-    newtime = localtime( &aclock );  // Convert time to struct tm form
-    char* st = asctime( newtime );
-    st[24] = 0;
-    return st;
 }
 
 
@@ -493,7 +480,6 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
-#if PY_MAJOR_VERSION >= 3
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -504,23 +490,6 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
         if (unicode)
             string = PyUnicode_AsUTF8(unicode);
     }
-#else
-    const char* string=0;
-    PyObject* unicode=0;
-    if (PyUnicode_Check(output)) {
-        unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-    else if (PyString_Check(output)) {
-        string = PyString_AsString(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-#endif
 
     PY_TRY {
         if (string)
@@ -539,7 +508,6 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
-#if PY_MAJOR_VERSION >= 3
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -550,23 +518,6 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
         if (unicode)
             string = PyUnicode_AsUTF8(unicode);
     }
-#else
-    const char* string=0;
-    PyObject* unicode=0;
-    if (PyUnicode_Check(output)) {
-        unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-    else if (PyString_Check(output)) {
-        string = PyString_AsString(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-#endif
 
     PY_TRY {
         if (string)
@@ -585,7 +536,6 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
-#if PY_MAJOR_VERSION >= 3
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -596,23 +546,6 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
         if (unicode)
             string = PyUnicode_AsUTF8(unicode);
     }
-#else
-    const char* string=0;
-    PyObject* unicode=0;
-    if (PyUnicode_Check(output)) {
-        unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-    else if (PyString_Check(output)) {
-        string = PyString_AsString(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-#endif
 
     PY_TRY {
         if (string)
@@ -631,7 +564,6 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
-#if PY_MAJOR_VERSION >= 3
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -642,23 +574,6 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
         if (unicode)
             string = PyUnicode_AsUTF8(unicode);
     }
-#else
-    const char* string=0;
-    PyObject* unicode=0;
-    if (PyUnicode_Check(output)) {
-        unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-    else if (PyString_Check(output)) {
-        string = PyString_AsString(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyString_AsString(unicode);
-    }
-#endif
 
     PY_TRY {
         if (string)
@@ -725,7 +640,7 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
 
             Py_INCREF(Py_None);
             return Py_None;
-        } 
+        }
 	else {
             Py_Error(Base::BaseExceptionFreeCADError,"Unknown Console Type");
     }
@@ -963,11 +878,7 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         PyFrameObject* frame = PyEval_GetFrame();
         if (frame) {
             line = PyFrame_GetLineNumber(frame);
-#if PY_MAJOR_VERSION >= 3
             src = PyUnicode_AsUTF8(frame->f_code->co_filename);
-#else
-            src = PyString_AsString(frame->f_code->co_filename);
-#endif
         }
     }
     if (print_src && src && src[0]) {

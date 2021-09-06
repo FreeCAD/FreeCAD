@@ -1,6 +1,7 @@
 # FEM coding_conventions
 These coding rules apply to FEM module code only. Other modules or the base system may use different coding rules especially in naming policy of Python.
 
+
 ## Spelling
 - Be mindful of spelling. Spell checks are quite often neglected.
 - Utilize [codespell](https://github.com/codespell-project/codespell) to discover and quickly correct spelling errors.  
@@ -16,6 +17,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
   1) We recommend running the dev version as it uses the most up to date typo dictionaries.  
   2) To find the most amount of typos we recommend running a quick `pip install --upgrade`  
   See the [codespell docs](https://github.com/codespell-project/codespell#updating) for more info.
+
 
 ## Python and C++
 ### Code formatting
@@ -34,31 +36,47 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 - maximal line length is 100
 - double quotes as string identifier
 
+### Exceptione
+- Do not use bare 'except'.
+- Be more specific. If not possible use:
+- Either use 'except Exception' or if really everything should be caught 'except BaseException'
+- https://stackoverflow.com/a/18982772
+- https://github.com/PyCQA/pycodestyle/issues/703
+
 ### Imports
-- Python imports should be grouped into three groups:
+- Only one import per line.
+    - on import from 'some_package' import 'some_module'. There should only be one 'some_module' per line.
+    - on import from 'some_module' import 'some_method'. There should only be one 'some_method' per line.
+- Each import group should be sorted alphabetically.
+- First the 'import some_module' ones, afterwards the 'from some_module import something'.
+- First absolute path imports than relative path imports.
+- On relative path imports first the one dot ones, afterwards the two dot ones.
+- Star import should not be used at all (from some_module import *).
+- Python imports should be grouped into groups:
     - Standard library imports
     - One empty line
     - Third-party imports
     - One empty line
-    - FreeCAD-specific imports from module FreeCAD
-    - One empty line
-    - Other FreeCAD non Gui imports
-    - One empty line
+    - non Gui FreeCAD specific imports
+        - from module FreeCAD
+        - One empty line
+        - other modules, but not FEM
+        - One empty line
+        - FEM specific imports
+            - absolute imports
+            - One empty line
+            - relative imports
+        - One empty line
     - FreeCAD Gui imports: 
         - The import of Gui modules should be guarded by a 'if FreeCAD.GuiUp:'
         - On Gui only modules the guard is not needed
-        - Same as above but without an empty line
+        - Same as above but without a empty line
         - Standard library imports
         - Third-party Gui imports
         - FreeCAD-specific imports from module FreeCADGui
         - other FreeCAD Gui imports
-- Each group should be sorted alphabetically
-- First the import imports, than the from imports
-- On from imports firs the one dot, than two dot and so on imports 
-- Only one import per line
-- Even for from mymodule import mymethod should only be one method
-- The above paragraphs highly reduces merge conflicts
-- Star import should not be used at all (from mymodule import *)
+        - FEM Gui imports
+- The above paragraphs highly reduces merge conflicts.
 
 ### Naming policy
 - snake_case_names
@@ -69,7 +87,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 ### Python code formatting tools
 - **flake8** in source code directory on Linux shell
 ```bash
-find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --ignore=E266,W503 --max-line-length=100 []
+find src/Mod/Fem/ -name "*\.py" | xargs -I [] flake8 --ignore=E266,W503 --max-line-length=100 []
 ```
 - [LGTM](https://lgtm.com/projects/g/FreeCAD/FreeCAD/latest/files/src/Mod/Fem/)
 - TODO: check pylint
@@ -101,6 +119,15 @@ Python style is preferred over Doxygen style
     - see `ccx` tools module in fem tools package
     - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
 
+### Module structure
+- task panels should go into a separate package too
+    - according pep8 imports should be on module beginning
+    - if task panel class in inside viewprovider module, the imports needed for task panel are module beginning too
+    - might be some special plot module or what ever is needed
+    - if this is not available the object can not even created
+    - if task panel is separate the object can be createdh
+
+
 ## C++
 ### Naming policy
 - CamelCase names
@@ -109,6 +136,7 @@ Python style is preferred over Doxygen style
 - slashes
     - Do not use to many slashes in a row. This could cause trouble with Doxygen.
     - see [PR with comment](https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)
+
 
 ## Icons
 ### Naming plicy

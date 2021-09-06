@@ -393,11 +393,16 @@ public:
     virtual ~CylinderFit();
     float GetRadius() const;
     Base::Vector3f GetBase() const;
+    void SetInitialValues(const Base::Vector3f&, const Base::Vector3f&);
     /**
      * Returns the axis of the fitted cylinder. If Fit() has not been called the null vector is
      * returned.
      */
     Base::Vector3f GetAxis() const;
+    /**
+     * Returns an initial axis based on point normals.
+     */
+    Base::Vector3f GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const;
     /**
      * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
      */
@@ -416,11 +421,17 @@ public:
      * Projects the points onto the fitted cylinder.
      */
     void ProjectToCylinder();
+    /**
+     * Get the bottom and top points of the cylinder. The distance of these
+     * points gives the height of the cylinder.
+     */
+    void GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const;
 
 protected:
     Base::Vector3f _vBase; /**< Base vector of the cylinder. */
     Base::Vector3f _vAxis; /**< Axis of the cylinder. */
     float _fRadius; /**< Radius of the cylinder. */
+    bool _initialGuess;
 };
 
 // -------------------------------------------------------------------------------

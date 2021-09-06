@@ -26,7 +26,7 @@
 
 #include <unordered_map>
 #include <QTreeWidget>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QStyledItemDelegate>
 
 #include <Base/Parameter.h>
@@ -81,8 +81,8 @@ public:
 
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
-    void selectLinkedObject(App::DocumentObject *linked); 
-    void selectAllLinks(App::DocumentObject *obj); 
+    void selectLinkedObject(App::DocumentObject *linked);
+    void selectAllLinks(App::DocumentObject *obj);
     void expandSelectedItems(TreeItemMode mode);
 
     bool eventFilter(QObject *, QEvent *ev) override;
@@ -128,6 +128,8 @@ public:
     void resetItemSearch();
     void startItemSearch(QLineEdit*);
     void itemSearch(const QString &text, bool select);
+
+    void synchronizeSelectionCheckBoxes();
 
 protected:
     /// Observer message from the Selection
@@ -176,6 +178,7 @@ protected Q_SLOTS:
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
+    void onItemChanged(QTreeWidgetItem*, int);
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
@@ -202,7 +205,7 @@ private:
     void changeEvent(QEvent *e) override;
     void setupText();
 
-    void updateChildren(App::DocumentObject *obj, 
+    void updateChildren(App::DocumentObject *obj,
             const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
 
 private:
@@ -228,7 +231,7 @@ private:
     QTimer* statusTimer;
     QTimer* selectTimer;
     QTimer* preselectTimer;
-    QTime preselectTime;
+    QElapsedTimer preselectTime;
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
@@ -329,13 +332,13 @@ protected:
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
-    bool createNewItem(const Gui::ViewProviderDocumentObject&, 
-                    QTreeWidgetItem *parent=0, int index=-1, 
+    bool createNewItem(const Gui::ViewProviderDocumentObject&,
+                    QTreeWidgetItem *parent=0, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
     int findRootIndex(App::DocumentObject *childObj);
 
-    DocumentObjectItem *findItemByObject(bool sync, 
+    DocumentObjectItem *findItemByObject(bool sync,
             App::DocumentObject *obj, const char *subname, bool select=false);
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
@@ -402,8 +405,8 @@ public:
 
     // check if a new item is required at root
     bool requiredAtRoot(bool excludeSelf=true) const;
-    
-    // return the owner, and full quanlified subname
+
+    // return the owner, and full qualified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
@@ -411,12 +414,12 @@ public:
     // 'cousin'.
     App::DocumentObject *getRelativeParent(
             std::ostringstream &str,
-            DocumentObjectItem *cousin, 
+            DocumentObjectItem *cousin,
             App::DocumentObject **topParent=0,
             std::string *topSubname=0) const;
 
     // return the top most linked group owner's name, and subname.  This method
-    // is necssary despite have getFullSubName above is because native geo group
+    // is necessary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
@@ -436,6 +439,8 @@ public:
     TreeWidget *getTree() const;
 
 private:
+    void setCheckState(bool checked);
+
     QBrush bgBrush;
     DocumentItem *myOwner;
     DocumentObjectDataPtr myData;
@@ -481,9 +486,6 @@ class TreeDockWidget : public Gui::DockWindow
 public:
     TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=0);
     ~TreeDockWidget();
-
-private:
-    QTreeWidget* treeWidget;
 };
 
 
@@ -494,7 +496,7 @@ class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
     TreeWidgetEditDelegate(QObject* parent=0);
-    virtual QWidget* createEditor(QWidget *parent, 
+    virtual QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const;
 };
 
@@ -524,6 +526,7 @@ public:
 
 #define FC_TREEPARAM_DEFS \
     FC_TREEPARAM_DEF2(SyncSelection,bool,Bool,true) \
+    FC_TREEPARAM_DEF2(CheckBoxesSelection,bool,Bool,false) \
     FC_TREEPARAM_DEF(SyncView,bool,Bool,true) \
     FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \

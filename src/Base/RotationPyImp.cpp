@@ -55,7 +55,7 @@ std::string RotationPy::representation(void) const
 
 PyObject *RotationPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of RotationPy and the Twin object 
+    // create a new instance of RotationPy and the Twin object
     return new RotationPy(new Rotation);
 }
 
@@ -100,6 +100,17 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args, "ddd", &y, &p, &r)) {
         getRotationPtr()->setYawPitchRoll(y, p, r);
         return 0;
+    }
+
+    PyErr_Clear();
+    const char *seq;
+    double a, b, c;
+    if (PyArg_ParseTuple(args, "sddd", &seq, &a, &b, &c)) {
+        PY_TRY {
+            getRotationPtr()->setEulerAngles(
+                    Rotation::eulerSequenceFromName(seq), a, b, c);
+            return 0;
+        } _PY_CATCH(return -1)
     }
 
     double a11 = 1.0, a12 = 0.0, a13 = 0.0, a14 = 0.0;
@@ -280,6 +291,32 @@ PyObject* RotationPy::toEuler(PyObject * args)
     tuple.setItem(1, Py::Float(B));
     tuple.setItem(2, Py::Float(C));
     return Py::new_reference_to(tuple);
+}
+
+PyObject* RotationPy::toEulerAngles(PyObject * args)
+{
+    const char *seq = nullptr;
+    if (!PyArg_ParseTuple(args, "|s", &seq))
+        return NULL;
+    if (!seq) {
+        Py::List res;
+        for (int i=1; i<Rotation::EulerSequenceLast; ++i)
+            res.append(Py::String(Rotation::eulerSequenceName((Rotation::EulerSequence)i)));
+        return Py::new_reference_to(res);
+    }
+
+    PY_TRY {
+        double A,B,C;
+        this->getRotationPtr()->getEulerAngles(
+                Rotation::eulerSequenceFromName(seq),A,B,C);
+
+        Py::Tuple tuple(3);
+        tuple.setItem(0, Py::Float(A));
+        tuple.setItem(1, Py::Float(B));
+        tuple.setItem(2, Py::Float(C));
+        return Py::new_reference_to(tuple);
+    } PY_CATCH
+
 }
 
 PyObject* RotationPy::toMatrix(PyObject * args)
@@ -491,11 +528,7 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
 {
     if (!PyObject_TypeCheck(self, &(RotationPy::Type)) ||
 
-#if PY_MAJOR_VERSION < 3
-            !PyInt_Check(other)
-#else
             !PyLong_Check(other)
-#endif
             || arg != Py_None
        )
     {
@@ -605,26 +638,11 @@ PyObject * RotationPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int RotationPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
-{
-    return 1;
-}
-#endif
-
 PyObject * RotationPy::number_int_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * RotationPy::number_long_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
 
 PyObject * RotationPy::number_float_handler (PyObject * /*self*/)
 {
@@ -632,16 +650,3 @@ PyObject * RotationPy::number_float_handler (PyObject * /*self*/)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-PyObject * RotationPy::number_oct_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * RotationPy::number_hex_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif

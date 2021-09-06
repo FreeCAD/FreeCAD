@@ -53,7 +53,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -74,6 +74,7 @@
 #include "TopoShapePy.h"
 
 using namespace Part;
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 
@@ -222,11 +223,11 @@ struct ShapeCache {
             return;
         inited = true;
         App::GetApplication().signalDeleteDocument.connect(
-                boost::bind(&ShapeCache::slotDeleteDocument, this, _1));
+                boost::bind(&ShapeCache::slotDeleteDocument, this, bp::_1));
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&ShapeCache::slotClear, this, _1));
+                boost::bind(&ShapeCache::slotClear, this, bp::_1));
         App::GetApplication().signalChangedObject.connect(
-                boost::bind(&ShapeCache::slotChanged, this, _1,_2));
+                boost::bind(&ShapeCache::slotChanged, this, bp::_1,bp::_2));
     }
 
     void slotDeleteDocument(const App::Document &doc) {

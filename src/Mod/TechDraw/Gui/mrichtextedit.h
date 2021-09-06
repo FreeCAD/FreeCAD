@@ -94,6 +94,7 @@ Q_SIGNALS:
     void list(bool checked, QTextListFormat::Style style);
     void indent(int delta);
     void focusInEvent(QFocusEvent *event);
+    void keyPressEvent(QKeyEvent *event);
     bool hasMultipleSizes(void);
 
     void addFontSize(QString fs);

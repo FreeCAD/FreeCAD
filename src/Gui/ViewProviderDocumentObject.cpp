@@ -69,20 +69,22 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
-  : pcObject(0)
-  , pcDocument(0)
+  : pcObject(nullptr)
+  , pcDocument(nullptr)
 {
-    ADD_PROPERTY(DisplayMode,((long)0));
-    ADD_PROPERTY(Visibility,(true));
-    ADD_PROPERTY(ShowInTree,(true));
+    static const char *dogroup = "Display Options";
+    static const char *sgroup = "Selection";
 
-    ADD_PROPERTY(SelectionStyle,((long)0));
+    ADD_PROPERTY_TYPE(DisplayMode, ((long)0), dogroup, App::Prop_None, "Set the display mode");
+    ADD_PROPERTY_TYPE(Visibility, (true), dogroup, App::Prop_None, "Show the object in the 3d view");
+    ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
+
+    ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
-    ADD_PROPERTY(OnTopWhenSelected,((long int)0));
-    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), "Base", App::Prop_None, 
+    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), sgroup, App::Prop_None,
             "Enabled: Display the object on top of any other object when selected\n"
             "Object: On top only if the whole object is selected\n"
             "Element: On top only if some sub-element of the object is selected");
@@ -186,7 +188,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             Visibility.setStatus(App::Property::User2, false);
         }
         if (!Visibility.testStatus(App::Property::User1)
-                && getObject() 
+                && getObject()
                 && getObject()->Visibility.getValue()!=Visibility.getValue())
         {
             // Changing the visibility of a document object will automatically set
@@ -194,9 +196,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             // this is undesired behaviour. So, if this change marks the document as
             // modified then it must be be reversed.
             if (!testStatus(Gui::ViewStatus::TouchDocument)) {
-                bool mod = pcDocument->isModified();
+                bool mod = false;
+                if (pcDocument)
+                    mod = pcDocument->isModified();
                 getObject()->Visibility.setValue(Visibility.getValue());
-                pcDocument->setModified(mod);
+                if (pcDocument)
+                    pcDocument->setModified(mod);
             }
             else {
                 getObject()->Visibility.setValue(Visibility.getValue());
@@ -230,6 +235,32 @@ void ViewProviderDocumentObject::hide(void)
     }
 }
 
+bool ViewProviderDocumentObject::isShowable() const
+{
+    return _Showable;
+}
+
+void ViewProviderDocumentObject::setShowable(bool enable)
+{
+    if (_Showable == enable)
+        return;
+
+    _Showable = enable;
+    int which = getModeSwitch()->whichChild.getValue();
+    if (_Showable && which == -1 && Visibility.getValue()) {
+        setModeSwitch();
+    }
+    else if (!_Showable) {
+        if (which >= 0)
+            ViewProvider::hide();
+    }
+}
+
+void ViewProviderDocumentObject::setModeSwitch() {
+    if(isShowable())
+        ViewProvider::setModeSwitch();
+}
+
 void ViewProviderDocumentObject::show(void)
 {
     if(TreeWidget::isObjectShowable(getObject()))
@@ -247,6 +278,11 @@ void ViewProviderDocumentObject::show(void)
         Visibility.setValue(true);
         Visibility.setStatus(App::Property::User2, false);
     }
+}
+
+const char* ViewProviderDocumentObject::getTransactionText() const
+{
+    return QT_TRANSLATE_NOOP("Command", "Edit");
 }
 
 void ViewProviderDocumentObject::updateView()
@@ -332,8 +368,13 @@ Gui::Document* ViewProviderDocumentObject::getDocument() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
-    App::Document* pAppDoc = pcObject->getDocument();
-    return Gui::Application::Instance->getDocument(pAppDoc);
+    if (pcDocument) {
+        return pcDocument;
+    }
+    else {
+        App::Document* pAppDoc = pcObject->getDocument();
+        return Gui::Application::Instance->getDocument(pAppDoc);
+    }
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
@@ -442,7 +483,7 @@ PyObject* ViewProviderDocumentObject::getPyObject()
     return pyViewObject;
 }
 
-bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -463,7 +504,7 @@ int ViewProviderDocumentObject::replaceObject(
     {
         FC_THROWM(Base::RuntimeError,"Invalid object");
     }
-    
+
     auto obj = getObject();
     if(!obj || !obj->getNameInDocument())
         FC_THROWM(Base::RuntimeError,"View provider not attached");
@@ -529,7 +570,7 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
 
     auto childRoot = getChildRoot();
     int idx;
-    if(!childRoot || 
+    if(!childRoot ||
        (idx=pcModeSwitch->whichChild.getValue())<0 ||
        pcModeSwitch->getChild(idx)!=childRoot)
     {
@@ -578,7 +619,7 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
     if(!vp) return false;
 
     auto childRoot = getChildRoot();
-    if(!childRoot) 
+    if(!childRoot)
         path->truncate(len);
     else {
         auto idx = pcModeSwitch->whichChild.getValue();
@@ -597,7 +638,7 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
 }
 
 void ViewProviderDocumentObject::onPropertyStatusChanged(
-        const App::Property &prop, unsigned long oldStatus) 
+        const App::Property &prop, unsigned long oldStatus)
 {
     (void)oldStatus;
     if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument())

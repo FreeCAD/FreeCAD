@@ -28,7 +28,7 @@
 #include <Mod/Fem/App/FemPostFunction.h>
 #include <Inventor/SbMatrix.h>
 #include <QWidget>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class SoScale;
 class SoSurroundScale;
@@ -49,7 +49,7 @@ class FemGuiExport FunctionWidget : public QWidget {
 
     Q_OBJECT
 public:
-    FunctionWidget() {}
+    FunctionWidget() : m_block(false), m_view(0), m_object(0) {}
     virtual ~FunctionWidget() {}
 
     virtual void applyPythonCode() = 0;

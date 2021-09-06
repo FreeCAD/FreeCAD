@@ -38,7 +38,7 @@ typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
 /**
  * The UnitsApi
  */
-class BaseExport UnitsApi 
+class BaseExport UnitsApi
 {
 
 public:
@@ -50,7 +50,7 @@ public:
     /** set Schema
      * set the UnitsSchema of the Application
      * this a represented by a class of type UnitSchema which
-     * defines a set of standard units for that schema and rules 
+     * defines a set of standard units for that schema and rules
      * for representative strings.
      */
     static void setSchema(UnitSystem s);
@@ -66,6 +66,22 @@ public:
         return UnitsApi::schemaTranslate(quant, dummy1, dummy2);
     }
 
+    /** Get a number as string for a quantity of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string also includes the unit of the quantity.
+     */
+    static QString toString(const Base::Quantity& q, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+    /** Get a number as string for a quantity of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string doesn't include the unit of the quantity.
+     */
+    static QString toNumber(const Base::Quantity& q, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+    /** Get a number as string for a double of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string doesn't include the unit of the quantity.
+     */
+    static QString toNumber(double d, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+
     /// generate a value for a quantity with default user preferred system
     static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
     /// generate a value for a quantity with default user preferred system
@@ -73,7 +89,7 @@ public:
 
     // set the number of decimals
     static void setDecimals(int);
-    // fet the number of decimals
+    // get the number of decimals
     static int getDecimals();
     /// set the application defaults
     //static void setDefaults(void);

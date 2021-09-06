@@ -105,6 +105,9 @@
        <property name="toolTip">
         <string>Scale factor for the section view</string>
        </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
@@ -331,6 +334,9 @@
             <height>22</height>
            </size>
           </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
@@ -369,6 +375,9 @@
             <height>22</height>
            </size>
           </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
@@ -406,6 +415,9 @@
             <width>150</width>
             <height>22</height>
            </size>
+          </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>

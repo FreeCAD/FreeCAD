@@ -71,6 +71,9 @@ TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) co
         try {
             Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
             TopoDS_Shape resShape = mkRefine.Shape();
+            if (!TopoShape(resShape).isClosed()) {
+                return oldShape;
+            }
             return resShape;
         }
         catch (Standard_Failure&) {
@@ -79,6 +82,14 @@ TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) co
     }
 
     return oldShape;
+}
+
+void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+{
+    if (addSubType == Additive)
+        addShape = AddSubShape.getShape();
+    else if (addSubType == Subtractive)
+        subShape = AddSubShape.getShape();
 }
 
 }

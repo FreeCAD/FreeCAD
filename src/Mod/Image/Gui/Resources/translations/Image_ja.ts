@@ -2,11 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ja" sourcelanguage="en">
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <source>Scale image plane</source>
+      <translation>イメージプレーンの尺度</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>２点間の距離を定義することにより、イメージ平面の尺度を調整できます</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>イメージプレーンを拡大縮小</translation>
+      <translation>イメージプレーンの尺度</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
@@ -37,19 +50,6 @@
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
       <translation>画像平面を選択し、距離を入力</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation>イメージプレーンを拡大縮小</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>２点間の距離を定義することにより、イメージ平面を大きさ調整(Scales) できます</translation>
     </message>
   </context>
   <context>
@@ -179,7 +179,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="119"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>1:1のスケールで画像を表示します</translation>
+      <translation>1:1の尺度で画像を表示します</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="128"/>

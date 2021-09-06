@@ -88,6 +88,29 @@ protected:
     Matrix4D _clMtx, _clMtxInv;
 };
 
+/**
+ * The ViewOrthoProjMatrix class returns the result of the multiplication
+ * of the 3D vector and the transformation matrix.
+ * Unlike ViewProjMatrix this class is not supposed to project points onto
+ * a viewport but project points onto a plane in 3D.
+ */
+class BaseExport ViewOrthoProjMatrix : public ViewProjMethod
+{
+public:
+    ViewOrthoProjMatrix (const Matrix4D &rclMtx);
+    virtual ~ViewOrthoProjMatrix();
+
+    Vector3f operator()(const Vector3f &rclPt) const;
+    Vector3d operator()(const Vector3d &rclPt) const;
+    Vector3f inverse (const Vector3f &rclPt) const;
+    Vector3d inverse (const Vector3d &rclPt) const;
+
+    Matrix4D getProjectionMatrix (void) const;
+
+protected:
+    Matrix4D _clMtx, _clMtxInv;
+};
+
 } // namespace Base
 
 #endif // BASE_VIEWPROJ_H

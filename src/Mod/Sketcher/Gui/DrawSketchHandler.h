@@ -94,15 +94,34 @@ public:
 
 protected:
     // helpers
-    void setCursor( const QPixmap &p,int x,int y );
+    /**
+     * Sets a cursor for 3D inventor view.
+     * pixmap as a cursor image in device independent pixels.
+     * 
+     * \param autoScale - set this to false if pixmap already scaled for HiDPI
+     **/
+    void setCursor(const QPixmap &pixmap, int x,int y, bool autoScale=true);
+    void setSvgCursor(const QString &svgName, int x, int y,
+                      const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>());
+    void addCursorTail(std::vector<QPixmap> &pixmaps);
     void unsetCursor(void);
     void applyCursor(void);
     void applyCursor(QCursor &newCursor);
     void setCrosshairColor();
+    unsigned long getCrosshairColor();
+    qreal devicePixelRatio();
+    void setCrosshairCursor(const char* svgName);
+
+    /**
+     * Returns constraints icons scaled to width.
+     **/
+    std::vector<QPixmap> suggestedConstraintsPixmaps(
+            std::vector<AutoConstraint> &suggestedConstraints);
 
     ViewProviderSketch *sketchgui;
     QCursor oldCursor;
     QCursor actCursor;
+    QPixmap actCursorPixmap;
 };
 
 

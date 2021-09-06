@@ -122,7 +122,7 @@ private:
 	bool ReadVertex(double *pVertex, bool *bulge_found, double *bulge);
 	void OnReadArc(double start_angle, double end_angle, double radius, const double* c);
 	void OnReadCircle(const double* c, double radius);
-    void OnReadEllipse(const double* c, const double* m, double ratio, double start_angle, double end_angle);
+	void OnReadEllipse(const double* c, const double* m, double ratio, double start_angle, double end_angle);
 	bool ReadInsert();
 
 	void get_line();
@@ -134,7 +134,7 @@ protected:
 
 public:
 	CDxfRead(const char* filepath); // this opens the file
-	~CDxfRead(); // this closes the file
+	virtual ~CDxfRead(); // this closes the file
 
 	bool Failed(){return m_fail;}
 	void DoRead(const bool ignore_errors = false); // this reads the file and calls the following functions

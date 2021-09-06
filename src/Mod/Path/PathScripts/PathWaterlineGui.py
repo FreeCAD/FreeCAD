@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
@@ -25,6 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathWaterline as PathWaterline
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
@@ -41,7 +41,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Waterline operation.'''
 
     def initPage(self, obj):
-        # self.setTitle("Waterline")
+        self.setTitle("Waterline - " + obj.Label)
         self.updateVisibility()
 
     def getForm(self):
@@ -51,6 +51,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
 
         if obj.Algorithm != str(self.form.algorithmSelect.currentText()):
             obj.Algorithm = str(self.form.algorithmSelect.currentText())
@@ -77,6 +78,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.Algorithm, self.form.algorithmSelect)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
@@ -96,6 +98,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
         signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.algorithmSelect.currentIndexChanged)
         signals.append(self.form.boundBoxSelect.currentIndexChanged)
         signals.append(self.form.layerMode.currentIndexChanged)
@@ -107,8 +110,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self):
-        '''updateVisibility()... Updates visibility of Tasks panel objects.'''
+    def updateVisibility(self, sentObj=None):
+        '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
         Algorithm = self.form.algorithmSelect.currentText()
         self.form.optimizeEnabled.hide()  # Has no independent QLabel object
 
@@ -143,9 +146,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Waterline',
         PathWaterline.Create,
         TaskPanelOpPage,
-        'Path-Waterline',
-        QtCore.QT_TRANSLATE_NOOP("Waterline", "Waterline"),
-        QtCore.QT_TRANSLATE_NOOP("Waterline", "Create a Waterline Operation from a model"),
+        'Path_Waterline',
+        QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Create a Waterline Operation from a model"),
         PathWaterline.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathWaterlineGui... done\n")

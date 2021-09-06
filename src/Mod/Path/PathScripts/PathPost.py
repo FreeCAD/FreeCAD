@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
 
 from __future__ import print_function
@@ -37,7 +36,7 @@ import os
 
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore, QtGui
-
+from datetime import datetime
 
 LOG_MODULE = PathLog.thisModule()
 
@@ -159,7 +158,7 @@ class CommandPathPost:
 
         if openDialog:
             foo = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), "Output File", filename)
-            if foo:
+            if foo[0]:
                 filename = foo[0]
             else:
                 filename = None
@@ -177,7 +176,7 @@ class CommandPathPost:
         return dlg.exec_()
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Post',
+        return {'Pixmap': 'Path_Post',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Post", "Post Process"),
                 'Accel': "P, P",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Post", "Post Process the selected Job")}
@@ -210,9 +209,9 @@ class CommandPathPost:
             print("post: %s(%s, %s)" % (postname, filename, postArgs))
             processor = PostProcessor.load(postname)
             gcode = processor.export(objs, filename, postArgs)
-            return (False, gcode)
+            return (False, gcode, filename)
         else:
-            return (True, '')
+            return (True, '', filename)
 
     def Activated(self):
         PathLog.track()
@@ -237,7 +236,7 @@ class CommandPathPost:
             elif hasattr(sel, "Path"):
                 try:
                     job = PathUtils.findParentJob(sel)
-                except Exception: # pylint: disable=broad-except
+                except Exception:
                     job = None
             else:
                 job = None
@@ -262,22 +261,9 @@ class CommandPathPost:
 
         PathLog.debug("about to postprocess job: {}".format(job.Name))
 
-        # Build up an ordered list of operations and tool changes.
-        # Then post-the ordered list
-        if hasattr(job, "Fixtures"):
-            wcslist = job.Fixtures
-        else:
-            wcslist = ['G54']
-
-        if hasattr(job, "OrderOutputBy"):
-            orderby = job.OrderOutputBy
-        else:
-            orderby = "Operation"
-
-        if hasattr(job, "SplitOutput"):
-            split = job.SplitOutput
-        else:
-            split = False
+        wcslist = job.Fixtures
+        orderby = job.OrderOutputBy
+        split = job.SplitOutput
 
         postlist = []
 
@@ -302,7 +288,7 @@ class CommandPathPost:
                 for obj in job.Operations.Group:
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None and PathUtil.opProperty(obj, 'Active'):
-                        if tc.ToolNumber != currTool:
+                        if tc.ToolNumber != currTool or split is True:
                             sublist.append(tc)
                             PathLog.debug("Appending TC: {}".format(tc.Name))
                             currTool = tc.ToolNumber
@@ -333,7 +319,7 @@ class CommandPathPost:
             for idx, obj in enumerate(job.Operations.Group):
 
                 # check if the operation is active
-                active =  PathUtil.opProperty(obj, 'Active')
+                active = PathUtil.opProperty(obj, 'Active')
 
                 tc = PathUtil.toolControllerForOp(obj)
                 if tc is None or tc.ToolNumber == currTool and active:
@@ -381,27 +367,34 @@ class CommandPathPost:
                         firstFixture = False
                         tc = PathUtil.toolControllerForOp(obj)
                         if tc is not None:
-                            if tc.ToolNumber != currTool:
+                            if job.SplitOutput or (tc.ToolNumber != currTool):
                                 sublist.append(tc)
                                 currTool = tc.ToolNumber
                         sublist.append(obj)
                     postlist.append(sublist)
 
         fail = True
-        rc = '' # pylint: disable=unused-variable
+        rc = ''
         if split:
             for slist in postlist:
-                (fail, rc) = self.exportObjectsWith(slist, job)
+                (fail, rc, filename) = self.exportObjectsWith(slist, job)
+                if fail:
+                    break
         else:
             finalpostlist = [item for slist in postlist for item in slist]
-            (fail, rc) = self.exportObjectsWith(finalpostlist, job)
+            (fail, rc, filename) = self.exportObjectsWith(finalpostlist, job)
 
         self.subpart = 1
 
         if fail:
             FreeCAD.ActiveDocument.abortTransaction()
         else:
+            if hasattr(job, "LastPostProcessDate"):
+                job.LastPostProcessDate = str(datetime.now())
+            if hasattr(job, "LastPostProcessOutput"):
+                job.LastPostProcessOutput = filename
             FreeCAD.ActiveDocument.commitTransaction()
+
         FreeCAD.ActiveDocument.recompute()
 
 

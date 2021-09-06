@@ -26,13 +26,12 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
 
-class QuantitySpinBox;
-
 namespace Gui
 {
+  class QuantitySpinBox;
   class SoFCCSysDragger;
   class ViewProviderDragger;
-  
+
   class TaskCSysDragger : public Gui::TaskView::TaskDialog
   {
       Q_OBJECT

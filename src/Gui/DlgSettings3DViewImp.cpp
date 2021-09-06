@@ -52,8 +52,8 @@ using namespace Gui::Dialog;
 bool DlgSettings3DViewImp::showMsg = true;
 
 /**
- *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     : PreferencePage( parent )
@@ -62,7 +62,7 @@ DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     ui->setupUi(this);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettings3DViewImp::~DlgSettings3DViewImp()
@@ -89,8 +89,11 @@ void DlgSettings3DViewImp::saveSettings()
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 
     ui->CheckBox_CornerCoordSystem->onSave();
+    ui->CheckBox_ShowAxisCross->onSave();
     ui->CheckBox_WbByTab->onSave();
     ui->CheckBox_ShowFPS->onSave();
+    ui->spinPickRadius->onSave();
+    ui->CheckBox_use_SW_OpenGL->onSave();
     ui->CheckBox_useVBO->onSave();
     ui->FloatSpinBox_EyeDistance->onSave();
     ui->checkBoxBacklight->onSave();
@@ -103,8 +106,11 @@ void DlgSettings3DViewImp::saveSettings()
 void DlgSettings3DViewImp::loadSettings()
 {
     ui->CheckBox_CornerCoordSystem->onRestore();
+    ui->CheckBox_ShowAxisCross->onRestore();
     ui->CheckBox_WbByTab->onRestore();
     ui->CheckBox_ShowFPS->onRestore();
+    ui->spinPickRadius->onRestore();
+    ui->CheckBox_use_SW_OpenGL->onRestore();
     ui->CheckBox_useVBO->onRestore();
     ui->FloatSpinBox_EyeDistance->onRestore();
     ui->checkBoxBacklight->onRestore();

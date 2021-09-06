@@ -34,6 +34,7 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
+    PathScripts/PathCustomGui.py
     PathScripts/PathDeburr.py
     PathScripts/PathDeburrGui.py
     PathScripts/PathDressup.py
@@ -54,6 +55,8 @@ SET(PathScripts_SRCS
     PathScripts/PathEngrave.py
     PathScripts/PathEngraveBase.py
     PathScripts/PathEngraveGui.py
+    PathScripts/PathFeatureExtensions.py
+    PathScripts/PathFeatureExtensionsGui.py
     PathScripts/PathFixture.py
     PathScripts/PathGeom.py
     PathScripts/PathGetPoint.py
@@ -83,18 +86,23 @@ SET(PathScripts_SRCS
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
+    PathScripts/PathPreferencesAdvanced.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
-	PathScripts/PathProbe.py
-	PathScripts/PathProbeGui.py
-    PathScripts/PathProfileBase.py
-    PathScripts/PathProfileBaseGui.py
+    PathScripts/PathProbe.py
+    PathScripts/PathProbeGui.py
+    PathScripts/PathProfile.py
     PathScripts/PathProfileContour.py
     PathScripts/PathProfileContourGui.py
     PathScripts/PathProfileEdges.py
     PathScripts/PathProfileEdgesGui.py
     PathScripts/PathProfileFaces.py
     PathScripts/PathProfileFacesGui.py
+    PathScripts/PathProfileGui.py
+    PathScripts/PathProperty.py
+    PathScripts/PathPropertyBag.py
+    PathScripts/PathPropertyBagGui.py
+    PathScripts/PathPropertyEditor.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
     PathScripts/PathSetupSheet.py
@@ -103,11 +111,15 @@ SET(PathScripts_SRCS
     PathScripts/PathSetupSheetOpPrototypeGui.py
     PathScripts/PathSimpleCopy.py
     PathScripts/PathSimulatorGui.py
+    PathScripts/PathSlot.py
+    PathScripts/PathSlotGui.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
     PathScripts/PathSurfaceSupport.py
+    PathScripts/PathThreadMilling.py
+    PathScripts/PathThreadMillingGui.py
     PathScripts/PathToolBit.py
     PathScripts/PathToolBitCmd.py
     PathScripts/PathToolBitEdit.py
@@ -122,6 +134,8 @@ SET(PathScripts_SRCS
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
+    PathScripts/PathVcarve.py
+    PathScripts/PathVcarveGui.py
     PathScripts/PathWaterline.py
     PathScripts/PathWaterlineGui.py
     PathScripts/PostUtils.py
@@ -133,47 +147,65 @@ SET(PathScripts_post_SRCS
     PathScripts/post/centroid_post.py
     PathScripts/post/comparams_post.py
     PathScripts/post/dynapath_post.py
+    PathScripts/post/dxf_post.py
     PathScripts/post/example_pre.py
     PathScripts/post/gcode_pre.py
     PathScripts/post/grbl_post.py
     PathScripts/post/jtech_post.py
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/mach3_mach4_post.py
+    PathScripts/post/nccad_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
     PathScripts/post/philips_post.py
     PathScripts/post/rml_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
+    PathScripts/post/uccnc_post.py
+)
+
+SET(Tools_SRCS
+    Tools/README.md
 )
 
 SET(Tools_Bit_SRCS
-  Tools/Bit/t1.fctb
-  Tools/Bit/t2.fctb
-  Tools/Bit/t3.fctb
-  Tools/Bit/t4.fctb
-  Tools/Bit/t5.fctb
-  Tools/Bit/t6.fctb
-  Tools/Bit/t7.fctb
-  Tools/Bit/t8.fctb
-  Tools/Bit/t9.fctb
+    Tools/Bit/45degree_chamfer.fctb
+    Tools/Bit/5mm-thread-cutter.fctb
+    Tools/Bit/5mm_Drill.fctb
+    Tools/Bit/5mm_Endmill.fctb
+    Tools/Bit/60degree_Vbit.fctb
+    Tools/Bit/6mm_Ball_End.fctb
+    Tools/Bit/6mm_Bullnose.fctb
+    Tools/Bit/probe.fctb
+    Tools/Bit/slittingsaw.fctb
 )
 
 SET(Tools_Library_SRCS
-  Tools/Library/endmills.fctl
+    Tools/Library/Default.fctl
 )
 
 SET(Tools_Shape_SRCS
-  Tools/Shape/ballend.fcstd
-  Tools/Shape/bullnose.fcstd
-  Tools/Shape/drill.fcstd
-  Tools/Shape/endmill.fcstd
-  Tools/Shape/v-bit.fcstd
+    Tools/Shape/ballend.fcstd
+    Tools/Shape/bullnose.fcstd
+    Tools/Shape/drill.fcstd
+    Tools/Shape/chamfer.fcstd
+    Tools/Shape/endmill.fcstd
+    Tools/Shape/probe.fcstd
+    Tools/Shape/slittingsaw.fcstd
+    Tools/Shape/thread-mill.fcstd
+    Tools/Shape/v-bit.fcstd
 )
 
 SET(PathTests_SRCS
     PathTests/__init__.py
+    PathTests/boxtest.fcstd
     PathTests/PathTestUtils.py
+    PathTests/test_adaptive.fcstd
+    PathTests/test_centroid_00.ngc
+    PathTests/test_geomop.fcstd
+    PathTests/test_holes00.fcstd
+    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
     PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
@@ -185,18 +217,20 @@ SET(PathTests_SRCS
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py
+    PathTests/TestPathPropertyBag.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
+    PathTests/TestPathThreadMilling.py
     PathTests/TestPathTool.py
     PathTests/TestPathToolBit.py
     PathTests/TestPathToolController.py
     PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
-    PathTests/boxtest.fcstd
-    PathTests/test_centroid_00.ngc
-    PathTests/test_geomop.fcstd
-    PathTests/test_holes00.fcstd
-    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestPathVcarve.py
+    PathTests/TestPathVoronoi.py
+    PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
+    PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
+    PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
 )
 
 SET(PathImages_Ops
@@ -214,13 +248,24 @@ SET(Path_Images
     ${PathImages_Tools}
 )
 
+SET(PathData_Threads
+    Data/Threads/metric-internal.csv
+    Data/Threads/imperial-internal.csv
+)
+
+SET(Path_Data
+    ${PathData_Threads}
+)
+
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${Tools_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
     ${Path_Images}
+    ${Path_Data}
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
@@ -254,10 +299,25 @@ INSTALL(
 )
 
 INSTALL(
+  DIRECTORY
+      PathTests/Tools
+  DESTINATION
+        Mod/Path/PathTests
+)
+      
+
+INSTALL(
     FILES
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${Tools_SRCS}
+    DESTINATION
+        Mod/Path/Tools
 )
 
 INSTALL(
@@ -293,5 +353,12 @@ INSTALL(
         ${PathImages_Tools}
     DESTINATION
         Mod/Path/Images/Tools
+)
+
+INSTALL(
+    FILES
+        ${PathData_Threads}
+    DESTINATION
+        Mod/Path/Data/Threads
 )
 

@@ -685,8 +685,9 @@ void MeshObject::deletedFacets(const std::vector<unsigned long>& remFacets)
             // remove the invalid indices
             std::sort(segm.begin(), segm.end());
             std::vector<unsigned long>::iterator ft = std::find_if
-                (segm.begin(), segm.end(), 
-                std::bind2nd(std::equal_to<unsigned long>(), ULONG_MAX));
+                (segm.begin(), segm.end(), [](unsigned long v) {
+                    return v == ULONG_MAX;
+                });
             if (ft != segm.end())
                 segm.erase(ft, segm.end());
             it->_indices = segm;
@@ -839,8 +840,9 @@ unsigned long MeshObject::getPointDegree(const std::vector<unsigned long>& indic
         pointDeg[face._aulPoints[2]]--;
     }
 
-    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(),
-        std::bind2nd(std::equal_to<unsigned long>(), 0));
+    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(), [](unsigned long v) {
+        return v == 0;
+    });
 
     point_degree.swap(pointDeg);
     return countInvalids;
@@ -987,6 +989,12 @@ void MeshObject::decimate(float fTolerance, float fReduction)
 {
     MeshCore::MeshSimplify dm(this->_kernel);
     dm.simplify(fTolerance, fReduction);
+}
+
+void MeshObject::decimate(int targetSize)
+{
+    MeshCore::MeshSimplify dm(this->_kernel);
+    dm.simplify(targetSize);
 }
 
 Base::Vector3d MeshObject::getPointNormal(unsigned long index) const
@@ -1380,8 +1388,8 @@ void MeshObject::removeSelfIntersections(const std::vector<unsigned long>& indic
     // make sure that the number of indices is even and are in range
     if (indices.size() % 2 != 0)
         return;
-    if (std::find_if(indices.begin(), indices.end(), 
-        std::bind2nd(std::greater_equal<unsigned long>(), _kernel.CountFacets())) < indices.end())
+    unsigned long cntfacets = _kernel.CountFacets();
+    if (std::find_if(indices.begin(), indices.end(), [cntfacets](unsigned long v) { return v >= cntfacets; }) < indices.end())
         return;
     std::vector<std::pair<unsigned long, unsigned long> > selfIntersections;
     std::vector<unsigned long>::const_iterator it;
@@ -1489,6 +1497,30 @@ void MeshObject::validateIndices()
         this->_segments.clear();
 }
 
+bool MeshObject::hasInvalidNeighbourhood() const
+{
+    MeshCore::MeshEvalNeighbourhood eval(_kernel);
+    return !eval.Evaluate();
+}
+
+bool MeshObject::hasPointsOutOfRange() const
+{
+    MeshCore::MeshEvalRangePoint eval(_kernel);
+    return !eval.Evaluate();
+}
+
+bool MeshObject::hasFacetsOutOfRange() const
+{
+    MeshCore::MeshEvalRangeFacet eval(_kernel);
+    return !eval.Evaluate();
+}
+
+bool MeshObject::hasCorruptedFacets() const
+{
+    MeshCore::MeshEvalCorruptedFacets eval(_kernel);
+    return !eval.Evaluate();
+}
+
 void MeshObject::validateDeformations(float fMaxAngle, float fEps)
 {
     unsigned long count = _kernel.CountFacets();
@@ -1565,11 +1597,7 @@ MeshObject* MeshObject::createSphere(float radius, int sampling)
         Py::Callable call(dict.getItem("Sphere"));
         Py::Tuple args(2);
         args.setItem(0, Py::Float(radius));
-#if PY_MAJOR_VERSION >= 3
         args.setItem(1, Py::Long(sampling));
-#else
-        args.setItem(1, Py::Int(sampling));
-#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1593,11 +1621,7 @@ MeshObject* MeshObject::createEllipsoid(float radius1, float radius2, int sampli
         Py::Tuple args(3);
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
-#if PY_MAJOR_VERSION >= 3
         args.setItem(2, Py::Long(sampling));
-#else
-        args.setItem(2, Py::Int(sampling));
-#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1621,15 +1645,9 @@ MeshObject* MeshObject::createCylinder(float radius, float length, int closed, f
         Py::Tuple args(5);
         args.setItem(0, Py::Float(radius));
         args.setItem(1, Py::Float(length));
-#if PY_MAJOR_VERSION >= 3
         args.setItem(2, Py::Long(closed));
         args.setItem(3, Py::Float(edgelen));
         args.setItem(4, Py::Long(sampling));
-#else
-        args.setItem(2, Py::Int(closed));
-        args.setItem(3, Py::Float(edgelen));
-        args.setItem(4, Py::Int(sampling));
-#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1654,15 +1672,9 @@ MeshObject* MeshObject::createCone(float radius1, float radius2, float len, int 
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
         args.setItem(2, Py::Float(len));
-#if PY_MAJOR_VERSION >= 3
         args.setItem(3, Py::Long(closed));
         args.setItem(4, Py::Float(edgelen));
         args.setItem(5, Py::Long(sampling));
-#else
-        args.setItem(3, Py::Int(closed));
-        args.setItem(4, Py::Float(edgelen));
-        args.setItem(5, Py::Int(sampling));
-#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1686,11 +1698,7 @@ MeshObject* MeshObject::createTorus(float radius1, float radius2, int sampling)
         Py::Tuple args(3);
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
-#if PY_MAJOR_VERSION >= 3
         args.setItem(2, Py::Long(sampling));
-#else
-        args.setItem(2, Py::Int(sampling));
-#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }

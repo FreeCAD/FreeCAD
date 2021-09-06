@@ -47,9 +47,9 @@ public:
     /// destructor
     virtual ~ViewProviderRichAnno();
 
-    App::PropertyLength             LineWidth;
-    App::PropertyIntegerConstraint  LineStyle;
-    App::PropertyColor              LineColor;
+    App::PropertyLength      LineWidth;
+    App::PropertyEnumeration LineStyle;
+    App::PropertyColor       LineColor;
 
     virtual void attach(App::DocumentObject *);
     virtual bool useNewSelectionModel(void) const {return false;}
@@ -59,6 +59,8 @@ public:
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
     virtual bool canDelete(App::DocumentObject* obj) const;
+
+    static const char* LineStyleEnums[];
 
     virtual TechDraw::DrawRichAnno* getViewObject() const;
     TechDraw::DrawRichAnno* getFeature()  const;

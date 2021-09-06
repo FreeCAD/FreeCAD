@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -74,19 +74,19 @@ std::string Uuid::createUuid(void)
     return Uuid;
 }
 
-void Uuid::setValue(const char* sString) 
-{ 
-    if (sString) { 
-        QUuid uuid(QString::fromLatin1(sString)); 
-        if (uuid.isNull()) 
-            throw std::runtime_error("invalid uuid"); 
-        // remove curly braces 
-        QString id = uuid.toString(); 
-        id = id.mid(1); 
-        id.chop(1); 
-        _uuid = (const char*)id.toLatin1(); 
-    } 
-} 
+void Uuid::setValue(const char* sString)
+{
+    if (sString) {
+        QUuid uuid(QString::fromLatin1(sString));
+        if (uuid.isNull())
+            throw std::runtime_error("invalid uuid");
+        // remove curly braces
+        QString id = uuid.toString();
+        id = id.mid(1);
+        id.chop(1);
+        _uuid = (const char*)id.toLatin1();
+    }
+}
 
 void Uuid::setValue(const std::string &sString)
 {

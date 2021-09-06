@@ -149,33 +149,29 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
 bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
 {
     bool result = false;        
-    App::Property* proxy = obj->getPropertyByName("Proxy");
+    App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
 
     if (proxy != nullptr) {
         //if no proxy, can not be Draft obj
         //if has proxy, might be Draft obj
-        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
         std::stringstream ss;
-        if (proxyPy != nullptr) {
-            Py::Object proxyObj = proxyPy->getValue();
-            std::stringstream ss;
-            if (proxyPy != nullptr) {
-                Base::PyGILStateLocker lock;
-                try {
-                    if (proxyObj.hasAttr("__module__")) {
-                        Py::String mod(proxyObj.getAttr("__module__"));
-                        ss <<  (std::string)mod; 
-                        if (ss.str().find("Draft") != std::string::npos) {
-                            result = true;
-                        }
-                    }
-                }
-                catch (Py::Exception&) {
-                    Base::PyException e; // extract the Python error text
-                    e.ReportException();
-                    result = false;
+        Py::Object proxyObj = proxy->getValue();
+        Base::PyGILStateLocker lock;
+        try {
+            if (proxyObj.hasAttr("__module__")) {
+                Py::String mod(proxyObj.getAttr("__module__"));
+                ss <<  (std::string)mod;
+                if (ss.str().find("Draft") != std::string::npos) {
+                    result = true;
+                } else if (ss.str().find("draft") != std::string::npos) {
+                    result = true;
                 }
             }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+            result = false;
         }
     }
     return result;
@@ -184,31 +180,28 @@ bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
 bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
 {
     bool result = false;        
-    App::Property* proxy = obj->getPropertyByName("Proxy");
+    App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
 
     if (proxy != nullptr) {
         //if no proxy, can not be Arch obj
         //if has proxy, might be Arch obj
-        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
-        Py::Object proxyObj = proxyPy->getValue();
+        Py::Object proxyObj = proxy->getValue();
         std::stringstream ss;
-        if (proxyPy != nullptr) {
-            Base::PyGILStateLocker lock;
-            try {
-                if (proxyObj.hasAttr("__module__")) {
-                    Py::String mod(proxyObj.getAttr("__module__"));
-                    ss <<  (std::string)mod; 
-                    //does this have to be an ArchSection, or can it be any Arch object?
-                    if (ss.str().find("Arch") != std::string::npos) {
-                        result = true;
-                    }
+        Base::PyGILStateLocker lock;
+        try {
+            if (proxyObj.hasAttr("__module__")) {
+                Py::String mod(proxyObj.getAttr("__module__"));
+                ss <<  (std::string)mod;
+                //does this have to be an ArchSection, or can it be any Arch object?
+                if (ss.str().find("Arch") != std::string::npos) {
+                    result = true;
                 }
             }
-            catch (Py::Exception&) {
-                Base::PyException e; // extract the Python error text
-                e.ReportException();
-                result = false;
-            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+            result = false;
         }
     }
     return result;
@@ -216,32 +209,29 @@ bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
 
 bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
 {
-    bool result = false;        
-    App::Property* proxy = obj->getPropertyByName("Proxy");
+    bool result = false;
+    App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
 
     if (proxy != nullptr) {
         //if no proxy, can not be Arch obj
         //if has proxy, might be Arch obj
-        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
-        Py::Object proxyObj = proxyPy->getValue();
+        Py::Object proxyObj = proxy->getValue();
         std::stringstream ss;
-        if (proxyPy != nullptr) {
-            Base::PyGILStateLocker lock;
-            try {
-                if (proxyObj.hasAttr("__module__")) {
-                    Py::String mod(proxyObj.getAttr("__module__"));
-                    ss <<  (std::string)mod; 
-                    //does this have to be an ArchSection, or can it be other Arch objects?
-                    if (ss.str().find("ArchSectionPlane") != std::string::npos) {
-                        result = true;
-                    }
+        Base::PyGILStateLocker lock;
+        try {
+            if (proxyObj.hasAttr("__module__")) {
+                Py::String mod(proxyObj.getAttr("__module__"));
+                ss <<  (std::string)mod;
+                //does this have to be an ArchSection, or can it be other Arch objects?
+                if (ss.str().find("ArchSectionPlane") != std::string::npos) {
+                    result = true;
                 }
             }
-            catch (Py::Exception&) {
-                Base::PyException e; // extract the Python error text
-                e.ReportException();
-                result = false;
-            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+            result = false;
         }
     }
     return result;

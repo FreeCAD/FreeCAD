@@ -34,7 +34,7 @@ modules.
 
 __title__ = "FreeCAD FEM solver run"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import os
 import os.path
@@ -95,18 +95,19 @@ def run_fem_solver(solver, working_dir=None):
 
     :note:
         There is some legacy code to execute the old Calculix solver
-        (pre-framework) which behaives differently because it doesn't use a
-        :class:`Machine`.
+        (pre-framework) which behaives differently because it does not
+        use a :class:`Machine`.
     """
 
-    if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools":
-        App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
+    if solver.Proxy.Type == "Fem::SolverCcxTools":
         from femtools.ccxtools import CcxTools as ccx
+        App.Console.PrintMessage("Run of CalxuliX ccx tools solver started.\n")
         fea = ccx(solver)
         fea.reset_mesh_purge_results_checked()
         if working_dir is None:
-            fea.run()
+            fea.run()  # standard, no working dir is given in solver
         else:
+            # not the standard way
             fea.update_objects()
             fea.setup_working_dir(working_dir)
             fea.setup_ccx()
@@ -116,7 +117,8 @@ def run_fem_solver(solver, working_dir=None):
                 fea.ccx_run()
                 fea.load_results()
             else:
-                App.Console.PrintError("Houston, we have a problem ...!\n{}\n".format(message))
+                App.Console.PrintError("Houston, we have a problem...!\n{}\n".format(message))
+        App.Console.PrintMessage("Run of CalxuliX ccx tools solver finished.\n")
     else:
         # App.Console.PrintMessage("Frame work solver!\n")
         try:
@@ -180,10 +182,13 @@ def getMachine(solver, path=None):
     :param path:
         A valid filesystem path which shall be associetad with the machine.
     """
+    # print(path)
     _DocObserver.attach()
     m = _machines.get(solver)
     if m is None or not _isPathValid(m, path):
         m = _createMachine(solver, path, testmode=False)
+        # print(m.__dir__())  # document these attributes somewhere
+        # print(m.directory)
     return m
 
 
@@ -244,7 +249,11 @@ def _getBesideDir(solver):
 
 def _getBesideBase(solver):
     path = os.path.splitext(solver.Document.FileName)[0]
-    if path is None:
+    # doc=App.newDocument()
+    # doc.FileName
+    # the above returns an empty string in FreeCAD 0.19
+    # https://forum.freecadweb.org/viewtopic.php?f=10&t=48842
+    if path == "":
         error_message = (
             "Please save the file before executing the solver. "
             "This must be done because the location of the working "
@@ -258,6 +267,7 @@ def _getBesideBase(solver):
                 error_message
             )
         raise MustSaveError()
+        # TODO may be do not abort but use a temporary directory
     return path
 
 
@@ -408,9 +418,11 @@ class Machine(BaseTask):
 
 class Check(BaseTask):
 
-    def checkMesh(self):
-        meshes = membertools.get_member(
-            self.analysis, "Fem::FemMeshObject")
+    def get_several_member(self, t):
+        return membertools.get_several_member(self.analysis, t)
+
+    def check_mesh_exists(self):
+        meshes = self.get_several_member("Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
             self.fail()
@@ -418,18 +430,71 @@ class Check(BaseTask):
         elif len(meshes) > 1:
             self.report.error(
                 "Too many meshes. "
-                "More than one mesh is not supported.")
+                "More than one mesh is not supported."
+            )
             self.fail()
             return False
         return True
 
-    def checkMaterial(self):
-        matObjs = membertools.get_member(
-            self.analysis, "App::MaterialObjectPython")
-        if len(matObjs) == 0:
+    def check_material_exists(self):
+        objs = self.get_several_member("App::MaterialObjectPython")
+        if len(objs) == 0:
             self.report.error(
-                "No material object found. "
-                "At least one material is required.")
+                "Missing a material object. "
+                "At least one material is required."
+            )
+            self.fail()
+            return False
+        return True
+
+    def check_material_single(self):
+        objs = self.get_several_member("App::MaterialObjectPython")
+        if len(objs) > 1:
+            self.report.error("Only one Material is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_no(self):
+        objs = self.get_several_member("Fem::ElementGeometry1D")
+        if len(objs) > 0:
+            self.report.error("Beamsections are not supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_single(self):
+        objs = self.get_several_member("Fem::ElementGeometry1D")
+        if len(objs) > 1:
+            self.report.error("Only one beamsection is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_shellthickness_no(self):
+        objs = self.get_several_member("Fem::ElementGeometry2D")
+        if len(objs) > 0:
+            self.report.error("Shellsections are not supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_shellthickness_single(self):
+        objs = self.get_several_member("Fem::ElementGeometry2D")
+        if len(objs) > 1:
+            self.report.error("Only one shellthickness is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_and_shellthickness(self):
+        beamsec_obj = self.get_several_member("Fem::ElementGeometry1D")
+        shellth_obj = self.get_several_member("Fem::ElementGeometry2D")
+        if len(beamsec_obj) > 0 and len(shellth_obj) > 0:
+            self.report.error(
+                "Either beamsection or shellthickness objects are "
+                "supported for this solver, but not both in one analysis."
+            )
             self.fail()
             return False
         return True
@@ -443,7 +508,9 @@ class Check(BaseTask):
                         supported = True
                 if not supported:
                     self.report.warning(
-                        "Ignored unsupported constraint: %s" % m.Label)
+                        "Ignored unsupported constraint: {}"
+                        .format(m.Label)
+                    )
         return True
 
 

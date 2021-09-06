@@ -55,7 +55,7 @@ public:
     TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = 0);
     ~TaskBoxPrimitives();
 
-    void setPrimitive(App::DocumentObject *);
+    bool setPrimitive(App::DocumentObject *);
 
 public Q_SLOTS:
     void onBoxLengthChanged(double);
@@ -63,6 +63,8 @@ public Q_SLOTS:
     void onBoxHeightChanged(double);
     void onCylinderRadiusChanged(double);
     void onCylinderHeightChanged(double);
+    void onCylinderXSkewChanged(double);
+    void onCylinderYSkewChanged(double);
     void onCylinderAngleChanged(double);
     void onSphereRadiusChanged(double);
     void onSphereAngle1Changed(double);
@@ -85,6 +87,8 @@ public Q_SLOTS:
     void onTorusAngle3Changed(double);
     void onPrismCircumradiusChanged(double);
     void onPrismHeightChanged(double);
+    void onPrismXSkewChanged(double);
+    void onPrismYSkewChanged(double);
     void onPrismPolygonChanged(int);
     void onWedgeXmaxChanged(double);
     void onWedgeXminChanged(double);

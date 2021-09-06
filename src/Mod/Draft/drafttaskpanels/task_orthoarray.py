@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the task panel for the Draft OrthoArray tool."""
+"""Provides the task panel code for the Draft OrthoArray tool."""
 ## @package task_orthoarray
-# \ingroup DRAFT
-# \brief Provide the task panel for the Draft OrthoArray tool.
+# \ingroup drafttaskpanels
+# \brief Provides the task panel code for the Draft OrthoArray tool.
 
+## \addtogroup drafttaskpanels
+# @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -33,9 +35,10 @@ import FreeCADGui as Gui
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 import draftutils.utils as utils
-from draftutils.messages import _msg, _err, _log
-from draftutils.translate import _tr
+
 from FreeCAD import Units as U
+from draftutils.messages import _msg, _err, _log
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -77,7 +80,7 @@ class TaskPanelOrthoArray:
 
     def __init__(self):
         self.name = "Orthogonal array"
-        _log(_tr("Task panel:") + "{}".format(_tr(self.name)))
+        _log(translate("draft","Task panel:") + " {}".format(translate("draft","Orthogonal array")))
 
         # The .ui file must be loaded into an attribute
         # called `self.form` so that it is displayed in the task panel.
@@ -89,7 +92,7 @@ class TaskPanelOrthoArray:
         pix = QtGui.QPixmap(svg)
         icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
         self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(_tr(self.name))
+        self.form.setWindowTitle(translate("draft","Orthogonal array"))
 
         self.form.label_icon.setPixmap(pix.scaled(32, 32))
 
@@ -186,7 +189,8 @@ class TaskPanelOrthoArray:
                                                self.n_x, self.n_y, self.n_z)
         if self.valid_input:
             self.create_object()
-            self.print_messages()
+            # The internal function already displays messages
+            # self.print_messages()
             self.finish()
 
     def validate_input(self, selection,
@@ -198,19 +202,19 @@ class TaskPanelOrthoArray:
         the interface may not allow to input wrong data.
         """
         if not selection:
-            _err(_tr("At least one element must be selected."))
+            _err(translate("draft","At least one element must be selected."))
             return False
 
         if n_x < 1 or n_y < 1 or n_z < 1:
-            _err(_tr("Number of elements must be at least 1."))
+            _err(translate("draft","Number of elements must be at least 1."))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(_tr("Selection is not suitable for array."))
-            _err(_tr("Object:") + " {0} ({1})".format(obj.Label, obj.TypeId))
+            _err(translate("draft","Selection is not suitable for array."))
+            _err(translate("draft","Object:") + " {0} ({1})".format(obj.Label, obj.TypeId))
             return False
 
         # The other arguments are not tested but they should be present.
@@ -237,18 +241,16 @@ class TaskPanelOrthoArray:
             sel_obj = self.selection[0]
 
         # This creates the object immediately
-        # obj = Draft.makeArray(sel_obj,
-        #                       self.v_x, self.v_y, self.v_z,
-        #                       self.n_x, self.n_y, self.n_z,
-        #                       self.use_link)
-        # if obj:
-        #     obj.Fuse = self.fuse
+        # obj = Draft.make_ortho_array(sel_obj,
+        #                              self.v_x, self.v_y, self.v_z,
+        #                              self.n_x, self.n_y, self.n_z,
+        #                              self.use_link)
 
-        # Instead, we build the commands to execute through the parent
+        # Instead, we build the commands to execute through the caller
         # of this class, the GuiCommand.
         # This is needed to schedule geometry manipulation
         # that would crash Coin3D if done in the event callback.
-        _cmd = "draftobjects.orthoarray.make_ortho_array"
+        _cmd = "Draft.make_ortho_array"
         _cmd += "("
         _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
         _cmd += "v_x=" + DraftVecUtils.toString(self.v_x) + ", "
@@ -260,15 +262,15 @@ class TaskPanelOrthoArray:
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
-        _cmd_list = ["Gui.addModule('Draft')",
-                     "Gui.addModule('draftobjects.orthoarray')",
-                     "obj = " + _cmd,
-                     "obj.Fuse = " + str(self.fuse),
-                     "Draft.autogroup(obj)",
+        Gui.addModule('Draft')
+
+        _cmd_list = ["_obj_ = " + _cmd,
+                     "_obj_.Fuse = " + str(self.fuse),
+                     "Draft.autogroup(_obj_)",
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(_tr(self.name), _cmd_list)
+        self.source_command.commit(translate("draft","Orthogonal array"), _cmd_list)
 
     def get_numbers(self):
         """Get the number of elements from the widgets."""
@@ -314,7 +316,7 @@ class TaskPanelOrthoArray:
             self.form.input_X_y.setProperty('rawValue', 0)
             self.form.input_X_z.setProperty('rawValue', 0)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
-            _msg(_tr("Interval X reset:")
+            _msg(translate("draft","Interval X reset:")
                  + " ({0}, {1}, {2})".format(self.v_x.x,
                                              self.v_x.y,
                                              self.v_x.z))
@@ -323,7 +325,7 @@ class TaskPanelOrthoArray:
             self.form.input_Y_y.setProperty('rawValue', 100)
             self.form.input_Y_z.setProperty('rawValue', 0)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
-            _msg(_tr("Interval Y reset:")
+            _msg(translate("draft","Interval Y reset:")
                  + " ({0}, {1}, {2})".format(self.v_y.x,
                                              self.v_y.y,
                                              self.v_y.z))
@@ -332,7 +334,7 @@ class TaskPanelOrthoArray:
             self.form.input_Z_y.setProperty('rawValue', 0)
             self.form.input_Z_z.setProperty('rawValue', 100)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
-            _msg(_tr("Interval Z reset:")
+            _msg(translate("draft","Interval Z reset:")
                  + " ({0}, {1}, {2})".format(self.v_z.x,
                                              self.v_z.y,
                                              self.v_z.z))
@@ -343,7 +345,7 @@ class TaskPanelOrthoArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(_tr("Fuse:") + " {}".format(state))
+        _msg(translate("draft","Fuse:") + " {}".format(state))
 
     def set_fuse(self):
         """Execute as a callback when the fuse checkbox changes."""
@@ -357,7 +359,7 @@ class TaskPanelOrthoArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(_tr("Create Link array:") + " {}".format(state))
+        _msg(translate("draft","Create Link array:") + " {}".format(state))
 
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
@@ -374,19 +376,19 @@ class TaskPanelOrthoArray:
             # For example, it could take the shapes of all objects,
             # make a compound and then use it as input for the array function.
             sel_obj = self.selection[0]
-        _msg(_tr("Object:") + " {}".format(sel_obj.Label))
-        _msg(_tr("Number of X elements:") + " {}".format(self.n_x))
-        _msg(_tr("Interval X:")
+        _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
+        _msg(translate("draft","Number of X elements:") + " {}".format(self.n_x))
+        _msg(translate("draft","Interval X:")
              + " ({0}, {1}, {2})".format(self.v_x.x,
                                          self.v_x.y,
                                          self.v_x.z))
-        _msg(_tr("Number of Y elements:") + " {}".format(self.n_y))
-        _msg(_tr("Interval Y:")
+        _msg(translate("draft","Number of Y elements:") + " {}".format(self.n_y))
+        _msg(translate("draft","Interval Y:")
              + " ({0}, {1}, {2})".format(self.v_y.x,
                                          self.v_y.y,
                                          self.v_y.z))
-        _msg(_tr("Number of Z elements:") + " {}".format(self.n_z))
-        _msg(_tr("Interval Z:")
+        _msg(translate("draft","Number of Z elements:") + " {}".format(self.n_z))
+        _msg(translate("draft","Interval Z:")
              + " ({0}, {1}, {2})".format(self.v_z.x,
                                          self.v_z.y,
                                          self.v_z.z))
@@ -395,7 +397,7 @@ class TaskPanelOrthoArray:
 
     def reject(self):
         """Execute when clicking the Cancel button or pressing Escape."""
-        _msg(_tr("Aborted:") + " {}".format(_tr(self.name)))
+        _msg(translate("draft","Aborted:") + " {}".format(translate("draft","Orthogonal array")))
         self.finish()
 
     def finish(self):
@@ -408,3 +410,5 @@ class TaskPanelOrthoArray:
         Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
+## @}

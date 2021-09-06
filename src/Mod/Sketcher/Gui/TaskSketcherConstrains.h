@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QListWidget>
 
 namespace App {
@@ -101,7 +101,7 @@ protected:
 private:
     QWidget* proxy;
     bool inEditMode;
-    Ui_TaskSketcherConstrains* ui;
+    std::unique_ptr<Ui_TaskSketcherConstrains> ui;
 };
 
 } //namespace SketcherGui

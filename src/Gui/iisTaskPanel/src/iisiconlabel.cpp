@@ -74,7 +74,11 @@ QSize iisIconLabel::minimumSizeHint() const
     int w = 8 + px.width();
     if (!myText.isEmpty()) {
         QFontMetrics fm(myFont);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+        w += fm.horizontalAdvance(myText);
+#else
         w += fm.width(myText);
+#endif
         h = qMax(h, 4+fm.height());
     }
 
@@ -123,11 +127,7 @@ void iisIconLabel::paintEvent ( QPaintEvent * event )
         QRect boundingRect;
 
         QFontMetrics fm(fnt);
-#if QT_VERSION >= 0x040203
         QString txt(fm.elidedText(myText, Qt::ElideRight, textRect.width()));
-#else
-        QString txt = myText;
-#endif
 
         p.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, txt, &boundingRect);
 

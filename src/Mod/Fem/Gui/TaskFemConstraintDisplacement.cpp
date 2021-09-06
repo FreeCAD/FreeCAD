@@ -445,8 +445,8 @@ void TaskFemConstraintDisplacement::addToSelection()
                 searchStr = "Edge";
             else
                 searchStr = "Face";
-            for (unsigned int iStr = 0; iStr < (SubElements.size()); ++iStr){
-                if ((SubElements[iStr].find(searchStr) == std::string::npos) && (SubElements.size() > 0)){
+            for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr){
+                if (SubElements[iStr].find(searchStr) == std::string::npos){
                     QString msg = tr("Only one type of selection (vertex,face or edge) per constraint allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe=false;
@@ -571,7 +571,7 @@ TaskDlgFemConstraintDisplacement::TaskDlgFemConstraintDisplacement(ViewProviderF
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintDisplacement(ConstraintView);;
+    this->parameter = new TaskFemConstraintDisplacement(ConstraintView);
 
     Content.push_back(parameter);
 }

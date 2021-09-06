@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>369</height>
+    <width>440</width>
+    <height>342</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,12 +15,6 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Colors</string>
@@ -117,6 +111,13 @@
           <property name="toolTip">
            <string>Hidden line color</string>
           </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>HiddenColor</cstring>
           </property>
@@ -146,7 +147,7 @@
            <color>
             <red>255</red>
             <green>255</green>
-            <blue>20</blue>
+            <blue>0</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -176,9 +177,9 @@
           </property>
           <property name="color">
            <color>
-            <red>225</red>
-            <green>225</green>
-            <blue>225</blue>
+            <red>211</red>
+            <green>211</green>
+            <blue>211</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -208,9 +209,9 @@
           </property>
           <property name="color">
            <color>
-            <red>28</red>
-            <green>173</green>
-            <blue>28</blue>
+            <red>0</red>
+            <green>255</green>
+            <blue>0</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -232,6 +233,13 @@
          <widget class="Gui::PrefColorButton" name="pcbSectionLine">
           <property name="toolTip">
            <string>Section line color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SectionColor</cstring>
@@ -260,9 +268,9 @@
           </property>
           <property name="color">
            <color>
-            <red>80</red>
-            <green>80</green>
-            <blue>80</blue>
+            <red>211</red>
+            <green>211</green>
+            <blue>211</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -376,6 +384,13 @@
           <property name="toolTip">
            <string>Centerline color</string>
           </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>CenterColor</cstring>
           </property>
@@ -395,6 +410,13 @@
          <widget class="Gui::PrefColorButton" name="pcbVertexColor">
           <property name="toolTip">
            <string>Color of vertices in views</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>VertexColor</cstring>
@@ -478,7 +500,7 @@
         <item row="6" column="4">
          <widget class="Gui::PrefColorButton" name="pcbMarkup">
           <property name="toolTip">
-           <string>Default color for leader lines </string>
+           <string>Default color for leader lines</string>
           </property>
           <property name="color">
            <color>
@@ -521,15 +543,12 @@
     <widget class="QLabel" name="label_12">
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
-       <italic>true</italic>
+       <pointsize>10</pointsize>
+       <italic>false</italic>
       </font>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
      <property name="text">
-      <string>Items in italics are default values for new objects.  They have no effect on existing objects.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

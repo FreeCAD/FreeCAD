@@ -126,13 +126,15 @@ PlaneSurfaceFit::~PlaneSurfaceFit()
 void PlaneSurfaceFit::Initialize(const MeshCore::MeshGeomFacet& tria)
 {
     if (fitter) {
-        fitter->Clear();
-
         basepoint = tria.GetGravityPoint();
         normal = tria.GetNormal();
+
+        fitter->Clear();
+
         fitter->AddPoint(tria._aclPoints[0]);
         fitter->AddPoint(tria._aclPoints[1]);
         fitter->AddPoint(tria._aclPoints[2]);
+        fitter->Fit();
     }
 }
 
@@ -201,7 +203,7 @@ CylinderSurfaceFit::CylinderSurfaceFit()
 
 /*!
  * \brief CylinderSurfaceFit::CylinderSurfaceFit
- * Set a pre-defined cylinder. Internal cylinder fits are not done, then.
+ * Set a predefined cylinder. Internal cylinder fits are not done, then.
  */
 CylinderSurfaceFit::CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r)
     : basepoint(b)
@@ -554,8 +556,10 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
         cAlgo.ResetFacetsFlag(resetVisited, MeshCore::MeshFacet::VISIT);
         resetVisited.clear();
 
-        iCur = std::find_if(iBeg, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-            MeshCore::MeshFacet::VISIT));
+        MeshCore::MeshIsNotFlag<MeshCore::MeshFacet> flag;
+        iCur = std::find_if(iBeg, iEnd, [flag](const MeshFacet& f) {
+            return flag(f, MeshFacet::VISIT);
+        });
         if (iCur < iEnd)
             startFacet = iCur - iBeg;
         else
@@ -578,8 +582,9 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
             }
 
             // search for the next start facet
-            iCur = std::find_if(iCur, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-                MeshCore::MeshFacet::VISIT));
+            iCur = std::find_if(iCur, iEnd, [flag](const MeshFacet& f) {
+                return flag(f, MeshFacet::VISIT);
+            });
             if (iCur < iEnd)
                 startFacet = iCur - iBeg;
             else
