@@ -110,6 +110,34 @@ void DlgGeneralImp::setRecentFileSize()
     }
 }
 
+static void saveTreeMode(int value)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/DockWindows");
+    bool treeView=false, propertyView=false, comboView=true;
+    switch(value) {
+    case 1:
+        treeView = true;
+        propertyView = true;
+        comboView = false;
+        break;
+    case 2:
+        treeView = true;
+        comboView = true;
+        propertyView = true;
+        break;
+    }
+
+    if(propertyView != hGrp->GetGroup("PropertyView")->GetBool("Enabled",false)
+            || treeView != hGrp->GetGroup("TreeView")->GetBool("Enabled",false)
+            || comboView != hGrp->GetGroup("ComboView")->GetBool("Enabled",true))
+    {
+        hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
+        hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
+        hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
+    }
+}
+
 void DlgGeneralImp::saveSettings()
 {
     int index = ui->AutoloadModuleCombo->currentIndex();
@@ -119,6 +147,27 @@ void DlgGeneralImp::saveSettings()
                           SetASCII("AutoloadModule", startWbName.toLatin1());
 
     setRecentFileSize();
+
+    ui->AutoApply->onSave();
+    ui->SaveParameter->onSave();
+    ui->tiledBackground->onSave();
+    ui->Languages->onSave();
+    ui->toolbarArea->onSave();
+    ui->globalToolbarArea->onSave();
+    ui->treeIconSize->onSave();
+    ui->treeFontSize->onSave();
+    ui->treeItemSpacing->onSave();
+    ui->appFontSize->onSave();
+    ui->RecentFiles->onSave();
+    ui->SplashScreen->onSave();
+    ui->PythonWordWrap->onSave();
+    ui->CmdHistorySize->onSave();
+    ui->checkPopUpWindow->onSave();
+    ui->toolbarIconSize->onSave();
+    ui->StyleSheets->onSave();
+    ui->OverlayStyleSheets->onSave();
+    ui->MenuStyleSheets->onSave();
+    saveTreeMode(ui->treeMode->currentIndex());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -172,11 +221,8 @@ void DlgGeneralImp::loadSettings()
         ui->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
         index = ui->toolbarIconSize->findData(QVariant(current));
     }
-    ui->toolbarIconSize->setCurrentIndex(index);
-    QObject::connect(ui->toolbarIconSize, QOverload<int>::of(&QComboBox::currentIndexChanged),
-        [this, hGrp](){
-            hGrp->SetInt("ToolbarIconSize", ui->toolbarIconSize->currentData().toInt());
-        });
+    ui->toolbarIconSize->setCurrentIndex(1);
+    ui->toolbarIconSize->onRestore();
 
     ui->treeMode->addItem(tr("Combo View"));
     ui->treeMode->addItem(tr("TreeView and PropertyView"));
@@ -192,34 +238,11 @@ void DlgGeneralImp::loadSettings()
     }
     ui->treeMode->setCurrentIndex(index);
     QObject::connect(ui->treeMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
-        [this, hGrp](int value) {
-            bool treeView=false, propertyView=false, comboView=true;
-            switch(value) {
-            case 1:
-                treeView = true;
-                propertyView = true;
-                comboView = false;
-                break;
-            case 2:
-                treeView = true;
-                comboView = true;
-                propertyView = true;
-                break;
-            }
-
-            if(propertyView != hGrp->GetGroup("PropertyView")->GetBool("Enabled",false)
-                    || treeView != hGrp->GetGroup("TreeView")->GetBool("Enabled",false)
-                    || comboView != hGrp->GetGroup("ComboView")->GetBool("Enabled",true))
-            {
-                hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
-                hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
-                hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
-            }
-        });
+        [this](int value) { if (PrefParam::AutoSave()) saveTreeMode(value); });
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     auto populateStylesheets = 
-    [hGrp](const char *key, const char *path, QComboBox *combo, const char *def) {
+    [hGrp](const char *key, const char *path, PrefComboBox *combo, const char *def) {
         // List all .qss/.css files
         QMap<QString, QString> cssFiles;
         QDir dir;
@@ -261,16 +284,11 @@ void DlgGeneralImp::loadSettings()
                     selectedStyleSheet = fi.absoluteFilePath();
                     combo->addItem(fi.baseName(), selectedStyleSheet);
                 }
-
-                index = combo->findData(selectedStyleSheet);
             }
         }
 
-        if (index > -1) combo->setCurrentIndex(index);
-        QObject::connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            [combo, key, hGrp](){
-                hGrp->SetASCII(key, combo->currentData().toByteArray().constData());
-            });
+        combo->setCurrentIndex(index);
+        combo->onRestore();
     };
 
     populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
@@ -287,6 +305,13 @@ void DlgGeneralImp::loadSettings()
     ui->globalToolbarArea->addItem(tr("Right"), QByteArray("Right"));
     ui->globalToolbarArea->addItem(tr("Bottom"), QByteArray("Bottom"));
 
+    ui->AutoApply->onRestore();
+    QObject::connect(ui->AutoApply, &PrefCheckBox::toggled, [this](bool checked) {
+        // Always auto apply for AutoApply option itself.
+        PrefParam::setAutoSave(checked);
+    });
+
+    ui->SaveParameter->onRestore();
     ui->tiledBackground->onRestore();
     ui->Languages->onRestore();
     ui->toolbarArea->onRestore();

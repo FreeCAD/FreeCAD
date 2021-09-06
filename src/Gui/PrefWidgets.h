@@ -179,6 +179,25 @@ protected:
   bool m_Restored = false;
 };
 
+class PrefParam: public ParameterGrp::ObserverType {
+public:
+  PrefParam();
+  ~PrefParam();
+
+  void OnChange(Base::Subject<const char*> &, const char * sReason);
+  static void addEntry(PrefWidget *entry);
+  static void removeEntry(PrefWidget *entry);
+  static bool AutoSave();
+  static void setAutoSave(bool);
+  static PrefParam *instance();
+
+private:
+  ParameterGrp::handle hGrp;
+  bool _AutoSave;
+  std::set<PrefWidget*> _entries;
+};
+
+
 /** The PrefSpinBox class.
  * \author Werner Mayer
  */

@@ -44,55 +44,48 @@
 using Base::Console;
 using namespace Gui;
 
-namespace {
+PrefParam::PrefParam() {
+  hGrp = App::GetApplication().GetParameterGroupByPath(
+      "User parameter:BaseApp/Preferences/General");
+  _AutoSave = hGrp->GetBool("AutoApplyPreference", true);
+  hGrp->Attach(this);
+}
 
-class PrefParam: public ParameterGrp::ObserverType {
-public:
-  PrefParam() {
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences");
-    _AutoSave = hGrp->GetBool("AutoSave", true);
-    hGrp->Attach(this);
+PrefParam::~PrefParam() {
+  hGrp->Detach(this);
+}
+
+void PrefParam::OnChange(Base::Subject<const char*> &, const char * sReason) {
+  if (boost::equals(sReason, "AutoApplyPreference")) {
+    _AutoSave = hGrp->GetBool("AutoApplyPreference", true);
+    for (auto entry : _entries)
+      entry->setAutoSave(_AutoSave);
   }
+}
 
-  ~PrefParam() {
-    hGrp->Detach(this);
-  }
+void PrefParam::addEntry(PrefWidget *entry) {
+  instance()->_entries.insert(entry);
+}
 
-  void OnChange(Base::Subject<const char*> &, const char * sReason) {
-    if (boost::equals(sReason, "AutoSave")) {
-      _AutoSave = hGrp->GetBool("AutoSave", true);
-      for (auto entry : _entries)
-        entry->setAutoSave(_AutoSave);
-    }
-  }
+void PrefParam::removeEntry(PrefWidget *entry) {
+  instance()->_entries.erase(entry);
+}
 
-  static void addEntry(PrefWidget *entry) {
-    instance()->_entries.insert(entry);
-  }
+bool PrefParam::AutoSave() {
+  return instance()->_AutoSave;
+}
 
-  static void removeEntry(PrefWidget *entry) {
-    instance()->_entries.erase(entry);
-  }
+void PrefParam::setAutoSave(bool enable) {
+  if (enable != AutoSave())
+    instance()->hGrp->GetBool("AutoApplyPreference", enable);
+}
 
-  static bool AutoSave() {
-    return instance()->_AutoSave;
-  }
-
-  static PrefParam *instance() {
-    static PrefParam *_instance;
-    if (!_instance)
-      _instance = new PrefParam;
-    return _instance;
-  }
-
-private:
-  ParameterGrp::handle hGrp;
-  bool _AutoSave;
-  std::set<PrefWidget*> _entries;
-};
-
-}// anonymous namespace
+PrefParam *PrefParam::instance() {
+  static PrefParam *_instance;
+  if (!_instance)
+    _instance = new PrefParam;
+  return _instance;
+}
 
 /** Constructs a preference widget.
  */
@@ -761,7 +754,8 @@ void PrefComboBox::restorePreferences()
     index = getWindowParameter()->GetInt(entryName(), m_DefaultIndex);
     break;
   }
-  setCurrentIndex(index);
+  if (index >= 0 && index < count())
+    setCurrentIndex(index);
 }
 
 void PrefComboBox::savePreferences()

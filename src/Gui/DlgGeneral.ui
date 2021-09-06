@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>851</height>
+    <height>909</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,555 +29,644 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="GroupBox5">
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="GroupBox10">
      <property name="title">
-      <string>General</string>
+      <string>Start up</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QGroupBox" name="GroupBox7">
-        <property name="title">
-         <string>Language</string>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
+       <number>11</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="SplashScreen">
+        <property name="toolTip">
+         <string>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</string>
         </property>
-        <layout class="QGridLayout">
-         <property name="leftMargin">
-          <number>11</number>
-         </property>
-         <property name="topMargin">
-          <number>11</number>
-         </property>
-         <property name="rightMargin">
-          <number>11</number>
-         </property>
-         <property name="bottomMargin">
-          <number>11</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="0" column="0">
-          <layout class="QHBoxLayout">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="TextLabel1_4">
-             <property name="text">
-              <string>Change language:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="Gui::PrefComboBox" name="Languages">
-             <property name="toolTip">
-              <string>Language of the application's user interface</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>General</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>Language</cstring>
-             </property>
-             <property name="prefType" stdset="0">
-              <cstring></cstring>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
+        <property name="text">
+         <string>Enable splash screen at start up</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowSplasher</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>General</cstring>
+        </property>
        </widget>
       </item>
-      <item>
-       <widget class="QGroupBox" name="GroupBox3">
-        <property name="title">
-         <string>Main window</string>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="leftMargin">
+         <number>0</number>
         </property>
-        <layout class="QVBoxLayout">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>11</number>
-         </property>
-         <property name="topMargin">
-          <number>11</number>
-         </property>
-         <property name="rightMargin">
-          <number>11</number>
-         </property>
-         <property name="bottomMargin">
-          <number>11</number>
-         </property>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>Command history size:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="Gui::PrefSpinBox" name="CmdHistorySize">
-             <property name="value">
-              <number>20</number>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>View</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>CommandHistorySize</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="recentFileListLabel">
-             <property name="text">
-              <string>Size of recent file list</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="Gui::PrefSpinBox" name="RecentFiles">
-             <property name="toolTip">
-              <string>How many files should be listed in recent files list</string>
-             </property>
-             <property name="value">
-              <number>4</number>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>RecentFiles</cstring>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>RecentFiles</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <spacer>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="Gui::PrefCheckBox" name="tiledBackground">
-             <property name="toolTip">
-              <string>Background of the main window will consist of tiles of a special image.
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="autoModuleLabel">
+          <property name="text">
+           <string>Auto load module after start up:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="AutoloadModuleCombo">
+          <property name="toolTip">
+           <string>Choose which workbench will be activated and shown
+after FreeCAD launches</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QGroupBox" name="GroupBox5">
+     <property name="title">
+      <string>Preferences</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout3">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="AutoApply">
+        <property name="toolTip">
+         <string>Auto apply preference options immediately after change.</string>
+        </property>
+        <property name="text">
+         <string>Auto apply</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>General</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AutoApplyPreference</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefCheckBox" name="SaveParameter">
+        <property name="toolTip">
+         <string>Save preference settings to file up on closing this dialog.</string>
+        </property>
+        <property name="text">
+         <string>Save settings to file</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>General</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SaveUserParameter</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBox3">
+     <property name="title">
+      <string>Main window</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
+       <number>11</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Command history size:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefSpinBox" name="CmdHistorySize">
+          <property name="value">
+           <number>20</number>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CommandHistorySize</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="recentFileListLabel">
+          <property name="text">
+           <string>Size of recent file list</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefSpinBox" name="RecentFiles">
+          <property name="toolTip">
+           <string>How many files should be listed in recent files list</string>
+          </property>
+          <property name="value">
+           <number>4</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>RecentFiles</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>RecentFiles</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="tiledBackground">
+          <property name="toolTip">
+           <string>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</string>
-             </property>
-             <property name="text">
-              <string>Enable tiled background</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>MainWindow</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>TiledBackground</cstring>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="Gui::PrefCheckBox" name="checkPopUpWindow">
-             <property name="toolTip">
-              <string>Enable this option to make sure pop up windows (e.g. Preference dialog)
+          </property>
+          <property name="text">
+           <string>Enable tiled background</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TiledBackground</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkPopUpWindow">
+          <property name="toolTip">
+           <string>Enable this option to make sure pop up windows (e.g. Preference dialog)
 are shown on the same screen as the main window.</string>
-             </property>
-             <property name="text">
-              <string>Show pop up window on the same screen</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>View</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>CheckWidgetPlacementOnRestore</cstring>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>View menu style sheet:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="Gui::PrefComboBox" name="toolbarArea">
-             <property name="toolTip">
-              <string>Choose default docking area for workbench toolbars</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>General</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>DefaultToolbarArea</cstring>
-             </property>
-             <property name="prefType" stdset="0">
-              <cstring></cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="Gui::PrefSpinBox" name="appFontSize">
-             <property name="toolTip">
-              <string>Set the default application font size</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>View</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>DefaultFontSize</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="OverlayStyleSheets"/>
-           </item>
-           <item row="10" column="0">
-            <widget class="QLabel" name="treeModeLabel">
-             <property name="text">
-              <string>Tree view mode:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1">
-            <widget class="Gui::PrefSpinBox" name="treeItemSpacing">
-             <property name="value">
-              <number>2</number>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>TreeView</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>ItemSpacing</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="1">
-            <widget class="Gui::PrefSpinBox" name="treeFontSize">
-             <property name="toolTip">
-              <string>Set tree view label font size</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>TreeView</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>FontSize</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Tree view item spacing:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="iconSizeLabel">
-             <property name="text">
-              <string>Size of toolbar icons:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="MenuStyleSheets"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="styleSheetLabel">
-             <property name="text">
-              <string>Style sheet:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="1">
-            <widget class="QComboBox" name="treeMode">
-             <property name="toolTip">
-              <string>Customize how tree view is shown in the panel (restart required).
+          </property>
+          <property name="text">
+           <string>Show pop up window on the same screen</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CheckWidgetPlacementOnRestore</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="9" column="1">
+         <widget class="Gui::PrefSpinBox" name="treeItemSpacing">
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>TreeView</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ItemSpacing</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="treeModeLabel">
+          <property name="text">
+           <string>Tree view mode:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefSpinBox" name="appFontSize">
+          <property name="toolTip">
+           <string>Set the default application font size</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultFontSize</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="Gui::PrefSpinBox" name="treeIconSize">
+          <property name="toolTip">
+           <string>Choose your preference for tree view icon size in pixel.
+The tree view row height will set to icon size + 2. Set 0
+to use the system default size.</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>TreeView</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>IconSize</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Default font size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Global toolbar area</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Tree view item spacing:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Overlay style sheet:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="Gui::PrefSpinBox" name="treeFontSize">
+          <property name="toolTip">
+           <string>Set tree view label font size</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>TreeView</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FontSize</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="iconSizeLabel">
+          <property name="text">
+           <string>Size of toolbar icons:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Workbench toolbar area</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>View menu style sheet:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Tree view icon size:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Tree view font size:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="styleSheetLabel">
+          <property name="text">
+           <string>Style sheet:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="StyleSheets">
+          <property name="toolTip">
+           <string>Style sheet how user interface will look like</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StyleSheet</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="OverlayStyleSheets">
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>OverlayActiveStyleSheet</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="MenuStyleSheets">
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MenuStyleSheet</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="toolbarIconSize">
+          <property name="toolTip">
+           <string>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>General</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ToolbarIconSize</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="toolbarArea">
+          <property name="toolTip">
+           <string>Choose default docking area for workbench toolbars</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>General</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultToolbarArea</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="globalToolbarArea">
+          <property name="toolTip">
+           <string>Choose default docking area for global toolbars</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>General</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>GlobalToolbarArea</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1" colspan="2">
+         <widget class="QComboBox" name="treeMode">
+          <property name="toolTip">
+           <string>Customize how tree view is shown in the panel (restart required).
 
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="Gui::PrefSpinBox" name="treeIconSize">
-             <property name="toolTip">
-              <string>Choose your preference for tree view icon size in pixel.
-The tree view row height will set to icon size + 2. Set 0
-to use the system default size.</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>TreeView</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>IconSize</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>Overlay style sheet:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QComboBox" name="toolbarIconSize">
-             <property name="toolTip">
-              <string>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Tree view icon size:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Tree view font size:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Default font size</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Workbench toolbar area</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Global toolbar area</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="Gui::PrefComboBox" name="globalToolbarArea">
-             <property name="toolTip">
-              <string>Choose default docking area for global toolbars</string>
-             </property>
-             <property name="prefPath" stdset="0">
-              <cstring>General</cstring>
-             </property>
-             <property name="prefEntry" stdset="0">
-              <cstring>GlobalToolbarArea</cstring>
-             </property>
-             <property name="prefType" stdset="0">
-              <cstring></cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="StyleSheets">
-             <property name="toolTip">
-              <string>Style sheet how user interface will look like</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="GroupBox10">
-        <property name="title">
-         <string>Start up</string>
-        </property>
-        <layout class="QGridLayout">
-         <property name="leftMargin">
-          <number>11</number>
-         </property>
-         <property name="topMargin">
-          <number>11</number>
-         </property>
-         <property name="rightMargin">
-          <number>11</number>
-         </property>
-         <property name="bottomMargin">
-          <number>11</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="2" column="0">
-          <widget class="Gui::PrefCheckBox" name="SplashScreen">
-           <property name="toolTip">
-            <string>A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</string>
-           </property>
-           <property name="text">
-            <string>Enable splash screen at start up</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>ShowSplasher</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>General</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <layout class="QGridLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="autoModuleLabel">
-             <property name="text">
-              <string>Auto load module after start up:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="AutoloadModuleCombo">
-             <property name="toolTip">
-              <string>Choose which workbench will be activated and shown
-after FreeCAD launches</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="GroupBox11">
-        <property name="title">
-         <string>Python console</string>
-        </property>
-        <layout class="QGridLayout" name="_4">
-         <property name="leftMargin">
-          <number>11</number>
-         </property>
-         <property name="topMargin">
-          <number>11</number>
-         </property>
-         <property name="rightMargin">
-          <number>11</number>
-         </property>
-         <property name="bottomMargin">
-          <number>11</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="Gui::PrefCheckBox" name="PythonWordWrap">
-           <property name="toolTip">
-            <string>Words will be wrapped when they exceed available
-horizontal space in Python console</string>
-           </property>
-           <property name="text">
-            <string>Enable word wrap</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>PythonWordWrap</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>General</cstring>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>352</width>
-          <height>221</height>
-         </size>
-        </property>
-       </spacer>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="GroupBox11">
+     <property name="title">
+      <string>Python console</string>
+     </property>
+     <layout class="QGridLayout" name="_4">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
+       <number>11</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="PythonWordWrap">
+        <property name="toolTip">
+         <string>Words will be wrapped when they exceed available
+horizontal space in Python console</string>
+        </property>
+        <property name="text">
+         <string>Enable word wrap</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PythonWordWrap</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>General</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="GroupBox7">
+     <property name="title">
+      <string>Language</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
+       <number>11</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="TextLabel1_4">
+          <property name="text">
+           <string>Change language:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="Languages">
+          <property name="toolTip">
+           <string>Language of the application's user interface</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>General</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Language</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>352</width>
+       <height>221</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
