@@ -460,7 +460,7 @@ class StockCreateBoxEdit(StockEdit):
 
     def getFields(self, obj, fields=None):
         if fields is None:
-            fields = ["length", "widht", "height"]
+            fields = ["length", "width", "height"]
         try:
             if self.IsStock(obj):
                 if "length" in fields:
