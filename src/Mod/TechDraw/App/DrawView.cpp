@@ -239,6 +239,26 @@ void DrawView::onDocumentRestored()
     handleXYLock();
     DrawView::execute();
 }
+/**
+ * @brief DrawView::countParentPages
+ * Fixes a crash in TechDraw when user creates duplicate page without dependencies
+ * In fixOrphans() we check how many parent pages an object has before deleting
+ * in case it is also a child of another duplicate page
+ * @return
+ */
+int DrawView::countParentPages() const
+{
+    int count = 0;
+
+    std::vector<App::DocumentObject*> parent = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            //page = static_cast<TechDraw::DrawPage *>(*it);
+            count++;
+        }
+    }
+    return count;
+}
 
 DrawPage* DrawView::findParentPage() const
 {
