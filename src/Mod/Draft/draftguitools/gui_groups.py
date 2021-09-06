@@ -105,6 +105,13 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
 
     def proceed(self, labelname):
+        """Place the selected objects in the chosen group or ungroup them.
+        Parameters
+        ----------
+        labelname: str
+            The passed string with the name of the group.
+            It puts the selected objects inside this group.
+        """
         # If the selected group matches the ungroup label,
         # remove the selection from all groups.
         if labelname == self.ungroup:
