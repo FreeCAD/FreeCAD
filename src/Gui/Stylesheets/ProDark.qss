@@ -1492,6 +1492,7 @@ QComboBox QAbstractItemView {
 /*==================================================================================================
 Push button
 ==================================================================================================*/
+Gui--PieButton,
 QPushButton {
     color: #e0e0e0;
     text-align: center;
@@ -1506,27 +1507,45 @@ QPushButton {
 
 }
 
+Gui--PieButton {
+    padding: 3px 4px;
+}
+
+Gui--PieButton:hover,
+Gui--PieButton:hover:checked,
 QPushButton:hover,
-QPushButton:focus {
-    color: #cbd8e6;
+QPushButton:hover:checked {
+    color: white;
     border-color: #2a2a2a;
     background-color: #557BB6;
 }
 
+Gui--PieButton:disabled,
+Gui--PieButton:disabled:checked,
 QPushButton:disabled,
 QPushButton:disabled:checked {
-    color: #2a2a2a;
+    color: #3a3a3a;
     background-color: #696969; /* same as enabled color */
     border-color: #2a2a2a; /* same as enabled color */
 }
 
-QPushButton:pressed {
-    background-color: #557BB6;
+Gui--PieButton:focus,
+QToolButton:focus,
+QPushButton:focus {
+    border: 1px solid #557BB6;
 }
 
+Gui--PieButton:pressed,
+Gui--PieButton:pressed:checked,
+QPushButton:pressed, 
+QPushButton:pressed:checked {
+    background-color: #456BB6;
+}
+
+Gui--PieButton:checked,
 QPushButton:checked {
-    background-color: #696969;
-    border-color: #557BB6;
+    background-color: #456BA6;
+    border-color: #456BA6;
 }
 
 /* Color Buttons */
@@ -1576,17 +1595,10 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget > QWidget > QF
     padding: 2px 6px;
 }
 
-QPushButton:checked {
-    background-color: #696969;
-    border-color: #696969;
-}
-
-
 /*==================================================================================================
 Tool button inside QDialogs that works as QPushButtons
 ==================================================================================================*/
 /* found under Tools -> Customize -> Macros -> Pixmap "..." button */
-Gui--PieButton,
 QDialog QToolButton {
     color: #e0e0e0;
     text-align: center;
@@ -1599,7 +1611,6 @@ QDialog QToolButton {
     border-radius: 2px;
 }
 
-Gui--PieButton:focus,
 QDialog QToolButton:hover,
 QDialog QToolButton:focus {
     color: #cbd8e6;
@@ -1607,8 +1618,6 @@ QDialog QToolButton:focus {
     background-color: #557BB6;
 }
 
-Gui--PieButton:disabled,
-Gui--PieButton:disabled:checked,
 QDialog QToolButton:disabled,
 QDialog QToolButton:disabled:checked {
     color: #333333;
@@ -1616,15 +1625,12 @@ QDialog QToolButton:disabled:checked {
     background-color: #424242;
 }
 
-Gui--PieButton:pressed,
-Gui--PieButton:pressed:checked,
 QDialog QToolButton:pressed:checked,
 QDialog QToolButton:pressed {
     color: #cbd8e6;
     background-color: #456BA6;
 }
 
-Gui--PieButton:checked,
 QDialog QToolButton:checked {
     color: #cbd8e6;
     background-color: #557BB6;

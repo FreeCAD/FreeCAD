@@ -1455,6 +1455,7 @@ QComboBox QAbstractItemView {
 /*==================================================================================================
 Push button
 ==================================================================================================*/
+Gui--PieButton,
 QPushButton {
     color: #e0e0e0;
     text-align: center;
@@ -1467,17 +1468,27 @@ QPushButton {
     border-radius: 4px;
 }
 
-QPushButton:hover {
+Gui--PieButton {
+    padding: 3px 4px;
+}
+
+Gui--PieButton:hover,
+Gui--PieButton:hover:checked,
+QPushButton:hover,
+QPushButton:hover:checked {
     color: white;
     border-color: #d0970c;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #daa116, stop:1 #d0970c);
 }
 
-QToolButton:focus
+Gui--PieButton:focus,
+QToolButton:focus,
 QPushButton:focus {
-    border: 1px solid #d0970c;
+    border: 1px solid #daa116;
 }
 
+Gui--PieButton:disabled,
+Gui--PieButton:disabled:checked,
 QPushButton:disabled,
 QPushButton:disabled:checked {
     color: #787878;
@@ -1485,11 +1496,16 @@ QPushButton:disabled:checked {
     border-color: #5a5a5a; /* same as enabled color */
 }
 
-QPushButton:pressed {
+Gui--PieButton:pressed,
+Gui--PieButton:pressed:checked,
+QPushButton:pressed,
+QPushButton:pressed:checked {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #d0970c, stop:1 #daa116);
 }
 
+Gui--PieButton:checked,
 QPushButton:checked {
+    color: white;
     background-color: #daa116;
     border-color: #d0970c;
 }
@@ -1550,7 +1566,6 @@ QPushButton:checked {
 Tool button inside QDialogs that works as QPushButtons
 ==================================================================================================*/
 /* found under Tools -> Customize -> Macros -> Pixmap "..." button */
-Gui--PieButton,
 QDialog QToolButton {
     color: #e0e0e0;
     text-align: center;
@@ -1563,7 +1578,6 @@ QDialog QToolButton {
     border-radius: 4px;
 }
 
-Gui--PieButton:focus,
 QDialog QToolButton:hover,
 QDialog QToolButton:focus {
     color: white;
@@ -1571,8 +1585,6 @@ QDialog QToolButton:focus {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #daa116, stop:1 #d0970c);
 }
 
-Gui--PieButton:disabled,
-Gui--PieButton:disabled:checked,
 QDialog QToolButton:disabled,
 QDialog QToolButton:disabled:checked {
     color: #6e6e6e;
@@ -1580,15 +1592,12 @@ QDialog QToolButton:disabled:checked {
     background-color: #5a5a5a;
 }
 
-Gui--PieButton:pressed,
-Gui--PieButton:pressed:checked,
 QDialog QToolButton:pressed:checked,
 QDialog QToolButton:pressed {
     color: white;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #c08700, stop:1 #ca9106);
 }
 
-Gui--PieButton:checked,
 QDialog QToolButton:checked {
     color: white;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #d0970c, stop:1 #daa116);
