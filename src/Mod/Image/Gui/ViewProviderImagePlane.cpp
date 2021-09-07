@@ -65,6 +65,8 @@ ViewProviderImagePlane::ViewProviderImagePlane()
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
 
+    ShapeColor.setValue(App::Color(1.0f, 1.0f, 1.0f));
+
     SelectionStyle.setValue(1);
 }
 
