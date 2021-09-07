@@ -187,7 +187,7 @@ def showPreselectInfo():
 
     try:
         bbox = shape.BoundBox
-        txt += '\nBoundBox: %s' % _bbox_tostr(bbox)
+        txt += '\nBoundBox: %s' % ('Infinite' if shape.isInfinite() else _bbox_tostr(bbox))
         txt += '\nBound center: %s' % _vec_tostr(bbox.Center)
     except Exception:
         pass
