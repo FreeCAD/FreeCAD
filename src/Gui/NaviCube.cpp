@@ -1927,14 +1927,27 @@ void NaviCubeShared::setLabels(QWidget *parent)
         fontDlg->show();
     });
 
-    auto checkbox = new QCheckBox(QObject::tr("Auto size"));
+    auto checkbox = new QCheckBox(QObject::tr("Auto scale"));
+    checkbox->setToolTip(QObject::tr("Auto scale font pixel size based on navigation cube size.\n"
+                                     "If disabled, then use the selected font point size.\n"));
     bool autoSize = m_hGrp->GetBool("FontAutoSize", true);
     checkbox->setChecked(autoSize);
-    grid->addWidget(checkbox, row++, 0, 1, 2);
+    grid->addWidget(checkbox, row, 0);
     QObject::connect(checkbox, &QCheckBox::toggled, [this, fontButton](bool checked) {
         m_hGrp->SetBool("FontAutoSize", checked);
         fontButton->setFont(getLabelFont());
     });
+
+    auto spinBoxScale = new QDoubleSpinBox;
+    grid->addWidget(spinBoxScale, row++, 1);
+    spinBoxScale->setValue(m_hGrp->GetFloat("FontScale", 0.22));
+    spinBoxScale->setMinimum(0.1);
+    spinBoxScale->setSingleStep(0.01);
+    QObject::connect(spinBoxScale, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+        [this, fontButton](double value) {
+            m_hGrp->SetFloat("FontScale", value);
+            fontButton->setFont(getLabelFont());
+        });
 
     grid->addWidget(new QLabel(QObject::tr("Font stretch")), row, 0);
     auto spinBoxStretch = new QSpinBox;
@@ -2025,7 +2038,7 @@ QFont NaviCubeShared::getLabelFont()
     QFont sansFont(fontString);
     if (fontSize <= 0 || m_hGrp->GetBool("FontAutoSize", true)) {
 	    int texSize = m_CubeWidgetSize * m_OverSample;
-        sansFont.setPixelSize(0.18 * texSize);
+        sansFont.setPixelSize(m_hGrp->GetFloat("FontScale", 0.22) * texSize);
     } else
         sansFont.setPointSize(fontSize);
     sansFont.setItalic(m_hGrp->GetBool("FontItalic", false));
