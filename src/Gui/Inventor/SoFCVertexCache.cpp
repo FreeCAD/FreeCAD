@@ -455,7 +455,7 @@ public:
   int colorpervertex;
   uint32_t firstcolor;
 
-  int lastenabled;
+  int lastenabled = -1;
   SbPlane prevsortplane;
 
   struct SortEntry {
@@ -1977,8 +1977,10 @@ SoFCVertexCacheP::addVertex(const Vertex & v)
 {
   this->vertexarray.append(v.vertex);
   this->normalarray.append(v.normal);
-  if (this->texcoord0array) this->texcoord0array.append(v.texcoord0);
-  if (this->bumpcoordarray) this->bumpcoordarray.append(v.bumpcoord);
+  if (this->lastenabled >= 0) {
+    this->texcoord0array.append(v.texcoord0);
+    this->bumpcoordarray.append(v.bumpcoord);
+  }
 
   if (!this->colorarray && this->colorpervertex > 0)
     initColor(this->vertexarray.getLength()*4 - 4);
