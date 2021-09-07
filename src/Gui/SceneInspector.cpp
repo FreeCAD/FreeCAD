@@ -437,8 +437,10 @@ void DlgInspector::populateFieldView(QTreeWidgetItem *parent, SoNode *n)
                 sval = val.getString();
                 val.makeEmpty(false);
                 boost::replace_all(sval, "\n", "; ");
+                if (sval.size() > 256)
+                    sval.resize(256);
                 stream << sval.c_str();
-                if (txt.size() > 256)
+                if (txt.size() >= 256)
                     break;
             }
             if (i < mfield->getNum())
@@ -451,6 +453,10 @@ void DlgInspector::populateFieldView(QTreeWidgetItem *parent, SoNode *n)
             sval = val.getString();
             val.makeEmpty(false);
             boost::replace_all(sval, "\n", "; ");
+            if (sval.size() > 256) {
+                sval.resize(256);
+                sval += "...";
+            }
             item->setText(1, QString::fromLatin1(sval.c_str()));
         }
     }
