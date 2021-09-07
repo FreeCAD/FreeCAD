@@ -6842,8 +6842,14 @@ static void getParameterRange(const TopoDS_Edge &edge,
     // the actual vertex.
     firstPoint = BRep_Tool::Pnt(TopExp::FirstVertex(edge));
     lastPoint = BRep_Tool::Pnt(TopExp::LastVertex(edge));
-    GeomAPI_ProjectPointOnCurve pfirst(firstPoint, curve.Curve().Curve());
-    GeomAPI_ProjectPointOnCurve plast(lastPoint, curve.Curve().Curve());
+
+    // Because GeomAPI_ProjectPointOnCurve only works on raw curve handle, we
+    // must get untransformed first and last point.
+    TopoDS_Shape e = edge.Located(TopLoc_Location());
+    auto fp = BRep_Tool::Pnt(TopExp::FirstVertex(TopoDS::Edge(e)));
+    auto lp = BRep_Tool::Pnt(TopExp::LastVertex(TopoDS::Edge(e)));
+    GeomAPI_ProjectPointOnCurve pfirst(fp, curve.Curve().Curve());
+    GeomAPI_ProjectPointOnCurve plast(lp, curve.Curve().Curve());
     firstParameter = pfirst.LowerDistanceParameter();
     lastParameter = plast.LowerDistanceParameter();
 }
