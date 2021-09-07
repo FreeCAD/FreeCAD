@@ -11,7 +11,7 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>Erstellt oder bearbeitet die Definition eines Evolventenzahnrades.</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>Erstellt oder bearbeitet die Kettenraddefinition.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Entwurfsassistent für Wellen...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Entwurfsassistent für Wellen starten</translation>
     </message>
   </context>
   <context>
@@ -45,22 +45,22 @@
     <message>
       <location filename="WizardShaftTable.py" line="43"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>Länge [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="44"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>Durchmesser [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="45"/>
       <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
+      <translation>Innendurchmesser [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Beziehungstyp</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="47"/>

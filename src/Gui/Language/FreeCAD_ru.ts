@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>По умолчанию</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Преобразовать</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Обрезка</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Цвет</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -1450,7 +1469,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Change language:</source>
-      <translation>Изменить язык (Change language):</translation>
+      <translation>Изменить язык:</translation>
     </message>
     <message>
       <source>Main window</source>
@@ -1617,7 +1636,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>Create</source>
-      <translation>Собрать</translation>
+      <translation>Создать</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -2161,7 +2180,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Create</source>
-      <translation>Собрать</translation>
+      <translation>Создать</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
@@ -3276,19 +3295,19 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Название верстака</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Автозагрузка?</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Загрузить сейчас</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Чтобы сэкономить ресурсы, FreeCAD не загружает верстаки до тех пор, пока они не будут использованы. После загрузки верстака, если это предусмотрено в настройках может появится дополнительный раздел с настройкам, связанным с функциональностью загруженного верстака.&lt;/p&gt;&lt;p&gt;В текущий момент доступны следующие верстаки, которые можно загрузить, если это требуется:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3299,27 +3318,27 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Автозагрузка</translation>
     </message>
     <message>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Если отмечено</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>будет загружен автоматически при запуске FreeCAD</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Это текущий модуль запуска и должен быть автоматически загружен. Смотрите Настройки/Общее/Автозагрузка для изменения.</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Загружено</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Загрузить сейчас</translation>
     </message>
   </context>
   <context>
@@ -3449,19 +3468,19 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Top left</source>
-      <translation>Верхний левый</translation>
+      <translation>Верхний левый угол</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>Верхний правый</translation>
+      <translation>Верхний правый угол</translation>
     </message>
     <message>
       <source>Bottom left</source>
-      <translation>Нижний левый</translation>
+      <translation>Нижний левый угол</translation>
     </message>
     <message>
       <source>Bottom right</source>
-      <translation>Нижний правый</translation>
+      <translation>Нижний правый угол</translation>
     </message>
     <message>
       <source>3D Navigation</source>
@@ -4677,6 +4696,16 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Partial</source>
       <translation>Частично</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -4986,19 +5015,19 @@ Do you want to save your changes?</source>
     <name>Gui::Flag</name>
     <message>
       <source>Top left</source>
-      <translation>Верхний левый</translation>
+      <translation>Верхний левый угол</translation>
     </message>
     <message>
       <source>Bottom left</source>
-      <translation>Нижний левый</translation>
+      <translation>Нижний левый угол</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>Верхний правый</translation>
+      <translation>Верхний правый угол</translation>
     </message>
     <message>
       <source>Bottom right</source>
-      <translation>Нижний правый</translation>
+      <translation>Нижний правый угол</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -8756,6 +8785,17 @@ Physical path: </source>
     <message>
       <source>Start the units calculator</source>
       <translation>Открыть конвертор единиц измерения</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>

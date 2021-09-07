@@ -264,7 +264,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="113"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Pašalinti sąlają, pritaikyti atsitiktinį pavaldžiųjų ir spalvų išdėstymą</translation>
+      <translation>Pašalinti sąlają, pritaikyti išdėstymą pavaldiesiems nariams ir nuspalvinti atsitiktinėmis spalvomis</translation>
     </message>
   </context>
   <context>

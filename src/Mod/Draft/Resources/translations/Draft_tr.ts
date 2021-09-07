@@ -147,7 +147,7 @@ Bu özellik salt okunurdur; çünkü sayılar, dizinin parametrelerine bağlıd�
       <translation>Bileşenler bu bloğa aittir</translation>
     </message>
     <message>
-      <location filename="wpproxy.py" line="42"/>
+      <location filename="hatch.py" line="46"/>
       <source>The placement of this object</source>
       <translation>Bu nesnenin yerleşimi</translation>
     </message>
@@ -1126,6 +1126,41 @@ BM mimari gösterimi için 'mimari' yi kullanın</translation>
       <source>This object will be recomputed only if this is True.</source>
       <translation>Bu nesne, sadece bu değişken Doğru olarak belirtilirse yeniden hesaplanacak.</translation>
     </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Bu nesnenin şekli</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="52"/>
+      <source>The base object used by this object</source>
+      <translation type="unfinished">The base object used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="55"/>
+      <source>The PAT file used by this object</source>
+      <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="58"/>
+      <source>The pattern name used by this object</source>
+      <translation type="unfinished">The pattern name used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="61"/>
+      <source>The pattern scale used by this object</source>
+      <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="64"/>
+      <source>The pattern rotation used by this object</source>
+      <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="67"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+    </message>
   </context>
   <context>
     <name>Dialog</name>
@@ -1674,6 +1709,11 @@ Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürüle
       <source>Warning</source>
       <translation>Uyarı</translation>
     </message>
+    <message>
+      <location filename="gui_hatch.py" line="48"/>
+      <source>You must choose a base object before using this command</source>
+      <translation type="unfinished">You must choose a base object before using this command</translation>
+    </message>
   </context>
   <context>
     <name>DraftCircularArrayTaskPanel</name>
@@ -2085,12 +2125,12 @@ En az 2 olmalıdır.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="341"/>
+      <location filename="gui_groups.py" line="365"/>
       <source>Add to Construction group</source>
       <translation>Yapı grubuna ekle</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="367"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2115,17 +2155,17 @@ Yoksa bir inşaat grubu oluşturur.</translation>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="gui_groups.py" line="67"/>
+      <location filename="gui_groups.py" line="68"/>
       <source>Ungroup</source>
       <translation>Grubu çöz</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="72"/>
+      <location filename="gui_groups.py" line="75"/>
       <source>Move to group</source>
       <translation>Gruba taşı</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="74"/>
+      <location filename="gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
       <translation>Seçili nesneleri mevcut bir gruba taşır veya herhangi bir gruptan kaldırır.
@@ -2203,12 +2243,12 @@ Dizi oluşturulduktan sonra, özellikleri ve türü
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="239"/>
+      <location filename="gui_groups.py" line="263"/>
       <source>Autogroup</source>
       <translation>Otogrup</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="242"/>
+      <location filename="gui_groups.py" line="266"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
       <translation>Tüm Taslak ve Mimari nesnelerinin ekleneceği bir grup seçin.</translation>
     </message>
@@ -2483,6 +2523,19 @@ menüsünü görüntülemek için E veya ALT + FareninSOL tuşlarına basın.</t
 If other objects are selected they are ignored.</source>
       <translation>Seçili boyutların normal yönünü çevirin (doğrusal, radyal, açısal).
 Diğer nesneler seçilirse, bunlar göz ardı edilir.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Hatch</name>
+    <message>
+      <location filename="gui_hatch.py" line="37"/>
+      <source>Hatch</source>
+      <translation>Tarama</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="41"/>
+      <source>Create hatches on selected faces</source>
+      <translation type="unfinished">Create hatches on selected faces</translation>
     </message>
   </context>
   <context>
@@ -2814,12 +2867,12 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</source>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="gui_groups.py" line="165"/>
+      <location filename="gui_groups.py" line="189"/>
       <source>Select group</source>
       <translation>Grubu seç</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="168"/>
+      <location filename="gui_groups.py" line="192"/>
       <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
@@ -2858,9 +2911,6 @@ Ayrıca üç köşe veya bir Çalışma Düzlemi Proxy'si de seçebilirsiniz.</t
     </message>
   </context>
   <context>
-    <name>Draft_SetWorkingPlaneProxy</name>
-  </context>
-  <context>
     <name>Draft_Shape2DView</name>
     <message>
       <location filename="gui_shape2dview.py" line="59"/>
@@ -2897,12 +2947,12 @@ Kapalı şekiller ekstrusyonlar ve mantıksal işlemler için kullanılabilir.</
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="589"/>
       <source>Show snap toolbar</source>
       <translation>Yakalama Araç çubuğunda göster</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="579"/>
+      <location filename="gui_snaps.py" line="592"/>
       <source>Show the snap toolbar if it is hidden.</source>
       <translation>Gizli ise, yakalama araç çubuğunu göster.</translation>
     </message>
@@ -2944,12 +2994,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="331"/>
+      <location filename="gui_snaps.py" line="344"/>
       <source>Angle</source>
       <translation>Açı</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="334"/>
+      <location filename="gui_snaps.py" line="347"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
       <translation>Dairesel bir yayın 30 ve 45 derecelik açı katlarında bulunan noktaları yakalamayı ayarlayın.</translation>
     </message>
@@ -2957,12 +3007,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="361"/>
+      <location filename="gui_snaps.py" line="374"/>
       <source>Center</source>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="364"/>
+      <location filename="gui_snaps.py" line="377"/>
       <source>Set snapping to the center of a circular arc.</source>
       <translation>Dairesel bir yayın merkezini yakalamayı ayarlayın.</translation>
     </message>
@@ -2970,12 +3020,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="513"/>
+      <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
       <translation>Ölçüleri göster</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="516"/>
+      <location filename="gui_snaps.py" line="529"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
       <translation>Bir nesneyi düzenlerken ve diğer yakalama yöntemlerini kullanırken geçici doğrusal boyutları gösterin.</translation>
     </message>
@@ -2983,12 +3033,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="300"/>
+      <location filename="gui_snaps.py" line="313"/>
       <source>Endpoint</source>
       <translation>Bitiş noktası</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="303"/>
+      <location filename="gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
       <translation>Bir kenarın uç noktalarına yakalamayı ayarlayın.</translation>
     </message>
@@ -2996,12 +3046,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="391"/>
+      <location filename="gui_snaps.py" line="404"/>
       <source>Extension</source>
       <translation>Uzantı</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="394"/>
+      <location filename="gui_snaps.py" line="407"/>
       <source>Set snapping to the extension of an edge.</source>
       <translation>Bir kenarın uzantısını yakalamayı ayarlayın.</translation>
     </message>
@@ -3009,12 +3059,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="210"/>
+      <location filename="gui_snaps.py" line="223"/>
       <source>Grid</source>
       <translation>Izgara</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="213"/>
+      <location filename="gui_snaps.py" line="226"/>
       <source>Set snapping to the intersection of grid lines.</source>
       <translation>Izgara çizgilerinin kesişme noktalarını yakalama.</translation>
     </message>
@@ -3022,12 +3072,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="240"/>
+      <location filename="gui_snaps.py" line="253"/>
       <source>Intersection</source>
       <translation>Kesişim</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="243"/>
+      <location filename="gui_snaps.py" line="256"/>
       <source>Set snapping to the intersection of edges.</source>
       <translation>Yakalamayı kenarların kesişim noktasına ayarlayın.</translation>
     </message>
@@ -3035,12 +3085,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="120"/>
+      <location filename="gui_snaps.py" line="133"/>
       <source>Main snapping toggle On/Off</source>
       <translation>Ana yakalamayı geçişi olarak Aç / Kapa</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="123"/>
+      <location filename="gui_snaps.py" line="136"/>
       <source>Activates or deactivates all snap methods at once.</source>
       <translation>Tüm yakalama yöntemlerini aynı anda etkinleştirir veya devre dışı bırakır.</translation>
     </message>
@@ -3048,12 +3098,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="150"/>
+      <location filename="gui_snaps.py" line="163"/>
       <source>Midpoint</source>
       <translation>Orta nokta</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="153"/>
+      <location filename="gui_snaps.py" line="166"/>
       <source>Set snapping to the midpoint of an edge.</source>
       <translation>Bir kenarın orta noktasına yakalamayı ayarlayın.</translation>
     </message>
@@ -3061,12 +3111,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="421"/>
+      <location filename="gui_snaps.py" line="434"/>
       <source>Nearest</source>
       <translation>Yakınında</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="424"/>
+      <location filename="gui_snaps.py" line="437"/>
       <source>Set snapping to the nearest point of an edge.</source>
       <translation>Bir kenarın en yakın noktasını yakalamayı ayarlayın.</translation>
     </message>
@@ -3074,12 +3124,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="452"/>
+      <location filename="gui_snaps.py" line="465"/>
       <source>Orthogonal</source>
       <translation>Ortogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="455"/>
+      <location filename="gui_snaps.py" line="468"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
       <translation>Bir noktadan 45 derecenin katları olan bir yönelim ile yakalamayı ayarlayın.</translation>
     </message>
@@ -3087,12 +3137,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="270"/>
+      <location filename="gui_snaps.py" line="283"/>
       <source>Parallel</source>
       <translation>Koşut</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="273"/>
+      <location filename="gui_snaps.py" line="286"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
       <translation>Yakalamayı bir kenara paralel bir yöne ayarlayın.</translation>
     </message>
@@ -3100,12 +3150,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="180"/>
+      <location filename="gui_snaps.py" line="193"/>
       <source>Perpendicular</source>
       <translation>Dik</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="183"/>
+      <location filename="gui_snaps.py" line="196"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
       <translation>Yakalamayı bir kenara dik olan bir yöne ayarlayın.</translation>
     </message>
@@ -3113,12 +3163,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="482"/>
+      <location filename="gui_snaps.py" line="495"/>
       <source>Special</source>
       <translation>Özel</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="485"/>
+      <location filename="gui_snaps.py" line="498"/>
       <source>Set snapping to the special points defined inside an object.</source>
       <translation>Bir nesnenin içinde tanımlanan özel noktalara yakalamayı ayarlayın.</translation>
     </message>
@@ -3126,12 +3176,12 @@ XY düzleminde çizilen düz Draft çizgileri. Tek satır olmayan seçili nesnel
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="546"/>
+      <location filename="gui_snaps.py" line="559"/>
       <source>Working plane</source>
       <translation>Çalışma düzlemi</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="549"/>
+      <location filename="gui_snaps.py" line="562"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
@@ -3270,7 +3320,7 @@ Bu, kapalı şekiller ve katılarla kullanılmak üzere tasarlanmıştır ve aç
       <translation>KırpUzat</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="79"/>
+      <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation>Seçilen nesneyi kırpar veya uzatır ya da tek yüzeyleri katılar.
@@ -3797,6 +3847,49 @@ sırasında değiştirebilirsiniz</translation>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
       <translation>Metnin farklı satırları arasındaki boşluk</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="14"/>
+      <source>Form</source>
+      <translation>Şekil:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="23"/>
+      <source>pattern files (*.pat)</source>
+      <translation type="unfinished">pattern files (*.pat)</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="30"/>
+      <source>PAT file:</source>
+      <translation type="unfinished">PAT file:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="37"/>
+      <source>Scale</source>
+      <translation>Ölçek</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="44"/>
+      <source>Pattern:</source>
+      <translation type="unfinished">Pattern:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="64"/>
+      <source>Rotation:</source>
+      <translation>Döndürme:</translation>
+    </message>
+    <message encoding="UTF-8">
+      <location filename="dialogHatch.ui" line="71"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>Grup</translation>
     </message>
   </context>
   <context>
@@ -5206,6 +5299,14 @@ Not: C ++ içe aktarıcı daha hızlıdır, ancak henüz o kadar özellikli değ
     </message>
   </context>
   <context>
+    <name>ImportAirfoilDAT</name>
+    <message>
+      <location filename="importAirfoilDAT.py" line="186"/>
+      <source>Did not find enough coordinates</source>
+      <translation type="unfinished">Did not find enough coordinates</translation>
+    </message>
+  </context>
+  <context>
     <name>ImportDWG</name>
     <message>
       <location filename="importDWG.py" line="233"/>
@@ -5262,7 +5363,7 @@ Not: C ++ içe aktarıcı daha hızlıdır, ancak henüz o kadar özellikli değ
       <translation>Etkin söz dizisi:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="275"/>
+      <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>Hiçbiri</translation>
     </message>
@@ -5317,7 +5418,7 @@ Not: C ++ içe aktarıcı daha hızlıdır, ancak henüz o kadar özellikli değ
       <translation>Uzunluk</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="217"/>
+      <location filename="gui_trimex.py" line="220"/>
       <source>Angle</source>
       <translation>Açı</translation>
     </message>
@@ -5442,7 +5543,7 @@ Not: C ++ içe aktarıcı daha hızlıdır, ancak henüz o kadar özellikli değ
       <translation>Etiket</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="212"/>
+      <location filename="gui_trimex.py" line="215"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
@@ -5756,7 +5857,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Metin nesnesini oluşturmak veya metninizi iki boş satırla bitirmek için bu düğmeye basın</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="214"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Offset distance</source>
       <translation>Öteleme mesafesi</translation>
     </message>
@@ -6662,7 +6763,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Yükselt</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="204"/>
+      <location filename="gui_move.py" line="205"/>
       <source>Move</source>
       <translation>Taşı</translation>
     </message>
@@ -6677,7 +6778,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Başlangıç noktasını seçin</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="302"/>
+      <location filename="gui_move.py" line="303"/>
       <source>Pick end point</source>
       <translation>Bitiş noktasını seçin</translation>
     </message>
@@ -6717,82 +6818,82 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Ekran modunu aç / kapat</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="113"/>
+      <location filename="gui_snaps.py" line="126"/>
       <source>Main toggle snap</source>
       <translation>Ana Yakalamayı Ac/Kapat</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="144"/>
+      <location filename="gui_snaps.py" line="157"/>
       <source>Midpoint snap</source>
       <translation>OrtaNoktayı yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="174"/>
+      <location filename="gui_snaps.py" line="187"/>
       <source>Perpendicular snap</source>
       <translation>Dik Yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="204"/>
+      <location filename="gui_snaps.py" line="217"/>
       <source>Grid snap</source>
       <translation>Izgarayı Yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="234"/>
+      <location filename="gui_snaps.py" line="247"/>
       <source>Intersection snap</source>
       <translation>Kesişim Yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="264"/>
+      <location filename="gui_snaps.py" line="277"/>
       <source>Parallel snap</source>
       <translation>Paralel yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="294"/>
+      <location filename="gui_snaps.py" line="307"/>
       <source>Endpoint snap</source>
       <translation>Uç noktayı yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="325"/>
+      <location filename="gui_snaps.py" line="338"/>
       <source>Angle snap (30 and 45 degrees)</source>
       <translation>Açı Yakala (30 ve 45 dereceler)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="355"/>
+      <location filename="gui_snaps.py" line="368"/>
       <source>Arc center snap</source>
       <translation>Yay merkezini yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="385"/>
+      <location filename="gui_snaps.py" line="398"/>
       <source>Edge extension snap</source>
       <translation>Kenar uzantısını yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="415"/>
+      <location filename="gui_snaps.py" line="428"/>
       <source>Near snap</source>
       <translation>Yakını yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="446"/>
+      <location filename="gui_snaps.py" line="459"/>
       <source>Orthogonal snap</source>
       <translation>Dikeyi yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="476"/>
+      <location filename="gui_snaps.py" line="489"/>
       <source>Special point snap</source>
       <translation>Özel nokta yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="507"/>
+      <location filename="gui_snaps.py" line="520"/>
       <source>Dimension display</source>
       <translation>Ölçü görüntüsü</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="540"/>
+      <location filename="gui_snaps.py" line="553"/>
       <source>Working plane snap</source>
       <translation>Çalışma düzlemi yakala</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="570"/>
+      <location filename="gui_snaps.py" line="583"/>
       <source>Show snap toolbar</source>
       <translation>Yakalama Araç çubuğunda göster</translation>
     </message>
@@ -7032,7 +7133,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Seçilen nesne için düzenleme noktası bulunamadı</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="822"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: bu nesne düzenlenebilir değil</translation>
     </message>
@@ -7057,7 +7158,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>KırpUzat</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="91"/>
+      <location filename="gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
       <translation>Kırpılacak veya uzatılacak nesneleri seçin</translation>
     </message>
@@ -7067,22 +7168,22 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Mesafe seçin</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="480"/>
+      <location filename="gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Bu nesneler kırpılamaz, yalnızca Taslak teller ve yaylar desteklenir.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="485"/>
+      <location filename="gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Bu nesneler kırplılamıyor, teller çok fazla</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="502"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
       <translation>Bu nesneler kesişmiyor.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="505"/>
+      <location filename="gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
       <translation>Çok fazla çakışma noktası.</translation>
     </message>
@@ -7222,27 +7323,27 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Biçimi değiştir</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="64"/>
+      <location filename="gui_groups.py" line="65"/>
       <source>Add to group</source>
       <translation>Gruba ekle</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="159"/>
+      <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
       <translation>Grubu seç</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="233"/>
+      <location filename="gui_groups.py" line="257"/>
       <source>Autogroup</source>
       <translation>Otogrup</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="281"/>
+      <location filename="gui_groups.py" line="305"/>
       <source>Add new Layer</source>
       <translation>Yeni Katman Ekle</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="335"/>
+      <location filename="gui_groups.py" line="359"/>
       <source>Add to construction group</source>
       <translation>Yapı grubuna ekle</translation>
     </message>
@@ -7460,7 +7561,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Nesneler ölçeklendirilemiyor:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="814"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Çok fazla nesne seçili, maksimum sayı şuna ayarlanıyor:</translation>
     </message>
@@ -7482,7 +7583,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 </translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="219"/>
+      <location filename="gui_trimex.py" line="222"/>
       <source>Offset angle</source>
       <translation type="unfinished">Offset angle</translation>
     </message>

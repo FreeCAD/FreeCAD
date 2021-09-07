@@ -45,22 +45,22 @@
     <message>
       <location filename="WizardShaftTable.py" line="43"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>Comprimento [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="44"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>Diâmetro [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="45"/>
       <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
+      <translation>Diâmetro interno [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Tipo de restrição</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
@@ -3993,37 +3993,37 @@ Embora você possa migrar a qualquer momento mais tarde com 'Part Design -&gt; M
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
       <source>Motorcycle 420</source>
-      <translation type="unfinished">Motorcycle 420</translation>
+      <translation>Motocicleta 420</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="168"/>
       <source>Motorcycle 425</source>
-      <translation type="unfinished">Motorcycle 425</translation>
+      <translation>Motocicleta 425</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="173"/>
       <source>Motorcycle 428</source>
-      <translation type="unfinished">Motorcycle 428</translation>
+      <translation>Motocicleta 428</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="178"/>
       <source>Motorcycle 520</source>
-      <translation type="unfinished">Motorcycle 520</translation>
+      <translation>Motocicleta 520</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="183"/>
       <source>Motorcycle 525</source>
-      <translation type="unfinished">Motorcycle 525</translation>
+      <translation>Motocicleta 525</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="188"/>
       <source>Motorcycle 530</source>
-      <translation type="unfinished">Motorcycle 530</translation>
+      <translation>Motocicleta 530</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="193"/>
       <source>Motorcycle 630</source>
-      <translation type="unfinished">Motorcycle 630</translation>
+      <translation>Motocicleta 630</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
@@ -4363,7 +4363,7 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="520"/>
       <source>Check to override the values predefined by the 'Type'</source>
-      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
+      <translation>Marque para substituir os valores predefinidos pelo 'Tipo'</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>
@@ -4400,7 +4400,7 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="734"/>
       <source>Take into account for depth</source>
-      <translation type="unfinished">Take into account for depth</translation>
+      <translation>Levar em conta a profundidade</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="741"/>

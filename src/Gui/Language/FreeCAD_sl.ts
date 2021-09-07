@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Privzeti</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Preoblikuj</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Prerez</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Barva</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -3279,19 +3298,19 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     </message>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Ime delovnega okolja</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Samodejno nalaganje?</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Naloži zdaj</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.&lt;/p&gt;&lt;p&gt;V vaši namestitvi so na voljo naslednja delovna okolja:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3302,27 +3321,27 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Samodejno nalaganje</translation>
     </message>
     <message>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Če je označeno</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>bo samodejno naloženo ob FreeCAD-ovem zagonu</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Takšen je trenutni zagonski modul, ki mora biti samodejno naložen. Če želite to spremeniti, pojdite ne Prednastavitve/Splošno/Samodejno nalaganje.</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Naloženo</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Naloži zdaj</translation>
     </message>
   </context>
   <context>
@@ -4676,6 +4695,16 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Partial</source>
       <translation>Delno</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -8764,6 +8793,17 @@ Tvarna pot: </translation>
     <message>
       <source>Start the units calculator</source>
       <translation>Zažene računalo enot</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>

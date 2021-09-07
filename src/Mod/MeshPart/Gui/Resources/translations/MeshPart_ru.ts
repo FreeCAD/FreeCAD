@@ -72,7 +72,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
-      <translation>Раздел</translation>
+      <translation>Разделить</translation>
     </message>
   </context>
   <context>
@@ -180,7 +180,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Create</source>
-      <translation>Собрать</translation>
+      <translation>Создать</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>

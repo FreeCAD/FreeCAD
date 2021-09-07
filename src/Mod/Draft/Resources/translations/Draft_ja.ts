@@ -148,7 +148,7 @@ This property is read-only, as the number depends on the parameters of the array
       <translation>このブロックのコンポーネント</translation>
     </message>
     <message>
-      <location filename="wpproxy.py" line="42"/>
+      <location filename="hatch.py" line="46"/>
       <source>The placement of this object</source>
       <translation>このオブジェクトの配置</translation>
     </message>
@@ -1113,6 +1113,41 @@ Use 'arch' to force US arch notation</translation>
       <source>This object will be recomputed only if this is True.</source>
       <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>このオブジェクトの形</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="52"/>
+      <source>The base object used by this object</source>
+      <translation type="unfinished">The base object used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="55"/>
+      <source>The PAT file used by this object</source>
+      <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="58"/>
+      <source>The pattern name used by this object</source>
+      <translation type="unfinished">The pattern name used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="61"/>
+      <source>The pattern scale used by this object</source>
+      <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="64"/>
+      <source>The pattern rotation used by this object</source>
+      <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="67"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+    </message>
   </context>
   <context>
     <name>Dialog</name>
@@ -1658,6 +1693,11 @@ X、Y、Zの軸の指定方向にコピーを並べます。
       <source>Warning</source>
       <translation>警告</translation>
     </message>
+    <message>
+      <location filename="gui_hatch.py" line="48"/>
+      <source>You must choose a base object before using this command</source>
+      <translation type="unfinished">You must choose a base object before using this command</translation>
+    </message>
   </context>
   <context>
     <name>DraftCircularArrayTaskPanel</name>
@@ -2069,12 +2109,12 @@ It must be at least 2.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="341"/>
+      <location filename="gui_groups.py" line="365"/>
       <source>Add to Construction group</source>
       <translation>構築グループに追加</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="367"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2099,17 +2139,17 @@ It creates a construction group if it doesn't exist.</source>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="gui_groups.py" line="67"/>
+      <location filename="gui_groups.py" line="68"/>
       <source>Ungroup</source>
       <translation>グループ解除</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="72"/>
+      <location filename="gui_groups.py" line="75"/>
       <source>Move to group</source>
       <translation>グループに移動</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="74"/>
+      <location filename="gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
       <translation>選択したオブジェクトを既存のグループに移動するか、グループから削除します。
@@ -2187,12 +2227,12 @@ to polar or circular, and its properties can be modified.</source>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="239"/>
+      <location filename="gui_groups.py" line="263"/>
       <source>Autogroup</source>
       <translation>オートグループ</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="242"/>
+      <location filename="gui_groups.py" line="266"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
       <translation>全てのDraft、Archオブジェクトを追加するグループを選択</translation>
     </message>
@@ -2461,6 +2501,19 @@ E キーまたは Alt+左クリックを押すと、サポートされている�
 If other objects are selected they are ignored.</source>
       <translation>選択した寸法（長さ、半径、角度）の法線方向を反転させます。
 他のオブジェクトが選択されている場合は無視されます。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Hatch</name>
+    <message>
+      <location filename="gui_hatch.py" line="37"/>
+      <source>Hatch</source>
+      <translation>ハッチング</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="41"/>
+      <source>Create hatches on selected faces</source>
+      <translation type="unfinished">Create hatches on selected faces</translation>
     </message>
   </context>
   <context>
@@ -2792,12 +2845,12 @@ CTRLでスナップ、SHIFTで拘束、ALTでコピー。</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="gui_groups.py" line="165"/>
+      <location filename="gui_groups.py" line="189"/>
       <source>Select group</source>
       <translation>グループを選択</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="168"/>
+      <location filename="gui_groups.py" line="192"/>
       <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
@@ -2837,9 +2890,6 @@ You may also select a three vertices or a Working Plane Proxy.</source>
     </message>
   </context>
   <context>
-    <name>Draft_SetWorkingPlaneProxy</name>
-  </context>
-  <context>
     <name>Draft_Shape2DView</name>
     <message>
       <location filename="gui_shape2dview.py" line="59"/>
@@ -2876,12 +2926,12 @@ The closed shapes can be used for extrusions and boolean operations.</source>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="589"/>
       <source>Show snap toolbar</source>
       <translation>スナップ用ツールバーを表示</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="579"/>
+      <location filename="gui_snaps.py" line="592"/>
       <source>Show the snap toolbar if it is hidden.</source>
       <translation>非表示の場合はスナップ用ツールバーを表示します。</translation>
     </message>
@@ -2922,12 +2972,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="331"/>
+      <location filename="gui_snaps.py" line="344"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="334"/>
+      <location filename="gui_snaps.py" line="347"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
       <translation>30度と45度の角度の倍数に位置する円弧上の点にスナップを設定</translation>
     </message>
@@ -2935,12 +2985,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="361"/>
+      <location filename="gui_snaps.py" line="374"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="364"/>
+      <location filename="gui_snaps.py" line="377"/>
       <source>Set snapping to the center of a circular arc.</source>
       <translation>円弧の中心にスナップを設定</translation>
     </message>
@@ -2948,12 +2998,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="513"/>
+      <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
       <translation>寸法を表示</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="516"/>
+      <location filename="gui_snaps.py" line="529"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
       <translation>オブジェクトを編集する時や他のスナップ方法を使用する時に、一時的な長さ寸法を表示</translation>
     </message>
@@ -2961,12 +3011,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="300"/>
+      <location filename="gui_snaps.py" line="313"/>
       <source>Endpoint</source>
       <translation>端点</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="303"/>
+      <location filename="gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
       <translation>エッジの端点にスナップを設定</translation>
     </message>
@@ -2974,12 +3024,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="391"/>
+      <location filename="gui_snaps.py" line="404"/>
       <source>Extension</source>
       <translation>拡張</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="394"/>
+      <location filename="gui_snaps.py" line="407"/>
       <source>Set snapping to the extension of an edge.</source>
       <translation>エッジの延長にスナップを設定</translation>
     </message>
@@ -2987,12 +3037,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="210"/>
+      <location filename="gui_snaps.py" line="223"/>
       <source>Grid</source>
       <translation>グリッド</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="213"/>
+      <location filename="gui_snaps.py" line="226"/>
       <source>Set snapping to the intersection of grid lines.</source>
       <translation>グリッド線の交点にスナップを設定</translation>
     </message>
@@ -3000,12 +3050,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="240"/>
+      <location filename="gui_snaps.py" line="253"/>
       <source>Intersection</source>
       <translation>共通集合</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="243"/>
+      <location filename="gui_snaps.py" line="256"/>
       <source>Set snapping to the intersection of edges.</source>
       <translation>エッジの交点にスナップを設定</translation>
     </message>
@@ -3013,12 +3063,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="120"/>
+      <location filename="gui_snaps.py" line="133"/>
       <source>Main snapping toggle On/Off</source>
       <translation>メインスナップのオン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="123"/>
+      <location filename="gui_snaps.py" line="136"/>
       <source>Activates or deactivates all snap methods at once.</source>
       <translation>全てのスナップ方法を同時に有効または無効にします。</translation>
     </message>
@@ -3026,12 +3076,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="150"/>
+      <location filename="gui_snaps.py" line="163"/>
       <source>Midpoint</source>
       <translation>中点</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="153"/>
+      <location filename="gui_snaps.py" line="166"/>
       <source>Set snapping to the midpoint of an edge.</source>
       <translation>エッジの中点にスナップを設定</translation>
     </message>
@@ -3039,12 +3089,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="421"/>
+      <location filename="gui_snaps.py" line="434"/>
       <source>Nearest</source>
       <translation>最近接</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="424"/>
+      <location filename="gui_snaps.py" line="437"/>
       <source>Set snapping to the nearest point of an edge.</source>
       <translation>エッジの最近接点にスナップを設定</translation>
     </message>
@@ -3052,12 +3102,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="452"/>
+      <location filename="gui_snaps.py" line="465"/>
       <source>Orthogonal</source>
       <translation>矩形</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="455"/>
+      <location filename="gui_snaps.py" line="468"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
       <translation>点から45度の倍数の方向にスナップを設定</translation>
     </message>
@@ -3065,12 +3115,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="270"/>
+      <location filename="gui_snaps.py" line="283"/>
       <source>Parallel</source>
       <translation>平行</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="273"/>
+      <location filename="gui_snaps.py" line="286"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
       <translation>エッジに平行な方向にスナップを設定</translation>
     </message>
@@ -3078,12 +3128,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="180"/>
+      <location filename="gui_snaps.py" line="193"/>
       <source>Perpendicular</source>
       <translation>直交する|鉛直な</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="183"/>
+      <location filename="gui_snaps.py" line="196"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
       <translation>エッジに垂直な方向にスナップを設定</translation>
     </message>
@@ -3091,12 +3141,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="482"/>
+      <location filename="gui_snaps.py" line="495"/>
       <source>Special</source>
       <translation>特殊</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="485"/>
+      <location filename="gui_snaps.py" line="498"/>
       <source>Set snapping to the special points defined inside an object.</source>
       <translation>オブジェクト内で定義されている特殊点にスナップを設定</translation>
     </message>
@@ -3104,12 +3154,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="546"/>
+      <location filename="gui_snaps.py" line="559"/>
       <source>Working plane</source>
       <translation>作業平面</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="549"/>
+      <location filename="gui_snaps.py" line="562"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
@@ -3246,7 +3296,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
       <translation>トリメックス</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="79"/>
+      <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation>選択したオブジェクトをトリムまたは延長するか、もしくは単一の面を押し出します。CTRLでスナップ、SHIFTで現在のセグメントまたは垂直方向に拘束、ALTで反転。</translation>
@@ -3765,6 +3815,49 @@ value by using the [ and ] keys while drawing</source>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
       <translation type="unfinished">The spacing between different lines of text</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="23"/>
+      <source>pattern files (*.pat)</source>
+      <translation type="unfinished">pattern files (*.pat)</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="30"/>
+      <source>PAT file:</source>
+      <translation type="unfinished">PAT file:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="37"/>
+      <source>Scale</source>
+      <translation>尺度</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="44"/>
+      <source>Pattern:</source>
+      <translation type="unfinished">Pattern:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="64"/>
+      <source>Rotation:</source>
+      <translation>回転:</translation>
+    </message>
+    <message encoding="UTF-8">
+      <location filename="dialogHatch.ui" line="71"/>
+      <source>°</source>
+      <translation>度</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>グループ</translation>
     </message>
   </context>
   <context>
@@ -5168,6 +5261,14 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
     </message>
   </context>
   <context>
+    <name>ImportAirfoilDAT</name>
+    <message>
+      <location filename="importAirfoilDAT.py" line="186"/>
+      <source>Did not find enough coordinates</source>
+      <translation type="unfinished">Did not find enough coordinates</translation>
+    </message>
+  </context>
+  <context>
     <name>ImportDWG</name>
     <message>
       <location filename="importDWG.py" line="233"/>
@@ -5224,7 +5325,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>アクティブコマンド:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="275"/>
+      <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>なし</translation>
     </message>
@@ -5279,7 +5380,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>長さ</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="217"/>
+      <location filename="gui_trimex.py" line="220"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -5404,7 +5505,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>ラベル</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="212"/>
+      <location filename="gui_trimex.py" line="215"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
@@ -5718,7 +5819,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>このボタンを押して、テキストオブジェクト作成するか、２行の空白行でテキストを終了します。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="214"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Offset distance</source>
       <translation>オフセットの距離</translation>
     </message>
@@ -6624,7 +6725,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>アップグレード</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="204"/>
+      <location filename="gui_move.py" line="205"/>
       <source>Move</source>
       <translation>移動</translation>
     </message>
@@ -6639,7 +6740,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>始点を選択</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="302"/>
+      <location filename="gui_move.py" line="303"/>
       <source>Pick end point</source>
       <translation>終点を選択</translation>
     </message>
@@ -6679,82 +6780,82 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>表示モードを切り替え</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="113"/>
+      <location filename="gui_snaps.py" line="126"/>
       <source>Main toggle snap</source>
       <translation>メイン切り替えスナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="144"/>
+      <location filename="gui_snaps.py" line="157"/>
       <source>Midpoint snap</source>
       <translation>中点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="174"/>
+      <location filename="gui_snaps.py" line="187"/>
       <source>Perpendicular snap</source>
       <translation>垂直スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="204"/>
+      <location filename="gui_snaps.py" line="217"/>
       <source>Grid snap</source>
       <translation>グリッドにスナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="234"/>
+      <location filename="gui_snaps.py" line="247"/>
       <source>Intersection snap</source>
       <translation>交点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="264"/>
+      <location filename="gui_snaps.py" line="277"/>
       <source>Parallel snap</source>
       <translation>平行スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="294"/>
+      <location filename="gui_snaps.py" line="307"/>
       <source>Endpoint snap</source>
       <translation>端点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="325"/>
+      <location filename="gui_snaps.py" line="338"/>
       <source>Angle snap (30 and 45 degrees)</source>
       <translation>角度スナップ (30度、45度)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="355"/>
+      <location filename="gui_snaps.py" line="368"/>
       <source>Arc center snap</source>
       <translation>円弧中心スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="385"/>
+      <location filename="gui_snaps.py" line="398"/>
       <source>Edge extension snap</source>
       <translation>エッジ延長スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="415"/>
+      <location filename="gui_snaps.py" line="428"/>
       <source>Near snap</source>
       <translation>近接スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="446"/>
+      <location filename="gui_snaps.py" line="459"/>
       <source>Orthogonal snap</source>
       <translation>直交スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="476"/>
+      <location filename="gui_snaps.py" line="489"/>
       <source>Special point snap</source>
       <translation>特殊点スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="507"/>
+      <location filename="gui_snaps.py" line="520"/>
       <source>Dimension display</source>
       <translation>寸法表示</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="540"/>
+      <location filename="gui_snaps.py" line="553"/>
       <source>Working plane snap</source>
       <translation>作業平面スナップ</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="570"/>
+      <location filename="gui_snaps.py" line="583"/>
       <source>Show snap toolbar</source>
       <translation>スナップ用ツールバーを表示</translation>
     </message>
@@ -6994,7 +7095,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>選択オブジェクトの中に編集点がありません。</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="822"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: このオブジェクトは編集できません</translation>
     </message>
@@ -7019,7 +7120,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>トリメックス</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="91"/>
+      <location filename="gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
       <translation>トリムまたは伸縮するオブジェクトを選択</translation>
     </message>
@@ -7029,22 +7130,22 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>距離を選択</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="480"/>
+      <location filename="gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>これらのオブジェクトをトリムすることはできません。サポートされているのはドラフトのワイヤーと円弧のみです。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="485"/>
+      <location filename="gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>これらのオブジェクトはワイヤーが多すぎてトリムすることができません。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="502"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
       <translation>これらのオブジェクトは交差してません。</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="505"/>
+      <location filename="gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
       <translation>交点が多すぎます。</translation>
     </message>
@@ -7184,27 +7285,27 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>スタイルを変更</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="64"/>
+      <location filename="gui_groups.py" line="65"/>
       <source>Add to group</source>
       <translation>グループに追加</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="159"/>
+      <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
       <translation>グループを選択</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="233"/>
+      <location filename="gui_groups.py" line="257"/>
       <source>Autogroup</source>
       <translation>オートグループ</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="281"/>
+      <location filename="gui_groups.py" line="305"/>
       <source>Add new Layer</source>
       <translation>新しいレイヤーを追加</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="335"/>
+      <location filename="gui_groups.py" line="359"/>
       <source>Add to construction group</source>
       <translation>構築グループに追加</translation>
     </message>
@@ -7422,7 +7523,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="814"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
@@ -7444,7 +7545,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 </translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="219"/>
+      <location filename="gui_trimex.py" line="222"/>
       <source>Offset angle</source>
       <translation type="unfinished">Offset angle</translation>
     </message>

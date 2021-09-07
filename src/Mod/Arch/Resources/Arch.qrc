@@ -156,5 +156,7 @@
         <file>translations/Arch_vi.qm</file>
         <file>translations/Arch_zh-CN.qm</file>
         <file>translations/Arch_zh-TW.qm</file>
+        <file>translations/Arch_es-AR.qm</file>
+        <file>translations/Arch_bg.qm</file>
     </qresource>
 </RCC>

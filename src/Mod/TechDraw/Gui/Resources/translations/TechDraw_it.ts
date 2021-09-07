@@ -850,7 +850,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="351"/>
       <source>Add Midpont Vertices</source>
-      <translation type="unfinished">Add Midpont Vertices</translation>
+      <translation>Aggiungi vertici nel punto mediano</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="379"/>

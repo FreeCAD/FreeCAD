@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Standard</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformieren</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Schneiden</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Farbe</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -3261,19 +3280,19 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Name des Arbeitsbereichs</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Automatisch laden?</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Jetzt laden</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um Ressourcen zu schonen, lädt FreeCAD keine Arbeitsbereiche solange sie nicht verwendet werden. Wenn sie geladen werden, können sie Zugriff auf weitere Einstellungen bezüglich ihrer Funktionalität freigeben.&lt;/p&gt;&lt;p&gt;Die folgenden Arbeitsbereiche sind in Ihrer Installation verfügbar:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3284,27 +3303,27 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Automatisch laden</translation>
     </message>
     <message>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Wenn markiert</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>wird beim Starten von FreeCAD automatisch geladen</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Dies ist das aktuelle Startmodul und muss automatisch geladen werden. Siehe Einstellungen/Allgemein/Autoload um dies zu ändern.</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Geladen</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Jetzt laden</translation>
     </message>
   </context>
   <context>
@@ -4658,6 +4677,16 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Partial</source>
       <translation>Teilweise</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -8745,6 +8774,17 @@ Physischer Pfad: </translation>
     <message>
       <source>Start the units calculator</source>
       <translation>Einheitenrechner starten</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>

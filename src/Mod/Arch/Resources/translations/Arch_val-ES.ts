@@ -889,62 +889,62 @@
       <translation>La distància entre la vora de l'escala i l'estructura</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="614"/>
+      <location filename="ArchStructure.py" line="1321"/>
       <source>An optional extrusion path for this element</source>
       <translation>Un camí opcional d'extrusió per a aquest element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="620"/>
+      <location filename="ArchStructure.py" line="698"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>L'alçària o profunditat d'extrusió d'aquest element. Mantín 0 per a automàtica</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="626"/>
+      <location filename="ArchStructure.py" line="704"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>Una descripció del perfil estàndard en què es basa aquest element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="628"/>
+      <location filename="ArchStructure.py" line="706"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>Distància de separació entre la línia central i la línia de nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="917"/>
+      <location filename="ArchStructure.py" line="1012"/>
       <source>If the nodes are visible or not</source>
       <translation>Si els nodes són visibles o no</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="919"/>
+      <location filename="ArchStructure.py" line="1014"/>
       <source>The width of the nodes line</source>
       <translation>L'amplària de la línia de nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="921"/>
+      <location filename="ArchStructure.py" line="1016"/>
       <source>The size of the node points</source>
       <translation>La mida dels punts de node</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="924"/>
+      <location filename="ArchStructure.py" line="1019"/>
       <source>The color of the nodes line</source>
       <translation>El color de la línia de nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="927"/>
+      <location filename="ArchStructure.py" line="1022"/>
       <source>The type of structural node</source>
       <translation>El tipus de node estructural</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1214"/>
+      <location filename="ArchStructure.py" line="1356"/>
       <source>Axes systems this structure is built on</source>
       <translation>Sistema d'eixos sobre el qual està construïda aquesta estructura</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1215"/>
+      <location filename="ArchStructure.py" line="1357"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>El nombre d'elements que s'han d'excloure quan l'estructura es basa en eixos</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1216"/>
+      <location filename="ArchStructure.py" line="1358"/>
       <source>If true the element are aligned with axes</source>
       <translation>Si s'estableix a cert, l'element s'alinea amb els eixos</translation>
     </message>
@@ -1224,57 +1224,57 @@
       <translation>L'amplària de la línia d'aquest objecte</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="502"/>
+      <location filename="ArchBuildingPart.py" line="522"/>
       <source>An optional unit to express levels</source>
       <translation>Una unitat opcional per a indicar els nivells</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="504"/>
+      <location filename="ArchBuildingPart.py" line="524"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Una transformació que s'aplica a la marca de nivell</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="507"/>
+      <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, show the level</source>
       <translation>Si és cert, mostra el nivell</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="510"/>
+      <location filename="ArchBuildingPart.py" line="530"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Si és cert, mostra la unitat en l'etiqueta de nivell</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="527"/>
+      <location filename="ArchBuildingPart.py" line="547"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Si és cert, quan estiga activat, el pla de treball s'adaptarà automàticament a aquest nivell</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="517"/>
+      <location filename="ArchBuildingPart.py" line="537"/>
       <source>The font to be used for texts</source>
       <translation>La tipografia a utilitzar per als textos</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="520"/>
+      <location filename="ArchBuildingPart.py" line="540"/>
       <source>The font size of texts</source>
       <translation>La mida de la tipografia dels textos</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="532"/>
+      <location filename="ArchBuildingPart.py" line="552"/>
       <source>Camera position data associated with this object</source>
       <translation>Les dades de posició de la càmera associades a aquest projecte</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="535"/>
+      <location filename="ArchBuildingPart.py" line="555"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Si s'activa, la vista emmagatzemada en aquest objecte es restaurarà amb un doble clic</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="523"/>
+      <location filename="ArchBuildingPart.py" line="543"/>
       <source>The individual face colors</source>
       <translation>Els colors de la cara individual</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="530"/>
+      <location filename="ArchBuildingPart.py" line="550"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Si s'estableix com a vertader, el pla de treball es mantindrà en mode automàtic</translation>
     </message>
@@ -1334,12 +1334,12 @@
       <translation>La part que cal utilitzar de l'arxiu base</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="326"/>
+      <location filename="ArchReference.py" line="385"/>
       <source>The latest time stamp of the linked file</source>
       <translation>L'última marca de temps del fitxer enllaçat</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="329"/>
+      <location filename="ArchReference.py" line="388"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Si és cert, els colors del fitxer enllaçat es mantindran actualitzats</translation>
     </message>
@@ -1604,27 +1604,27 @@
       <translation>La grossària de les contrapetges</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="548"/>
+      <location filename="ArchBuildingPart.py" line="568"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Si és vertader, mostra els objectes continguts en aquesta part de la construcció que adoptaran aquests ajustos de de línia, color i transparència</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="550"/>
+      <location filename="ArchBuildingPart.py" line="570"/>
       <source>The line width of child objects</source>
       <translation>L'amplària de la línia dels objectes fills</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="553"/>
+      <location filename="ArchBuildingPart.py" line="573"/>
       <source>The line color of child objects</source>
       <translation>El color de la línia dels objectes fills</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="557"/>
+      <location filename="ArchBuildingPart.py" line="577"/>
       <source>The shape color of child objects</source>
       <translation>El color de la forma dels objectes fills</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="561"/>
+      <location filename="ArchBuildingPart.py" line="581"/>
       <source>The transparency of child objects</source>
       <translation>La transparència dels objectes fills</translation>
     </message>
@@ -1644,37 +1644,37 @@
       <translation>Aquesta propietat emmagatzema una representació d'inventor per a aquest objecte</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="512"/>
+      <location filename="ArchBuildingPart.py" line="532"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Si és cert, el desplaçament de la visualització afectarà també la marca d'origen</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="514"/>
+      <location filename="ArchBuildingPart.py" line="534"/>
       <source>If true, the object's label is displayed</source>
       <translation>Si és cert, es visualitza l'etiqueta de l'objecte</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="541"/>
+      <location filename="ArchBuildingPart.py" line="561"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Si està activada, la representació de l’inventor d’aquest objecte es guardarà en el fitxer FreeCAD, i permetrà fer-ne referència en altres fitxers en mode lleuger.</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="543"/>
+      <location filename="ArchBuildingPart.py" line="563"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>Una espai per a guardar la representació de l’inventor d’aquest objecte, si està habilitada</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="565"/>
+      <location filename="ArchBuildingPart.py" line="585"/>
       <source>Cut the view above this level</source>
       <translation>Retalla la vista per damunt d’aquest nivell</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="567"/>
+      <location filename="ArchBuildingPart.py" line="587"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Distància entre el pla de nivell i la línia de tall</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="570"/>
+      <location filename="ArchBuildingPart.py" line="590"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Activa el tall quan s'active aquest nivell</translation>
     </message>
@@ -1884,7 +1884,7 @@
       <translation>L’àrea d’aquest mur com a simple càlcul d'alçària * llargària</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="537"/>
+      <location filename="ArchBuildingPart.py" line="557"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
     </message>
@@ -2043,6 +2043,61 @@
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
     </message>
+    <message>
+      <location filename="ArchBuildingPart.py" line="352"/>
+      <source>If true, only solids will be collected by this object when referenced from other files</source>
+      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+    </message>
+    <message>
+      <location filename="ArchBuildingPart.py" line="355"/>
+      <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
+      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+    </message>
+    <message>
+      <location filename="ArchReference.py" line="106"/>
+      <source>Fuse objects of same material</source>
+      <translation type="unfinished">Fuse objects of same material</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="678"/>
+      <source>The computed length of the extrusion path</source>
+      <translation type="unfinished">The computed length of the extrusion path</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="680"/>
+      <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
+      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="682"/>
+      <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
+      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="684"/>
+      <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
+      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="686"/>
+      <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="688"/>
+      <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="690"/>
+      <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="692"/>
+      <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
   </context>
   <context>
     <name>Arch</name>
@@ -2192,7 +2247,7 @@
       <translation>Crea un lloc</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="283"/>
+      <location filename="ArchStructure.py" line="345"/>
       <source>Create Structure</source>
       <translation>Crea una estructura</translation>
     </message>
@@ -2212,7 +2267,7 @@
       <translation>Alçària</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="705"/>
+      <location filename="ArchStructure.py" line="790"/>
       <source>This mesh is an invalid solid</source>
       <translation>Aquesta malla no és un sòlid vàlid.</translation>
     </message>
@@ -2322,7 +2377,7 @@
       <translation>Longitud</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="678"/>
+      <location filename="ArchStructure.py" line="764"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Error: la forma base no s'ha pogut extrudir al llarg de l'objecte guia</translation>
     </message>
@@ -2357,7 +2412,7 @@
       <translation>S'ha produït un error en calcular la forma de l'objecte</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="227"/>
+      <location filename="ArchStructure.py" line="245"/>
       <source>Create Structural System</source>
       <translation>Crea un sistema estructural</translation>
     </message>
@@ -2512,7 +2567,7 @@
       <translation>Estableix la posició del text</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="382"/>
+      <location filename="ArchStructure.py" line="444"/>
       <source>Category</source>
       <translation>Categoria</translation>
     </message>
@@ -2742,52 +2797,52 @@
       <translation>Guió</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1053"/>
+      <location filename="ArchStructure.py" line="1148"/>
       <source>Node Tools</source>
       <translation>Eines de node</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1058"/>
+      <location filename="ArchStructure.py" line="1153"/>
       <source>Reset nodes</source>
       <translation>Reinicialitza els nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1065"/>
+      <location filename="ArchStructure.py" line="1160"/>
       <source>Edit nodes</source>
       <translation>Edita els nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1071"/>
+      <location filename="ArchStructure.py" line="1166"/>
       <source>Extend nodes</source>
       <translation>Estén els nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1072"/>
+      <location filename="ArchStructure.py" line="1167"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Estén els nodes d'aquest element per a arribar als nodes d'un altre element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1078"/>
+      <location filename="ArchStructure.py" line="1173"/>
       <source>Connect nodes</source>
       <translation>Connecta els nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1079"/>
+      <location filename="ArchStructure.py" line="1174"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Connecta els nodes d'aquest element amb els nodes d'un altre element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1085"/>
+      <location filename="ArchStructure.py" line="1180"/>
       <source>Toggle all nodes</source>
       <translation>Commuta tots els nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1086"/>
+      <location filename="ArchStructure.py" line="1181"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Activa/desactiva en el document tots els nodes estructurals</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1130"/>
+      <location filename="ArchStructure.py" line="1236"/>
       <source>Intersection found.
 </source>
       <translation>S'ha trobat una intersecció.</translation>
@@ -3203,7 +3258,7 @@
       <translation>Seleccioneu una cara base en un objecte d'estructura</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="689"/>
+      <location filename="ArchReference.py" line="748"/>
       <source>Create external reference</source>
       <translation>Crea una referència externa</translation>
     </message>
@@ -3248,32 +3303,32 @@
       <translation>Centre</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1141"/>
+      <location filename="ArchStructure.py" line="1247"/>
       <source>Choose another Structure object:</source>
       <translation>Tria un altre objecte Estructura:</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1146"/>
+      <location filename="ArchStructure.py" line="1252"/>
       <source>The chosen object is not a Structure</source>
       <translation>L'objecte triat no és una Estructura</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1149"/>
+      <location filename="ArchStructure.py" line="1255"/>
       <source>The chosen object has no structural nodes</source>
       <translation>L'objecte triat no té nodes estructurals</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1152"/>
+      <location filename="ArchStructure.py" line="1258"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Un d'aquests objectes té més de 2 nodes</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1159"/>
+      <location filename="ArchStructure.py" line="1265"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>No s'ha pogut trobar un punt d'intersecció adequat</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1162"/>
+      <location filename="ArchStructure.py" line="1268"/>
       <source>Intersection found.</source>
       <translation>S'ha trobat una intersecció.</translation>
     </message>
@@ -3413,57 +3468,57 @@
       <translation>Centra el pla sobre els objectes de la llista anterior</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="264"/>
+      <location filename="ArchStructure.py" line="326"/>
       <source>First point of the beam</source>
       <translation>Primer punt de la biga</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="266"/>
+      <location filename="ArchStructure.py" line="328"/>
       <source>Base point of column</source>
       <translation>Punt d'origen de la columna</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="279"/>
+      <location filename="ArchStructure.py" line="341"/>
       <source>Next point</source>
       <translation>Punt següent</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="366"/>
+      <location filename="ArchStructure.py" line="428"/>
       <source>Structure options</source>
       <translation>Opcions de l'estructura</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="370"/>
+      <location filename="ArchStructure.py" line="432"/>
       <source>Drawing mode</source>
       <translation>Mode de dibuix</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="371"/>
+      <location filename="ArchStructure.py" line="433"/>
       <source>Beam</source>
       <translation>Biga</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="372"/>
+      <location filename="ArchStructure.py" line="434"/>
       <source>Column</source>
       <translation>Columna</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="389"/>
+      <location filename="ArchStructure.py" line="451"/>
       <source>Preset</source>
       <translation>Preconfiguració</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="425"/>
+      <location filename="ArchStructure.py" line="487"/>
       <source>Switch L/H</source>
       <translation>Canvia L/H</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="427"/>
+      <location filename="ArchStructure.py" line="489"/>
       <source>Switch L/W</source>
       <translation>Canvia L/W</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="431"/>
+      <location filename="ArchStructure.py" line="493"/>
       <source>Con&amp;tinue</source>
       <translation>Con&amp;tinua</translation>
     </message>
@@ -3769,6 +3824,41 @@ Floor creation aborted.</source>
       <translation type="unfinished">There is no valid object in the selection.
 
 Floor creation aborted.</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="205"/>
+      <source>Create Structures From Selection</source>
+      <translation type="unfinished">Create Structures From Selection</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="222"/>
+      <source>Please select the base object first and then the edges to use as extrusion paths</source>
+      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="256"/>
+      <source>Please select at least an axis object</source>
+      <translation type="unfinished">Please select at least an axis object</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1186"/>
+      <source>Extrusion Tools</source>
+      <translation type="unfinished">Extrusion Tools</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1325"/>
+      <source>Select tool...</source>
+      <translation type="unfinished">Select tool...</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1192"/>
+      <source>Select object or edges to be used as a Tool (extrusion path)</source>
+      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1304"/>
+      <source>Done</source>
+      <translation>Fet</translation>
     </message>
   </context>
   <context>
@@ -4387,12 +4477,12 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="ArchReference.py" line="678"/>
+      <location filename="ArchReference.py" line="737"/>
       <source>External reference</source>
       <translation>Referència externa</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="682"/>
+      <location filename="ArchReference.py" line="741"/>
       <source>Creates an external reference object</source>
       <translation>Crea un objecte de referència externa</translation>
     </message>
@@ -4530,14 +4620,39 @@ Floor creation aborted.</translation>
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="ArchStructure.py" line="199"/>
+      <location filename="ArchStructure.py" line="270"/>
       <source>Structure</source>
       <translation>Estructura</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="203"/>
+      <location filename="ArchStructure.py" line="274"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Crea una estructura a partir de zero o d'un objecte seleccionat (esbós, línia, cara o sòlid)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="196"/>
+      <source>Multiple Structures</source>
+      <translation type="unfinished">Multiple Structures</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="199"/>
+      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
+      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="233"/>
+      <source>Structural System</source>
+      <translation type="unfinished">Structural System</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="236"/>
+      <source>Create a structural system object from a selected structure and axis</source>
+      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1472"/>
+      <source>Structure tools</source>
+      <translation type="unfinished">Structure tools</translation>
     </message>
   </context>
   <context>
@@ -4924,7 +5039,7 @@ Leave blank to use all objects from the document</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="ArchBuildingPart.py" line="856"/>
+      <location filename="ArchBuildingPart.py" line="877"/>
       <source>Writing camera position</source>
       <translation>S'està escrivint la posició de la càmera</translation>
     </message>

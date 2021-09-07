@@ -75,6 +75,11 @@
       <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
     </message>
     <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Gehitu</translation>
@@ -128,11 +133,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Solidoa</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
     </message>
   </context>
   <context>

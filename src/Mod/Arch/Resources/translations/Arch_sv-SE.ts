@@ -889,62 +889,62 @@
       <translation>Förskjutningen mellan kanten på trappan och trappgrunden</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="614"/>
+      <location filename="ArchStructure.py" line="1321"/>
       <source>An optional extrusion path for this element</source>
       <translation>En valbar extruderingsbana för detta element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="620"/>
+      <location filename="ArchStructure.py" line="698"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>Höjden eller extruderingsdjupet för detta element. Behåll 0 för automatisk</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="626"/>
+      <location filename="ArchStructure.py" line="704"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>En beskrivning av standardprofilen detta element är baserad på</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="628"/>
+      <location filename="ArchStructure.py" line="706"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>Förskjutningsavstånd mellan centrumlinje och nodernas linje</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="917"/>
+      <location filename="ArchStructure.py" line="1012"/>
       <source>If the nodes are visible or not</source>
       <translation>Om noderna är synliga eller inte</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="919"/>
+      <location filename="ArchStructure.py" line="1014"/>
       <source>The width of the nodes line</source>
       <translation>Tjockleken på nodernas linje</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="921"/>
+      <location filename="ArchStructure.py" line="1016"/>
       <source>The size of the node points</source>
       <translation>Storleken på nodpunkterna</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="924"/>
+      <location filename="ArchStructure.py" line="1019"/>
       <source>The color of the nodes line</source>
       <translation>Färgen på nodlinjerna</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="927"/>
+      <location filename="ArchStructure.py" line="1022"/>
       <source>The type of structural node</source>
       <translation>Strukturnodens typ</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1214"/>
+      <location filename="ArchStructure.py" line="1356"/>
       <source>Axes systems this structure is built on</source>
       <translation>Axelsystem denna struktur är byggd på</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1215"/>
+      <location filename="ArchStructure.py" line="1357"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Elementnumrena som ska exkluderas när denna struktur baseras på axlar</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1216"/>
+      <location filename="ArchStructure.py" line="1358"/>
       <source>If true the element are aligned with axes</source>
       <translation>Om detta är sant justeras elementet till axlar</translation>
     </message>
@@ -1224,57 +1224,57 @@
       <translation>Linjetjockleken för detta objekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="502"/>
+      <location filename="ArchBuildingPart.py" line="522"/>
       <source>An optional unit to express levels</source>
       <translation>En valfri enhet för att uttrycka våningar</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="504"/>
+      <location filename="ArchBuildingPart.py" line="524"/>
       <source>A transformation to apply to the level mark</source>
       <translation>En omvandling att applicera på våningsmarkeringen</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="507"/>
+      <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, show the level</source>
       <translation>Om detta är sant visas våningen</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="510"/>
+      <location filename="ArchBuildingPart.py" line="530"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Om detta är sant visas enheten på våningsetiketten</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="527"/>
+      <location filename="ArchBuildingPart.py" line="547"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Om detta är sant kommer arbetsplanet när det är aktiverat att automatiskt anpassas till denna våning</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="517"/>
+      <location filename="ArchBuildingPart.py" line="537"/>
       <source>The font to be used for texts</source>
       <translation>Teckensnittet att använda för texter</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="520"/>
+      <location filename="ArchBuildingPart.py" line="540"/>
       <source>The font size of texts</source>
       <translation>Teckenstorleken för texter</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="532"/>
+      <location filename="ArchBuildingPart.py" line="552"/>
       <source>Camera position data associated with this object</source>
       <translation>Kamera-positionsdata associerad med detta objekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="535"/>
+      <location filename="ArchBuildingPart.py" line="555"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Om detta är ikryssat kommer den sparade vyn i detta objekt återställas med dubbelklick</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="523"/>
+      <location filename="ArchBuildingPart.py" line="543"/>
       <source>The individual face colors</source>
       <translation>De individuella ytfärgerna</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="530"/>
+      <location filename="ArchBuildingPart.py" line="550"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Om detta är sant, kommer arbetsplanet hållas i auto-läge</translation>
     </message>
@@ -1334,12 +1334,12 @@
       <translation>Komponenten att använda från basfilen</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="326"/>
+      <location filename="ArchReference.py" line="385"/>
       <source>The latest time stamp of the linked file</source>
       <translation>Den senaste tidstämpeln på den länkade filen</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="329"/>
+      <location filename="ArchReference.py" line="388"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Om detta är sant, kommer färgerna från den länkade filen hållas uppdaterade</translation>
     </message>
@@ -1604,27 +1604,27 @@
       <translation>Tjockleken på sättstegen</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="548"/>
+      <location filename="ArchBuildingPart.py" line="568"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Om sant, kommer objekten i denna byggdel kommer att anta dessa linje-, färg- och transparensinställningar</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="550"/>
+      <location filename="ArchBuildingPart.py" line="570"/>
       <source>The line width of child objects</source>
       <translation>Linjetjockleken för underobjekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="553"/>
+      <location filename="ArchBuildingPart.py" line="573"/>
       <source>The line color of child objects</source>
       <translation>Linjefärgen för underobjekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="557"/>
+      <location filename="ArchBuildingPart.py" line="577"/>
       <source>The shape color of child objects</source>
       <translation>Formfärgen för underobjekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="561"/>
+      <location filename="ArchBuildingPart.py" line="581"/>
       <source>The transparency of child objects</source>
       <translation>Transparensen för underobjekt</translation>
     </message>
@@ -1644,37 +1644,37 @@
       <translation>Den här egenskapen lagrar en uppfinnarrepresentation för detta objekt</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="512"/>
+      <location filename="ArchBuildingPart.py" line="532"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Om sant, påverkar visningsförskjutning även origo märket</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="514"/>
+      <location filename="ArchBuildingPart.py" line="534"/>
       <source>If true, the object's label is displayed</source>
       <translation>Om sant, visas objektets etikett</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="541"/>
+      <location filename="ArchBuildingPart.py" line="561"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Om detta är aktiverat kommer inventor representationen av detta objekt att sparas i FreeCAD-filen, vilket tillåter att referera det i andra filer i lättviktsläge.</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="543"/>
+      <location filename="ArchBuildingPart.py" line="563"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>En plats för att spara inventor representationen av detta objekt, om aktiverad</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="565"/>
+      <location filename="ArchBuildingPart.py" line="585"/>
       <source>Cut the view above this level</source>
       <translation>Trimma vyn över denna nivå</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="567"/>
+      <location filename="ArchBuildingPart.py" line="587"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Avståndet mellan vågrätt plan och skärlinje</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="570"/>
+      <location filename="ArchBuildingPart.py" line="590"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Aktivera trimning när du aktiverar denna nivå</translation>
     </message>
@@ -1884,7 +1884,7 @@
       <translation>Denna väggs area som en enkel höjd * Längd beräkning</translation>
     </message>
     <message>
-      <location filename="ArchBuildingPart.py" line="537"/>
+      <location filename="ArchBuildingPart.py" line="557"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Om sant, så gör en dubbelklickning på detta objekt i trädet, aktivt</translation>
     </message>
@@ -2043,6 +2043,61 @@
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
     </message>
+    <message>
+      <location filename="ArchBuildingPart.py" line="352"/>
+      <source>If true, only solids will be collected by this object when referenced from other files</source>
+      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+    </message>
+    <message>
+      <location filename="ArchBuildingPart.py" line="355"/>
+      <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
+      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+    </message>
+    <message>
+      <location filename="ArchReference.py" line="106"/>
+      <source>Fuse objects of same material</source>
+      <translation type="unfinished">Fuse objects of same material</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="678"/>
+      <source>The computed length of the extrusion path</source>
+      <translation type="unfinished">The computed length of the extrusion path</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="680"/>
+      <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
+      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="682"/>
+      <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
+      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="684"/>
+      <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
+      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="686"/>
+      <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="688"/>
+      <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="690"/>
+      <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="692"/>
+      <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
+      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+    </message>
   </context>
   <context>
     <name>Arch</name>
@@ -2192,7 +2247,7 @@
       <translation>Skapa plats</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="283"/>
+      <location filename="ArchStructure.py" line="345"/>
       <source>Create Structure</source>
       <translation>Skapa struktur</translation>
     </message>
@@ -2212,7 +2267,7 @@
       <translation>Höjd</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="705"/>
+      <location filename="ArchStructure.py" line="790"/>
       <source>This mesh is an invalid solid</source>
       <translation>Detta nät är en ogiltig solid</translation>
     </message>
@@ -2322,7 +2377,7 @@
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="678"/>
+      <location filename="ArchStructure.py" line="764"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Fel: Grundformen kunde inte extruderas längs detta verktygsobjekt</translation>
     </message>
@@ -2357,7 +2412,7 @@
       <translation>Fel vid beräkning av formen på detta objekt</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="227"/>
+      <location filename="ArchStructure.py" line="245"/>
       <source>Create Structural System</source>
       <translation>Skapa strukturellt system</translation>
     </message>
@@ -2512,7 +2567,7 @@
       <translation>Ange textplacering</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="382"/>
+      <location filename="ArchStructure.py" line="444"/>
       <source>Category</source>
       <translation>Kategori</translation>
     </message>
@@ -2742,52 +2797,52 @@
       <translation>Schema</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1053"/>
+      <location filename="ArchStructure.py" line="1148"/>
       <source>Node Tools</source>
       <translation>Nodverktyg</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1058"/>
+      <location filename="ArchStructure.py" line="1153"/>
       <source>Reset nodes</source>
       <translation>Återställ noder</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1065"/>
+      <location filename="ArchStructure.py" line="1160"/>
       <source>Edit nodes</source>
       <translation>Redigera noder</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1071"/>
+      <location filename="ArchStructure.py" line="1166"/>
       <source>Extend nodes</source>
       <translation>Utöka noder</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1072"/>
+      <location filename="ArchStructure.py" line="1167"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Utökar noderna för detta element att nå noderna för ett annat element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1078"/>
+      <location filename="ArchStructure.py" line="1173"/>
       <source>Connect nodes</source>
       <translation>Anslut noder</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1079"/>
+      <location filename="ArchStructure.py" line="1174"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Ansluter noderna för detta element till noderna för ett annat element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1085"/>
+      <location filename="ArchStructure.py" line="1180"/>
       <source>Toggle all nodes</source>
       <translation>Växla alla noder</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1086"/>
+      <location filename="ArchStructure.py" line="1181"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Växlar alla strukturnoder i dokumentet av/på</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1130"/>
+      <location filename="ArchStructure.py" line="1236"/>
       <source>Intersection found.
 </source>
       <translation>Korsning hittad.
@@ -3204,7 +3259,7 @@
       <translation>Vänligen välj en basyta på ett strukturellt objekt</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="689"/>
+      <location filename="ArchReference.py" line="748"/>
       <source>Create external reference</source>
       <translation>Skapa extern referens</translation>
     </message>
@@ -3249,32 +3304,32 @@
       <translation>Centrum</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1141"/>
+      <location filename="ArchStructure.py" line="1247"/>
       <source>Choose another Structure object:</source>
       <translation>Välj ett annat strukturobjekt:</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1146"/>
+      <location filename="ArchStructure.py" line="1252"/>
       <source>The chosen object is not a Structure</source>
       <translation>Det valda objektet är inte en struktur</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1149"/>
+      <location filename="ArchStructure.py" line="1255"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Det valda objektet har inga strukturella noder</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1152"/>
+      <location filename="ArchStructure.py" line="1258"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Ett av dessa objekt har mer än 2 noder</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1159"/>
+      <location filename="ArchStructure.py" line="1265"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Det går inte att hitta en lämplig skärningspunkt</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="1162"/>
+      <location filename="ArchStructure.py" line="1268"/>
       <source>Intersection found.</source>
       <translation>Korsning hittad.</translation>
     </message>
@@ -3414,57 +3469,57 @@
       <translation>Centrerar planet på objekten i listan ovan</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="264"/>
+      <location filename="ArchStructure.py" line="326"/>
       <source>First point of the beam</source>
       <translation>Första punkt för balken</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="266"/>
+      <location filename="ArchStructure.py" line="328"/>
       <source>Base point of column</source>
       <translation>Baspunkt för pelare</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="279"/>
+      <location filename="ArchStructure.py" line="341"/>
       <source>Next point</source>
       <translation>Nästa punkt</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="366"/>
+      <location filename="ArchStructure.py" line="428"/>
       <source>Structure options</source>
       <translation>Strukturinställningar</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="370"/>
+      <location filename="ArchStructure.py" line="432"/>
       <source>Drawing mode</source>
       <translation>Ritläge</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="371"/>
+      <location filename="ArchStructure.py" line="433"/>
       <source>Beam</source>
       <translation>Balk</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="372"/>
+      <location filename="ArchStructure.py" line="434"/>
       <source>Column</source>
       <translation>Pelare</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="389"/>
+      <location filename="ArchStructure.py" line="451"/>
       <source>Preset</source>
       <translation>Förval</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="425"/>
+      <location filename="ArchStructure.py" line="487"/>
       <source>Switch L/H</source>
       <translation>Växla L/H</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="427"/>
+      <location filename="ArchStructure.py" line="489"/>
       <source>Switch L/W</source>
       <translation>Växla L/B</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="431"/>
+      <location filename="ArchStructure.py" line="493"/>
       <source>Con&amp;tinue</source>
       <translation>For&amp;tsättning</translation>
     </message>
@@ -3764,6 +3819,41 @@ Floor creation aborted.</source>
       <translation>Det finns inget giltigt objekt i markeringen.
 
 Skapande av golv avbruten.</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="205"/>
+      <source>Create Structures From Selection</source>
+      <translation type="unfinished">Create Structures From Selection</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="222"/>
+      <source>Please select the base object first and then the edges to use as extrusion paths</source>
+      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="256"/>
+      <source>Please select at least an axis object</source>
+      <translation type="unfinished">Please select at least an axis object</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1186"/>
+      <source>Extrusion Tools</source>
+      <translation type="unfinished">Extrusion Tools</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1325"/>
+      <source>Select tool...</source>
+      <translation type="unfinished">Select tool...</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1192"/>
+      <source>Select object or edges to be used as a Tool (extrusion path)</source>
+      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1304"/>
+      <source>Done</source>
+      <translation>Färdig</translation>
     </message>
   </context>
   <context>
@@ -4382,12 +4472,12 @@ Skapande av golv avbruten.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="ArchReference.py" line="678"/>
+      <location filename="ArchReference.py" line="737"/>
       <source>External reference</source>
       <translation>Extern referens</translation>
     </message>
     <message>
-      <location filename="ArchReference.py" line="682"/>
+      <location filename="ArchReference.py" line="741"/>
       <source>Creates an external reference object</source>
       <translation>Skapar ett extern referens-objekt</translation>
     </message>
@@ -4525,14 +4615,39 @@ Skapande av golv avbruten.</translation>
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="ArchStructure.py" line="199"/>
+      <location filename="ArchStructure.py" line="270"/>
       <source>Structure</source>
       <translation>Struktur</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="203"/>
+      <location filename="ArchStructure.py" line="274"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Skapar ett strukturobjekt från början eller från ett markerat objekt (skiss, tråd, yta eller solid)</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="196"/>
+      <source>Multiple Structures</source>
+      <translation type="unfinished">Multiple Structures</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="199"/>
+      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
+      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="233"/>
+      <source>Structural System</source>
+      <translation type="unfinished">Structural System</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="236"/>
+      <source>Create a structural system object from a selected structure and axis</source>
+      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="1472"/>
+      <source>Structure tools</source>
+      <translation type="unfinished">Structure tools</translation>
     </message>
   </context>
   <context>
@@ -4919,7 +5034,7 @@ Lämna tomt för att använda alla objekt från dokumentet</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="ArchBuildingPart.py" line="856"/>
+      <location filename="ArchBuildingPart.py" line="877"/>
       <source>Writing camera position</source>
       <translation>Skriver kamerans position</translation>
     </message>

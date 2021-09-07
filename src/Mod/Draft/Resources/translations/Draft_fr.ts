@@ -148,7 +148,7 @@ Cette propriété est en lecture seule, car le nombre dépend des paramètres du
       <translation>Les composants de ce bloc</translation>
     </message>
     <message>
-      <location filename="wpproxy.py" line="42"/>
+      <location filename="hatch.py" line="46"/>
       <source>The placement of this object</source>
       <translation>Le positionnement de cet objet</translation>
     </message>
@@ -1121,6 +1121,41 @@ Utilisez 'arch' pour forcer la notation architecturale US</translation>
       <source>This object will be recomputed only if this is True.</source>
       <translation>Cet objet ne sera recalculé que si ceci est Vrai.</translation>
     </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forme de cet objet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="52"/>
+      <source>The base object used by this object</source>
+      <translation type="unfinished">The base object used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="55"/>
+      <source>The PAT file used by this object</source>
+      <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="58"/>
+      <source>The pattern name used by this object</source>
+      <translation type="unfinished">The pattern name used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="61"/>
+      <source>The pattern scale used by this object</source>
+      <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="64"/>
+      <source>The pattern rotation used by this object</source>
+      <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="67"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+    </message>
   </context>
   <context>
     <name>Dialog</name>
@@ -1667,6 +1702,11 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
       <source>Warning</source>
       <translation>Attention</translation>
     </message>
+    <message>
+      <location filename="gui_hatch.py" line="48"/>
+      <source>You must choose a base object before using this command</source>
+      <translation type="unfinished">You must choose a base object before using this command</translation>
+    </message>
   </context>
   <context>
     <name>DraftCircularArrayTaskPanel</name>
@@ -2078,12 +2118,12 @@ Doit être d’au moins 2.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="341"/>
+      <location filename="gui_groups.py" line="365"/>
       <source>Add to Construction group</source>
       <translation>Ajouter au groupe de Construction</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="367"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2108,17 +2148,17 @@ Il crée un groupe de construction s'il n'existe pas.</translation>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="gui_groups.py" line="67"/>
+      <location filename="gui_groups.py" line="68"/>
       <source>Ungroup</source>
       <translation>Dégrouper</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="72"/>
+      <location filename="gui_groups.py" line="75"/>
       <source>Move to group</source>
       <translation>Déplacer vers le groupe</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="74"/>
+      <location filename="gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
       <translation>Déplace les objets sélectionnés vers un groupe existant, ou les supprime de n'importe quel groupe.
@@ -2195,12 +2235,12 @@ en type polaire ou circulaire, et ses propriétés peuvent être modifiées.</tr
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="239"/>
+      <location filename="gui_groups.py" line="263"/>
       <source>Autogroup</source>
       <translation>Groupement automatique</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="242"/>
+      <location filename="gui_groups.py" line="266"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
       <translation>Sélectionner un groupe auquel ajouter tous les objets Draft &amp; Arch.</translation>
     </message>
@@ -2474,6 +2514,19 @@ sur les nœuds pris en charge et sur les objets pris en charge.</translation>
 If other objects are selected they are ignored.</source>
       <translation>Inverser la direction normale des cotes sélectionnées (linéaire, radiale, angulaire).
 Si d'autres objets sont sélectionnés, ils sont ignorés.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Hatch</name>
+    <message>
+      <location filename="gui_hatch.py" line="37"/>
+      <source>Hatch</source>
+      <translation>Hachure</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="41"/>
+      <source>Create hatches on selected faces</source>
+      <translation type="unfinished">Create hatches on selected faces</translation>
     </message>
   </context>
   <context>
@@ -2807,12 +2860,12 @@ CTRL pour aimanter, MAJ pour contraindre, ALT pour copier.</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="gui_groups.py" line="165"/>
+      <location filename="gui_groups.py" line="189"/>
       <source>Select group</source>
       <translation>Sélectionner groupe</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="168"/>
+      <location filename="gui_groups.py" line="192"/>
       <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
@@ -2852,9 +2905,6 @@ Vous pouvez également sélectionner trois sommets ou un Proxy de Plan de Travai
     </message>
   </context>
   <context>
-    <name>Draft_SetWorkingPlaneProxy</name>
-  </context>
-  <context>
     <name>Draft_Shape2DView</name>
     <message>
       <location filename="gui_shape2dview.py" line="59"/>
@@ -2891,12 +2941,12 @@ Les formes fermées peuvent être utilisées pour les extrusions et les opérati
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="589"/>
       <source>Show snap toolbar</source>
       <translation>Afficher la barre d'outils d'aimantation</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="579"/>
+      <location filename="gui_snaps.py" line="592"/>
       <source>Show the snap toolbar if it is hidden.</source>
       <translation>Afficher la barre d'outils d'aimantation si elle est cachée.</translation>
     </message>
@@ -2938,12 +2988,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="331"/>
+      <location filename="gui_snaps.py" line="344"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="334"/>
+      <location filename="gui_snaps.py" line="347"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
       <translation>Paramétrer l’aimantation sur des points, dans un arc circulaire, situés à des multiples d’angles de 30 et 45 degrés.</translation>
     </message>
@@ -2951,12 +3001,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="361"/>
+      <location filename="gui_snaps.py" line="374"/>
       <source>Center</source>
       <translation>Centre</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="364"/>
+      <location filename="gui_snaps.py" line="377"/>
       <source>Set snapping to the center of a circular arc.</source>
       <translation>Définir l'aimantation au centre d'un arc de cercle.</translation>
     </message>
@@ -2964,12 +3014,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="513"/>
+      <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
       <translation>Afficher les cotes</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="516"/>
+      <location filename="gui_snaps.py" line="529"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
       <translation>Afficher les cotes linéaires temporaires lors de l'édition d'un objet et de l'utilisation d'autres méthodes d'aimantation.</translation>
     </message>
@@ -2977,12 +3027,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="300"/>
+      <location filename="gui_snaps.py" line="313"/>
       <source>Endpoint</source>
       <translation>Terminaison</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="303"/>
+      <location filename="gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
       <translation>Définir l'aimantation aux extrémités d'une arête.</translation>
     </message>
@@ -2990,12 +3040,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="391"/>
+      <location filename="gui_snaps.py" line="404"/>
       <source>Extension</source>
       <translation>Extension</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="394"/>
+      <location filename="gui_snaps.py" line="407"/>
       <source>Set snapping to the extension of an edge.</source>
       <translation>Définir l'aimantation aux prolongement d'une arête.</translation>
     </message>
@@ -3003,12 +3053,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="210"/>
+      <location filename="gui_snaps.py" line="223"/>
       <source>Grid</source>
       <translation>Grille</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="213"/>
+      <location filename="gui_snaps.py" line="226"/>
       <source>Set snapping to the intersection of grid lines.</source>
       <translation>Définir l’aimantation à l’intersection des lignes de la grille.</translation>
     </message>
@@ -3016,12 +3066,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="240"/>
+      <location filename="gui_snaps.py" line="253"/>
       <source>Intersection</source>
       <translation>Intersection</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="243"/>
+      <location filename="gui_snaps.py" line="256"/>
       <source>Set snapping to the intersection of edges.</source>
       <translation>Définir l’aimantation à l’intersection d'arêtes.</translation>
     </message>
@@ -3029,12 +3079,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="120"/>
+      <location filename="gui_snaps.py" line="133"/>
       <source>Main snapping toggle On/Off</source>
       <translation>Active/Désactive l'aimantation générale</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="123"/>
+      <location filename="gui_snaps.py" line="136"/>
       <source>Activates or deactivates all snap methods at once.</source>
       <translation>Active ou désactive toutes les méthodes d’aimantation en même temps.</translation>
     </message>
@@ -3042,12 +3092,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="150"/>
+      <location filename="gui_snaps.py" line="163"/>
       <source>Midpoint</source>
       <translation>Milieu</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="153"/>
+      <location filename="gui_snaps.py" line="166"/>
       <source>Set snapping to the midpoint of an edge.</source>
       <translation>Définir l'aimantation au milieu d'une arête.</translation>
     </message>
@@ -3055,12 +3105,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="421"/>
+      <location filename="gui_snaps.py" line="434"/>
       <source>Nearest</source>
       <translation>Le plus proche</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="424"/>
+      <location filename="gui_snaps.py" line="437"/>
       <source>Set snapping to the nearest point of an edge.</source>
       <translation>Définir l'aimantation au point le plus proche d'une arête.</translation>
     </message>
@@ -3068,12 +3118,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="452"/>
+      <location filename="gui_snaps.py" line="465"/>
       <source>Orthogonal</source>
       <translation>Orthogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="455"/>
+      <location filename="gui_snaps.py" line="468"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
       <translation>Définir l'aimantation à une direction multiple de 45 degrés à partir d'un point.</translation>
     </message>
@@ -3081,12 +3131,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="270"/>
+      <location filename="gui_snaps.py" line="283"/>
       <source>Parallel</source>
       <translation>Parallèle</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="273"/>
+      <location filename="gui_snaps.py" line="286"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
       <translation>Définir l'aimantation dans une direction parallèle à une arête.</translation>
     </message>
@@ -3094,12 +3144,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="180"/>
+      <location filename="gui_snaps.py" line="193"/>
       <source>Perpendicular</source>
       <translation>Perpendiculaire</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="183"/>
+      <location filename="gui_snaps.py" line="196"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
       <translation>Définir l'aimantation dans une direction perpendiculaire à une arête.</translation>
     </message>
@@ -3107,12 +3157,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="482"/>
+      <location filename="gui_snaps.py" line="495"/>
       <source>Special</source>
       <translation>Spécial</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="485"/>
+      <location filename="gui_snaps.py" line="498"/>
       <source>Set snapping to the special points defined inside an object.</source>
       <translation>Définir l'aimantation sur les points spéciaux définis à l'intérieur d'un objet.</translation>
     </message>
@@ -3120,12 +3170,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="546"/>
+      <location filename="gui_snaps.py" line="559"/>
       <source>Working plane</source>
       <translation>Plan de travail</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="549"/>
+      <location filename="gui_snaps.py" line="562"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
@@ -3264,7 +3314,7 @@ Ceci est destiné à être utilisé avec des formes fermées et des solides, et 
       <translation>Ajuste ou Prolonge</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="79"/>
+      <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation>Ajuste ou étend l'objet sélectionné, ou extrude des faces uniques.
@@ -3790,6 +3840,49 @@ en utilisant les touches [ et ] lors du dessin</translation>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
       <translation>L'écartement entre les différentes lignes de texte</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="14"/>
+      <source>Form</source>
+      <translation>Forme</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="23"/>
+      <source>pattern files (*.pat)</source>
+      <translation type="unfinished">pattern files (*.pat)</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="30"/>
+      <source>PAT file:</source>
+      <translation type="unfinished">PAT file:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="37"/>
+      <source>Scale</source>
+      <translation>Échelle</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="44"/>
+      <source>Pattern:</source>
+      <translation type="unfinished">Pattern:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="64"/>
+      <source>Rotation:</source>
+      <translation>Rotation :</translation>
+    </message>
+    <message encoding="UTF-8">
+      <location filename="dialogHatch.ui" line="71"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>Groupe</translation>
     </message>
   </context>
   <context>
@@ -5198,6 +5291,14 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
     </message>
   </context>
   <context>
+    <name>ImportAirfoilDAT</name>
+    <message>
+      <location filename="importAirfoilDAT.py" line="186"/>
+      <source>Did not find enough coordinates</source>
+      <translation type="unfinished">Did not find enough coordinates</translation>
+    </message>
+  </context>
+  <context>
     <name>ImportDWG</name>
     <message>
       <location filename="importDWG.py" line="233"/>
@@ -5254,7 +5355,7 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
       <translation>commande active :</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="275"/>
+      <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
@@ -5309,7 +5410,7 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
       <translation>Longueur</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="217"/>
+      <location filename="gui_trimex.py" line="220"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -5434,7 +5535,7 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
       <translation>Étiquette</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="212"/>
+      <location filename="gui_trimex.py" line="215"/>
       <source>Distance</source>
       <translation>Distance</translation>
     </message>
@@ -5741,7 +5842,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Appuyez sur ce bouton pour créer l'objet texte, ou terminez votre texte avec deux lignes vides</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="214"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Offset distance</source>
       <translation>Distance de décalage</translation>
     </message>
@@ -6647,7 +6748,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Mettre à niveau</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="204"/>
+      <location filename="gui_move.py" line="205"/>
       <source>Move</source>
       <translation>Déplacer</translation>
     </message>
@@ -6662,7 +6763,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Sélectionner le point de départ</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="302"/>
+      <location filename="gui_move.py" line="303"/>
       <source>Pick end point</source>
       <translation>Sélectionner le point final</translation>
     </message>
@@ -6702,82 +6803,82 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Basculer le mode d'affichage</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="113"/>
+      <location filename="gui_snaps.py" line="126"/>
       <source>Main toggle snap</source>
       <translation>Basculer l'aimantation générale</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="144"/>
+      <location filename="gui_snaps.py" line="157"/>
       <source>Midpoint snap</source>
       <translation>Aimantation au milieu</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="174"/>
+      <location filename="gui_snaps.py" line="187"/>
       <source>Perpendicular snap</source>
       <translation>Aimantation perpendiculaire</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="204"/>
+      <location filename="gui_snaps.py" line="217"/>
       <source>Grid snap</source>
       <translation>Ancrage à la grille</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="234"/>
+      <location filename="gui_snaps.py" line="247"/>
       <source>Intersection snap</source>
       <translation>Aimantation d'intersection</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="264"/>
+      <location filename="gui_snaps.py" line="277"/>
       <source>Parallel snap</source>
       <translation>Aimantation parallèle</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="294"/>
+      <location filename="gui_snaps.py" line="307"/>
       <source>Endpoint snap</source>
       <translation>Aimantation au point d'extrémité</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="325"/>
+      <location filename="gui_snaps.py" line="338"/>
       <source>Angle snap (30 and 45 degrees)</source>
       <translation>Accrochage d'angles (30 et 45 degrés)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="355"/>
+      <location filename="gui_snaps.py" line="368"/>
       <source>Arc center snap</source>
       <translation>Aimantation au centre d'arc</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="385"/>
+      <location filename="gui_snaps.py" line="398"/>
       <source>Edge extension snap</source>
       <translation>Aimantation à l'extension d'arête</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="415"/>
+      <location filename="gui_snaps.py" line="428"/>
       <source>Near snap</source>
       <translation>Aimantation de proximité</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="446"/>
+      <location filename="gui_snaps.py" line="459"/>
       <source>Orthogonal snap</source>
       <translation>Aimantation orthogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="476"/>
+      <location filename="gui_snaps.py" line="489"/>
       <source>Special point snap</source>
       <translation>Aimantation aux points spéciaux</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="507"/>
+      <location filename="gui_snaps.py" line="520"/>
       <source>Dimension display</source>
       <translation>Affichage des cotes</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="540"/>
+      <location filename="gui_snaps.py" line="553"/>
       <source>Working plane snap</source>
       <translation>Accrochage au Plan de travail</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="570"/>
+      <location filename="gui_snaps.py" line="583"/>
       <source>Show snap toolbar</source>
       <translation>Afficher la barre d'outils d'aimantation</translation>
     </message>
@@ -7017,7 +7118,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Aucun point d'édition trouvé pour l'objet sélectionné</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="822"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: cet objet n'est pas modifiable</translation>
     </message>
@@ -7042,7 +7143,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Ajuste ou Prolonge</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="91"/>
+      <location filename="gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
       <translation>Sélectionner l'objet à réduire ou agrandir</translation>
     </message>
@@ -7052,22 +7153,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Choisir la distance</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="480"/>
+      <location filename="gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Impossible d'ajuster ces objets, seuls les objets Draft filaires et arcs sont supportés.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="485"/>
+      <location filename="gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Impossible d'ajuster ces objets, trop de filaires</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="502"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
       <translation>Ces objets ne se croisent pas.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="505"/>
+      <location filename="gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
       <translation>Trop de points d'intersection.</translation>
     </message>
@@ -7207,27 +7308,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Changer le Style</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="64"/>
+      <location filename="gui_groups.py" line="65"/>
       <source>Add to group</source>
       <translation>Ajouter au groupe</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="159"/>
+      <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
       <translation>Sélectionner groupe</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="233"/>
+      <location filename="gui_groups.py" line="257"/>
       <source>Autogroup</source>
       <translation>Groupement automatique</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="281"/>
+      <location filename="gui_groups.py" line="305"/>
       <source>Add new Layer</source>
       <translation>Ajouter un nouveau Calque</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="335"/>
+      <location filename="gui_groups.py" line="359"/>
       <source>Add to construction group</source>
       <translation>Ajouter au groupe de construction</translation>
     </message>
@@ -7444,7 +7545,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Impossible de mettre les objets à l'échelle :</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="814"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Trop d'objets sélectionnés, le nombre maximum est de :</translation>
     </message>
@@ -7466,9 +7567,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
 </translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="219"/>
+      <location filename="gui_trimex.py" line="222"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>Angle de décalage</translation>
     </message>
   </context>
   <context>

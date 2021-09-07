@@ -284,7 +284,7 @@
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Insert Detail View</source>
-      <translation type="unfinished">Insert Detail View</translation>
+      <translation>Вставити детальний вигляд</translation>
     </message>
   </context>
   <context>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="373"/>
       <source>Insert Diameter Dimension</source>
-      <translation type="unfinished">Insert Diameter Dimension</translation>
+      <translation>Вставити розмір діаметру</translation>
     </message>
   </context>
   <context>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="124"/>
       <source>Insert Dimension</source>
-      <translation type="unfinished">Insert Dimension</translation>
+      <translation>Вставити розмір</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1346"/>
       <source>Export Page as DXF</source>
-      <translation type="unfinished">Export Page as DXF</translation>
+      <translation>Експортувати лист у DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Зберегти файл Dxf</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -364,7 +364,7 @@
     <message>
       <location filename="../../Command.cpp" line="1302"/>
       <source>Export Page as SVG</source>
-      <translation type="unfinished">Export Page as SVG</translation>
+      <translation>Експортувати лист у SVG</translation>
     </message>
   </context>
   <context>
@@ -439,7 +439,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="594"/>
       <source>Insert Horizontal Dimension</source>
-      <translation type="unfinished">Insert Horizontal Dimension</translation>
+      <translation>Вставити горизонтальний розмір</translation>
     </message>
   </context>
   <context>
@@ -465,13 +465,13 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="278"/>
       <source>Insert Bitmap Image</source>
-      <translation type="unfinished">Insert Bitmap Image</translation>
+      <translation>Вставити растрове зображення</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="279"/>
       <location filename="../../CommandDecorate.cpp" line="281"/>
       <source>Insert Bitmap from a file into a page</source>
-      <translation type="unfinished">Insert Bitmap from a file into a page</translation>
+      <translation>Вставити на сторінку растрове зображення з файлу</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="296"/>
@@ -626,7 +626,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="251"/>
       <source>Insert Radius Dimension</source>
-      <translation type="unfinished">Insert Radius Dimension</translation>
+      <translation>Вставити розмір радіусу</translation>
     </message>
   </context>
   <context>
@@ -665,7 +665,7 @@
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Insert Section View</source>
-      <translation type="unfinished">Insert Section View</translation>
+      <translation>Вставити розріз</translation>
     </message>
   </context>
   <context>
@@ -850,7 +850,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="351"/>
       <source>Add Midpont Vertices</source>
-      <translation type="unfinished">Add Midpont Vertices</translation>
+      <translation>Додайте середню точку вершини</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="379"/>
@@ -3479,7 +3479,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="862"/>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Зберегти файл Dxf</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="864"/>

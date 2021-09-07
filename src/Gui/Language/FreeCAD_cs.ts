@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Výchozí</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformace</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Řez</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Barva</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -2609,12 +2628,11 @@ but slower response to any scene changes.</translation>
     <message>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation type="unfinished">Axis cross will be shown by default at file
-opening or creation</translation>
+      <translation>Ve výchozím nastavení bude zobrazen osový kříž při otevření nebo vytvoření souboru</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Zobrazit ve výchozím nastavení osový kříž</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2915,7 +2933,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
-      <translation type="unfinished">How many Undo/Redo steps should be recorded</translation>
+      <translation>Kolik kroků Zpět/Znovu by mělo být zaznamenáno</translation>
     </message>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
@@ -2939,7 +2957,7 @@ automatically run a file recovery when it is started.</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>Náhled bude uložen jakmile se uloží dokument</translation>
     </message>
     <message>
       <source>Size</source>
@@ -2948,12 +2966,12 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>Nastavení velikosti náhledu uloženého v dokumentu.
+Obvyklé rozměry jsou 128, 256 a 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>Logo programu bude přidáno do náhledu</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
@@ -3007,7 +3025,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation type="unfinished">Default company name to use for new files</translation>
+      <translation>Výchozí název společnosti pro nové soubory</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
@@ -3282,7 +3300,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Načíst nyní</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3297,15 +3315,15 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Automaticky načíst</translation>
     </message>
     <message>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Je-li zaškrtnuto</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>bude automaticky načtena při spuštění FreeCADu</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
@@ -3313,11 +3331,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Načteno</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Načíst nyní</translation>
     </message>
   </context>
   <context>
@@ -3487,9 +3505,9 @@ Select a set and then press the button to view said configurations.</translation
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</translation>
+      <translation>Styl rotace.
+Trackball: vodorovný pohyb myši otáčí dílem kolem osy y
+Otočení: díl se otočí kolem osy z.</translation>
     </message>
     <message>
       <source>Turntable</source>
@@ -3652,7 +3670,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+      <translation>Automaticky přepnout na 3D zobrazení obsahující vybranou položku</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
@@ -3755,7 +3773,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation type="unfinished">Number of decimals that should be shown for numbers and dimensions</translation>
+      <translation>Počet desetinných míst, která se mají zobrazit pro čísla a kóty</translation>
     </message>
     <message>
       <source>Unit system that should be used for all parts the application</source>
@@ -4673,6 +4691,16 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <source>Partial</source>
       <translation>Částečné</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -8759,6 +8787,17 @@ Fyzická cesta: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -9426,7 +9465,7 @@ Fyzická cesta: </translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+      <translation>Automaticky přepnout na 3D zobrazení obsahující vybranou položku</translation>
     </message>
   </context>
   <context>

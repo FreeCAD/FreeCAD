@@ -346,6 +346,16 @@ Feu clic a 'Continua' per a crear la propietat de totes formes, o en 'Interromp'
       <translation>Llesca a la composició</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragments booleans</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Divideix els objectes on s'interseccionen</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -358,16 +368,6 @@ Es pot usar un 'Filtre de Compost' per extreure'n els talls individuals.</transl
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
       <translation>Llesca a part</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragments booleans</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Divideix els objectes on s'interseccionen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>

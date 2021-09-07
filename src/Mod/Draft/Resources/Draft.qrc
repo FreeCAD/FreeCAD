@@ -169,6 +169,8 @@
         <file>translations/Draft_vi.qm</file>
         <file>translations/Draft_zh-CN.qm</file>
         <file>translations/Draft_zh-TW.qm</file>
+        <file>translations/Draft_es-AR.qm</file>
+        <file>translations/Draft_bg.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>

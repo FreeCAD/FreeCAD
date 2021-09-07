@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Varsayılan</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Dönüştür</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Kesme</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Renk</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -3272,7 +3291,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Tezgah Adı</translation>
     </message>
     <message>
       <source>Autoload?</source>
@@ -3280,11 +3299,11 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Şimdi Yükle</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt; Kaynakları korumak için FreeCAD, kullanılıncaya kadar çalışma tezgahlarını yüklemez. Bunları yüklemek, işlevleriyle ilgili ek tercihlere erişim sağlayabilir. &lt;/p&gt; &lt;p&gt; Aşağıdaki çalışma tezgahları kurulumunuzda mevcuttur, ancak henüz yüklenmemiştir: &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3299,23 +3318,23 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Eğer işaretliyse</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>FreeCAD başlangıcında otomatik olarak yüklenecek</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Bu, geçerli başlangıç modülüdür ve otomatik olarak yüklenmesi gerekir. Değiştirmek için Tercihler/Genel/Otomatik Yükleme bölümüne bakın.</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Yüklendi</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Şimdi Yükle</translation>
     </message>
   </context>
   <context>
@@ -4671,6 +4690,16 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Partial</source>
       <translation>Kısmi</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -8752,6 +8781,17 @@ Fiziksel yol: </translation>
     <message>
       <source>Start the units calculator</source>
       <translation>Birimler hesap makinesini başlat</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>

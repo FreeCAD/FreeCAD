@@ -276,5 +276,7 @@
         <file>translations/Sketcher_vi.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_es-AR.qm</file>
+        <file>translations/Sketcher_bg.qm</file>
     </qresource>
 </RCC>

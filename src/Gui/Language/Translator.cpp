@@ -166,7 +166,10 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
-    
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Bulgarian"            )] = "bg";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish, Argentina"   )] = "es-AR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek"                )] = "el";
+
     d->activatedLanguage = "English";
 
     d->paths = directories();

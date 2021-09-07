@@ -1692,7 +1692,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
-      <translation type="unfinished">Allow used features</translation>
+      <translation>Leisti naudojamas savybes</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="30"/>
@@ -2460,7 +2460,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Įtvirtintas</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -4495,7 +4495,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Apply a pattern</source>
-      <translation type="unfinished">Apply a pattern</translation>
+      <translation>Pritaikyti raštą</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>

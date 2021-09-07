@@ -141,6 +141,8 @@
         <file>translations/Fem_vi.qm</file>
         <file>translations/Fem_zh-CN.qm</file>
         <file>translations/Fem_zh-TW.qm</file>
+        <file>translations/Fem_es-AR.qm</file>
+        <file>translations/Fem_bg.qm</file>
 
         <!-- task panels -->
         <file>ui/ConstraintCentrif.ui</file>

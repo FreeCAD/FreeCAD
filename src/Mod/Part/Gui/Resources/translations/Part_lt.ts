@@ -350,6 +350,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation type="unfinished">Slice to compound</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation type="unfinished">Boolean Fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation type="unfinished">Split objects where they intersect</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -362,16 +372,6 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
       <translation type="unfinished">Slice apart</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
@@ -568,7 +568,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Pavidalas</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
@@ -1702,7 +1702,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Padėtis sutapdinama su objekto padėtimi.</translation>
+      <translation>Išdėstymas sutapdinamas su susieto daikto išdėstymu.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -3516,7 +3516,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Pavidalas</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
@@ -4338,7 +4338,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="52"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Pavidalas</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="71"/>
@@ -4613,7 +4613,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Atsitiktinė pavidalo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4705,7 +4705,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../Mirroring.ui" line="33"/>
       <source>Shapes</source>
-      <translation type="unfinished">Shapes</translation>
+      <translation>Pavidalai</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="41"/>
@@ -4750,7 +4750,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../Mirroring.cpp" line="124"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation type="unfinished">Select a shape for mirroring, first.</translation>
+      <translation>Veidrodinei kopijai sukurti pirmiausia pasirinkite pavidalą.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="131"/>
@@ -4807,17 +4807,17 @@ Prašome pažymėti bent vieną kraštinę.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="255"/>
       <location filename="../../TaskShapeBuilder.cpp" line="348"/>
       <source>Select one or more edges</source>
-      <translation type="unfinished">Select one or more edges</translation>
+      <translation>Pasirinkite bent vieną kraštinę</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="296"/>
       <source>Select three or more vertices</source>
-      <translation type="unfinished">Select three or more vertices</translation>
+      <translation>Pasirinkite bent tris viršūnes</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="400"/>
       <source>Select two or more faces</source>
-      <translation>Pasirinkite vieną ar daugiau sienų</translation>
+      <translation>Pasirinkite bent dvi sienas</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="463"/>
@@ -5095,7 +5095,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="942"/>
       <source>Shape Content</source>
-      <translation type="unfinished">Shape Content</translation>
+      <translation>Pavidalo turinys</translation>
     </message>
   </context>
   <context>
@@ -5261,7 +5261,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Edge from vertices</source>
-      <translation>Briauna iš viršūnių</translation>
+      <translation>Kraštinė iš viršūnių</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
@@ -5271,12 +5271,12 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Solid from shell</source>
-      <translation>Pilnavidurį iš tuščiavidurio kevalo</translation>
+      <translation>Pilnaviduris iš tuščiavidurio kevalo</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="68"/>
       <source>Planar</source>
-      <translation type="unfinished">Planar</translation>
+      <translation>Plokščias</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
@@ -5286,7 +5286,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="85"/>
       <source>All faces</source>
-      <translation type="unfinished">All faces</translation>
+      <translation>Visos sienos</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="107"/>
@@ -5296,7 +5296,7 @@ Prašome pažymėti bent vieną kraštinę.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation>Laužtė iš kraštinių</translation>
+      <translation>Rėmelis iš kraštinių</translation>
     </message>
   </context>
   <context>

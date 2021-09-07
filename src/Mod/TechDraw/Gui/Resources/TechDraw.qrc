@@ -168,5 +168,7 @@
         <file>translations/TechDraw_val-ES.qm</file>
         <file>translations/TechDraw_ar.qm</file>
         <file>translations/TechDraw_vi.qm</file>
+        <file>translations/TechDraw_es-AR.qm</file>
+        <file>translations/TechDraw_bg.qm</file>
     </qresource>
 </RCC> 

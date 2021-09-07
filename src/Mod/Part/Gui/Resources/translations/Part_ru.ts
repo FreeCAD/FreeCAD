@@ -347,7 +347,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
-      <translation>Разрезать и в соединение</translation>
+      <translation>Надрезать</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Получить все фрагменты булевой операции</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Разделение объектов там, где они пересекаются</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -362,16 +372,6 @@ A 'Compound Filter' can be used to extract the individual slices.</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
       <translation>Разрезать на части</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Булевы фрагменты</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Разделение объектов там, где они пересекаются</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
@@ -2891,7 +2891,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="941"/>
       <source>Section</source>
-      <translation>Раздел</translation>
+      <translation>Разделить</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
@@ -3196,7 +3196,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
       <source>Section</source>
-      <translation>Раздел</translation>
+      <translation>Разделить</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="39"/>
@@ -5287,7 +5287,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="107"/>
       <source>Create</source>
-      <translation>Собрать</translation>
+      <translation>Создать</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
