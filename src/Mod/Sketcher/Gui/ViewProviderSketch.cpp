@@ -2016,6 +2016,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
         else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
             if (edit->PreselectPoint != -1
                     || edit->PreselectCross != -1
+                    || edit->PreselectCurve != -1
                     || !edit->PreselectConstraintSet.empty()) {
                 resetPreselectPoint();
                 edit->PreselectCurve = -1;
