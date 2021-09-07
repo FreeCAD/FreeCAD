@@ -789,22 +789,28 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
     copyMaterial(res, parent, &Material::twoside, 0, Material::FLAG_TWOSIDE);
   }
 
-  res.texturematrices.combine(parent.texturematrices);
-
-  if (parent.texturematrices.getNum()) {
-    for (auto & v : parent.texturematrices.getData()) {
-      const SoFCRenderCache::TextureInfo * pinfo = res.textures.get(v.first);
-      if (!pinfo) continue;
-      SoFCRenderCache::TextureInfo info = * pinfo;
-      if (info.identity)
-        info.matrix = v.second.matrix;
-      else
-        info.matrix.multLeft(v.second.matrix);
-      info.identity = false;
-      res.textures.set(v.first, info);
+  if (res.overrideflags.test(Material::FLAG_NO_TEXTURE)
+      || parent.overrideflags.test(Material::FLAG_NO_TEXTURE)) {
+    res.overrideflags.set(Material::FLAG_NO_TEXTURE);
+    res.textures.clear();
+    res.texturematrices.clear();
+  } else {
+    res.texturematrices.combine(parent.texturematrices);
+    if (parent.texturematrices.getNum()) {
+      for (auto & v : parent.texturematrices.getData()) {
+        const SoFCRenderCache::TextureInfo * pinfo = res.textures.get(v.first);
+        if (!pinfo) continue;
+        SoFCRenderCache::TextureInfo info = * pinfo;
+        if (info.identity)
+          info.matrix = v.second.matrix;
+        else
+          info.matrix.multLeft(v.second.matrix);
+        info.identity = false;
+        res.textures.set(v.first, info);
+      }
     }
+    res.textures.add(parent.textures, false);
   }
-  res.textures.add(parent.textures, false);
 
   res.lights = parent.lights;
   mergeNodeInfo(res.lights, child.lights);
@@ -2041,6 +2047,9 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
     bboxmaterial.linewidth = ViewParams::instance()->getSelectionBBoxLineWidth();
     bboxmaterial.pointsize = bboxmaterial.linewidth * 2;
     bboxmaterial.depthclamp = true;
+    bboxmaterial.overrideflags.set(Material::FLAG_NO_TEXTURE);
+    bboxmaterial.textures.clear();
+    bboxmaterial.texturematrices.clear();
 
     res[bboxmaterial].emplace_back(cache, matrix, false, false, CacheKeyPtr());
   }

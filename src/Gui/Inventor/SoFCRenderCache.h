@@ -215,6 +215,7 @@ public:
       FLAG_DEPTH_WRITE,
       FLAG_DEPTH_FUNC,
       FLAG_POLYGON_OFFSET,
+      FLAG_NO_TEXTURE,
     };
 
     int32_t order;
@@ -354,7 +355,7 @@ public:
           if (pointsize > other.pointsize) return false;
         }
       }
-      return false;
+      return overrideflags.to_ulong() < other.overrideflags.to_ulong();
     }
   };
 
