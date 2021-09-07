@@ -501,7 +501,7 @@ void MDIViewPage::fixOrphans(bool force)
              * if the user duplicated the page without duplicating dependencies
              */
             int numParentPages = qv->getViewObject()->countParentPages();
-            if (thisPage != pp && numParentPages == 1) {
+            if (thisPage != pp && numParentPages == 0) {
                m_view->removeQView(qv);
             }
         }
