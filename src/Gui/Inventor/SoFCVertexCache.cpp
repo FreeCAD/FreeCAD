@@ -1068,7 +1068,7 @@ SoFCVertexCacheP::render(SoState * state,
                          int32_t drawcount)
 {
   if (!indexer || !indexer->getNumIndices()) return;
-  if (!this->vertexarray || !this->vertexarray.getLength()) return;
+  if (!this->vertexarray) return;
   int lastenabled = -1;
 
   const SbBool * enabled = NULL;
@@ -1423,7 +1423,8 @@ SoFCVertexCache::addTriangle(const SoPrimitiveVertex * v0,
         float tmpt = PRIVATE(this)->tmp->transpptr[SbClamp(midx,0,PRIVATE(this)->tmp->numtransp-1)];
         v.color = tmpc.getPackedValue(tmpt);
       }
-      if (v.color != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = 1;
+      if (PRIVATE(this)->colorpervertex < 0 && v.color != PRIVATE(this)->firstcolor)
+        PRIVATE(this)->colorpervertex = 1;
       PRIVATE(this)->hastransp = (PRIVATE(this)->hastransp || (v.color&0xff) != 0xff);
     }
 
@@ -1524,7 +1525,8 @@ SoFCVertexCache::addLine(const SoPrimitiveVertex * v0,
         float tmpt = PRIVATE(this)->tmp->transpptr[SbClamp(midx,0,PRIVATE(this)->tmp->numtransp-1)];
         v.color = tmpc.getPackedValue(tmpt);
       }
-      if (v.color != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = 1;
+      if (PRIVATE(this)->colorpervertex < 0 && v.color != PRIVATE(this)->firstcolor)
+        PRIVATE(this)->colorpervertex = 1;
       PRIVATE(this)->hastransp = (PRIVATE(this)->hastransp || (v.color&0xff) != 0xff);
     }
 
@@ -1614,7 +1616,8 @@ SoFCVertexCache::addPoint(const SoPrimitiveVertex * v0)
       float tmpt = PRIVATE(this)->tmp->transpptr[SbClamp(midx,0,PRIVATE(this)->tmp->numtransp-1)];
       v.color = tmpc.getPackedValue(tmpt);
     }
-    if (v.color != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = 1;
+    if (PRIVATE(this)->colorpervertex < 0 && v.color != PRIVATE(this)->firstcolor)
+      PRIVATE(this)->colorpervertex = 1;
     PRIVATE(this)->hastransp = (PRIVATE(this)->hastransp || (v.color&0xff) != 0xff);
   }
 
@@ -1982,10 +1985,9 @@ SoFCVertexCacheP::addVertex(const Vertex & v)
     this->bumpcoordarray.append(v.bumpcoord);
   }
 
-  if (!this->colorarray && this->colorpervertex > 0)
-    initColor(this->vertexarray.getLength()*4 - 4);
-
-  if (this->colorarray) {
+  if (this->colorpervertex > 0) {
+    if (!this->colorarray)
+      initColor(this->vertexarray.getLength()*4 - 4);
     uint8_t r,g,b,a;
     r = (v.color >> 24) & 0xff;
     g = (v.color >> 16) & 0xff;
