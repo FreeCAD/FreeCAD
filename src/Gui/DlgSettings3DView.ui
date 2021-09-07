@@ -552,28 +552,6 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1" colspan="2">
-         <widget class="Gui::PrefComboBox" name="boxMarkerSize">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Size of vertices in the Sketcher workbench</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>MarkerSize</cstring>
-          </property>
-          <property name="prefType" stdset="0">
-           <number>0</number>
-          </property>
-         </widget>
-        </item>
         <item row="8" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinPreselectionDelay">
           <property name="decimals">
@@ -606,6 +584,28 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="Gui::PrefComboBox" name="boxMarkerSize">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Size of vertices in the Sketcher workbench</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MarkerSize</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <number>0</number>
           </property>
          </widget>
         </item>

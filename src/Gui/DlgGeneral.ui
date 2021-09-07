@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>425</width>
+    <width>466</width>
     <height>909</height>
    </rect>
   </property>
@@ -297,7 +297,7 @@ are shown on the same screen as the main window.</string>
         <item row="9" column="1">
          <widget class="Gui::PrefSpinBox" name="treeItemSpacing">
           <property name="value">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>TreeView</cstring>
@@ -503,10 +503,10 @@ this according to your screen size or personal taste</string>
            <string>Choose default docking area for workbench toolbars</string>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>General</cstring>
+           <cstring>MainWindow</cstring>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>DefaultToolbarArea</cstring>
+           <cstring>DefaultToolBarArea</cstring>
           </property>
           <property name="prefType" stdset="0">
            <cstring></cstring>
@@ -519,10 +519,10 @@ this according to your screen size or personal taste</string>
            <string>Choose default docking area for global toolbars</string>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>General</cstring>
+           <cstring>MainWindow</cstring>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>GlobalToolbarArea</cstring>
+           <cstring>GlobalToolBarArea</cstring>
           </property>
           <property name="prefType" stdset="0">
            <cstring></cstring>
