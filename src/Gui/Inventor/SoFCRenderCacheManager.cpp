@@ -232,6 +232,7 @@ public:
 
   static SoCallbackAction::Response preSeparator(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postSeparator(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postSep(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response preAnnotation(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postAnnotation(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response prePathAnnotation(void *, SoCallbackAction *action, const SoNode * node);
@@ -443,6 +444,7 @@ void SoFCRenderCacheManagerP::initAction()
   this->action = new SoCallbackAction;
   this->action->addPreCallback(SoFCSelectionRoot::getClassTypeId(), &preSeparator, this);
   this->action->addPostCallback(SoFCSelectionRoot::getClassTypeId(), &postSeparator, this);
+  this->action->addPostCallback(SoSeparator::getClassTypeId(), &postSep, this);
   this->action->addPreCallback(SoAnnotation::getClassTypeId(), &preAnnotation, this);
   this->action->addPostCallback(SoAnnotation::getClassTypeId(), &postAnnotation, this);
   this->action->addPreCallback(SoFCPathAnnotation::getClassTypeId(), &prePathAnnotation, this);
@@ -1069,6 +1071,19 @@ SoFCRenderCacheManagerP::postSeparator(void *userdata,
     if (self->stack.size())
       self->stack.back()->endChildCaching(state, cache);
   }
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postSep(void *userdata,
+                                 SoCallbackAction *action,
+                                 const SoNode * node)
+{
+  (void)node;
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+
+  if (!self->stack.empty())
+    self->stack.back()->checkState(action->getState());
   return SoCallbackAction::CONTINUE;
 }
 

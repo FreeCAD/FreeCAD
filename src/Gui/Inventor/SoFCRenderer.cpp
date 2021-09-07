@@ -417,9 +417,9 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
 
   bool clipperchanged = first || this->material.clippers != clippers;
   bool texturechanged = clipperchanged
-            || (next.type == Material::Triangle && this->material.textures != next.textures);
+            || this->material.textures != next.textures;
   bool lightchanged = texturechanged
-            || (next.type == Material::Triangle && this->material.lights != next.lights);
+            || this->material.lights != next.lights;
 
   if (clipperchanged || texturechanged || lightchanged) {
     state->pop();

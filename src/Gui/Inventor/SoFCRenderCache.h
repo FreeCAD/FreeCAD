@@ -524,6 +524,8 @@ public:
 
   const SbBox3f & getBoundingBox() const;
 
+  void checkState(SoState *state);
+
 private:
   friend class SoFCRenderCacheP;
   SoFCRenderCacheP * pimpl;
