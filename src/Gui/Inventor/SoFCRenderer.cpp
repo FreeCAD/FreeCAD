@@ -557,14 +557,18 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     this->material.depthfunc = depthfunc;
   }
 
-  if (first || this->material.lightmodel != next.lightmodel) {
-    SoLazyElement::setLightModel(state, next.lightmodel);
-    if (next.lightmodel == SoLazyElement::PHONG)
+  auto lightmodel = next.lightmodel;
+  if (next.type != Material::Triangle)
+    lightmodel = SoLazyElement::BASE_COLOR;
+
+  if (first || this->material.lightmodel != lightmodel) {
+    SoLazyElement::setLightModel(state, lightmodel);
+    if (lightmodel == SoLazyElement::PHONG)
       glEnable(GL_LIGHTING);
     else
       glDisable(GL_LIGHTING);
     FC_GLERROR_CHECK;
-    this->material.lightmodel = next.lightmodel;
+    this->material.lightmodel = lightmodel;
   }
 
   // Always set color because the current color may be changed by opengl draw call
