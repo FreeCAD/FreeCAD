@@ -3085,7 +3085,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
 
     auto doc = Application::Instance->editDocument();
 
-    if(mode == ViewProvider::Transform || mode == ViewProvider::TransformAt) {
+    if(_pendingTransform || mode == ViewProvider::Transform || mode == ViewProvider::TransformAt) {
         if(_pendingTransform && doc)
             doc->setEditingTransform(_editingTransform);
 
@@ -3138,7 +3138,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     // back to us.
     _editingTransform = doc->getEditingTransform();
     doc->setEditingTransform(doc->getEditingTransform()*mat);
-    Base::FlagToggler<> guard(_pendingTransform);
+    Base::StateLocker guard(_pendingTransform);
     return vpd->startEditing(mode);
 }
 
