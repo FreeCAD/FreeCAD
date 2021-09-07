@@ -1400,6 +1400,10 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
       if (!selfkey && PRIVATE(this)->selnode) {
         selfkey = std::allocate_shared<CacheKey>(SoFCAllocator<CacheKey>());
         selfkey->push(PRIVATE(this)->selnode);
+        if (!canmerge) {
+          if (auto id = entry.vcache->getSelectionNodeId())
+            selfkey->forcePush(id);
+        }
       }
       SoFCSelectionContextExPtr ctx;
       if (selfkey)

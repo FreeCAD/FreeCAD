@@ -144,8 +144,9 @@ public:
   SoNode *getNode() const;
   void resetNode();
   SbFCUniqueId getNodeId() const;
-  SbFCUniqueId getDiffuseId() const;
-  SbFCUniqueId getTransparencyId() const;
+
+  SbFCUniqueId getSelectionNodeId() const;
+  void setSelectionNodeId(SbFCUniqueId id);
 
   SbVec3f getCenter() const;
   const SbBox3f & getBoundingBox() const;

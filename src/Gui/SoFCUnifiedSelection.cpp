@@ -965,7 +965,7 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
                     if (useRenderer()) {
                         if(detailPath->getLength()) {
                             CoinPtr<SoPath> nodePath = detailPath;
-                            if (detail && ViewParams::getShowSelectionOnTop()) {
+                            if (ViewParams::getShowSelectionOnTop()) {
                                 // The render manager requires a path without
                                 // sub-element detail to bring the whole object
                                 // on top if any of its sub element is

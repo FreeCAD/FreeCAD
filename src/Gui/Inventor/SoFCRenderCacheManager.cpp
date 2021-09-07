@@ -66,6 +66,7 @@
 #include "../ViewParams.h"
 #include "../InventorBase.h"
 #include "../SoFCUnifiedSelection.h"
+#include "../SoFCSelection.h"
 
 #include "SoFCVertexCache.h"
 #include "SoFCRenderCache.h"
@@ -232,6 +233,8 @@ public:
 
   static SoCallbackAction::Response preSeparator(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postSeparator(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response preFCSel(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postFCSel(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postSep(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response preAnnotation(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postAnnotation(void *, SoCallbackAction *action, const SoNode * node);
@@ -374,6 +377,7 @@ public:
   int selid;
   
   SbFCVector<RenderCachePtr> stack;
+  SbFCVector<SbFCUniqueId> selnodeid;
   SbFCUniqueId sceneid;
   std::unordered_set<const SoNode *> nodeset;
   const SoNode * prunenode;
@@ -445,6 +449,8 @@ void SoFCRenderCacheManagerP::initAction()
   this->action->addPreCallback(SoFCSelectionRoot::getClassTypeId(), &preSeparator, this);
   this->action->addPostCallback(SoFCSelectionRoot::getClassTypeId(), &postSeparator, this);
   this->action->addPostCallback(SoSeparator::getClassTypeId(), &postSep, this);
+  this->action->addPreCallback(SoFCSelection::getClassTypeId(), &preFCSel, this);
+  this->action->addPostCallback(SoFCSelection::getClassTypeId(), &postFCSel, this);
   this->action->addPreCallback(SoAnnotation::getClassTypeId(), &preAnnotation, this);
   this->action->addPostCallback(SoAnnotation::getClassTypeId(), &postAnnotation, this);
   this->action->addPreCallback(SoFCPathAnnotation::getClassTypeId(), &prePathAnnotation, this);
@@ -501,6 +507,7 @@ void
 SoFCRenderCacheManager::clear()
 {
   PRIVATE(this)->stack.clear();
+  PRIVATE(this)->selnodeid.clear();
   PRIVATE(this)->nodeset.clear();
   // PRIVATE(this)->cachetable.clear();
   // PRIVATE(this)->vcachetable.clear();
@@ -562,6 +569,7 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
     }
     cache->close(state);
     PRIVATE(this)->stack.clear();
+    PRIVATE(this)->selnodeid.clear();
     if (!cache->isEmpty()) {
       // Must use SoTempPath as key to avoid path changes, because we are using
       // the path as key which is supposed to be immutable.
@@ -620,6 +628,7 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
   }
   cache->close(state);
   self->stack.clear();
+  self->selnodeid.clear();
 
   if (cache->isEmpty())
     return;
@@ -975,6 +984,7 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
     cache->close(state);
     PRIVATE(this)->renderer->setScene(cache);
     PRIVATE(this)->stack.clear();
+    PRIVATE(this)->selnodeid.clear();
   }
 
   PRIVATE(this)->renderer->render(action);
@@ -1084,6 +1094,29 @@ SoFCRenderCacheManagerP::postSep(void *userdata,
 
   if (!self->stack.empty())
     self->stack.back()->checkState(action->getState());
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::preFCSel(void *userdata,
+                                 SoCallbackAction *action,
+                                 const SoNode * node)
+{
+  (void)action;
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  self->selnodeid.push_back(node->getNodeId());
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postFCSel(void *userdata,
+                                   SoCallbackAction *action,
+                                   const SoNode * node)
+{
+  (void)action;
+  (void)node;
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  self->selnodeid.pop_back();
   return SoCallbackAction::CONTINUE;
 }
 
@@ -1396,6 +1429,8 @@ SoFCRenderCacheManagerP::preShape(void *userdata,
 
   state->push();
   self->vcache.reset(new SoFCVertexCache(state, const_cast<SoNode*>(node), prev));
+  if (self->selnodeid.size())
+    self->vcache->setSelectionNodeId(self->selnodeid.back());
   sensor.caches.emplace_back(self->vcache.get());
 
   currentcache->beginChildCaching(state, self->vcache);

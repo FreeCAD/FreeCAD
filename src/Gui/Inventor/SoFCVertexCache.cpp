@@ -435,6 +435,7 @@ public:
   SbFCUniqueId nodeid;
   SbFCUniqueId diffuseid;
   SbFCUniqueId transpid;
+  SbFCUniqueId selnodeid = 0;
 
   Vec3Array vertexarray;
   Vec3Array normalarray;
@@ -526,7 +527,7 @@ SoFCVertexCache::SoFCVertexCache(SoState * state, SoNode * node, SoFCVertexCache
       PRIVATE(this)->markerindices = nullptr;
   }
   PRIVATE(this)->tmp->state = state;
-  PRIVATE(this)->elementselectable = false;
+  PRIVATE(this)->elementselectable = true;
   PRIVATE(this)->ontoppattern = false;
 
   const SoField * field = node->getField(*PartIndexField);
@@ -817,6 +818,18 @@ SbFCUniqueId
 SoFCVertexCache::getNodeId() const
 {
   return PRIVATE(this)->nodeid;
+}
+
+SbFCUniqueId
+SoFCVertexCache::getSelectionNodeId() const
+{
+  return PRIVATE(this)->selnodeid;
+}
+
+void
+SoFCVertexCache::setSelectionNodeId(SbFCUniqueId id)
+{
+  PRIVATE(this)->selnodeid = id;
 }
 
 SoNode *
