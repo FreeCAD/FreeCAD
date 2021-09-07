@@ -240,6 +240,10 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
 
 double Measurement::length(const TopoDS_Shape &shape) const
 {
+    if (shape.Infinite()) {
+        MEASURE_ERROR("Measurement::length - infinite edge");
+        return -1.0;
+    }
     if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
         MEASURE_ERROR("Measurement::length - not an edge");
         return -1.0;
@@ -651,7 +655,7 @@ Base::Vector3d Measurement::delta() const
             // Only case that is supported is straight line edge
             if(numRefs == 1) {
                 TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
-                if (shape.IsNull())
+                if (shape.IsNull() || shape.Infinite())
                     return Base::Vector3d();
                 const TopoDS_Edge& edge = TopoDS::Edge(shape);
                 BRepAdaptor_Curve curve(edge);
