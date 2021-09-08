@@ -1047,7 +1047,7 @@ public:
                 if (start >= end)
                     break;
             }
-            if (expansion.size() && start > end) {
+            if (expansion.size() && start < end) {
                 expansion.push_back(child);
                 expansion.back().indexedName.setIndex(start);
                 expansion.back().count = end - start;
@@ -1467,7 +1467,7 @@ ComplexGeoData::getElementName(const char *name,
     else if (copy)
         res.name = name;
     else
-        res.name = MappedName::fromRawData(name);
+        res.name = MappedName(name);
     res.index = getIndexedName(res.name, sid);
     return res;
 }
@@ -1634,6 +1634,9 @@ char ComplexGeoData::elementType(const Data::MappedName &name) const
 {
     if(!name)
         return 0;
+    auto indexedName = getIndexedName(name);
+    if (indexedName)
+        return elementType(indexedName);
     char element_type=0;
     if (findTagInElementName(name,0,0,0,&element_type) < 0)
         return elementType(name.toIndexedName());
@@ -2011,7 +2014,7 @@ long ComplexGeoData::getElementHistory(const MappedName & name,
             return tag;
         tag = tag2;
         if(history)
-            history->push_back(ret);
+            history->push_back(ret.copy());
     }
 }
 
