@@ -570,7 +570,7 @@ void Base::XMLReader::characters(const   XMLCh* const chars, const XMLSize_t len
 
     // We only capture characters when some one wants it
     if(CharacterOffset>=0) {
-        Characters = StrX(chars).c_str();
+        Characters = StrXUTF8(chars).c_str();
         CharacterOffset = 0;
     }
 }
