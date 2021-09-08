@@ -266,7 +266,7 @@ Defaults to: %N = %V
          <string>DimensionalStringFormat</string>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Sketcher</string>
+         <cstring>Mod/Sketcher</cstring>
         </property>
        </widget>
       </item>
