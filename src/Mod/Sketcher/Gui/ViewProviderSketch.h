@@ -479,6 +479,7 @@ protected:
     float zLowLines;
     float zMidLines;
     float zHighLines;
+    float zDatum;
 
     // reference coordinates for relative operations
     double xInit,yInit;

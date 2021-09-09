@@ -431,13 +431,14 @@ ViewProviderSketch::ViewProviderSketch()
     // lower constraint z height because it often blocks selection of line and
     // point. Constraint normally has a bigger hit area unlike line and point.
     zConstr=0.003f; // constraint not construction
+    zDatum = 0.012f; // datum label
 
     //zPoints=0.010f;
     zRootPoint = 0.009f;
     zLowPoints = 0.010f;
     zHighPoints = 0.011f;
-    zHighlight=0.012f;
-    zText=0.012f;
+    zHighlight=0.013f;
+    zText=0.013f;
 
 
     xInit=0;
@@ -3360,7 +3361,6 @@ void ViewProviderSketch::updateColor(void)
             hasMaterial = true;
             m = static_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
         }
-
         if (highlightColor) {
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
@@ -5954,8 +5954,8 @@ Restart:
                         asciiText->pnts.setNum(2);
                         SbVec3f *verts = asciiText->pnts.startEditing();
 
-                        verts[0] = SbVec3f (pnt1.x,pnt1.y,zConstr);
-                        verts[1] = SbVec3f (pnt2.x,pnt2.y,zConstr);
+                        verts[0] = SbVec3f (pnt1.x,pnt1.y,zDatum);
+                        verts[1] = SbVec3f (pnt2.x,pnt2.y,zDatum);
 
                         asciiText->pnts.finishEditing();
 
@@ -6125,8 +6125,8 @@ Restart:
                         Base::Vector3d pnt1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
                         Base::Vector3d pnt2 = getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
 
-                        SbVec3f p1(pnt1.x,pnt1.y,zConstr);
-                        SbVec3f p2(pnt2.x,pnt2.y,zConstr);
+                        SbVec3f p1(pnt1.x,pnt1.y,zDatum);
+                        SbVec3f p2(pnt2.x,pnt2.y,zDatum);
                         SbVec3f dir = (p2-p1);
                         dir.normalize();
                         SbVec3f norm (-dir[1],dir[0],0);
@@ -6255,6 +6255,7 @@ Restart:
                         SbVec3f *verts = asciiText->pnts.startEditing();
 
                         verts[0] = p0;
+                        verts[0][2] = zDatum;
 
                         asciiText->pnts.finishEditing();
 
@@ -6297,8 +6298,8 @@ Restart:
                         } else
                             break;
 
-                        SbVec3f p1(pnt1.x,pnt1.y,zConstr);
-                        SbVec3f p2(pnt2.x,pnt2.y,zConstr);
+                        SbVec3f p1(pnt1.x,pnt1.y,zDatum);
+                        SbVec3f p2(pnt2.x,pnt2.y,zDatum);
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
@@ -6375,8 +6376,8 @@ Restart:
                         } else
                             break;
 
-                        SbVec3f p1(pnt1.x,pnt1.y,zConstr);
-                        SbVec3f p2(pnt2.x,pnt2.y,zConstr);
+                        SbVec3f p1(pnt1.x,pnt1.y,zDatum);
+                        SbVec3f p2(pnt2.x,pnt2.y,zDatum);
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
