@@ -48,7 +48,7 @@
         <FCParamGroup Name="TreeView">
           <FCBool Name="HideColumn" Value="1"/>
           <FCUInt Name="TreeEditColor" Value="2913796351"/>
-          <FCUInt Name="ItemBackground" Value="20"/>
+          <FCUInt Name="ItemBackground" Value="4294967090"/>
           <FCUInt Name="TreeActiveColor" Value="2812803839"/>
         </FCParamGroup>
         <FCParamGroup Name="MainWindow">
@@ -71,10 +71,7 @@
           <FCBool Name="DockOverlayActivateOnHover" Value="0"/>
           <FCBool Name="Gradient" Value="0"/>
           <FCBool Name="Simple" Value="1"/>
-          <FCUInt Name="BackgroundColor" Value="4008636159"/>
-          <FCUInt Name="EditedEdgeColor" Value="5636095"/>
-          <FCUInt Name="SketchEdgeColor" Value="5636095"/>
-          <FCUInt Name="SketchVertexColor" Value="5636095"/>
+          <FCUInt Name="BackgroundColor" Value="3873892095"/>
           <FCUInt Name="CursorCrosshairColor" Value="1027423743"/>
         </FCParamGroup>
       </FCParamGroup>

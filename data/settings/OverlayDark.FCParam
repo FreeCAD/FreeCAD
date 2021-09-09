@@ -72,9 +72,6 @@
           <FCBool Name="Gradient" Value="0"/>
           <FCBool Name="Simple" Value="1"/>
           <FCUInt Name="BackgroundColor" Value="1953789183"/>
-          <FCUInt Name="EditedEdgeColor" Value="4294967295"/>
-          <FCUInt Name="SketchEdgeColor" Value="4294967295"/>
-          <FCUInt Name="SketchVertexColor" Value="4294967295"/>
           <FCUInt Name="CursorCrosshairColor" Value="4294967295"/>
         </FCParamGroup>
       </FCParamGroup>
