@@ -34,6 +34,7 @@
 #include <QTreeWidget>
 #include <QDialog>
 #include <QPointer>
+#include <QAction>
 
 namespace Gui {
 namespace Dialog {
