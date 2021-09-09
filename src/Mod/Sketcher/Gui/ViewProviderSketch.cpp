@@ -4167,7 +4167,8 @@ float ViewProviderSketch::getScaleFactor()
     if (edit && edit->viewer) {
         Gui::View3DInventorViewer *viewer = edit->viewer;
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-        float scale = camera->getViewVolume(camera->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
+        float aspectRatio = camera->aspectRatio.getValue();
+        float scale = camera->getViewVolume(aspectRatio).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
         return scale;
     }
     else {
