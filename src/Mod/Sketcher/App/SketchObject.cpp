@@ -7260,18 +7260,23 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                             geos.emplace_back(projectedSegment);
                         }
                         else {
-
                             elipsDest.SetPosition(destCurveAx2);
                             elipsDest.SetMajorRadius(destAxisMajor.Magnitude());
                             elipsDest.SetMinorRadius(destAxisMinor.Magnitude());
-
-
                             Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
-                            Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                            ellipse->setHandle(curve);
-                            GeometryFacade::setConstruction(ellipse, true);
-
-                            geos.emplace_back(ellipse);
+                            if (firstPoint.SquareDistance(lastPoint) < Precision::Confusion()) {
+                                Part::GeomEllipse* ellipse = new Part::GeomEllipse();
+                                ellipse->setHandle(curve);
+                                GeometryFacade::setConstruction(ellipse, true);
+                                geos.emplace_back(ellipse);
+                            } else {
+                                Part::GeomArcOfEllipse* gArc = new Part::GeomArcOfEllipse();
+                                Handle(Geom_TrimmedCurve) tCurve = 
+                                    new Geom_TrimmedCurve(curve, firstParam, lastParam);
+                                gArc->setHandle(tCurve);
+                                GeometryFacade::setConstruction(gArc, true);
+                                geos.emplace_back(gArc);
+                            }
                         }
                     }
                 }
