@@ -743,7 +743,8 @@ void PieMenu::wheelEvent(QWheelEvent *ev)
 void PieMenu::onTriggered(QAction *action)
 {
     pimpl->action = action;
-    hide();
+    if (action && !action->isCheckable())
+        hide();
 }
 
 bool PieMenu::isEnabled(const char *name)
