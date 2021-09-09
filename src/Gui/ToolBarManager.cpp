@@ -443,7 +443,9 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbar = it->second;
             toolbars.erase(it);
         }
+        bool newToolbar = false;
         if (!toolbar) {
+            newToolbar = true;
             toolbar = createToolBar(name);
             QByteArray n(name.toLatin1());
             if (hPref->GetBool(n, true) != hPref->GetBool(n, false)) {
@@ -486,7 +488,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             top_width += (btns.size() * toolbar->iconSize().width());
             int max_width = toolbar->orientation() == Qt::Vertical
                 ? getMainWindow()->height() : getMainWindow()->width();
-            if (top_width > max_width) {
+            if (newToolbar && top_width > max_width) {
                 top_width = 0;
                 getMainWindow()->insertToolBarBreak(toolbar);
             }
