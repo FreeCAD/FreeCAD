@@ -66,6 +66,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
 
     ui->autoUpdate->onRestore();
     ui->autoRemoveRedundants->onRestore();
+    ui->showOriginalColor->onRestore();
 
     if(ui->autoUpdate->isChecked())
         sketchView->getSketchObject()->noRecomputes=false;
@@ -88,6 +89,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
 
 TaskSketcherMessages::~TaskSketcherMessages()
 {
+    ui->showOriginalColor->onSave();
     connectionSetUp.disconnect();
     connectionSolved.disconnect();
 }

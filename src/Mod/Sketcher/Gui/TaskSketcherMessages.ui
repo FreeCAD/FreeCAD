@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>108</height>
+    <height>149</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,6 +85,22 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="showOriginalColor">
+     <property name="toolTip">
+      <string>Do not change color for invalid or fully constrained sketch.</string>
+     </property>
+     <property name="text">
+      <string>Show original color</string>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>ShowOriginalColor</cstring>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
