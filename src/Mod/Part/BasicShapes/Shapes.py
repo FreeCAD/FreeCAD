@@ -94,7 +94,9 @@ _presel_maxlen = 75
 
 def _tostr(v):
     if isinstance(v, float):
-        return '%.*f' % (_Decimals, v)
+        res = '%.*f' % (_Decimals, v)
+        if len(res) > 128: # probably infinite shape
+            res = '?'
     if isinstance(v, FreeCAD.Vector):
         return _vec_tostr(v)
     if isinstance(v, FreeCAD.Placement):
