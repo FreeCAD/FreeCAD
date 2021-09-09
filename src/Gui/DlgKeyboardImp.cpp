@@ -267,20 +267,8 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
             ui->editShortcut->clear();
         }
 
-        // update the tool tip
         QString toolTip = QCoreApplication::translate(cmd->className(),
             cmd->getToolTipText());
-        if (!nativeText.isEmpty()) {
-            if (!toolTip.isEmpty()) {
-                QString tip = QString::fromLatin1("%1 (%2)")
-                    .arg(toolTip, nativeText);
-                action->setToolTip(tip);
-            }
-        }
-        else {
-            action->setToolTip(toolTip);
-        }
-
         // update the status tip
         QString statusTip = QCoreApplication::translate(cmd->className(),
             cmd->getStatusTip());
