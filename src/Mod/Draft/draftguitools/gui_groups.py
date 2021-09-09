@@ -144,7 +144,7 @@ def moveToGroup(group):
 
     for obj in Gui.Selection.getSelection():
         try:
-            #retreive group's visibility
+            #retrieve group's visibility
             obj.ViewObject.Visibility = group.ViewObject.Visibility
             group.addObject(obj)
 
