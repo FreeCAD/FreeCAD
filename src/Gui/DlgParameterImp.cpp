@@ -175,6 +175,7 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
                         } catch(Base::Exception &e) {
                             e.ReportException();
                         }
+                        onChangeParameterSet(ui->parameterSet->currentIndex());
                     });
                 }
             }
