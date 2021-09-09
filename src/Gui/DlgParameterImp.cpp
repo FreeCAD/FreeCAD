@@ -143,6 +143,43 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
 #endif
 
     populate();
+
+    QObject::connect(&actMerge, &QAction::triggered, [this]() {
+        doImportOrMerge(curParamManager, true);
+    });
+
+    QMenu *menu = new QMenu(this);
+    ui->btnMerge->setMenu(menu);
+    QObject::connect(menu, &QMenu::aboutToShow, [this, menu]() {
+        menu->clear();
+        actMerge.setText(tr("From file..."));
+        menu->addAction(&actMerge);
+        bool first = true;
+        for (auto &v : monitors) {
+            if (v.first == curParamManager || v.second.changes.empty())
+                continue;
+            for (int i=0, c=ui->parameterSet->count(); i<c; ++i) {
+                auto name = ui->parameterSet->itemData(i).toByteArray();
+                if (App::GetApplication().GetParameterSet(name) == v.first) {
+                    if (first) {
+                        first = false;
+                        menu->addSeparator();
+                    }
+                    auto action = menu->addAction(ui->parameterSet->itemText(i));
+                    ParameterManager *manager = v.first;
+                    QObject::connect(action, &QAction::triggered, [this, manager]() {
+                        try {
+                            auto h = copyParameters(manager);
+                            if (h)
+                                h->insertTo((ParameterManager*)curParamManager);
+                        } catch(Base::Exception &e) {
+                            e.ReportException();
+                        }
+                    });
+                }
+            }
+        }
+    });
 }
 
 /**
@@ -169,7 +206,7 @@ void DlgParameterImp::on_btnCopy_clicked()
             ui->parameterSet->currentText()).toUtf8().constData();
     auto manager = App::GetApplication().AddParameterSet(
             name, curParamManager->GetSerializeFileName());
-    if (auto h = copyParameters())
+    if (auto h = copyParameters(curParamManager))
         h->copyTo(manager);
     ui->parameterSet->addItem(QString::fromUtf8(name.c_str()), QByteArray(name.c_str()));
     ui->parameterSet->setCurrentIndex(ui->parameterSet->count()-1);
@@ -618,11 +655,6 @@ void DlgParameterImp::on_btnReset_clicked()
     }
 }
 
-void DlgParameterImp::on_btnMerge_clicked()
-{
-    doImportOrMerge(curParamManager, true);
-}
-
 void DlgParameterImp::on_btnImport_clicked()
 {
     if (QMessageBox::warning(this,
@@ -635,15 +667,15 @@ void DlgParameterImp::on_btnImport_clicked()
 
 void DlgParameterImp::on_btnExport_clicked()
 {
-    auto h = copyParameters();
+    auto h = copyParameters(curParamManager);
     if (!h)
         h = curParamManager;
     doExport(h);
 }
 
-ParameterGrp::handle DlgParameterImp::copyParameters()
+ParameterGrp::handle DlgParameterImp::copyParameters(ParameterManager *manager)
 {
-    auto it = monitors.find(curParamManager);
+    auto it = monitors.find(manager);
     if (it == monitors.end())
         return nullptr;
     ParameterManager *hTmp = new ParameterManager;
@@ -651,7 +683,7 @@ ParameterGrp::handle DlgParameterImp::copyParameters()
     hTmp->CreateDocument();
     for (auto &v : it->second.changes) {
         auto hSrc = v.first;
-        if (hSrc->Manager() != curParamManager)
+        if (hSrc->Manager() != manager)
             continue;
         auto hGrp = hTmp->GetGroup(hSrc->GetPath().c_str());
 
@@ -1612,9 +1644,11 @@ void ParameterValue::onChangeSelectedItem()
 
 void ParameterValue::onDeleteSelectedItem()
 {
+    bool monitor = _owner->monitors.count(_owner->curParamManager) != 0;
     for (auto item : selectedItems()) {
         static_cast<ParameterValueItem*>(item)->removeFromGroup();
-        delete item;
+        if (!monitor)
+            delete item;
     }
 }
 

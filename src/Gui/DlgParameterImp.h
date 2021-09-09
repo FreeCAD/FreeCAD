@@ -89,7 +89,6 @@ protected Q_SLOTS:
     void on_buttonFind_clicked();
     void on_findGroupLE_textChanged(const QString &SearchStr);
     void on_buttonSaveToDisk_clicked();
-    void on_btnMerge_clicked();
     void on_btnExport_clicked();
     void on_btnImport_clicked();
     void on_btnAdd_clicked();
@@ -117,7 +116,7 @@ protected:
     void closeEvent(QCloseEvent*);
 
     void doImportOrMerge(ParameterGrp *hGrp, bool merge);
-    ParameterGrp::handle copyParameters();
+    ParameterGrp::handle copyParameters(ParameterManager *manager);
     bool doExport(ParameterGrp *hGrp);
     void updateGroupItemCheckState(QTreeWidgetItem *item);
     void setGroupItemState(ParameterGroupItem *item, Qt::CheckState state);
@@ -162,6 +161,7 @@ private:
     bool importing = false;
     bool geometryRestored = false;
     int lastIndex = -1;
+    QAction actMerge;
 };
 
 // --------------------------------------------------------------------

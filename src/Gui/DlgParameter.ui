@@ -147,7 +147,7 @@ This will overwrite the current configuration.</string>
      <item>
       <widget class="QPushButton" name="btnMerge">
        <property name="toolTip">
-        <string>Import saved configuration and merge with the current one.</string>
+        <string>Merge an existing configuration with the current one.</string>
        </property>
        <property name="text">
         <string>Merge</string>
