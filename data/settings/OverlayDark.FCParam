@@ -7,8 +7,8 @@
         <FCParamGroup Name="DockWindows">
           <FCParamGroup Name="OverlayLeft">
             <FCText Name="Widgets">Tree view,Property view,</FCText>
-            <FCBool Name="Transparent" Value="1"/>
             <FCText Name="Sizes">220,220</FCText>
+            <FCBool Name="Transparent" Value="1"/>
             <FCInt Name="Width" Value="300"/>
             <FCInt Name="Height" Value="502"/>
           </FCParamGroup>
@@ -72,6 +72,10 @@
           <FCBool Name="Gradient" Value="0"/>
           <FCBool Name="Simple" Value="1"/>
           <FCUInt Name="BackgroundColor" Value="1953789183"/>
+          <FCUInt Name="EditedEdgeColor" Value="4294967295"/>
+          <FCUInt Name="SketchEdgeColor" Value="4294967295"/>
+          <FCUInt Name="SketchVertexColor" Value="4294967295"/>
+          <FCUInt Name="CursorCrosshairColor" Value="4294967295"/>
         </FCParamGroup>
       </FCParamGroup>
     </FCParamGroup>

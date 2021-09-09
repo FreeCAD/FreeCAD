@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <FCParameters>
+
   <FCParamGroup Name="Root">
     <FCParamGroup Name="BaseApp">
       <FCParamGroup Name="MainWindow">
         <FCParamGroup Name="DockWindows">
           <FCParamGroup Name="OverlayLeft">
             <FCText Name="Widgets">Tree view,Property view,</FCText>
-            <FCBool Name="Transparent" Value="1"/>
             <FCText Name="Sizes">220,220</FCText>
+            <FCBool Name="Transparent" Value="1"/>
             <FCInt Name="Width" Value="300"/>
             <FCInt Name="Height" Value="502"/>
           </FCParamGroup>
@@ -71,6 +72,10 @@
           <FCBool Name="Gradient" Value="0"/>
           <FCBool Name="Simple" Value="1"/>
           <FCUInt Name="BackgroundColor" Value="4008636159"/>
+          <FCUInt Name="EditedEdgeColor" Value="5636095"/>
+          <FCUInt Name="SketchEdgeColor" Value="5636095"/>
+          <FCUInt Name="SketchVertexColor" Value="5636095"/>
+          <FCUInt Name="CursorCrosshairColor" Value="1027423743"/>
         </FCParamGroup>
       </FCParamGroup>
     </FCParamGroup>
