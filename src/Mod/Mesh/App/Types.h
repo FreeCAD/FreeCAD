@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,40 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef DRAFTUTILS_PRECOMPILED_H
-#define DRAFTUTILS_PRECOMPILED_H
+#ifndef MESH_TYPES_H
+#define MESH_TYPES_H
 
-#include <FCConfig.h>
+#include "Core/Definitions.h"
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define DraftUtilsExport  __declspec(dllexport)
-# define PartExport __declspec(dllexport)
-#else // for Linux
-# define DraftUtilsExport
-# define PartExport
-#endif
 
-#ifdef _MSC_VER
-# pragma warning(disable : 4275)
-#endif
+namespace Mesh
+{
 
-#ifdef _PreComp_
+// type definitions
+using ElementIndex = MeshCore::ElementIndex;
+using FacetIndex = MeshCore::FacetIndex;
+using PointIndex = MeshCore::PointIndex;
 
-// standard
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
-#include <cctype>
+} // namespace Mesh
 
-#include <Python.h>
-
-#endif // _PreComp_
-#endif
-
+#endif // MESH_TYPES_H

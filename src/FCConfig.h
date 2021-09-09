@@ -304,39 +304,7 @@ typedef unsigned __int64    uint64_t;
 
 //**************************************************************************
 // Windows import export DLL defines
-#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
-#   ifdef FCApp
-#       define AppExport   __declspec(dllexport)
-#       define DataExport  __declspec(dllexport)
-#   else
-#       define AppExport   __declspec(dllimport)
-#       define DataExport  __declspec(dllimport)
-#   endif
-#   ifdef FCBase
-#       define BaseExport  __declspec(dllexport)
-#   else
-#       define BaseExport  __declspec(dllimport)
-#   endif
-#   ifdef FCGui
-#       define GuiExport   __declspec(dllexport)
-#   else
-#       define GuiExport   __declspec(dllimport)
-#   endif
-#else
-#   ifndef BaseExport
-#       define BaseExport
-#   endif
-#   ifndef GuiExport
-#       define GuiExport
-#   endif
-#   ifndef AppExport
-#       define AppExport
-#   endif
-#   ifndef DataExport
-#       define DataExport
-#   endif
-#endif
-
+#include <FCGlobal.h>
 
 //**************************************************************************
 // here get the warnings of too long specifiers disabled (needed for VC6)

@@ -44,7 +44,7 @@
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -222,16 +222,38 @@ bool Tessellation::accept()
 
     this->document = QString::fromLatin1(activeDoc->getName());
 
+    bool bodyWithNoTip = false;
+    bool partWithNoFace = false;
     for (auto &sel : Gui::Selection().getSelection("*",0)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             shapeObjects.emplace_back(sel.pObject, sel.SubName);
         }
+        else if (sel.pObject) {
+            if (sel.pObject->isDerivedFrom(Part::Feature::getClassTypeId())) {
+                partWithNoFace = true;
+            }
+            if (sel.pObject->isDerivedFrom(Part::BodyBase::getClassTypeId())) {
+                Part::BodyBase* body = static_cast<Part::BodyBase*>(sel.pObject);
+                if (!body->Tip.getValue()) {
+                    bodyWithNoTip = true;
+                }
+            }
+        }
     }
 
     if (shapeObjects.empty()) {
-        QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape for meshing, first."));
+        if (bodyWithNoTip) {
+            QMessageBox::critical(this, windowTitle(), tr("You have selected a body without tip.\n"
+                                                          "Either set the tip of the body or select a different shape, please."));
+        }
+        else if (partWithNoFace) {
+            QMessageBox::critical(this, windowTitle(), tr("You have selected a shape without faces.\n"
+                                                          "Select a different shape, please."));
+        }
+        else {
+            QMessageBox::critical(this, windowTitle(), tr("Select a shape for meshing, first."));
+        }
         return false;
     }
 
