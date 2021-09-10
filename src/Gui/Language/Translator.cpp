@@ -28,6 +28,7 @@
 # include <QStringList>
 # include <QDir>
 # include <QApplication>
+# include <QRegularExpression>
 #endif
 
 #include "Translator.h"
@@ -169,6 +170,19 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
 
+    auto entries = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetASCII("AdditionalLanguageDomainEntries", "");
+    // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
+    // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
+    QRegularExpression matchingRE(QString::fromUtf8("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
+    auto matches = matchingRE.globalMatch(QString::fromStdString(entries));
+    while (matches.hasNext()) {
+        QRegularExpressionMatch match = matches.next();
+        QString language = match.captured(1);
+        QString tld = match.captured(2);
+        d->mapLanguageTopLevelDomain[language.toStdString()] = tld.toStdString();
+    }
+
     d->activatedLanguage = "English";
 
     d->paths = directories();
@@ -196,13 +210,16 @@ TStringMap Translator::supportedLocales() const
         return d->mapSupportedLocales;
 
     // List all .qm files
-    QDir dir(QLatin1String(":/translations"));
-    for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
-        it != d->mapLanguageTopLevelDomain.end(); ++it) {
-        QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(it->second.c_str()));
-        QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-        if (!fileNames.isEmpty())
-            d->mapSupportedLocales[it->first] = it->second;
+    for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
+        for (const auto& directoryName : d->paths) {
+            QDir dir(directoryName);
+            QString filter = QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
+            QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+            if (!fileNames.isEmpty()) {
+                d->mapSupportedLocales[domainMap.first] = domainMap.second;
+                break;
+            }
+        }
     }
 
     return d->mapSupportedLocales;
@@ -235,12 +252,17 @@ std::string Translator::locale(const std::string& lang) const
 
 QStringList Translator::directories() const
 {
-    QStringList list;
+    QStringList list; 
+    auto dir = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetASCII("AdditionalTranslationsDirectory", "");
+    if (!dir.empty())
+        list.push_back(QString::fromStdString(dir));
     QDir home(QString::fromUtf8(App::Application::getUserAppDataDir().c_str()));
     list.push_back(home.absoluteFilePath(QLatin1String("translations")));
     QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
     list.push_back(resc.absoluteFilePath(QLatin1String("translations")));
     list.push_back(QLatin1String(":/translations"));
+    
     return list;
 }
 
