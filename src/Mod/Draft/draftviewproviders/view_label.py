@@ -229,6 +229,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.text2d.string = self.text3d.string = "Label"
         self.text2d.justification = coin.SoText2.RIGHT
         self.text3d.justification = coin.SoAsciiText.RIGHT
+        self.font.name = utils.get_param("textfont")
 
         switchnode = coin.SoSeparator()
         switchnode.addChild(self.line)
@@ -310,10 +311,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             self.text2d.string.setValue("")
             self.text3d.string.setValue("")
 
-            if sys.version_info.major >= 3:
-                _list = [l for l in obj.Text if l]
-            else:
-                _list = [l.encode("utf8") for l in obj.Text if l]
+            _list = [l for l in obj.Text if l]
 
             self.text2d.string.setValues(_list)
             self.text3d.string.setValues(_list)
