@@ -160,18 +160,9 @@ void QGIViewAnnotation::drawAnnotation()
         if (it != annoText.begin()) {
             ss << "<br>";
         }
-    //TODO: there is still a bug here.  entering "'" works, save and restore works, but edit after
-    //      save and restore brings "\'" back into text.  manually deleting the "\" fixes it until the next
-    //      save/restore/edit cycle.
-    //      a guess is that the editor for propertyStringList is too enthusiastic about substituting.
-    //      the substituting might be necessary for using the strings in Python.
-    //      &apos; doesn't seem to help in this case.
 
-        std::string u8String = Base::Tools::escapedUnicodeToUtf8(*it); //from \x??\x?? to real utf8
-        std::string apos = std::regex_replace((u8String), std::regex("\\\\"), "");  //remove doubles.
-        apos = std::regex_replace((apos), std::regex("\\'"), "'");  //replace escaped apos
         //"less than" symbol chops off line.  need to use html sub.
-        std::string lt   = std::regex_replace((apos), std::regex("<"), "&lt;");
+        std::string lt   = std::regex_replace((*it), std::regex("<"), "&lt;");
         ss << lt;
     }
     ss << "<br></p>\n</body>\n</html> ";
@@ -203,11 +194,11 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     const std::vector<std::string> &values = annotation->Text.getValues();
     QString text;
     if (values.size() > 0) {
-        text = QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(values[0]).c_str());
+        text = QString::fromUtf8(values[0].c_str());
 
         for (unsigned int i = 1; i < values.size(); ++i) {
             text += QChar::fromLatin1('\n');
-            text += QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(values[i]).c_str());
+            text += QString::fromUtf8(values[i].c_str());
         }
     }
 
@@ -233,7 +224,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
             std::vector<std::string> newValues;
 
             for (int i = 0; i < list.size(); ++i) {
-                newValues.push_back(Base::Tools::escapedUnicodeFromUtf8(list[i].toStdString().c_str()));
+                newValues.push_back(list[i].toStdString());
             }
 
             App::GetApplication().setActiveTransaction("Set Annotation Text");

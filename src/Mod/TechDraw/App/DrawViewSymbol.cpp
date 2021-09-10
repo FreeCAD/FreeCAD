@@ -111,7 +111,7 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
                 while (!queryResult.next().isNull())
                 {
                     QDomElement tspanElement = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
-                    editables.push_back(Base::Tools::escapedUnicodeFromUtf8(tspanElement.text().toStdString().c_str()));
+                    editables.push_back(tspanElement.text().toStdString());
                 }
             }
             else {
@@ -188,7 +188,7 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 
                 // Finally append text node with editable replacement as the only <tspan> descendant
                 tspanElement.appendChild(symbolDocument.createTextNode(
-                                 QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(editText[count]).c_str())));
+                                 QString::fromUtf8(editText[count].c_str())));
                 ++count;
             }
 
