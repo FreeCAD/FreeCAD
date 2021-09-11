@@ -1239,6 +1239,7 @@ ParameterManager *Application::AddParameterSet(std::string &name, const std::str
                 fdest.canonicalFilePath().toUtf8().constData()));
     try {
         manager->LoadOrCreateDocument();
+        manager->SetASCII("Name", name);
         if (!fdest.exists())
             manager->SaveDocument(); // make sure the file exists
     } catch (Base::Exception &e) {
@@ -1702,7 +1703,8 @@ void Application::destruct(void)
     auto& paramMgr = _pcSingleton->mpcPramManager;
     for (auto it = paramMgr.begin(); it != paramMgr.end(); ++it) {
         if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
-            if (it->second->HasSerializer()) {
+            if (it->second->HasSerializer()
+                    && !boost::starts_with(it->second->GetSerializeFileName(), getResourceDir())) {
                 Console().Log("Saving %s...\n", it->first.c_str());
                 it->second->SaveDocument();
                 Console().Log("Saving %s...done\n", it->first.c_str());

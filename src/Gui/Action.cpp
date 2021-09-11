@@ -2896,14 +2896,24 @@ void PresetsAction::onShowMenu()
 {
     _menu->clear();
     QString tooltip = tr("Click to apply the setting.\nCtrl + Click to revert to default.");
+    QAction *pos = nullptr;
     for (auto &v : App::GetApplication().GetParameterSetList()) {
         if (v.second == &App::GetApplication().GetUserParameter()
                 || v.second == &App::GetApplication().GetSystemParameter()
                 || !v.second->GetBool("Preset", true))
             continue;
-        auto action = _menu->addAction(QString::fromUtf8(
-                    v.second->GetASCII("Name", v.first.c_str()).c_str()));
-        QString t = QString::fromUtf8(v.second->GetASCII("ToolTip").c_str());
+        auto action = new QAction(_menu);
+        QString t;
+        if (boost::starts_with(v.second->GetSerializeFileName(), App::GetApplication().getResourceDir())) {
+            _menu->insertAction(pos, action);
+            action->setText(tr(v.second->GetASCII("Name", v.first.c_str()).c_str()));
+            t = tr(v.second->GetASCII("ToolTip").c_str());
+        } else if (!pos) {
+            pos = _menu->addSeparator();
+            _menu->addAction(action);
+            action->setText(QString::fromUtf8(v.second->GetASCII("Name", v.first.c_str()).c_str()));
+            t = QString::fromUtf8(v.second->GetASCII("ToolTip").c_str());
+        }
         if (t.size())
             t += QStringLiteral("\n\n");
         t += tooltip;

@@ -207,10 +207,17 @@ void DlgParameterImp::on_btnCopy_clicked()
             ui->parameterSet->currentText()).toUtf8().constData();
     auto manager = App::GetApplication().AddParameterSet(
             name, curParamManager->GetSerializeFileName());
-    if (auto h = copyParameters(curParamManager))
+    std::string tooltip = curParamManager->GetASCII("ToolTip");
+    if (auto h = copyParameters(curParamManager)) {
+        h->SetASCII("Name", name);
+        h->SetASCII("ToolTip", tooltip);
         h->copyTo(manager);
-    ui->parameterSet->addItem(QString::fromUtf8(name.c_str()), QByteArray(name.c_str()));
-    ui->parameterSet->setCurrentIndex(ui->parameterSet->count()-1);
+    }
+
+    on_btnRefresh_clicked();
+    int idx = ui->parameterSet->findData(QByteArray(name.c_str()));
+    if (idx >= 0)
+        ui->parameterSet->setCurrentIndex(idx);
 }
 
 void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
@@ -480,6 +487,13 @@ void DlgParameterImp::activateParameterSet(const char* config)
     }
 }
 
+bool DlgParameterImp::isReadOnly(ParameterManager* mgr)
+{
+    if (!mgr)
+        mgr = curParamManager;
+    return boost::starts_with(mgr->GetSerializeFileName(), App::GetApplication().getResourceDir());
+}
+
 /** Switches the type of parameters either to user or system parameters. */
 void DlgParameterImp::onChangeParameterSet(int itemPos)
 {
@@ -490,7 +504,8 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
 
     saveState(false);
 
-    bool editable = rcParMngr != &App::GetApplication().GetUserParameter()
+    bool readonly =  isReadOnly(rcParMngr);
+    bool editable = !readonly && rcParMngr != &App::GetApplication().GetUserParameter()
             && rcParMngr != &App::GetApplication().GetSystemParameter();
     ui->parameterSet->setEditable(false);
     ui->btnRename->setEnabled(editable);
@@ -498,8 +513,19 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     ui->checkBoxPreset->setEnabled(editable);
     ui->btnToolTip->setEnabled(editable);
 
+    ui->btnMerge->setDisabled(readonly);
+    ui->btnImport->setDisabled(readonly);
+    ui->btnReset->setDisabled(readonly);
+    
+    paramGroup->subGrpAct->setDisabled(readonly);
+    paramGroup->removeAct->setDisabled(readonly);
+    paramGroup->renameAct->setDisabled(readonly);
+    paramGroup->exportAct->setDisabled(readonly);
+    paramGroup->importAct->setDisabled(readonly);
+    paramGroup->mergeAct->setDisabled(readonly);
+
     rcParMngr->CheckDocument();
-    ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
+    ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer() && !readonly);
 
     QSignalBlocker block(paramGroup);
     QSignalBlocker block2(paramValue);
@@ -771,6 +797,7 @@ void DlgParameterImp::populate()
     paramGroup->clear();
     ui->parameterSet->clear();
 
+    int pos = -1;
     const auto& rcList = App::GetApplication().GetParameterSetList();
     for (auto it= rcList.begin();it!=rcList.end();++it) {
         // for now ignore system parameters because they are nowhere used
@@ -790,8 +817,16 @@ void DlgParameterImp::populate()
                 tooltip += QStringLiteral("\n\n");
             tooltip += t;
         }
-        ui->parameterSet->addItem(name, QVariant(QByteArray(it->first.c_str())));
-        ui->parameterSet->setItemData(ui->parameterSet->count()-1, tooltip, Qt::ToolTipRole);
+        
+        int idx = ui->parameterSet->count();
+        if (!isReadOnly(it->second)) {
+            if (pos < 0)
+                pos = idx;
+        } else if (pos >= 0)
+            idx = pos++;
+            
+        ui->parameterSet->insertItem(idx, name, QVariant(QByteArray(it->first.c_str())));
+        ui->parameterSet->setItemData(idx, tooltip, Qt::ToolTipRole);
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp/Preferences/ParameterEditor");
@@ -825,9 +860,9 @@ void DlgParameterImp::on_btnRemove_clicked()
             ui->parameterSet->itemData(index).toByteArray());
     QSignalBlocker block(ui->parameterSet);
     ui->parameterSet->removeItem(index);
-    ui->parameterSet->setCurrentIndex(index);
     if (index == ui->parameterSet->count())
         --index;
+    ui->parameterSet->setCurrentIndex(index);
     onChangeParameterSet(index);
 }
 
@@ -1303,8 +1338,11 @@ void ParameterGroup::contextMenuEvent ( QContextMenuEvent* event )
     if (item && item->isSelected())
     {
         expandAct->setEnabled(item->childCount() > 0);
-        // do not allow to import parameters from a non-empty parameter group
-        importAct->setEnabled(item->childCount() == 0);
+
+        if (!_owner->isReadOnly()) {
+            // do not allow to import parameters from a non-empty parameter group
+            importAct->setEnabled(item->childCount() == 0);
+        }
 
         if (item->isExpanded())
             expandAct->setText( tr("Collapse") );
@@ -1329,6 +1367,8 @@ void ParameterGroup::keyPressEvent (QKeyEvent* event)
 
 void ParameterGroup::onDeleteSelectedItem()
 {
+    if (_owner->isReadOnly())
+        return;
     QTreeWidgetItem* sel = currentItem();
     if (sel && sel->isSelected())
     {
@@ -1589,6 +1629,8 @@ bool ParameterValue::edit ( const QModelIndex & index, EditTrigger trigger, QEve
 
 void ParameterValue::contextMenuEvent ( QContextMenuEvent* event )
 {
+    if (_owner->isReadOnly())
+        return;
     QTreeWidgetItem* item = currentItem();
     if (item && item->isSelected()) {
         menuEdit->popup(event->globalPos());
@@ -1632,6 +1674,12 @@ void ParameterValue::resizeEvent(QResizeEvent* event)
 
 void ParameterValue::onChangeSelectedItem(QTreeWidgetItem* item, int col)
 {
+    if (_owner->isReadOnly()) {
+        QMessageBox::warning(_owner, tr("Read only settings"),
+                tr("The current configuration settings is read only. "
+                   "You can copy it and then make changes."));
+        return;
+    }
     if (item && item->isSelected() && col > 0)
     {
         static_cast<ParameterValueItem*>(item)->changeValue();

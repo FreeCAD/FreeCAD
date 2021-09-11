@@ -153,6 +153,8 @@ protected:
     std::map<ParameterManager*, MonitorInfo> monitors;
     Base::Reference<ParameterManager> curParamManager;
 
+    bool isReadOnly(ParameterManager *mgr = nullptr);
+
 private:
     QFont defaultFont;
     QBrush defaultColor;
@@ -163,6 +165,7 @@ private:
     bool geometryRestored = false;
     int lastIndex = -1;
     QAction actMerge;
+    std::set<ParameterGrp*> warned;
 };
 
 // --------------------------------------------------------------------
