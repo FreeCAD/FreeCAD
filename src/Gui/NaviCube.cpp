@@ -283,7 +283,7 @@ public:
     void setColors(QWidget *parent);
     void setLabels(QWidget *parent);
     QFont getLabelFont();
-    void setLabelFont(const QFont &);
+    void saveLabelFont(const QFont &);
 
 	GLuint createCubeFaceTex(float gap, const char* text, int shape);
 	GLuint createButtonTex(int button, bool stroke = true);
@@ -1906,24 +1906,26 @@ void NaviCubeShared::setLabels(QWidget *parent)
     fontButton->setFont(font);
     grid->addWidget(fontButton, row++, 0, 1, 2);
     QObject::connect(fontButton, &QPushButton::clicked, [this, &dlg, fontButton]() {
-        QFont curFont(getLabelFont());
-        QFontDialog *fontDlg;
         if (this->m_DlgFont) {
-            fontDlg = this->m_DlgFont;
-            fontDlg->setCurrentFont(curFont);
-        } else {
-            this->m_DlgFont = fontDlg = new QFontDialog(curFont, &dlg);
-            QObject::connect(fontDlg, &QFontDialog::currentFontChanged, [this, fontButton](const QFont &f) {
-                setLabelFont(f);
-                fontButton->setFont(getLabelFont());
-            });
-            QObject::connect(fontDlg, &QFontDialog::finished, [this, curFont, fontButton](int result) {
-                if (result == QDialog::Rejected) {
-                    setLabelFont(curFont);
-                    fontButton->setFont(curFont);
-                }
-            });
+            this->m_DlgFont->show();
+            return;
         }
+        QFont curFont(getLabelFont());
+        auto fontDlg = new QFontDialog(&dlg);
+        fontDlg->setAttribute(Qt::WA_DeleteOnClose);
+        // fontDlg->setOption(QFontDialog::DontUseNativeDialog);
+        fontDlg->setCurrentFont(curFont);
+        this->m_DlgFont = fontDlg;
+        QObject::connect(fontDlg, &QFontDialog::currentFontChanged, [this, fontButton](const QFont &f) {
+            saveLabelFont(f);
+            fontButton->setFont(getLabelFont());
+        });
+        QObject::connect(fontDlg, &QFontDialog::finished, [this, curFont, fontButton](int result) {
+            if (result == QDialog::Rejected) {
+                saveLabelFont(curFont);
+                fontButton->setFont(getLabelFont());
+            }
+        });
         fontDlg->show();
     });
 
@@ -1955,10 +1957,8 @@ void NaviCubeShared::setLabels(QWidget *parent)
     spinBoxStretch->setValue(font.stretch());
     QObject::connect(spinBoxStretch, QOverload<int>::of(&QSpinBox::valueChanged),
         [this, fontButton](int value) {
-            QFont f = getLabelFont();
-            f.setStretch(value);
-            setLabelFont(f);
-            fontButton->setFont(f);
+            m_hGrp->SetInt("FontStretch", value);
+            fontButton->setFont(getLabelFont());
         });
 
     auto self = this->shared_from_this();
@@ -1972,7 +1972,7 @@ void NaviCubeShared::setLabels(QWidget *parent)
                     self->m_hGrp->SetASCII(info.name, labels[i].c_str());
                 ++i;
             }
-            self->setLabelFont(font);
+            self->saveLabelFont(font);
             self->m_hGrp->SetBool("FontAutoSize", autoSize);
         }
     });
@@ -1995,6 +1995,7 @@ void NaviCubeShared::setColors(QWidget *parent)
 
     m_DlgColors = new QDialog(parent);
     QDialog &dlg = *m_DlgColors;
+    dlg.setAttribute(Qt::WA_DeleteOnClose);
     auto layout = new QVBoxLayout;
     layout->setSizeConstraint(QLayout::SetFixedSize);
     dlg.setLayout(layout);
@@ -2039,7 +2040,7 @@ QFont NaviCubeShared::getLabelFont()
     if (fontSize <= 0 || m_hGrp->GetBool("FontAutoSize", true)) {
 	    int texSize = m_CubeWidgetSize * m_OverSample;
         sansFont.setPixelSize(m_hGrp->GetFloat("FontScale", 0.22) * texSize);
-    } else
+    } else if (fontSize > 0)
         sansFont.setPointSize(fontSize);
     sansFont.setItalic(m_hGrp->GetBool("FontItalic", false));
     int weight = m_hGrp->GetInt("FontWeight", 87);
@@ -2051,12 +2052,14 @@ QFont NaviCubeShared::getLabelFont()
     return sansFont;
 }
 
-void NaviCubeShared::setLabelFont(const QFont &font)
+void NaviCubeShared::saveLabelFont(const QFont &font)
 {
-    m_hGrp->SetASCII("FontString", font.family().toUtf8().constData());
+    if (font.family().isEmpty())
+        m_hGrp->RemoveASCII("FontString");
+    else
+        m_hGrp->SetASCII("FontString", font.family().toUtf8().constData());
     m_hGrp->SetInt("FontSize", font.pointSize());
     m_hGrp->SetInt("FontWeight", font.weight());
-    m_hGrp->SetInt("FontStretch", font.stretch());
     m_hGrp->SetBool("FontItalic", font.italic());
 }
 
