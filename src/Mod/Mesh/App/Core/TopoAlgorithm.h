@@ -240,7 +240,7 @@ public:
      * Removes the corrupted facet at position \a index from the mesh structure.
      * A facet is corrupted if the indices of its corner points are not all different.
      */
-    void RemoveCorruptedFacet(unsigned long index);
+    bool RemoveCorruptedFacet(unsigned long index);
     /**
      * Closes holes in the mesh that consists of up to \a length edges. In case a fit 
      * needs to be done then the points of the neighbours of \a level rings will be used.
