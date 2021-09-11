@@ -113,10 +113,6 @@ def write_femelement_material(f, ccxwriter):
                 if nl_mat_obj.LinearBaseMaterial == mat_obj:
                     if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
                         f.write("*PLASTIC\n")
-                        if nl_mat_obj.YieldPoint1:
-                            f.write("{}\n".format(nl_mat_obj.YieldPoint1))
-                        if nl_mat_obj.YieldPoint2:
-                            f.write("{}\n".format(nl_mat_obj.YieldPoint2))
-                        if nl_mat_obj.YieldPoint3:
-                            f.write("{}\n".format(nl_mat_obj.YieldPoint3))
+                        for yield_point in nl_mat_obj.YieldPoints:
+                            f.write("{}\n".format(yield_point))
                 f.write("\n")
