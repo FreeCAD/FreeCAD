@@ -1217,8 +1217,6 @@ ParameterManager *Application::AddParameterSet(std::string &name, const std::str
     }
 
     std::string pathPrefix = getUserAppDataDir();
-    if (mConfig.count("VendorCFGPrefix"))
-        pathPrefix += mConfig["VendorCFGPrefix"];
 
     QFileInfo fdest;
     std::string basename(name);
@@ -2318,8 +2316,8 @@ void Application::RefreshParameterSet(bool savefirst)
             ++it;
     }
     std::vector<std::string> paths;
-    paths.push_back(getHomePath());
-    paths.back() += "/data/settings/";
+    paths.push_back(getResourceDir());
+    paths.back() += "/settings/";
     paths.push_back(getUserAppDataDir());
     paths.back() += "/settings/";
     for (auto &path : paths) {
