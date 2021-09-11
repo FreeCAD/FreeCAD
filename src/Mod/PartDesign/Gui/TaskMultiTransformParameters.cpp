@@ -72,6 +72,8 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    defaultMinimumHeight = 300;
+
     setupUI();
 
     // Create a context menu for the listview of transformation features

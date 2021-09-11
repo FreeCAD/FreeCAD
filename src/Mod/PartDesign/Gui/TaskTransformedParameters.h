@@ -245,7 +245,7 @@ protected:
     QCheckBox *checkBoxNewSolid = nullptr;
 
     QSplitter *splitter = nullptr;
-    int defaultMinimumHeight = 80;
+    int defaultMinimumHeight = 150;
 
     QLabel *labelMessage = nullptr;
     boost::signals2::scoped_connection connMessage;
