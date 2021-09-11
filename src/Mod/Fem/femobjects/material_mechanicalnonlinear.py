@@ -60,25 +60,10 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
         obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
 
         obj.addProperty(
-            "App::PropertyString",
-            "YieldPoint1",
+            "App::PropertyStringList",
+            "YieldPoints",
             "Fem",
-            "Set stress and strain for yield point one, separated by a comma."
+            "Set stress and strain for yield points as a list of strings, "
+            "each point \"stress, plastic strain\""
         )
-        obj.YieldPoint1 = "235.0, 0.0"
-
-        obj.addProperty(
-            "App::PropertyString",
-            "YieldPoint2",
-            "Fem",
-            "Set stress and strain for yield point two, separated by a comma."
-        )
-        obj.YieldPoint2 = "241.0, 0.025"
-
-        obj.addProperty(
-            "App::PropertyString",
-            "YieldPoint3",
-            "Fem",
-            "Set stress and strain for yield point three, separated by a comma."
-        )
-        obj.YieldPoint3 = ""
+        obj.YieldPoints = []
