@@ -60,6 +60,7 @@ public:
     { return pos; }
     const std::vector<QWidget*> &getDialogContent(void) const;
     bool canClose() const;
+    bool tryClose();
 
     /// tells the framework which buttons are wished for the dialog
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const

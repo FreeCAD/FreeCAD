@@ -99,18 +99,8 @@ bool ViewProviderShapeBinder::setEdit(int ModNum) {
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgShapeBinder *sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
-        if (dlg && !sbDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().reject();
-            else
-                return false;
-        }
+        if (dlg && !sbDlg && !dlg->tryClose())
+            return false;
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();

@@ -574,18 +574,8 @@ bool ViewProviderFemPostObject::setEdit(int ModNum) {
         TaskDlgPost *postDlg = qobject_cast<TaskDlgPost*>(dlg);
         if (postDlg && postDlg->getView() != this)
             postDlg = 0; // another pad left open its task panel
-        if (dlg && !postDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().reject();
-            else
-                return false;
-        }
+        if (dlg && !postDlg && !dlg->tryClose())
+            return false;
 
         // start the edit dialog
         if (postDlg)

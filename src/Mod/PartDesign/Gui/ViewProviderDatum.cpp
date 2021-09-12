@@ -247,18 +247,8 @@ bool ViewProviderDatum::setEdit(int ModNum)
         TaskDlgDatumParameters *datumDlg = qobject_cast<TaskDlgDatumParameters *>(dlg);
         if (datumDlg && datumDlg->getViewProvider() != this)
             datumDlg = 0; // another datum feature left open its task panel
-        if (dlg && !datumDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
-                return false;
-        }
+        if (dlg && !datumDlg && !dlg->tryClose())
+            return false;
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();

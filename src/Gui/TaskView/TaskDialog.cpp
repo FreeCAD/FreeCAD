@@ -27,6 +27,7 @@
 # include <QMessageBox>
 #endif
 
+#include "Control.h"
 #include "TaskDialog.h"
 
 using namespace Gui::TaskView;
@@ -72,6 +73,24 @@ bool TaskDialog::canClose() const
         return true;
     else
         return false;
+}
+
+bool TaskDialog::tryClose()
+{
+    if (!canClose())
+        return false;
+    // Note, this tryClose() function is meant to replace lots of duplicate
+    // code doing mostly the same thing, with one exception. Many code closes
+    // the dialog by calling TaskDialog::reject(). This will very likely
+    // trigger active transaction abortion, which may cause some object bening
+    // deleted. And if unlucky, this could be the very object we are trying to
+    // edit.
+    //
+    // What's worse, abort is not like undo. It can't be redo. The object or
+    // some already performed operation is truely lost. If the user really
+    // meant for rejecting, he can always manually undo.
+    Gui::Control().closeDialog();
+    return true;
 }
 
 //==== calls from the TaskView ===============================================================

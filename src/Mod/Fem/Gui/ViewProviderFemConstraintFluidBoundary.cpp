@@ -71,15 +71,7 @@ bool ViewProviderFemConstraintFluidBoundary::setEdit(int ModNum)
             checkForWizard();
             if ((wizardWidget == NULL) || (wizardSubLayout == NULL)) {
                 // No shaft wizard is running
-                QMessageBox msgBox;
-                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-                msgBox.setDefaultButton(QMessageBox::Yes);
-                int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes)
-                    Gui::Control().reject();
-                else
+                if (!dlg->tryClose())
                     return false;
             } else if (constraintDialog != NULL) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
