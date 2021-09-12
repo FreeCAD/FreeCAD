@@ -3955,8 +3955,16 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     if(d->_RecomputeLog.size())
         Base::Console().Error("Recompute failed! Please check report view.\n");
 
+    clearPendingRemove();
+    return objectCount;
+}
+
+void Document::clearPendingRemove()
+{
     for (auto doc : GetApplication().getDocuments()) {
-        for(auto &o : doc->d->pendingRemove) {
+        decltype(doc->d->pendingRemove) objs;
+        objs.swap(doc->d->pendingRemove);
+        for(auto &o : objs) {
             try {
                 auto obj = o.getObject();
                 if(obj)
@@ -3966,9 +3974,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                         << ": " << e.what());
             }
         }
-        doc->d->pendingRemove.clear();
     }
-    return objectCount;
 }
 
 #endif // USE_OLD_DAG
@@ -4514,8 +4520,13 @@ void Document::removeObject(const char* sName)
         return;
 
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
-        // TODO: shall we allow removal if there is active undo transaction?
-        FC_LOG("pending remove of " << sName << " after recomputing document " << getName());
+        FC_LOG("pending remove of recomputing object " << pos->second->getFullName());
+        d->pendingRemove.emplace_back(pos->second);
+        return;
+    }
+
+    if (pos->second->testStatus(ObjectStatus::ObjEditing)) {
+        FC_LOG("pending remove of editing object " << pos->second->getFullName());
         d->pendingRemove.emplace_back(pos->second);
         return;
     }
@@ -4600,8 +4611,15 @@ void Document::removeObject(const char* sName)
 /// Remove an object out of the document (internal)
 void Document::_removeObject(DocumentObject* pcObject)
 {
-    if (testStatus(Document::Recomputing)) {
-        FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
+    if (pcObject->testStatus(ObjectStatus::PendingRecompute)) {
+        FC_LOG("pending remove of recomputing object " << pcObject->getFullName());
+        d->pendingRemove.emplace_back(pcObject);
+        return;
+    }
+
+    if (pcObject->testStatus(ObjectStatus::ObjEditing)) {
+        FC_LOG("pending remove of editing object " << pcObject->getFullName());
+        d->pendingRemove.emplace_back(pcObject);
         return;
     }
 

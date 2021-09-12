@@ -334,6 +334,14 @@ struct EditDocumentGuard {
 
 bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
 {
+    static bool _Busy;
+    if (_Busy) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Ignore recusrive call to Document::setEdit()");
+        return false;
+    }
+    Base::StateLocker lock(_Busy);
+
     ViewProviderDocumentObject* vp = dynamic_cast<ViewProviderDocumentObject*>(p);
     if (!vp) {
         FC_ERR("cannot edit non ViewProviderDocumentObject");
@@ -477,6 +485,9 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     d->_editObjs.insert(sobjs.begin(),sobjs.end());
     d->_editingObject = sobj;
 
+    Base::ObjectStatusLocker<App::ObjectStatus, App::DocumentObject> 
+        guard2(App::ObjEditing, sobj);
+
     d->_editMode = ModNum;
     d->_editViewProvider = svp->startEditing(ModNum);
     if(!d->_editViewProvider) {
@@ -484,10 +495,22 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         d->_editObjs.clear();
         d->_editingObject = 0;
         FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
+        // Some code somewhere may try to delete the editing object (e.g.
+        // undo), but couldn't because of the App::ObjEditing status we set
+        // here. We will reset the App::ObjEditing status to flush any pending
+        // removal.
+        guard2.detach();
+        App::Document::clearPendingRemove();
+        return false;
+    } else if (Application::Instance->editDocument() != this) {
+        // It is possible when calling startEditing() above show triggers some
+        // code to call resetEdit(), which prematrually clears the
+        // Application::editDocument(). In this cause we shall abort.
+        _resetEdit();
+        guard2.detach();
+        App::Document::clearPendingRemove();
         return false;
     }
-
-    d->_editingObject->setStatus(App::ObjEditing, true);
 
     if(view3d) {
         view3d->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);
@@ -503,7 +526,9 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     }
     guard.active = false;
     App::AutoTransaction::setEnable(false);
-    return true;
+    guard2.detach();
+    App::Document::clearPendingRemove();
+    return d->_editViewProvider != nullptr;
 }
 
 const Base::Matrix4D &Document::getEditingTransform() const {

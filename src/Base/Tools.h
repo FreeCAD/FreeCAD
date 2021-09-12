@@ -221,7 +221,15 @@ public:
     ObjectStatusLocker(Status s, Object* o, bool value = true) : status(s), obj(o)
     { old_value = obj->testStatus(status); obj->setStatus(status, value); }
     ~ObjectStatusLocker()
-    { obj->setStatus(status, old_value); }
+    { if (obj) obj->setStatus(status, old_value); }
+
+    void detach(bool reset=true) {
+        if (obj) {
+            if (reset)
+                obj->setStatus(status, old_value); 
+            obj = nullptr;
+        }
+    }
 private:
     Status status;
     Object* obj;

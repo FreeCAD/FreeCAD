@@ -298,6 +298,8 @@ public:
      */
     void addObject(DocumentObject*, const char* pObjectName=0, bool activate=true);
 
+    static void clearPendingRemove();
+
 
     /** Copy objects from another document to this document
      *
