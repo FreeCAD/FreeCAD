@@ -484,6 +484,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "&File");
     qApp->translate("Workbench", "&Edit");
     qApp->translate("Workbench", "Standard views");
+    qApp->translate("Workbench", "Axonometric");
     qApp->translate("Workbench", "&Stereo");
     qApp->translate("Workbench", "&Zoom");
     qApp->translate("Workbench", "Visibility");
