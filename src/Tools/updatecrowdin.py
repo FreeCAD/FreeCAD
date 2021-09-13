@@ -296,19 +296,17 @@ def updateTranslatorCpp(lncode):
     f.close()
 
     # checking for existing entry
-    for l in cppcode:
+    lastentry = 0
+    for i,l in enumerate(cppcode):
         if l.startswith("    d->mapLanguageTopLevelDomain[QT_TR_NOOP("):
+            lastentry = i
             if "\""+lncode+"\"" in l:
                 print(lnname+" ("+lncode+") already exists in Translator.cpp")
                 return
 
     # find the position to insert
-    pos = None
-    for i in range(len(cppcode)):
-        if cppcode[i].startswith( "    d->activatedLanguage = "):
-            pos = i-1
-            break
-    if pos is None:
+    pos = lastentry + 1
+    if pos == 1:
         print("ERROR: couldn't update Translator.cpp")
         sys.exit()
 
