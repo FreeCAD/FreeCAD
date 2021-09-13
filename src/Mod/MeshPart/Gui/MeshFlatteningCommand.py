@@ -19,7 +19,9 @@ class CreateFlatMesh(BaseCommand):
     """create flat wires from a meshed face"""
 
     def GetResources(self):
-        return {'Pixmap': 'MeshPart_CreateFlatMesh.svg', 'MenuText': 'Unwrap Mesh', 'ToolTip': 'find a flat representation of a mesh'}
+        return {'Pixmap': 'MeshPart_CreateFlatMesh.svg',
+                'MenuText': 'Unwrap Mesh',
+                'ToolTip': 'find a flat representation of a mesh'}
 
     def Activated(self):
         import numpy as np
@@ -47,10 +49,12 @@ class CreateFlatMesh(BaseCommand):
 class CreateFlatFace(BaseCommand):
     """create a flat face from a single face
        only full faces are supported right now"""
-       
+
     def GetResources(self):
-        return {'Pixmap': 'MeshPart_CreateFlatFace.svg', 'MenuText': 'Unwrap Face', 'ToolTip': 'find a flat representation of a mesh'}
-    
+        return {'Pixmap': 'MeshPart_CreateFlatFace.svg',
+                          'MenuText': 'Unwrap Face',
+                          'ToolTip': 'find a flat representation of a mesh'}
+
     def Activated(self):
         import numpy as np
         import flatmesh
@@ -74,12 +78,14 @@ class CreateFlatFace(BaseCommand):
                 bs.setPole(u + 1, v + 1, App.Vector(poles[i]))
                 i += 1
         Part.show(bs.toShape())
-        
+
     def IsActive(self):
         assert(super(CreateFlatFace, self).IsActive())
         assert(isinstance(Gui.Selection.getSelectionEx()[0].SubObjects[0], Part.Face))
         return True
 
+
+# Test if pybind11 dependency is available
 try:
     import flatmesh
     Gui.addCommand('MeshPart_CreateFlatMesh', CreateFlatMesh())
