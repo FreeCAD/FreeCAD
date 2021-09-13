@@ -1474,9 +1474,9 @@ void MeshTopoAlgorithm::RemoveDegeneratedFacet(unsigned long index)
   }
 }
 
-void MeshTopoAlgorithm::RemoveCorruptedFacet(unsigned long index)
+bool MeshTopoAlgorithm::RemoveCorruptedFacet(unsigned long index)
 {
-  if (index >= _rclMesh._aclFacetArray.size()) return;
+  if (index >= _rclMesh._aclFacetArray.size()) return false;
   MeshFacet& rFace = _rclMesh._aclFacetArray[index];
 
   // coincident corners (topological)
@@ -1494,9 +1494,11 @@ void MeshTopoAlgorithm::RemoveCorruptedFacet(unsigned long index)
       rFace._aulNeighbours[1] = ULONG_MAX;
       rFace._aulNeighbours[2] = ULONG_MAX;
       _rclMesh.DeleteFacet(index);
-      return;
+      return true;
     }
   }
+
+  return false;
 }
 
 void MeshTopoAlgorithm::FillupHoles(unsigned long length, int level,

@@ -1249,9 +1249,12 @@ bool MeshFixCorruptedFacets::Fixup()
     if ( it->Area() <= FLOAT_EPS )
     {
       unsigned long uId = it.Position();
-      cTopAlg.RemoveCorruptedFacet(uId);
-      // due to a modification of the array the iterator became invalid
-      it.Set(uId-1);
+      bool removed = cTopAlg.RemoveCorruptedFacet(uId);
+      if (removed) {
+          // due to a modification of the array the iterator became invalid
+          it.Set(uId-1);
+      }
+      
     }
   }
 
