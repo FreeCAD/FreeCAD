@@ -897,9 +897,11 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     return ret;
 }
 
-std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subname) const {
+std::vector<DocumentObject*> DocumentObject::getSubObjectList(
+        const char *subname, std::vector<int> *sublist) const {
     std::vector<DocumentObject*> res;
     res.push_back(const_cast<DocumentObject*>(this));
+    if (sublist) sublist->push_back(0);
     if(!subname || !subname[0])
         return res;
     auto element = Data::ComplexGeoData::findElementName(subname);
@@ -911,6 +913,8 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subnam
         if(!sobj || !sobj->getNameInDocument())
             continue;
         res.push_back(sobj);
+        if (sublist)
+            sublist->push_back(pos+1);
         sub[pos+1] = c;
     }
     return res;
@@ -1284,77 +1288,49 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
 {
     if(!link || !link->getNameInDocument() || !getNameInDocument())
         return 0;
-    auto ret = const_cast<DocumentObject*>(this);
-    if(link != ret) {
-        auto sub = subname.c_str();
-        auto nextsub = sub;
-        for(auto dot=strchr(nextsub,'.');dot;nextsub=dot+1,dot=strchr(nextsub,'.')) {
-            std::string subcheck(sub,nextsub-sub);
-            subcheck += link->getNameInDocument();
-            subcheck += '.';
-            if(getSubObject(subcheck.c_str())==link) {
-                ret = getSubObject(std::string(sub,dot+1-sub).c_str());
-                if(!ret) 
-                    return 0;
-                subname = std::string(dot+1);
-                break;
-            }
-        }
-        return ret;
-    }
 
-    size_t pos=0, linkPos=0, prevPos=0, prevLinkPos=0;
-    std::string linkssub,ssub;
-    for (;;) {
-        prevPos = pos;
-        prevLinkPos = linkPos;
+    std::vector<int> mysubs;
+    std::vector<int> linksubs;
+    auto myobjs = getSubObjectList(subname.c_str(), &mysubs);
+    auto linkobjs = link->getSubObjectList(linkSub.c_str(), &linksubs);
 
-        linkPos = linkSub.find('.',linkPos);
-        if(linkPos == std::string::npos) {
-            link = 0;
-            return 0;
-        }
-        ++linkPos;
-        pos = subname.find('.',pos);
-        if(pos == std::string::npos) {
+    auto itself = myobjs.begin();
+    auto itlink = linkobjs.begin();
+    while(true) {
+        if (itlink == linkobjs.end())
+            return nullptr;
+        if (itself == myobjs.end()) {
+            link = *itlink;
+            linkSub.erase(linkSub.begin(), linkSub.begin() + linksubs[itlink - linkobjs.begin()]);
             subname.clear();
-            ret = 0;
-            break;
+            return const_cast<DocumentObject*>(this);
         }
-        ++pos;
+        if (*itself != *itlink)
+            break;
+        ++itself;
+        ++itlink;
+    }
 
-        if (subname.compare(prevPos,pos,linkSub,prevLinkPos,linkPos)!=0) {
-            // Check if the name difference is caused by a label reference in
-            // one of the name path
-            if (subname[prevPos] != linkSub[prevLinkPos]
-                    && (subname[prevPos] == '$' || linkSub[prevLinkPos] == '$'))
-            {
-                // Temporary shorten name path to obtain the sub-object for
-                // comparison.
-                Base::StringGuard guard(&subname[pos]);
-                Base::StringGuard guard2(&linkSub[linkPos]);
-                if (getSubObject(subname.c_str()) == link->getSubObject(linkSub.c_str()))
-                    continue;
+    if (itself == myobjs.begin()) {
+        auto it = std::find(linkobjs.begin(), linkobjs.end(), *itself);
+        if (it != linkobjs.end()) {
+            itlink = it + 1;
+        } else {
+            it = std::find(myobjs.begin(), myobjs.end(), *itlink);
+            if (it != myobjs.end()) {
+                itself = it;
+                ++itlink;
             }
-            break;
         }
     }
 
-    if(pos != std::string::npos) {
-        ret = getSubObject(subname.substr(0,pos).c_str());
-        if(!ret) {
-            link = 0;
-            return 0;
-        }
-        subname = subname.substr(pos);
-    }
-    if(linkPos) {
-        link = link->getSubObject(linkSub.substr(0,linkPos).c_str());
-        if(!link)
-            return 0;
-        linkSub = linkSub.substr(linkPos);
-    }
-    return ret;
+    if (itlink == linkobjs.end())
+        return nullptr;
+
+    link = *itlink;
+    linkSub.erase(linkSub.begin(), linkSub.begin() + linksubs[itlink - linkobjs.begin()]);
+    subname.resize(mysubs[itself - myobjs.begin()]);
+    return *itself;
 }
 
 bool DocumentObject::adjustRelativeLinks(

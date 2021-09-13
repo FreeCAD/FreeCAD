@@ -382,8 +382,15 @@ public:
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0,
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
-    /// Return a list of objects referenced by a given subname including this object
-    std::vector<DocumentObject*> getSubObjectList(const char *subname) const;
+    /** Return a list of objects referenced by a given subname including this object
+     * @param subname: the sub name path
+     * @param subsizes: optional sub name sizes for each returned object, that is,
+     *                  ret[i] = getSubObject(std::string(subname, subsizes[i]).c_str());
+     *
+     * @return Return a list of object along the path.
+     */
+    std::vector<DocumentObject*> getSubObjectList(const char *subname,
+                                                  std::vector<int> *subsizes = nullptr) const;
 
     /// reason of calling getSubObjects()
     enum GSReason {
