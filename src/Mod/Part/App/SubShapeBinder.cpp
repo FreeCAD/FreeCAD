@@ -1138,7 +1138,7 @@ SubShapeBinder::import(const App::SubObjectT &feature,
     App::DocumentObject *editObj = nullptr;
     App::DocumentObject *container = nullptr;
     App::DocumentObject *topParent = nullptr;
-    std::string subname;
+    std::string subname = editObjT.getSubNameNoElement();
 
     if (noSubElement) {
         noSubObject = true;
@@ -1149,20 +1149,13 @@ SubShapeBinder::import(const App::SubObjectT &feature,
     if (!editObj)
         FC_THROWM(Base::RuntimeError, "No editing object");
     else {
-        std::ostringstream ss;
         auto objs = editObjT.getSubObjectList();
         topParent = objs.front();
-        bool first = true;
-        for (auto obj : objs) {
-            if (first)
-                first = false;
-            else
-                ss << obj->getNameInDocument() << ".";
-            obj = obj->getLinkedObject();
+        for (auto rit = objs.rbegin(); rit != objs.rend(); ++rit) {
+            auto obj = (*rit)->getLinkedObject();
             if (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
-                subname = ss.str();
                 container = obj;
-                // No break. We need the last geo group along the path
+                break;
             }
         }
     }
@@ -1198,7 +1191,8 @@ SubShapeBinder::import(const App::SubObjectT &feature,
                     << feature.getSubObjectFullName());
 
         resolved = App::SubObjectT(link, linkSub.c_str());
-        if (Part::BodyBase::findBodyOf(link) == container
+        if (link == container
+                || Part::BodyBase::findBodyOf(link) == container
                 || App::Part::getPartOfObject(link) == container) {
             if (!noSubElement || !resolved.hasSubElement()
                     || !noSubObject || !resolved.hasSubObject())
