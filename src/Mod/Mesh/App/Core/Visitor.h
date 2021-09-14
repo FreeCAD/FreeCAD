@@ -24,6 +24,10 @@
 #ifndef VISITOR_H
 #define VISITOR_H
 
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
+
 namespace MeshCore {
 
 class MeshFacet;

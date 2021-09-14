@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Imetric 3D GmbH                                    *
+ *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,74 +19,44 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
-#ifndef MESH_DEFINITIONS_H
-#define MESH_DEFINITIONS_H
-
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
-
-// default values
-#define MESH_MIN_PT_DIST           1.0e-6f
-#define MESH_MIN_EDGE_LEN          1.0e-3f
-#define MESH_MIN_EDGE_ANGLE        2.0
-#define MESH_REMOVE_MIN_LEN        true
-#define MESH_REMOVE_G3_EDGES       true
-
-/*
- * general constant definitions
+/** \file FCGlobal.h
+ *  \brief Include export or import macros.
  */
-#define FLOAT_EPS   1.0e-4f 
 
-#ifndef  FLOAT_MAX
-# define FLOAT_MAX 1e30f
+
+#ifndef FC_GLOBAL_H
+#define FC_GLOBAL_H
+
+
+#if defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__CYGWIN__)
+#  define FREECAD_DECL_EXPORT __declspec(dllexport)
+#  define FREECAD_DECL_IMPORT __declspec(dllimport)
+#else
+#  define FREECAD_DECL_EXPORT
+#  define FREECAD_DECL_IMPORT
 #endif
 
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+// FreeCADBase
+#ifdef FreeCADBase_EXPORTS
+#  define BaseExport  FREECAD_DECL_EXPORT
+#else
+#  define BaseExport  FREECAD_DECL_IMPORT
 #endif
 
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+// FreeCADApp
+#ifdef FreeCADApp_EXPORTS
+#       define AppExport   FREECAD_DECL_EXPORT
+#       define DataExport  FREECAD_DECL_EXPORT
+#else
+#       define AppExport   FREECAD_DECL_IMPORT
+#       define DataExport  FREECAD_DECL_IMPORT
 #endif
 
-namespace MeshCore {
+// FreeCADGui
+#ifdef FreeCADGui_EXPORTS
+#  define GuiExport   FREECAD_DECL_EXPORT
+#else
+#  define GuiExport   FREECAD_DECL_IMPORT
+#endif
 
-template <class Prec>
-class Math
-{
-public:
-    MeshExport static const Prec PI;
-};
-
-typedef Math<float> Mathf;
-typedef Math<double> Mathd;
-
-/**
- * Global defined tolerances used to compare points
- * for equality.
- */
-class MeshExport MeshDefinitions
-{
-public:
-  MeshDefinitions (void);
-  virtual ~MeshDefinitions (void)
-  {}
-
-  static float  _fMinPointDistance;
-  static float  _fMinPointDistanceP2;
-  static float  _fMinPointDistanceD1;
-
-  static float  _fMinEdgeLength;
-  static bool  _bRemoveMinLength;
-
-  static float _fMinEdgeAngle;
-
-  static void  SetMinPointDistance (float fMin);
-};
-
-} // namespace MeshCore
-
-#endif // MESH_DEFINITIONS_H 
+#endif //FC_GLOBAL_H
