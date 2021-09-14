@@ -82,6 +82,7 @@ private:
     std::map<App::SubObjectT, QTreeWidgetItem*> itemMap;
     std::map<App::SubObjectT, QTreeWidgetItem*> depMap;
     std::map<App::SubObjectT, QTreeWidgetItem*> inMap;
+    std::set<QTreeWidgetItem*> itemUnchecked;
     QTreeWidgetItem *allItem = nullptr;
     bool geometryRestored = false;
     QSize savedSize;
