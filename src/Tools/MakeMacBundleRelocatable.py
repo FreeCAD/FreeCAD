@@ -73,13 +73,13 @@ class DepsGraph:
 
         for k in self.graph.keys():
             if not self.graph[k]._marked:
-                stack.append(k)
+                stack.append((None, k))
                 while stack:
-                    node_key = stack.pop()
+                    self.parent_key, node_key = stack.pop()
                     self.graph[node_key]._marked = True
                     for ck in self.graph[node_key].children:
                         if not self.graph[ck]._marked:
-                            stack.append(ck)
+                            stack.append((node_key,ck))
                     operation(self, self.graph[node_key], *op_args)
 
 
@@ -238,7 +238,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
                    deps = create_dep_nodes(list_install_names(k2), s_paths)
                 except Exception:
                    logging.error("Failed to resolve dependency in " + k2)
-                   raise
+                   continue
 
                 for d in deps:
                     if d.name not in node.children:
@@ -344,7 +344,10 @@ def change_libid(graph, node, bundle_path):
           logging.warning("Failed to change bundle id {} in lib {}".format(node.name, lib))
 
 def print_child(graph, node, path):
-    logging.debug("  >" + str(node))
+    parent = graph.parent_key
+    if parent is not None:
+        parent = ' <-- ' + os.path.basename(parent)
+    logging.debug("  >" + str(node) + str(parent))
 
 def print_node(graph, node, path):
     logging.debug(node)
