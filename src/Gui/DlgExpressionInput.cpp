@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <QApplication>
 #include <QPainter>
 #include <QDesktopWidget>
@@ -226,6 +229,15 @@ void DlgExpressionInput::onTimer()
                                  "Be aware that invoking function may cause unexpected change "
                                  "to various objects."));
         ui->okBtn->setDisabled(false);
+    }
+    catch (Base::ParserError & e) {
+        if (boost::starts_with(e.what(), "syntax error, unexpected end of input")) {
+            ui->msg->setPlainText(QString());
+        } else {
+            ui->msg->setStyleSheet(errorColorStyle);
+            ui->msg->setPlainText(QString::fromUtf8(e.what()));
+        }
+        ui->okBtn->setDisabled(true);
     }
     catch (Base::Exception & e) {
         ui->msg->setStyleSheet(errorColorStyle);
