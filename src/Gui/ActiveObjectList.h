@@ -27,7 +27,10 @@
 #define GUI_ActiveObjectList_H
 
 #include <map>
+#include <boost_signals2.hpp>
+#include <QTimer>
 #include "Tree.h"
+
 namespace App {
     class DocumentObject;
 }
@@ -47,16 +50,14 @@ namespace Gui
     class GuiExport ActiveObjectList
     {
     public:
-        ActiveObjectList(Document *doc)
-            :_Doc(doc)
-        {}
+        ActiveObjectList(Document *doc);
 
         template<typename _T>
         inline _T getObject(const char* name, App::DocumentObject **parent=0, std::string *subname=0) const {
             auto it = _ObjectMap.find(name);
             if(it==_ObjectMap.end())
                 return 0;
-            return dynamic_cast<_T>(getObject(it->second,true,parent,subname));
+            return dynamic_cast<_T>(_getObject(it->second,parent,subname));
         }
         void setObject(App::DocumentObject*, const char*, const char *subname=0,
                 const Gui::HighlightMode& m = HighlightMode::UserDefined);
@@ -66,18 +67,23 @@ namespace Gui
 
     private:
         struct ObjectInfo;
-        void setHighlight(const ObjectInfo &info, Gui::HighlightMode mode, bool enable);
-        App::DocumentObject *getObject(const ObjectInfo &info, bool resolve,
-                App::DocumentObject **parent=0, std::string *subname=0) const;
+        void setHighlight(const ObjectInfo &info, bool enable) const;
+        App::DocumentObject *_getObject(ObjectInfo &info,
+                                        App::DocumentObject **parent=0,
+                                        std::string *subname=0) const;
         ObjectInfo getObjectInfo(App::DocumentObject *obj, const char *subname) const;
 
     private:
         struct ObjectInfo {
             App::DocumentObject *obj;
             std::string subname;
+            App::DocumentObject *activeObject;
+            HighlightMode mode;
         };
-        std::map<std::string, ObjectInfo> _ObjectMap;
+        mutable std::map<std::string, ObjectInfo> _ObjectMap;
         Document *_Doc;
+        boost::signals2::scoped_connection connChangedChildren;
+        QTimer timer;
     };
 
 } //namespace Gui

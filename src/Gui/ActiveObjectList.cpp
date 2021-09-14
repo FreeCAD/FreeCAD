@@ -40,28 +40,57 @@ FC_LOG_LEVEL_INIT("MDIView",true,true)
 
 using namespace Gui;
 
-App::DocumentObject *ActiveObjectList::getObject(const ObjectInfo &info, bool resolve,
-                                                 App::DocumentObject **parent,
-                                                 std::string *subname) const
+ActiveObjectList::ActiveObjectList(Document *doc)
+    :_Doc(doc)
+{
+    connChangedChildren = Application::Instance->signalChangedChildren.connect(
+        [this](const ViewProviderDocumentObject &) {
+            if (_ObjectMap.size())
+                timer.start(10);
+        });
+    timer.setSingleShot(true);
+    QObject::connect(&timer, &QTimer::timeout, [this]() {
+        for (auto it = _ObjectMap.begin(); it!=_ObjectMap.end();) {
+            if (!_getObject(it->second))
+                it = _ObjectMap.erase(it);
+            else
+                ++it;
+        }
+    });
+}
+
+App::DocumentObject *ActiveObjectList::_getObject(ObjectInfo &info,
+                                                  App::DocumentObject **parent,
+                                                  std::string *subname) const
 {
     if(parent) *parent = info.obj;
     if(subname) *subname = info.subname;
     auto obj = info.obj;
-    if(!obj || !obj->getNameInDocument())
-        return 0;
     if(info.subname.size()) {
         obj = obj->getSubObject(info.subname.c_str());
-        if(!obj)
-            return 0;
+        if (obj)
+            obj = obj->getLinkedObject(true);
+    } else if (obj->getParents().size())
+        obj = nullptr;
+    if (obj != info.activeObject) {
+        setHighlight(info, false);
+        auto newInfo = getObjectInfo(info.activeObject, 0);
+        if (newInfo.activeObject == nullptr)
+            return nullptr;
+        newInfo.mode = info.mode;
+        info = newInfo;
+        if(parent) *parent = info.obj;
+        if(subname) *subname = info.subname;
+        setHighlight(info, true);
     }
-    return resolve?obj->getLinkedObject(true):obj;
+
+    return info.activeObject;
 }
 
-void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, bool enable)
+void ActiveObjectList::setHighlight(const ObjectInfo &info, bool enable) const
 {
-    auto obj = getObject(info,false);
-    if(!obj) return;
-    auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+    auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+            Application::Instance->getViewProvider(info.activeObject));
     if(!vp) return;
 
     if (TreeParams::TreeActiveAutoExpand()) {
@@ -69,18 +98,22 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
                                               info.obj, info.subname.c_str());
     }
 
-    Gui::Application::Instance->signalHighlightObject(*vp, mode,enable,info.obj,info.subname.c_str());
+    Gui::Application::Instance->signalHighlightObject(*vp, info.mode,enable,info.obj,info.subname.c_str());
 }
 
 Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::DocumentObject *obj, const char *subname) const
 {
     ObjectInfo info;
     info.obj = 0;
+    info.activeObject = 0;
+    info.mode = HighlightMode::UserDefined;
     if(!obj || !obj->getNameInDocument())
         return info;
+    bool checkSelection = true;
     if(subname) {
         info.obj = obj;
         info.subname = subname;
+        checkSelection = false;
     }else{
         // No subname is given, try Selection().getContext() first
         auto ctxobj = Gui::Selection().getContext().getSubObject();
@@ -88,10 +121,12 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
             info.obj = Gui::Selection().getContext().getObject();
             if (info.obj->getDocument() == _Doc->getDocument()) {
                 info.subname = Gui::Selection().getContext().getSubName();
-                return info;
+                checkSelection = false;
             }
         }
+    }
 
+    if (checkSelection) {
         // If the input object is not from this document, it must be brought in
         // by some link type object of this document. We only accept the object
         // if we can find such object in the current selection.
@@ -133,10 +168,16 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
                 }
             }
 
-            if(!info.obj && obj->getDocument()==_Doc->getDocument())
-                info.obj = obj;
+            if(!info.obj) {
+                if (obj->getDocument()==_Doc->getDocument())
+                    info.obj = obj;
+                return info;
+            }
         }
     }
+
+    if (auto sobj = info.obj->getSubObject(info.subname.c_str()))
+        info.activeObject = sobj->getLinkedObject(true);
     return info;
 }
 
@@ -147,7 +188,11 @@ bool Gui::ActiveObjectList::hasObject(App::DocumentObject *obj,
     if(it==_ObjectMap.end())
         return false;
     auto info = getObjectInfo(obj,subname);
-    return info.obj==it->second.obj && info.subname==it->second.subname;
+    if (!subname)
+        return info.activeObject == obj;
+    return info.obj == it->second.obj
+        && info.subname == it->second.subname
+        && info.activeObject == it->second.activeObject;
 }
 
 void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name,
@@ -155,13 +200,13 @@ void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name
 {
     auto it = _ObjectMap.find(name);
     if(it!=_ObjectMap.end()) {
-        setHighlight(it->second,mode,false);
+        setHighlight(it->second,false);
         _ObjectMap.erase(it);
     }
     if(!obj) return;
 
     auto info = getObjectInfo(obj,subname);
-    if(!info.obj) {
+    if(!info.activeObject) {
         FC_ERR("Cannot set active object "
                 << obj->getFullName() << '.' << (subname?subname:"")
                 << " in document '" << _Doc->getDocument()->getName()
@@ -169,8 +214,10 @@ void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name
         return;
     }
 
+    if (mode != HighlightMode::None)
+        info.mode = mode;
     _ObjectMap[name] = info;
-    setHighlight(info,mode,true);
+    setHighlight(info,true);
 }
 
 bool Gui::ActiveObjectList::hasObject(const char*name)const
@@ -183,7 +230,7 @@ void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject &vp)
   //maybe boost::bimap or boost::multi_index
   for (auto it = _ObjectMap.begin(); it != _ObjectMap.end(); ++it)
   {
-    if (it->second.obj == vp.getObject())
+    if (it->second.obj == vp.getObject() || it->second.activeObject == vp.getObject())
     {
       _ObjectMap.erase(it);
       return;
