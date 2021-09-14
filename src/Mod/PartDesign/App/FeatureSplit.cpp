@@ -387,6 +387,7 @@ int Split::setElementVisible(const char * element, bool visible)
 }
 
 void Split::setupObject () {
+    Feature::setupObject();
     _Version.setValue(1);
 }
 

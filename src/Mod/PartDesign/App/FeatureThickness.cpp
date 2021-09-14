@@ -56,6 +56,7 @@ Thickness::Thickness()
 }
 
 void Thickness::setupObject() {
+    DressUp::setupObject();
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));

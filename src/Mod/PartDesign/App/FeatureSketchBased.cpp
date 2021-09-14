@@ -125,6 +125,7 @@ short ProfileBased::mustExecute() const
 
 void ProfileBased::setupObject()
 {
+    FeatureAddSub::setupObject();
     AllowMultiFace.setValue(true);
     _ProfileBasedVersion.setValue(1);
 }
