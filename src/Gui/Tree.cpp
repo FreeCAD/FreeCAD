@@ -295,6 +295,7 @@ private:
     int previousStatus;
     int selected;
     bool populated;
+    Gui::HighlightMode highlightMode = Gui::HighlightMode::None;
 
     friend class TreeWidget;
     friend class TreeWidgetItemDelegate;
@@ -607,6 +608,11 @@ void TreeParams::onFontSizeChanged() {
 
 void TreeParams::onItemSpacingChanged()
 {
+    refreshTreeViews();
+}
+
+void TreeParams::refreshTreeViews()
+{
     for(auto tree : TreeWidget::Instances) {
         tree->scheduleDelayedItemsLayout();
     }
@@ -625,16 +631,48 @@ void TreeParams::onItemBackgroundChanged()
         _TreeItemBackground = QBrush(col);
     } else
         _TreeItemBackground = QBrush();
-    for(auto tree : TreeWidget::Instances)
-        tree->update();
+    refreshTreeViews();
+}
+
+void TreeParams::onTreeActiveColorChanged()
+{
+    refreshTreeViews();
+}
+
+void TreeParams::onTreeEditColorChanged()
+{
+    refreshTreeViews();
+}
+
+void TreeParams::onTreeActiveBoldChanged()
+{
+    refreshTreeViews();
+}
+
+void TreeParams::onTreeActiveItalicChanged()
+{
+    refreshTreeViews();
+}
+
+void TreeParams::onTreeActiveUnderlinedChanged()
+{
+    refreshTreeViews();
+}
+
+void TreeParams::onTreeActiveOverlinedChanged()
+{
+    refreshTreeViews();
+}
+
+void TreeParams::onIndentationChanged()
+{
+    refreshTreeViews();
 }
 
 void TreeParams::onItemBackgroundPaddingChanged()
 {
-    if (ItemBackground()) {
-        for(auto tree : TreeWidget::Instances)
-            tree->update();
-    }
+    if (ItemBackground())
+        refreshTreeViews();
 }
 
 void TreeParams::onHideColumnChanged()
@@ -5324,11 +5362,11 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
     FOREACH_ITEM_ALL(item)
         if(tree->editingItem) {
             if(item == tree->editingItem) {
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
+                item->setHighlight(true, item->highlightMode);
                 break;
             }
         }else if(item->object() == &v)
-            item->setData(0, Qt::BackgroundColorRole,QVariant());
+            item->setHighlight(true, item->highlightMode);
     END_FOREACH_ITEM
     tree->editingItem = 0;
 }
@@ -6591,6 +6629,11 @@ void DocumentObjectItem::restoreBackground() {
 
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     QFont f = this->font(0);
+    if (!set)
+        high = Gui::HighlightMode::None;
+    else if (high == Gui::HighlightMode::None)
+        set = false;
+    this->highlightMode = high;
     auto highlight = [=](const QColor& col){
         if (set)
             this->setBackground(0, col);
@@ -6639,6 +6682,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
         highlight(color);
     }   break;
     default:
+        highlight(QColor());
         break;
     }
     this->setFont(0,f);

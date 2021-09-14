@@ -88,19 +88,19 @@ public:
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(TreeActiveAutoExpand,bool,Bool,true, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(TreeActiveColor,unsigned long, Unsigned, 0xe6e6ffff, \
+    FC_TREE_PARAM2(TreeActiveColor,unsigned long, Unsigned, 0xe6e6ffff, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(TreeEditColor,unsigned long, Unsigned, 0x929200ff, \
+    FC_TREE_PARAM2(TreeEditColor,unsigned long, Unsigned, 0x929200ff, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(TreeActiveBold,bool, Bool, true, \
+    FC_TREE_PARAM2(TreeActiveBold,bool, Bool, true, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(TreeActiveItalic,bool, Bool, false, \
+    FC_TREE_PARAM2(TreeActiveItalic,bool, Bool, false, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(TreeActiveUnderlined,bool, Bool, false, \
+    FC_TREE_PARAM2(TreeActiveUnderlined,bool, Bool, false, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(TreeActiveOverlined,bool, Bool, false, \
+    FC_TREE_PARAM2(TreeActiveOverlined,bool, Bool, false, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(Indentation,int,Int,0, \
+    FC_TREE_PARAM2(Indentation,int,Int,0, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(LabelExpression,bool,Bool,false, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
@@ -160,6 +160,8 @@ public:
     static const char *doc##_name(); \
 
     FC_TREE_PARAMS
+
+    void refreshTreeViews();
 
 private:
 #undef FC_TREE_PARAM

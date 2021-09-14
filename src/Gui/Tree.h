@@ -58,6 +58,7 @@ class DocumentItem;
 
 /// highlight modes for the tree items
 enum class HighlightMode {
+    None,
     Underlined,
     Italic,
     Overlined,
