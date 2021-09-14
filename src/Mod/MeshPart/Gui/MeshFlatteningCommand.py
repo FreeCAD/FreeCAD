@@ -1,5 +1,5 @@
 #**************************************************************************
-#*  Copyright (c)                                                         *
+#*  Copyright (c) 2017 Lorenz Lechner                                     *
 #*                                                                        *
 #*  This file is part of the FreeCAD CAx development system.              *
 #*                                                                        *
