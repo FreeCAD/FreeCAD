@@ -652,7 +652,7 @@ PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 Hole::Hole()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    initAddSubType(FeatureAddSub::Subtractive);
 
     readCutDefinitions();
 

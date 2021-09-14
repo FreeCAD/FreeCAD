@@ -68,8 +68,6 @@ PROPERTY_SOURCE(PartDesign::Pad, PartDesign::ProfileBased)
 
 Pad::Pad()
 {
-    addSubType = FeatureAddSub::Additive;
-
     ADD_PROPERTY_TYPE(Type, (0L), "Pad", App::Prop_None, "Pad type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");

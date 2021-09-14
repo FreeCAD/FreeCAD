@@ -66,7 +66,7 @@ PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 
 Pocket::Pocket()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    initAddSubType(FeatureAddSub::Subtractive);
 
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);

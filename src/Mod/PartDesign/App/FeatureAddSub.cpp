@@ -41,7 +41,6 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::Feature)
 
 FeatureAddSub::FeatureAddSub()
-  :  addSubType(Additive)
 {
     ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
     ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
@@ -61,19 +60,20 @@ FeatureAddSub::Type FeatureAddSub::getAddSubType()
     return addSubType;
 }
 
-void FeatureAddSub::setupObject()
+void FeatureAddSub::initAddSubType(Type t)
 {
-    Feature::setupObject();
-
-    switch(addSubType) {
-    case 0:
-        AddSubType.setValue((long)0);
-        break;
-    case 1:
+    switch(t) {
+    case Subtractive:
+        addSubType = Subtractive;
         AddSubType.setValue((long)1);
         break;
-    case 2:
+    case Intersecting:
+        addSubType = Intersecting;
         AddSubType.setValue((long)2);
+        break;
+    default:
+        addSubType = Additive;
+        AddSubType.setValue((long)0);
         break;
     }
 }
@@ -167,7 +167,6 @@ PROPERTY_SOURCE(PartDesign::FeatureAdditivePython, PartDesign::FeatureAddSubPyth
 
 FeatureAdditivePython::FeatureAdditivePython()
 {
-    addSubType = Additive;
 }
 
 FeatureAdditivePython::~FeatureAdditivePython()
@@ -179,7 +178,7 @@ PROPERTY_SOURCE(PartDesign::FeatureSubtractivePython, PartDesign::FeatureAddSubP
 
 FeatureSubtractivePython::FeatureSubtractivePython()
 {
-    addSubType = Subtractive;
+    initAddSubType(Subtractive);
 }
 
 FeatureSubtractivePython::~FeatureSubtractivePython()
@@ -190,7 +189,7 @@ PROPERTY_SOURCE(PartDesign::FeatureIntersectingPython, PartDesign::FeatureAddSub
 
 FeatureIntersectingPython::FeatureIntersectingPython()
 {
-    addSubType = Intersecting;
+    initAddSubType(Intersecting);
 }
 
 FeatureIntersectingPython::~FeatureIntersectingPython()

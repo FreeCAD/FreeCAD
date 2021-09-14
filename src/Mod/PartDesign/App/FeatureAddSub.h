@@ -50,8 +50,6 @@ public:
 
     virtual short mustExecute() const override;
     virtual void onChanged(const App::Property *) override;
-    virtual void setupObject() override;
-
     virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes);
     TopoShape refineShapeIfActive(const TopoShape&) const;
 
@@ -65,11 +63,12 @@ public:
     bool isRecomputePaused() const;
 
 protected:
-    Type addSubType;
+    void initAddSubType(Type t);
 
 private:
+    Type addSubType = Type::Additive;
     bool pauseRecompute = false;
-    int pausedRevision;
+    int pausedRevision = 0;
 };
 
 typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;

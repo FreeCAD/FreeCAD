@@ -74,8 +74,6 @@ PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
 Helix::Helix()
 {
-    addSubType = FeatureAddSub::Additive;
-
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Helix", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Helix", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Pitch,(10.),"Helix", App::Prop_None, "Pitch");
@@ -307,10 +305,9 @@ Base::Vector3d Helix::getProfileCenterPoint()
 
 PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
 AdditiveHelix::AdditiveHelix() {
-    addSubType = Additive;
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveHelix, PartDesign::Helix)
 SubtractiveHelix::SubtractiveHelix() {
-    addSubType = Subtractive;
+    initAddSubType(Subtractive);
 }

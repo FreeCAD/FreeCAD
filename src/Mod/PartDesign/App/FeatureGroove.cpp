@@ -59,7 +59,7 @@ PROPERTY_SOURCE(PartDesign::Groove, PartDesign::ProfileBased)
 
 Groove::Groove()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    initAddSubType(FeatureAddSub::Subtractive);
     
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");

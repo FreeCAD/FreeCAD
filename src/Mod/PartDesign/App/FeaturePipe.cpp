@@ -496,10 +496,9 @@ TopoShape Pipe::buildPipePath(const App::PropertyLinkSub &link, const gp_Trsf &t
 
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)
 AdditivePipe::AdditivePipe() {
-    addSubType = Additive;
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractivePipe, PartDesign::Pipe)
 SubtractivePipe::SubtractivePipe() {
-    addSubType = Subtractive;
+    initAddSubType(FeatureAddSub::Subtractive);
 }

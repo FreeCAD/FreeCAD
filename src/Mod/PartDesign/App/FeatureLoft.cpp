@@ -246,10 +246,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
 PROPERTY_SOURCE(PartDesign::AdditiveLoft, PartDesign::Loft)
 AdditiveLoft::AdditiveLoft() {
-    addSubType = Additive;
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveLoft, PartDesign::Loft)
 SubtractiveLoft::SubtractiveLoft() {
-    addSubType = Subtractive;
+    initAddSubType(Subtractive);
 }
