@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,45 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef MESH_KDTREE_H
-#define MESH_KDTREE_H
+#ifndef MESH_TYPES_H
+#define MESH_TYPES_H
 
-#include "Elements.h"
+#include "Core/Definitions.h"
 
-namespace MeshCore
+
+namespace Mesh
 {
 
-class MeshExport MeshKDTree
-{
-public:
-    MeshKDTree();
-    MeshKDTree(const std::vector<Base::Vector3f>& points);
-    MeshKDTree(const MeshPointArray& points);
-    ~MeshKDTree();
+// type definitions
+using ElementIndex = MeshCore::ElementIndex;
+using FacetIndex = MeshCore::FacetIndex;
+using PointIndex = MeshCore::PointIndex;
 
-    void AddPoint(Base::Vector3f& point);
-    void AddPoints(const std::vector<Base::Vector3f>& points);
-    void AddPoints(const MeshPointArray& points);
+} // namespace Mesh
 
-    bool IsEmpty() const;
-    void Clear();
-    void Optimize();
-
-    PointIndex FindNearest(const Base::Vector3f& p, Base::Vector3f& n, float&) const;
-    PointIndex FindNearest(const Base::Vector3f& p, float max_dist,
-                              Base::Vector3f& n, float&) const;
-    PointIndex FindExact(const Base::Vector3f& p) const;
-    void FindInRange(const Base::Vector3f&, float, std::vector<PointIndex>&) const;
-
-private:
-    class Private;
-    Private* d;
-
-    MeshKDTree(const MeshKDTree&);
-    void operator= (const MeshKDTree&);
-};
-
-} // namespace MeshCore
-
-
-#endif  // MESH_KDTREE_H 
+#endif // MESH_TYPES_H

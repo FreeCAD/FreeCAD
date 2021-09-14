@@ -28,6 +28,8 @@
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
 
+#include <climits>
+
 // default values
 #define MESH_MIN_PT_DIST           1.0e-6f
 #define MESH_MIN_EDGE_LEN          1.0e-3f
@@ -54,6 +56,14 @@
 
 namespace MeshCore {
 
+// type definitions
+using ElementIndex = unsigned long;
+const ElementIndex ELEMENT_INDEX_MAX = ULONG_MAX;
+using FacetIndex = ElementIndex;
+const FacetIndex FACET_INDEX_MAX = ULONG_MAX;
+using PointIndex = ElementIndex;
+const PointIndex POINT_INDEX_MAX = ULONG_MAX;
+
 template <class Prec>
 class Math
 {
@@ -71,8 +81,8 @@ typedef Math<double> Mathd;
 class MeshExport MeshDefinitions
 {
 public:
-  MeshDefinitions (void);
-  virtual ~MeshDefinitions (void)
+  MeshDefinitions ();
+  virtual ~MeshDefinitions ()
   {}
 
   static float  _fMinPointDistance;

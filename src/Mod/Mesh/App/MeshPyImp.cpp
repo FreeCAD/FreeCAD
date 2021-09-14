@@ -756,10 +756,10 @@ PyObject* MeshPy::getInternalFacets(PyObject *args)
     MeshCore::MeshEvalInternalFacets eval(kernel);
     eval.Evaluate();
 
-    const std::vector<unsigned long>& indices = eval.GetIndices();
+    const std::vector<FacetIndex>& indices = eval.GetIndices();
     Py::List ary(indices.size());
     Py::List::size_type pos=0;
-    for (std::vector<unsigned long>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
+    for (std::vector<FacetIndex>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
         ary[pos++] = Py::Long(*it);
     }
 
@@ -841,8 +841,8 @@ PyObject* MeshPy::getSegment(PyObject *args)
     }
 
     Py::List ary;
-    const std::vector<unsigned long>& segm = getMeshObjectPtr()->getSegment(index).getIndices();
-    for (std::vector<unsigned long>::const_iterator it = segm.begin(); it != segm.end(); ++it) {
+    const std::vector<FacetIndex>& segm = getMeshObjectPtr()->getSegment(index).getIndices();
+    for (std::vector<FacetIndex>::const_iterator it = segm.begin(); it != segm.end(); ++it) {
         ary.append(Py::Long((int)*it));
     }
 
@@ -855,7 +855,7 @@ PyObject* MeshPy::getSeparateComponents(PyObject *args)
         return NULL;
 
     Py::List meshesList;
-    std::vector<std::vector<unsigned long> > segs;
+    std::vector<std::vector<FacetIndex> > segs;
     segs = getMeshObjectPtr()->getComponents();
     for (unsigned int i=0; i<segs.size(); i++) {
         MeshObject* mesh = getMeshObjectPtr()->meshFromSegment(segs[i]);
@@ -870,9 +870,9 @@ PyObject* MeshPy::getFacetSelection(PyObject *args)
         return 0;
 
     Py::List ary;
-    std::vector<unsigned long> facets;
+    std::vector<FacetIndex> facets;
     getMeshObjectPtr()->getFacetsFromSelection(facets);
-    for (std::vector<unsigned long>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
+    for (std::vector<FacetIndex>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
         ary.append(Py::Long((int)*it));
     }
 
@@ -885,9 +885,9 @@ PyObject* MeshPy::getPointSelection(PyObject *args)
         return 0;
 
     Py::List ary;
-    std::vector<unsigned long> points;
+    std::vector<PointIndex> points;
     getMeshObjectPtr()->getPointsFromSelection(points);
-    for (std::vector<unsigned long>::const_iterator it = points.begin(); it != points.end(); ++it) {
+    for (std::vector<PointIndex>::const_iterator it = points.begin(); it != points.end(); ++it) {
         ary.append(Py::Long((int)*it));
     }
 
@@ -900,7 +900,7 @@ PyObject* MeshPy::meshFromSegment(PyObject *args)
     if (!PyArg_ParseTuple(args, "O", &list))
         return 0;
 
-    std::vector<unsigned long> segment;
+    std::vector<FacetIndex> segment;
     Py::Sequence ary(list);
     for (Py::Sequence::iterator it = ary.begin(); it != ary.end(); ++it) {
         Py::Long f(*it);
@@ -997,7 +997,7 @@ PyObject*  MeshPy::getSelfIntersections(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    std::vector<std::pair<unsigned long, unsigned long> > selfIndices;
+    std::vector<std::pair<FacetIndex, FacetIndex> > selfIndices;
     std::vector<std::pair<Base::Vector3f, Base::Vector3f> > selfPoints;
     MeshCore::MeshEvalSelfIntersection eval(getMeshObjectPtr()->getKernel());
     eval.GetIntersections(selfIndices);
@@ -1104,7 +1104,7 @@ PyObject*  MeshPy::getNonUniformOrientedFacets(PyObject *args)
 
     const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
     MeshCore::MeshEvalOrientation cMeshEval(kernel);
-    std::vector<unsigned long> inds = cMeshEval.GetIndices();
+    std::vector<FacetIndex> inds = cMeshEval.GetIndices();
     Py::Tuple tuple(inds.size());
     for (std::size_t i=0; i<inds.size(); i++) {
         tuple.setItem(i, Py::Long(inds[i]));
@@ -1550,7 +1550,7 @@ PyObject*  MeshPy::collapseFacets(PyObject *args)
     // if no mesh is given
     try {
         Py::Sequence list(pcObj);
-        std::vector<unsigned long> facets;
+        std::vector<FacetIndex> facets;
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Long idx(*it);
             unsigned long iIdx = static_cast<unsigned long>(idx);
@@ -1756,7 +1756,7 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
                            (float)Py::Float(dir_t.getItem(1)),
                            (float)Py::Float(dir_t.getItem(2)));
 
-        unsigned long index = 0;
+        FacetIndex index = 0;
         Base::Vector3f res;
         MeshCore::MeshAlgorithm alg(getMeshObjectPtr()->getKernel());
 
@@ -1814,9 +1814,9 @@ PyObject*  MeshPy::getPlanarSegments(PyObject *args)
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
-        const std::vector<unsigned long>& segm = it->getIndices();
+        const std::vector<FacetIndex>& segm = it->getIndices();
         Py::List ary;
-        for (std::vector<unsigned long>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
+        for (std::vector<FacetIndex>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
             ary.append(Py::Long((int)*jt));
         }
         s.append(ary);
@@ -1854,9 +1854,9 @@ PyObject*  MeshPy::getSegmentsOfType(PyObject *args)
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
-        const std::vector<unsigned long>& segm = it->getIndices();
+        const std::vector<FacetIndex>& segm = it->getIndices();
         Py::List ary;
-        for (std::vector<unsigned long>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
+        for (std::vector<FacetIndex>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
             ary.append(Py::Long((int)*jt));
         }
         s.append(ary);

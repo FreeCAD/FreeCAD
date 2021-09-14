@@ -59,7 +59,7 @@ SetOperations::SetOperations (const MeshKernel &cutMesh1, const MeshKernel &cutM
 {
 }
 
-SetOperations::~SetOperations (void)
+SetOperations::~SetOperations ()
 {
 }
 
@@ -74,7 +74,7 @@ void SetOperations::Do ()
   // _builder.clear();
 
   //Base::Sequencer().next();
-  std::set<unsigned long> facetsCuttingEdge0, facetsCuttingEdge1;
+  std::set<FacetIndex> facetsCuttingEdge0, facetsCuttingEdge1;
   Cut(facetsCuttingEdge0, facetsCuttingEdge1);
 
   // no intersection curve of the meshes found
@@ -170,7 +170,7 @@ void SetOperations::Do ()
   MeshDefinitions::SetMinPointDistance(saveMinMeshDistance);
 }
 
-void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<unsigned long>& facetsCuttingEdge1)
+void SetOperations::Cut (std::set<FacetIndex>& facetsCuttingEdge0, std::set<FacetIndex>& facetsCuttingEdge1)
 {
   MeshFacetGrid grid1(_cutMesh0, 20);
   MeshFacetGrid grid2(_cutMesh1, 20);
@@ -189,24 +189,24 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
       {
         if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
         {
-          std::vector<unsigned long> vecFacets2;
+          std::vector<FacetIndex> vecFacets2;
           grid2.Inside(grid1.GetBoundBox(gx1, gy1, gz1), vecFacets2);
       
           if (vecFacets2.size() > 0)
           {
-            std::set<unsigned long> vecFacets1;
+            std::set<FacetIndex> vecFacets1;
             grid1.GetElements(gx1, gy1, gz1, vecFacets1);
             
-            std::set<unsigned long>::iterator it1;
+            std::set<FacetIndex>::iterator it1;
             for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
             {
-              unsigned long fidx1 = *it1;
+              FacetIndex fidx1 = *it1;
               MeshGeomFacet f1 = _cutMesh0.GetFacet(*it1);
               
-              std::vector<unsigned long>::iterator it2;
+              std::vector<FacetIndex>::iterator it2;
               for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
               {
-                unsigned long fidx2 = *it2;
+                FacetIndex fidx2 = *it2;
                 MeshGeomFacet f2 = _cutMesh1.GetFacet(fidx2);
 
                 MeshPoint p0, p1;
@@ -304,13 +304,13 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
 void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
 {
   // Triangulate Mesh 
-  std::map<unsigned long, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
+  std::map<FacetIndex, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
   for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
   {
     std::vector<Vector3f> points;
     std::set<MeshPoint>   pointsSet;
 
-    unsigned long fidx = it1->first;
+    FacetIndex fidx = it1->first;
     MeshGeomFacet f = cutMesh.GetFacet(fidx);
 
     //if (side == 1)
@@ -468,7 +468,7 @@ void SetOperations::CollectFacets (int side, float mult)
   {
     if (!itf->IsFlag(MeshFacet::VISIT))
     { // Facet found, visit neighbours
-      std::vector<unsigned long> facets;
+      std::vector<FacetIndex> facets;
       facets.push_back(itf - rFacets.begin()); // add seed facet
       CollectFacetVisitor visitor(mesh, facets, _edges, side, mult, _builder); 
       mesh.VisitNeighbourFacets(visitor, itf - rFacets.begin());
@@ -492,7 +492,7 @@ void SetOperations::CollectFacets (int side, float mult)
   // MeshDefinitions::SetMinPointDistance(distSave);
 }
 
-SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh, std::vector<unsigned long>& facets,
+SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh, std::vector<FacetIndex>& facets,
                                                          std::map<Edge, EdgeInfo>& edges, int side, float mult,
                                                          Base::Builder3D& builder)
   : _facets(facets)
@@ -506,7 +506,7 @@ SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh,
 }
 
 bool SetOperations::CollectFacetVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
-                                                unsigned long ulFInd, unsigned long ulLevel)
+                                                FacetIndex ulFInd, unsigned long ulLevel)
 {
     (void)rclFacet;
     (void)rclFrom;
@@ -517,14 +517,14 @@ bool SetOperations::CollectFacetVisitor::Visit (const MeshFacet &rclFacet, const
 
 //static int matchCounter = 0;
 bool SetOperations::CollectFacetVisitor::AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom,
-                                                     unsigned long ulFInd, unsigned long ulLevel,
+                                                     FacetIndex ulFInd, unsigned long ulLevel,
                                                      unsigned short neighbourIndex)
 {
     (void)ulFInd;
     (void)ulLevel;
     if (rclFacet.IsFlag(MeshFacet::MARKED) && rclFrom.IsFlag(MeshFacet::MARKED)) {
         // facet connected to an edge
-        unsigned long pt0 = rclFrom._aulPoints[neighbourIndex], pt1 = rclFrom._aulPoints[(neighbourIndex+1)%3];
+        PointIndex pt0 = rclFrom._aulPoints[neighbourIndex], pt1 = rclFrom._aulPoints[(neighbourIndex+1)%3];
         Edge edge(_mesh.GetPoint(pt0), _mesh.GetPoint(pt1));
 
         std::map<Edge, EdgeInfo>::iterator it = _edges.find(edge);

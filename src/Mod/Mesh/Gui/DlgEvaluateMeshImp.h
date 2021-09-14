@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
+#include <Mod/Mesh/App/Types.h>
 
 class QAbstractButton;
 
@@ -127,7 +128,7 @@ protected:
     void refreshList();
     void showInformation();
     void cleanInformation();
-    void addViewProvider(const char* vp, const std::vector<unsigned long>& indices);
+    void addViewProvider(const char* vp, const std::vector<Mesh::ElementIndex>& indices);
     void removeViewProvider(const char* vp);
     void removeViewProviders();
     void changeEvent(QEvent *e);

@@ -59,7 +59,7 @@ public:
   /// Construction
   SetOperations (const MeshKernel &cutMesh1, const MeshKernel &cutMesh2, MeshKernel &result, OperationType opType, float minDistanceToPoint = 1e-5f);
   /// Destruction
-  virtual ~SetOperations (void);
+  virtual ~SetOperations ();
 
 public:
 
@@ -116,7 +116,7 @@ private:
     public:
       int               fcounter[2];           // counter of facets attacted to the edge
       MeshGeomFacet     facets[2][2];          // Geom-Facets attached to the edge
-      unsigned long     facet[2];              // underlying Facet-Index
+      FacetIndex        facet[2];              // underlying Facet-Index
 
       EdgeInfo ()
       {
@@ -146,7 +146,7 @@ private:
   class CollectFacetVisitor : public MeshFacetVisitor
   {
     public:
-      std::vector<unsigned long> &_facets;
+      std::vector<FacetIndex>    &_facets;
       const MeshKernel           &_mesh;
       std::map<Edge, EdgeInfo>   &_edges;
       int                         _side;
@@ -154,9 +154,9 @@ private:
       int                         _addFacets; // 0: add facets to the result 1: do not add facets to the result
       Base::Builder3D& _builder;
 
-      CollectFacetVisitor (const MeshKernel& mesh, std::vector<unsigned long>& facets, std::map<Edge, EdgeInfo>& edges, int side, float mult, Base::Builder3D& builder);
-      bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, unsigned long ulFInd, unsigned long ulLevel);
-      bool AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom, unsigned long ulFInd, unsigned long ulLevel, unsigned short neighbourIndex);
+      CollectFacetVisitor (const MeshKernel& mesh, std::vector<FacetIndex>& facets, std::map<Edge, EdgeInfo>& edges, int side, float mult, Base::Builder3D& builder);
+      bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, FacetIndex ulFInd, unsigned long ulLevel);
+      bool AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom, FacetIndex ulFInd, unsigned long ulLevel, unsigned short neighbourIndex);
   };
 
   /** all points from cut */
@@ -164,14 +164,14 @@ private:
   /** all edges */
   std::map<Edge, EdgeInfo>  _edges;
   /** map from facet index to its cut points (mesh 1 and mesh 2) Key: Facet-Index  Value: List of iterators of set<MeshPoint> */
-  std::map<unsigned long, std::list<std::set<MeshPoint>::iterator> > _facet2points[2];
+  std::map<FacetIndex, std::list<std::set<MeshPoint>::iterator> > _facet2points[2];
   /** Facets collected from region growing */
   std::vector<MeshGeomFacet> _facetsOf[2];
 
   std::vector<MeshGeomFacet> _newMeshFacets[2];
 
   /** Cut mesh 1 with mesh 2 */
-  void Cut (std::set<unsigned long>& facetsNotCuttingEdge0, std::set<unsigned long>& facetsCuttingEdge1);
+  void Cut (std::set<FacetIndex>& facetsNotCuttingEdge0, std::set<FacetIndex>& facetsCuttingEdge1);
   /** Trianglute each facets cut with its cutting points */
   void TriangulateMesh (const MeshKernel &cutMesh, int side);
   /** search facets for adding (with region growing) */
