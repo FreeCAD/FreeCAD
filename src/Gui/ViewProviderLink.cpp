@@ -2459,9 +2459,6 @@ std::vector<App::DocumentObject*> ViewProviderLink::claimChildren(void) const {
     auto ext = getLinkExtension();
     std::vector<App::DocumentObject*> ret;
 
-    if (ext && ext->getLinkCopyOnChangeGroupValue())
-        ret.push_back(ext->getLinkCopyOnChangeGroupValue());
-
     if(ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
@@ -2484,6 +2481,8 @@ std::vector<App::DocumentObject*> ViewProviderLink::claimChildren(void) const {
                 ret.insert(ret.begin(), ext->getLinkedObjectValue());
         }
     }
+    if (ext && ext->getLinkCopyOnChangeGroupValue())
+        ret.insert(ret.begin(), ext->getLinkCopyOnChangeGroupValue());
     return ret;
 }
 
