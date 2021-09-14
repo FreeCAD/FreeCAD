@@ -28,6 +28,9 @@
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFColor.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;

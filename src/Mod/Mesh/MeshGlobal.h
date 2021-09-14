@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Imetric 3D GmbH                                    *
+ *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,73 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#ifndef MESH_DEFINITIONS_H
-#define MESH_DEFINITIONS_H
+#include <FCGlobal.h>
 
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+#define MESH_GLOBAL_H
+
+
+// Mesh
+#ifndef MeshExport
+#ifdef Mesh_EXPORTS
+#       define MeshExport   FREECAD_DECL_EXPORT
+#else
+#       define MeshExport   FREECAD_DECL_IMPORT
+#endif
 #endif
 
-// default values
-#define MESH_MIN_PT_DIST           1.0e-6f
-#define MESH_MIN_EDGE_LEN          1.0e-3f
-#define MESH_MIN_EDGE_ANGLE        2.0
-#define MESH_REMOVE_MIN_LEN        true
-#define MESH_REMOVE_G3_EDGES       true
-
-/*
- * general constant definitions
- */
-#define FLOAT_EPS   1.0e-4f 
-
-#ifndef  FLOAT_MAX
-# define FLOAT_MAX 1e30f
+// MeshGui
+#ifndef MeshGuiExport
+#ifdef MeshGui_EXPORTS
+#  define MeshGuiExport   FREECAD_DECL_EXPORT
+#else
+#  define MeshGuiExport   FREECAD_DECL_IMPORT
+#endif
 #endif
 
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
-
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
-
-namespace MeshCore {
-
-template <class Prec>
-class Math
-{
-public:
-    MeshExport static const Prec PI;
-};
-
-typedef Math<float> Mathf;
-typedef Math<double> Mathd;
-
-/**
- * Global defined tolerances used to compare points
- * for equality.
- */
-class MeshExport MeshDefinitions
-{
-public:
-  MeshDefinitions (void);
-  virtual ~MeshDefinitions (void)
-  {}
-
-  static float  _fMinPointDistance;
-  static float  _fMinPointDistanceP2;
-  static float  _fMinPointDistanceD1;
-
-  static float  _fMinEdgeLength;
-  static bool  _bRemoveMinLength;
-
-  static float _fMinEdgeAngle;
-
-  static void  SetMinPointDistance (float fMin);
-};
-
-} // namespace MeshCore
-
-#endif // MESH_DEFINITIONS_H 
+#endif //MESH_GLOBAL_H

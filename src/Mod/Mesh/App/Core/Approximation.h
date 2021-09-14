@@ -28,6 +28,9 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Eigen.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ImplicitSurface.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 #include <algorithm>
 #include <list>
 #include <set>
