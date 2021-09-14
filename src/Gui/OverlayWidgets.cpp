@@ -3715,6 +3715,9 @@ public:
             return;
         }
 
+        if (dock && dock->isFloating() && !rectMdi.contains(dock->geometry().center()))
+            return;
+
         if (src && src == dst && dstIndex != -2){
             auto splitter = src->getSplitter();
             if (dstIndex == -1) {
