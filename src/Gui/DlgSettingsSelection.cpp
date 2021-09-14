@@ -58,10 +58,10 @@ void DlgSettingsSelection::saveSettings()
 void DlgSettingsSelection::loadSettings()
 {
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-    ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView"));
-    ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection"));
-    ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection"));
-    ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection"));
+    ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView", true));
+    ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection", true));
+    ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection", true));
+    ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection", true));
     ui->checkBoxSelectionCheckBoxes->setChecked(handle->GetBool("CheckBoxesSelection"));
 }
 
