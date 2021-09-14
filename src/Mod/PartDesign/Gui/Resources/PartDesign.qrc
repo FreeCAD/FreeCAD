@@ -13,6 +13,7 @@
         <file>icons/PartDesign_AdditiveWedge.svg</file>
         <file>icons/PartDesign_AdditiveHole.svg</file>
         <file>icons/PartDesign_AdditiveGroove.svg</file>
+        <file>icons/PartDesign_AdditivePocket.svg</file>
         <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
         <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
@@ -65,7 +66,6 @@
         <file>icons/PartDesign_SubtractiveWedge.svg</file>
         <file>icons/PartDesign_SubtractiveRevolution.svg</file>
         <file>icons/PartDesign_SubtractivePad.svg</file>
-        <file>icons/PartDesign_SubtractivePocket.svg</file>
         <file>icons/PartDesign_IntersectingBox.svg</file>
         <file>icons/PartDesign_IntersectingCone.svg</file>
         <file>icons/PartDesign_IntersectingCylinder.svg</file>
