@@ -27,6 +27,7 @@
 #include <cstring>
 #include <memory>
 #include <cctype>
+#include <boost/algorithm/string/predicate.hpp>
 #include <QByteArray>
 #include <QHash>
 #include "ComplexGeoData.h"
@@ -203,6 +204,9 @@ public:
 	explicit MappedName(const char * name, int size = -1)
 		:raw(false)
 	{
+        if (!name) return;
+        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix()))
+            name += ComplexGeoData::elementMapPrefix().size();
         if (size < 0)
             data = QByteArray(name);
         else
@@ -210,8 +214,15 @@ public:
     }
 
 	explicit MappedName(const std::string & name)
-		:data(name.c_str(), name.size()), raw(false)
-	{}
+    {
+        int size = name.size();
+        const char *n = name.c_str();
+        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix())) {
+            n += ComplexGeoData::elementMapPrefix().size();
+            size -= ComplexGeoData::elementMapPrefix().size();
+        }
+        data = QByteArray(n, size);
+    }
 
     explicit MappedName(const IndexedName & element)
         :data(element.getType()), raw(false)
@@ -299,15 +310,13 @@ public:
 
     MappedName & operator=(const std::string & other)
     {
-		this->data = other.c_str();
-        this->raw = false;
+        *this = MappedName(other);
         return *this;
     }
 
     MappedName & operator=(const char * other)
     {
-		this->data = other ? other : "";
-        this->raw = false;
+        *this = MappedName(other);
         return *this;
     }
 
@@ -796,6 +805,7 @@ struct AppExport HistoryItem {
     App::DocumentObject *obj;
     long tag;
     Data::MappedName element;
+    Data::IndexedName index;
     std::vector<Data::MappedName> intermediates;
     HistoryItem(App::DocumentObject *obj, const Data::MappedName &name);
 };
