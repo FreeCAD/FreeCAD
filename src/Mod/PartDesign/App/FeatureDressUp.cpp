@@ -97,7 +97,7 @@ Part::Feature *DressUp::getBaseObject(bool silent) const
     return rv;
 }
 
-void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
+void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
 
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
