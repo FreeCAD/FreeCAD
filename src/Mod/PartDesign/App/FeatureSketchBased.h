@@ -154,7 +154,7 @@ protected:
                             const TopoShape& supportface,
                             const TopoShape& sketchshape,
                             const std::string& method,
-                            const gp_Dir& dir);
+                            gp_Dir& dir);
 
     /// Add an offset to the face
     static void addOffsetToFace(TopoShape& upToFace,

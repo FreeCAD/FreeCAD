@@ -1817,7 +1817,7 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
         // the base shape. So if this is not the case, we make our own base
         // using the 'up to face' by extrusion, and later on cut it out.
         cutBase = true;
-        base.makEPrism(uptoface, -direction);
+        base.makEPrism(uptoface, direction);
     }
 
     // Check whether the face has limits or not. Unlimited faces have no wire

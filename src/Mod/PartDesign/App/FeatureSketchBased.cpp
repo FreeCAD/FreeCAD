@@ -587,7 +587,7 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
                               const TopoShape& supportface,
                               const TopoShape& sketchshape,
                               const std::string& method,
-                              const gp_Dir& dir)
+                              gp_Dir& dir)
 {
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
@@ -607,7 +607,8 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
             else if (it->distsq < it_near->distsq)
                 it_near = it;
         upToFace = (method == "UpToLast" ? it_far->face : it_near->face);
-    }
+    } else if (Part::findAllFacesCutBy(upToFace, sketchshape, dir).empty())
+        dir = -dir;
 
     if (upToFace.shapeType(true) != TopAbs_FACE) {
         if (!upToFace.hasSubShape(TopAbs_FACE))
