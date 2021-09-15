@@ -27,6 +27,12 @@
 #include <Base/Parameter.h>
 #include <App/DynamicProperty.h>
 
+#ifdef FC_OS_MACOSX
+#   define FC_ENABLE_MENUBAR_CHECKBOX false
+#else
+#   define FC_ENABLE_MENUBAR_CHECKBOX true
+#endif
+
 namespace Gui {
 
 /** Convenient class to obtain view provider related parameters
@@ -363,6 +369,7 @@ public:
                                        "solid shapes with flipped normals.")) \
     FC_VIEW_PARAM2(DefaultFontSize, int , Int, 0,  "") \
     FC_VIEW_PARAM2(EnableTaskPanelKeyTranslate, bool, Bool, false, "") \
+    FC_VIEW_PARAM(EnableMenuBarCheckBox, bool, Bool, FC_ENABLE_MENUBAR_CHECKBOX, "")\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

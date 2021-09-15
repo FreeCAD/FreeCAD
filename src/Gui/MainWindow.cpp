@@ -662,7 +662,7 @@ enum MenuType {
     DockWindowMenu,
 };
 
-void populateMenu(QMenu *menu, MenuType type)
+void populateMenu(QMenu *menu, MenuType type, bool popup)
 {
     auto mw = getMainWindow();
     QMap<QString, QAction*> actions;
@@ -671,6 +671,9 @@ void populateMenu(QMenu *menu, MenuType type)
     QMenu *lockMenu = nullptr;
     menu->setToolTipsVisible(true);
 
+    if (ViewParams::EnableMenuBarCheckBox())
+        popup = true;
+
     switch(type) {
     case ToolBarMenu: {
         tooltip = QObject::tr("Toggles this toolbar");
@@ -678,13 +681,22 @@ void populateMenu(QMenu *menu, MenuType type)
         lockMenu = new QMenu(QObject::tr("Lock toolbars"), menu);
         lockMenu->setToolTipsVisible(true);
 
-        QCheckBox *ckDefault;
-        auto wa = Action::addCheckBox(lockMenu, QObject::tr("Default"),
-                QObject::tr("Default locking of all toolbars"), QIcon(),
-                !ToolBarManager::getInstance()->isDefaultMovable(), &ckDefault);
         auto cb = [](bool checked) {ToolBarManager::getInstance()->setDefaultMovable(!checked);};
-        QObject::connect(wa, &QWidgetAction::toggled, cb);
-        QObject::connect(ckDefault, &QCheckBox::toggled, cb);
+        QAction *lockAction = nullptr;
+        if (popup) {
+            QCheckBox *checkbox;
+            lockAction = Action::addCheckBox(lockMenu, QObject::tr("Default"),
+                    QObject::tr("Default locking of all toolbars"), QIcon(),
+                    !ToolBarManager::getInstance()->isDefaultMovable(), &checkbox);
+            QObject::connect(lockAction, &QAction::toggled, cb);
+            QObject::connect(checkbox, &QCheckBox::toggled, cb);
+        } else {
+            lockAction = lockMenu->addAction(QObject::tr("Default"));
+            QObject::connect(lockAction, &QAction::toggled, cb);
+            lockAction->setToolTip(QObject::tr("Default locking of all toolbars"));
+            lockAction->setCheckable(true);
+            lockAction->setChecked(!ToolBarManager::getInstance()->isDefaultMovable());
+        }
         lockMenu->addSeparator();
 
         for (auto toolbar : mw->findChildren<QToolBar*>()) {
@@ -696,12 +708,21 @@ void populateMenu(QMenu *menu, MenuType type)
                 if ((action->isVisible() || toolbar->isVisible()) && action->text().size()) {
                     action->setVisible(true);
                     actions[action->text()] = action;
+                    auto cb = [toolbar](bool checked) {toolbar->setMovable(!checked);};
+                    if (!popup) {
+                        auto act = lockMenu->addAction(action->text());
+                        act->setToolTip(ltooltip);
+                        act->setIcon(action->icon());
+                        act->setCheckable(true);
+                        act->setChecked(!toolbar->isMovable());
+                        QObject::connect(act, &QAction::toggled, cb);
+                        continue;
+                    }
                     QCheckBox *checkbox;
                     auto wa = Action::addCheckBox(lockMenu, action->text(),
                             ltooltip, action->icon(), !toolbar->isMovable(), &checkbox);
-                    auto cb = [toolbar](bool checked) {toolbar->setMovable(!checked);};
                     QObject::connect(wa, &QWidgetAction::toggled, cb);
-                    QObject::connect(ckDefault, &QCheckBox::toggled, [checkbox](bool checked){
+                    QObject::connect(lockAction, &QAction::toggled, [checkbox](bool checked){
                         QSignalBlocker block(checkbox);
                         checkbox->setChecked(checked);
                     });
@@ -733,10 +754,14 @@ void populateMenu(QMenu *menu, MenuType type)
 
     for(auto it=actions.begin(); it!=actions.end(); ++it) {
         auto action = *it;
+        auto m = hiddenMenu && !action->isVisible() ? hiddenMenu : menu;
+        if (!popup) {
+            m->addAction(action);
+            continue;
+        }
         QCheckBox *checkbox;
         auto wa = Action::addCheckBox(
-                hiddenMenu && !action->isVisible() ? hiddenMenu : menu,
-                it.key(), tooltip, action->icon(), action->isChecked(), &checkbox);
+                m, it.key(), tooltip, action->icon(), action->isChecked(), &checkbox);
         QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SIGNAL(triggered(bool)));
         QObject::connect(wa, SIGNAL(triggered(bool)), action, SIGNAL(triggered(bool)));
     }
@@ -751,9 +776,9 @@ void populateMenu(QMenu *menu, MenuType type)
 QMenu* MainWindow::createPopupMenu ()
 {
     QMenu *menu = new QMenu(this);
-    populateMenu(menu, DockWindowMenu);
+    populateMenu(menu, DockWindowMenu, true);
     menu->addSeparator();
-    populateMenu(menu, ToolBarMenu);
+    populateMenu(menu, ToolBarMenu, true);
     menu->addSeparator();
 
     Workbench* wb = WorkbenchManager::instance()->active();
@@ -1325,14 +1350,14 @@ void MainWindow::onToolBarMenuAboutToShow()
 {
     QMenu* menu = static_cast<QMenu*>(sender());
     menu->clear();
-    populateMenu(menu, ToolBarMenu);
+    populateMenu(menu, ToolBarMenu, false);
 }
 
 void MainWindow::onDockWindowMenuAboutToShow()
 {
     QMenu* menu = static_cast<QMenu*>(sender());
     menu->clear();
-    populateMenu(menu, DockWindowMenu);
+    populateMenu(menu, DockWindowMenu, false);
 }
 
 QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
