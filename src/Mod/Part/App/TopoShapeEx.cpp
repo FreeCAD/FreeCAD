@@ -1922,8 +1922,8 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
     if (cutBase) {
         this->makECut({*this, base});
-        if (!_base.isNull())
-            this->makEFuse({*this, _base});
+        // if (!_base.isNull())
+        //     this->makEFuse({*this, _base});
     }
     return *this;
 }
