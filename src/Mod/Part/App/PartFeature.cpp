@@ -267,13 +267,13 @@ Feature::getElementHistory(App::DocumentObject *feature,
     TopoShape shape = getTopoShape(feature);
     Data::IndexedName idx(name);
     Data::MappedName element;
+    Data::MappedName prevElement;
     if (idx)
         element = shape.getMappedName(idx, true);
-    else {
-        if (boost::starts_with(name, Data::ComplexGeoData::elementMapPrefix()))
-            name += Data::ComplexGeoData::elementMapPrefix().size();
+    else if (Data::ComplexGeoData::isMappedElement(name))
+        element = Data::MappedName(Data::ComplexGeoData::newElementName(name));
+    else
         element = Data::MappedName(name);
-    }
     char element_type=0;
     if(sameType)
         element_type = shape.elementType(element);
@@ -282,6 +282,20 @@ Feature::getElementHistory(App::DocumentObject *feature,
         Data::MappedName original;
         ret.emplace_back(feature,element);
         long tag = shape.getElementHistory(element,&original,&ret.back().intermediates);
+
+        ret.back().index = shape.getIndexedName(element);
+        if (!ret.back().index && prevElement) {
+            ret.back().index = shape.getIndexedName(prevElement);
+            if (ret.back().index) {
+                ret.back().intermediates.insert(ret.back().intermediates.begin(), element);
+                ret.back().element = prevElement;
+            }
+        }
+        if (ret.back().intermediates.size())
+            prevElement = ret.back().intermediates.back();
+        else
+            prevElement = Data::MappedName();
+
         App::DocumentObject *obj = nullptr;
         if (tag) {
             App::Document *doc = feature->getDocument();

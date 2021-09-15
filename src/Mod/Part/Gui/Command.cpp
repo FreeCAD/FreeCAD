@@ -2648,7 +2648,10 @@ void CmdPartGeometryHistory::activated(int iMsg)
     std::string tmp;
     for (auto &hist : Part::Feature::getElementHistory(sobj, element.c_str())) {
         tmp.clear();
-        sels.emplace_back(hist.obj, hist.element.toString(tmp));
+        hist.index.toString(tmp);
+        if (tmp.empty())
+            tmp = "?";
+        sels.emplace_back(hist.obj, tmp.c_str());
     }
 
     Gui::SelectionMenu menu;
@@ -2693,7 +2696,7 @@ void CmdPartGeometryDerived::activated(int iMsg)
         }
         sel = sels.front();
     }
-    auto element = sel.getNewElementName(false);
+    auto element = sel.getOldElementName();
     if (element.empty()) {
         FC_ERR("No geometry element selection");
         return;
@@ -2716,6 +2719,9 @@ void CmdPartGeometryDerived::activated(int iMsg)
             sels.emplace_back(obj, elementName.index.toString(tmp));
         }
     }
+
+    if (sels.empty())
+        return;
 
     Gui::SelectionMenu menu;
     menu.doPick(sels, sel);
