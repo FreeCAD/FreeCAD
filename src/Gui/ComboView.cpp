@@ -35,6 +35,7 @@
 #include "ProjectView.h"
 #include "Application.h"
 #include "Document.h"
+#include "MainWindow.h"
 #include "Tree.h"
 #include "DockWindowManager.h"
 #include "TaskView/TaskView.h"
@@ -88,6 +89,14 @@ ComboView::~ComboView()
 bool ComboView::hasTreeView() const
 {
     return tree != nullptr;
+}
+
+static inline void checkFocus()
+{
+#ifdef FC_OS_MACOSX
+    // Prevent undesired view switch
+    getMainWindow()->setFocus();
+#endif
 }
 
 void ComboView::setShowModel(bool showModel)
@@ -153,6 +162,8 @@ void ComboView::showDialog(Gui::TaskView::TaskDialog *dlg)
 {
     static QIcon icon = Gui::BitmapFactory().pixmap("edit-edit.svg");
 
+    checkFocus();
+
     // switch to the TaskView tab
     oldTabIndex = tabs->currentIndex();
     tabs->setCurrentIndex(taskIndex);
@@ -170,12 +181,15 @@ void ComboView::showDialog(Gui::TaskView::TaskDialog *dlg)
 void ComboView::closeDialog()
 {
     // close the dialog
+    checkFocus();
     taskPanel->removeDialog();
 }
 
 void ComboView::closedDialog()
 {
     static QIcon icon = QIcon();
+
+    checkFocus();
 
     // dialog has been closed
     tabs->setCurrentIndex(oldTabIndex);
@@ -186,12 +200,16 @@ void ComboView::showTreeView()
 {
     if (modelIndex < 0)
         return;
+    checkFocus();
+
     // switch to the tree view
     tabs->setCurrentIndex(modelIndex);
 }
 
 void ComboView::showTaskView()
 {
+    checkFocus();
+
     // switch to the task view
     tabs->setCurrentIndex(taskIndex);
 }
