@@ -844,8 +844,8 @@ static bool setPreselect(QMenu *menu,
                             "Shift + right click to bring up the object context menu."));
     if (sel.hasSubElement())
         tooltip = QString::fromLatin1("%1\n%2").arg(tooltip,
-                QObject::tr("Alt + right click to trace geometry history.\n"
-                             "Alt + Shift + right click to list derived geometries."));
+                QObject::tr("CTRL + right click to trace geometry history.\n"
+                             "CTRL + Shift + right click to list derived geometries."));
 
 
     ToolTip::showText(QCursor::pos(), tooltip, menu);
@@ -928,7 +928,7 @@ void SelectionMenu::onSelUpMenu()
         return;
     }
     
-    if (!(modifiers & Qt::AltModifier)) {
+    if (!(modifiers & Qt::ControlModifier)) {
         SelUpMenu menu(currentMenu);
         TreeWidget::populateSelUpMenu(&menu, &sel);
         TreeWidget::execSelUpMenu(&menu, QCursor::pos());
@@ -942,8 +942,8 @@ void SelectionMenu::onSelUpMenu()
         _HasPicked = false;
         PieMenu::deactivate(false);
 
-        // alt + right click for geometry element history tracing
-        // alt + shift + right click for derived geometry
+        // ctrl + right click for geometry element history tracing
+        // ctrl + shift + right click for derived geometry
         if (modifiers & Qt::ShiftModifier)
             Application::Instance->commandManager().runCommandByName("Part_GeometryDerived");
         else
