@@ -200,6 +200,9 @@ void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const cha
         OccurrencesProperty.Restore(reader);
         Occurrences.setValue(OccurrencesProperty.getValue());
     }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 }

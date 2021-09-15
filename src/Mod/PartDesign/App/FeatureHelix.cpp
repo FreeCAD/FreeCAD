@@ -514,6 +514,9 @@ void Helix::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeN
         TurnsProperty.Restore(reader);
         Turns.setValue(TurnsProperty.getValue());
     }
+    else {
+        ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
