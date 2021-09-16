@@ -112,15 +112,17 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
     bool isSolid = PartDesign::Body::isSolidFeature(feat);
     auto body = PartDesign::Body::findBodyOf(feat);
+    if (body) {
+        auto act = menu->addAction(QObject::tr("Toggle export"), receiver, member);
+        act->setData(QVariant((int)Gui::ViewProvider::ExportInGroup));
+    }
+
     if(body && isSolid) {
         QAction* act;
         act = menu->addAction(QObject::tr(
                     feat->Suppress.getValue()?"Unsuppress":"Suppress"),
                     receiver, member);
         act->setData(QVariant((int)EditToggleSupress));
-
-        act = menu->addAction(QObject::tr("Toggle export"), receiver, member);
-        act->setData(QVariant((int)Gui::ViewProvider::ExportInGroup));
 
         if (!body->AutoGroupSolids.getValue() && feat->_Siblings.getSize()) {
             act = menu->addAction(QObject::tr("Ungroup solid feature"), receiver, member);
