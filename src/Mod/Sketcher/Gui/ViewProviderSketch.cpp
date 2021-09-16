@@ -6144,8 +6144,8 @@ Restart:
                         Base::Vector3d pnt1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
                         Base::Vector3d pnt2 = getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
 
-                        SbVec3f p1(pnt1.x,pnt1.y,zDatum);
-                        SbVec3f p2(pnt2.x,pnt2.y,zDatum);
+                        SbVec3f p1(pnt1.x,pnt1.y,zConstr);
+                        SbVec3f p2(pnt2.x,pnt2.y,zConstr);
                         SbVec3f dir = (p2-p1);
                         dir.normalize();
                         SbVec3f norm (-dir[1],dir[0],0);
