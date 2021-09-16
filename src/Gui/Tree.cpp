@@ -6663,25 +6663,19 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
         break;
     case HighlightMode::UserDefined:
     {
-        QColor color(230,230,255);
-        if (set) {
-            f.setBold(TreeParams::TreeActiveBold());
-            f.setItalic(TreeParams::TreeActiveItalic());
-            f.setUnderline(TreeParams::TreeActiveUnderlined());
-            f.setOverline(TreeParams::TreeActiveOverlined());
-
-            unsigned long col = TreeParams::TreeActiveColor();
-            color = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
-        }
-        else {
-            f.setBold(false);
-            f.setItalic(false);
-            f.setUnderline(false);
-            f.setOverline(false);
-        }
+        f.setBold(TreeParams::TreeActiveBold());
+        f.setItalic(TreeParams::TreeActiveItalic());
+        f.setUnderline(TreeParams::TreeActiveUnderlined());
+        f.setOverline(TreeParams::TreeActiveOverlined());
+        unsigned long col = TreeParams::TreeActiveColor();
+        QColor color = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
         highlight(color);
     }   break;
     default:
+        f.setBold(false);
+        f.setItalic(false);
+        f.setUnderline(false);
+        f.setOverline(false);
         highlight(QColor());
         break;
     }
