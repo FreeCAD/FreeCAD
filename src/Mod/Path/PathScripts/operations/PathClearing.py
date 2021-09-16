@@ -27,7 +27,7 @@ import Path
 import PathScripts.PathLog as PathLog
 
 # import PathScripts.PathOp as PathOp
-import PathScripts.operations.PathOp2 as PathOp
+import PathScripts.operations.PathOp2 as PathOp2
 import PathScripts.PathUtils as PathUtils
 import PathScripts.strategies.PathStrategyClearing as PathStrategyClearing
 import PathScripts.PathSelectionProcessing as SelectionProcessing
@@ -52,21 +52,21 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-class ObjectClearing(PathOp.ObjectOp):
+class ObjectClearing(PathOp2.ObjectOp):
     """Proxy object for Clearing operation."""
 
     def opFeatures(self, obj):
         """opFeatures(obj) ... returns the base features supported by all Path.Area based operations."""
         return (
-            PathOp.FeatureTool
-            | PathOp.FeatureHeightsDepths
-            | PathOp.FeatureStepDown
-            | PathOp.FeatureFinishDepth
-            | PathOp.FeatureStartPoint
-            | PathOp.FeatureCoolant
-            | PathOp.FeatureBaseEdges
-            | PathOp.FeatureBaseFaces
-            | PathOp.FeatureExtensions
+            PathOp2.FeatureTool
+            | PathOp2.FeatureHeightsDepths
+            | PathOp2.FeatureStepDown
+            | PathOp2.FeatureFinishDepth
+            | PathOp2.FeatureStartPoint
+            | PathOp2.FeatureCoolant
+            | PathOp2.FeatureBaseEdges
+            | PathOp2.FeatureBaseFaces
+            | PathOp2.FeatureExtensions
         )
 
     def initOperation(self, obj):
@@ -543,7 +543,7 @@ class ObjectClearing(PathOp.ObjectOp):
 
         if obj.Base:
             baseObjList = obj.Base
-            extensions = PathOp.PathFeatureExtensions.getExtensions(obj)
+            extensions = PathOp2.PathFeatureExtensions.getExtensions(obj)
         else:
             baseObjList = [(base, list()) for base in self.model]
 

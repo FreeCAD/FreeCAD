@@ -199,9 +199,9 @@ Command = PathOpGui.SetupOperation(
     PathPerimeter.Create,
     TaskPanelOpPage,
     "Path_Profile2",
-    QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+    QtCore.QT_TRANSLATE_NOOP("Path_Perimeter", "Perimeter"),
     QtCore.QT_TRANSLATE_NOOP(
-        "Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"
+        "Path_Perimeter", "Profile entire model, selected face(s) or selected edge(s)"
     ),
     PathPerimeter.SetupProperties,
 )

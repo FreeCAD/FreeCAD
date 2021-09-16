@@ -27,7 +27,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
-import PathScripts.operations.PathOp2 as PathOp
+import PathScripts.operations.PathOp2 as PathOp2
 import PathScripts.PathUtils as PathUtils
 import PathScripts.strategies.PathStrategyProfile as StrategyProfile
 import PathScripts.PathSelectionProcessing as SelectionProcessing
@@ -57,21 +57,21 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-class ObjectPerimeter(PathOp.ObjectOp):
+class ObjectPerimeter(PathOp2.ObjectOp):
     """Proxy object for Profile operations based on faces."""
 
     def opFeatures(self, obj):
         """opFeatures(obj) ... returns the base features supported by all Path.Area based operations."""
         return (
-            PathOp.FeatureTool
-            | PathOp.FeatureHeightsDepths
-            | PathOp.FeatureStepDown
-            | PathOp.FeatureStartPoint
-            | PathOp.FeatureCoolant
-            | PathOp.FeatureBaseFaces
-            | PathOp.FeatureBasePanels
-            | PathOp.FeatureBaseEdges
-            | PathOp.FeatureExtensions
+            PathOp2.FeatureTool
+            | PathOp2.FeatureHeightsDepths
+            | PathOp2.FeatureStepDown
+            | PathOp2.FeatureStartPoint
+            | PathOp2.FeatureCoolant
+            | PathOp2.FeatureBaseFaces
+            | PathOp2.FeatureBasePanels
+            | PathOp2.FeatureBaseEdges
+            | PathOp2.FeatureExtensions
         )
 
     def initOperation(self, obj):
@@ -462,7 +462,7 @@ class ObjectPerimeter(PathOp.ObjectOp):
 
         if baseDataExists:
             baseObjList = obj.Base
-            extensions = PathOp.PathFeatureExtensions.getExtensions(obj)
+            extensions = PathOp2.PathFeatureExtensions.getExtensions(obj)
         else:
             baseObjList = [(base, list()) for base in self.model]
             PathLog.debug("Processing entire model")
@@ -524,7 +524,7 @@ class ObjectPerimeter(PathOp.ObjectOp):
 
 def SetupProperties():
     setup = list()
-    # setup.extend(PathOp.PathFeatureExtensions.SetupProperties())
+    # setup.extend(PathOp2.PathFeatureExtensions.SetupProperties())
     setup.extend([tup[1] for tup in ObjectPerimeter.opPropertyDefinitions(None)])
     return setup
 

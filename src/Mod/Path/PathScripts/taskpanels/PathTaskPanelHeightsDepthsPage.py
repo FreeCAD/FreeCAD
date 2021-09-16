@@ -140,7 +140,7 @@ class TaskPanelHeightsDepthsPage(PathTaskPanelPage.TaskPanelPage):
             self.form.finishDepthLabel.hide()
 
     def getTitle(self, obj):
-        return translate("PathOp2", "Depths and Heights")
+        return translate("PathOp2", "Heights and Depths")
 
     def getFields(self, obj):
         self.safeHeight.updateProperty()

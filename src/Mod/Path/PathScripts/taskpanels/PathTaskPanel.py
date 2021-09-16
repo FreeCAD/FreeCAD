@@ -142,7 +142,7 @@ class TaskPanel(object):
                 page = opPage.taskPanelHeightsDepthsPage(obj, features)
             else:
                 page = HeightsDepthsPage.TaskPanelHeightsDepthsPage(obj, features)
-            self.featurePages["Locations"] = page
+            self.featurePages["HeightsDepths"] = page
 
         if PathOp2.FeatureDiameters & features:
             if hasattr(opPage, "taskPanelDiametersPage"):
