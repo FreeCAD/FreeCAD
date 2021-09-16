@@ -514,6 +514,32 @@ PyObject*  MeshPy::outer(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::section(PyObject *args, PyObject *kwds)
+{
+    PyObject *pcObj;
+    PyObject *connectLines = Py_True;
+    float fMinDist = 0.0001f;
+
+    static char* keywords_section[] = {"Mesh", "ConnectLines", "MinDist", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|O!f",keywords_section,
+                                     &(MeshPy::Type), &pcObj, &PyBool_Type, &connectLines, &fMinDist))
+        return nullptr;
+
+    MeshPy* pcObject = static_cast<MeshPy*>(pcObj);
+
+    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), PyObject_IsTrue(connectLines), fMinDist);
+    Py::List outer;
+    for (const auto& it : curves) {
+        Py::List inner;
+        for (const auto& jt : it) {
+            inner.append(Py::Vector(jt));
+        }
+        outer.append(inner);
+    }
+
+    return Py::new_reference_to(outer);
+}
+
 PyObject*  MeshPy::coarsen(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

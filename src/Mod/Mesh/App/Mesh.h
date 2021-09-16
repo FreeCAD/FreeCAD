@@ -252,6 +252,7 @@ public:
     MeshObject* subtract(const MeshObject&) const;
     MeshObject* inner(const MeshObject&) const;
     MeshObject* outer(const MeshObject&) const;
+    std::vector< std::vector<Base::Vector3f> > section(const MeshObject&, bool connectLines, float fMinDist) const;
     //@}
 
     /** @name Topological operations */

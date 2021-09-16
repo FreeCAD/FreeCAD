@@ -1176,6 +1176,44 @@ MeshObject* MeshObject::outer(const MeshObject& mesh) const
     return new MeshObject(result);
 }
 
+std::vector< std::vector<Base::Vector3f> >
+MeshObject::section(const MeshObject& mesh, bool connectLines, float fMinDist) const
+{
+    MeshCore::MeshKernel kernel1(this->_kernel);
+    kernel1.Transform(this->_Mtrx);
+    MeshCore::MeshKernel kernel2(mesh._kernel);
+    kernel2.Transform(mesh._Mtrx);
+    std::vector< std::vector<Base::Vector3f> > lines;
+
+    MeshCore::MeshIntersection sec(kernel1, kernel2, fMinDist);
+    std::list<MeshCore::MeshIntersection::Tuple> tuple;
+    sec.getIntersection(tuple);
+
+    if (!connectLines) {
+        for (const auto& it : tuple) {
+            std::vector<Base::Vector3f> curve;
+            curve.push_back(it.p1);
+            curve.push_back(it.p2);
+            lines.push_back(curve);
+        }
+    }
+    else {
+        std::list< std::list<MeshCore::MeshIntersection::Triple> > triple;
+        sec.connectLines(false, tuple, triple);
+
+        for (const auto& it : triple) {
+            std::vector<Base::Vector3f> curve;
+            curve.reserve(it.size());
+
+            for (const auto& jt : it)
+                curve.push_back(jt.p);
+            lines.push_back(curve);
+        }
+    }
+
+    return lines;
+}
+
 void MeshObject::refine()
 {
     unsigned long cnt = _kernel.CountFacets();

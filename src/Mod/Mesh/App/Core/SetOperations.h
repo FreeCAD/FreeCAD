@@ -184,6 +184,54 @@ private:
 
 };
 
+/*!
+  Determine the intersections between two meshes.
+*/
+class MeshExport MeshIntersection
+{
+public:
+    struct Tuple {
+        Base::Vector3f p1, p2;
+        FacetIndex f1, f2;
+    };
+    struct Triple {
+        Base::Vector3f p;
+        FacetIndex f1, f2;
+    };
+    struct Pair {
+        Base::Vector3f p;
+        FacetIndex f;
+    };
+
+    MeshIntersection(const MeshKernel& m1,
+                     const MeshKernel& m2,
+                     float dist)
+        : kernel1(m1)
+        , kernel2(m2)
+        , minDistance(dist)
+    {
+    }
+    ~MeshIntersection()
+    {
+    }
+
+    bool hasIntersection() const;
+    void getIntersection(std::list<Tuple>&) const;
+    /*!
+      From an unsorted list of intersection points make a list of sorted intersection points. If parameter \a onlyclosed
+      is set to true then only closed intersection curves are taken and all other curves are filtered out.
+     */
+    void connectLines(bool onlyclosed, const std::list<Tuple>&, std::list< std::list<Triple> >&);
+
+private:
+    static bool testIntersection(const MeshKernel& k1, const MeshKernel& k2);
+
+private:
+    const MeshKernel& kernel1;
+    const MeshKernel& kernel2;
+    float minDistance;
+};
+
 
 } // namespace MeshCore
 
