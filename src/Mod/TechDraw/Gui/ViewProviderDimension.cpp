@@ -102,7 +102,7 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 
     sPixmap = "TechDraw_Dimension";
     if (getViewObject()->isDerivedFrom(TechDraw::LandmarkDimension::getClassTypeId())) {
-        sPixmap = "techdraw-landmarkdistance";
+        sPixmap = "TechDraw_LandmarkDimension";
     }
 }
 
