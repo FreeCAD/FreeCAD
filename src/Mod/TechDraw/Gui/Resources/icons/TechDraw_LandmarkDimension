@@ -176,7 +176,7 @@
             <dc:title>[WandererFan]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>TechDraw_Dimension_Length</dc:title>
+        <dc:title>TechDraw_LandmarkDimension</dc:title>
         <dc:date>2016-04-27</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -184,7 +184,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_Dimension_Length.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_LandmarkDimension.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
