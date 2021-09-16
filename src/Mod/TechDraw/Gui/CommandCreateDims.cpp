@@ -1319,7 +1319,7 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_LandmarkDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "techdraw-landmarkdistance";
+    sPixmap         = "TechDraw_LandmarkDimension";
 }
 
 void CmdTechDrawLandmarkDimension::activated(int iMsg)
