@@ -250,8 +250,10 @@ void CmdPartDesignBody::activated(int iMsg)
             return;
         if (checkBox.isChecked() != Part::PartParams::UseBaseObjectName())
             Part::PartParams::set_UseBaseObjectName(checkBox.isChecked());
-        if(res == QMessageBox::No)
+        if(res == QMessageBox::No) {
             support.clear();
+            baseFeature = nullptr;
+        }
     } else
         labelSource = App::DocumentObjectT();
 
