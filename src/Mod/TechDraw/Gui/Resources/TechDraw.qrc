@@ -39,7 +39,7 @@
         <file>icons/TechDraw_LinkDimension.svg</file>
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
-        <file>icons/techdraw-landmarkdistance.svg</file>
+        <file>icons/TechDraw_LandmarkDimension.svg</file>
         <file>icons/actions/techdraw-View.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
