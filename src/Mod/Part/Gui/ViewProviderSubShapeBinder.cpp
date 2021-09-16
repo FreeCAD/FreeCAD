@@ -49,6 +49,7 @@
 #include <Gui/Command.h>
 
 #include <Mod/Part/App/SubShapeBinder.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/Gui/PartParams.h>
 #include "ViewProviderSubShapeBinder.h"
 
@@ -304,6 +305,12 @@ void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver
         });
     }
 
+    auto body = Part::BodyBase::findBodyOf(self);
+    if (body) {
+        auto act = menu->addAction(QObject::tr("Toggle export"), receiver, member);
+        act->setData(QVariant((int)Gui::ViewProvider::ExportInGroup));
+    }
+
     ViewProviderPart::setupContextMenu(menu,receiver,member);
 }
 
@@ -486,6 +493,7 @@ void ViewProviderSubShapeBinder::getExtraIcons(
     generateIcons();
     for (auto &v : iconMap)
         icons.emplace_back(v.first, v.second.pixmap);
+    ViewProviderPart::getExtraIcons(icons);
 }
 
 QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
