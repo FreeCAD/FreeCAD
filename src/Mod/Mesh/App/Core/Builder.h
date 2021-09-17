@@ -64,9 +64,11 @@ private:
     class Edge
     {
         public:
-        unsigned long	pt1, pt2, facetIdx;
+        PointIndex pt1;
+        PointIndex pt2;
+        FacetIndex facetIdx;
 
-        Edge (unsigned long p1, unsigned long p2, unsigned long idx)
+        Edge (PointIndex p1, PointIndex p2, FacetIndex idx)
         {
             facetIdx = idx;
             if (p1 > p2)
@@ -113,7 +115,7 @@ private:
 
 public:
     MeshBuilder(MeshKernel &rclM);
-    ~MeshBuilder(void);
+    ~MeshBuilder();
 
     /**
      * Set the tolerance for the comparison of points. Normally you don't need to set the tolerance.
@@ -189,7 +191,7 @@ private:
 public:
     typedef int size_type;
     MeshFastBuilder(MeshKernel &rclM);
-    ~MeshFastBuilder(void);
+    ~MeshFastBuilder();
 
     /** Initializes the class. Must be done before adding facets 
      * @param ctFacets count of facets.

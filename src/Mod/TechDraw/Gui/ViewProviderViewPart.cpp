@@ -334,6 +334,9 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
         ExtraWidthProperty.Restore(reader);
         ExtraWidth.setValue(ExtraWidthProperty.getValue());
     }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)

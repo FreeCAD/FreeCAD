@@ -27,14 +27,19 @@
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_HorizontalDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCircleCenterLines.svg</file>
+        <file>icons/TechDraw_ExtensionThreadHoleSide.svg</file>
+        <file>icons/TechDraw_ExtensionThreadBoltSide.svg</file>
+        <file>icons/TechDraw_ExtensionThreadHoleBottom.svg</file>
+        <file>icons/TechDraw_ExtensionThreadBoltBottom.svg</file>
         <file>icons/TechDraw_LengthDimension.svg</file>
         <file>icons/TechDraw_RadiusDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
         <file>icons/TechDraw_VerticalDimension.svg</file>
-        <file>icons/TechDraw_Dimension_Link.svg</file>
+        <file>icons/TechDraw_LinkDimension.svg</file>
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
-        <file>icons/techdraw-landmarkdistance.svg</file>
+        <file>icons/TechDraw_LandmarkDimension.svg</file>
         <file>icons/actions/techdraw-View.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
@@ -168,5 +173,7 @@
         <file>translations/TechDraw_val-ES.qm</file>
         <file>translations/TechDraw_ar.qm</file>
         <file>translations/TechDraw_vi.qm</file>
+        <file>translations/TechDraw_es-AR.qm</file>
+        <file>translations/TechDraw_bg.qm</file>
     </qresource>
 </RCC> 

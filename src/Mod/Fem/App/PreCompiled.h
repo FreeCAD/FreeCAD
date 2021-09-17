@@ -32,13 +32,11 @@
 # define FemExport      __declspec(dllexport)
 # define PartExport     __declspec(dllimport)
 # define MeshExport     __declspec(dllimport)
-# define BaseExport     __declspec(dllimport)
 #else // for Linux
 # define AppFemExport
 # define FemExport
 # define PartExport
 # define MeshExport
-# define BaseExport
 #endif
 
 #ifdef _MSC_VER

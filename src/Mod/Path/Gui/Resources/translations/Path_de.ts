@@ -9,6 +9,36 @@
       <translation>Zeigt im DEBUG-Modus den temporären Objekte Pfad-konstruktion.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
+      <source>The direction along which dropcutter lines are created</source>
+      <translation>Die Richtung, entlang der Drop-Cutter Bahnen erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
+      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
+      <translation>Soll die Operation durch das Grundobjekt oder durch die Begrenzungsbox des Basisobjekts eingeschränkt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
+      <source>Step over percentage of the drop cutter path</source>
+      <translation>Überlappung des Drop-Cutter Pfads in Prozent</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
+      <source>Z-axis offset from the surface of the object</source>
+      <translation>Z-Achsenversatz von der Oberfläche des Objekts</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
+      <source>The Sample Interval. Small values cause long wait times</source>
+      <translation>Das Abtastintervall. Kleine Werte führen zu langer Wartezeit</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
+      <source>Enable optimization which removes unnecessary points from G-Code output</source>
+      <translation>Aktivieren Sie die Optimierung, um unnötige Punkte aus der G-Code-Ausgabe zu entfernen</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="124"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
       <translation>Kleinere Werte liefern ein feineres, genaueres Netz - bei höherem Rechenaufwand (Cpu).</translation>
@@ -19,9 +49,34 @@
       <translation>Kleinere Werte liefern ein feineres, genaueres Netz. Geringere Werte erhöhen die Verarbeitungszeit unerheblich.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
+      <source>The completion mode for the operation: single or multi-pass</source>
+      <translation>Der Vervollständigungsmodus für die Operation: einfach oder mehrfach</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
+      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
+      <translation>Umlaufrichtung des Werkzeugs um das Werkstück: Gleichlauf (Uhrzeigersinn) oder Gegenlauf (entgegen des Uhrzeigersinns)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="135"/>
       <source>Stop index(angle) for rotational scan</source>
       <translation>Stopp-Index(Winkel) für Rotationssuche</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
+      <source>Ignore areas that proceed below specified depth.</source>
+      <translation>Ignoriere Bereiche, die unterhalb der angegebenen Tiefe fortfahren.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
+      <source>Depth used to identify waste areas to ignore.</source>
+      <translation>Tiefe zum Ermitteln von überschüssigen Flächen, um diese auszulassen.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
+      <source>Cut through waste to depth at model edge, releasing the model.</source>
+      <translation>Schneide durch überschüssiges Material bis zur Werkstückkante, um dieses zu befreien.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="131"/>
@@ -197,6 +252,11 @@
       <location filename="PathProfileEdges.py" line="70"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>Vermessungspunkt welcher zur Berechnung des Werkzeugweges verwendet wird</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="98"/>
+      <source>Extra value to stay away from final profile- good for roughing toolpath</source>
+      <translation>Aufmaß zum Endprofil - Geeignet für die schruppende Vor-Bearbeitung</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="48"/>
@@ -611,19 +671,9 @@ nur unwesentlich.</translation>
       <translation>Ein Material für dieses Objekt</translation>
     </message>
     <message>
-      <location filename="PathProfileBase.py" line="62"/>
-      <source>Controls how tool moves around corners. Default=Round</source>
-      <translation>Kontrolliert wie sich das Werkzeug um Ecken bewegt. Standard=rund</translation>
-    </message>
-    <message>
       <location filename="PathProfileBase.py" line="64"/>
       <source>Maximum distance before a miter join is truncated</source>
       <translation>Maximale Entfernung, bevor Gehrungsverbindungen abgeschnitten werden</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="98"/>
-      <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation>Aufmaß zum Endprofil - Geeignet für die schruppende Vor-Bearbeitung</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="99"/>
@@ -651,64 +701,14 @@ nur unwesentlich.</translation>
       <translation>Auf Wahr setzen, wenn die Fräser-Radiuskompensation verwendet werden soll</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
-      <source>The direction along which dropcutter lines are created</source>
-      <translation>Die Richtung, entlang der Drop-Cutter Bahnen erstellt werden</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
-      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
-      <translation>Soll die Operation durch das Grundobjekt oder durch die Begrenzungsbox des Basisobjekts eingeschränkt werden</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
-      <source>Step over percentage of the drop cutter path</source>
-      <translation>Überlappung des Drop-Cutter Pfads in Prozent</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
-      <source>Z-axis offset from the surface of the object</source>
-      <translation>Z-Achsenversatz von der Oberfläche des Objekts</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
-      <source>The Sample Interval. Small values cause long wait times</source>
-      <translation>Das Abtastintervall. Kleine Werte führen zu langer Wartezeit</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
-      <source>Enable optimization which removes unnecessary points from G-Code output</source>
-      <translation>Aktivieren Sie die Optimierung, um unnötige Punkte aus der G-Code-Ausgabe zu entfernen</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="129"/>
-      <source>The completion mode for the operation: single or multi-pass</source>
-      <translation>Der Vervollständigungsmodus für die Operation: einfach oder mehrfach</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="130"/>
-      <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
-      <translation>Umlaufrichtung des Werkzeugs um das Werkstück: Gleichlauf (Uhrzeigersinn) oder Gegenlauf (entgegen des Uhrzeigersinns)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
-      <source>Ignore areas that proceed below specified depth.</source>
-      <translation>Ignoriere Bereiche, die unterhalb der angegebenen Tiefe fortfahren.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
-      <source>Depth used to identify waste areas to ignore.</source>
-      <translation>Tiefe zum Ermitteln von überschüssigen Flächen, um diese auszulassen.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
-      <source>Cut through waste to depth at model edge, releasing the model.</source>
-      <translation>Schneide durch überschüssiges Material bis zur Werkstückkante, um dieses zu befreien.</translation>
-    </message>
-    <message>
       <location filename="PathPocket.py" line="55"/>
       <source>The library to use to generate the path</source>
       <translation>Algorithmus zum berechnen des Werkzeugweges</translation>
+    </message>
+    <message>
+      <location filename="PathProfileBase.py" line="62"/>
+      <source>Controls how tool moves around corners. Default=Round</source>
+      <translation>Kontrolliert wie sich das Werkzeug um Ecken bewegt. Standard=rund</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="71"/>
@@ -1119,46 +1119,9 @@ nur unwesentlich.</translation>
       <translation>Liste der deaktivierten Funktionen</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="151"/>
-      <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
-      <translation>Der Lochdurchmesser kann aufgrund der Tessellation (Kantigkeit) an der Fläche oder Kante ungenau sein.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Auf 'umgekehrten Winkel' gedreht, um den Zugriff zu versuchen.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
-      <source>Always select the bottom edge of the hole when using an edge.</source>
-      <translation>Wählen Sie immer den unteren Rand des Lochs aus, wenn Sie eine Kante verwenden.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
-      <source>Start depth &lt;= face depth.
-Increased to stock top.</source>
-      <translation>Starttiefe &lt;= Oberflächentiefe.
-Wurde auf Grundkörperoberseite erhöht.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
-      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
-      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation A(x)' für die Erreichbarkeit.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
-      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
-      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation B(y)' für die Erreichbarkeit.</translation>
-    </message>
-    <message>
       <location filename="PathCircularHoleBase.py" line="120"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>Funktion %s.%s lässt sich nicht als ein kreisrundes Loch verarbeiten - bitte aus der Basisgeometrie-Liste entfernen.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
-      <source>Ignoring non-horizontal Face</source>
-      <translation>Benutzt nur Horizontale Flächen oder Kanten</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
@@ -1226,6 +1189,38 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <translation>Werkzeuge</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="151"/>
+      <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
+      <translation>Der Lochdurchmesser kann aufgrund der Tessellation (Kantigkeit) an der Fläche oder Kante ungenau sein.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Auf 'umgekehrten Winkel' gedreht, um den Zugriff zu versuchen.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
+      <source>Always select the bottom edge of the hole when using an edge.</source>
+      <translation>Wählen Sie immer den unteren Rand des Lochs aus, wenn Sie eine Kante verwenden.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
+      <source>Start depth &lt;= face depth.
+Increased to stock top.</source>
+      <translation>Starttiefe &lt;= Oberflächentiefe.
+Wurde auf Grundkörperoberseite erhöht.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
+      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
+      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation A(x)' für die Erreichbarkeit.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
+      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
+      <translation>Ausgewählte(s) Element(e) benötigt 'Erlaube Rotation B(y)' für die Erreichbarkeit.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
       <source>Face appears misaligned after initial rotation.</source>
       <translation>Die Fläche erscheint nach der ersten Rotation falsch ausgerichtet zu sein.</translation>
@@ -1249,6 +1244,11 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
       <source>EnableRotation property is 'Off'.</source>
       <translation>Die Eigenschaft "Rotation zulassen" ist deaktiviert.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
+      <source>Ignoring non-horizontal Face</source>
+      <translation>Benutzt nur Horizontale Flächen oder Kanten</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
@@ -1381,6 +1381,19 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <location filename="PathAreaOp.py" line="88"/>
       <source>no job for op %s found.</source>
       <translation>Kein Job zur Operation %s gefunden.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathArray</name>
+    <message>
+      <location filename="PathArray.py" line="245"/>
+      <source>No base objects for PathArray.</source>
+      <translation type="unfinished">No base objects for PathArray.</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="258"/>
+      <source>Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</source>
+      <translation>Anordnungen von Bewegungsbahnen mit unterschiedlichen Werkzeugsteuerungen werden entsprechend der Werkzeugsteuerung der ersten Bewegungsbahn behandelt.</translation>
     </message>
   </context>
   <context>
@@ -1706,6 +1719,16 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <translation>Argumente für den Post-Prozessor (abhängig vom gewählten Post-Prozessor)</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="100"/>
+      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
+      <translation>Zur Berechnung der Werkzeugwege; kleiner erhöht die Genauigkeit, verlangsamt jedoch die Berechnung</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="104"/>
+      <source>Compound path of all operations in the order they are processed.</source>
+      <translation>Zusammengesetzter Pfad aller Vorgänge in der Reihenfolge, wie sie verarbeitet werden.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="105"/>
       <source>Collection of tool controllers available for this job.</source>
       <translation>Auswahl der Tool-Controller die für diesen Job zur Verfügung stehen.</translation>
@@ -1721,19 +1744,9 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <translation>Optionale Beschreibung für diesen Job</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="100"/>
-      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
-      <translation>Zur Berechnung der Werkzeugwege; kleiner erhöht die Genauigkeit, verlangsamt jedoch die Berechnung</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathJob.py" line="103"/>
       <source>Solid object to be used as stock.</source>
       <translation>Festes Objekt das als Bass verwendet werden soll.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="104"/>
-      <source>Compound path of all operations in the order they are processed.</source>
-      <translation>Zusammengesetzter Pfad aller Vorgänge in der Reihenfolge, wie sie verarbeitet werden.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="110"/>
@@ -1844,6 +1857,11 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <translation>Hält den minimalen Z-Wert des Grundkörpers</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="138"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Vermessungspunkt welcher zur Berechnung des Werkzeugweges verwendet wird</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="113"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Abwählen, damit die Aktion keinen Code generiert</translation>
@@ -1867,11 +1885,6 @@ Wurde auf Grundkörperoberseite erhöht.</translation>
       <location filename="../../../PathScripts/PathOp.py" line="123"/>
       <source>Base locations for this operation</source>
       <translation>Ausgangspunkt für diese Operation</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="138"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Vermessungspunkt welcher zur Berechnung des Werkzeugweges verwendet wird</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="142"/>
@@ -2175,14 +2188,14 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
       <translation>Flächen-Profil</translation>
     </message>
     <message>
-      <location filename="PathProfile.py" line="670"/>
-      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation>Prüfe die Kantenauswahl und die Anforderungen an die Endtiefe für die Profilerstellung der offenen Kanten.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="860"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>Überprüfen Sie die endgültige Tiefe für diese Operation.</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="670"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation>Prüfe die Kantenauswahl und die Anforderungen an die Endtiefe für die Profilerstellung der offenen Kanten.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
@@ -4227,6 +4240,11 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>Dem Job wurde kein Basisobjekt zugeordnet.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
       <translation>Prüfe das Path-Projekt auf bekannte Fehler</translation>
@@ -4475,11 +4493,6 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
       <location filename="../../../PathScripts/PathSanity.py" line="345"/>
       <source>Date</source>
       <translation>Datum</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>Dem Job wurde kein Basisobjekt zugeordnet.</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="50"/>

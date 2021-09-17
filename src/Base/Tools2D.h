@@ -28,11 +28,14 @@
 #include <algorithm>
 #include <cmath>
 #include <cfloat>
-#include <stdio.h>
+#include <cstdio>
 #include <list>
 #include <vector>
 
 #include "Vector3D.h"
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 

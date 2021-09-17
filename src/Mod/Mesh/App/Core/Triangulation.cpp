@@ -253,7 +253,7 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
     }
 }
 
-std::vector<unsigned long> AbstractPolygonTriangulator::GetInfo() const
+std::vector<PointIndex> AbstractPolygonTriangulator::GetInfo() const
 {
     return _info;
 }
@@ -292,7 +292,7 @@ bool EarClippingTriangulator::Triangulate()
     _triangles.clear();
 
     std::vector<Base::Vector3f> pts = ProjectToFitPlane();
-    std::vector<unsigned long> result;
+    std::vector<PointIndex> result;
 
     //  Invoke the triangulator to triangulate this polygon.
     Triangulate::Process(pts,result);
@@ -306,7 +306,7 @@ bool EarClippingTriangulator::Triangulate()
 
     MeshGeomFacet clFacet;
     MeshFacet clTopFacet;
-    for (unsigned long i=0; i<tcount; i++) {
+    for (size_t i=0; i<tcount; i++) {
         if (Triangulate::_invert) {
             clFacet._aclPoints[0] = _points[result[i*3+0]];
             clFacet._aclPoints[2] = _points[result[i*3+1]];
@@ -398,7 +398,7 @@ bool EarClippingTriangulator::Triangulate::Snip(const std::vector<Base::Vector3f
 bool EarClippingTriangulator::Triangulate::_invert = false;
 
 bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vector3f> &contour,
-                                                   std::vector<unsigned long> &result)
+                                                   std::vector<PointIndex> &result)
 {
     /* allocate and initialize list of Vertices in polygon */
 
@@ -483,30 +483,30 @@ bool QuasiDelaunayTriangulator::Triangulate()
 
     // For each internal edge get the adjacent facets. When doing an edge swap we must update
     // this structure.
-    std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> > aEdge2Face;
+    std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> > aEdge2Face;
     for (std::vector<MeshFacet>::iterator pI = _facets.begin(); pI != _facets.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
-            unsigned long ulPt0 = std::min<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
-            unsigned long ulPt1 = std::max<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+            PointIndex ulPt0 = std::min<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+            PointIndex ulPt1 = std::max<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
             // ignore borderlines of the polygon
             if ((ulPt1-ulPt0)%(_points.size()-1) > 1)
-                aEdge2Face[std::pair<unsigned long, unsigned long>(ulPt0, ulPt1)].push_back(pI - _facets.begin());
+                aEdge2Face[std::pair<PointIndex, PointIndex>(ulPt0, ulPt1)].push_back(pI - _facets.begin());
         }
     }
 
     // fill up this list with all internal edges and perform swap edges until this list is empty
-    std::list<std::pair<unsigned long, unsigned long> > aEdgeList;
-    std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> >::iterator pE;
+    std::list<std::pair<PointIndex, PointIndex> > aEdgeList;
+    std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> >::iterator pE;
     for (pE = aEdge2Face.begin(); pE != aEdge2Face.end(); ++pE)
         aEdgeList.push_back(pE->first);
 
     // to be sure to avoid an endless loop
-    unsigned long uMaxIter = 5 * aEdge2Face.size();
+    size_t uMaxIter = 5 * aEdge2Face.size();
 
     // Perform a swap edge where needed
     while (!aEdgeList.empty() && uMaxIter > 0) {
         // get the first edge and remove it from the list
-        std::pair<unsigned long, unsigned long> aEdge = aEdgeList.front();
+        std::pair<PointIndex, PointIndex> aEdge = aEdgeList.front();
         aEdgeList.pop_front();
         uMaxIter--;
 
@@ -556,10 +556,10 @@ bool QuasiDelaunayTriangulator::Triangulate()
 
             // adjust the edge list
             for (int i=0; i<3; i++) {
-                std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> >::iterator it;
+                std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> >::iterator it;
                 // first facet
-                unsigned long ulPt0 = std::min<unsigned long>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
-                unsigned long ulPt1 = std::max<unsigned long>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
+                PointIndex ulPt0 = std::min<PointIndex>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
+                PointIndex ulPt1 = std::max<PointIndex>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
                 it = aEdge2Face.find( std::make_pair(ulPt0, ulPt1) );
                 if (it != aEdge2Face.end()) {
                     if (it->second[0] == pE->second[1])
@@ -570,8 +570,8 @@ bool QuasiDelaunayTriangulator::Triangulate()
                 }
 
                 // second facet
-                ulPt0 = std::min<unsigned long>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
-                ulPt1 = std::max<unsigned long>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
+                ulPt0 = std::min<PointIndex>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
+                ulPt1 = std::max<PointIndex>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
                 it = aEdge2Face.find( std::make_pair(ulPt0, ulPt1) );
                 if (it != aEdge2Face.end()) {
                     if (it->second[0] == pE->second[0])
@@ -583,9 +583,9 @@ bool QuasiDelaunayTriangulator::Triangulate()
             }
 
             // Now we must remove the edge and replace it through the new edge
-            unsigned long ulPt0 = std::min<unsigned long>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
-            unsigned long ulPt1 = std::max<unsigned long>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
-            std::pair<unsigned long, unsigned long> aNewEdge = std::make_pair(ulPt0, ulPt1);
+            PointIndex ulPt0 = std::min<PointIndex>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
+            PointIndex ulPt1 = std::max<PointIndex>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
+            std::pair<PointIndex, PointIndex> aNewEdge = std::make_pair(ulPt0, ulPt1);
             aEdge2Face[aNewEdge] = pE->second;
             aEdge2Face.erase(pE);
         }
@@ -664,7 +664,7 @@ bool DelaunayTriangulator::Triangulate()
         // then the triangulation must have 2*N-2-H triangles and 3*N-3-H
         // edges.
         int iEQuantity = 0;
-        int* aiIndex = 0;
+        int* aiIndex = nullptr;
         del.GetHull(iEQuantity,aiIndex);
         int iUniqueVQuantity = del.GetUniqueVertexQuantity();
         int iTVerify = 2*iUniqueVQuantity - 2 - iEQuantity;
@@ -680,7 +680,7 @@ bool DelaunayTriangulator::Triangulate()
     for (int i = 0; i < iTQuantity; i++) {
         for (int j=0; j<3; j++) {
             size_t index = static_cast<size_t>(aiTVertex[static_cast<size_t>(3*i+j)]);
-            facet._aulPoints[j] = static_cast<unsigned long>(index);
+            facet._aulPoints[j] = static_cast<PointIndex>(index);
             triangle._aclPoints[j].x = static_cast<float>(akVertex[index].X());
             triangle._aclPoints[j].y = static_cast<float>(akVertex[index].Y());
         }

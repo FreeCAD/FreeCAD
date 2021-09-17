@@ -130,7 +130,8 @@ static void findGeometry(int minFaces, double tolerance,
         if (mesh.hasSelectedFacets()) {
             const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
-            std::vector<unsigned long> facets, vertexes;
+            std::vector<MeshCore::FacetIndex> facets;
+            std::vector<MeshCore::PointIndex> vertexes;
             mesh.getFacetsFromSelection(facets);
             vertexes = mesh.getPointsFromFacets(facets);
             MeshCore::MeshPointArray coords = kernel.GetPoints(vertexes);
@@ -244,7 +245,7 @@ void SegmentationManual::createSegment()
         if (ct > 0) {
             selected = true;
 
-            std::vector<unsigned long> facets;
+            std::vector<MeshCore::FacetIndex> facets;
             algo.GetFacetsFlag(facets, MeshCore::MeshFacet::SELECTED);
 
             std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(facets));

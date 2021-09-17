@@ -262,6 +262,7 @@ protected:
   // necessary   for what() legacy behaviour as it returns a buffer that
   // can not be of a temporary object to be destroyed at end of what()
   std::string _sErrMsgAndFileName;
+  void setFileName(const char * sFileName=0);
 };
 
 /**

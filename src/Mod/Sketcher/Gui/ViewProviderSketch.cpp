@@ -3164,23 +3164,35 @@ bool ViewProviderSketch::doubleClicked(void)
 
 QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
 {
-    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits option
-    bool                            iHideUnits;
-    QString                         userStr; // final return string
+    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits and ShowDimensionalName option
+    bool                            iHideUnits; // internal HideUnits setting
+    bool                            iShowDimName; // internal ShowDimensionalName setting
+    QString                         nameStr; // name parameter string
+    QString                         valueStr; // dimensional value string
+    QString                         presentationStr; // final return string
     QString                         unitStr;  // the actual unit string
     QString                         baseUnitStr; // the expected base unit string
+    QString                         formatStr; // the user defined format for the representation string
     double                          factor; // unit scaling factor, currently not used
     Base::UnitSystem                unitSys; // current unit system
 
     if(!constraint->isActive)
         return QString::fromLatin1(" ");
 
-    // Get value of HideUnits option. Default is false.
+    // get parameter group for Sketcher display settings
     hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
+    // Get value of HideUnits option. Default is false.
     iHideUnits = hGrpSketcher->GetBool("HideUnits", 0);
+    // Get Value of ShowDimensionalName option. Default is true.
+    iShowDimName = hGrpSketcher->GetBool("ShowDimensionalName", false);
+    // Get the defined format string
+    formatStr = QString::fromStdString(hGrpSketcher->GetASCII("DimensionalStringFormat", "%N = %V"));
 
-    // Get the current display string including units
-    userStr = constraint->getPresentationValue().getUserString(factor, unitStr);
+    // Get the current name parameter string of the constraint
+    nameStr = QString::fromStdString(constraint->Name);
+
+    // Get the current value string including units
+    valueStr = constraint->getPresentationValue().getUserString(factor, unitStr);
 
     // Hide units if user has requested it, is being displayed in the base
     // units, and the schema being used has a clear base unit in the first
@@ -3225,19 +3237,45 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
             {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
                 QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
-                userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
+                valueStr.remove(rxUnits);                      //getUserString(defaultDecimals) without units
             }
         }
     }
 
     if (constraint->Type == Sketcher::Diameter){
-        userStr.insert(0, QChar(8960)); // Diameter sign
+        valueStr.insert(0, QChar(8960)); // Diameter sign
     }
     else if (constraint->Type == Sketcher::Radius){
-        userStr.insert(0, QChar(82)); // Capital letter R
+        valueStr.insert(0, QChar(82)); // Capital letter R
     }
 
-    return userStr;
+    /**
+    Create the representation string from the user defined format string
+    Format options are:
+    %N - the constraint name parameter
+    %V - the value of the dimensional constraint, including any unit characters
+    */
+    if (iShowDimName && !nameStr.isEmpty())
+    {
+        if (formatStr.contains(QLatin1String("%V")) || formatStr.contains(QLatin1String("%N")))
+        {
+            presentationStr = formatStr;
+            presentationStr.replace(QLatin1String("%N"), nameStr);
+            presentationStr.replace(QLatin1String("%V"), valueStr);
+        }
+        else
+        {
+            // user defined format string does not contain any valid parameter, using default format "%N = %V"
+            presentationStr = nameStr + QLatin1String(" = ") + valueStr;
+            FC_WARN("When parsing dimensional format string \""
+                    << QString(formatStr).toStdString()
+                    << "\", no valid parameter found, using default format.");
+        }
+
+        return presentationStr;
+    }
+
+    return valueStr;
 }
 
 QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)

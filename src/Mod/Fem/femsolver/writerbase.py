@@ -151,14 +151,14 @@ class FemInputWriter():
 
         def constraint_sets_loop_writing(the_file, femobjs, write_before, write_after):
             if write_before != "":
-                f.write(write_before)
+                the_file.write(write_before)
             for femobj in femobjs:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
                 the_obj = femobj["Object"]
-                f.write("** {}\n".format(the_obj.Label))
+                the_file.write("** {}\n".format(the_obj.Label))
                 con_module.write_meshdata_constraint(the_file, femobj, the_obj, self)
             if write_after != "":
-                f.write(write_after)
+                the_file.write(write_after)
 
         write_before = con_module.get_before_write_meshdata_constraint()
         write_after = con_module.get_after_write_meshdata_constraint()
@@ -170,7 +170,6 @@ class FemInputWriter():
 
         if self.split_inpfile is True:
             file_name_split = "{}_{}.inp".format(self.mesh_name, write_name)
-            f.write("** {}\n".format(write_name.replace("_", " ")))
             f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
             inpfile_split = open(join(self.dir_name, file_name_split), "w")
             constraint_sets_loop_writing(inpfile_split, femobjs, write_before, write_after)

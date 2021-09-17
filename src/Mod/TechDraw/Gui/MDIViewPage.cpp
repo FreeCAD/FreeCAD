@@ -481,7 +481,11 @@ void MDIViewPage::fixOrphans(bool force)
             m_view->removeQView(qv);
         } else {
             TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
-            if (thisPage != pp) {
+            /** avoid crash where a view might have more than one parent page
+             * if the user duplicated the page without duplicating dependencies
+             */
+            int numParentPages = qv->getViewObject()->countParentPages();
+            if (thisPage != pp && numParentPages == 0) {
                m_view->removeQView(qv);
             }
         }

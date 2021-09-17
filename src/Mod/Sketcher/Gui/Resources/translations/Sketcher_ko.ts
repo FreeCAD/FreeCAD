@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="163"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>B-스플라인 곡률 빗 표시/숨기기</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="164"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the curvature comb for all B-splines</translation>
+      <translation>모든 B-스플라인에 대한 곡률 빗 표시 및 숨기기 전환</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="101"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>B-스플라인 차수 표시/숨기기</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="102"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>모든 B-스플라인에 대한 각도 표시 및 숨기기를 전환합니다.</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="331"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>B-스플라인 차수 표시/숨기기</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>B-스플라인 곡률 빗 표시/숨기기</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
@@ -2450,7 +2450,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="239"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>새로운 스케치 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="489"/>
@@ -5412,7 +5412,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="347"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the curvature comb for all B-splines</translation>
+      <translation>모든 B-스플라인에 대한 곡률 빗 표시 및 숨기기 전환</translation>
     </message>
   </context>
   <context>
@@ -5430,7 +5430,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="333"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="335"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>모든 B-스플라인에 대한 각도 표시 및 숨기기를 전환합니다.</translation>
     </message>
   </context>
   <context>

@@ -94,17 +94,17 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6943"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6935"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6944"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6936"/>
       <source>Carbon copy</source>
       <translation>Másolat</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6945"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6937"/>
       <source>Copies the geometry of another sketch</source>
       <translation>Másik vázlat geometriáinak másolatai</translation>
     </message>
@@ -283,27 +283,27 @@
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5335"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5344"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5336"/>
       <source>Create circle</source>
       <translation>Kör rajzolása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5345"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5337"/>
       <source>Create a circle in the sketcher</source>
       <translation>Kör létrehozása a vázlatkészítőben</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5422"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5414"/>
       <source>Center and rim point</source>
       <translation>Közép- és a perem pont</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5426"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <source>3 rim points</source>
       <translation>3 perem pont</translation>
     </message>
@@ -354,27 +354,27 @@
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5920"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5912"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5921"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5913"/>
       <source>Fillets</source>
       <translation>Lekerekítés</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5922"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5914"/>
       <source>Create a fillet between two lines</source>
       <translation>Létrehoz egy lekerekítést két vonal közt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5997"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5989"/>
       <source>Sketch fillet</source>
       <translation>Vázlat lekerekítés</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6001"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5993"/>
       <source>Constraint-preserving sketch fillet</source>
       <translation>Kényszer-megőrzési vázlat lekerekítés</translation>
     </message>
@@ -415,52 +415,52 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7586"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7578"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7587"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7579"/>
       <source>Create regular polygon</source>
       <translation>Szabályos sokszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7588"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7580"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>Szabályos sokszög létrehozása a vázlatkészítőben</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7703"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7695"/>
       <source>Triangle</source>
       <translation>Háromszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7707"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7699"/>
       <source>Square</source>
       <translation>Négyzet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7711"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7703"/>
       <source>Pentagon</source>
       <translation>Ötszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7715"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7707"/>
       <source>Hexagon</source>
       <translation>Hatszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7719"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7711"/>
       <source>Heptagon</source>
       <translation>Hétszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7723"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7715"/>
       <source>Octagon</source>
       <translation>Nyolcszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7727"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7719"/>
       <source>Regular polygon</source>
       <translation>Szabályos sokszög</translation>
     </message>
@@ -931,17 +931,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5316"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5308"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5317"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5309"/>
       <source>Create circle by three points</source>
       <translation>Kör létrehozása három ponttal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5318"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5310"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>Kör létrehozása 3 kerületi ponttal</translation>
     </message>
@@ -1057,17 +1057,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5580"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5572"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5581"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5573"/>
       <source>Create draft line</source>
       <translation>Vázlatvonal rajzolása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5582"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5574"/>
       <source>Create a draft line in the sketch</source>
       <translation>Vázlatvonal rajzolása a vázlaton</translation>
     </message>
@@ -1111,17 +1111,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5860"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5852"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5861"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5853"/>
       <source>Create fillet</source>
       <translation>Lekerekítés létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5862"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5854"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Lekerekítés létrehozása két vonal között vagy egybeeső pontok közt</translation>
     </message>
@@ -1129,17 +1129,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7501"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7493"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7502"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7494"/>
       <source>Create heptagon</source>
       <translation>Hétszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7503"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7495"/>
       <source>Create a heptagon in the sketch</source>
       <translation>Egy hétszög létrehozása a vázlaton</translation>
     </message>
@@ -1147,17 +1147,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7474"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7466"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7475"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7467"/>
       <source>Create hexagon</source>
       <translation>Hatszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7476"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7468"/>
       <source>Create a hexagon in the sketch</source>
       <translation>Egy hatszög létrehozása a vázlaton</translation>
     </message>
@@ -1201,17 +1201,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7528"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7520"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7529"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7521"/>
       <source>Create octagon</source>
       <translation>Nyolcszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7530"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7522"/>
       <source>Create an octagon in the sketch</source>
       <translation>Egy nyolcszög létrehozása a vázlaton</translation>
     </message>
@@ -1219,17 +1219,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7446"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7438"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7447"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7439"/>
       <source>Create pentagon</source>
       <translation>Ötszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7448"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7440"/>
       <source>Create a pentagon in the sketch</source>
       <translation>Egy ötszög létrehozása a vázlaton</translation>
     </message>
@@ -1255,17 +1255,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5523"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5515"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5524"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5516"/>
       <source>Create point</source>
       <translation>Pont létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5525"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5517"/>
       <source>Create a point in the sketch</source>
       <translation>Pont létrehozása a vázlaton</translation>
     </message>
@@ -1273,17 +1273,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5889"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5881"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5882"/>
       <source>Create corner-preserving fillet</source>
       <translation>Sarokmegőrző lekerekítés létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5891"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5883"/>
       <source>Fillet that preserves intersection point and most constraints</source>
       <translation>Lekerekítés a metszéspont és a legtöbb kényszerítés megörzésével</translation>
     </message>
@@ -1345,17 +1345,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7555"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7547"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7548"/>
       <source>Create regular polygon</source>
       <translation>Szabályos sokszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7557"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7549"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>Egy szabályos sokszög létrehozása a vázlatban</translation>
     </message>
@@ -1363,17 +1363,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7199"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7191"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7200"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7192"/>
       <source>Create slot</source>
       <translation>Hozzon létre nyílást</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7201"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7193"/>
       <source>Create a slot in the sketch</source>
       <translation>Hozzon létre egy nyílást a vázlatban</translation>
     </message>
@@ -1381,17 +1381,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7419"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7411"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7420"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7412"/>
       <source>Create square</source>
       <translation>Négyzet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7421"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7413"/>
       <source>Create a square in the sketch</source>
       <translation>Egy négyszög létrehozása a vázlaton</translation>
     </message>
@@ -1399,17 +1399,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5552"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5544"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5553"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5545"/>
       <source>Create text</source>
       <translation>Szöveg létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5554"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5546"/>
       <source>Create text in the sketch</source>
       <translation>Szöveg létrehozása a vázlaton</translation>
     </message>
@@ -1417,17 +1417,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7392"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7384"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7393"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7385"/>
       <source>Create equilateral triangle</source>
       <translation>Egyenlő oldalú háromszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7394"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7386"/>
       <source>Create an equilateral triangle in the sketch</source>
       <translation>Egyenlő oldalú háromszög létrehozása a vázlaton</translation>
     </message>
@@ -1525,17 +1525,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6464"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6456"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6465"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6457"/>
       <source>Extend edge</source>
       <translation>Él meghosszabbítás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6466"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6458"/>
       <source>Extend an edge with respect to the picked position</source>
       <translation>Hosszabbítson meg egy élt a kiválasztott pozíció figyelembe vételével</translation>
     </message>
@@ -1543,17 +1543,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6767"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6759"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6768"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6760"/>
       <source>External geometry</source>
       <translation>Külső geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6769"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6761"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>Hozzon létre egy szegélyt, csatolva a külső geometriához</translation>
     </message>
@@ -1976,17 +1976,17 @@ A 'Támogatás' tulajdonság törlődik, ha van.</translation>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6583"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6575"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6584"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6576"/>
       <source>Split edge</source>
       <translation>Él felosztás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6585"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6577"/>
       <source>Splits an edge into two while preserving constraints</source>
       <translation>Kettévágja az éleket, miközben megőrzi a kényszerítéseket</translation>
     </message>
@@ -2104,17 +2104,17 @@ megvezetett vagy hivatkozási üzemmódban</translation>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6150"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6142"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6151"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6143"/>
       <source>Trim edge</source>
       <translation>Él vágása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6152"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6144"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>Él levágása, tekintettel a kiválasztott helyzetre</translation>
     </message>
@@ -2517,7 +2517,7 @@ invalid constraints, degenerated geometry, etc.</source>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2562"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5240"/>
       <source>Add sketch circle</source>
       <translation>Vázlat kör hozzáadása</translation>
     </message>
@@ -2547,48 +2547,48 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Pólus kör hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5475"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5467"/>
       <source>Add sketch point</source>
       <translation>Vázlat pont hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5724"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5802"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5716"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5794"/>
       <source>Create fillet</source>
       <translation>Lekerekítés létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6120"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6112"/>
       <source>Trim edge</source>
       <translation>Él vágása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6396"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6388"/>
       <source>Extend edge</source>
       <translation>Él meghosszabbítás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6548"/>
       <source>Split edge</source>
       <translation>Él felosztás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6731"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6723"/>
       <source>Add external geometry</source>
       <translation>Külső geometria hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6912"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6904"/>
       <source>Add carbon copy</source>
       <translation>Másolat hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7110"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7102"/>
       <source>Add slot</source>
       <translation>Horony hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7320"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7312"/>
       <source>Add hexagon</source>
       <translation>Hatszög hozzáadása</translation>
     </message>
@@ -3655,7 +3655,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Jelölje ki a vázlatból a kényszerítés(eke)t.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5813"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5805"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="682"/>
       <source>CAD Kernel Error</source>
       <translation>CAD rendszermag hiba</translation>
@@ -3798,42 +3798,42 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6814"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6806"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Másolás körkörös függőséget teremthet.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6817"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6809"/>
       <source>This object is in another document.</source>
       <translation>Ez az objektum egy másik dokumentumban van.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6820"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6812"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
       <translation>Ez az objektum egy másik testhez tartozik. Tartsa lenyomva a Ctrl billentyűt, hogy lehetővé tegye a kereszt hivatkozásokat.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6823"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6815"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
       <translation>Ez az objektum egy másik testhez tartozik, és külső geometriát tartalmaz. Kereszt hivatkozás nem megengedett.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6826"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6818"/>
       <source>This object belongs to another part.</source>
       <translation>Ez az objektum egy másik alkatrészhez tartozik.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6829"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6821"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>A kiválasztott vázlat nem párhuzamos ezzel a vázlattal. Tartsa nyomva Ctrl+Alt a nem párhuzamos vázlatok engedélyezéséhez.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6832"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6824"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Az XY tengelyek a kiválasztott vázlaton nem egyeznek meg ennek a vázlatnak az irányával. Tartsa nyomva Ctrl+Alt ennek figyelmen kívül hagyásához.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6835"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6827"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>A kiválasztott vázlat kiinduló pontja nincs összhangban ennek a vázlatnak a kiinduló pontjával. Tartsa nyomva Ctrl+Alt ennek figyelmen kívül hagyásához.</translation>
     </message>
@@ -3987,22 +3987,22 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6623"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6615"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Összekötése körkörös függőséget okoz.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6618"/>
       <source>This object is in another document.</source>
       <translation>Ez az objektum egy másik dokumentumban van.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6629"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6621"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>Ez az objektum egy másik testhez tartozik, nem tudja csatolni.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6632"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6624"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>Ez az objektum egy másik alkatrészhez tartozik, nem tudja csatolni.</translation>
     </message>
@@ -4528,183 +4528,221 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
       <translation>Vázlat szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="26"/>
-      <source>A dialog will pop up to input a value for new dimensional constraints</source>
-      <translation>Megjelenik egy párbeszédablak, ahol új dimenziókényszerek értékeket adhat meg</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="29"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Távolság kényszerítés létrehozása után kérjen értéket</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="45"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
       <source>Segments per geometry</source>
       <translation>Geometriánkénti szakaszok</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="52"/>
-      <source>Current constraint creation tool will remain active after creation</source>
-      <translation>Az aktuális kényszerítés eszköz a létrehozás után is aktív marad</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="55"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>Megkötés létrehozása "Folytatódó mód"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="71"/>
-      <source>Line pattern used for grid lines</source>
-      <translation>Rácsvonalakhoz használt vonalminta</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="81"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
       <source>Base length units will not be displayed in constraints.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Az alaphossz egységek nem jelennek meg kényszerítésekben.
 Az 'USA szokásos' és az 'USA/Euro építés' kivételével minden egységrendszert támogat.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="85"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>A támogatott mértékegység rendszerek alap mértékegységeinek elrejtése</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="104"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="32"/>
       <source>Font size</source>
       <translation>Betűméret</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="138"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
+      <source>Font size used for labels and constraints.</source>
+      <translation type="unfinished">Font size used for labels and constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
+      <source>The 3D view is scaled based on this factor.</source>
+      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
+      <source>Line pattern used for grid lines.</source>
+      <translation type="unfinished">Line pattern used for grid lines.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
+      <source>The number of polygons used for geometry approximation.</source>
+      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <source>A dialog will pop up to input a value for new dimensional constraints.</source>
+      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
+      <source>The current sketcher creation tool will remain active after creation.</source>
+      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
+      <source>The current constraint creation tool will remain active after creation.</source>
+      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
+      <source>If checked, displays the name on dimensional constraints (if exists).</source>
+      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <source>Show dimensional constraint name with format</source>
+      <translation type="unfinished">Show dimensional constraint name with format</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
+      <source>%N = %V</source>
+      <translation type="unfinished">%N = %V</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
+      <source>The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</source>
+      <translation type="unfinished">The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
+      <source>DimensionalStringFormat</source>
+      <translation type="unfinished">DimensionalStringFormat</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="269"/>
+      <source>Mod/Sketcher</source>
+      <translation type="unfinished">Mod/Sketcher</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
       <source>Visibility automation</source>
       <translation>Láthatóság automatizálás</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
-      <source>When opening sketch, hide all features that depend on it</source>
-      <translation>Vázlat megnyitásakor, a függőséggel rendelkező összes jellemző elrejtése</translation>
+      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
+      <source>When opening a sketch, hide all features that depend on it.</source>
+      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
+      <source>When opening a sketch, show sources for external geometry links.</source>
+      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
+      <source>When opening a sketch, show objects the sketch is attached to.</source>
+      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
+      <source>Applies current visibility automation settings to all sketches in open documents.</source>
+      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Minden objektum elrejtése, amely függ a vázlattól</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
-      <source>When opening sketch, show sources for external geometry links</source>
-      <translation>Vázlat megnyitásakor mutassa meg a külső geometriai kapcsolatok forrásait</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
       <source>Show objects used for external geometry</source>
       <translation>Mutassa az külső geometriához használt objektumokat</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
-      <source>When opening sketch, show objects the sketch is attached to</source>
-      <translation>A vázlat megnyitásakor jelenítsük meg azokat az objektumokat, amelyekhez a vázlat csatlakozik</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="353"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Olyan tárgyak megjelenítése, amelyekhez a vázlat csatolva van</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
+      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>Ortográfiai kamera kényszerítése szerkesztési mód bekapcsolásakor</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="244"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
+      <source>Open a sketch in Section View mode by default.
+Then objects are only visible behind the sketch plane.</source>
+      <translation type="unfinished">Open a sketch in Section View mode by default.
+Then objects are only visible behind the sketch plane.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
       <source>Open sketch in Section View mode</source>
       <translation>Vázlat megnyitása szakasznézet módban</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Megjegyzés: Ezek az új vázlatok alapértelmezett beállításai. A rendszer minden vázlathoz külön-külön tárolja a viselkedést tulajdonságokként a Nézet lapon.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="374"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
       <source>View scale ratio</source>
       <translation>Méretezési arány megtekintése</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="381"/>
-      <source>The 3D view is scaled based on this factor</source>
-      <translation>A 3D nézet mérete e tényező alapján kerül méretezésre</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
-      <source>When closing sketch, move camera back to where it was before sketch was opened</source>
-      <translation>Vázlat bezárásakor, mozgassa a kamerát vissza oda, ahova a vázlat megnyitása előtt volt</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="372"/>
       <source>Restore camera position after editing</source>
       <translation>Kamera helyzetének visszaállítása a szerkesztés után</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation>Szerkesztési módba lépve a kamera függőleges vetületi nézetre kényszerítése.
 Csak akkor működik, ha a "Szerkesztés után visszaállítja a kamera helyzetét" engedélyezve van.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
-      <source>Open a by default sketch in Section View mode.
-Then objects are only visible behind the sketch plane.</source>
-      <translation>Alapértelmezés szerint vázlat megnyitása Szakasznézet módban.
-Ezután a tárgyak csak a vázlatsík mögött láthatók.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="285"/>
-      <source>Applies current visibility automation settings to all sketches in open documents</source>
-      <translation>Aktuális láthatóság automatizálási beállítások alkalmazása a megnyitott dokumentumok összes vázlatára</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="288"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
       <source>Apply to existing sketches</source>
       <translation>Alkalmazza a meglévő vázlatokhoz</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="298"/>
-      <source>Font size used for labels and constraints</source>
-      <translation>Címkékhez és kényszerítésekhez használt betűméret</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="301"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="45"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="323"/>
-      <source>Current sketcher creation tool will remain active after creation</source>
-      <translation>A jelenlegi vázlatkészítő eszköz a létrehozás után is aktív marad</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="326"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Geometria létrehozása "Folytatás mód"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="342"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="114"/>
       <source>Grid line pattern</source>
       <translation>Rács vonalminta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
-      <source>Number of polygons for geometry approximation</source>
-      <translation>A geometria hozzávetőlegességéhez szolgáló sokszögek száma</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="232"/>
       <source>Unexpected C++ exception</source>
       <translation>Váratlan C++ kivétel</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="231"/>
+      <location filename="../../SketcherSettings.cpp" line="235"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
@@ -5267,136 +5305,136 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6244"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6282"/>
       <source>Edit sketch</source>
       <translation>Vázlat szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6258"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6296"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6297"/>
       <source>Do you want to close this dialog?</source>
       <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6311"/>
       <source>Invalid sketch</source>
       <translation>Érvénytelen vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6274"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6312"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Szeretné megnyitni a vázlat érvényesítés eszközt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6275"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6313"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>A vázlat érvénytelen, és nem szerkeszthető.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6490"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6528"/>
       <source>Please remove the following constraint:</source>
       <translation>Kérjük, távolítsa el az alábbi ilesztést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6491"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Kérjük, távolítsa el, legalább az egyiket a következő kényszerítésekből:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6497"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6535"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Kérjük, távolítsa el a következő felesleges kényszerítést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6498"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6536"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Kérjük, távolítsa el a következő felesleges kényszerítéseket:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6504"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6542"/>
       <source>The following constraint is partially redundant:</source>
       <translation>A következő kényszerítés részben felesleges:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6505"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6543"/>
       <source>The following constraints are partially redundant:</source>
       <translation>A következő kényszerítések részben feleslegesek:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6511"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6549"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Távolítsa el a következő hibás kényszerítést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6512"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6550"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Távolítsa el a következő hibás kényszerítéseket:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6547"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
       <source>Empty sketch</source>
       <translation>Üres vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6554"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6592"/>
       <source>Over-constrained sketch</source>
       <translation>Túl sok kényszerítést tartalmazó vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6561"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6599"/>
       <source>Sketch contains malformed constraints</source>
       <translation>A vázlat hibásan formázott kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6568"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6606"/>
       <source>Sketch contains conflicting constraints</source>
       <translation>Vázlat szabálytalan kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6576"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6614"/>
       <source>Sketch contains redundant constraints</source>
       <translation>A vázlat felesleges kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation>A vázlat részlegesen felesleges kényszerítéseket tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6555"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6562"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6569"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6577"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6586"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6593"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6600"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6624"/>
       <source>(click to select)</source>
       <translation>(kattintás a kijelöléshez)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6597"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6635"/>
       <source>Fully constrained sketch</source>
       <translation>Teljesen zárolt vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6604"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6642"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Alul korlátozott vázlat &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 fok&lt;/span&gt;&lt;/a&gt; szabadsággal. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6645"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Alul korlátozott vázlat &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 fokkos&lt;/span&gt;&lt;/a&gt; szabadsággal. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6612"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6650"/>
       <source>Solved in %1 sec</source>
       <translation>Megoldva %1 másodperc alatt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6653"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Megoldatlan (%1 mp)</translation>
     </message>
@@ -5546,8 +5584,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5427"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5428"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5419"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5420"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Kört hoz létre 3 határoló ponttal</translation>
     </message>
@@ -5605,8 +5643,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5423"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5424"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5415"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5416"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Kört hoz létre annak középpontjával és egy határoló ponttal</translation>
     </message>
@@ -5632,8 +5670,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5998"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5999"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5990"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5991"/>
       <source>Creates a radius between two lines</source>
       <translation>Sugarat hoz létre két vonal között</translation>
     </message>
@@ -5641,8 +5679,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7720"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7721"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7712"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7713"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Létrehoz egy hétszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5650,8 +5688,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7716"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7717"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7708"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7709"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>Létrehoz egy hatszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5667,14 +5705,14 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7724"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7725"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7716"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7717"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Létrehoz egy nyolcszöget a középpontból és egy sarokból</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7728"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7729"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7720"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7721"/>
       <source>Create a regular polygon by its center and by one corner</source>
       <translation>Létrehoz egy egyszerű sokszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5682,8 +5720,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7712"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7713"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7704"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7705"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Létrehoz egy ötszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5691,8 +5729,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6002"/>
-      <location filename="../../CommandCreateGeo.cpp" line="6003"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5994"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5995"/>
       <source>Fillet that preserves constraints and intersection point</source>
       <translation>Kényszerítéseket és metszéspontokat fenntartó lekerekítés</translation>
     </message>
@@ -5716,8 +5754,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7708"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7709"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7700"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7701"/>
       <source>Create a square by its center and by one corner</source>
       <translation>Létrehoz egy négyszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5725,8 +5763,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7704"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7705"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7696"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7697"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>Létrehoz egy egyenlő oldalú háromszöget a középpontból és egy sarokból</translation>
     </message>

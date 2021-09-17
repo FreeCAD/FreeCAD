@@ -306,7 +306,7 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() +'M9' + '\n'
 
   if RETURN_TO:
-    gcode += linenumber() + "G0 X%s Y%s" % tuple(RETURN_TO)
+    gcode += linenumber() + "G0 X%s Y%s\n" % tuple(RETURN_TO)
 
   # do the post_amble
   if OUTPUT_BCNC:

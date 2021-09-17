@@ -49,7 +49,7 @@
     <message>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Regular solid...</source>
-      <translation>Bryła podstawowa...</translation>
+      <translation>Bryła pierwotna ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1606"/>
@@ -693,7 +693,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Union</source>
-      <translation>Suma</translation>
+      <translation>Połączenie</translation>
     </message>
   </context>
   <context>
@@ -750,7 +750,7 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Mesh union</source>
-      <translation>Złączenie siatek</translation>
+      <translation>Połączenie siatek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -826,7 +826,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
       <source>Fix indices</source>
-      <translation>Napraw indeksy</translation>
+      <translation>Napraw wskaźniki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
@@ -867,7 +867,7 @@
       <location filename="../../ViewProvider.cpp" line="874"/>
       <location filename="../../ViewProvider.cpp" line="929"/>
       <source>Cut</source>
-      <translation>Wytnij</translation>
+      <translation>Przetnij</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="883"/>
@@ -1036,7 +1036,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
       <source>Face indices</source>
-      <translation>Wskaźniki powierzchni</translation>
+      <translation>Wskaźniki ścian</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="667"/>
@@ -1139,7 +1139,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="640"/>
       <source>Invalid face indices</source>
-      <translation>Nieprawidłowe wskaźniki powierzchni</translation>
+      <translation>Nieprawidłowe wskaźniki ścian</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="647"/>
@@ -1154,7 +1154,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="661"/>
       <source>Invalid neighbour indices</source>
-      <translation>Nieprawidłowe wskaźniki sąsiadów</translation>
+      <translation>Nieprawidłowe wskaźniki sąsiedztwa</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="668"/>
@@ -1245,7 +1245,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation settings</source>
-      <translation>Ustawienia ewaluacji</translation>
+      <translation>Ustawienia klasyfikacji</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1273,7 +1273,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>Bryła podstawowa</translation>
+      <translation>Bryła pierwotna</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="53"/>
@@ -1586,7 +1586,7 @@ do gładszego wyglądu.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Kąt załamania to kąt progowy pomiędzy dwoma powierzchniami.
+      <translation>Kąt załamania to kąt progowy pomiędzy dwoma wielokątami.
 
  Jeśli kąt ściany ≥ kąta załamania, stosuje się cieniowanie ściany
  Jeśli kąt ściany &lt; kąta załamania, stosuje się cieniowanie gładkie</translation>
@@ -2205,13 +2205,13 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
       <location filename="../../Command.cpp" line="458"/>
       <location filename="../../Command.cpp" line="517"/>
       <source>Inventor V2.1 ascii</source>
-      <translation>Inventor V2.1 w ASCII</translation>
+      <translation>Inventor v2.1 w ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="459"/>
       <location filename="../../Command.cpp" line="521"/>
       <source>Stanford Polygon</source>
-      <translation>Stanford Polygon</translation>
+      <translation>Stanford Triangle Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
@@ -2262,12 +2262,12 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <source>Python module def</source>
-      <translation>Moduły Pythona</translation>
+      <translation>Definicje modułów Python</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation>Format Asymptoty</translation>
+      <translation>Format asymptoty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -2391,7 +2391,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Meshes</source>
-      <translation>Siatki</translation>
+      <translation>&amp;Siatki</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>

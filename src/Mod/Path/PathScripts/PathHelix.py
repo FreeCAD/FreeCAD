@@ -51,7 +51,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... enable features supported by Helix.'''
-        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels
+        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... create helix specific properties.'''

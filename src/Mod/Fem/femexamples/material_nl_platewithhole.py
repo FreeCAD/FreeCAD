@@ -149,8 +149,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # nonlinear material
     name_nlm = "Material_nonlin"
     nonlinear_mat = ObjectsFem.makeMaterialMechanicalNonlinear(doc, material_obj, name_nlm)
-    nonlinear_mat.YieldPoint1 = '240.0, 0.0'
-    nonlinear_mat.YieldPoint2 = '270.0, 0.025'
+    nonlinear_mat.YieldPoints = ['240.0, 0.0', '270.0, 0.025']
     analysis.addObject(nonlinear_mat)
     # check solver attributes, Nonlinearity needs to be set to nonlinear
 

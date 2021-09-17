@@ -5150,11 +5150,7 @@ public:
             setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
-                // Disable tangent snap on 1st point
-                if (sugConstr1.back().Type == Sketcher::Tangent)
-                    sugConstr1.pop_back();
-                else
-                    renderSuggestConstraintsCursor(sugConstr1);
+                renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
@@ -5188,16 +5184,12 @@ public:
                 if (Mode == STATUS_SEEK_Second) {
                     if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                         AutoConstraint::CURVE)) {
-                        // Disable tangent snap on 2nd point
-                        if (sugConstr2.back().Type == Sketcher::Tangent)
-                            sugConstr2.pop_back();
-                        else
-                            renderSuggestConstraintsCursor(sugConstr2);
+                        renderSuggestConstraintsCursor(sugConstr2);
                         return;
                     }
                 }
                 else {
-                    if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
+                    if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f),
                                         AutoConstraint::CURVE)) {
                         renderSuggestConstraintsCursor(sugConstr3);
                         return;

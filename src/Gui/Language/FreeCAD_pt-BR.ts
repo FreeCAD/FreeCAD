@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Padrão</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Cor</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -3266,20 +3285,51 @@ Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</trans
       <translation>Bancadas não carregadas</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carregue as bancadas selecionadas, adicionando suas janelas de preferência ao diálogo de preferências.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation>Nome da bancada</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Carregar Selecionados</translation>
+      <source>Autoload?</source>
+      <translation>Auto-carregar?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bancadas não carregadas disponíveis&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation>Carregar Agora</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para preservar os recursos, o FreeCAD não carrega bancadas até que sejam usadas. Carregá-las pode fornecer acesso a preferências adicionais relacionadas à sua funcionalidade.&lt;/p&gt;&lt;p&gt;As seguintes bancadas estão disponíveis em sua instalação, mas ainda não foram carregadas:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Bancada</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Auto-carregar</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Se selecionado</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>será carregado automaticamente quando o FreeCAD iniciar</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Carregado</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Carregar Agora</translation>
     </message>
   </context>
   <context>
@@ -4634,6 +4684,16 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Partial</source>
       <translation>Parcial</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -5384,7 +5444,7 @@ Deseja prosseguir?</translation>
     </message>
     <message>
       <source>Show all</source>
-      <translation>Mostrar todos</translation>
+      <translation>Mostrar todas</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -8709,6 +8769,17 @@ Caminho físico: </translation>
     <message>
       <source>Start the units calculator</source>
       <translation>Iniciar o conversor de unidades</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>

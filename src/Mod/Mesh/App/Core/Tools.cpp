@@ -53,7 +53,7 @@ void MeshSearchNeighbours::Reinit (float fSampleDistance)
     MeshAlgorithm(_rclMesh).ResetPointFlag(MeshPoint::MARKED);
 }
 
-unsigned long MeshSearchNeighbours::NeighboursFromFacet (unsigned long ulFacetIdx, float fDistance, unsigned long ulMinPoints, std::vector<Base::Vector3f> &raclResultPoints)
+unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, float fDistance, unsigned long ulMinPoints, std::vector<Base::Vector3f> &raclResultPoints)
 {
     bool bAddPoints = false;
 
@@ -82,12 +82,12 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (unsigned long ulFacetId
     while ((bFound == true) && (nCtExpandRadius < 10)) {
         bFound = false;
 
-        std::set<unsigned long> aclTmp;
+        std::set<PointIndex> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
-            const std::set<unsigned long> &rclISet = _clPt2Fa[*pI]; 
+        for (std::set<FacetIndex>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
+            const std::set<FacetIndex> &rclISet = _clPt2Fa[*pI];
             // search all facets hanging on this point
-            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
+            for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
                 if (rclF.IsFlag(MeshFacet::MARKED) == false) {
@@ -114,14 +114,14 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (unsigned long ulFacetId
     for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin();
         pF != aclTestedFacet.end(); ++pF)
         (*pF)->ResetFlag(MeshFacet::MARKED);
-    for (std::set<unsigned long>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
+    for (std::set<PointIndex>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
         _rclPAry[*pR].ResetFlag(MeshPoint::MARKED);
 
 
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     size_t i = 0;
-    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
+    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
         raclResultPoints[i] = _rclPAry[*pI];
 
     if (bAddPoints == true) {
@@ -133,7 +133,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (unsigned long ulFacetId
     return ulVisited;
 }
 
-void MeshSearchNeighbours::SampleAllFacets (void)
+void MeshSearchNeighbours::SampleAllFacets ()
 {
     if (_aclSampledFacets.size() == _rclMesh.CountFacets())
         return; // already sampled, do nothing
@@ -149,7 +149,7 @@ void MeshSearchNeighbours::SampleAllFacets (void)
     }
 }
 
-unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (unsigned long ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints)
+unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints)
 {
     SampleAllFacets();
 
@@ -175,12 +175,12 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (unsigned long u
     while (bFound == true) {
         bFound = false;
 
-        std::set<unsigned long> aclTmp;
+        std::set<PointIndex> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
-            const std::set<unsigned long> &rclISet = _clPt2Fa[*pI]; 
+        for (std::set<PointIndex>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
+            const std::set<FacetIndex> &rclISet = _clPt2Fa[*pI];
             // search all facets hanging on this point
-            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
+            for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
                 if (rclF.IsFlag(MeshFacet::MARKED) == false) {
@@ -203,7 +203,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (unsigned long u
     std::copy(_aclPointsResult.begin(), _aclPointsResult.end(), raclResultPoints.begin());
 
     // facet points
-    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI) {
+    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI) {
         if (InnerPoint(_rclPAry[*pI]) == true)
             raclResultPoints.push_back(_rclPAry[*pI]);
     }
@@ -211,12 +211,12 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (unsigned long u
     return ulVisited;
 }
 
-bool MeshSearchNeighbours::AccumulateNeighbours (const MeshFacet &rclF, unsigned long ulFIdx)
+bool MeshSearchNeighbours::AccumulateNeighbours (const MeshFacet &rclF, FacetIndex ulFIdx)
 {
     int  k = 0;
 
     for (int i = 0; i < 3; i++) {
-        unsigned long ulPIdx = rclF._aulPoints[i];
+        PointIndex ulPIdx = rclF._aulPoints[i];
         _aclOuter.insert(ulPIdx);
         _aclResult.insert(ulPIdx);
 
@@ -251,7 +251,7 @@ bool MeshSearchNeighbours::ExpandRadius (unsigned long ulMinPoints)
 {
     // add facets from current level
     _aclResult.insert(_aclOuter.begin(), _aclOuter.end());
-    for (std::set<unsigned long>::iterator pI = _aclOuter.begin(); pI != _aclOuter.end(); ++pI)
+    for (std::set<PointIndex>::iterator pI = _aclOuter.begin(); pI != _aclOuter.end(); ++pI)
         _rclPAry[*pI].SetFlag(MeshPoint::MARKED);
 
     if (_aclResult.size() < ulMinPoints) {
@@ -262,9 +262,9 @@ bool MeshSearchNeighbours::ExpandRadius (unsigned long ulMinPoints)
         return false;
 }
 
-unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (unsigned long ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints, std::vector<unsigned long> &raclResultFacets)
+unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (FacetIndex ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints, std::vector<FacetIndex> &raclResultFacets)
 {
-    std::set<unsigned long> aulFacetSet;
+    std::set<FacetIndex> aulFacetSet;
 
     _fMaxDistanceP2 = fDistance * fDistance;
     _clCenter       = _rclMesh.GetFacet(ulFacetIdx).GetGravityPoint();
@@ -287,12 +287,12 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (unsigned long ulFa
     while (bFound == true) {
         bFound = false;
 
-        std::set<unsigned long> aclTmp;
+        std::set<PointIndex> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
-            const std::set<unsigned long> &rclISet = _clPt2Fa[*pI]; 
+        for (std::set<PointIndex>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
+            const std::set<FacetIndex> &rclISet = _clPt2Fa[*pI];
             // search all facets hanging on this point
-            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
+            for (std::set<PointIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
                 for (int i = 0; i < 3; i++) {
@@ -317,13 +317,13 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (unsigned long ulFa
     // reset marked facets, points
     for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); ++pF)
         (*pF)->ResetFlag(MeshFacet::MARKED);
-    for (std::set<unsigned long>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
+    for (std::set<PointIndex>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
         _rclPAry[*pR].ResetFlag(MeshPoint::MARKED);
 
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     size_t i = 0;
-    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
+    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
         raclResultPoints[i] = _rclPAry[*pI];
 
     // copy facets in result container

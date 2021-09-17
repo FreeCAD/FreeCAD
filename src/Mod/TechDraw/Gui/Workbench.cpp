@@ -80,6 +80,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_LinkDimension";
     *dimensions << "TechDraw_LandmarkDimension";
 
+    // toolattributes
+    Gui::MenuItem* toolattrib = new Gui::MenuItem;
+    toolattrib->setCommand("Extensions: centerlines and threading");
+    *toolattrib << "TechDraw_ExtensionCircleCenterLines";
+    *toolattrib << "TechDraw_ExtensionThreadHoleSide";
+    *toolattrib << "TechDraw_ExtensionThreadBoltSide";
+    *toolattrib << "TechDraw_ExtensionThreadHoleBottom";
+    *toolattrib << "TechDraw_ExtensionThreadBoltBottom";
+
     // annotations
     Gui::MenuItem* annotations = new Gui::MenuItem;
     annotations->setCommand("Annotations");
@@ -124,6 +133,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_ClipGroupRemove";
     *draw << "Separator";
     *draw << dimensions;
+    *draw << toolattrib;
     *draw << "Separator";
     *draw << "TechDraw_ExportPageSVG";
     *draw << "TechDraw_ExportPageDXF";
@@ -186,6 +196,14 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension"
+
+    Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
+    attribs->setCommand("TechDraw Toolattributes");
+    *attribs << "TechDraw_ExtensionCircleCenterLines";
+    *attribs << "TechDraw_ExtensionThreadHoleSide";
+    *attribs << "TechDraw_ExtensionThreadBoltSide";
+    *attribs << "TechDraw_ExtensionThreadHoleBottom";
+    *attribs << "TechDraw_ExtensionThreadBoltBottom";
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
@@ -260,6 +278,15 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension";
+
+    Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
+    attribs->setCommand("TechDraw Toolattributes");
+    *attribs << "TechDraw_ExtensionCircleCenterLines";
+    *attribs << "TechDraw_ExtensionThreadHoleSide";
+    *attribs << "TechDraw_ExtensionThreadBoltSide";
+    *attribs << "TechDraw_ExtensionThreadHoleBottom";
+    *attribs << "TechDraw_ExtensionThreadBoltBottom";
+
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
