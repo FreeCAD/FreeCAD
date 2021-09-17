@@ -29,6 +29,8 @@
 # include <QPainter>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
 #include <App/Application.h>
@@ -911,7 +913,6 @@ public:
         selIdPair.GeoId = Constraint::GeoUndef;
         selIdPair.PosId = Sketcher::none;
         std::stringstream ss;
-        SelType newSelType = SelUnknown;
 
         //For each SelType allowed, check if button is released there and assign it to selIdPair
         int VtId = sketchgui->getPreselectPoint();
@@ -920,35 +921,29 @@ public:
         if (allowedSelTypes & (SelRoot | SelVertexOrRoot) && CrsId == 0) {
             selIdPair.GeoId = Sketcher::GeoEnum::RtPnt;
             selIdPair.PosId = Sketcher::start;
-            newSelType = (allowedSelTypes & SelRoot) ? SelRoot : SelVertexOrRoot;
             ss << "RootPoint";
         }
         else if (allowedSelTypes & (SelVertex | SelVertexOrRoot) && VtId >= 0) {
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId,
                                                             selIdPair.GeoId,
                                                             selIdPair.PosId);
-            newSelType = (allowedSelTypes & SelVertex) ? SelVertex : SelVertexOrRoot;
             ss << "Vertex" << VtId + 1;
         }
         else if (allowedSelTypes & (SelEdge | SelEdgeOrAxis) && CrvId >= 0) {
             selIdPair.GeoId = CrvId;
-            newSelType = (allowedSelTypes & SelEdge) ? SelEdge : SelEdgeOrAxis;
             ss << "Edge" << CrvId + 1;
         }
         else if (allowedSelTypes & (SelHAxis | SelEdgeOrAxis) && CrsId == 1) {
             selIdPair.GeoId = Sketcher::GeoEnum::HAxis;
-            newSelType = (allowedSelTypes & SelHAxis) ? SelHAxis : SelEdgeOrAxis;
             ss << "H_Axis";
         }
         else if (allowedSelTypes & (SelVAxis | SelEdgeOrAxis) && CrsId == 2) {
             selIdPair.GeoId = Sketcher::GeoEnum::VAxis;
-            newSelType = (allowedSelTypes & SelVAxis) ? SelVAxis : SelEdgeOrAxis;
             ss << "V_Axis";
         }
         else if (allowedSelTypes & SelExternalEdge && CrvId <= Sketcher::GeoEnum::RefExt) {
             //TODO: Figure out how this works
             selIdPair.GeoId = CrvId;
-            newSelType = SelExternalEdge;
             ss << "ExternalEdge" << Sketcher::GeoEnum::RefExt + 1 - CrvId;
         }
 
@@ -960,13 +955,66 @@ public:
         }
         else {
             // If mouse is released on something allowed, select it and move forward
-            selSeq.push_back(selIdPair);
             Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
                                           sketchgui->getSketchObject()->getNameInDocument(),
                                           ss.str().c_str(),
                                           onSketchPos.x,
                                           onSketchPos.y,
                                           0.f);
+        }
+        return true;
+    }
+
+    virtual bool onSelectionChanged(const Gui::SelectionChanges &msg) {
+        switch (msg.Type) {
+        case Gui::SelectionChanges::RmvSelection:
+            Gui::Selection().clearSelection();
+            return false;
+        case Gui::SelectionChanges::ClrSelection:
+            selSeq.clear();
+            resetOngoingSequences();
+            return false;
+        case Gui::SelectionChanges::AddSelection:
+            break;
+        default:
+            return false;
+        }
+
+        App::DocumentObject *selObj = msg.Object.getObject();
+        if (selObj)
+            selObj = selObj->getLinkedObject();
+        if (selObj != sketchgui->getObject())
+            return false;
+
+        auto element = msg.Object.getOldElementName();
+        if (element.empty())
+            return false;
+
+        SelIdPair selIdPair;
+        SelType newSelType = SelUnknown;
+        auto sketch = sketchgui->getSketchObject();
+        if (sketch->geoIdFromShapeType(element.c_str(), selIdPair.GeoId, selIdPair.PosId)) {
+            if (selIdPair.GeoId == Sketcher::GeoEnum::RtPnt)
+                newSelType = (allowedSelTypes & SelRoot) ? SelRoot : SelVertexOrRoot;
+            else if (selIdPair.GeoId == Sketcher::GeoEnum::HAxis)
+                newSelType = (allowedSelTypes & SelHAxis) ? SelHAxis : SelEdgeOrAxis;
+            else if (selIdPair.GeoId == Sketcher::GeoEnum::VAxis)
+                newSelType = (allowedSelTypes & SelVAxis) ? SelVAxis : SelEdgeOrAxis;
+            else if (boost::starts_with(element, "Edge"))
+                newSelType = (allowedSelTypes & SelEdge) ? SelEdge : SelEdgeOrAxis;
+            else if (boost::starts_with(element, "Vertex"))
+                newSelType = (allowedSelTypes & SelVertex) ? SelVertex : SelVertexOrRoot;
+            else if (boost::starts_with(element, "ExternalEdge"))
+                newSelType = SelExternalEdge;
+        }
+
+        if (selIdPair.GeoId == Constraint::GeoUndef) {
+            // If mouse is released on "blank" space, start over
+            selSeq.clear();
+            resetOngoingSequences();
+            Gui::Selection().clearSelection();
+        } else {
+            selSeq.push_back(selIdPair);
             _tempOnSequences.clear();
             allowedSelTypes = 0;
             for (std::set<int>::iterator token = ongoingSequences.begin();
@@ -978,21 +1026,18 @@ public:
 
                         selSeq.clear();
                         resetOngoingSequences();
-
-                        return true;
+                        return false;
                     }
                     _tempOnSequences.insert(*token);
                     allowedSelTypes = allowedSelTypes | (cmd->allowedSelSequences).at(*token).at(seqIndex+1);
                 }
             }
-
             // Progress to next seqIndex
             std::swap(_tempOnSequences, ongoingSequences);
             seqIndex++;
             selFilterGate->setAllowedSelTypes(allowedSelTypes);
         }
-
-        return true;
+        return false;
     }
 
 protected:
@@ -1984,51 +2029,79 @@ public:
         int VtId = sketchgui->getPreselectPoint();
         int CrsId = sketchgui->getPreselectCross();
         std::stringstream ss;
-        int GeoId_temp;
-        Sketcher::PointPos PosId_temp;
 
         if (VtId != -1) {
-            sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId_temp,PosId_temp);
+            int GeoId;
+            Sketcher::PointPos PosId;
+            sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId,PosId);
             ss << "Vertex" << VtId + 1;
         }
         else if (CrsId == 0){
-            GeoId_temp = Sketcher::GeoEnum::RtPnt;
-            PosId_temp = Sketcher::start;
             ss << "RootPoint";
         }
         else {
-            GeoId1 = GeoId2 = Constraint::GeoUndef;
-            PosId1 = PosId2 = Sketcher::none;
             Gui::Selection().clearSelection();
-
             return true;
         }
 
+        Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
+                                      sketchgui->getSketchObject()->getNameInDocument(),
+                                      ss.str().c_str(),
+                                      onSketchPos.x,
+                                      onSketchPos.y,
+                                      0.f);
+        return false;
+    }
 
-        if (GeoId1 == Constraint::GeoUndef) {
-            GeoId1 = GeoId_temp;
-            PosId1 = PosId_temp;
-            Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
-                                          sketchgui->getSketchObject()->getNameInDocument(),
-                                          ss.str().c_str(),
-                                          onSketchPos.x,
-                                          onSketchPos.y,
-                                          0.f);
+    virtual bool onSelectionChanged(const Gui::SelectionChanges &msg) {
+        switch (msg.Type) {
+        case Gui::SelectionChanges::RmvSelection:
+            Gui::Selection().clearSelection();
+            return false;
+        case Gui::SelectionChanges::ClrSelection:
+            GeoId1 = Constraint::GeoUndef;
+            PosId1 = Sketcher::none;
+            return false;
+        case Gui::SelectionChanges::AddSelection:
+            break;
+        default:
+            return false;
         }
-        else {
-            GeoId2 = GeoId_temp;
-            PosId2 = PosId_temp;
+
+        App::DocumentObject *selObj = msg.Object.getObject();
+        if (selObj)
+            selObj = selObj->getLinkedObject();
+        if (selObj != sketchgui->getObject())
+            return false;
+
+        auto element = msg.Object.getOldElementName();
+        if (element.empty())
+            return false;
+
+        Sketcher::PointPos PosId;
+        int GeoId;
+        if (element != "RootPoint" && !boost::starts_with(element, "Vertex")) {
+            Gui::Selection().clearSelection();
+            return false;
+        }
+        auto sketch = sketchgui->getSketchObject();
+        sketch->geoIdFromShapeType(element.c_str(), GeoId, PosId);
+        if (GeoId1 == Constraint::GeoUndef) {
+            GeoId1 = GeoId;
+            PosId1 = PosId;
+        } else {
+            GeoId2 = GeoId;
+            PosId2 = PosId;
 
             // Apply the constraint
-            Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
-
+            //
             // undo command open
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
             // check if this coincidence is already enforced (even indirectly)
-            bool constraintExists = Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
+            bool constraintExists = sketch->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
             if (!constraintExists && (GeoId1 != GeoId2)) {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                Gui::cmdAppObjectArgs(sketch, "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
                     GeoId1,PosId1,GeoId2,PosId2);
                 Gui::Command::commitCommand();
             }
@@ -2037,7 +2110,7 @@ public:
             }
         }
 
-        return true;
+        return false;
     }
 protected:
     int GeoId1, GeoId2;
