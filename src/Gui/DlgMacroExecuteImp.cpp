@@ -714,6 +714,10 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     QDir dir;
     QTreeWidgetItem* item = 0;
 
+    //When duplicating a macro we can either begin trying to find a unique name with @001 or begin with the current @NNN if applicable
+
+    bool from001 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("DuplicateFrom001", false);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("DuplicateFrom001", from001); //create parameter
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
         item = ui->userMacroListBox->currentItem();
@@ -733,10 +737,13 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     QString last3 = baseName.right(3);
     bool ok = true; //was conversion to int successful?
     int nLast3 = last3.toInt(&ok);
-    last3 = QString::fromStdString("001"); //increment beginning with 001 no matter what
+    last3 = QString::fromStdString("001"); //increment beginning with 001 unless from001 = false
     if (ok ){
         //last3 were all digits, so we strip them from the base name
         if (baseName.size()>3){ //if <= 3 leave be (e.g. 2.py becomes 2@001.py)
+            if(!from001){
+                last3 = baseName.right(3); //use these instead of 001
+            }
             baseName = baseName.left(baseName.size()-3); //strip digits
             if (baseName.endsWith(neutralSymbol)){
                 baseName = baseName.left(baseName.size()-1); //trim the "@", will be added back later
@@ -746,6 +753,7 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     //at this point baseName = the base name without any digits, e.g. "MyMacro"
     //neutralSymbol = "@"
     //last3 is a string representing 3 digits, always "001" at this time
+    //unless from001 = false, in which case we begin with previous numbers
     //completeSuffix = FCMacro or py or FCMacro.py or else suffix will become FCMacro below
 
     QString oldNameDigitized = baseName+neutralSymbol+last3+QString::fromStdString(".")+completeSuffix;
