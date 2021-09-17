@@ -58,7 +58,7 @@ public:
     virtual Part::Feature* getBaseObject(bool silent=false) const;
     /// extracts all edges from the subshapes (including face edges) and furthermore adds
     /// all C0 continuous edges to the vector
-    void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);
+    void getContinuousEdges(Part::TopoShape, std::vector< std::string >&);
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
 

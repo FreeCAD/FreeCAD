@@ -58,7 +58,7 @@ char *upper(char * string)
     int i;
     int l;
 
-    if (string != NULL) {
+    if (string != nullptr) {
         l = std::strlen(string);
         for (i=0; i<l; i++)
             string[i] = toupper(string[i]);
@@ -258,8 +258,8 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     upper(szBuf);
 
     try {
-        if ((strstr(szBuf, "SOLID") == NULL)  && (strstr(szBuf, "FACET") == NULL)    && (strstr(szBuf, "NORMAL") == NULL) &&
-            (strstr(szBuf, "VERTEX") == NULL) && (strstr(szBuf, "ENDFACET") == NULL) && (strstr(szBuf, "ENDLOOP") == NULL)) {
+        if ((strstr(szBuf, "SOLID") == nullptr)  && (strstr(szBuf, "FACET") == nullptr)    && (strstr(szBuf, "NORMAL") == nullptr) &&
+            (strstr(szBuf, "VERTEX") == nullptr) && (strstr(szBuf, "ENDFACET") == nullptr) && (strstr(szBuf, "ENDLOOP") == nullptr)) {
             // probably binary STL
             buf->pubseekoff(0, std::ios::beg, std::ios::in);
             return LoadBinarySTL(rstrIn);
@@ -1578,7 +1578,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
         }
         // read the point indices of the facets
         else if (points && line.find("INDEXEDFACESET {") != std::string::npos) {
-            unsigned long ulPoints[3];
+            PointIndex ulPoints[3];
             facets = true;
             unsigned long ulCt = 0;
             // Get the next line and check for the index field which might begin
@@ -2062,7 +2062,6 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
     clIter.Transform(this->_transform);
     const MeshGeomFacet *pclFacet;
-    unsigned long i;
 
     if (!rstrOut || rstrOut.bad() == true || _rclMesh.CountFacets() == 0)
         return false;
@@ -2088,7 +2087,7 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
         rstrOut << "    outer loop\n";
 
         // vertices
-        for (i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             rstrOut << "      vertex "  << pclFacet->_aclPoints[i].x << " "
                                         << pclFacet->_aclPoints[i].y << " "
                                         << pclFacet->_aclPoints[i].z << '\n';
@@ -2305,7 +2304,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
 
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     if (first || prev != Kd[*it]) {
                         first = false;
@@ -2326,7 +2325,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
         else {
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     out << "f " << f._aulPoints[0]+1 << "//" << *it + 1 << " "
                                 << f._aulPoints[1]+1 << "//" << *it + 1 << " "
@@ -3473,7 +3472,7 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
   : pointArray(p)
   , facetArray(f)
-  , materialArray(0)
+  , materialArray(nullptr)
 {
 }
 
@@ -3553,12 +3552,12 @@ void MeshCleanup::RemoveInvalidPoints()
                     [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
     if (countInvalidPoints > 0) {
         // generate array of decrements
-        std::vector<unsigned long> decrements;
+        std::vector<PointIndex> decrements;
         decrements.resize(pointArray.size());
-        unsigned long decr = 0;
+        PointIndex decr = 0;
 
         MeshPointArray::_TIterator p_end = pointArray.end();
-        std::vector<unsigned long>::iterator decr_it = decrements.begin();
+        std::vector<PointIndex>::iterator decr_it = decrements.begin();
         for (MeshPointArray::_TIterator p_it = pointArray.begin(); p_it != p_end; ++p_it, ++decr_it) {
             *decr_it = decr;
             if (!p_it->IsValid())
@@ -3655,7 +3654,7 @@ void MeshPointFacetAdjacency::SetFacetNeighbourhood()
             }
 
             if (!success) {
-                facet1._aulNeighbours[i] = ULONG_MAX;
+                facet1._aulNeighbours[i] = FACET_INDEX_MAX;
             }
         }
     }

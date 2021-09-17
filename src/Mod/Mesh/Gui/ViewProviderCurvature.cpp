@@ -340,7 +340,7 @@ void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
 
     // curvature values
     std::vector<float> fValues = pCurvInfo->getCurvature( mode ); 
-    unsigned long j=0;
+    int j=0;
     for ( std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++ ) {
         App::Color col = pcColorBar->getColor( *jt );
         pcColorMat->diffuseColor.set1Value(j, SbColor(col.r, col.g, col.b));

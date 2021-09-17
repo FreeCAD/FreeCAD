@@ -36,10 +36,10 @@
         <file>icons/TechDraw_RadiusDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
         <file>icons/TechDraw_VerticalDimension.svg</file>
-        <file>icons/TechDraw_Dimension_Link.svg</file>
+        <file>icons/TechDraw_LinkDimension.svg</file>
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
-        <file>icons/techdraw-landmarkdistance.svg</file>
+        <file>icons/TechDraw_LandmarkDimension.svg</file>
         <file>icons/actions/techdraw-View.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>

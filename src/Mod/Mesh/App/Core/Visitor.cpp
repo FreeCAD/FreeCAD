@@ -31,12 +31,12 @@
 using namespace MeshCore;
 
 
-unsigned long MeshKernel::VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, unsigned long ulStartFacet) const
+unsigned long MeshKernel::VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, FacetIndex ulStartFacet) const
 {
     unsigned long ulVisited = 0, j, ulLevel = 0;
     unsigned long ulCount = _aclFacetArray.size();
-    std::vector<unsigned long> clCurrentLevel, clNextLevel;
-    std::vector<unsigned long>::iterator  clCurrIter;  
+    std::vector<FacetIndex> clCurrentLevel, clNextLevel;
+    std::vector<FacetIndex>::iterator  clCurrIter;
     MeshFacetArray::_TConstIterator clCurrFacet, clNBFacet;
 
     // pick up start point
@@ -52,7 +52,7 @@ unsigned long MeshKernel::VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, u
             // visit all neighbours of the current level if not yet done
             for (unsigned short i = 0; i < 3; i++) {
                 j = clCurrFacet->_aulNeighbours[i]; // index to neighbour facet
-                if (j == ULONG_MAX) 
+                if (j == FACET_INDEX_MAX)
                     continue;      // no neighbour facet
 
                 if (j >= ulCount) 
@@ -83,28 +83,28 @@ unsigned long MeshKernel::VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, u
     return ulVisited;
 }
 
-unsigned long MeshKernel::VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rclFVisitor, unsigned long ulStartFacet) const
+unsigned long MeshKernel::VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rclFVisitor, FacetIndex ulStartFacet) const
 {
     unsigned long ulVisited = 0, ulLevel = 0;
     MeshRefPointToFacets clRPF(*this);
     const MeshFacetArray& raclFAry = _aclFacetArray;
     MeshFacetArray::_TConstIterator pFBegin = raclFAry.begin();
-    std::vector<unsigned long> aclCurrentLevel, aclNextLevel;
+    std::vector<FacetIndex> aclCurrentLevel, aclNextLevel;
 
     aclCurrentLevel.push_back(ulStartFacet);
     raclFAry[ulStartFacet].SetFlag(MeshFacet::VISIT);
 
     while (aclCurrentLevel.size() > 0) {
         // visit all neighbours of the current level
-        for (std::vector<unsigned long>::iterator pCurrFacet = aclCurrentLevel.begin(); pCurrFacet < aclCurrentLevel.end(); ++pCurrFacet) {
+        for (std::vector<FacetIndex>::iterator pCurrFacet = aclCurrentLevel.begin(); pCurrFacet < aclCurrentLevel.end(); ++pCurrFacet) {
             for (int i = 0; i < 3; i++) {
                 const MeshFacet &rclFacet = raclFAry[*pCurrFacet];
-                const std::set<unsigned long>& raclNB = clRPF[rclFacet._aulPoints[i]];
-                for (std::set<unsigned long>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); ++pINb) {
+                const std::set<FacetIndex>& raclNB = clRPF[rclFacet._aulPoints[i]];
+                for (std::set<FacetIndex>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); ++pINb) {
                     if (pFBegin[*pINb].IsFlag(MeshFacet::VISIT) == false) {
                         // only visit if VISIT Flag not set
                         ulVisited++;
-                        unsigned long ulFInd = *pINb;
+                        FacetIndex ulFInd = *pINb;
                         aclNextLevel.push_back(ulFInd);
                         pFBegin[*pINb].SetFlag(MeshFacet::VISIT);
                         if (rclFVisitor.Visit(pFBegin[*pINb], raclFAry[*pCurrFacet], ulFInd, ulLevel) == false)
@@ -121,11 +121,11 @@ unsigned long MeshKernel::VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rcl
     return ulVisited;
 }
 
-unsigned long MeshKernel::VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, unsigned long ulStartPoint) const
+unsigned long MeshKernel::VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, PointIndex ulStartPoint) const
 {
     unsigned long ulVisited = 0, ulLevel = 0;
-    std::vector<unsigned long> aclCurrentLevel, aclNextLevel;
-    std::vector<unsigned long>::iterator  clCurrIter;  
+    std::vector<PointIndex> aclCurrentLevel, aclNextLevel;
+    std::vector<PointIndex>::iterator  clCurrIter;
     MeshPointArray::_TConstIterator pPBegin = _aclPointArray.begin();
     MeshRefPointToPoints clNPs(*this);
 
@@ -135,12 +135,12 @@ unsigned long MeshKernel::VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, u
     while (aclCurrentLevel.size() > 0) {
         // visit all neighbours of the current level
         for (clCurrIter = aclCurrentLevel.begin(); clCurrIter < aclCurrentLevel.end(); ++clCurrIter) {
-            const std::set<unsigned long>& raclNB = clNPs[*clCurrIter];
-            for (std::set<unsigned long>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); ++pINb) {
+            const std::set<PointIndex>& raclNB = clNPs[*clCurrIter];
+            for (std::set<PointIndex>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); ++pINb) {
                 if (pPBegin[*pINb].IsFlag(MeshPoint::VISIT) == false) {
                     // only visit if VISIT Flag not set
                     ulVisited++;
-                    unsigned long ulPInd = *pINb;
+                    PointIndex ulPInd = *pINb;
                     aclNextLevel.push_back(ulPInd);
                     pPBegin[*pINb].SetFlag(MeshPoint::VISIT);
                     if (rclPVisitor.Visit(pPBegin[*pINb], *(pPBegin + (*clCurrIter)), ulPInd, ulLevel) == false)
@@ -160,7 +160,7 @@ unsigned long MeshKernel::VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, u
 
 MeshSearchNeighbourFacetsVisitor::MeshSearchNeighbourFacetsVisitor (const MeshKernel &rclMesh,
                                                                     float fRadius,
-                                                                    unsigned long ulStartFacetIdx)
+                                                                    FacetIndex ulStartFacetIdx)
   : _rclMeshBase(rclMesh),
     _clCenter(rclMesh.GetFacet(ulStartFacetIdx).GetGravityPoint()),
     _fRadius(fRadius),
@@ -169,7 +169,7 @@ MeshSearchNeighbourFacetsVisitor::MeshSearchNeighbourFacetsVisitor (const MeshKe
 {
 }
 
-std::vector<unsigned long> MeshSearchNeighbourFacetsVisitor::GetAndReset (void)
+std::vector<FacetIndex> MeshSearchNeighbourFacetsVisitor::GetAndReset ()
 {
     MeshAlgorithm(_rclMeshBase).ResetFacetsFlag(_vecFacets, MeshFacet::VISIT);
     return _vecFacets;
@@ -177,8 +177,8 @@ std::vector<unsigned long> MeshSearchNeighbourFacetsVisitor::GetAndReset (void)
 
 // -------------------------------------------------------------------------
 
-MeshPlaneVisitor::MeshPlaneVisitor (const MeshKernel& mesh, unsigned long index,
-                                    float deviation, std::vector<unsigned long> &indices)
+MeshPlaneVisitor::MeshPlaneVisitor (const MeshKernel& mesh, FacetIndex index,
+                                    float deviation, std::vector<FacetIndex> &indices)
   : mesh(mesh), indices(indices), max_deviation(deviation), fitter(new PlaneFit)
 {
     MeshGeomFacet triangle = mesh.GetFacet(index);
@@ -195,7 +195,7 @@ MeshPlaneVisitor::~MeshPlaneVisitor ()
 }
 
 bool MeshPlaneVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&, 
-                                   unsigned long, unsigned long, unsigned short)
+                                   FacetIndex, unsigned long, unsigned short)
 {
     if (!fitter->Done())
         fitter->Fit();
@@ -208,7 +208,7 @@ bool MeshPlaneVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&,
 }
 
 bool MeshPlaneVisitor::Visit (const MeshFacet & face, const MeshFacet &,
-                              unsigned long ulFInd, unsigned long)
+                              FacetIndex ulFInd, unsigned long)
 {
     MeshGeomFacet triangle = mesh.GetFacet(face);
     indices.push_back(ulFInd);

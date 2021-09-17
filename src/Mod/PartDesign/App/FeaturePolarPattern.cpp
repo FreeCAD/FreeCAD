@@ -189,6 +189,9 @@ void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char
         OccurrencesProperty.Restore(reader);
         Occurrences.setValue(OccurrencesProperty.getValue());
     }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 }

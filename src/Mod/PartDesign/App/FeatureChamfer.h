@@ -62,6 +62,7 @@ public:
 
 protected:
     void Restore(Base::XMLReader &reader) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
     static const App::PropertyQuantityConstraint::Constraints floatSize;
     static const App::PropertyAngle::Constraints floatAngle;
 };
