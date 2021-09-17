@@ -1161,7 +1161,7 @@ bool Document::save(void)
         catch (const Base::FileException& e) {
             int ret = QMessageBox::question(
                 getMainWindow(),
-                QObject::tr("Could not Save Document"),
+                QObject::tr("Could not save document"),
                 QObject::tr("There was an issue trying to save the file. "
                             "This may be because some of the parent folders do not exist, "
                             "or you do not have sufficient permissions, "
@@ -1218,7 +1218,7 @@ bool Document::saveAs(void)
         catch (const Base::FileException& e) {
             int ret = QMessageBox::question(
                 getMainWindow(),
-                QObject::tr("Could not Save Document"),
+                QObject::tr("Could not save document"),
                 QObject::tr("There was an issue trying to save the file. "
                             "This may be because some of the parent folders do not exist, "
                             "or you do not have sufficient permissions, "
