@@ -204,6 +204,7 @@ struct MainWindowP
     boost::signals2::scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
+    QTime _showNormal;
 
     void restoreWindowState(const QByteArray &);
 };
@@ -966,6 +967,15 @@ void MainWindow::showDocumentation(const QString& help)
 
 bool MainWindow::event(QEvent *e)
 {
+    if (e->type() == QEvent::WindowStateChange) {
+        if (isMaximized()
+                && d->_showNormal.isValid()
+                && d->_showNormal > QTime::currentTime())
+        {
+            QMetaObject::invokeMethod(this, "showNormal", Qt::QueuedConnection);
+        }
+        d->_showNormal = QTime();
+    }
     if (e->type() == QEvent::EnterWhatsThisMode) {
         // Unfortunately, for top-level widgets such as menus or dialogs we
         // won't be notified when the user clicks the link in the hypertext of
@@ -1404,6 +1414,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
         d->activityTimer->stop();
         saveWindowSettings();
+        d->_restoring = true; // prevent futher triggering of saving window setting
         delete d->assistant;
         d->assistant = 0;
 
@@ -1662,10 +1673,22 @@ void MainWindow::loadWindowSettings()
     this->move(x, y);
     this->resize(w, h);
 
+    Base::StateLocker guard(d->_restoring);
+
     d->restoreWindowState(windowState);
     std::clog << "Main window restored" << std::endl;
 
-    max ? showMaximized() : show();
+    if (max)
+        showMaximized();
+    else {
+        // It seems that X window can't really show normal if the window hasn't
+        // been shown before, or may be because of some other reason. The work
+        // around here is to use _showNormal to set a time interval, within
+        // which is the window is maximized (by some unknown force), we change
+        // it back to normal.
+        d->_showNormal = QTime::currentTime().addSecs(1);
+        showNormal();
+    }
     statusBar()->setVisible(showStatusBar);
 
     ToolBarManager::getInstance()->restoreState();
@@ -1701,6 +1724,9 @@ void MainWindowP::restoreWindowState(const QByteArray &windowState)
 
 void MainWindow::saveWindowSettings(bool canDelay)
 {
+    if (isRestoringWindowState())
+        return;
+
     if (canDelay) {
         d->saveStateTimer.start(100);
         return;
