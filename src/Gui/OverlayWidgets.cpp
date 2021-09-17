@@ -3706,7 +3706,7 @@ public:
         }
 
         bool outside = false;
-        if (!rectMdi.contains(pos)) {
+        if (!rectMain.contains(pos)) {
             outside = true;
             if (drop) {
                 if (!dock->isFloating()) {
@@ -3721,7 +3721,7 @@ public:
                 }
                 if (_DragFloating)
                     _DragFloating->hide();
-            } else {
+            } else if (!dock->isFloating()) {
                 if (!_DragFloating) {
                     _DragFloating = new QDockWidget(getMainWindow());
                     _DragFloating->setFloating(true);
