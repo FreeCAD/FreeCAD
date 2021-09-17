@@ -86,6 +86,7 @@ static OverlayTabWidget *_BottomOverlay;
 static std::array<OverlayTabWidget*, 4> _Overlays;
 
 static OverlayDragFrame *_DragFrame;
+static QDockWidget *_DragFloating;
 static QWidget *_Dragging;
 
 static const int _MinimumOverlaySize = 30;
@@ -2427,6 +2428,8 @@ void OverlaySplitterHandle::endDrag()
             ?  Qt::SizeHorCursor : Qt::SizeVerCursor);
     if (_DragFrame)
         _DragFrame->hide();
+    if (_DragFloating)
+        _DragFloating->hide();
 }
 
 void OverlaySplitterHandle::keyPressEvent(QKeyEvent *ke)
@@ -3702,21 +3705,55 @@ public:
                              tabWidget->rectOverlay.size());
         }
 
+        bool outside = false;
+        if (!rectMdi.contains(pos)) {
+            outside = true;
+            if (drop) {
+                if (!dock->isFloating()) {
+                    if (src) {
+                        _overlayMap.erase(dock);
+                        src->removeWidget(dock);
+                    }
+                    setFocusView();
+                    dock->setFloating(true);
+                    dock->move(pos - dragOffset);
+                    dock->show();
+                }
+                if (_DragFloating)
+                    _DragFloating->hide();
+            } else {
+                if (!_DragFloating) {
+                    _DragFloating = new QDockWidget(getMainWindow());
+                    _DragFloating->setFloating(true);
+                }
+                _DragFloating->resize(dock->size());
+                _DragFloating->setWindowTitle(dock->windowTitle());
+                _DragFloating->show();
+                _DragFloating->move(pos - dragOffset);
+            }
+            if (_DragFrame)
+                _DragFrame->hide();
+            return;
+
+        } else if (!drop && _DragFrame && !_DragFrame->isVisible()) {
+            _DragFrame->raise();
+            _DragFrame->show();
+            if (_DragFloating)
+                _DragFloating->hide();
+        }
+
         if (!drop) {
             if (!_DragFrame)
                 _DragFrame = new OverlayDragFrame(getMainWindow());
 
             rect = QRect(getMainWindow()->mapFromGlobal(rect.topLeft()), rect.size());
             _DragFrame->setGeometry(rect);
-            if (!_DragFrame->isVisible()) {
+            if (!outside && !_DragFrame->isVisible()) {
                 _DragFrame->raise();
                 _DragFrame->show();
             }
             return;
         }
-
-        if (dock && dock->isFloating() && !rectMdi.contains(dock->geometry().center()))
-            return;
 
         if (src && src == dst && dstIndex != -2){
             auto splitter = src->getSplitter();
