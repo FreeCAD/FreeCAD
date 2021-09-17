@@ -28,14 +28,23 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import math
+
 
 def add_femelement_geometry(f, model, mystran_writer):
 
     # generate pyNastran code
     # HACK, the if statemant needs improvement, see calculix solver
+    # print (model)
+    # print (mystran_writer.member)
     if mystran_writer.member.geos_beamsection:
+        # print ("beamsection")
         beamsec_obj = mystran_writer.member.geos_beamsection[0]["Object"]
-        if beamsec_obj.SectionType == "Rectangular":
+        # print (beamsec_obj.Content)
+
+        # PBARL
+        isRod = 0
+        if beamsec_obj.SectionType == "Rectangular_L":
             height = beamsec_obj.RectHeight.getValueAs("mm").Value
             width = beamsec_obj.RectWidth.getValueAs("mm").Value
             pynas_code = "# pbarl card, properties of a simple beam element (CBAR entry)\n"
@@ -49,8 +58,132 @@ def add_femelement_geometry(f, model, mystran_writer):
                 .format('"BAR"')
             )
             pynas_code += "# pbarl.validate()\n\n\n"
+
+        # PBAR
+        # pyNastran def add_pbar(self, pid, mid, A=0., i1=0., i2=0., i12=0., j=0., nsm=0.,
+        #             c1=0., c2=0., d1=0., d2=0., e1=0., e2=0.,
+        #             f1=0., f2=0., k1=1.e8, k2=1.e8, comment="") -> PBAR:
+        # PROD
+        # pyNastran def add_prod(self, pid: int, mid: int, A: float,
+        #             j: float=0., c: float=0., nsm: float=0., comment: str="") -> PROD:
+
+        elif beamsec_obj.SectionType == "Rectangular":
+            height = beamsec_obj.RectHeight.getValueAs("mm").Value
+            width = beamsec_obj.RectWidth.getValueAs("mm").Value
+            dim1 = width
+            dim2 = height
+            pynas_code = "# pbarl card, properties of a simple beam element (CBAR entry)\n"
+            pynas_code += "# defined by cross-sectional dimensions\n"
+            pynas_code += (
+                "dim = [{}, {}]\n"
+                .format(dim1, dim2)
+            )
+            pynas_code += (
+                "A = {}\n"
+                .format(width * height)
+            )
+            pynas_code += (
+                "i1 = {}\n"
+                .format(width * math.pow(height, 3) / 12.0)
+            )
+            pynas_code += (
+                "i2 = {}\n"
+                .format(math.pow(width, 3) * height / 12.0)
+            )
+            pynas_code += (
+                "j = {}\n"
+                .format(width * math.pow(height, 3) * (1.0 / 3.0 - 21.0 * height / width * (1.0 - math.pow(height / width, 4) / 12.0)))
+            )
+            if isRod == 1:
+                pynas_code += (
+                    "model.add_prod(pid=1, mid=1, A=A)\n"
+                )
+            else:
+                pynas_code += (
+                    "model.add_pbar(pid=1, mid=1, A=A, i1=i1, i2=i2, j=j)\n"
+                )
+
+            pynas_code += "# pbar.validate()\n\n\n"
+
+        elif beamsec_obj.SectionType == "Circular":
+            # Input: 25mm
+            # If diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
+            # Output: PBAR           1       1490.8738
+
+            # If diameter = beamsec_obj.CircDiameter.getValueAs("m").Value
+            # Output: PBAR           1       14.9087-4
+
+            diameter = beamsec_obj.CircDiameter.getValueAs("m").Value
+            dim1 = diameter / 2.0
+            pynas_code = "# pbar card, properties of a simple beam element (CBAR entry)\n"
+            pynas_code += "# defined by cross-sectional dimensions\n"
+            pynas_code += (
+                "A = {}\n"
+                .format(math.pi / 4.0 * diameter * diameter)
+            )
+            pynas_code += (
+                "i1 = {}\n"
+                .format(math.pi / 4.0 * math.pow(diameter / 2.0, 4))
+            )
+            pynas_code += (
+                "i2 = {}\n"
+                .format(math.pi / 4.0 * math.pow(diameter / 2.0, 4))
+            )
+            pynas_code += (
+                "j = {}\n"
+                .format(math.pi / 2.0 * math.pow(diameter / 2.0, 4))
+            )
+            if isRod == 1:
+                pynas_code += (
+                    "model.add_prod(pid=1, mid=1, A=A)\n"
+                )
+            else:
+                pynas_code += (
+                    "model.add_pbar(pid=1, mid=1, A=A, i1=i1, i2=i2, j=j)\n"
+                )
+            pynas_code += "# pbar.validate()\n\n\n"
+
+        elif beamsec_obj.SectionType == "Pipe":
+            diameter = beamsec_obj.PipeDiameter.getValueAs("m").Value
+            thickness = beamsec_obj.PipeThickness.getValueAs("m").Value
+            dim1 = diameter / 2.0
+            dim2 = diameter / 2.0 - thickness
+            pynas_code = "# pbar card, properties of a simple beam element (CBAR entry)\n"
+            pynas_code += "# defined by cross-sectional dimensions\n"
+            pynas_code += (
+                "dim = [{}, {}]\n"
+                .format(dim1, dim2)
+            )
+            pynas_code += (
+                "A = {}\n"
+                .format(math.pi / 4.0 * (dim1 * dim1 - dim2 * dim2))
+            )
+            pynas_code += (
+                "i1 = {}\n"
+                .format(math.pi / 4.0 * (math.pow(dim1, 4) - math.pow(dim2, 4)))
+            )
+            pynas_code += (
+                "i2 = {}\n"
+                .format(math.pi / 4.0 * (math.pow(dim1, 4) - math.pow(dim2, 4)))
+            )
+            pynas_code += (
+                "j = {}\n"
+                .format(math.pi / 2.0 * (math.pow(dim1, 4) - math.pow(dim2, 4)))
+            )
+            if isRod == 1:
+                pynas_code += (
+                    "model.add_prod(pid=1, mid=1, A=A)\n"
+                )
+            else:
+                pynas_code += (
+                    "model.add_pbar(pid=1, mid=1, A=A, i1=i1, i2=i2, j=j)\n"
+                )
+            pynas_code += "# pbar.validate()\n\n\n"
         else:
+            print("This type of 1D element section is not supported yet.")
+            print(beamsec_obj.SectionType)
             return
+
     elif mystran_writer.member.geos_shellthickness:
         # only use the first shellthickness object
         shellth_obj = mystran_writer.member.geos_shellthickness[0]["Object"]
