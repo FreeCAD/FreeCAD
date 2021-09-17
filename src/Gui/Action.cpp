@@ -2908,8 +2908,9 @@ void PresetsAction::onShowMenu()
             _menu->insertAction(pos, action);
             action->setText(tr(v.second->GetASCII("Name", v.first.c_str()).c_str()));
             t = tr(v.second->GetASCII("ToolTip").c_str());
-        } else if (!pos) {
-            pos = _menu->addSeparator();
+        } else {
+            if (!pos)
+                pos = _menu->addSeparator();
             _menu->addAction(action);
             action->setText(QString::fromUtf8(v.second->GetASCII("Name", v.first.c_str()).c_str()));
             t = QString::fromUtf8(v.second->GetASCII("ToolTip").c_str());
