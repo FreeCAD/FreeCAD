@@ -350,8 +350,16 @@ void DlgMacroExecuteImp::on_editButton_clicked()
 void DlgMacroExecuteImp::on_createButton_clicked()
 {
     // query file name
+    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
+
     QString fn = QInputDialog::getText(this, tr("Macro file"), tr("Enter a file name, please:"),
         QLineEdit::Normal, QString(), nullptr, Qt::MSWindowsFixedSizeDialogHint);
+
+    if(replaceSpaces){
+        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    }
+
     if (!fn.isEmpty())
     {
         QString suffix = QFileInfo(fn).suffix().toLower();
@@ -674,6 +682,9 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
     if (!item)
         return;
 
+    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
+
     QString oldName = item->text(0);
     QFileInfo oldfi(dir, oldName);
     QFile oldfile(oldfi.absoluteFilePath());
@@ -681,6 +692,11 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
     // query new name
     QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
         tr("Enter new name:"), QLineEdit::Normal, oldName, nullptr, Qt::MSWindowsFixedSizeDialogHint);
+
+    if(replaceSpaces){
+        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    }
+
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
@@ -729,8 +745,8 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
 
     //when creating a note it will be convenient to convert spaces to underscores if the user desires this behavior
 
-    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("DuplicateReplaceSpaces", false);
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("DuplicateReplaceSpaces", replaceSpaces); //create parameter
+    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
 
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
