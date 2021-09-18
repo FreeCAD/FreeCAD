@@ -2109,7 +2109,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody,
     if (Feat) {
         func(Feat, features, subfeatures);
         Gui::Command::updateActive();
-        PartDesignGui::fitViewWithDelay(5);
+        PartDesignGui::fitViewWithDelay(50);
     }
 }
 
