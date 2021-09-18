@@ -53,7 +53,9 @@ ViewProviderHole::~ViewProviderHole()
 std::vector<App::DocumentObject*> ViewProviderHole::_claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Hole*>(getObject())->Profile.getValue());
+    auto profile = static_cast<PartDesign::Hole*>(getObject())->Profile.getValue();
+    if (profile && !profile->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        temp.push_back(profile);
     return temp;
 }
 
