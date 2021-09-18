@@ -74,6 +74,7 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
+    bool eventFilter(QObject*, QEvent*) override;
 
 private:
     double getLength(void) const;

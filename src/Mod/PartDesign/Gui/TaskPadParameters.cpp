@@ -49,6 +49,7 @@
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
 #include "ViewProviderExtrusion.h"
+#include "Utils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -86,6 +87,9 @@ void TaskPadParameters::setupUI(bool newObj)
 #endif
     }
     addBlinkEditor(ui->lineFaceName);
+
+    ui->lineFaceName->installEventFilter(this);
+    ui->lineFaceName->setMouseTracking(true);
 
     this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
@@ -652,6 +656,30 @@ QString TaskPadParameters::getFaceName(void) const
     }
     return QString::fromLatin1("None");
 }
+
+bool TaskPadParameters::eventFilter(QObject *o, QEvent *ev)
+{
+    switch(ev->type()) {
+    case QEvent::Leave:
+        Gui::Selection().rmvPreselect();
+        break;
+    case QEvent::Enter:
+        if (vp && o == ui->lineFaceName) {
+            auto pad = static_cast<PartDesign::Pad*>(vp->getObject());
+            auto obj = pad->UpToFace.getValue();
+            if (obj) {
+                const auto &subs = pad->UpToFace.getSubValues(true);
+                PartDesignGui::highlightObjectOnTop(
+                        App::SubObjectT(obj, subs.size()?subs[0].c_str():""));
+            }
+        }
+        break;
+    default:
+        break;
+    }
+    return false;
+}
+
 
 TaskPadParameters::~TaskPadParameters()
 {

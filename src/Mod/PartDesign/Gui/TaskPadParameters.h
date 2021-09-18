@@ -81,6 +81,7 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
+    bool eventFilter(QObject*, QEvent*) override;
     void refresh() override;
 
 private:

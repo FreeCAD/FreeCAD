@@ -47,6 +47,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
+#include "Utils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -65,6 +66,9 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
     addBlinkEditor(ui->lineFaceName);
 #endif
+
+    ui->lineFaceName->installEventFilter(this);
+    ui->lineFaceName->setMouseTracking(true);
 
     this->groupLayout()->addWidget(proxy);
     initUI(proxy);
@@ -160,6 +164,29 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
         ui->innerTaperAngleEdit2->setToLastUsedValue();
         ui->innerTaperAngleEdit2->selectNumber();
     }
+}
+
+bool TaskPocketParameters::eventFilter(QObject *o, QEvent *ev)
+{
+    switch(ev->type()) {
+    case QEvent::Leave:
+        Gui::Selection().rmvPreselect();
+        break;
+    case QEvent::Enter:
+        if (vp && o == ui->lineFaceName) {
+            auto pocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+            auto obj = pocket->UpToFace.getValue();
+            if (obj) {
+                const auto &subs = pocket->UpToFace.getSubValues(true);
+                PartDesignGui::highlightObjectOnTop(
+                        App::SubObjectT(obj, subs.size()?subs[0].c_str():""));
+            }
+        }
+        break;
+    default:
+        break;
+    }
+    return false;
 }
 
 void TaskPocketParameters::refresh()
