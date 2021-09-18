@@ -1035,7 +1035,12 @@ QString SelectionSingleton::format(const char *docname,
                                     fmtDecimal<0 ? format.precision : fmtDecimal),
                         unit);
         };
-        ts << fmt(x) << "; " << fmt(y) << "; " << fmt(z) << QLatin1String(" | ");
+        if (QApplication::queryKeyboardModifiers() == Qt::AltModifier) {
+            ts << qSetRealNumberPrecision(std::numeric_limits<double>::digits10 + 1);
+            ts << x << "; " << y << "; " << z;
+        } else
+            ts << fmt(x) << "; " << fmt(y) << "; " << fmt(z);
+        ts << QStringLiteral(" | ");
     }
 
     ts << objT.getDocumentName().c_str() << "#" 
