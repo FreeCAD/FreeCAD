@@ -695,10 +695,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             std::vector<TopoShape> tmpshapes;
             for (auto &v : addsub) {
                 if (v.second != Additive) {
-                    // Add an empty compound shape to mark this is a subtractive shape
+                    // Add an empty compound shape to mark this as a subtractive shape
                     tmpshapes.push_back(TopoShape().makECompound({}));
                     if (v.second == Intersecting)
-                        // Add a second empty compound shape to mark this is a common shape
+                        // Add a second empty compound shape to mark this as a common shape
                         tmpshapes.push_back(TopoShape().makECompound({}));
                 }
                 tmpshapes.push_back(v.first);
@@ -886,6 +886,34 @@ bool Transformed::isElementGenerated(const TopoShape &shape, const Data::MappedN
 
 void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes)
 {
+    // Here is how Transformed pack the add/sub shapes inside AddSubShape.
+    // Remember that we now have a third type of 'Intersecting' shape.
+    // 
+    // * If we have a single non compound shape, then it is an additive shape
+    //
+    // * If we have a compound of equal or less than three sub shapes,
+    //
+    //   * If the first sub shape is not a compound, then we got a single
+    //     additive shape for this first sub shape
+    //
+    //     * If there is a second sub shape, then we got an additional
+    //       subtractive shape from the second sub shape.
+    //
+    //   * If the first sub shape is an empty compound, then we got a single
+    //     subtractive shape from the second sub shape.
+    //
+    //   * If the first and second sub shape are both empty compound, then we
+    //     got a single intersecting shape from the third sub shape.
+    //
+    // * Else, then each sub shape of the compound is also a compound with 
+    //   maximum three sub shapes, the first sub shape being additive, the
+    //   second being subtractive, and the third being intersecting. Only one
+    //   of the sub shape can be non empty (although the code below checks
+    //   for all sub shapes).
+    //
+    // Note that the order of doing additive/subtractive/intersecting is
+    // important and preserved as the indexing position of the sub shapes.
+
     Part::TopoShape res = AddSubShape.getShape();
     if (res.isNull())
         return;
@@ -895,17 +923,17 @@ void Transformed::getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > 
     }
     int count = 0;
     auto subshapes = res.getSubTopoShapes();
-    if (subshapes.size() > 0 && subshapes.size() <= 2) {
+    if (subshapes.size() > 0 && subshapes.size() <= 3) {
         auto s = subshapes[0];
         bool proceed = false;
         if (s.isNull())
             proceed = true;
-        else if (s.shapeType(true)!=TopAbs_COMPOUND
-                || s.countSubShapes(TopAbs_SHAPE) != 0) {
+        else if (s.shapeType(true)!=TopAbs_COMPOUND) {
             ++count;
             shapes.emplace_back(s, Additive);
             proceed = true;
-        }
+        } else if (s.countSubShapes(TopAbs_SHAPE) == 0)
+            proceed = true;
         if (proceed && subshapes.size() > 1) {
             auto s = subshapes[1];
             if (!s.isNull()) {
