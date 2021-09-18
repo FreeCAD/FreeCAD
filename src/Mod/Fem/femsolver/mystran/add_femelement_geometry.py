@@ -38,12 +38,11 @@ def add_femelement_geometry(f, model, mystran_writer):
     # print (model)
     # print (mystran_writer.member)
     if mystran_writer.member.geos_beamsection:
-        # print ("beamsection")
+
         beamsec_obj = mystran_writer.member.geos_beamsection[0]["Object"]
-        # print (beamsec_obj.Content)
 
         # PBARL
-        isRod = 0
+        isRod = False
         if beamsec_obj.SectionType == "Rectangular_L":
             height = beamsec_obj.RectHeight.getValueAs("mm").Value
             width = beamsec_obj.RectWidth.getValueAs("mm").Value
@@ -70,13 +69,11 @@ def add_femelement_geometry(f, model, mystran_writer):
         elif beamsec_obj.SectionType == "Rectangular":
             height = beamsec_obj.RectHeight.getValueAs("mm").Value
             width = beamsec_obj.RectWidth.getValueAs("mm").Value
-            dim1 = width
-            dim2 = height
             pynas_code = "# pbarl card, properties of a simple beam element (CBAR entry)\n"
             pynas_code += "# defined by cross-sectional dimensions\n"
             pynas_code += (
                 "dim = [{}, {}]\n"
-                .format(dim1, dim2)
+                .format(width, height)
             )
             pynas_code += (
                 "A = {}\n"
@@ -94,7 +91,7 @@ def add_femelement_geometry(f, model, mystran_writer):
                 "j = {}\n"
                 .format(width * math.pow(height, 3) * (1.0 / 3.0 - 21.0 * height / width * (1.0 - math.pow(height / width, 4) / 12.0)))
             )
-            if isRod == 1:
+            if isRod == True:
                 pynas_code += (
                     "model.add_prod(pid=1, mid=1, A=A)\n"
                 )
@@ -106,34 +103,18 @@ def add_femelement_geometry(f, model, mystran_writer):
             pynas_code += "# pbar.validate()\n\n\n"
 
         elif beamsec_obj.SectionType == "Circular":
-            # Input: 25mm
-            # If diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
-            # Output: PBAR           1       1490.8738
-
-            # If diameter = beamsec_obj.CircDiameter.getValueAs("m").Value
-            # Output: PBAR           1       14.9087-4
-
-            diameter = beamsec_obj.CircDiameter.getValueAs("m").Value
-            dim1 = diameter / 2.0
+            diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
+            area = math.pi / 4.0 * diameter * diameter
+            i1 = math.pi / 4.0 * math.pow(diameter / 2.0, 4)
+            i2 = i1
+            j = math.pi / 2.0 * math.pow(diameter / 2.0, 4)
             pynas_code = "# pbar card, properties of a simple beam element (CBAR entry)\n"
             pynas_code += "# defined by cross-sectional dimensions\n"
-            pynas_code += (
-                "A = {}\n"
-                .format(math.pi / 4.0 * diameter * diameter)
-            )
-            pynas_code += (
-                "i1 = {}\n"
-                .format(math.pi / 4.0 * math.pow(diameter / 2.0, 4))
-            )
-            pynas_code += (
-                "i2 = {}\n"
-                .format(math.pi / 4.0 * math.pow(diameter / 2.0, 4))
-            )
-            pynas_code += (
-                "j = {}\n"
-                .format(math.pi / 2.0 * math.pow(diameter / 2.0, 4))
-            )
-            if isRod == 1:
+            pynas_code += "A = {}\n".format(area)
+            pynas_code += "i1 = {}\n".format(i1)
+            pynas_code += "i2 = {}\n".format(i2)
+            pynas_code += "j = {}\n".format(j)
+            if isRod == True:
                 pynas_code += (
                     "model.add_prod(pid=1, mid=1, A=A)\n"
                 )
@@ -144,8 +125,8 @@ def add_femelement_geometry(f, model, mystran_writer):
             pynas_code += "# pbar.validate()\n\n\n"
 
         elif beamsec_obj.SectionType == "Pipe":
-            diameter = beamsec_obj.PipeDiameter.getValueAs("m").Value
-            thickness = beamsec_obj.PipeThickness.getValueAs("m").Value
+            diameter = beamsec_obj.PipeDiameter.getValueAs("mm").Value
+            thickness = beamsec_obj.PipeThickness.getValueAs("mm").Value
             dim1 = diameter / 2.0
             dim2 = diameter / 2.0 - thickness
             pynas_code = "# pbar card, properties of a simple beam element (CBAR entry)\n"
@@ -170,7 +151,7 @@ def add_femelement_geometry(f, model, mystran_writer):
                 "j = {}\n"
                 .format(math.pi / 2.0 * (math.pow(dim1, 4) - math.pow(dim2, 4)))
             )
-            if isRod == 1:
+            if isRod == True:
                 pynas_code += (
                     "model.add_prod(pid=1, mid=1, A=A)\n"
                 )
