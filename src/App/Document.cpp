@@ -2613,9 +2613,8 @@ bool Document::saveToFile(const char* filename) const
     }
     Base::FileInfo tmp(fn);
     // In case some folders in the path do not exist
-    fs::path parent = fs::path(filename).parent_path();
-    if (!parent.empty() && !parent.filename_is_dot() && !parent.filename_is_dot_dot())
-        fs::create_directories(parent);
+    auto parentPath = fs::absolute(fs::path(filename)).parent_path();
+    fs::create_directories(parentPath);
 
     // open extra scope to close ZipWriter properly
     {
