@@ -530,6 +530,8 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
 {
     CommandManager& mgr = Application::Instance->commandManager();
     QList<ToolBarItem*> items = item->getItems();
+    if (items.empty())
+        return;
     QList<QAction*> actions = toolbar->actions();
     for (QList<ToolBarItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
         // search for the action item.
@@ -602,7 +604,8 @@ void ToolBarManager::retranslate()
         if (toolbar->objectName().startsWith(QLatin1String("Custom_")))
             continue;
         QByteArray toolbarName = toolbar->objectName().toUtf8();
-        toolbar->setWindowTitle(QApplication::translate("Workbench", (const char*)toolbarName));
+        if (toolbar->windowTitle().size())
+            toolbar->setWindowTitle(QApplication::translate("Workbench", (const char*)toolbarName));
     }
 }
 
@@ -623,7 +626,7 @@ std::map<QString, QPointer<QToolBar>> ToolBarManager::toolBars()
                 QString(), Qt::FindDirectChildrenOnly))
     {
         QString name = tb->objectName();
-        if (name.isEmpty())
+        if (name.isEmpty() || name.startsWith(QStringLiteral("*")))
             continue;
         auto &p = res[name];
         if (!p) {
