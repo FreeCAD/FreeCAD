@@ -521,7 +521,7 @@ def calculate_placement(globalRotation,
     try:
         t = edge.tangentAt(get_parameter_from_v0(edge, offset))
         t.normalize()
-    except:
+    except Exception:
         _wrn(translate("draft","Cannot calculate path tangent. Copy not aligned."))
         return placement
 
